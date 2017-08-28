@@ -1,14 +1,4 @@
-===========================
-jQuery UI framework Themes
-===========================
-
-
 ==== THEMES ====
-
-*** jqueryui/themes/ ***
-Contain all theme related to jQuery UI framework
-
-- jQuery UI Themes:
 1. infragistics
 2. infragistics2012
 3. ios
@@ -16,9 +6,9 @@ Contain all theme related to jQuery UI framework
 
 
 
-*** jquery/themes/[Theme name] ***
+*** infragistics/themes/[Theme name] ***
 
-themes/[Theme name]/images - Contain all images related to the theme (This will be removed after we implement the web font in each theme)
+themes/[Theme name]/images - Contain all images related to the theme
 
 themes/[Theme name]/infragistics.theme.less - The root file which import all partial.
 
@@ -26,16 +16,14 @@ themes/[Theme name]/infragistics-ignite-ui-controls - Contain all theme styles r
 
 themes/[Theme name]/jquery-ui-overrides.less -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
 
-themes/[Theme name]/variables.less - Contain all bootstrap theme variables.
+themes/[Theme name]/variables.less - Contain all theme variables.
 
-themes/[Theme name]/ignite-ui-variables.less - Contain all variables related to Ignite UI components
-
-themes/[Theme name]/mixins.less - Contain all mixins related to Ignite UI components
+themes/[Theme name]/mixins.less - Contain all theme mixins.
 
 
 NOTE: the root file "infragistics-theme-less" is the only file that needs to be compiled to .CSS
 
-NOTE: File "@import" order inside "infragistics.theme.less" is important! In order the theme to work correctly.
+NOTE: Import order inside "infragistics.theme.less" is important! In order the theme to work correctly.
 
 
 

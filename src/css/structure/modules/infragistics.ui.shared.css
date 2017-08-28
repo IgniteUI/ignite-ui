@@ -282,15 +282,13 @@
 }
 */
 .ui-igcheckbox-normal-on {
-    margin-left: 1px;
-    margin-top: 1px;
-	text-indent: 0px;
+	text-indent: 0;
 }
+
 .ui-igcheckbox-small {
 	display: inline-block;
 	width: 13px;
 	height: 13px;
-	/*font-size: 1px;*/
 	overflow: hidden;
     color: transparent;
 }

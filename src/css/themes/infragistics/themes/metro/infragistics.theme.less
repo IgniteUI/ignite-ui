@@ -5,21 +5,17 @@
 /* Theme variables */
 @import "variables.less";
 
-// Icons fonts
-@import (css)"../../../../structure/fonts/style.css";
-
 // Ignite UI mixins
 @import "mixins.less";
 
+// Font https://icomoon.io
+@import (css)"../../../../structure/fonts/style.css";
 
 
-// jQuery UI Structure
-@import "../../../shared-styles/less/jquery-ui.less";
+// jQuery UI
+@import (css)"../../../../structure/jquery-ui.css";
 
-// jQuery UI Theme
-@import "jquery-ui-theme.less";
-
-// JQuery UI Components Overrides
+// JQuery UI  Overrides
 @import "jquery-ui-overrides.less";
 
 
@@ -27,5 +23,10 @@
 // Ignite UI controls
 @import "infragistics-ignite-ui-controls.less";
 
-// Icon styles
-@import "../../../shared-styles/less/icons-styles.less";
+// Icon styles to override jquery ui icon images
+@import (css)"../../../../structure/icons-styles.css";
+
+
+// Put your Styles in this file
+@import "overrides";
+

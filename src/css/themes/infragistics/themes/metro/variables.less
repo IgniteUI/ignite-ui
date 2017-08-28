@@ -1,14 +1,20 @@
 // Font
 @font-family-base: "Segoe UI",Arial,sans-serif;
 @text-color: @igGray10;
+@text-color-light: #fff;
 @highlight-color:#0c2837;
 @text-muted: fade(@text-color, 70%);
 
 
 // Color palette
+@body-bg: #FFFFFF;
 @accent1: #00aade;
-@accent2: #80D5EF;
-@accent3: #fd472b;
+@accent2: #b3e6f5;
+@accent2-border: #03bbde;
+@danger: #fd472b;
+@error-border-color: @danger;
+@error-color: #3a0d11;
+
 
 @dialog-header:@accent1;
 
@@ -61,7 +67,52 @@
 
 
 // Radius
-@radius: 6px;
+@border-radius-base: 6px;
+
+//* igChart colors */
+@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
+
+
+// Gradual palette, used mainly for bulletGraph and linearGauge
+@chartGradualPalette1: #2380A8;
+@chartGradualPalette2: #333333;
+@chartGradualPalette3: #808080;
+@chartGradualPalette4: #185170;
+@chartGradualPalette5: #879922;
+@chartGradualPalette6: #FBA609;
+@chartGradualPalette7: #FF5559;
+@chartGradualPalette8: #8856b1;
+@chartGradualPalette9: #e3720c;
+@chartGradualPalette10: #582c7d;
+@chartGradualPalette11: #386a23;
+@chartGradualPalette12: #C62D36;
+
+@chartPaletteNegative: #c33d4a;
+
+
+//Radialgauge range palette
+@range-1:#A4bA29;
+@range-2:#FDBD48;
+@range-3:#F79036;
+@range-4:#D3404B;
+@range-5:#9E73C1;
+@range-6:#793BAC;
+
+// bulletgraph,lineargauge range palette
+@shades-range-1:#005E9C;
+@shades-range-2:#0078C8;
+@shades-range-3:#0092F4;
+@shades-range-4:#21A7FF;
+@shades-range-5:#4FB9FF;
+
+
+// Icons
+@ui-icons-darker: #222222;
+@ui-icons-dark: #333;
+@ui-icons-light: #ffffff;
+@ui-icons-accent: @accent1;
+
+@link-color:@accent1;
 
 
 // grays
@@ -76,6 +127,57 @@
 @igGray9: #303030;
 @igGray10: #000000;
 
+// Grids
+@add-row-bg:@igGray2;
+
+@table-bg: @body-bg; // table bg
+@table-border-color: #ebebeb;
+@table-border-color-active: @accent1;
+@table-bg-accent: @igGray2; // alt row bg
+@table-bg-hover: #f8f8f8;
+@table-bg-active: @accent1; // select
+
+@grid-header-bg:#fff;
+@grid-header-border: @table-border-color;
+@grid-header-active-bg:@accent1;
+@grid-header-text:@text-color;
+@grid-header-text-active:@text-color-light;
+
+@grid-footer-bg:@accent1;
+@grid-footer-color:@text-color-light;
+
+@grid-toolbar-bg:#f8f8f8;
+
+@iggrid-highlight-bg:@accent2;
+@iggrid-highlight-border:darken(@accent2,5%);
+@iggrid-highlight-color:@text-color;
+@iggrid-highlight-color-hover:@text-color-light;
+
+@iggrid-icons:@ui-icons-dark;
+@iggrid-icons-active:@ui-icons-light;
+
+
+
+// Tabs
+@tabs-header-bg:@accent1;
+
+@tabs-normal-tab-bg:@accent1;
+@tabs-normal-tab-border:@accent1;
+@tabs-normal-tab-color:@text-color-light;
+
+@tabs-active-tab-bg:#fff;
+@tabs-active-tab-border:transparent;
+@tabs-active-tab-color:@text-color;
+
+@tabs-panel-border:@table-border-color;
+
+// Dropdowns and Menus
+@dropdown-bg: @body-bg;
+@dropdown-link-color: @text-color;
+@dropdown-link-hover-color: @text-color;
+@dropdown-link-hover-bg: @igGray6;
+@dropdown-link-active-color: @text-color;
+@dropdown-link-active-bg: @accent1;
 
 // Spreadsheet
 @bar-background: #e4e4e4;
@@ -89,7 +191,7 @@
 @spreadsheet-wight-text: #fff;
 @spreadsheet-empty-bg: #fff;
 @spreadsheet-disabled: #c4c4c4;
-@spreadsheet-danger: @accent3;
+@spreadsheet-danger: @danger;
 @spreadsheet-menu-item-bg-hover: @spreadsheet-cell-selection-rgba;
 @spreadsheet-formula-btn-bg: @igGray6;
 @spreadsheet-tab-text-color: #666;

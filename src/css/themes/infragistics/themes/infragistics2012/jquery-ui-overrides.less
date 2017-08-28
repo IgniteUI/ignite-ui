@@ -1,7 +1,8 @@
+/*! jQuery UI - v1.12.1 - 2016-09-14 */
+
 /*
 
-    List with Overwritten components for :
-  // jQuery UI - v1.12.1 - 2016-09-14
+  List with Overwritten components
 
   1. jQuery UI Accordion
   2. jQuery UI Auto complete
@@ -10,13 +11,17 @@
   5. jQuery UI Dialog
   6. jQuery UI Progressbar
   7. jQuery UI Slider
-  8. jQuery UI Tabs
+  8. jQuery UI Spinner
+  9. jQuery UI Tabs
 
 */
 
 /**********************
 * jQuery UI Accordion *
 **********************/
+.ui-accordion .ui-accordion-header {
+  padding: .5em .5em .5em 2em;
+}
 
 .ui-accordion .ui-accordion-header.ui-state-hover {
   .stateHover;
@@ -56,17 +61,19 @@
   position: absolute;
 }
 
-.ui-menu .ui-menu-item {
+.ui-menu-item {
   list-style-image: none;
+  position: relative;
+  padding: .5rem 1.7rem .5rem .7rem;
 }
 
-.ui-menu .ui-menu-item.ui-state-focus {
+.ui-menu-item.ui-state-focus {
   color: @dropdown-link-hover-color;
   background: @dropdown-link-hover-bg;
   border: 1px solid @igGray7;
 }
 
-.ui-menu .ui-menu-item.ui-state-active {
+.ui-menu-item.ui-state-active {
   color: @dropdown-link-active-color;
   background: @dropdown-link-active-bg;
   border: 1px solid @accent2;
@@ -79,20 +86,38 @@
 .ui-datepicker {
   background: @body-bg;
   padding: 0;
+  .ui-icon {
+    color: #fff;
+  }
+  .ui-state-hover {
+    .ui-icon {
+      color: #ddd;
+    }
+  }
+  .ui-datepicker-prev.ui-state-hover,
+  .ui-datepicker-next.ui-state-hover {
+    background: transparent;
+    border-color: transparent;
+  }
 }
+
 .ui-datepicker .ui-datepicker-header {
   background: @igGray8;
+  color: #fff;
 }
 
 // changing the arrow icons to a simple triangle
 .ui-datepicker .ui-datepicker-prev .ui-icon {
-  &::before { content: '\e64a'}
+  &::before {
+    content: '\e64a'
+  }
 }
 
 .ui-datepicker .ui-datepicker-next .ui-icon {
-  &::before { content: '\e646'}
+  &::before {
+    content: '\e646'
+  }
 }
-
 
 .ui-datepicker thead {
   background: @igGray3;
@@ -109,6 +134,7 @@
   border: 1px solid transparent;
   color: @text-color;
 }
+
 .ui-datepicker .ui-datepicker-calendar a.ui-state-active {
   .stateActive;
 }
@@ -146,19 +172,18 @@
 }
 
 .ui-dialog .ui-dialog-title {
-  max-width: 60%;
+  max-width: 100%;
 }
 
-
 .ui-dialog .ui-dialog-content {
-  padding:1em;
+  padding: 1em;
 }
 
 .ui-dialog .ui-dialog-buttonpane,
-.ui-dialog .ui-dialog-titlebar{
-
+.ui-dialog .ui-dialog-titlebar {
   padding: 1rem;
 }
+
 .ui-dialog .ui-dialog-buttonpane {
   margin-top: 1rem;
   position: absolute;
@@ -166,14 +191,15 @@
   bottom: 0;
   width: 100%;
 }
-.ui-dialog .ui-dialog-titlebar{
+
+.ui-dialog .ui-dialog-titlebar {
   margin-bottom: 1rem;
   position: relative;
 }
 
-.ui-dialog  button {
+.ui-dialog button {
   cursor: pointer;
-  margin:0 0 0 .5rem;
+  margin: 0 0 0 .5rem;
   padding: .4rem 1.5rem;
 }
 
@@ -182,7 +208,10 @@
 }
 
 .ui-iggrid-headercaption {
-  border-width:1px;
+  background: #fff;
+  border-color: @table-border-color;
+  border-width: 1px;
+  text-align: center;
 }
 
 .ui-dialog,
@@ -204,14 +233,13 @@
 }
 
 .ui-dialog .ui-dialog-titlebar.ui-state-focus {
-  background: @igGray8;
+  background: @accent1;
   border-color: @accent2;
 }
 
 .ui-dialog .ui-state-focus .ui-dialog-title {
   color: #FFFFFF;
 }
-
 
 /************************
 * jQuery UI Progressbar *
@@ -245,8 +273,7 @@
 
 .touch .ui-spinner-button,
 .touchevents .ui-spinner-button,
-.pointerevents .ui-spinner-button
-{
+.pointerevents .ui-spinner-button {
   width: 1.4em;
   height: 1.4em;
 
@@ -262,9 +289,15 @@
   background: #FFFFFF;
 }
 
+.ui-tabs.ui-widget.ui-widget-content {
+  border: none;
+}
+
 .ui-tabs .ui-tabs-nav {
-  padding: 0;
-  background: @igGray8;
+  padding: .5em .5em 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  background: @tabs-header-bg;
 }
 
 .ui-tabs .ui-tabs-nav li {
@@ -273,74 +306,106 @@
 }
 
 .ui-tabs .ui-tabs-nav li.ui-state-default {
-  background: @igGray8;
-  border-color: @igGray8;
+  background: @tabs-normal-tab-bg;
+  border-color: @tabs-normal-tab-border;
+  .ui-tabs-anchor {
+    color: @tabs-normal-tab-color
+  }
 }
 
 .ui-tabs .ui-tabs-nav li.ui-state-hover {
   background: @igGray10;
   border-color: @igGray10;
+  .ui-tabs-anchor {
+    color: #fff;
+  }
 }
 
 .ui-tabs .ui-tabs-nav li.ui-state-active {
-  background: @accent2;
-  border-color: @accent2;
+  background: @tabs-active-tab-bg;
+  border-color: @tabs-active-tab-border;
+  .ui-tabs-anchor {
+    color: @tabs-active-tab-color;
+  }
 }
 
 .ui-tabs .ui-tabs-panel {
-  border:1px solid @igGray2;
+  border: 1px solid @tabs-panel-border;
+  border-top: transparent;
 }
 
+.ui-tabs-active.ui-state-active {
+  a:focus {
+    outline-color: transparent;
+  }
+}
 
 /* Component containers
 ----------------------------------*/
 .ui-widget {
   font-family: @font-family-base;
-  outline:none;
+  outline: none;
+  font-size: 1.1em;
 }
+
 .ui-widget .ui-widget {
-  outline:none;
+  outline-color: transparent;
+  font-size: 1em;
 }
+
 .ui-widget input,
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
   font-family: @font-family-base;
+  font-size: 1em;
 }
+
 .ui-widget.ui-widget-content {
   border: 1px solid @table-border-color;
 }
+
 .ui-widget-content {
   border: 1px solid @table-border-color;
   background: @body-bg;
   color: @text-color;
 }
+
 .ui-widget-content a {
   color: @text-color;
 }
+
 .ui-widget-header {
-  border: 1px solid @igGray8;
-  background: @igGray8;
-  color: #fff;
-  font-weight: normal;
-}
-.ui-widget-header a {
+  border: 1px solid @table-border-color;
+  background: @body-bg;
   color: @text-color;
+  font-weight: normal;
+  a {
+    color: @text-color;
+  }
+}
+
+th.ui-widget-header {
+  color: #fff;
 }
 
 /* Interaction states
 ----------------------------------*/
+
+// Default state
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default,
 .ui-button,
-
-  /* We use html here because we need a greater specificity to make sure disabled
-  works properly when clicked or hovered */
 html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
   .stateNormal;
 }
+
+.ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
+  background: transparent;
+}
+
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited,
@@ -351,16 +416,27 @@ a:visited.ui-button,
   color: @text-color;
 }
 
+// Hover state
 .ui-state-hover,
-.ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover,
 .ui-state-focus,
+.ui-widget-content .ui-state-hover,
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus,
 .ui-button:hover,
 .ui-button:focus {
   .stateHover;
 }
+
+.ui-widget-content .ui-state-hover,
+.ui-widget-content .ui-state-focus {
+  color: @text-color;
+}
+
+.ui-state-focus:focus {
+  outline-color: transparent;
+}
+
 .ui-state-hover a,
 .ui-state-hover a:hover,
 .ui-state-hover a:link,
@@ -371,13 +447,14 @@ a:visited.ui-button,
 .ui-state-focus a:visited,
 a.ui-button:hover,
 a.ui-button:focus {
-  color: @text-color;
+  color: @link-color;
 }
 
 .ui-visual-focus {
   box-shadow: 0 0 3px 1px @accent1;
 }
 
+// Active state
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active,
@@ -392,20 +469,32 @@ a.ui-button:active,
   border: @accent1;
   background-color: #ffffff;
 }
+
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
   color: @text-color;
+  text-decoration: underline;
 }
 
 /* Interaction Cues
 ----------------------------------*/
 
 // Highlight state
+.ui-iggrid-colasc .ui-state-highlight {
+  border-bottom: 0;
+  border-top: 0;
+}
+
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
   .stateActive;
+}
+
+.ui-state-checked {
+  border: 1px solid darken(@accent2, 6.5%);
+  background: @accent2;
 }
 
 .ui-state-highlight a,
@@ -471,7 +560,6 @@ a.ui-button:active,
   cursor: default !important;
 }
 
-
 /* Icons
 ----------------------------------*/
 
@@ -480,57 +568,54 @@ a.ui-button:active,
   width: 16px;
   height: 16px;
   background-position: 16px 16px;
+  color: @ui-icons-dark;
 }
 
 // Default state for buttons
-.ui-icon,
-.ui-widget-content .ui-icon,
-.ui-state-default .ui-icon,
-.ui-widget-header .ui-state-default .ui-icon,
-.ui-iggrid-paging-item.ui-state-default .ui-icon {
-  color: @ui-icons-dark;
+.ui-state-default .ui-widget-header.ui-icon {
+  color: @ui-icons-darker;
 }
 
 // Focus state
-.ui-state-focus .ui-icon,
-.ui-igcombo.ui-state-focus .ui-igcombo-button .ui-icon,
-.ui-igedit.ui-state-focus .ui-igcombo-button .ui-icon,
-.ui-iggrid .ui-igcombo.ui-state-focus .ui-igcombo-button .ui-icon,
-.ui-widget-header .ui-state-focus.ui-state-hover .ui-icon,
-.ui-igcombo-button-focus .ui-icon,
-.ui-state-focus.ui-state-hover .ui-icon {
-  color: @ui-icons-dark;
-}
-
-// Hover state
-.ui-state-hover .ui-icon,
-.ui-state-hover.ui-state-default .ui-icon,
-.ui-igedit.ui-state-hover .ui-igedit-button-common.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-focus .ui-igedit-button-common.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-active .ui-igedit-button-common.ui-state-hover .ui-icon,
-.ui-state-default.ui-state-hover.ui-igedit-button .ui-icon,
-.ui-state-default.ui-state-hover.ui-igcombo-button .ui-icon,
-.ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon {
-  color: @ui-icons-dark;
+.ui-state-focus > .ui-icon,
+.ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon
+  // bug: 218458 , 17.08.2016, M.P, The checkmark disappears when the mouse is over it.
+{
+  color: @ui-icons-light;
 }
 
 // EXCEPTION: inputs have a white bg, so icons inside can't be white
 .ui-state-hover.ui-state-default .ui-igcombo-clearicon.ui-icon, // EXCEPTION: hover on combo but not on the dropdown button itself
 .ui-state-hover .ui-state-default > .ui-icon {
-  color: @ui-icons-dark;
+  color: @ui-icons-light;
 }
 
 // Active state (with accent icons)
-.ui-state-active .ui-icon,
-.ui-state-active.ui-state-hover .ui-icon,
-.ui-igcombo-button.ui-state-active .ui-icon,
-.ui-igedit-button.ui-state-active .ui-icon,
-.ui-iggrid .ui-igcombo-button.ui-state-active .ui-icon,
+
+/*dropdown pressed*/
 .ui-igedit.ui-state-focus .ui-igedit-button-common .ui-icon,
 .ui-igedit.ui-state-active .ui-igedit-button-common .ui-icon,
 .ui-state-hover.ui-state-highlight.ui-igedit-button .ui-icon,
 .ui-state-hover.ui-state-highlight.ui-igcombo-button .ui-icon {
+  color: @ui-icons-light;
+}
+
+.ui-igedit-button-common.ui-state-hover {
+  background: @accent2;
+  .ui-icon {
+    color: @text-color-light;
+  }
+}
+
+.ui-iggrid-filterbutton.ui-state-hover,
+.ui-iggrid-filterbutton.ui-state-active {
   color: @ui-icons-accent;
+  border-color: transparent;
+}
+
+// Active state (combo dropdown in grid)
+.ui-iggrid .ui-state-hover.ui-state-highlight.ui-igedit-button .ui-icon {
+  color: @ui-icons-darker;
 }
 
 // Highlight state
@@ -546,29 +631,43 @@ a.ui-button:active,
   color: @ui-icons-darker;
 }
 
-// EXCEPTION: Headers in this theme are dark so they need a light icon
-.ui-widget-header .ui-icon,
-.ui-state-default .ui-widget-header.ui-icon {
-  color: @ui-icons-light;
-}
-
 .ui-iggrid-header.ui-state-active .ui-icon,
 .ui-iggrid-header.ui-state-active.ui-state-hover .ui-icon {
   color: @ui-icons-light;
 }
 
-input.ui-button,
-input.ui-igbutton {
-  border-radius: @border-radius-base !important;
+/* Scheduler icons */
+.ui-igscheduler {
+  .ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+    .ui-icon {
+      background-image: @ui-icons-darker;
+    }
+  }
+  .ui-igscheduler-tabs,
+  .ui-igscheduler-today-button {
+    &:hover {
+      .ui-icon {
+        background-image: @ui-icons-darker;
+      }
+    }
+  }
+  .ui-icon-calendar-day {
+    background-position: -96px -208px;
+  }
+  .ui-icon-calendar {
+    background-position: -112px -208px;
+  }
+  .ui-icon-note {
+    background-position: -128px -208px;
+  }
 }
 
-.ui-igcombo-button .ui-state-default {
-  border: 0 !important;
-}
+/* Scheduler icons END */
 
-/* positioning */
 .ui-icon-grip-diagonal-se,
-.ui-dialog .ui-icon-grip-diagonal-se {background-position: -80px -224px;}
+.ui-dialog .ui-icon-grip-diagonal-se {
+  background-position: -80px -224px;
+}
 
 /* Misc visuals
 ----------------------------------*/
@@ -631,3 +730,9 @@ input.ui-igbutton {
   filter: alpha(opacity=20);
 }
 
+.ui-iggrid-fixedcontainer-left {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-right: 2px solid @accent1!important;
+}

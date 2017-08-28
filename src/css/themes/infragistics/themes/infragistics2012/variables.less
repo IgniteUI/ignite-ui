@@ -1,17 +1,19 @@
 // Font
 @font-family-base: "Segoe UI",Arial,sans-serif;
 @text-color: @igGray10;
+@text-color-light: #fff;
 @highlight-color:#0c2837;
 @text-muted: fade(@text-color, 70%);
 
 
 // Color palette
-@accent1: #4897AA;
-@accent2: #9ECBD6;
+@accent1: #2686ae;
+@accent2: #a5d2dd;
 @accent2-border: #78b5c3;
 @danger: #fd472b;
 @error-border-color: @danger;
 @error-color: #3a0d11;
+
 
 @dialog-header:@accent1;
 
@@ -67,19 +69,76 @@
 //* igChart colors */
 @chartToolTipBgColor: rgba(255, 255, 255, 0.95);
 
+// Grids
+@add-row-bg:@igGray2;
+
+@table-bg: @body-bg; // table bg
+@table-border-color: #ebebeb;
+@table-border-color-active: @accent1;
+@table-bg-accent: @igGray1; // alt row bg
+@table-bg-hover: #f8f8f8;
+@table-bg-active: @accent1; // select
+
+@grid-header-bg:#5d5d5d;
+@grid-header-border: #4b4b4b;
+@grid-header-active-bg:@accent1;
+@grid-header-text:@text-color-light;
+@grid-header-text-active:@text-color-light;
+
+@grid-footer-bg:#a1a1a1;
+@grid-footer-color:@text-color;
+
+@grid-toolbar-bg:#f8f8f8;
+
+@iggrid-highlight-bg:@accent2;
+@iggrid-highlight-border:darken(@accent2,5%);
+@iggrid-highlight-color:@text-color;
+@iggrid-highlight-color-hover:@text-color-light;
+
+@iggrid-icons:@ui-icons-dark;
+@iggrid-icons-active:@ui-icons-light;
+
+//Gradients
+@gradient-0-1: rgb(245, 245, 245);
+@gradient-0-2: rgb(235, 235, 235);
+
+@gradient-1-1:rgb(211, 211, 211);
+@gradient-1-2:rgb(161, 161, 161);
+
+@gradient-2-1:rgb(117, 117, 117);
+@gradient-2-2:rgb(79, 79, 79);
+
+@gradient-3-1:rgb(59, 183, 235);
+@gradient-3-2:rgb(38, 134, 174);
+
+// Tabs
+@tabs-header-bg:@accent1;
+
+@tabs-normal-tab-bg:@accent1;
+@tabs-normal-tab-border:@accent1;
+@tabs-normal-tab-color:@text-color-light;
+
+@tabs-active-tab-bg:#fff;
+@tabs-active-tab-border:transparent;
+@tabs-active-tab-color:@text-color;
+
+@tabs-panel-border:@table-border-color;
+
 
 // Icons
 @ui-icons-darker: #222222;
 @ui-icons-dark: #888888;
 @ui-icons-light: #ffffff;
-@ui-icons-accent: @accent1;
+@ui-icons-accent: @accent2;
+
+@link-color:@accent1;
 
 
 // Variables for Grids
 @body-bg: #FFFFFF;
 @table-bg: @body-bg; // table bg
 @table-border-color: @igGray4;
-@table-bg-accent: @igGray1; // alt row bg
+@table-bg-accent: @igGray2; // alt row bg
 @table-bg-hover: @igGray6;
 @table-bg-active: @accent1; // select
 @iggrid-icons-dark: url(../../../../structure/images/igGrid/filter-icons-333333.png); //dark filter icons

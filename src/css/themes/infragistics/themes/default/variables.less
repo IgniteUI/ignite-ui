@@ -1,16 +1,19 @@
 // Font
 @font-family-base: "Segoe UI",Arial,sans-serif;
 @text-color: @igGray10;
+@text-color-light: #fff;
 @highlight-color:@accent2;
 @text-muted: fade(@text-color, 70%);
 
 
 // Color palette
-@accent1: #9ECBD6;
+@body-bg: #FFFFFF;
+@accent1: #a8d6e1;
 @accent2: #4897AA;
 @accent2-border: #6cb9cc;
 @error-border-color: #D3404B;
 @error-color: #3a0d11;
+
 
 @dialog-header:@accent2;
 
@@ -62,15 +65,49 @@
 @border-radius-base: 0;
 
 
-// Variables for Grids
-@body-bg: #FFFFFF;
+// Grids
+@add-row-bg:@igGray2;
+
 @table-bg: @body-bg; // table bg
 @table-border-color: @igGray4;
+@table-border-color-active: @accent1;
 @table-bg-accent: @igGray1; // alt row bg
-@table-bg-hover: @igGray6;
+@table-bg-hover: #f8f8f8;
 @table-bg-active: @accent1; // select
-@iggrid-icons-dark: url(../../../../structure/images/igGrid/filter-icons-333333.png); //dark filter icons
-@iggrid-icons-light: url(../../../../structure/images/igGrid/filter-icons-FFFFFF.png); //white filter icons
+
+@grid-header-bg:@igGray9;
+@grid-header-border: @table-border-color;
+@grid-header-active-bg:@accent2;
+@grid-header-text:@text-color-light;
+@grid-header-text-active:@text-color-light;
+
+@grid-footer-bg:@igGray6;
+@grid-footer-color:@text-color;
+
+@grid-toolbar-bg:@igGray6;
+
+@iggrid-highlight-bg:@accent1;
+@iggrid-highlight-border:darken(@accent1,5%);
+@iggrid-highlight-color:@text-color;
+@iggrid-highlight-color-hover:@text-color;
+
+@iggrid-icons:@ui-icons-dark;
+@iggrid-icons-active:@ui-icons-light;
+
+
+
+// Tabs
+@tabs-header-bg:@accent2;
+
+@tabs-normal-tab-bg:@accent2;
+@tabs-normal-tab-border:@accent2;
+@tabs-normal-tab-color:@text-color-light;
+
+@tabs-active-tab-bg:#fff;
+@tabs-active-tab-border:transparent;
+@tabs-active-tab-color:@text-color;
+
+@tabs-panel-border:@table-border-color;
 
 
 // Icons
@@ -79,6 +116,8 @@
 @ui-icons-light: #ffffff;
 @ui-icons-accent: @accent2;
 
+@link-color:@accent2;
+
 
 // Dropdowns and Menus
 @dropdown-bg: @body-bg;
@@ -86,7 +125,7 @@
 @dropdown-link-hover-color: @text-color;
 @dropdown-link-hover-bg: @igGray6;
 @dropdown-link-active-color: @text-color;
-@dropdown-link-active-bg: @accent1;
+@dropdown-link-active-bg: @accent2;
 
 
 // Spreadsheet
