@@ -1123,7 +1123,7 @@
 				$editor.igDatePicker("option", "regional", "ja");
 				equal($editor.igDatePicker("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
 				$editor.igDatePicker("setFocus");
-				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Input Format should be in German");
+				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Display Format should be in German");
 				$editor.trigger("blur").remove();
 			});
 	    });

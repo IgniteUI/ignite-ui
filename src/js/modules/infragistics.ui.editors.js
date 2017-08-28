@@ -1796,7 +1796,7 @@
 			this._superApply(arguments);
 			this._changeLocaleForNotifier();
 		},
-		_changeRegional: function() {
+		changeRegional: function() {
 			this._editorInput.val(this._getDisplayValue());
 		},
 		_setOption: function (option, value) { // igTextEditor
@@ -7994,7 +7994,7 @@
 				this._dispalyFormat = this._inputFormat;
 			}
 		},
-		_changeRegional: function() {
+		changeRegional: function() {
 			this._initialize();
 			this._applyOptions();
 			this._updateValue(this._dateObjectValue);
