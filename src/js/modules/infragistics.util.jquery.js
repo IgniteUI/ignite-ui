@@ -193,7 +193,7 @@
 	$.ig.hoursToString = function (hours, flag) {
 		var result;
 		switch (flag) {
-			case "h": {
+			case "h":
 				if (hours > 12) {
 					hours -= 12;
 				}
@@ -203,9 +203,8 @@
 					hours = 12;
 				}
 				result = hours.toString();
-			}
 				break;
-			case "hh": {
+			case "hh":
 				if (hours > 12) {
 					hours -= 12;
 				}
@@ -219,21 +218,18 @@
 				} else {
 					result = hours.toString();
 				}
-			}
 				break;
-			case "H": {
+			case "H":
 				result = hours.toString();
-			}
 				break;
-			case "HH": {
-				if (hours < 10) {
-					result = "0" + hours.toString();
-				} else {
-					result = hours.toString();
-				}
-			}
-				break;
+			case "HH":
+				/* falls through */
 			default:
+				if (hours < 10) {
+					result = "0" + hours.toString();
+				} else {
+					result = hours.toString();
+				}
 				break;
 		}
 		return result;
@@ -242,19 +238,17 @@
 	$.ig.dateToString = function (date, flag) {
 		var result;
 		switch (flag) {
-			case "dd": {
+			case "dd":
 				if (date < 10) {
 					result = "0" + date.toString();
 				} else {
 					result = date;
 				}
-			}
 				break;
-			case "d": {
-				result = date.toString();
-			}
-				break;
+			case "d":
+				/* falls through */
 			default:
+				result = date.toString();
 				break;
 		}
 		return result;
@@ -263,15 +257,13 @@
 	$.ig.dayToString = function (day, flag, regional) {
 		var result;
 		switch (flag) {
-			case "dddd": {
+			case "dddd":
 				result = $.ig.getRegionalValue("dayNames", regional)[ day ];
-			}
 				break;
-			case "ddd": {
-				result = $.ig.getRegionalValue("dayNamesShort", regional)[ day ];
-			}
-				break;
+			case "ddd":
+				/* falls through */
 			default:
+				result = $.ig.getRegionalValue("dayNamesShort", regional)[ day ];
 				break;
 		}
 		return result;
@@ -280,29 +272,25 @@
 	$.ig.monthToString = function (month, flag, regional) {
 		var result;
 		switch (flag) {
-			case "MMMM": {
+			case "MMMM":
 				result = $.ig.getRegionalValue("monthNames", regional)[ month ];
-			}
 				break;
-			case "MMM": {
+			case "MMM":
 				result = $.ig.getRegionalValue("monthNamesShort", regional)[ month ];
-			}
 				break;
-			case "MM": {
+			case "M":
+				month++;
+				result = month.toString();
+				break;
+			case "MM":
+				/* falls through */
+			default:
 				month++;
 				if (month < 10) {
 					result = "0" + month.toString();
 				} else {
 					result = month;
 				}
-			}
-				break;
-			case "M": {
-				month++;
-				result = month.toString();
-			}
-				break;
-			default:
 				break;
 		}
 		return result;

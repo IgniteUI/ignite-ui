@@ -1674,13 +1674,13 @@
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
 
-		testId = 'Cannot set on runtime';
+		testId = 'Option cannot be set for numeric editor';
 		test(testId, 1, function () {
 			throws(function () {
 					$('#numericEditorRuntime').igNumericEditor("option", "excludeKeys", "asds");
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
-				}, $.ig.Editor.locale.setOptionError + "excludeKeys");
+					return err.message.indexOf($.ig.Editor.locale.numericEditorNoSuchOption) > -1;
+				}, Error($.ig.Editor.locale.numericEditorNoSuchOption));
 		});
 		
 		testId = 'spinDown button not disabled'

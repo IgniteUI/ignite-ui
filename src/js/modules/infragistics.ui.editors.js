@@ -4731,7 +4731,7 @@
 			case "excludeKeys":
 			case "includeKeys":
 				this.options[ option ] = prevValue;
-				throw new Error(this._getLocaleValue("setOptionError") + option);
+				throw new Error(this._getLocaleValue("numericEditorNoSuchOption"));
 
 			default:
 
@@ -7893,7 +7893,7 @@
 		_initialize: function () {
 			var offset = this.options.displayTimeOffset;
 			this._super();
-			this._validateRegionalSettings();
+			this._applyRegionalSettings();
 			this.options.inputMask =
 				this._convertDateMaskToDigitMask(this.options.dateInputFormat);
 			this._setNumericType();
@@ -7967,7 +7967,7 @@
 				break;
 			}
 		},
-		_validateRegionalSettings: function () { //DateEditor
+		_applyRegionalSettings: function () { //DateEditor
 			if (this.options.dateInputFormat !== null) {
 				if (this._inputFormat === undefined) {
 					this._inputFormat = this.options.dateInputFormat;
@@ -7995,11 +7995,13 @@
 			}
 		},
 		changeRegional: function() {
+			var timeouts = this._timeouts;
 			this._initialize();
-			this._applyOptions();
-			this._updateValue(this._dateObjectValue);
-			this._updateMaskedValue();
-			this._super();
+			this._timeouts = timeouts;
+			this._setInitialValue(this._dateObjectValue);
+			if (this._focused) {
+				this._enterEditMode();
+			}
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
@@ -10550,8 +10552,6 @@
 			return valid;
 		},
 		_deleteInternalProperties: function () {
-			delete this._inputFormat;
-			delete this._displayFormat;
 			this._super();
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */

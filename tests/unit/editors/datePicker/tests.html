@@ -1113,7 +1113,7 @@
 			});
 
 			testId = 'Runtime changes for local and regional options';
-			test(testId, 5, function () {
+			test(testId, 6, function () {
 				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
 
 				equal($editor.igDatePicker("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
@@ -1124,6 +1124,8 @@
 				equal($editor.igDatePicker("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
 				$editor.igDatePicker("setFocus");
 				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Display Format should be in German");
+				$editor.igDatePicker("option", "regional", "en");
+				equal($editor.igDatePicker("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
 				$editor.trigger("blur").remove();
 			});
 	    });
