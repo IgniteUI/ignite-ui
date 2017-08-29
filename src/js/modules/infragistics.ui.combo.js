@@ -6187,14 +6187,14 @@
 			*/
 			var clearFiltering = texts === "",
 				type = this.options.filteringType,
-				ds = this.options.dataSource;
+				ds = this.options.dataSource,
 				expressions = [];
 
 			if (!this._isFilteringEnabled()) {
 				return this;
 			}
 
-			if(type == "local"){ 
+			if(type === "local"){ 
 				if (clearFiltering) {
 					this._options.expression = null;
 					ds.clearLocalFilter();
