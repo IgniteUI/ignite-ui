@@ -6194,7 +6194,7 @@
 				return this;
 			}
 
-			if (type === "local") { 
+			if (type === "local") {
 				if (clearFiltering) {
 					this._options.expression = null;
 					ds.clearLocalFilter();
@@ -6205,7 +6205,7 @@
 				this._generateExpressions(texts);
 
 			this.filterByExpressions(expressions, event);
-			
+
 		},
 		filterByExpressions: function (expressions, event) {
 			/* Creates expressions for filtering.
@@ -6242,16 +6242,15 @@
 			filtering.expressions.forEach(function(element) {
 				if (element.fieldName === undefined) {
 					element.fieldName = textKeyValueOption;
-				}	
+				}
 			});
 
 			if (event) {
 				this._triggerFiltering(event);
 			}
-			
+
 			if (type === "local") {
 				ds.filter(filtering.expressions, logic, true);
-				
 				if (this.options.virtualization) {
 					this._handleLocalFilteringWithVirt(ds);
 				} else {
