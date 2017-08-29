@@ -82,6 +82,10 @@
         <div id="combo-remote-filtering-blur"></div>
     </div>
 
+    <div class="cont">
+        <div id="combo-filtering-by-expressions"></div>
+    </div>
+
     <script>
         $(function() {
             var testId_1 = 'Generate expressions from texts for filtering',
@@ -94,7 +98,8 @@
                 testId_8 = 'When fitering is remote and multiSelection is enabled input value is not cleared after clicking outside the combo',
                 testId_9 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered',
                 testId_10 = 'Filtering event arguments',
-                testId_11 = 'While remotely filtering combo is loading and blurred it should clear the input and close dropdown';
+                testId_11 = 'While remotely filtering combo is loading and blurred it should clear the input and close dropdown',
+                testId_12 = "Pass custom filtering expression objects";
 
             $.mockjaxSettings.logging = 0;
 
@@ -633,6 +638,59 @@
                         }
                     });
                 }, blurAfter)
+            });
+            test(testId_12, function() {
+                var expectedResult = [],
+                    filteredItems = [],
+                    $combo = $('#combo-filtering-by-expressions').igCombo({
+                        valueKey: 'id',
+                        textKey: 'name',
+                        dataSource: [
+                            {"id": 1, "name": "Chai" }, { "id": 2, "name": "Chang" }, { "id": 3, "name": "Aniseed Syrup"}, { "id": 4, "name": "Chef Cajun Seasoning" },
+                            { "id": 5, "name": "Chef Gumbo Mix" }, { "id": 6, "name": "Grandma Boysenberry Spread" }, { "id": 7, "name": "Uncle Bob Organic Dried Pears" }
+                        ]
+                    }),
+                    combo = $combo.igCombo(),
+                    firstCondition = "startsWith",
+                    secondCondition = "endsWith",
+                    firstExpression = "c",
+                    secondExpression = "i",
+                    firstFilterLogic = "and",
+                    secondFilterLogic = "or";
+                
+                expectedResult.push("Chai");
+                combo.igCombo("filterByExpressions", [{cond: firstCondition, expr: firstExpression, logic: firstFilterLogic},
+                    {cond: secondCondition, expr: secondExpression, logic: secondFilterLogic}]);
+
+                filteredItems = combo.igCombo("filteredItems");
+
+                deepEqual(filteredItems.length, expectedResult.length, "The number of filtered items is not correct!")
+
+                filteredItems.forEach(function(element) {
+                    equal(expectedResult.contains(element.data.name), true, "There is an incorrect filtered item!");
+                });
+
+                expectedResult = [];
+
+                // Change some filter settings
+                firstExpression = "chef";
+                secondCondition = "contains";
+                secondExpression = "spread";
+                firstFilterLogic = "or"; 
+                
+                combo.igCombo("filterByExpressions", [{cond: firstCondition, expr: firstExpression, logic: firstFilterLogic},
+                    {cond: secondCondition, expr: secondExpression, logic: secondFilterLogic}]);
+
+                // Get filtered items
+                filteredItems = combo.igCombo("filteredItems");
+
+                expectedResult.push("Chef Cajun Seasoning", "Chef Gumbo Mix", "Grandma Boysenberry Spread");
+
+                deepEqual(filteredItems.length, expectedResult.length, "The number of filtered items is not correct!");
+
+                filteredItems.forEach(function(element) {
+                    equal(expectedResult.contains(element.data.name), true, "There is an incorrect filtered item!");
+                })
             });
         });
     </script>
