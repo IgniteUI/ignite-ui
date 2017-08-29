@@ -6194,7 +6194,7 @@
 				return this;
 			}
 
-			if(type === "local"){ 
+			if (type === "local") { 
 				if (clearFiltering) {
 					this._options.expression = null;
 					ds.clearLocalFilter();
@@ -6231,7 +6231,7 @@
 				filtering = ds.settings.filtering,
 				textKeyValueOption = this.options.textKey;
 
-			if(!this._isFilteringEnabled()) {
+			if (!this._isFilteringEnabled()) {
 				return this;
 			}
 
@@ -6240,7 +6240,7 @@
 			filtering.caseSensitive = this.options.caseSensitive;
 			filtering.expressions = this._options.expression = expressions;
 			filtering.expressions.forEach(function(element) {
-				if(element.fieldName === undefined) {
+				if (element.fieldName === undefined) {
 					element.fieldName = textKeyValueOption;
 				}	
 			});
@@ -6260,12 +6260,12 @@
 			}
 
 			if (type === "remote") {
-				if(paging) {
+				if (paging) {
 					paging.pageIndex = 0;
 					paging.appendPage = false;
 				}
 
-				if(filterExprUrlKey) {
+				if (filterExprUrlKey) {
 					filtering.filterExprUrlKey = filterExprUrlKey;
 				}
 
@@ -6274,11 +6274,11 @@
 				ds.dataBind(this._handleRemoteFiltering, this);
 			}
 
-			if(this._options.dropDownOpened) {
+			if (this._options.dropDownOpened) {
 				this.listScrollTop(0);
 			}
 
-			if(event && !this._options.remoteFilteringTriggerEvt) {
+			if (event && !this._options.remoteFilteringTriggerEvt) {
 				this._triggerFiltered(event);
 			}
 
