@@ -587,8 +587,8 @@
 				```
 				*/
 				targetKey: "Target",
-				/* type="string" Gets the name of the data source property the value of which would indicate that the
-								node is expanded on initial load.
+				/* type="string" Gets the name of the data source property the value of which would hold the node`s
+								expanded state.
 					```
 					$(".selector").igTree({
 						dataSource: data,
@@ -601,7 +601,22 @@
 					});
 					```
 				*/
-				expandedKey: "Expanded",
+				expandedKey: "__expanded__",
+				/* type="string" Gets the name of the data source property the value of which would hold the node's
+								check state.
+					```
+					$(".selector").igTree({
+						dataSource: data,
+						dataSourceType: "xml",
+						initialExpandDepth: 0,
+						pathSeparator: ".",
+						bindings: {
+							checkedKey: "Checked"
+						}
+					});
+					```
+				*/
+				checkedKey: "__checked__",
 				/* type="string" Gets the name of the data source property the value of which is the primary key attribute
 								for the data. This property is used when load on demand is enabled and if specified the node paths
 								would be generated using primary keys instead of indices.
@@ -1738,6 +1753,9 @@
 		_createWidget: function (options) {
 			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
 			this.options.bindings = null;
+			if (options && options.bindings) {
+				this._populateStateKeys(options.bindings);
+			}
 
 			if (options && options.dragAndDrop) {
 				this.changeLocale();
@@ -1978,8 +1996,10 @@
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
-				schema.expanded = { name: "Expanded", type: "boolean" };
-				opt.bindings.expandedKey = "Expanded";
+				schema.expanded = { name: "__expanded__", type: "boolean" };
+				opt.bindings.expandedKey = "__expanded__";
+				schema.checked = { name: "__checked__", type: "boolean" };
+				opt.bindings.checkedKey = "__checked__";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
 				if (bindings.searchFieldXPath) {
@@ -2590,7 +2610,7 @@
 				}
 			});
 		},
-		_initChildrenRecursively: function (path, data, depth, checkFlag, indexFeed) {
+		_initChildrenRecursively: function (path, data, depth, indexFeed) {
 			var childUl, opt = this.options, childPath, binding, value, display,
 				liStr = [], i = 0, li, children;
 
@@ -2641,19 +2661,21 @@
 				}
 				if ((children && children.length > 0) || (children && opt.loadOnDemand)) {
 					if ((depth <= opt.initialExpandDepth &&
-						!opt.loadOnDemand) || (binding.hasOwnProperty("expandedKey") &&
-						data[ i ].hasOwnProperty(binding.expandedKey) &&
+						!opt.loadOnDemand) || (data[ i ].hasOwnProperty(binding.expandedKey) &&
 						data[ i ][ binding.expandedKey ])) {
-						li += this._renderExpanderImage(true);
+						li += this._renderExpanderImage(data[ i ][ binding.expandedKey ] = true);
 						display = "block";
 					} else {
-						li += this._renderExpanderImage(false);
+						li += this._renderExpanderImage(data[ i ][ binding.expandedKey ] = false);
 						display = "none";
 					}
 				}
 
 				if (opt.checkboxMode && opt.checkboxMode.toLowerCase() !== "off") {
-					li += this._renderCheckbox(checkFlag);
+					if (typeof data[ i ][ binding.checkedKey ] !== "string") {
+						data[ i ][ binding.checkedKey ] = "off";
+					}
+					li += this._renderCheckbox(data[ i ][ binding.checkedKey ]);
 				}
 				li += this._renderNodeImage(data[ i ], binding);
 				if (!binding.nodeContentTemplate) {
@@ -2665,7 +2687,7 @@
 				if ((children && children.length > 0) || (children && opt.loadOnDemand)) {
 					childUl = "<ul style='display: " + display + "' data-depth='" + (depth + 1) + "'";
 					if (children.length > 0 && !opt.loadOnDemand) {
-						childUl += ">" + this._initChildrenRecursively(childPath, children, depth + 1, checkFlag);
+						childUl += ">" + this._initChildrenRecursively(childPath, children, depth + 1);
 					} else {
 						childUl += " data-populated='false'>";
 					}
@@ -2783,11 +2805,22 @@
 			}
 			return html;
 		},
-		_renderCheckbox: function (checkFlag) {
-			var self = this, css = self.css;
-			return "<span data-chk='" + (checkFlag ? "on" : "off") + "' data-role='checkbox' class='" +
-				css.checkbox + "'><span class='" + (checkFlag ?
-				css.checkboxOn : css.checkboxOff) + "'></span></span>";
+		_renderCheckbox: function (checkstate) {
+			var css = this.css,
+				stateClass;
+			switch (checkstate) {
+			case "on":
+				stateClass = css.checkboxOn;
+				break;
+			case "partial":
+				stateClass = css.checkboxPartial;
+				break;
+			default:
+				stateClass = css.checkboxOff;
+				break;
+			}
+			return "<span data-chk='" + checkstate + "' data-role='checkbox' class='" +
+				css.checkbox + "'><span class='" + stateClass + "'></span></span>";
 		},
 		_renderNodeImage: function (data, binding) {
 			var opt = this.options, hasChildren, img = "", src;
@@ -3031,19 +3064,38 @@
 			}
 			return result;
 		},
+		_populateStateKeys: function (bindings) {
+			if (bindings && !bindings.hasOwnProperty("expandedKey")) {
+				bindings.expandedKey = "__expanded__";
+			}
+			if (bindings && !bindings.hasOwnProperty("checkedKey")) {
+				bindings.checkedKey = "__checked__";
+			}
+			if (bindings.bindings) {
+				this._populateStateKeys(bindings.bindings);
+			}
+		},
+		_populateCheckedStates: function (data, bindings, state) {
+			for (var i = 0; i < data.length; i++) {
+				data[ i ][ bindings.checkedKey ] = state;
+			}
+		},
 		_populatingNode: null,
 		_populateNodeData: function (success, msg, data) {
 			if (!success) {
 				throw new Error(this._getLocaleValue("errorOnRequest") + msg);
 			}
 			var ul = this._populatingNode.ul, node = this._populatingNode.node,
-				originalData = this.nodeDataFor(node.attr("data-path")),
+				path = node.attr("data-path"),
+				originalData = this.nodeDataFor(path),
 				depth = ul.attr("data-depth"),
 				binding = this._retrieveCurrentDepthBinding(depth - 1),
-				checked, newData = data.data();
+				newData = data.data();
 
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
-				checked = this.isChecked(node);
+				if (this.isChecked(node)) {
+					this._populateCheckedStates(newData, binding.bindings || binding, "on");
+				}
 			}
 
 			// Clear the loading indicator space
@@ -3062,8 +3114,7 @@
 			this._triggerRendering(newData);
 
 			// K.D. August 16th, 2013 Bug #149438 Keeping the already rendered nodes and rendering the loaded ones after
-			ul.append(this._initChildrenRecursively(node.attr("data-path"),
-				newData, parseInt(ul.attr("data-depth"), 10), checked));
+			ul.append(this._initChildrenRecursively(path, newData, depth));
 			ul.attr("data-populated", true);
 			if (this.options.dragAndDrop) {
 				this._initDragAndDrop(ul);
@@ -3132,10 +3183,14 @@
 			dataSource.dataBind(this._populateNodeData, this);
 		},
 		_renderOnDemand: function (node, data) {
-			var ul, checked;
+			var ul, bindings, depth;
 			ul = node.children("ul");
+			depth = parseInt(ul.attr("data-depth"), 10)
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
-				checked = this.isChecked(node);
+				if (this.isChecked(node)) {
+					bindings = this._retrieveCurrentDepthBinding(depth);
+					this._populateCheckedStates(data, bindings, "on");
+				}
 			}
 			this._triggerNodePopulated(null, node);
 			this._triggerRendering(data);
@@ -3143,8 +3198,7 @@
 			// K.D. November 4th, 2013 Bug #156776 When we have render on demand and drag and drop we need to clear the container
 			// because we've added the data to the data source and we've rendered an item upon drop and thus we end up with two
 			// items when we pass through this method
-			ul.html(this._initChildrenRecursively(node.attr("data-path"),
-				data, parseInt(ul.attr("data-depth"), 10), checked));
+			ul.html(this._initChildrenRecursively(node.attr("data-path"), data, depth));
 			ul.attr("data-populated", true);
 			if (this.options.dragAndDrop) {
 				this._initDragAndDrop(ul);
@@ -3641,6 +3695,14 @@
 			case binding.imageUrlKey:
 				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
 				element.children("img[data-role=node-image]").attr("src", value);
+				break;
+			case binding.expandedKey:
+				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
+				if (value) {
+					this.expand(element);
+				} else {
+					this.collapse(element);
+				}
 				break;
 			default:
 				break;
@@ -4327,7 +4389,7 @@
 				}
 				return;
 			}
-			var ul, path, checked, isLi, li, isEmpty, r, binding;
+			var ul, path, isLi, li, isEmpty, r, binding, depth;
 
 			// Root node is to be used
 			if (!parent) {
@@ -4359,10 +4421,13 @@
 				ul = $("<ul data-depth='" + (parseInt(parent.parent().attr("data-depth"), 10) + 1) +
 					"' style='display: none'></ul>").appendTo(parent);
 			}
+			depth = parseInt(ul.attr("data-depth"), 10);
 			path = isLi ? parent.attr("data-path") : "";
-			binding = this._retrieveCurrentDepthBinding(parseInt(ul.attr("data-depth"), 10));
+			binding = this._retrieveCurrentDepthBinding(depth);
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
-				checked = isLi ? this.isChecked(parent) : false;
+				if (this.isChecked(parent)) {
+					this._populateCheckedStates($.isArray(node) ? node : [ node ], binding, "on");
+				}
 			}
 
 			// K.D. July 3rd, 2012 Bug #116064 We need the parent UL depth not the current UL. This would be at least 0 because the root insert is
@@ -4371,17 +4436,16 @@
 			this._triggerRendering(node);
 			isEmpty = ul.children("li").length <= 0;
 			if (nodeIndex === 0) {
-				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
-						checked, ul.children("li").length)).prependTo(ul);
+				li = $(this._initChildrenRecursively(path, node, depth, ul.children("li").length))
+						.prependTo(ul);
 				if (!binding.hasOwnProperty("primaryKey")) {
 					this._recalculatePaths(path);
 				}
 			} else if (!nodeIndex) {
-				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
-						checked, ul.children("li").length)).appendTo(ul);
+				li = $(this._initChildrenRecursively(path, node, depth, ul.children("li").length))
+						.appendTo(ul);
 			} else {
-				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
-						checked, ul.children("li").length))
+				li = $(this._initChildrenRecursively(path, node, depth, ul.children("li").length))
 						.insertBefore(ul.children("li:eq(" + nodeIndex + ")"));
 				if (!binding.hasOwnProperty("primaryKey")) {
 					this._recalculatePaths(path);

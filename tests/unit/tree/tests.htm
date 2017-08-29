@@ -1440,7 +1440,7 @@
 				anchor = node.children('a');
 				ok(anchor.has('font'), 'Second level template did not render');
 				equal(anchor.children('font').html(), 'Changed1: ');
-				equal($("#tree5").igTree("checkState", node), "on", "The expanded key did not take effect.");
+				equal($("#tree5").igTree("checkState", node), "on", "The checked key did not take effect.");
 				node = $('#tree5').igTree('nodeByPath', '0_0_0');
 				anchor = node.children('a');
 				equal(anchor.attr("href"), "#", "The template href was not rendered.");
