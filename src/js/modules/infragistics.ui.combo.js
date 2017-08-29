@@ -2885,7 +2885,8 @@
 
             // D.A. 20th March 2015, Bug #190591 In Chrome when mode is dropdown and selecting an item, the carret is not moved and the selected element is not visible
             // Remove readonly during the focus
-            if (readonly) {
+            // R.K. 29th August 2017, #1155 Combo in dropdown mode accepts keypress values in its input in IE/Edge
+            if (readonly && !($.ig.util.isEdge || $.ig.util.isIE)) {
                 this._options.$input.removeAttr("readonly");
             }
 
