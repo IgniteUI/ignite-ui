@@ -664,7 +664,7 @@
 
                 filteredItems = combo.igCombo("filteredItems");
 
-                deepEqual(filteredItems.length, expectedResult.length, "The number of filtered items is not correct!")
+                strictEqual(filteredItems.length, expectedResult.length, "The number of filtered items is not correct!")
 
                 filteredItems.forEach(function(element) {
                     equal(expectedResult.contains(element.data.name), true, "There is an incorrect filtered item!");
@@ -686,7 +686,7 @@
 
                 expectedResult.push("Chef Cajun Seasoning", "Chef Gumbo Mix", "Grandma Boysenberry Spread");
 
-                deepEqual(filteredItems.length, expectedResult.length, "The number of filtered items is not correct!");
+                strictEqual(filteredItems.length, expectedResult.length, "The number of filtered items is not correct!");
 
                 filteredItems.forEach(function(element) {
                     equal(expectedResult.contains(element.data.name), true, "There is an incorrect filtered item!");
