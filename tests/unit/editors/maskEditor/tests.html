@@ -326,10 +326,10 @@
 			testId = 'mask editor cannot set on runtime';
 			test(testId, 2, function () {
 				throws(function () {
-					$('#maskEditorRuntime').igMaskEditor("option", "regional", "ru-Ru")
+					$('#maskEditorRuntime').igMaskEditor("option", "excludeKeys", "asds")
 				}, function (err) {
 					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
-				}, $.ig.Editor.locale.setOptionError + "regional");
+				}, $.ig.Editor.locale.setOptionError + "excludeKeys");
 
 				
 				throws(function () {

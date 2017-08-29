@@ -14,6 +14,9 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -22,7 +25,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -1671,13 +1674,13 @@
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
 
-		testId = 'Cannot set on runtime';
+		testId = 'Option cannot be set for numeric editor';
 		test(testId, 1, function () {
 			throws(function () {
-					$('#numericEditorRuntime').igNumericEditor("option", "regional", "ru-Ru")
+					$('#numericEditorRuntime').igNumericEditor("option", "excludeKeys", "asds");
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
-				}, $.ig.Editor.locale.setOptionError + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.numericEditorNoSuchOption) > -1;
+				}, Error($.ig.Editor.locale.numericEditorNoSuchOption));
 		});
 		
 		testId = 'spinDown button not disabled'
@@ -2156,7 +2159,7 @@
 	test(testId, 78, function() {
 		var $editorRound, $editorTrunc, testData, errorMessage, mode, boundary;
 
-		testData = [ null, undefined];
+		testData = [ null, undefined ];
 		for(index = 0; index < testData.length; index++) {
 			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
 				minDecimals: testData[index],
@@ -2524,6 +2527,23 @@
 			$("#editorGroupSeparators").igNumericEditor("option", "groupSeparator", "/");
 			$editor.remove();
 		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+	});
+
+	testId = 'Runtime changes for local and regional options';
+	test(testId, 6, function () {
+		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({ buttonType: "spin", value: 1234567.123 });
+
+		equal($editor.igNumericEditor("displayValue"), "1,234,567.12", "Format should be in English");
+		equal($editor.igNumericEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+		$editor.igNumericEditor("option", "language", "de");
+		equal($editor.igNumericEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+		$editor.igNumericEditor("option", "regional", "de");
+		equal($editor.igNumericEditor("displayValue"), "1.234.567,12", "Format should be in German");
+		$editor.igNumericEditor("setFocus");
+		equal($editor.igNumericEditor("field").val(), "1234567,12", "Input Format should be in German");
+		$editor.igNumericEditor("option", "regional", "en");
+		equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in German");
+		$editor.trigger("blur").remove();
 	});
 });
 	function testSelection(input, start, end) {
