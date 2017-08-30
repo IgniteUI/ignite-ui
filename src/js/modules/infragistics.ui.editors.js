@@ -9762,12 +9762,16 @@
 			delta = this._getDelta(delta, "hours");
 			if (is24format) {
 				hours = 24;
-				newHour = currentHour + (delta % 24);
+
+				// N.A. August 29th, 2017 #1141: When delta for hours = 24, then it should stay as 24, not delta % 24, which is 0
+				newHour = currentHour + (Math.abs(delta) === 24 ? delta : (delta % 24));
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
 				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
-				newHour = currentHour + (delta % 12);
+
+				// N.A. August 29th, 2017 #1141: When delta for hours = 12, then it should stay as 12, not delta % 12, which is 0
+				newHour = currentHour + (Math.abs(delta) === 12 ? delta : (delta % 12));
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
 				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
@@ -9813,15 +9817,16 @@
 						// In 12H format date, when the hour changes (wraps down) from 01 to 12, this is NOT the time that the day is decreased.
 						// It is decreased an hour later. (implemented in the top else block).
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
-						if (newHour <= 0) {
-							newHour = 12 + newHour;
-							if (newHour < 0 || delta < -1) {
+						// N.A. August 29th, 2017 #1141: Fix spinning with delta for hours = 12
+						if (newHour < 0 || Math.abs(delta) === 12) {
+							if (newHour < hours || delta < -1) {
 								amPmUpdateDelta = true;
 							}
 							if (currentAmPm === "am") {
 								dayUpdateDelta = true;
 							}
 						}
+						newHour = 12 + newHour;
 					}
 				}
 			} else {
