@@ -51,8 +51,9 @@
 	    currencyPositivePattern: '$ n',
 	    currencyNegativePattern: '$-n',
 	    currencySymbol: 'R'
-    };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('af');
+	};
+	
+    if ($.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('af');
     }
 }));// REMOVE_FROM_COMBINED_FILES
