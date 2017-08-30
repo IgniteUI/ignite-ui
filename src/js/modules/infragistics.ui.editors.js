@@ -7955,6 +7955,15 @@
 			case "dateInputFormat":
 				this.options[ option ] = prevValue;
 				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "dateDisplayFormat":
+
+				// D.P. 30th Aug 2017 #1162 Runtime set of predefined dateDisplayFormat doesn't produce the expected pattern
+				delete this._dispalyFormat;
+				this._applyRegionalSettings();
+				if (!this._editMode) {
+					this._editorInput.val(this._getDisplayValue());
+				}
+				break;
 			case "spinDelta":
 				try {
 					this._validateSpinSettings();
