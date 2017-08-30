@@ -51,7 +51,7 @@
 	    percentMaxDecimals: 2,
 	    percentMinDecimals: 2
     };
-    if ($.ig.util.changeGlobalRegional) {
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
 	    $.ig.util.changeGlobalRegional('en-US');
     }
 }));// REMOVE_FROM_COMBINED_FILES

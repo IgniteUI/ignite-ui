@@ -45,7 +45,7 @@
 	    numericMaxDecimals: 2,
 	    currencySymbol: 'HK$'
     };
-    if ($.ig.util.changeGlobalRegional) {
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
 	    $.ig.util.changeGlobalRegional('zh-HK');
     }
 }));// REMOVE_FROM_COMBINED_FILES
