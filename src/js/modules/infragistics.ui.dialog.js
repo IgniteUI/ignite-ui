@@ -606,6 +606,128 @@
 				```
 			*/
 			trackFocus: true,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the close button in the dialog. Use option [locale.closeButtonTitle](ui.igdialog#options:locale.closeButtonTitle).*/
+			closeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the minimize button in the dialog. Use option [locale.minimizeButtonTitle](ui.igdialog#options:locale.minimizeButtonTitle).*/
+			minimizeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the maximize button in the dialog. Use option [locale.minimizeButtonTitle](ui.igdialog#options:locale.minimizeButtonTitle).*/
+			maximizeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the pin button in the dialog. Use option [locale.pinButtonTitle](ui.igdialog#options:locale.pinButtonTitle).*/
+			pinButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the unpin button in the dialog. Use option [locale.unpinButtonTitle](ui.igdialog#options:locale.unpinButtonTitle).*/
+			unpinButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the restore button in the dialog.  Use option [locale.restoreButtonTitle](ui.igdialog#options:locale.restoreButtonTitle).*/
+			restoreButtonTitle: undefined,
+			locale: {
+				/* type="string" Gets/Sets the title/tooltip for the close button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						closeButtonTitle : "Close"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").closeButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { closeButtonTitle: "Close"});
+				```
+				*/
+				closeButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the minimize button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						minimizeButtonTitle : "Minimize"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").minimizeButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { minimizeButtonTitle: "Minimize"});
+				```
+				*/
+				minimizeButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the maximize button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						maximizeButtonTitle : "Maximize"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").maximizeButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { maximizeButtonTitle: "Maximize"});
+				```
+				*/
+				maximizeButtonTitle: undefined,
+				/* type="string"  Gets/Sets the title/tooltip for the pin button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						pinButtonTitle : "Pin"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").pinButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { pinButtonTitle: "Pin"});
+				```
+				*/
+				pinButtonTitle: undefined,
+				/* type="string"  Gets/Sets the title/tooltip for the pin button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						unpinButtonTitle : "Unpin"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").unpinButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { unpinButtonTitle: "Unpin"});
+				```
+				*/
+				unpinButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the restore button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						restoreButtonTitle : "Restore"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").restoreButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { restoreButtonTitle: "Restore"});
+				```
+				*/
+				restoreButtonTitle: undefined
+			},
 			/* type="string" Gets/Sets the temporary value for src, which is used while changing the parent of the base element if it is an instance of IFRAME. That allows getting around possible JavaScript exceptions under IE.
 				```
 				//Initialize

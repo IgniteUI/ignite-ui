@@ -17,6 +17,9 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -27,6 +30,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script> 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -369,6 +373,44 @@
 				"Invalid centuryThreshold is set.");
 				$editor.remove();
 
+			});
+
+			var testId = 'Set dateDisplayFormat';
+			test(testId, 8, function () {
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDateEditor({
+						value: new Date(2017, 7, 30, 15, 45, 55)
+					});
+				
+				$editor.igDateEditor("option", "dateDisplayFormat", "dateTime");
+				equal($editor.val(), "8/30/2017 3:45 PM", "Runtime dateTime display format not applied");
+				$editor.trigger("focus");
+				$editor.trigger("blur");
+				equal($editor.val(), "8/30/2017 3:45 PM", "Runtime dateTime display format not applied");
+				$editor.focus();
+				$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
+				equal($editor.val(), "08/30/2017", "Edit text should not change when seeting display format");
+				$editor.blur();
+				equal($editor.val(), "Wednesday, August 30, 2017", "Runtime dateLong display format not applied after exiting edit mode");
+				$editor.remove();
+
+				// test with predefined formats and swap with masks
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDateEditor({
+						dateInputFormat: "timeLong",
+						dateDisplayFormat: "time",
+						value: new Date(2017, 3, 13, 10, 12, 43)
+					});
+
+				$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
+				equal($editor.val(), "13 Apr 17 10:12:43 AM", "Runtime dateDisplayFormat display format not applied");
+				$editor.focus();
+				equal($editor.val(), "10:12:43 AM", "Edit text not correct");
+				$editor.igDateEditor("option", "dateDisplayFormat", "time");
+				equal($editor.val(), "10:12:43 AM", "Edit text should not change");
+				$editor.blur();
+				equal($editor.val(), "10:12 AM", "Runtime time display format not applied");
+				$editor.remove();
 			});
 
 			var testId = 'Initialize minVal and maxVal with wrong values';
@@ -2916,7 +2958,7 @@
 			});
 
 			var testId = 'Spin delta as an object';
-			test(testId, 24, function () {
+			test(testId, 36, function () {
 				// Test when spinDelta is an object and has invalid values.
 				var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
 					errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
@@ -3114,13 +3156,92 @@
 				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
 				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 				
-				// Spin up edit mode
+				// Spin up edit mode with delta 12 hours
 				$dtEditor.igDateEditor("setFocus");
 				$dtEditor.data("igDateEditor")._setCursorPosition(12);
 				clickElement(spinUpButton, false, false);
 				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 PM", "Display is properly updated after spinining");
 				clickElement(spinDownButton, false, false);
 				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+				$dtEditor.trigger("blur").remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2017, 11, 8, 1),
+					dataMode: "date",
+					dateInputFormat: "dateTime",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				
+				// Spin up edit mode with delta 12 hours
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:45 AM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				clickElement(spinDownButton, false, false);
+				clickElement(spinDownButton, false, false);
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/07/2017 11:45 PM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/07/2017 11:30 PM", "Display is properly updated after spinining");
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00 AM", "Display is properly updated after spinining");
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/07/2017 01:00 PM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/07/2017 01:00 AM", "Display is properly updated after spinining");
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00 AM", "Display is properly updated after spinining");
+				$dtEditor.trigger("blur").remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2017, 11, 8, 1),
+					dataMode: "date",
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 24,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				
+				// Spin up edit mode with delta 24 hours
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/07/2017 01:00:00:000", "Display is properly updated after spinining");
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00:00:000", "Display is properly updated after spinining");
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/09/2017 01:00:00:000", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00:00:000", "Display is properly updated after spinining");
 				$dtEditor.trigger("blur").remove();
 			});
 
@@ -3797,6 +3918,41 @@
 					equal($editor.igDateEditor("value") && $editor.igDateEditor("value").getTime(), new Date(2015, 04, 01).getTime(), "value did not stay the same");
 					$editor.remove();
 				}, 0);
+			});
+
+			testId = 'Runtime changes for local and regional options';
+			test(testId, 9, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDateEditor({ buttonType: "spin", dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
+
+				equal($editor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+				equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+				$editor.igDateEditor("option", "language", "ja");
+				equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.ja.Editor.spinUpperTitle, "Title of the button should be in Japanese");
+				$editor.igDateEditor("option", "regional", "ja");
+				equal($editor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
+				$editor.igDateEditor("setFocus");
+				equal($editor.igDateEditor("field").val(), "2017/08/18 18:06", "Display Format should be in German");
+				$editor.igDateEditor("option", "regional", "en");
+				equal($editor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
+				$editor.trigger("blur").remove();
+
+				//regional with display format change in between:
+				$editor = $("<input/>").appendTo("#testBedContainer")
+					.igDateEditor({
+						regional: "en-US",
+						dateInputFormat: "dateTime",
+						value: new Date(2017, 3, 13, 10, 12, 43)
+					});
+				$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
+				$editor.igDateEditor("option", "regional", "ja");
+				equal($editor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
+				$editor.focus();
+				equal($editor.val(), "2017/04/13 10:12", "Edit text not correct");
+				$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
+				$editor.igDateEditor("option", "regional", "de");
+				$editor.blur();
+				equal($editor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
+				$editor.remove();
 			});
 		});
 
