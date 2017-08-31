@@ -411,7 +411,7 @@
 			.replace(/>/g, "&gt;")
 			.replace(/'/g, "&#39;")
 			.replace(/"/g, "&#34;") : "";
-	}
+	};
 
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
 		displayStyle, labelText, tabIndex) {
