@@ -3185,7 +3185,7 @@
 		_renderOnDemand: function (node, data) {
 			var ul, bindings, depth;
 			ul = node.children("ul");
-			depth = parseInt(ul.attr("data-depth"), 10)
+			depth = parseInt(ul.attr("data-depth"), 10);
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
 				if (this.isChecked(node)) {
 					bindings = this._retrieveCurrentDepthBinding(depth);
@@ -3828,65 +3828,10 @@
 				paramType="object" optional="false" Specifies the node element the checkbox of which would be toggled.
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
-			var self = this, opt = self.options, css = self.css, noCancel, sibling,
-				siblingExpander, i = 0, expander;
-
-			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
-			if (!node) {
-				throw new Error(this._getLocaleValue("incorrectNodeObject"));
-			}
-			if (!event) {
-				expander = node.children("." + css.nodeExpander);
+			if (this.isExpanded(node)) {
+				this.collapse(node, event);
 			} else {
-				expander = $(event.target).closest("span[data-role=expander]");
-			}
-
-			if (node.children("ul").attr("data-populated") &&
-				node.children("ul").attr("data-populated") === "false") {
-				this._prepareRequest(node, event);
-				return;
-			}
-
-			if (expander.attr("data-exp") && expander.attr("data-exp") !== "false") {
-				noCancel = self._triggerNodeCollapsing(event, node);
-
-				if (noCancel) {
-					$(node).children("ul").hide(opt.animationDuration, function () {
-						self._triggerNodeCollapsed(event, node);
-					});
-					expander.removeClass(css.collapseIcon).addClass(css.expandIcon).attr("data-exp", false);
-				}
-			} else {
-				noCancel = self._triggerNodeExpanding(event, node);
-
-				if (noCancel) {
-
-					// Performing collapse on the same level if single expand is enabled
-					if (opt.singleBranchExpand) {
-						sibling = node.siblings();
-
-						for (i; i < sibling.length; i++) {
-							siblingExpander = $(sibling[ i ]).children("." + css.nodeExpander);
-							if (siblingExpander.length > 0 && (siblingExpander.attr("data-exp") === "true" ||
-								siblingExpander.attr("data-exp") === true)) {
-								noCancel = self._triggerNodeCollapsing(event, $(sibling[ i ]));
-
-								if (noCancel) {
-									$(sibling[ i ]).children("ul").hide(opt.animationDuration,
-										$.proxy(this._triggerNodeCollapsed(event,
-											$(sibling[ i ])), this));
-									siblingExpander.removeClass(css.collapseIcon).addClass(css.expandIcon)
-										.attr("data-exp", false);
-								}
-							}
-						}
-					}
-
-					node.children("ul").show(opt.animationDuration, function () {
-						self._triggerNodeExpanded(event, node);
-					});
-					expander.removeClass(css.expandIcon).addClass(css.collapseIcon).attr("data-exp", true);
-				}
+				this.expand(node, event);
 			}
 		},
 		expandToNode: function (node, toSelect) {
@@ -3915,75 +3860,89 @@
 				cachedanimationDuration = this.options.animationDuration;
 				this.options.animationDuration = 0;
 				while (parentNode) {
-					if (!this.isExpanded(parentNode)) {
-						this.toggle(parentNode);
-					}
+					this.expand(parentNode);
 					parentNode = this.parentNode(parentNode);
 				}
 				this.options.animationDuration = cachedanimationDuration;
 			}
 		},
-		expand: function (node) {
+		expand: function (node, event) {
 			/* Expands the specified node.
 			```
 				$(".selector").igTree("expand", targetNode);
 			```
 				paramType="object" optional="false" Specifies the node element to expand.
 			*/
-			var self = this, opt = self.options, css = self.css, sibling, siblingExpander, i = 0, expander;
+			var self = this, opt = self.options, css = self.css, i = 0, expander,
+				nodeObject, noCancel = true, siblings;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
 				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
-
 			if (node.children("ul").attr("data-populated") &&
 					node.children("ul").attr("data-populated") === "false") {
 				this._prepareRequest(node);
 				return;
 			}
 
+			nodeObject = this._constructNodeObject(node);
 			expander = node.children("." + css.nodeExpander);
 
-			if (!expander.attr("data-exp") || expander.attr("data-exp") === "false") {
+			if (!this.isExpanded(node)) {
 
 				// Performing collapse on the same level if single expand is enabled
 				if (opt.singleBranchExpand) {
-					sibling = node.siblings();
+					siblings = node.siblings();
 
-					for (i; i < sibling.length; i++) {
-						siblingExpander = $(sibling[ i ]).children("." + css.nodeExpander);
-						if (siblingExpander.length > 0 && (siblingExpander.attr("data-exp") === "true" ||
-							siblingExpander.attr("data-exp") === true)) {
-							$(sibling[ i ]).children("ul").hide(opt.animationDuration);
-							siblingExpander.removeClass(css.collapseIcon).addClass(css.expandIcon)
-								.attr("data-exp", false);
-						}
+					for (i; i < siblings.length; i++) {
+						this.collapse($(siblings[ i ]));
 					}
 				}
-
-				node.children("ul").show(opt.animationDuration);
-				expander.removeClass(css.expandIcon).addClass(css.collapseIcon).attr("data-exp", true);
+				if (event) {
+					noCancel = this._triggerNodeExpanding(event, nodeObject);
+				}
+				if (noCancel) {
+					node.children("ul").show(opt.animationDuration, function () {
+						if (event) {
+							self._triggerNodeExpanded(event, nodeObject);
+						}
+					});
+					expander.removeClass(css.expandIcon).addClass(css.collapseIcon).attr("data-exp", true);
+					nodeObject.data[ nodeObject.binding.expandedKey ] = true;
+				}
 			}
 		},
-		collapse: function (node) {
+		collapse: function (node, event) {
 			/* Collapses the specified node.
 			```
 				$(".selector").igTree("collapse", targetNode);
 			```
 				paramType="object" optional="false" Specifies the node element to collapse.
 			*/
-			var self = this, opt = self.options, css = self.css, expander;
+			var self = this, opt = self.options, css = self.css, expander,
+				nodeObject, noCancel = true;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
 				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
+			nodeObject = this._constructNodeObject(node);
 			expander = node.children("." + css.nodeExpander);
 
-			if (expander.attr("data-exp") && expander.attr("data-exp") !== "false") {
-				$(node).children("ul").hide(opt.animationDuration);
-				expander.removeClass(css.collapseIcon).addClass(css.expandIcon).attr("data-exp", false);
+			if (this.isExpanded(node)) {
+				if (event) {
+					noCancel = this._triggerNodeCollapsing(event, nodeObject);
+				}
+				if (noCancel) {
+					$(node).children("ul").hide(opt.animationDuration, function () {
+						if (event) {
+							self._triggerNodeCollapsed(event, nodeObject);
+						}
+					});
+					expander.removeClass(css.collapseIcon).addClass(css.expandIcon).attr("data-exp", false);
+					nodeObject.data[ nodeObject.binding.expandedKey ] = false;
+				}
 			}
 		},
 		parentNode: function (node) {
@@ -4567,26 +4526,26 @@
 
 			this._trigger(this.events.selectionChanged, event, args);
 		},
-		_triggerNodeCollapsing: function (event, node) {
+		_triggerNodeCollapsing: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			return this._trigger(this.events.nodeCollapsing, event, args);
 		},
-		_triggerNodeCollapsed: function (event, node) {
+		_triggerNodeCollapsed: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			this._trigger(this.events.nodeCollapsed, event, args);
 		},
-		_triggerNodeExpanding: function (event, node) {
+		_triggerNodeExpanding: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			return this._trigger(this.events.nodeExpanding, event, args);
