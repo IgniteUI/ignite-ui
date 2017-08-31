@@ -303,6 +303,21 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			object type="object" A RegExp object or an object with expression and errorMessage properties.
 		*/
 		pattern: null,
+		/* type="bool" Gets/Sets If all rules for a field should be checked, so even if one fails checks will continue executing.
+		```
+			//Initialize
+			$('.selector').igValidator({
+				executeAllRules: true
+			});
+
+			//Get
+			var executeAllRules = $(".selector").igValidator("option", "executeAllRules");
+
+			//Set
+			$(".selector").igValidator("option", "executeAllRules", true);
+		```
+		*/
+		executeAllRules: false,
 		/* type="dom" Gets/Sets a custom jQuery element to be used for validation messages. That inner HTML of the target is modified, can be a SPAN, LABEL or DIV.
 		```
 			//Initialize
