@@ -4550,10 +4550,10 @@
 
 			return this._trigger(this.events.nodeExpanding, event, args);
 		},
-		_triggerNodeExpanded: function (event, node) {
+		_triggerNodeExpanded: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			this._trigger(this.events.nodeExpanded, event, args);
