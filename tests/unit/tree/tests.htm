@@ -501,20 +501,24 @@
 				$("#tree12").igTree("collapse", $('#tree12').igTree('nodeByPath', '0_4'));
 			});
 			test(testId_5, function () {
-				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]');
+				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
+					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
 				ok(checkbox.length > 0, 'Checkbox was not retrieved correctly');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-igcheckbox-normal');
 				equal(checkbox.attr('data-chk'), 'off', 'The data-chk attribute was not initialized properly');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is not initialized properly.');
 				var icon = checkbox.children('span');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-off');
 			});
 			test(testId_6, function () {
-				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]');
+				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
+					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate of the checkbox is rendered as on');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is rendered as on');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -524,9 +528,12 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				equal(checkbox.attr('data-chk'), 'on', 'The checkstate did not toggle to on');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not toggle to on');
 				node = node.find('ul > li:first');
+				data = $('#tree14').igTree('nodeDataFor', '0_0');
 				checkbox = node.children('[data-role=checkbox]');
 				equal(checkbox.attr('data-chk'), 'off', 'Checkstate has cascaded in biState');
+				equal(data[ binding.checkedKey ], "off", 'Checkstate data has cascaded in biStaten');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -536,6 +543,7 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				equal(checkbox.attr('data-chk'), 'on', 'The checkstate of the checkbox is rendered as on');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data of the checkbox is rendered as on');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -545,15 +553,20 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-off');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate did not return to off');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not return to off');
 				node = $('#tree14').igTree('nodeByPath', '0');
+				data = $('#tree14').igTree('nodeDataFor', '0')
 				$('#tree14').igTree('toggleCheckstate', node);
 				checkbox = node.children('[data-role=checkbox]');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate did not return to off');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not return to off');
 			});
 			test(testId_7, function () {
-				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]');
+				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
+					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
 				$('#tree14').igTree('option', 'checkboxMode', 'triState');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate of the checkbox is rendered as on');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is rendered as on');
 				var selector = $('#tree14').igTree('checkedNodes');
 				equal(selector.length, 0, 'The checkboxes did not cascade or the API method returned wrong');
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
@@ -567,9 +580,12 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				equal(checkbox.attr('data-chk'), 'on', 'The checkstate did not toggle to on');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not toggle to on');
 				selector = $('#tree14').igTree('checkedNodes');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
 				node = $('#tree14').igTree('nodeByPath', '0_1');
+				data = $('#tree14').igTree('nodeDataFor', '0_1');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not cascade properly.');
 				checkbox = node.children('[data-role=checkbox]');
 				icon = checkbox.children('span');
 				$('#tree14').igTree('toggleCheckstate', node);
@@ -579,19 +595,29 @@
 				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
 				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not cascade properly');
 				node = $('#tree14').igTree('nodeByPath', '0');
+				data = $('#tree14').igTree('nodeDataFor', '0');
 				checkbox = node.children('[data-role=checkbox]');
 				icon = checkbox.children('span');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				$.ig.TestUtil.checkClass(icon, 'ui-state-disabled');
+				equal(data[ binding.checkedKey ], "partial", 'The checkstate data of the checkbox is node partial');
 				$('#tree14').igTree('toggleCheckstate', node);
 				selector = $('#tree14').igTree('uncheckedNodes');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not toggle to off');
+				data = $('#tree14').igTree('nodeDataFor', '0_0');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not cascade properly');
 				$('#tree14').igTree('toggleCheckstate', node);
 				node = $('#tree14').igTree('nodeByPath', '0_0_0');
+				data = $('#tree14').igTree('nodeDataFor', '0_0_0');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not cascade properly');
 				$('#tree14').igTree('toggleCheckstate', node);
+				data = $('#tree14').igTree('nodeDataFor', '0_0');
+				equal(data[ binding.checkedKey ], "partial", 'The checkstate data did not cascade properly');
 				selector = $('#tree14').igTree('checkedNodes');
 				equal(selector.length, 3, 'The checkboxes did not cascade ot the API method returned wrong');
 				selector = $('#tree14').igTree('uncheckedNodes');
@@ -615,7 +641,9 @@
 				node = $('#tree14').igTree('nodeByPath', '0_0_0');
 				$('#tree14').igTree('toggleCheckstate', node);
 				selector = $('#tree14').igTree('checkedNodes');
+				data = $('#tree14').igTree('nodeDataFor', '0');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not cascade properly');
 			});
 			test(testId_8, function () {
 				var nodePath = '0', node = $('#tree12').igTree('nodeByPath', nodePath), anchor = node.children('a');
