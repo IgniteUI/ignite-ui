@@ -1139,6 +1139,69 @@
                 ok(valid, "Custom rule result not applied");
             });
 
+            testId = 'Execute all rules';
+            test(testId, 7, function () {
+                var $field = $("<input />").appendTo("#testBedContainer")
+                    .igValidator({
+                        onchange: true,
+                        reuired: false,
+                        //executeAllRules: true,
+                        lengthRange: { min: 2, max: null },
+                        pattern: { expression: /\d/, errorMessage: "Must contain at least one number" },
+                        custom: function () {
+                            return false;
+                        },
+                        error: function (ev, ui) {
+                            console.log(ui.messages);
+                        }
+                    }),
+                    check,
+                    arrayDiff = function (arr1, arr2) {
+                        var total = arr1.concat(arr2);
+                        return total.filter(function (msg, i, array) {
+                            var inExp = arr1.indexOf(msg),
+                                inRes = arr2.indexOf(msg);
+                            if (inExp == -1 || inRes == -1 || inExp !== inRes) {
+                                return true;
+                            }
+                            return false;
+                        });
+                    };
+
+              
+                ok($field.igValidator("isValid"), "Non-required filed should be valid if no other rules apply");
+                $field.igValidator("option", "executeAllRules", true);
+                ok(!$field.igValidator("isValid"), "Non-required filed shouldn't be valid when custom is also run");
+                check = {
+                    result: false,
+                    message: "This field needs attention",
+                    errorMessages: ["This field needs attention"]
+                };
+                var messages = $field.igValidator("getErrorMessages");
+                var diff = arrayDiff(messages, check.errorMessages);
+                equal(diff.length, 0, "Error messages did not match expected, diff: " + diff);
+                
+                check.message = "Entry should be at least 2 character(s) long";
+                check.errorMessages = ["Entry should be at least 2 character(s) long", "Must contain at least one number", "This field needs attention"];
+                $field.on("igvalidatorvalidated.test", function (evt, ui) {
+                    strictEqual(ui.valid, check.result, check.message);
+                    if (!ui.valid) {
+                        var diff = arrayDiff(ui.messages, check.errorMessages);
+                        equal(diff.length, 0, "Error messages event args did not match expected, diff: " + diff);
+                    }
+                });
+                $field.focus();
+                util.keyInteraction(65, $field);
+
+                check.message = "Must contain at least one number";
+                check.errorMessages = ["Must contain at least one number", "This field needs attention"];
+                util.keyInteraction(66, $field);
+               
+                
+                
+                $field.off(".test")//.remove();
+            });
+
             testId = '#1102 Setting valueRange min/max to null causes exceptions';
             test(testId, 7, function () {
                 var $field = $("<input>").appendTo("#testBedContainer")

@@ -1052,9 +1052,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				this._evalMessageTarget(this.options);
 				if (oldVisible) {
 					if (this.options.isValid) {
-						this._showSuccess(this.options, { message: this.options._currentMessage });
+						this._showSuccess(this.options, { message: this.options._currentMessages[0] });
 					} else {
-						this._showError(this.options, { message: this.options._currentMessage });
+						this._showError(this.options, { message: this.options._currentMessages[0] });
 					}
 				}
 				break;
@@ -1435,12 +1435,13 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		if (opts._ignored) {
 			return true;
 		}
-		var options = this._addGlobalSettings(opts);
+		var options = this._addGlobalSettings(opts), valueString, hasLength,
+			 args, result = true, ruleResult, ruleMessage;
 
 		// Called per field with optional value to check, event and blur flag
 		value = value !== undefined ? value : this._getTargetValue(options);
-		var valueString = value !== 0 ? value && value.toString() : value.toString(),
-			hasLength = valueString && value.length !== undefined;
+		valueString = value !== 0 ? value && value.toString() : value.toString();
+		hasLength = valueString && value.length !== undefined;
 
 		// validation stop rules (threshold, triggers validation)
 		// Note: Options must be extended with globals at this point to properly validate triggers and conditions
@@ -1459,9 +1460,10 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			}
 		}
 
-		var args = {
+		args = {
 			value: value,
 			owner: this,
+			messages: [],
 			fieldOptions: options === this.options ? null : opts
 		};
 
@@ -1470,37 +1472,51 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			return true;
 		}
 
-		opts._currentMessage = null;
+		opts._currentMessages = [];
 
-		if (!options.required && !valueString) {
+		if (!options.required && !valueString && !options.executeAllRules) {
 			//no value and not required, return
-			args.message = opts._currentMessage = options.successMessage;
+			opts._currentMessages.push(options.successMessage);
+			args.message = options.successMessage;
 			this._success(options, args, evt, isSubmitting);
 			return true;
 		}
 
 		for (var i = 0; i < this.rules.length; i++) {
 			if (options[ this.rules[ i ].name ] || this.rules[ i ].name === "control") {
-				// validate rules
-				var result = this.rules[ i ].isValid(options, value);
-				if (!result) {
-					opts._currentMessage = this.rules[ i ].getRuleMessage(options) ||
+				// execute rules
+				if (!valueString && !this.rules[ i ].shouldRunOnEmpty) {
+					continue;
+				}
+				ruleResult = this.rules[ i ].isValid(options, value);
+				result = result ? ruleResult : result;
+				if (!ruleResult) {
+					ruleMessage = this.rules[ i ].getRuleMessage(options) ||
 						this._getLocalizedMessage(this.rules[ i ].getMessageType(options));
 
-					opts._currentMessage = this.rules[ i ].formatMessage(opts._currentMessage);
+					ruleMessage = this.rules[ i ].formatMessage(ruleMessage);
 
-					args.message = opts._currentMessage;
+					args.message = args.message || ruleMessage;
+					opts._currentMessages.push(ruleMessage);
+					args.messages.push(ruleMessage);
 					args.rule = this.rules[ i ].name;
-					this._showError(options, args, evt);
-					return false;
+					if (!options.executeAllRules) {
+						break;
+					}
 				}
 			}
 		}
 
-		// Success
-		args.message = opts._currentMessage = options.successMessage;
-		this._success(options, args, evt);
-		return true;
+		if (result) {
+			// Success
+			opts._currentMessages.push(options.successMessage);
+			args.message = options.successMessage;
+			this._success(options, args, evt);
+			return true;
+		} else {
+			this._showError(options, args, evt);
+			return false;
+		}
 	},
 	_success: function (options, args, evt) {
 		// Success
@@ -1748,7 +1764,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		var properties = [ "required", "threshold", "number", "date", "lengthRange",
 							"valueRange", "email", "creditCard", "custom", "onblur", "onchange",
 							"onsubmit", "successMessage", "errorMessage",
-							"requiredIndication", "optionalIndication" ],
+							"requiredIndication", "optionalIndication", "executeAllRules" ],
 			extendedOptions = $.extend({}, options);
 
 		for (var i = 0; i < properties.length; i++) {
@@ -1891,17 +1907,17 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			    if ((i = this._fieldIndexOf(field)) > -1 &&
                     this.options.fields[ i ].isValid !== undefined &&
                     !this.options.fields[ i ].isValid) {
-					result.push(this.options.fields[ i ]._currentMessage);
+					Array.prototype.push.apply(result, this.options.fields[ i ]._currentMessages);
 				}
 				return result;
 			}
 			for (i = 0; i < this.options.fields.length; i++) {
 				if (this.options.fields[ i ].isValid !== undefined && !this.options.fields[ i ].isValid) {
-					result.push(this.options.fields[ i ]._currentMessage);
+					Array.prototype.push.apply(result, this.options.fields[ i ]._currentMessages);
 				}
 			}
-    } else if (this.options.isValid !== undefined && !this.options.isValid) {
-			result.push(this.options._currentMessage);
+		} else if (this.options.isValid !== undefined && !this.options.isValid) {
+			Array.prototype.push.apply(result, this.options._currentMessages);
 		}
 		return result;
 	},
@@ -2089,6 +2105,8 @@ $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
 	name: "base",
 	/* type="array" Items produced and stored during validation, to be used for message formatting before next validation call */
 	formatItems: [],
+	/* type="bool" Defines if the rule should be ran against an empty value */
+	shouldRunOnEmpty: false,
 	/*jshint unused: false*/
 	getMessageType: function (options) {
 		/* Gets the error message type to get from locale settings (matching as "<type>Message>"). Returns the rule name by default.
@@ -2142,6 +2160,7 @@ $.ig.igValidatorRequiredRule = $.ig.igValidatorRequiredRule || $.ig.igValidatorB
 	name: "required",
 	groupTypes: [ "checkboxrange", "radio", "select", "selectrange" ],
 	groupMessageName: "select",
+	shouldRunOnEmpty: true,
 	getMessageType: function (options) {
 		if ($.inArray(options._type, this.groupTypes) > -1) {
 			return this.groupMessageName;
@@ -2366,6 +2385,7 @@ $.ig.igValidatorPatternRule = $.ig.igValidatorPatternRule || $.ig.igValidatorBas
 
 $.ig.igValidatorCustomRule = $.ig.igValidatorCustomRule || $.ig.igValidatorBaseRule.extend({
 	name: "custom",
+	shouldRunOnEmpty: true,
 	getMessageType: function (/* options */) {
 		return "default";
 	},
