@@ -881,7 +881,7 @@
             });
 
             testId = 'Validation targets/types';
-            test(testId, 21, function () {
+            test(testId, 23, function () {
                 //HTML checkbox
                 ok(!$("#singleCheck").igValidator("isValid"), "Single checkbox: required passed without being checked.");
                 $("#singleCheck").click();
@@ -940,6 +940,34 @@
                 util.keyInteraction(50, $('#textEditor3'));
                 $('#textEditor3').off("igvalidatorvalidating");
 
+                // threshold checks:
+                var $field = $("<input>").appendTo("#testBedContainer")
+                    .igValidator({
+                        threshold: 2,
+                        onchange: true,
+                        lengthRange: { min: 10, max: null }
+                    }),
+                    check = {
+                        result: false,
+                        message: "Value shouldn't be valid over the threshold"
+                    };
+
+                $field.on("igvalidatorvalidated", function (evt, ui) {
+                    strictEqual(ui.valid, check.result, check.message);
+                });
+                $field.focus();
+                util.keyInteraction(65, $field);
+                util.keyInteraction(66, $field);
+                util.keyInteraction(67, $field);
+                //reset
+                $field.igValidator("option", "threshold", -1);
+                check.message = "Value shouldn't be valid without threshold";
+                util.keyInteraction(66, $field);
+                $field.igValidator("option", "threshold", 5);
+                check.result = "not valid";
+                check.message = "Validated should not trigger until threshold is reached";
+                util.keyInteraction(67, $field);
+                $field.off().remove();
 
                 // nested check beacause of nasty timeouts, TODO:
                 $('#textEditor3').one("igvalidatorvalidating", function (evt, ui) {
