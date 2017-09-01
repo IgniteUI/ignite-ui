@@ -3704,8 +3704,73 @@
 					this.collapse(element);
 				}
 				break;
+			case binding.checkedKey:
+				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
+				switch (value) {
+				case "on":
+					this.checkNode(node);
+					break;
+				case "partial":
+					this.partiallyCheckNode(node);
+					break;
+				case "off":
+					this.uncheckNode(node);
+					break;
+				default:
+					break;
+				}
+				break;
 			default:
 				break;
+			}
+		},
+		_cascadeUncheck: function (nodeObj, cascadeDir) {
+			var children = nodeObj.element.find("li[data-role=node]"),
+				self = this,
+				parent;
+
+			// Down cascade up and down from every node.
+			if (!cascadeDir || cascadeDir === "down") {
+				children.each(function () {
+					self.uncheckNode(self._constructNodeObject($(this)), "down");
+				});
+			}
+
+			if (!cascadeDir || cascadeDir === "up") {
+				parent = this.parentNode(nodeObj.element);
+
+				if (parent) {
+					if (parent.find("ul > li > span[data-chk=on]").length <= 0) {
+						this.uncheckNode(this._constructNodeObject(parent), "up");
+					} else {
+						this.partiallyCheckNode(this._constructNodeObject(parent), "up");
+					}
+				}
+			}
+		},
+		_cascadeCheck: function (nodeObj, cascadeDir) {
+			var children = nodeObj.element.find("li[data-role=node]"),
+				self = this,
+				parent;
+
+			// Down cascade up and down from every node.
+			if (!cascadeDir || cascadeDir === "down") {
+				children.each(function () {
+					self.checkNode(self._constructNodeObject($(this)), "down");
+				});
+			}
+
+			if (!cascadeDir || cascadeDir === "up") {
+				parent = this.parentNode(nodeObj.element);
+
+				if (parent) {
+					if (parent.find("ul > li > span[data-chk=on]").length ===
+						parent.find("ul > li").length) {
+						this.checkNode(this._constructNodeObject(parent), "up");
+					} else {
+						this.partiallyCheckNode(this._constructNodeObject(parent), "up");
+					}
+				}
 			}
 		},
 		dataBind: function () {
@@ -3729,8 +3794,7 @@
 				paramType="object" optional="false" Specifies the node element the checkbox of which would be toggled.
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
-			var self = this, opt = self.options, css = self.css, childCheckboxes, childCheckIcons,
-				checkbox, checkIcon, parentLi, noCancel;
+			var self = this, opt = self.options, state, noCancel = true, nodeObject;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
@@ -3740,84 +3804,80 @@
 				return;
 			}
 
-			checkbox = node.children("span[data-role=checkbox]");
-			checkIcon = checkbox.children("span");
-			noCancel = self._triggerNodeCheckstateChanging(event, node);
+			nodeObject = this._constructNodeObject(node);
+			if (event) {
+				noCancel = this._triggerNodeCheckstateChanging(event, nodeObject);
+			}
 			if (noCancel) {
-				if (opt.checkboxMode.toLowerCase() === "tristate") {
-					if (checkbox.attr("data-chk") === "on" || checkbox.attr("data-chk") === "partial") {
-						childCheckboxes = node.find("span[data-role=checkbox]");
-						childCheckIcons = childCheckboxes.children("span");
-						checkbox.attr("data-chk", "off");
-						checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOff);
-						childCheckboxes.attr("data-chk", "off");
-						childCheckIcons.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOff);
-
-						parentLi = checkbox.parent().parent().parent();
-						while (parentLi && parentLi.is("li")) {
-
-							// All child checkboxes are unchecked
-							if (parentLi.find("ul > li > span[data-chk=on]").length <= 0) {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "off");
-								checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-									.addClass(css.checkboxOff);
-								parentLi = this.parentNode(parentLi);
-							} else {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "partial");
-								checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
-									.addClass(css.checkboxPartial);
-								parentLi = this.parentNode(parentLi);
-							}
-						}
-					} else {
-						childCheckboxes = node.find("span[data-role=checkbox]");
-						childCheckIcons = childCheckboxes.children("span");
-						checkbox.attr("data-chk", "on");
-						checkIcon.removeClass(css.checkboxOff).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOn);
-						childCheckboxes.attr("data-chk", "on");
-						childCheckIcons.removeClass(css.checkboxOff).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOn);
-
-						parentLi = checkbox.parent().parent().parent();
-						while (parentLi && parentLi.is("li")) {
-
-							// All childcheckboxes are checked
-							if (parentLi.find("ul > li > span[data-chk=on]").length ===
-									parentLi.find("ul > li").length) {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "on");
-								checkIcon.removeClass(css.checkboxOff).removeClass(css.checkboxPartial)
-									.addClass(css.checkboxOn);
-								parentLi = this.parentNode(parentLi);
-							} else {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "partial");
-								checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
-									.addClass(css.checkboxPartial);
-								parentLi = this.parentNode(parentLi);
-							}
-						}
-					}
+				state = nodeObject.data[ nodeObject.binding.checkedKey ];
+				if (state === "on" || state === "partial") {
+					this.uncheckNode(nodeObject);
 				} else {
-					if (checkbox.attr("data-chk") === "on" || checkbox.attr("data-chk") === "partial") {
-						checkbox.attr("data-chk", "off");
-						checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOff);
-					} else {
-						checkbox.attr("data-chk", "on");
-						checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
-					}
+					this.checkNode(nodeObject);
 				}
-				self._triggerNodeCheckstateChanged(event, node);
+				if (event) {
+					this._triggerNodeCheckstateChanged(event, nodeObject);
+				}
+			}
+		},
+		checkNode: function (nodeObj, cascadeDir) {
+			var opt = this.options,
+				css = this.css,
+				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
+				checkIcon = checkbox.children("span");
+
+			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
+				return;
+			}
+
+			checkbox.attr("data-chk", "on");
+			checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
+			nodeObj.data[ nodeObj.binding.checkedKey ] = "on";
+
+			if (opt.checkboxMode.toLowerCase() === "tristate") {
+				this._cascadeCheck(nodeObj, cascadeDir);
+			}
+		},
+		uncheckNode: function (nodeObj, cascadeDir) {
+			var opt = this.options,
+				css = this.css,
+				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
+				checkIcon = checkbox.children("span");
+
+			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
+				return;
+			}
+
+			checkbox.attr("data-chk", "off");
+			checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
+				.addClass(css.checkboxOff);
+			nodeObj.data[ nodeObj.binding.checkedKey ] = "off";
+
+			if (opt.checkboxMode.toLowerCase() === "tristate") {
+				this._cascadeUncheck(nodeObj, cascadeDir);
+			}
+		},
+		partiallyCheckNode: function (nodeObj, cascadeDir) {
+			var opt = this.options,
+				css = this.css,
+				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
+				checkIcon = checkbox.children("span"),
+				parentNode;
+
+			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
+				return;
+			}
+
+			checkbox.attr("data-chk", "partial");
+			checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
+				.addClass(css.checkboxPartial);
+			nodeObj.data[ nodeObj.binding.checkedKey ] = "partial";
+
+			if (opt.checkboxMode.toLowerCase() === "tristate" || cascadeDir) {
+				parentNode = this.parentNode(nodeObj.element);
+				if (parentNode) {
+					this.partiallyCheckNode(this._constructNodeObject(parentNode), "up");
+				}
 			}
 		},
 		toggle: function (node, event) {
@@ -4566,10 +4626,10 @@
 			var args = this._constructNodeObject(node);
 			this._trigger(this.events.nodePopulated, event, args);
 		},
-		_triggerNodeCheckstateChanging: function (event, node) {
-			var state = node.children("span[data-role=checkbox]").attr("data-chk"), args = {
+		_triggerNodeCheckstateChanging: function (event, nodeObj) {
+			var state = nodeObj.data[ nodeObj.binding.checkedKey ], args = {
 				owner: this,
-				node: this._constructNodeObject(node),
+				node: nodeObj,
 				currentState: state,
 				newState: state === "off" ? "on" : "off",
 				currentCheckedNodes: this.checkedNodes()
@@ -4577,10 +4637,10 @@
 
 			return this._trigger(this.events.nodeCheckstateChanging, event, args);
 		},
-		_triggerNodeCheckstateChanged: function (event, node) {
-			var state = node.children("span[data-role=checkbox]").attr("data-chk"), args = {
+		_triggerNodeCheckstateChanged: function (event, nodeObj) {
+			var state = nodeObj.data[ nodeObj.binding.checkedKey ], args = {
 				owner: this,
-				node: this._constructNodeObject(node),
+				node: nodeObj,
 				newState: state,
 				newCheckedNodes: this.checkedNodes(),
 				newPartiallyCheckedNodes: this.partiallyCheckedNodes()
