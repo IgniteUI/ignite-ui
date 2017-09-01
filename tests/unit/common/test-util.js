@@ -113,19 +113,22 @@
 		 */
 		keyInteraction: function (key, target, special) {
 			// could use an update in the future - https://www.w3.org/TR/DOM-Level-3-Events/#keypress-event-order
-			var char, startPos, endPos, newPos;
+			var char, startPos, endPos, newPos, textInput, prevented = false;
 			char = (key > 31) ? String.fromCharCode(key) : "";
 			if (special && char) {
 				char = special === "shiftKey" ? char.toUpperCase() : "";
 				key = char.charCodeAt(0);
 			}
+
+			// Cancelling down/press should skip their default actions only without breaking the event chain.
 			if (this.keyDownChar(key, target, special)) {
-				return;
+				prevented = true;
 			}
 			if (this.keyPressChar(key, target, special)) {
-				return;
+				prevented = true;
 			}
-			if (char && target[0].selectionEnd !== undefined) {
+			textInput = target[0].selectionEnd !== undefined && target[0].selectionEnd !== null;
+			if (!prevented && textInput && char) {
 				endPos = target[0].selectionEnd;
 				startPos = target[0].selectionStart;
 				target[0].value =

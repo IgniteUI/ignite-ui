@@ -695,7 +695,7 @@
 			testId = "Apply different displayTimeOffset on picker display/values";
 			test(testId, 16, function(){
 				var today = new Date(),
-					todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+					todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())),
 					pickerTestOpts = [{
 						picker: {
 							displayTimeOffset: 240,
@@ -721,7 +721,7 @@
 						date: "",
 						day: "",
 						nextDate: (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
-						nextValue: today.toISOString().split("T")[0] + "T03:00:00.000Z"
+						nextValue: todayUTC.toISOString().split("T")[0] + "T03:00:00.000Z"
 					}, {
 						//#1002: igDatePicker drop down cannot be opened 
 						picker: {

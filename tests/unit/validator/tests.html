@@ -31,16 +31,15 @@
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.rating.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.combo.js"></script>
-    <!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>-->
-    
-    
-    <!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>-->
+
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
 
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../common/test-util.js"></script>
 
     <script type="text/javascript">
+    var util = $.ig.TestUtil;
 		//var ttest = test;
 		//test = function () { }
 
@@ -892,9 +891,9 @@
                 $("#check3").click();
                 equal($("#check4").igValidator("getErrorMessages")[0], "At least 2 item(s) should be selected", "Checkbox: No validation on group interaction");
                 $("#check4").focus();
-                keyInteraction(32, $('#check4')); // space to toggle
+                util.keyInteraction(32, $('#check4')); // space to toggle
                 $("#check4").attr("checked", true);
-                keyInteraction(9, $('#check4')); // tab (should be ignored)
+                util.keyInteraction(9, $('#check4')); // tab (should be ignored)
                 equal($("#check4").igValidator("getErrorMessages").length, 1, "Checkbox: Validation triggered on tab without blur");
                 $("#check4").blur();
                 equal($("#check4").igValidator("getErrorMessages").length, 0, "Checkbox: No validation on group interaction");
@@ -937,8 +936,8 @@
                     equal(ui.value, "2", "Input: Change handler failed to validate proper value");
                 });
                 $('#textEditor3').val("2").blur();
-                $('#textEditor3').focus();
-                keyInteraction(50, $('#textEditor3'));
+                $('#textEditor3').val("").focus();
+                util.keyInteraction(50, $('#textEditor3'));
                 $('#textEditor3').off("igvalidatorvalidating");
 
 
@@ -1166,7 +1165,7 @@
                 $('#validationForm').one("igvalidatorvalidating", function (evt, ui) {
                     equal(ui.value, true, "igCheckboxEditor change validation wrong value");
                 });
-                keyInteraction(32, $("#igCheckboxEditor"));
+                util.keyInteraction(32, $("#igCheckboxEditor"));
                 $('#validationForm').one("igvalidatorvalidating", function (evt, ui) {
                     equal(ui.value, false, "igCheckboxEditor change validation wrong value");
                 });
@@ -1191,13 +1190,13 @@
                     strictEqual(ui.valid, valid, "On change validation failed for igTextEditor");
                 });
                 $("#TestTextBox1").igTextEditor("field").focus();
-                keyInteraction(51, $("#TestTextBox1").igTextEditor("field"), null, true); // enter 3
+                util.keyInteraction(51, $("#TestTextBox1").igTextEditor("field"), null, true); // enter 3
                 value = "";
                 valid = false;
-                keyDownChar(8, $('#spinEditor').igNumericEditor("field")); // backspace / delete + empty string for value
-                keyPressChar(8, $('#spinEditor').igNumericEditor("field"));
+                util.keyDownChar(8, $('#spinEditor').igNumericEditor("field")); // backspace / delete + empty string for value
+                util.keyPressChar(8, $('#spinEditor').igNumericEditor("field"));
                 $('#spinEditor').igNumericEditor("field").val('');
-                keyUpChar(8, $('#spinEditor').igNumericEditor("field"));
+                util.keyUpChar(8, $('#spinEditor').igNumericEditor("field"));
                 $("#TestTextBox1").off("igvalidatorvalidated");
             
                 $("#spinEditor").one("igvalidatorvalidating", function (evt, ui) {
@@ -1205,16 +1204,16 @@
                     strictEqual(ui.value, 3, "Wrong numeric value on change validation");
                 });
                 $("#spinEditor").igNumericEditor("field").focus();
-                keyInteraction(51, $("#spinEditor").igNumericEditor("field"), null, true); // enter 3
+                util.keyInteraction(51, $("#spinEditor").igNumericEditor("field"), null, true); // enter 3
               
                 $("#spinEditor").one("igvalidatorvalidated", function (evt, ui) {
                     ok(!ui.value, "Wrong numeric value on change validation");
                     ok(!ui.valid && ui.rule === "required", "Validation did not fail for required numeric editor.");
                 });
-                keyDownChar(8, $('#spinEditor').igNumericEditor("field")); // backspace / delete + empty string for value
-                keyPressChar(8, $('#spinEditor').igNumericEditor("field"));
+                util.keyDownChar(8, $('#spinEditor').igNumericEditor("field")); // backspace / delete + empty string for value
+                util.keyPressChar(8, $('#spinEditor').igNumericEditor("field"));
                 $('#spinEditor').igNumericEditor("field").val('');
-                keyUpChar(8, $('#spinEditor').igNumericEditor("field"));
+                util.keyUpChar(8, $('#spinEditor').igNumericEditor("field"));
                 $("#spinEditor").igNumericEditor("field").blur();
                 
                 // spin change igNumericEditor
@@ -1233,10 +1232,10 @@
                 });
                 $('#maskEditor').igMaskEditor("setFocus");
                 value = "5";
-                keyDownChar(53, $('#maskEditor').igMaskEditor("field"));
-                keyPressChar(53, $('#maskEditor').igMaskEditor("field"));
+                util.keyDownChar(53, $('#maskEditor').igMaskEditor("field"));
+                util.keyPressChar(53, $('#maskEditor').igMaskEditor("field"));
                 $('#maskEditor').igMaskEditor("field").val("5ccccc");
-                keyUpChar(53, $('#maskEditor').igMaskEditor("field"));
+                util.keyUpChar(53, $('#maskEditor').igMaskEditor("field"));
                 $('#maskEditor').off("igvalidatorvalidating");
 
                 //onchange date editor
@@ -1250,10 +1249,10 @@
                 $('#dateEditor').igDateEditor("setFocus");
                 value = new Date(2015, 10, 11);
                 rule = "valueRange";
-                keyDownChar(53, $('#dateEditor').igDateEditor("field"));
-                keyPressChar(53, $('#dateEditor').igDateEditor("field"));
+                util.keyDownChar(53, $('#dateEditor').igDateEditor("field"));
+                util.keyPressChar(53, $('#dateEditor').igDateEditor("field"));
                 $('#dateEditor').igDateEditor("field").val('11/11/2015');
-                keyUpChar(53, $('#dateEditor').igDateEditor("field"));
+                util.keyUpChar(53, $('#dateEditor').igDateEditor("field"));
                 $('#dateEditor').off("igvalidatorvalidated");
 
                 // igcombo
@@ -1297,41 +1296,6 @@
                  $comboEditor.remove();
             });
         });
-        function keyInteraction(key, target, special, set) {
-            keyDownChar(key, target, special);
-            if (set) {
-                target.val(String.fromCharCode(key));
-            }
-            keyPressChar(key, target, special);
-            keyUpChar(key, target, special);
-        }
-        function keyDownChar(key, target, special) {
-            var evt = $.Event("keydown");
-            evt.keyCode = key;
-            evt.charCode = key;
-            if (special) {
-                evt[special] = true;
-            }
-            target.trigger(evt);
-        }
-        function keyPressChar(key, target, special) {
-            var evt = $.Event("keypress");
-            evt.keyCode = key;
-            evt.charCode = key;
-            if (special) {
-                evt[special] = true;
-            }
-            target.trigger(evt);
-        }
-        function keyUpChar(key, target, special) {
-            var evt = $.Event("keyup");
-            evt.keyCode = key;
-            evt.charCode = key;
-            if (special) {
-                evt[special] = true;
-            }
-            target.trigger(evt);
-        }
     </script>
 </head>
 <body>
