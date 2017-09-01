@@ -3821,6 +3821,12 @@
 			}
 		},
 		checkNode: function (nodeObj, cascadeDir) {
+			/* Applies a checked state to a node.
+			```
+				$(".selector").igTree("checkNode", targetNode);
+			```
+				paramType="object" optional="false" Specifies the node element to apply the state to.
+			*/
 			var opt = this.options,
 				css = this.css,
 				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
@@ -3839,6 +3845,12 @@
 			}
 		},
 		uncheckNode: function (nodeObj, cascadeDir) {
+			/* Applies an unchecked state to a node.
+			```
+				$(".selector").igTree("uncheckNode", targetNode);
+			```
+				paramType="object" optional="false" Specifies the node element to apply the state to.
+			*/
 			var opt = this.options,
 				css = this.css,
 				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
@@ -3858,6 +3870,12 @@
 			}
 		},
 		partiallyCheckNode: function (nodeObj, cascadeDir) {
+			/* Applies a partially checked state to a node.
+			```
+				$(".selector").igTree("partiallyCheckNode", targetNode);
+			```
+				paramType="object" optional="false" Specifies the node element to apply the state to.
+			*/
 			var opt = this.options,
 				css = this.css,
 				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
@@ -3931,7 +3949,8 @@
 			```
 				$(".selector").igTree("expand", targetNode);
 			```
-				paramType="object" optional="false" Specifies the node element to expand.
+				paramType="$" optional="false" Specifies the node element to expand.
+				paramType="event" optional="true" The original browser event that triggered the expand.
 			*/
 			var self = this, opt = self.options, css = self.css, i = 0, expander,
 				nodeObject, noCancel = true, siblings;
@@ -3978,7 +3997,8 @@
 			```
 				$(".selector").igTree("collapse", targetNode);
 			```
-				paramType="object" optional="false" Specifies the node element to collapse.
+				paramType="$" optional="false" Specifies the node element to collapse.
+				paramType="event" optional="true" The original browser event that triggered the collapse.
 			*/
 			var self = this, opt = self.options, css = self.css, expander,
 				nodeObject, noCancel = true;
