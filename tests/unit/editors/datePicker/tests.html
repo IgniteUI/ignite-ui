@@ -1129,7 +1129,7 @@
 				$editor.trigger("blur").remove();
 			});
 			var testId = 'displayTimeOffset enabled and setting date from drop down calendar';
-			test(testId, 3, function () {
+			test(testId, 6, function () {
 				var $editor, $ddButton, $input;
 
 				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({
@@ -1151,7 +1151,29 @@
 				$ddButton.click();
 				$(".ui-datepicker-current-day").next().click();
 				$input.blur();
-				equal($editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
+				equal($editor.igDatePicker("displayValue"), "12/9/2017 12:00 AM", "Display value is not correct");
+				$editor.remove();
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2017-12-08T00:00:00.000Z"),
+					dataMode: "date",
+					dateDisplayFormat: "dateTime",
+					enableUTCDates: true,
+					displayTimeOffset: 240,
+					dropDownAnimationDuration: 1
+				});
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$ddButton.click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$(".ui-datepicker-current-day").next().click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/9/2017 4:00 AM", "Display value is not correct");
 				$editor.remove();
 			});
 	    });
