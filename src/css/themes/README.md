@@ -1,12 +1,12 @@
 
-Bootstrap 3 Themes
+Infragistics Themes
 =====================
 
 
-1. Default (Default bootstrap 3 theme)
-2. Flatly
-3. Yeti
-4. superhero
+1. Default
+2. infragistics - 2012
+3. Metro
+4. IOS
 
 
 
@@ -21,29 +21,19 @@ Bootstrap 3 Themes
  
 * **jquery-ui-overrides.less** -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
  
-* **variables.less** - Contain all bootstrap theme variables.
- 
-* **ignite-ui-variables.less** - Contain all variables related to Ignite UI components
+* **variables.less** - Contain all theme variables.
  
 * **mixins.less** - Contain all mixins related to Ignite UI components
-
 
 
 **Note:** the root file "infragistics-theme-less" is the only file that needs to be compiled to .CSS
 
 
-**Note:** File "@import" order inside "infragistics.theme.less" is important! In order the theme to work correctly.
-
-
-
 ### File order:
 
 ```diff
-//Bootstrap Theme variables
+//Theme variables
 @import "variables.less";
- 
-//Ignite UI Theme variables
-@import "ignite-ui-variables";
  
 //Ignite UI mixins
 @import "mixins.less";
@@ -66,6 +56,10 @@ Bootstrap 3 Themes
 //Use this file to override all infragistics & jQuery styles
 @import "overrides";
 ```
+
+**Note:** File order is important in order the theme to work correctly.
+
+
 
 
 ### Icons web font

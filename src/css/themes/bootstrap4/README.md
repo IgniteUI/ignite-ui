@@ -72,7 +72,7 @@ Bootstrap 4 Themes
 hold all files related to icons web font
 
 To add/remove/change icons form the web font:
-1. Go to [icomoon.io/app](icomoon.io/app) and upload the file "**jqurey-ui.svg**" located in: C css/structure/fonts
+1. Go to [icomoon.io/app](icomoon.io/app) and upload the file "**jqurey-ui.svg**" located in: css/structure/fonts
 2. Make the desired modification, download and replace the changed font.
 
 
