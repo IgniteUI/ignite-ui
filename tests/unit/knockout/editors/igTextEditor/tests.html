@@ -375,15 +375,15 @@
 			$chk.remove();
 
 			$editor = $("#edDisabledNotObs1"), $chk = $("#edDisabledNotObs1");
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be enabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be enabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
+			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 			$chk.click();
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be enabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be enabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
+			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 			$editor.remove();
 			$chk.remove();
 		});
