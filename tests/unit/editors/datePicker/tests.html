@@ -467,7 +467,6 @@
 				editor.blur();
 
 				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, today.getSeconds()));
-				debugger;
 				equal(editor.igDatePicker("value").getDate(), expectedDate.getDate(), "The date is not set");
 				equal(editor.igDatePicker("value").getHours(), expectedDate.getHours(), "The hours is not set");
 				equal(editor.igDatePicker("value").getMinutes(), expectedDate.getMinutes(), "The minutes is not set");
