@@ -470,8 +470,8 @@
 			/* Event which is raised after the editor value is changed. It can be raised after loosing focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.originalValue to obtain the original value.
+				Use ui.newValue to obtain the value entered from the user after internal formatting.
+				Use ui.originalValue to obtain the value entered from the user before internal formatting.
 				Use ui.editorInput to obtain reference to the editor input.
 				```
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
@@ -1570,23 +1570,6 @@
 				```
 			*/
 			toLower: false,
-			/* type="object" Gets/Sets the strings used for the localization of the component. This includes button titles, error messages etc. Value of the object should contain pairs or key:value members. Note: any sub-option of locale can appear within the main option of igEditor. In this case those values within main options will have highest priority and override corresponding value in locale.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					locale: {
-							spinUpperTitle: 'SpinUp'
-					}
-				});
-
-				//Get
-				var locale = $(".selector").%%WidgetName%%("option", "locale");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "locale", {spinUpperTitle: 'SpinUp'});
-			```
-			*/
-			locale: null,
 			/* type="bool" Disables/Enables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
 			```
 				//Initialize
@@ -4090,21 +4073,6 @@
 				```
 			 */
 			listItems: null,
-			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					regional: "en-US"
-				});
-
-				//Get
-				var region = $(".selector").%%WidgetName%%("option", "regional");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "regional", "en-US");
-			```
-			*/
-			regional: null,
 			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
@@ -4464,21 +4432,21 @@
 		},
 		_initialize: function () {
 			this._super();
+			this._setNumericType();
 
 			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
 			this._validateDecimalSettings();
-			this._applyRegionalSettings();
+			this._validateRegionalSettings();
 			this._applyDataModeSettings();
-			this._setNumericType();
 			var numericChars = "0123456789", dataMode = this.options.dataMode;
 
 			// Allow decimal separator as a char.
 			// When the dataMode is set to int, decimal separator should not be allowed
 			if (dataMode === "double" || dataMode === "float") {
-				numericChars += this.options.decimalSeparator;
+				numericChars += this._getOptionOrRegionalValue("decimalSeparator");
 
 				// K.D. September 25th, 2015 The decimal separator key on the keyboard is always the 110 and 190 keycodes, which is '.'
-				if (this.options.decimalSeparator !== ".") {
+				if (this._getOptionOrRegionalValue("decimalSeparator") !== ".") {
 					numericChars += ".";
 				}
 			}
@@ -4489,7 +4457,7 @@
 			// Allow negativeSign as a char only where negative values are supported
 			if (dataMode === "double" || dataMode === "float" || dataMode === "long" ||
 				dataMode === "int" || dataMode === "short" || dataMode === "sbyte") {
-				numericChars += this.options.negativeSign;
+				numericChars += this._getRegionalValue("negativeSign");
 			}
 
 			// Setting Exclude keys is not allowed into numeric/percent/currency editor
@@ -4498,7 +4466,7 @@
 			}
 
 			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
-			if (this.options.decimalSeparator.toString().length > 1) {
+			if (this._getOptionOrRegionalValue("decimalSeparator").toString().length > 1) {
 				throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
 			}
 
@@ -4506,7 +4474,8 @@
 			this.options.includeKeys = numericChars;
 
 			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-			if (this.options.decimalSeparator === this.options.groupSeparator) {
+			if (this._getOptionOrRegionalValue("decimalSeparator") ===
+				this._getOptionOrRegionalValue("groupSeparator")) {
 				throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 			}
 		},
@@ -4537,24 +4506,16 @@
 			}
 			return result;
 		},
-		_applyRegionalSettings: function () { //Numeric
-			this.options.negativeSign = this._getRegionalValue("negativeSign");
-			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalValue("numericNegativePattern");
-			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalValue("numericDecimalSeparator");
-
-			// TODO: make a validate function to ignore numbers as separators, undefined vs allowed chars here?
-			this.options.groupSeparator = this.options.groupSeparator !== null ?
-				this.options.groupSeparator :
-				this._getRegionalValue("numericGroupSeparator");
-			this.options.groups = this.options.groups || this._getRegionalValue("numericGroups");
-			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalValue("numericMaxDecimals") :
-				this.options.maxDecimals;
-			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalValue("numericMinDecimals") :
-				this.options.minDecimals;
+		_validateRegionalSettings: $.noop,
+		_getOptionOrRegionalValue: function (name) { //Numeric
+			var regName;
+			if (name === "negativeSign" || name === "percentSymbol" ||
+				name === "currencySymbol" || name === "displayFactor") {
+				regName = name;
+			} else {
+				regName = this._numericType + name.substr(0, 1).toUpperCase() + name.substr(1);
+			}
+			return this.options[ name ] !== null ? this.options[ name ] : this._getRegionalValue(regName);
 		},
 		_setInitialValue: function (value) { // NumericEditor
 			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
@@ -4598,10 +4559,10 @@
 					// Validate if the fractional part is longer than maxDecimals
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
-						if (fractional.toString().length > this.options.maxDecimals) {
+						if (fractional.toString().length > this._getOptionOrRegionalValue("maxDecimals")) {
 							throw new Error($.ig.util.stringFormat(
 								this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
-								this.options.maxDecimals));
+								this._getOptionOrRegionalValue("maxDecimals")));
 						}
 					}
 				} else {
@@ -4616,16 +4577,26 @@
 			}
 		},
 		_validateDecimalSettings: function() {
+			var minDecimalsName = this._numericType + "MinDecimals",
+				maxDecimalsName = this._numericType + "MaxDecimals";
+
+			if (this.options.minDecimals === null) {
+				this.options.minDecimals = this._getRegionalValue(minDecimalsName);
+			}
 			try {
 				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalValue("numericMinDecimals");
+				this.options.minDecimals = this._getRegionalValue(minDecimalsName);
 				throw e;
+			}
+
+			if (this.options.maxDecimals === null) {
+				this.options.maxDecimals = this._getRegionalValue(maxDecimalsName);
 			}
 			try {
 				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalValue("numericMaxDecimals");
+				this.options.maxDecimals = this._getRegionalValue(maxDecimalsName);
 				throw e;
 			}
 			this._validateDecimalMinMax();
@@ -4646,8 +4617,9 @@
 			}
 		},
 		_validateDecimalMinMax: function() {
-			if (this.options.minDecimals > this.options.maxDecimals) {
-				this.options.maxDecimals = this.options.minDecimals;
+			if (this._getOptionOrRegionalValue("minDecimals") >
+				this._getOptionOrRegionalValue("maxDecimals")) {
+				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4739,7 +4711,7 @@
 				}
 
 				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-				if (this.options[ option ] === this.options.groupSeparator) {
+				if (this.options[ option ] === this._getOptionOrRegionalValue("groupSeparator")) {
 					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 				}
 				break;
@@ -4751,13 +4723,10 @@
 				}
 
 				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-				if (this.options[ option ] === this.options.decimalSeparator) {
+				if (this.options[ option ] === this._getOptionOrRegionalValue("decimalSeparator")) {
 					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 				}
 				break;
-			case "regional":
-				this.options[ option ] = prevValue;
-				throw new Error(this._getLocaleValue("setOptionError") + option);
 
 			case "excludeKeys":
 			case "includeKeys":
@@ -4773,6 +4742,7 @@
 			}
 		},
 		_processValueChanging: function (value) { //NumericEditor
+			var displayFactor = this._getOptionOrRegionalValue("displayFactor");
 			if (typeof value === "string" || value instanceof String) {
 				value = value.trim();
 				value = this._parseNumericValueByMode(value,
@@ -4783,11 +4753,11 @@
 				if (value === "" && !this.options.allowNullValue) {
 					value = 0;
 				}
-				if (this._numericType === "percent" && this.options.displayFactor) {
+				if (this._numericType === "percent" && displayFactor) {
 					if (value !== "" && !isNaN(value)) {
 
 						// TODO - any logic related to "percent" should not be in numeric editor.
-						value = this._divideWithPrecision(value, this.options.displayFactor);
+						value = this._divideWithPrecision(value, displayFactor);
 					}
 				}
 			}
@@ -4994,9 +4964,9 @@
 		},
 		_parseNumericValueByMode: function (value, numericEditorType, dataMode) { //NumericEditor
 			var val, stringValue, exponent, exponentIndex,
-				decimalSeparator = this.options.decimalSeparator,
-				groupSeparator = this.options.groupSeparator,
-				maxDecimals = this.options.maxDecimals;
+				decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator"),
+				groupSeparator = this._getOptionOrRegionalValue("groupSeparator"),
+				maxDecimals = this._getOptionOrRegionalValue("maxDecimals");
 
 			if (value === null || value === "") { // TODO VERIFY _validateValue and _updateValue both have cases calling parse with null!
 				return value;
@@ -5010,13 +4980,13 @@
 
 				// D.P. 27th Oct 2015 Bug 208296: Don't replace group separator on actual numbers as it can be '.'
 				value = value.toString().replace(new RegExp($.ig.util.escapeRegExp(groupSeparator), "g"), ""); // TODO VERIFY Remove group separator cause parseInt("1,000") returns 1?
-				if (this.options.negativeSign !== "-") {
-					value = value.replace(this.options.negativeSign, "-");
+				if (this._getOptionOrRegionalValue("negativeSign") !== "-") {
+					value = value.replace(this._getOptionOrRegionalValue("negativeSign"), "-");
 				}
 				if (numericEditorType === "percent") {
-					value = value.replace(this.options.percentSymbol, "").trim();
+					value = value.replace(this._getOptionOrRegionalValue("percentSymbol"), "").trim();
 				} else if (numericEditorType === "currency") {
-					value = value.replace(this.options.currencySymbol, "").trim();
+					value = value.replace(this._getOptionOrRegionalValue("currencySymbol"), "").trim();
 				}
 
 				// D.P. decimalSeparator replace before any parsing, regardless of mode (ensure scientific decimals are parsed correctly)
@@ -5034,7 +5004,7 @@
 						if (!this.options.scientificFormat) {
 							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
 							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
-							stringValue = value.toFixed(this.options.maxDecimals + 1);
+							stringValue = value.toFixed(this._getOptionOrRegionalValue("maxDecimals") + 1);
 						} else {
 							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
 							stringValue = value.toString().toLowerCase();
@@ -5167,7 +5137,7 @@
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
 				var dataMode = this.options.dataMode, ch, val,
-					negativeSign = this.options.negativeSign, nextCh, prevCh,
+					negativeSign = this._getOptionOrRegionalValue("negativeSign"), nextCh, prevCh,
 					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
@@ -5199,7 +5169,7 @@
 
 				//We need this extra validation in case the user tries to enter decimal separator multiple times
 				if (dataMode === "double" || dataMode === "float") {
-					var decimalSeparator = this.options.decimalSeparator;
+					var decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator");
 
 					// val = $(event.target).val();
 					if (decimalSeparator !== "." && isDecimal &&
@@ -5327,8 +5297,9 @@
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
-				decimalSeparator = this.options.decimalSeparator, decimalPoint = ".",
-				minDecimals = this.options.minDecimals, dataMode = this.options.dataMode,
+				decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator"), decimalPoint = ".",
+				minDecimals = this._getOptionOrRegionalValue("minDecimals"), dataMode = this.options.dataMode,
+				displayFactor = this._getOptionOrRegionalValue("displayFactor"),
 				stringValue, displayValue, integerDigits, fractionalDigits,
 				scientificValue, scientificExponent, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
@@ -5341,17 +5312,17 @@
 				}
 			}
 			if (this._numericType !== "numeric") {
-				positivePattern = this.options.positivePattern;
-				symbol = this.options[ this._numericType + "Symbol" ];
+				positivePattern = this._getOptionOrRegionalValue("positivePattern");
+				symbol = this._getOptionOrRegionalValue(this._numericType + "Symbol");
 			}
-			negativePattern = this.options.negativePattern;
+			negativePattern = this._getOptionOrRegionalValue("negativePattern");
 
 			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
-			var originalArray = this.options.groups;
+			var originalArray = this._getOptionOrRegionalValue("groups");
 			groups = originalArray.filter(function(item) {return item !== 0;} );
-			groupSeparator = this.options.groupSeparator;
-			if (this._numericType === "percent" && this.options.displayFactor) {
-				value = this._multiplyWithPrecision(value, this.options.displayFactor);
+			groupSeparator = this._getOptionOrRegionalValue("groupSeparator");
+			if (this._numericType === "percent" && displayFactor) {
+				value = this._multiplyWithPrecision(value, displayFactor);
 				value = this._parseNumericValueByMode(value, this._numericType, this.options.dataMode);
 			}
 
@@ -5421,7 +5392,7 @@
 			}
 
 			if (value < 0 ) {
-				negativeSign = this.options.negativeSign;
+				negativeSign = this._getOptionOrRegionalValue("negativeSign");
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
@@ -5486,11 +5457,11 @@
 			} else if (val.toString().indexOf("e") !== -1) {
 				val = this._convertScientificToNumeric(val).replace("+", "");
 			}
-			if (this.options.decimalSeparator !== ".") {
-				val = val.toString().replace(".", this.options.decimalSeparator);
+			if (this._getOptionOrRegionalValue("decimalSeparator") !== ".") {
+				val = val.toString().replace(".", this._getOptionOrRegionalValue("decimalSeparator"));
 			}
-			if (this.options.negativeSign !== "-") {
-				val = val.toString().replace("-", this.options.negativeSign);
+			if (this._getOptionOrRegionalValue("negativeSign") !== "-") {
+				val = val.toString().replace("-", this._getOptionOrRegionalValue("negativeSign"));
 			}
 			return val;
 		},
@@ -5929,6 +5900,13 @@
 			```
 				returnType="string" Current regional */
 			return this._getRegionalValue();
+		},
+		changeRegional: function() { //igNumericEditor
+			if (this._focused) {
+				this._enterEditMode();
+			} else {
+				this._editorInput.val(this._getDisplayValue());
+			}
 		}
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
@@ -5976,28 +5954,6 @@
 		_setNumericType: function () {
 			this._numericType = "currency";
 		},
-		_applyRegionalSettings: function () { //igCurrencyEditor
-
-			this.options.negativeSign = this._getRegionalValue("negativeSign");
-			this.options.currencySymbol = this._getRegionalValue("currencySymbol");
-			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalValue("currencyPositivePattern");
-			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalValue("currencyNegativePattern");
-			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalValue("currencyDecimalSeparator");
-			this.options.groupSeparator = this.options.groupSeparator !== null ?
-				this.options.groupSeparator :
-				this._getRegionalValue("currencyGroupSeparator");
-			this.options.groups = this.options.groups ||
-				this._getRegionalValue("currencyGroups");
-			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalValue("currencyMaxDecimals") :
-				this.options.maxDecimals;
-			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalValue("currencyMinDecimals") :
-				this.options.minDecimals;
-		},
 
 		// igCurrencyEditor public methods
 		currencySymbol: function (symbol) {
@@ -6010,7 +5966,7 @@
 			if (symbol) {
 				this.options.currencySymbol = symbol;
 			} else {
-				return this.options.currencySymbol;
+				return this._getOptionOrRegionalValue("currencySymbol");
 			}
 		}
 	});
@@ -6119,12 +6075,13 @@
 			this._numericType = "percent";
 		},
 		_insert: function (newValue, previousValue, selection) { // Percent Editor
-			var newLenght = newValue.length, diff;
+			var newLenght = newValue.length,
+				displayFactor = this._getOptionOrRegionalValue("displayFactor"), diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (!isNaN(this.options.maxValue) &&
-					newValue / this.options.displayFactor > this.options.maxValue) {
-					newValue = this.options.maxValue * this.options.displayFactor;
+					newValue / displayFactor > this.options.maxValue) {
+					newValue = this.options.maxValue * displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
@@ -6133,8 +6090,8 @@
 							arg: this.options.maxValue
 						});
 				} else if (!isNaN(this.options.minValue) &&
-					newValue / this.options.displayFactor < this.options.minValue) {
-					newValue = this.options.minValue * this.options.displayFactor;
+					newValue / displayFactor < this.options.minValue) {
+					newValue = this.options.minValue * displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
@@ -6143,7 +6100,7 @@
 							arg: this.options.minValue
 						});
 				}
-				if (!this._validateValue(newValue / this.options.displayFactor) &&
+				if (!this._validateValue(newValue / displayFactor) &&
 					this.options.revertIfNotValid) {
 					newValue = previousValue;
 				}
@@ -6162,47 +6119,32 @@
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 				}
 			} else {
-				newValue = this._divideWithPrecision(newValue, this.options.displayFactor);
+				newValue = this._divideWithPrecision(newValue, displayFactor);
 				this._processInternalValueChanging(newValue);
 				this._exitEditMode();
 			}
-			this._setSpinButtonsState(newValue / this.options.displayFactor);
+			this._setSpinButtonsState(newValue / displayFactor);
 			this._processTextChanged();
 		},
-		_applyRegionalSettings: function () { //Percent
+		_validateRegionalSettings: function () { //Percent
 
-			this.options.negativeSign = this.options.negativeSign ||
-				this._getRegionalValue("negativeSign");
-			this.options.percentSymbol = this.options.percentSymbol ||
-				this._getRegionalValue("percentSymbol");
-			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalValue("percentPositivePattern");
-			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalValue("percentNegativePattern");
-			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalValue("percentDecimalSeparator");
-			this.options.groupSeparator = this.options.groupSeparator !== null ?
-				this.options.groupSeparator :
-				this._getRegionalValue("percentGroupSeparator");
-			this.options.groups = this.options.groups ||
-				this._getRegionalValue("percentGroups");
-			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalValue("percentMaxDecimals") :
-				this.options.maxDecimals;
-			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalValue("percentMinDecimals") :
-				this.options.minDecimals;
-			if (this.options.displayFactor === 100) {
-				// TODO - this is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
-				this.options.maxDecimals += 2;
+			if (this.options.displayFactor !== null) {
+				if (typeof this._getOptionOrRegionalValue("displayFactor") !== "number") {
+					throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
+				} else if (this._getOptionOrRegionalValue("displayFactor") !== 1 &&
+					this._getOptionOrRegionalValue("displayFactor") !== 100) {
+					throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
+				}
 			}
-			this.options.displayFactor = this.options.displayFactor ||
-				this._getRegionalValue("displayFactor");
-			if (typeof this.options.displayFactor !== "number") {
-				throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
-			} else if (this.options.displayFactor !== 1 && this.options.displayFactor !== 100) {
-				throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
+		},
+		_getOptionOrRegionalValue: function(name) {
+			var regionalValue = this._super(name);
+
+			// This is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
+			if (name === "maxDecimals" && this.options.displayFactor === 100) {
+				regionalValue += 2;
 			}
+			return regionalValue;
 		},
 		_setOption: function (option, value) { // igPercentEditor
 			/* igPercentEditor custom setOption goes here */
@@ -6236,7 +6178,8 @@
 			// value must be numeric
 			if (val !== "" && !isNaN(val)) {
 				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
-				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
+				val = this._multiplyWithPrecision(parseFloat(val),
+					this._getOptionOrRegionalValue("displayFactor"));
 			}
 			return this._super(val);
 		},
@@ -6271,25 +6214,13 @@
 			if (symbol) {
 				this.options.percentSymbol = symbol;
 			} else {
-				return this.options.percentSymbol;
+				return this._getOptionOrRegionalValue("percentSymbol");
 			}
 
 		}
 	});
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
-			/* type="object" Gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					regional: "en-US"
-				});
-
-				//Get
-				var region = $(".selector").%%WidgetName%%("option", "regional");
-				```
-			*/
-			regional: null,
 			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
@@ -7435,7 +7366,6 @@
 				throw new Error(this._getLocaleValue("setOptionError") + option);
 			case "excludeKeys":
 			case "includeKeys":
-			case "regional":
 			case "unfilledCharsPrompt":
 				this.options[ option ] = prevValue;
 				throw new Error(this._getLocaleValue("setOptionError") + option);
@@ -8025,6 +7955,15 @@
 			case "dateInputFormat":
 				this.options[ option ] = prevValue;
 				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "dateDisplayFormat":
+
+				// D.P. 30th Aug 2017 #1162 Runtime set of predefined dateDisplayFormat doesn't produce the expected pattern
+				delete this._dispalyFormat;
+				this._applyRegionalSettings();
+				if (!this._editMode) {
+					this._editorInput.val(this._getDisplayValue());
+				}
+				break;
 			case "spinDelta":
 				try {
 					this._validateSpinSettings();
@@ -8042,24 +7981,39 @@
 			}
 		},
 		_applyRegionalSettings: function () { //DateEditor
-			var format;
 			if (this.options.dateInputFormat !== null) {
-				format = this.options.dateInputFormat;
-				if (format === "date" || format === "dateLong" || format === "dateTime" ||
-					format === "time" || format === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalValue(format + "Pattern");
+				if (this._inputFormat === undefined) {
+					this._inputFormat = this.options.dateInputFormat;
+				}
+				if (this._inputFormat === "date" || this._inputFormat === "dateLong" ||
+					this._inputFormat === "dateTime" || this._inputFormat === "time" ||
+					this._inputFormat === "timeLong") {
+					this.options.dateInputFormat = this._getRegionalValue(this._inputFormat + "Pattern");
 				}
 			} else {
 				this.options.dateInputFormat = this._getRegionalValue("datePattern");
 			}
 			if (this.options.dateDisplayFormat !== null) {
-				format = this.options.dateDisplayFormat;
-				if (format === "date" || format === "dateLong" || format === "dateTime" ||
-					format === "time" || format === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalValue(format + "Pattern");
+				if (this._dispalyFormat === undefined) {
+					this._dispalyFormat = this.options.dateDisplayFormat;
+				}
+				if (this._dispalyFormat === "date" || this._dispalyFormat === "dateLong" ||
+					this._dispalyFormat === "dateTime" || this._dispalyFormat === "time" ||
+					this._dispalyFormat === "timeLong") {
+					this.options.dateDisplayFormat = this._getRegionalValue(this._dispalyFormat + "Pattern");
 				}
 			} else {
 				this.options.dateDisplayFormat = this.options.dateInputFormat;
+				this._dispalyFormat = this._inputFormat;
+			}
+		},
+		changeRegional: function() {
+			var timeouts = this._timeouts;
+			this._initialize();
+			this._timeouts = timeouts;
+			this._setInitialValue(this._dateObjectValue);
+			if (this._focused) {
+				this._enterEditMode();
 			}
 		},
 		_setInitialValue: function (value) { //igDateEditor
@@ -8342,6 +8296,7 @@
 			var currentMaskValue = this._maskWithPrompts ?
 					this._maskWithPrompts :
 					this._parseValueByMask(""),
+				regional = this.options.regional,
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
@@ -8461,14 +8416,14 @@
 					if (this._dateIndices.ffLength === 1) {
 						currentMaskValue = this._replaceCharAt(currentMaskValue,
 							this._dateIndices.ff,
-							this._getMilliseconds(milliseconds, 100).toString());
+							$.ig.millisecondsToString(milliseconds, "fff", regional).toString());
 					} else if (this._dateIndices.ffLength === 2) {
 						currentMaskValue = this._replaceStringRange(currentMaskValue,
-							this._getMilliseconds(milliseconds, 10).toString(),
+							$.ig.millisecondsToString(milliseconds, "ff", regional).toString(),
 								this._dateIndices.ff, this._dateIndices.ff + 1);
 					} else {
 						currentMaskValue = this._replaceStringRange(currentMaskValue,
-							this._getMilliseconds(milliseconds, 1).toString(),
+							$.ig.millisecondsToString(milliseconds, "f", regional).toString(),
 								this._dateIndices.ff, this._dateIndices.ff + 2);
 					}
 				}
@@ -8485,14 +8440,16 @@
 		// This method is used to get indices of the date groups within the mask and to convert the date mask into a mask with digit flags valid for igMaskEditor
 		_convertDateMaskToDigitMask: function (mask) {
 			var x, i, j, flag = -1, txt = "", maskVal = mask;
-			if (!maskVal) {
-				maskVal = "";
-			}
-			maskVal = maskVal.replace("dddd", "ddd").replace("ddd,", "").replace("ddd ", "")
-						.replace(" ddd", "").replace("ddd", "");
 
 			this._dateIndices = {};
 			this._dateIndices.fourDigitYear = false;
+
+			if (!maskVal) {
+				maskVal = "";
+			}
+
+			maskVal = maskVal.replace("dddd", "ddd").replace("ddd,", "").replace("ddd ", "")
+				.replace(" ddd", "").replace("ddd", "");
 
 			// temporary replace \\f,d,s,m,etc. by \x01-\x09
 			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");
@@ -9309,6 +9266,13 @@
 			}
 			return newDate;
 		},
+		_getYearShift: function(date) {
+			var newDate;
+
+			newDate = new Date(date.getTime());
+			newDate.setFullYear(date.getFullYear() + this.options.yearShift);
+			return newDate;
+		},
 		_clearDateOffset: function(date) {
 			date.setUTCMinutes(date.getUTCMinutes() -
 				date.getTimezoneOffset() - this.options.displayTimeOffset);
@@ -9563,103 +9527,22 @@
 			return extractedDate;
 
 		},
-		_getDisplayValue: function (newDate) { //igDateEditor
-			var maskVal, dateObject = newDate ? newDate : this._dateObjectValue;
+		_getDisplayValue: function (date) { //igDateEditor
+			var dateObject = date ? date : this._dateObjectValue;
 
 			if (!dateObject) {
 				return "";
+			}
+
+			if (this.options.yearShift !== null) {
+				dateObject = this._getYearShift(dateObject);
 			}
 
 			if (this.options.displayTimeOffset !== null) {
 				dateObject = this._getDateOffset(dateObject);
 			}
 
-			maskVal = this.options.dateDisplayFormat;
-			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");
-			maskVal = maskVal.replace(/\\f/g, "\x01").replace(/\\d/g, "\x02")
-				.replace(/\\s/g, "\x03").replace(/\\m/g, "\x04").replace(/\\t/g, "\x05")
-				.replace(/\\H/g, "\x06").replace(/\\h/g, "\x07").replace(/\\M/g, "\x08")
-				.replace(/\\y/g, "\x09");
-
-			// 01-y,02-yy,03-yyyy,04-M,05-MM,06-MMM,07-MMMM,08-d,09-dd
-			// 10-h,11-hh,12-H,13-HH,14-t,15-tt,16-m,17-mm,18-s,19-ss
-			// 20-ddd,21-dddd,22-f,23-ff,24-fff
-			// Temporary remove 0 and 9, as they are valid mask flags
-			// maskVal = maskVal.replace(/9/g, "\x11").replace(/0/g, "\x12");
-
-			// Mark all flags as hexadecimal
-			maskVal = maskVal.replace(/fff/g, "\x10030")
-				.replace(/ff/g, "\x10031")
-				.replace(/f/g, "\x10032");
-
-			maskVal = maskVal.replace(/dddd/g, "\x10033")
-				.replace(/ddd/g, "\x10034")
-				.replace(/dd/g, "\x10035")
-				.replace(/d/g, "\x10036")
-				.replace(/ss/g, "\x10037")
-				.replace(/s/g, "\x10038")
-				.replace(/mm/g, "\x10039")
-				.replace(/m/g, "\x10040");
-			maskVal = maskVal.replace(/tt/g, "\x10041")
-				.replace(/t/g, "\x10042")
-				.replace(/HH/g, "\x10043")
-				.replace(/H/g, "\x10044")
-				.replace(/hh/g, "\x10045")
-				.replace(/h/g, "\x10046");
-			maskVal = maskVal.replace(/MMMM/g, "\x10047")
-				.replace(/MMM/g, "\x10048")
-				.replace(/MM/g, "\x10049")
-				.replace(/M/g, "\x10050");
-			maskVal = maskVal.replace(/yyyy/g, "\x10051")
-				.replace(/yy/g, "\x10052")
-				.replace(/y/g, "\x10053");
-
-			maskVal = maskVal.replace(/\x10030/g,
-				this._getMilliseconds(this._getDateField("Milliseconds", dateObject), 1))
-				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("Milliseconds",
-					dateObject), 10))
-				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("Milliseconds",
-					dateObject), 100));
-
-			maskVal = maskVal.replace(/\x10033/g,
-				this._getDay(this._getDateField("Day", dateObject), "dddd"))
-				.replace(/\x10034/g, this._getDay(this._getDateField("Day", dateObject), "ddd"))
-				.replace(/\x10035/g, this._getDate(this._getDateField("Date", dateObject), "dd"))
-				.replace(/\x10036/g, this._getDate(this._getDateField("Date", dateObject), "d"))
-				.replace(/\x10037/g,
-					this._getSeconds(this._getDateField("Seconds", dateObject), "ss"))
-				.replace(/\x10038/g,
-					this._getSeconds(this._getDateField("Seconds", dateObject), "s"))
-				.replace(/\x10039/g,
-					this._getMinutes(this._getDateField("Minutes", dateObject), "mm"))
-				.replace(/\x10040/g,
-					this._getMinutes(this._getDateField("Minutes", dateObject), "m"))
-
-				.replace(/\x10041/g,
-					this._getAMorPM(this._getDateField("Hours", dateObject), "tt"))
-				.replace(/\x10042/g, this._getAMorPM(this._getDateField("Hours", dateObject), "t"))
-				.replace(/\x10043/g, this._getHours(this._getDateField("Hours", dateObject), "HH"))
-				.replace(/\x10044/g, this._getHours(this._getDateField("Hours", dateObject), "H"))
-				.replace(/\x10045/g, this._getHours(this._getDateField("Hours", dateObject), "hh"))
-				.replace(/\x10046/g, this._getHours(this._getDateField("Hours", dateObject), "h"));
-
-			maskVal = maskVal.replace(/\x10047/g,
-				this._getMonth(this._getDateField("Month", dateObject), "MMMM"))
-				.replace(/\x10048/g, this._getMonth(this._getDateField("Month", dateObject), "MMM"))
-				.replace(/\x10049/g, this._getMonth(this._getDateField("Month", dateObject), "MM"))
-				.replace(/\x10050/g, this._getMonth(this._getDateField("Month", dateObject), "M"));
-
-			maskVal = maskVal.replace(/\x10051/g,
-				this._getYear(this._getDateField("FullYear", dateObject), "yyyy"))
-				.replace(/\x10052/g, this._getYear(this._getDateField("FullYear", dateObject), "yy"))
-				.replace(/\x10053/g, this._getYear(this._getDateField("FullYear", dateObject), "y"));
-
-			// Restore original \\f,d,s,m,etc.
-			maskVal = maskVal.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
-				.replace(/\x04/g, "m").replace(/\x05/g, "t").replace(/\x06/g, "H")
-				.replace(/\x07/g, "h").replace(/\x08/g, "M").replace(/\x09/g, "y");
-
-			return maskVal;
+			return $.ig.formatDate(this.options.dateDisplayFormat, dateObject, this.options.regional);
 		},
 		_valueFromText: function (text) { //igDateEditor
 			// TODO Verify
@@ -9684,182 +9567,6 @@
 				}
 			}
 			return dataModeValue;
-		},
-
-		// We use flag for different mask flags f milliseconds field in thousands, ff milliseconds field in tenths, fff milliseconds field in hundreds
-		_getMilliseconds: function (milliseconds, flag) {
-			var result = parseInt(milliseconds / flag).toString();
-			if (flag === 10) {
-				if (result.length !== 2) {
-					while (result.length < 2) {
-						result = "0" + result;
-					}
-				}
-			} else if (flag === 1) {
-
-				// Flag 1
-				if (result.length !== 3) {
-					while (result.length < 3) {
-						result = "0" + result;
-					}
-				}
-			}
-			return result;
-		},
-
-		// Flag values are dddd, ddd, dd, d - according to the
-		_getSeconds: function (seconds, flag) {
-			var result;
-			if (flag === "ss" && seconds < 10) {
-				result = "0" + seconds.toString();
-			} else {
-				result = seconds.toString();
-			}
-			return result;
-		},
-		_getMinutes: function (minutes, flag) {
-			var result;
-			if (flag === "mm" && minutes < 10) {
-				result = "0" + minutes.toString();
-			} else {
-				result = minutes.toString();
-			}
-			return result;
-		},
-
-		// Get before midday, or after middday
-		_getAMorPM: function (hours, flag) {
-			var result;
-			if (hours >= 12) {
-
-				// pm
-				result = this._getRegionalValue("pm");
-			} else {
-				result = this._getRegionalValue("am");
-			}
-			if (flag === "t") {
-				result = result.charAt(0);
-			}
-			return result;
-		},
-		_getHours: function (hours, flag) {
-			var result;
-			switch (flag) {
-				case "h": {
-					if (hours > 12) {
-						hours -= 12;
-					}
-
-					// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
-					if (hours === 0) {
-						hours = 12;
-					}
-					result = hours.toString();
-				}
-					break;
-				case "hh": {
-					if (hours > 12) {
-						hours -= 12;
-					}
-
-					// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
-					if (hours === 0) {
-						hours = 12;
-					}
-					if (hours < 10) {
-						result = "0" + hours.toString();
-					} else {
-						result = hours.toString();
-					}
-				}
-					break;
-				case "H": {
-					result = hours.toString();
-				}
-					break;
-				case "HH": {
-					if (hours < 10) {
-						result = "0" + hours.toString();
-					} else {
-						result = hours.toString();
-					}
-				}
-					break;
-
-			}
-			return result;
-		},
-		_getDate: function (date, flag) {
-			var result;
-			switch (flag) {
-				case "dd": {
-					if (date < 10) {
-						result = "0" + date.toString();
-					} else {
-						result = date;
-					}
-				}
-					break;
-				case "d": {
-					result = date.toString();
-				}
-					break;
-			}
-			return result;
-		},
-		_getDay: function (day, flag) {
-			var result;
-			switch (flag) {
-				case "dddd": {
-					result = this._getRegionalValue("dayNames")[ day ];
-				}
-					break;
-				case "ddd": {
-					result = this._getRegionalValue("dayNamesShort")[ day ];
-				}
-					break;
-			}
-			return result;
-		},
-		_getMonth: function (month, flag) {
-			var result;
-			switch (flag) {
-				case "MMMM": {
-					result = this._getRegionalValue("monthNames")[ month ];
-				}
-					break;
-				case "MMM": {
-					result = this._getRegionalValue("monthNamesShort")[ month ];
-				}
-					break;
-				case "MM": {
-					month++;
-					if (month < 10) {
-						result = "0" + month.toString();
-					} else {
-						result = month;
-					}
-				}
-					break;
-				case "M": {
-					month++;
-					result = month.toString();
-				}
-					break;
-			}
-			return result;
-		},
-		_getYear: function (year, flag) {
-			var result;
-			if (flag === "yy") {
-				result = year.toString().substring(2);
-			} else if (flag === "y") {
-				result = parseInt(year.toString().substring(2)).toString();
-			} else {
-				result = year.toString();
-			}
-			return result;
-
 		},
 		_handleBackSpaceKey: function () { //igDateEditor
 			var cursorPosition;
@@ -10064,12 +9771,16 @@
 			delta = this._getDelta(delta, "hours");
 			if (is24format) {
 				hours = 24;
-				newHour = currentHour + (delta % 24);
+
+				// N.A. August 29th, 2017 #1141: When delta for hours = 24, then it should stay as 24, not delta % 24, which is 0
+				newHour = currentHour + (Math.abs(delta) === 24 ? delta : (delta % 24));
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
 				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
-				newHour = currentHour + (delta % 12);
+
+				// N.A. August 29th, 2017 #1141: When delta for hours = 12, then it should stay as 12, not delta % 12, which is 0
+				newHour = currentHour + (Math.abs(delta) === 12 ? delta : (delta % 12));
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
 				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
@@ -10115,15 +9826,16 @@
 						// In 12H format date, when the hour changes (wraps down) from 01 to 12, this is NOT the time that the day is decreased.
 						// It is decreased an hour later. (implemented in the top else block).
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
-						if (newHour <= 0) {
-							newHour = 12 + newHour;
-							if (newHour < 0 || delta < -1) {
+						// N.A. August 29th, 2017 #1141: Fix spinning with delta for hours = 12
+						if (newHour < 0 || Math.abs(delta) === 12) {
+							if (newHour < hours || delta < -1) {
 								amPmUpdateDelta = true;
 							}
 							if (currentAmPm === "am") {
 								dayUpdateDelta = true;
 							}
 						}
+						newHour = 12 + newHour;
 					}
 				}
 			} else {
@@ -10890,21 +10602,6 @@
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
-			/* type="object" Gets/Sets the custom regional settings for the editor. If it is a string, then $.ig.regional[stringValue] is assumed.
-			```
-			//Initialize
-				$(".selector").igDatePicker({
-					regional: "en-US"
-				});
-
-				//Get
-				var regional = $(".selector").igDatePicker("option", "regional");
-
-				//Set
-				$(".selector").igDatePicker("option", "regional", "en-US");
-			```
-			*/
-			regional: null,
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
 ```
 					//Initialize

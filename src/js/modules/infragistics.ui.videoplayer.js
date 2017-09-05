@@ -1622,6 +1622,331 @@
 					*/
 					animationDuration: 1000
 				}
+			},
+			locale: {
+				/* type="bool" Gets/Sets live stream video title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							liveStream: "Live video"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").liveStream;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { liveStream: "Live video" });
+				```
+				*/
+				liveStream: undefined,
+				/* type="bool" Gets/Sets live video title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							live: "Live"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").live;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { live: "Live" });
+				```
+				*/
+				live: undefined,
+					/* type="bool" Gets/Sets paused button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							paused: "Paused"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").paused;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { paused: "Paused" });
+				```
+				*/
+				paused: undefined,
+				/* type="bool" Gets/Sets playing button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							playing: "Playing"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").playing;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { playing: "Playing" });
+				```
+				*/
+				playing: undefined,
+				/* type="bool" Gets/Sets play button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							play: "Play"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").play;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { play: "Playing" });
+				```
+				*/
+				play: undefined,
+				/* type="bool" Gets/Sets volume button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							volume: "Volume"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").volume;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { volume: "Volume" });
+				```
+				*/
+				volume: undefined,
+				/* type="bool" Gets/Sets progress label long format.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							progressLabelLongFormat: "$currentTime$ / $duration$"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").progressLabelLongFormat;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { progressLabelLongFormat: "$currentTime$ / $duration$" });
+				```
+				*/
+				progressLabelLongFormat: undefined,
+				/* type="bool" Gets/Sets progress label short format.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							progressLabelShortFormat: "$currentTime$"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").progressLabelShortFormat;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { progressLabelShortFormat: "$currentTime$" });
+				```
+				*/
+				progressLabelShortFormat: undefined,
+					/* type="bool" Gets/Sets enter fullscreen button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							enterFullscreen: "Go Fullscreen"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").enterFullscreen;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { enterFullscreen: "Go Fullscreen"});
+				```
+				*/
+				enterFullscreen: undefined,
+				/* type="bool" Gets/Sets exit fullscreen button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							exitFullscreen: "Exit Fullscreen"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").exitFullscreen;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { exitFullscreen: "Exit Fullscreen"});
+				```
+				*/
+				exitFullscreen: undefined,
+				/* type="bool" Gets/Sets skip to button title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							skipTo: "skip to"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").skipTo;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { skipTo: "skip to"});
+				```
+				*/
+				skipTo: undefined,
+				/* type="bool" Gets/Sets buffering label text.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							buffering: "Buffering"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").buffering;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { buffering: "Buffering"});
+				```
+				*/
+				buffering: undefined,
+				/* type="bool" Gets/Sets ad message text.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							adMessage: 'Ad: Video will resume in $duration$ seconds.'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").adMessage;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { buffering: 'Ad: Video will resume in $duration$ seconds.'});
+				```
+				*/
+				adMessage: undefined,
+				/* type="bool" Gets/Sets long ad message text.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							adMessageLong: 'Ad: Video will resume in $duration$.'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").adMessageLong;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { adMessageLong: 'Ad: Video will resume in $duration$.'});
+				```
+				*/
+				adMessageLong: undefined,
+				/* type="bool" Gets/Sets ad message text when no duration is specified.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							adMessageNoDuration: 'Ad: Video will resume after the commercial.'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").adMessageNoDuration;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { adMessageNoDuration: 'Ad: Video will resume after the commercial.'});
+				```
+				*/
+				adMessageNoDuration: undefined,
+				/* type="bool" Gets/Sets new ad window title.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							adNewWindowTip: 'Ad: Click to open ad content in a new window.'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").adNewWindowTip;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { adNewWindowTip: 'Ad: Click to open ad content in a new window.'});
+				```
+				*/
+				adNewWindowTip: undefined,
+				/* type="bool" Gets/Sets related videos text.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							relatedVideos: 'RELATED VIDEOS'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").relatedVideos;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { relatedVideos: 'RELATED VIDEOS'});
+				```
+				*/
+				relatedVideos: undefined,
+				/* type="bool" Gets/Sets replay button text.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							replayButton: 'Replay'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").replayButton;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { replayButton: 'Replay'});
+				```
+				*/
+				replayButton: undefined,
+				/* type="bool" Gets/Sets replay button tooltip.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						locale: {
+							replayTooltip: 'Replay'
+						}
+					});
+
+					//Get
+					var text = $(".selector").igVideoPlayer("option", "locale").replayTooltip;
+
+					//Set
+					$(".selector").igVideoPlayer("option", "locale", { replayTooltip: 'Replay'});
+				```
+				*/
+				replayTooltip: undefined
 			}
 		},
 
@@ -2051,7 +2376,7 @@
 			o.banners = [];
 			o.commercials.linkedCommercials = [];
 			o.commercials.embeddedCommercials = [];
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 
 		_create: function () {
