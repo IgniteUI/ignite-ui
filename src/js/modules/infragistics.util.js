@@ -206,10 +206,64 @@
 	$.ig.util.regional = "en-US";
 	$.ig.util.widgetStack = [];
 
+	$.ig._regional = {
+		monthNames: [ "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" ],
+		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday",
+			"Thursday", "Friday", "Saturday" ],
+		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+		am: "AM",
+		pm: "PM",
+		datePattern: "M/d/yyyy",
+		dateLongPattern: "dddd, MMMM dd, yyyy",
+		dateTimePattern: "M/d/yyyy h:mm tt",
+		timePattern: "h:mm tt",
+		timeLongPattern: "h:mm:ss tt",
+		dateTitleFullPattern: "dd MM yy",
+		dateTitleMonthPattern: "MM yy",
+		negativeSign: "-",
+		numericNegativePattern: "-$n",
+		numericDecimalSeparator: ".",
+		numericGroupSeparator: ",",
+		numericGroups: [ 3 ],
+		numericMaxDecimals: 2,
+		numericMinDecimals: 0,
+		currencyPositivePattern: "$n",
+		currencyNegativePattern: "-$n",
+		currencySymbol: "$",
+		currencyDecimalSeparator: ".",
+		currencyGroupSeparator: ",",
+		currencyGroups: [ 3 ],
+		currencyMaxDecimals: 2,
+		currencyMinDecimals: 2,
+		percentPositivePattern: "n$",
+		percentNegativePattern: "-n$",
+		percentSymbol: "%",
+		percentDecimalSeparator: ".",
+		percentGroupSeparator: ",",
+		percentGroups: [ 3 ],
+		percentDisplayFactor: 100,
+		percentMaxDecimals: 2,
+		percentMinDecimals: 2
+	};
+	$.ig.regional = $.ig.regional || {};
+	$.ig.regional.defaults = $.ig._regional;
+
 	$.ig.util.changeGlobalLanguage = function (language) {
 		$.ig.util.language = language;
 		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
 			$.ig.util.widgetStack[ i ].changeGlobalLanguage();
+		}
+	};
+
+	$.ig.util.changeGlobalRegional = function (regional) {
+		$.ig.util.regional = regional;
+		$.ig.regional.defaults = $.extend($.ig._regional,
+			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalRegional();
 		}
 	};
 

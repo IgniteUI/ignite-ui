@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client TreeGrid - Dynamically change locale and regional settings</title>
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.js"></script>
+
+	<link type="text/css" href="../../../ignite-ui/src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.tree.css" rel="stylesheet" />
+	<link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.layout.css" rel="stylesheet" />
+	<link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.tilemanager.css" rel="stylesheet" />
+	<link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.splitter.css" rel="stylesheet" />
+    <link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../ignite-ui/src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	
+	
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.widget.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.combo.js"></script>
+	
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.tilemanager-en.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.datasource-de.js"></script>
+	
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.combo-de.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.combo-ja.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.combo-bg.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.combo-fr.js"></script>
+	
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.tree-de.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.validator-de.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.tilemanager-de.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.splitter-de.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/i18n/infragistics.ui.editors-bg.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.tree.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.layoutmanager.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.tilemanager.js"></script>
+	<script type="text/javascript" src="../../../ignite-ui/src/js/modules/infragistics.ui.splitter.js"></script>
+
+
+	<style type="text/css">
+		body {
+			font-size: 12px;
+		}
+		
+		.panel {
+			padding: 10px 0;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function () {
+			$("#comboLocale").on("change", function () {
+				var locale = $(this).val();
+				$("#combo").igCombo("option", "locale", locale);
+			});
+			$("#comboRegional").on("change", function () {
+				var regional = this.selectedOptions[0].value;
+				$("#combo").igCombo("option", "regional", regional);
+			});
+			$("#combo").igCombo({
+				dataSource: [
+					{ ID: 1, Name: "John", Salary: 2600, HireDate: new Date ("08/01/2017") },
+					{ ID: 2, Name: "Mary", Salary: 600, HireDate: new Date ("08/15/2017") },
+					{ ID: 3, Name: "Maya", Salary: 500, HireDate: new Date ("12/23/2013") },
+					{ ID: 4, Name: "Bob", Salary: 800, HireDate: new Date ("04/14/2010") },
+					{ ID: 5, Name: "Vasya", Salary: 2600, HireDate: new Date ("12/10/2013") },
+					{ ID: 6, Name: "Gery", Salary: 1500, HireDate: new Date ("05/13/2012") },
+					{ ID: 7, Name: "Tsanna", Salary: 2600, HireDate: new Date ("02/11/2013") },
+					{ ID: 8, Name: "Nadya", Salary: 3500, HireDate: new Date ("03/29/2010") }
+				],
+				format : "currency",
+				textKey: 'Salary',
+				valueKey: 'ID',
+				regional: "de"
+			});
+		});
+	</script>
+</head>
+<body>
+	<label for="comboLocale">Select language: </label>
+	<select id="comboLocale" data-combo-languages="grid">
+		<option value="en" selected>English</option>
+		<option value="ja">Japanese</option>
+		<option value="de">German</option>
+		<option value="bg">Bulgarian</option>
+	</select> |
+	<label for="comboRegional">Select regional setting: </label>
+	<select id="comboRegional">
+		<option value="en">English</option>
+		<option value="ja">Japanese</option>
+		<option value="de">German</option>
+		<option value="bg">Bulgarian</option>
+	</select>
+	<br />
+	<br />
+	<br />
+	<input id="combo" />
+</body>

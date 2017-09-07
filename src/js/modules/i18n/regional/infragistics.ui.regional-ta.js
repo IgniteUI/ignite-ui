@@ -55,7 +55,7 @@
 	    percentPositivePattern: 'n $',
 	    percentNegativePattern: '-n $'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('ta');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('ta');
     }
 }));// REMOVE_FROM_COMBINED_FILES
