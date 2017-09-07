@@ -5883,7 +5883,7 @@
 	};
 
 	$.ig.util.summaries = $.ig.util.summaries || {};
-	$.ig.util.summaries.min = function (data, dataType) {
+	$.ig.util.summaries.min = function (data, dataType, fullData) {
 		if (data.length === 0) {
 			if (dataType === "date") {
 				return null;
@@ -5893,7 +5893,7 @@
 		return Math.min.apply(Math, data);
 	};
 
-	$.ig.util.summaries.max = function (data, dataType) {
+	$.ig.util.summaries.max = function (data, dataType, fullData) {
 		if (data.length === 0) {
 			if (dataType === "date") {
 				return null;
@@ -5903,7 +5903,7 @@
 		return Math.max.apply(Math, data);
 	};
 
-	$.ig.util.summaries.sum = function (data, dataType) {
+	$.ig.util.summaries.sum = function (data, dataType, fullData) {
 		var sum = 0,
 			i;
 		for (i = 0; i < data.length; i++) {
@@ -5912,18 +5912,25 @@
 		return sum;
 	};
 
-	$.ig.util.summaries.avg = function (data, dataType) {
+	$.ig.util.summaries.avg = function (data, dataType, fullData) {
 		if (data.length === 0) {
 			return 0;
 		}
 		return $.ig.util.summaries.sum(data) / data.length;
 	};
 
-	$.ig.util.summaries.count = function (data, dataType) {
+	$.ig.util.summaries.count = function (data, dataType, fullData) {
 		return data.length;
 	};
 
-	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
+	/**	Calculates the summaries based on the function or function name provided
+	*	summaryFunction - specifies the name of the summary function that will be used
+	*	data - data that will be used to calculate the summary value. Contains usually the column data the summary is for.
+	*	caller - custom summary function that will be used when summaryFunction = "custom"
+	*	dataType - the type of the column the 'colData' is applicable for
+	*	fullData - contains the full data for all summaries. In general full row records used in the current summary row. In GroupBy scenario, will contain only the group records.
+	**/
+	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType, fullData) {
 		// M.H. 16 Nov. 2011 Fix for bug 97886
 		summaryFunction = summaryFunction.toLowerCase();
 		if (summaryFunction.startsWith("custom")) {
@@ -5932,26 +5939,26 @@
 
 		switch (summaryFunction) {
 			case "min":
-				return $.ig.util.summaries.min(data, dataType);
+				return $.ig.util.summaries.min(data, dataType, fullData);
 			case "max":
-				return $.ig.util.summaries.max(data, dataType);
+				return $.ig.util.summaries.max(data, dataType, fullData);
 			case "sum":
-				return $.ig.util.summaries.sum(data, dataType);
+				return $.ig.util.summaries.sum(data, dataType, fullData);
 			case "avg":
-				return $.ig.util.summaries.avg(data, dataType);
+				return $.ig.util.summaries.avg(data, dataType, fullData);
 			case "count":
-				return $.ig.util.summaries.count(data, dataType);
+				return $.ig.util.summaries.count(data, dataType, fullData);
 			case "custom":
 
 				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
 				if (caller !== undefined && caller !== null) {
 					if (typeof caller === "function") {
-						return caller(data, dataType);
+						return caller(data, dataType, fullData);
 					}
 					if (typeof caller === "string") {
 						/*jshint evil:true */
 						caller = eval(caller);
-						return caller(data, dataType);
+						return caller(data, dataType, fullData);
 					}
 				} else {
 					return null;
