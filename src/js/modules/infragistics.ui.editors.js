@@ -1202,7 +1202,7 @@
 			this._restoreDOMStructure();
 			this._deleteInternalProperties();
 			delete this.options;
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
@@ -11309,7 +11309,7 @@
 			```
 			*/
 			this._editorInput.datepicker("destroy");
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
