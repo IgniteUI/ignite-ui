@@ -416,6 +416,96 @@
 			AND type="string"
 			*/
 			filteringLogic: "OR",
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets text of list item for condition when [filteringType](ui.igcombo#options:filteringType) option is enabled and no match was found.
+				Use option [locale.noMatchFoundText](ui.igcombo#options:locale.noMatchFoundText).
+			*/
+			noMatchFoundText: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets title for html element which represent the drop-down button.
+				Use option [locale.dropDownButtonTitle](ui.igcombo#options:locale.dropDownButtonTitle).
+			*/
+			dropDownButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets title for html element which represent clear button.
+				Use option [locale.clearButtonTitle](ui.igcombo#options:locale.clearButtonTitle).
+			*/
+			clearButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets value that is displayed when input field is empty.
+				Use option [locale.placeHolder](ui.igcombo#options:locale.placeHolder).
+			*/
+			placeHolder: undefined,
+			locale: {
+				/* type="object" Gets/Sets text of list item for condition when [filteringType](ui.igcombo#options:filteringType) option is enabled and no match was found.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							noMatchFoundText: "No match found"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").noMatchFoundText;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { noMatchFoundText: "No match found" });
+				```
+				*/
+				noMatchFoundText: undefined,
+				/* type="object" Gets/Sets title for html element which represent the drop-down button.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							dropDownButtonTitle: "Open Dropdown"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").dropDownButtonTitle;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { dropDownButtonTitle: "Open Dropdown" });
+				```
+				*/
+				dropDownButtonTitle: undefined,
+				/* type="object" Gets/Sets title for html element which represent the clear button.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							clearButtonTitle: "Clear value"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").clearButtonTitle;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { clearButtonTitle: "Clear value" });
+				```
+				*/
+				clearButtonTitle: undefined,
+				/* type="object" Gets/Sets value that is displayed when input field is empty.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							placeHolder: "Empty input field"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").placeHolder;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { placeHolder: "Empty input field" });
+				```
+				*/
+				placeHolder: undefined
+			},
 			/* type="object" Gets/Sets container of variables which define load on demand functionality.
 				Notes:
 				That option has effect only when data is loaded remotely using [dataSourceUrl](ui.igcombo#options:dataSourceUrl).
@@ -2825,7 +2915,8 @@
 
 			// D.A. 20th March 2015, Bug #190591 In Chrome when mode is dropdown and selecting an item, the carret is not moved and the selected element is not visible
 			// Remove readonly during the focus
-			if (readonly) {
+			// R.K. 29th August 2017, #1155 Combo in dropdown mode accepts keypress values in its input in IE/Edge
+			if (readonly && !($.ig.util.isEdge || $.ig.util.isIE)) {
 				this._options.$input.removeAttr("readonly");
 			}
 
@@ -4869,7 +4960,7 @@
 				this._changeLocaleForElement($noMatchFound);
 			}
 		},
-		_changeRegional: function () {
+		changeRegional: function () {
 			this.dataBind();
 		},
 		_setOption: function (option, value) {
@@ -7544,7 +7635,7 @@
 			}
 
 			_options = null;
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
