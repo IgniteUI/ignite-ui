@@ -1968,7 +1968,7 @@ $.extend($.ig.loaderClass, {
 		autoDetectLocale: false,
 		/* type="string" Two letter code for current locale. Defaults to "en". */
 		locale: null,
-		/* type="string" Regional code. Can be two or five characters long ("en", "en-GB"). Defaults to "en". */
+		/* type="string" A list of regional codes separated with ',' that will be loaded by the loader. Example: "en,fr,de". Each regional code can be two or five characters long ("en", "en-GB"). Defaults to "en". */
 		regional: null,
 		/* type="function" A function to call when all resources are loaded but before the "ready" notification is sent. */
 		preinit: null,
