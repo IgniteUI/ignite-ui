@@ -123,6 +123,20 @@
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
 
+	$.ig.encode = function (value) {
+	/* Encode string.
+		paramType="string" The string to be encoded.
+		returnType="string" Returns the encoded string.
+		*/
+		return value !== null && value !== undefined ?
+		value.toString()
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/'/g, "&#39;")
+		.replace(/"/g, "&#34;") : "";
+	};
+
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex) {
 		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
@@ -131,6 +145,8 @@
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
+		/* P.Zh. 11 August 2017 - Fixing bug #238125 When headerText contains HTML string the column cell data is broken (contains escaped html) */
+		labelText = $.ig.encode(labelText);
 		if (format === "checkbox" && notTemplate) {
 			s = "<span class='ui-igcheckbox-container' style='display:" +
 				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
