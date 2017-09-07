@@ -403,14 +403,14 @@
 		/* Encode string.
 			paramType="string" The string to be encoded.
 			returnType="string" Returns the encoded string.
-		 */
-			return value !== null && value !== undefined ?
-			value.toString()
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/'/g, "&#39;")
-			.replace(/"/g, "&#34;") : "";
+		*/
+		return value !== null && value !== undefined ?
+		value.toString()
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/'/g, "&#39;")
+		.replace(/"/g, "&#34;") : "";
 	};
 
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
