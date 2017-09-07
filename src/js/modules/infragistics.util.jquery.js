@@ -135,6 +135,20 @@
 		return (value === undefined) ? $.ig.regional.defaults[ key ] : value;
 	};
 
+	$.ig.encode = function (value) {
+		/* Encode string.
+			paramType="string" The string to be encoded.
+			returnType="string" Returns the encoded string.
+		*/
+		return value !== null && value !== undefined ?
+		value.toString()
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/'/g, "&#39;")
+		.replace(/"/g, "&#34;") : "";
+	};
+
 	$.ig.millisecondsToString = function(milliseconds, flag) {
 		var result = parseInt(milliseconds / Math.pow(10, flag.length - 1)).toString();
 			if (flag === "ff") {
@@ -306,11 +320,13 @@
 			result = year.toString();
 		}
 		return result;
-
 	};
 
 	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
-		var s = "<span class='ui-igcheckbox-container' style='display:" +
+		var s;
+		/* P.Zh. 11 August 2017 - Fixing bug #238125 When headerText contains HTML string the column cell data is broken (contains escaped html) */
+		labelText = $.ig.encode(labelText);
+		s = "<span class='ui-igcheckbox-container' style='display:" +
 			display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 			val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
 		s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
