@@ -123,18 +123,18 @@
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
 
-		$.ig.encode = function (value) {
-		/* Encode string.
-			paramType="string" The string to be encoded.
-			returnType="string" Returns the encoded string.
-		 */
-			return value !== null && value !== undefined ?
-			value.toString()
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/'/g, "&#39;")
-			.replace(/"/g, "&#34;") : "";
+	$.ig.encode = function (value) {
+	/* Encode string.
+		paramType="string" The string to be encoded.
+		returnType="string" Returns the encoded string.
+		*/
+		return value !== null && value !== undefined ?
+		value.toString()
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/'/g, "&#39;")
+		.replace(/"/g, "&#34;") : "";
 	};
 
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
