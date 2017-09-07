@@ -2396,15 +2396,15 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 
 .ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
-  color: @accent2;
+  color: @accent1;
   .ui-icon {
-    color: @accent2;
+    color: @accent1;
   }
 }
 
 .ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
 .ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
-  color: @accent2;
+  color: @accent1;
 }
 
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
@@ -2441,7 +2441,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 
 .ui-igscheduler-core .ui-igscheduler-monthview-day-selected {
-  background-color: @igGray1;
+  background-color: @igGray4;
   color: @igGray8;
 }
 
@@ -2450,13 +2450,12 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 
 .ui-igscheduler-core .ui-igscheduler-monthview-day-today {
-  color: @accent2;
-  font-weight: bold !important;
+  color: @accent1;
 }
 
 .ui-igscheduler-monthview-day-today {
   span {
-    color: @accent2;
+    color: @accent1;
   }
 }
 
@@ -2496,33 +2495,24 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 
 .ui-igscheduler-today-button:hover,
 .ui-igscheduler-tabs:hover {
-  background-color: #fff;
-  color: @igGray9;
-}
-
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
-  cursor: pointer;
+  background-color: @igscheduler-tabs-hover-bg;
+  color: @igscheduler-tabs-hover-color;
 }
 
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
-  color: @accent2;
+  color: @start-time-selected-color;
 }
 
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
-  color: @accent1;
+  color: @end-time-selected-color;
 }
 
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
-  color: @accent2;
+  color: @subject-agenda-color;
 }
 
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-location-selected {
-  color: lighten(@accent2, 15%);
-}
-
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
-  margin: 10px 0;
+  color: @location-agenda-color;
 }
 
 .ui-igscheduler-core .ui-igscheduler-monthview {
@@ -2530,11 +2520,15 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 
 .ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
-  background-color: rgb(192, 192, 192);
+  background-color: @monthview-activity-indicator;
 }
 
 .ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
-  font-size: .75em;
+  font-size: .8em;
+}
+
+.ui-igscheduler-appointment-popover-from-to {
+  color: @appointment-popover-from-to;
 }
 
 /* Scheduler END */
@@ -2744,46 +2738,46 @@ Spreadsheet colors
 
 /* Cols & Rows Header, Selected  */
 .ui-igspreadsheet-columnheader-selected {
-  border-right-color: darken(@spreadsheet-accent, 10%);
+  border-right-color: lighten(@spreadsheet-accent, 10%);
 }
 
 .ui-igspreadsheet-rowheader-selected {
-  border-bottom-color: darken(@spreadsheet-accent, 10%);
+  border-bottom-color: lighten(@spreadsheet-accent, 10%);
 }
 
 /* Cols & Rows Header, Selected but not focused */
 .ui-igspreadsheet-columnheader-selected,
 .ui-igspreadsheet-rowheader-selected {
   background-color: @spreadsheet-accent;
-  color: @spreadsheet-text-color;
+  color: @text-color-light;
 }
 
 .ui-igspreadsheet-columnheader-selected.ui-state-highlight,
 .ui-igspreadsheet-rowheader-selected.ui-state-highlight {
-  color: lighten(@accent1, 40%);
+  color: lighten(@accent1, 60%);
 }
 
 /* Selected cel, header col & row background and color */
 .ui-igspreadsheet-columnheader-selectedcells,
 .ui-igspreadsheet-rowheader-selectedcells {
-  background-color: @igGray6;
-  color: lighten(@spreadsheet-accent, 10%);;
+  background-color: @spreadsheet-accent;
+  color: @text-color-light;
 }
 
 /* Selected cel, header col & row border color */
 .ui-igspreadsheet-columnheader-selectedcells {
-  border-right-color: darken(@row-col-bar-border, 5%);
+  border-right-color: darken(@spreadsheet-accent, 5%);
 }
 
 .ui-igspreadsheet-rowheader-selectedcells {
-  border-bottom-color: darken(@row-col-bar-border, 5%);
+  border-bottom-color: darken(@spreadsheet-accent, 5%);
 }
 
 /* Selected cel, header hover col & row  background & colors */
 .ui-igspreadsheet-columnheader-hover,
 .ui-igspreadsheet-rowheader-hover {
   background-color: lighten(@accent1, 10%);
-  color: @spreadsheet-text-color;
+  color: @text-color-light;
 }
 
 .ui-igspreadsheet-columnheader-hover {
@@ -2870,85 +2864,14 @@ Spreadsheet colors
   border-color: @igGray4;
 }
 
-/* Icons image */
-.ui-icon.ui-igspreadsheet-copy-icon,
-.ui-icon.ui-igspreadsheet-cut-icon,
-.ui-icon.ui-igspreadsheet-paste-icon,
-.ui-icon.ui-igspreadsheet-paste-icon,
-.ui-icon.ui-igspreadsheet-clearcontents-icon,
-  /* insert */
-.ui-icon.ui-igspreadsheet-insertcellsshiftright-icon,
-.ui-icon.ui-igspreadsheet-insertcellsshiftdown-icon,
-.ui-icon.ui-igspreadsheet-insertrows-icon,
-.ui-icon.ui-igspreadsheet-insertcolumns-icon,
-  /* delete */
-.ui-icon.ui-igspreadsheet-deletecellsshiftleft-icon,
-.ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
-.ui-icon.ui-igspreadsheet-deleterows-icon,
-.ui-icon.ui-igspreadsheet-deletecolumns-icon {
-  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png) !important;
-  left: 0.5em;
-  width: 16px;
-  height: 16px;
-}
-
-// Icons positions
-
-.ui-igspreadsheet-copy-icon {
-  background-position: 0 0;
-}
-
-.ui-igspreadsheet-cut-icon {
-  background-position: 0 -16px;
-}
-
-.ui-igspreadsheet-paste-icon {
-  background-position: 0 -32px;
-}
-
-.ui-igspreadsheet-clearcontents-icon {
-  background-position: 0 -128px;
-}
-
-.ui-igspreadsheet-insertcellsshiftdown-icon {
-  background-position: 0 -112px;
-
-}
-
-.ui-igspreadsheet-insertcellsshiftright-icon {
-  background-position: 0 -96px;
-}
-
-.ui-igspreadsheet-deletecellsshiftup-icon {
-  background-position: 0 -80px;
-}
-
-.ui-igspreadsheet-deletecellsshiftleft-icon {
-  background-position: 0 -64px;
-}
-
-.ui-igspreadsheet-insertrows-icon,
-.ui-igspreadsheet-deleterows-icon {
-  background-position: 0 -160px;
-}
-
-.ui-igspreadsheet-insertcolumns-icon,
-.ui-igspreadsheet-deletecolumns-icon {
-  background-position: 0 -144px;
-}
-
 .ui-igspreadsheet .ui-menu {
-  box-shadow: 0 0 10px @igGray5;
+  .boxShadow-1;
 }
 
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 @border-radius-base @border-radius-base @border-radius-base;
 }
 
-.ui-igspreadsheet .ui-menu-item:hover {
-  background: @spreadsheet-menu-item-bg-hover;
-  border-radius: 0;
-}
 
 /*
 =========================

@@ -89,6 +89,13 @@
   .ui-icon {
     color: #fff;
   }
+  &.ui-widget-content {
+    .ui-state-hover {
+      .ui-icon {
+        color: #ddd;
+      }
+    }
+  }
   .ui-state-hover {
     .ui-icon {
       color: #ddd;
@@ -97,12 +104,12 @@
   .ui-datepicker-prev.ui-state-hover,
   .ui-datepicker-next.ui-state-hover {
     background: transparent;
-    border-color: transparent;
+    border: none;
   }
 }
 
 .ui-datepicker .ui-datepicker-header {
-  background: @igGray8;
+  background: @accent1;
   color: #fff;
 }
 
@@ -154,7 +161,7 @@
 }
 
 .ui-datepicker .ui-datepicker-today a.ui-state-active {
-  color: @text-color;
+  color: @text-color-light;
 }
 
 /*******************
@@ -173,10 +180,6 @@
 
 .ui-dialog .ui-dialog-title {
   max-width: 100%;
-}
-
-.ui-dialog .ui-dialog-content {
-  padding: 1em;
 }
 
 .ui-dialog .ui-dialog-buttonpane,
@@ -223,7 +226,6 @@
 
 .ui-dialog .ui-dialog-titlebar {
   background: @igGray8;
-  border: 1px solid @igGray9;
   color: #FFFFFF;
 }
 
@@ -385,10 +387,6 @@
   }
 }
 
-th.ui-widget-header {
-  color: #fff;
-}
-
 /* Interaction states
 ----------------------------------*/
 
@@ -404,6 +402,7 @@ html .ui-button.ui-state-disabled:active {
 
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
   background: transparent;
+  color: @text-color;
 }
 
 .ui-state-default a,
@@ -430,7 +429,16 @@ a:visited.ui-button,
 
 .ui-widget-content .ui-state-hover,
 .ui-widget-content .ui-state-focus {
-  color: @text-color;
+  .ui-icon {
+    color: @text-color;
+  }
+}
+
+.ui-widget-content .ui-state-hover.ui-igdialog-headerbutton,
+.ui-widget-content .ui-state-focus.ui-igdialog-headerbutton {
+  background: transparent;
+  border-color: transparent;
+  color: @text-color-light;
 }
 
 .ui-state-focus:focus {
@@ -601,9 +609,16 @@ a.ui-button:active,
 }
 
 .ui-igedit-button-common.ui-state-hover {
-  background: @accent2;
+  background: @accent1;
   .ui-icon {
     color: @text-color-light;
+  }
+}
+
+.ui-igscheduler-appointment-form-group .ui-state-hover,
+.ui-igscheduler-appointment-form-group .ui-state-focus {
+  .ui-igedit-button-common {
+    background: @accent1;
   }
 }
 
@@ -734,5 +749,5 @@ a.ui-button:active,
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  border-right: 2px solid @accent1!important;
+  border-right: 2px solid @accent1 !important;
 }
