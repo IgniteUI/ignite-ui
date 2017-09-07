@@ -165,6 +165,13 @@
 			var listNullInt = $.ig.IList$1.prototype.$type.specialize($.ig.Nullable$1.prototype.$type.specialize($.ig.Number.prototype.$type));
 			equal($.ig.Number.prototype.$type, listNullInt.typeArguments[0].typeArguments[0], "List<Nullable<int>>");
 		});
+
+		test("Test $.ig.encode", function () {
+			equal($.ig.encode("<div></div>"), "&lt;div&gt;&lt;/div&gt;", "Should encode div element");
+			equal($.ig.encode("&lt;div&gt;&lt;/div&gt;"), "&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;", "Should encode encoded div element");
+			equal($.ig.encode("<span id='span1'></span>"), "&lt;span id=&#39;span1&#39;&gt;&lt;/span&gt;", "Should encode span element with attribute and single quote");
+			equal($.ig.encode("<span id=\"span1\"></span>"), "&lt;span id=&#34;span1&#34;&gt;&lt;/span&gt;", "Should encode span element with attribute and double quote")
+		});
 	</script>
 </head>
 <body>
