@@ -1635,7 +1635,7 @@
                     if (colSpan > gl.minColCount) {
                         gl.minColCount = colSpan;
                     }
-                    
+
                     width = this._calculateGlItemWidth(col, colSpan, colWidth, colsWidth, ml);
                     height = this._calculateGlItemHeight(row, rowSpan, colHeight, colsHeight, mt);
                     left = this._calculateGlItemLeft(col, colWidth, colsWidth, ml);
@@ -1770,37 +1770,50 @@
             _renderGlItemsFromColsRows: function (initialRendering) {
                 var i,
                     j,
+                    width,
+                    height,
                     top,
                     left,
                     item,
+                    e = this.element,
                     gl = this._opt.gridLayout,
                     ml = gl.marginLeft,
                     mt = gl.marginTop,
-                    iw = gl.columnWidth,
-                    ih = gl.columnHeight;
+                    colWidth = gl.columnWidth,
+                    colsWidth = gl.columnsWidth.length ?
+                        this._calculateColumnsWidthOrHeightMatrix(gl.columnsWidth) : null,
+                    colHeight = gl.columnHeight,
+                    colsHeight = gl.columnsHeight.length ?
+                        this._calculateColumnsWidthOrHeightMatrix(gl.columnsHeight) : null,                    
+                    offset = e.offset();
 
                 for (i = 0; i < gl.rows; i++) {
                     for (j = 0; j < gl.cols; j++) {
+                        width = this._calculateGlItemWidth(j, 1, colWidth, colsWidth, ml);
+                        height = this._calculateGlItemHeight(i, 1, colHeight, colsHeight, mt);
+                        top = this._calculateGlItemTop(i, colHeight, colsHeight, mt);
+                        left = this._calculateGlItemLeft(j, colWidth, colsWidth, ml);
+
+                        if (gl.useOffset) {
+                            top += offset.top;
+                            left += offset.left;
+                        }
+
                         item = $("<div>")
                             .appendTo(this.element)
                             .addClass(this.css.item)
                             .addClass(this.css.gridItemAbs)
                             .attr("data-index", i * gl.cols + j)
-                            .width(iw)
-                            .height(ih);
+                            .css({
+                                top: top,
+                                left: left,
+                                width: width,
+                                height: height
+                            });
 
                         // Trigger Item Rendered
                         this._trigger(this.events.itemRendered, null, {
                             item: item
-                        });
-
-                        left = j * iw + (j + 1) * ml;
-                        top = i * ih + (i + 1) * mt;
-                        left += j === 0 ? ml : 0;
-
-                        item.css({
-                            top: top,
-                            left: left
                         });
                     }
                 }
@@ -1836,13 +1849,11 @@
                 if (items && items.length > 0) {
                     this._initGlFromItemsConfig(true);
                 } else if ($children.length === 0) {
-
                     // When there aren't any children, and cols & rows is defined in the gridLayout settings
                     // we are going to create cols * rows number of DIVs
                     this._initGlFromColsRows(true);
                 }
             },
-
             // Stores the grid layout configuration as it is upon initialization
             _setGlInitialConfig: function () {
                 var gl = this._opt.gridLayout;
