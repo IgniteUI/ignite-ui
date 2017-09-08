@@ -95,6 +95,9 @@
 			this._superApply(arguments);
 		},
 		_setOption: function (option, value) {
+			if (option === "language" && this.options.language === value) {
+				return;
+			}
 			this._super(option, value);
 
 			switch (option) {
@@ -103,7 +106,7 @@
 				this.changeLocale();
 				break;
 			case "regional":
-				this._changeRegional();
+				this.changeRegional();
 				break;
 			default:
 				break;
@@ -137,7 +140,7 @@
 			var language = this.options.language,
 				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
 				localeObj = ($.ig.locale[ language ] && $.ig.locale[ language ][ widgetName ]) ||
-					$.ig[ widgetName ].locale;
+					($.ig[ widgetName ] && $.ig[ widgetName ].locale);
 			return localeObj;
 		},
 		_getLocaleValue: function (key) {
@@ -159,7 +162,7 @@
 				$element.text(this._getLocaleValue(key));
 			}
 		},
-		_changeRegional: $.noop,
+		changeRegional: $.noop,
 		changeLocale: function ($container) {
 			var self = this;
 			$container = $container || this.localeContainer || this.element;
@@ -170,6 +173,11 @@
 		changeGlobalLanguage: function () {
 			if (!this._userPreset || !this._userPreset.language) {
 				this._setOption("language", $.ig.util.language);
+			}
+		},
+		changeGlobalRegional: function () {
+			if (!this._userPreset || !this._userPreset.regional) {
+				this._setOption("regional", $.ig.util.regional);
 			}
 		},
 		destroy: function () {
