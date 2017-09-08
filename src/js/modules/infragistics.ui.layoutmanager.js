@@ -944,7 +944,9 @@
                                     cols: null,
                                     rows: null,
                                     columnWidth: null,
+                                    columnsWidth: [],
                                     columnHeight: null,
+                                    columnsHeight: [],
                                     marginLeft: 0,
                                     marginTop: 0,
                                     rearrangeItems: true,
@@ -958,7 +960,9 @@
 
                             // Reinit the grid layout only when any of the layout options are changed
                             initGridLayout = value.cols || value.rows || value.columnWidth ||
-                                value.columnHeight || typeof value.marginLeft === "number" ||
+                                value.columnsWidth.length > 0 || value.columnHeight ||
+                                value.columnsHeight.length > 0 ||
+                                typeof value.marginLeft === "number" ||
                                 typeof value.marginTop === "number" || value.useOffset;
                         }
                         break;
@@ -1534,10 +1538,19 @@
                     // D.A. 12th May 2014, Bug #160622, Preserve the initial configuration when reflowing
                     initialCols: 0,
                     initialRows: 0,
+
                     initialColWidth: 0,
                     initialColWidthRatio: null,
+
+                    initialColsWidth: [],
+                    initialColsWidthRatio: [],
+
                     initialColHeight: 0,
-                    initialColHeightRation: null,
+                    initialColHeightRatio: null,
+
+                    initialColsHeight: [],
+                    initialColsHeightRatio: [],
+
                     initialItems: [],
                     initialReflow: true,
                     useOffset: (e.css("position") === "static" || e.css("position") === "fixed") &&
@@ -1860,10 +1873,19 @@
 
                 gl.initialCols = gl.cols;
                 gl.initialRows = gl.rows;
-                gl.initialColHeight = gl.columnHeight;
+
                 gl.initialColWidth = gl.columnWidth;
                 gl.initialColWidthRatio = gl.columnWidthRatio;
+
+                gl.initialColsWidth = gl.columnsWidth;
+                gl.initialColsWidthRatio = gl.columnsWidthRatio;
+
+                gl.initialColHeight = gl.columnHeight;
                 gl.initialColHeightRatio = gl.columnHeightRatio;
+
+                gl.initialColsHeight = gl.columnsHeight;
+                gl.initialColsHeightRatio = gl.columnsHeightRatio;
+
                 gl.initialItems = $.extend(true, [], this.options.items);
             },
             _getContainerWidthNoScroll: function () {
