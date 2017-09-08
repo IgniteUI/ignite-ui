@@ -340,7 +340,43 @@
                 $(".selector").igToolbar("option", "isExpanded", false);
             ```
             */
-            isExpanded: true
+            isExpanded: true,
+            locale: {
+				/* type="boolean" Gets/Sets collapse button title.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    locale: {
+						collapseButtonTitle: "Collapse {0}"
+					}
+                });
+
+                // Get
+                var text = $(".selector").igToolbar("option", "locale").collapseButtonTitle;
+
+                // Set
+                $(".selector").igToolbar("option", "locale", {collapseButtonTitle: "Collapse {0}"});
+            ```
+            */
+				collapseButtonTitle: undefined,
+				/* type="boolean" Gets/Sets expand button title.
+				```
+				//Initialize
+					$(".selector").igToolbar({
+					locale: {
+							expandButtonTitle: "Expand {0}"
+						}
+					});
+
+					// Get
+					var text = $(".selector").igToolbar("option", "locale").expandButtonTitle;
+
+					// Set
+					$(".selector").igToolbar("option", "locale", {expandButtonTitle: "Expand {0}"});
+				```
+				*/
+				expandButtonTitle: undefined
+			}
         },
         events: {
             /*cancel="false" Event fired after a click on any toolbar button

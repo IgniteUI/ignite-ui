@@ -135,6 +135,20 @@
 		return (value === undefined) ? $.ig.regional.defaults[ key ] : value;
 	};
 
+	$.ig.encode = function (value) {
+		/* Encode string.
+			paramType="string" The string to be encoded.
+			returnType="string" Returns the encoded string.
+		*/
+		return value !== null && value !== undefined ?
+		value.toString()
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/'/g, "&#39;")
+		.replace(/"/g, "&#34;") : "";
+	};
+
 	$.ig.millisecondsToString = function(milliseconds, flag) {
 		var result = parseInt(milliseconds / Math.pow(10, flag.length - 1)).toString();
 			if (flag === "ff") {
@@ -306,11 +320,13 @@
 			result = year.toString();
 		}
 		return result;
-
 	};
 
 	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
-		var s = "<span class='ui-igcheckbox-container' style='display:" +
+		var s;
+		/* P.Zh. 11 August 2017 - Fixing bug #238125 When headerText contains HTML string the column cell data is broken (contains escaped html) */
+		labelText = $.ig.encode(labelText);
+		s = "<span class='ui-igcheckbox-container' style='display:" +
 			display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 			val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
 		s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
@@ -662,61 +678,6 @@
 			}
 		}
 		return (val || val === 0) ? val : "&nbsp;";
-	};
-	$.ig._regional = {
-		monthNames: [ "January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December" ],
-		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday",
-			"Thursday", "Friday", "Saturday" ],
-		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-		am: "AM",
-		pm: "PM",
-		datePattern: "M/d/yyyy",
-		dateLongPattern: "dddd, MMMM dd, yyyy",
-		dateTimePattern: "M/d/yyyy h:mm tt",
-		timePattern: "h:mm tt",
-		timeLongPattern: "h:mm:ss tt",
-		dateTitleFullPattern: "dd MM yy",
-		dateTitleMonthPattern: "MM yy",
-		negativeSign: "-",
-		numericNegativePattern: "-$n",
-		numericDecimalSeparator: ".",
-		numericGroupSeparator: ",",
-		numericGroups: [ 3 ],
-		numericMaxDecimals: 2,
-		numericMinDecimals: 0,
-		currencyPositivePattern: "$n",
-		currencyNegativePattern: "-$n",
-		currencySymbol: "$",
-		currencyDecimalSeparator: ".",
-		currencyGroupSeparator: ",",
-		currencyGroups: [ 3 ],
-		currencyMaxDecimals: 2,
-		currencyMinDecimals: 2,
-		percentPositivePattern: "n$",
-		percentNegativePattern: "-n$",
-		percentSymbol: "%",
-		percentDecimalSeparator: ".",
-		percentGroupSeparator: ",",
-		percentGroups: [ 3 ],
-		percentDisplayFactor: 100,
-		percentMaxDecimals: 2,
-		percentMinDecimals: 2
-	};
-	$.ig.regional = $.ig.regional || {};
-	$.ig.regional.defaults = $.ig._regional;
-	$.ig.setRegionalDefault = function (regional) {
-		if ($.ui && $.ui.igEditor) {
-			$.ui.igEditor.setDefaultCulture(regional);
-		} else {
-			$.ig.regional.defaults = $.extend($.ig._regional,
-				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
-		}
-		if ($.ig && $.ig.util) {
-			$.ig.util.regional = regional;
-		}
 	};
 
 	// get max zIndex of ui-dialogs - method is usually called by feautures for configuring zIndex of modal dialogs(like filtering, feature chooser, hiding, etc.)
