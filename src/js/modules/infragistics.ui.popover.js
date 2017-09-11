@@ -492,7 +492,7 @@
 			this._detachEventsFromTarget();
 			$(window).off("resize.popover", this._resizeHandler);
 			this.popover.remove();
-			this._super();
+			this._superApply(arguments);
 			return this;
 		},
 		id: function () {

@@ -4824,7 +4824,7 @@
 				$(".selector").igTree("destroy");
 			```
 			*/
-			this._super();
+			this._superApply(arguments);
 
 			// K.D. February 17th, 2014 Bug #164398 Attaching events only on create as delegate is used instead of bind now.
 			this.element.undelegate();

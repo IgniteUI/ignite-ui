@@ -7290,7 +7290,8 @@
 						sumFuncName,
 						fieldValues,
 						sumFunc,
-						fieldType
+						fieldType,
+						res
 					);
 					if (!gbSummaryRec.summaries[ summary.field ]) {
 						gbSummaryRec.summaries[ summary.field ] = [];
