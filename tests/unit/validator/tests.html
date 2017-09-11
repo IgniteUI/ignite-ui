@@ -1140,11 +1140,11 @@
             });
 
             testId = 'Execute all rules';
-            test(testId, 7, function () {
+            test(testId, 8, function () {
                 var $field = $("<input />").appendTo("#testBedContainer")
                     .igValidator({
                         onchange: true,
-                        reuired: false,
+                        required: false,
                         //executeAllRules: true,
                         lengthRange: { min: 2, max: null },
                         pattern: { expression: /\d/, errorMessage: "Must contain at least one number" },
@@ -1170,6 +1170,7 @@
 
               
                 ok($field.igValidator("isValid"), "Non-required filed should be valid if no other rules apply");
+                equal($field.igValidator("getErrorMessages").length, 0, "There should be no error messages.");
                 $field.igValidator("option", "executeAllRules", true);
                 ok(!$field.igValidator("isValid"), "Non-required filed shouldn't be valid when custom is also run");
                 check = {
@@ -1196,10 +1197,7 @@
                 check.message = "Must contain at least one number";
                 check.errorMessages = ["Must contain at least one number", "This field needs attention"];
                 util.keyInteraction(66, $field);
-               
-                
-                
-                $field.off(".test")//.remove();
+                $field.remove();
             });
 
             testId = '#1102 Setting valueRange min/max to null causes exceptions';
