@@ -497,7 +497,7 @@
                 }).on("igvalidatorsuccess.validate", function (e) {
                 	successFlag = flag;
                 }).on("igvalidatorerror.validate", function (e, ui) {
-                	ok(validateEvtArgs(ui) && ui.rule, e.type.replace("igvalidator", "") + " arguments are not valid");
+                	ok(validateEvtArgs(ui) && ui.rule && ui.rules, e.type.replace("igvalidator", "") + " arguments are not valid");
                 	errorFlag = flag;
                 });
 
@@ -1140,7 +1140,7 @@
             });
 
             testId = 'Execute all rules';
-            test(testId, 8, function () {
+            test(testId, 30, function () {
                 var $field = $("<input />").appendTo("#testBedContainer")
                     .igValidator({
                         onchange: true,
@@ -1150,9 +1150,6 @@
                         pattern: { expression: /\d/, errorMessage: "Must contain at least one number" },
                         custom: function () {
                             return false;
-                        },
-                        error: function (ev, ui) {
-                            console.log(ui.messages);
                         }
                     }),
                     check,
@@ -1166,6 +1163,11 @@
                             }
                             return false;
                         });
+                    },
+                    getNotifierMessages = function ($field) {
+                        return $field.igValidator("notifier").container().find("ul > li").map(function(){
+                            return $.trim($(this).text());
+                        }).get()
                     };
 
               
@@ -1176,6 +1178,7 @@
                 check = {
                     result: false,
                     message: "This field needs attention",
+                    rules: ["custom"],
                     errorMessages: ["This field needs attention"]
                 };
                 var messages = $field.igValidator("getErrorMessages");
@@ -1183,21 +1186,102 @@
                 equal(diff.length, 0, "Error messages did not match expected, diff: " + diff);
                 
                 check.message = "Entry should be at least 2 character(s) long";
+                check.rules = ["lengthRange", "pattern", "custom"];
                 check.errorMessages = ["Entry should be at least 2 character(s) long", "Must contain at least one number", "This field needs attention"];
                 $field.on("igvalidatorvalidated.test", function (evt, ui) {
                     strictEqual(ui.valid, check.result, check.message);
                     if (!ui.valid) {
                         var diff = arrayDiff(ui.messages, check.errorMessages);
                         equal(diff.length, 0, "Error messages event args did not match expected, diff: " + diff);
+                        diff = arrayDiff(ui.rules, check.rules);
+                        equal(diff.length, 0, "Failed rules event args did not match expected, diff: " + diff);
                     }
                 });
                 $field.focus();
                 util.keyInteraction(65, $field);
 
                 check.message = "Must contain at least one number";
+                check.rules = ["pattern", "custom"];
                 check.errorMessages = ["Must contain at least one number", "This field needs attention"];
                 util.keyInteraction(66, $field);
                 $field.remove();
+
+                $field = $("<input />").appendTo("#testBedContainer")
+                    .igValidator({
+                        onchange: true,
+                        required: true,
+                        executeAllRules: true,
+                        lengthRange: { min: 2, max: null },
+                        pattern: { expression: /\d/, errorMessage: "Must contain at least one number" },
+                        custom: function () {
+                            return false;
+                        }
+                    });
+                $field.focus();
+                util.keyInteraction(65, $field);
+                check.errorMessages = ["Entry should be at least 2 character(s) long", "Must contain at least one number", "This field needs attention"];
+                messages = getNotifierMessages($field);
+                diff = arrayDiff(messages, check.errorMessages);
+                equal(diff.length, 0, "Error messages not as expected with one char. Diff: " + diff);
+
+                $field.val("");
+                util.keyInteraction(8 /*bkspc*/, $field);
+                check.errorMessages =  ["This field is required", "This field needs attention"];
+                messages = getNotifierMessages($field);
+                diff = arrayDiff(messages, check.errorMessages);
+                equal(diff.length, 0, "Error messages not as expected on emty field. Diff: " + diff);
+                $field.val("343");
+                util.keyInteraction(65, $field);
+                check.errorMessages =  ["This field needs attention"];
+                messages = getNotifierMessages($field);
+                diff = arrayDiff(messages, check.errorMessages);
+                equal(diff.length, 0, "Error messages not as expected with all but custom fulfilled. Diff: " + diff);
+                $field.igValidator("option", "custom", null);
+                ok($field.igValidator("isValid"), "Non-required filed should be valid if no other rules apply");
+                $field.remove();
+
+                // inherit:
+                var $fields =  $("<div> <input id='password'/> <input id='repeatParrword'/> </div>").appendTo("#testBedContainer")
+                    .igValidator({
+                        executeAllRules: true, //inherited
+                        fields : [{
+                            selector : "#password",
+                            required: true,
+                            lengthRange: { min: 8 },
+                            pattern: { expression: /\d/, errorMessage: "Must contain at least one number" },
+                          }, {
+                            selector : "#repeatParrword",
+                            required: true,
+                            equalTo : "#password",
+                            lengthRange: { min: 8 },
+                            executeAllRules: false //override
+                          }
+                        ]
+                    });
+                $fields.find("#password").val("pass");
+                ok(!$fields.igValidator("isValid", "#password"), "First should not be valid without a number");
+                equal($fields.igValidator("getErrorMessages", "#password").length, 2, "Should have two error message");
+                $fields.find("#password").val("pass2");
+                ok(!$fields.igValidator("isValid", "#password"), "First should not be valid under min");
+                equal($fields.igValidator("getErrorMessages", "#password").length, 1, "Should have one error message");
+
+                ok(!$fields.igValidator("isValid", "#repeatParrword"), "Second should not be valid wihtout a value");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword").length, 1, "Second should have one error message");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword")[0], "This field is required", "Should have required message");
+                $fields.find("#repeatParrword").val("pass");
+                ok(!$fields.igValidator("isValid", "#repeatParrword"), "Second should not be valid under min");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword").length, 1, "Second should have one error message");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword")[0], "Entry should be at least 8 character(s) long", "Should have length message");
+                $fields.find("#repeatParrword").val("passpass");
+                ok(!$fields.igValidator("isValid", "#repeatParrword"), "Second should not be valid match");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword").length, 1, "Second should have one error message");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword")[0], "The two values do not match", "Should have equalTo message");
+
+                $fields.igValidator("updateField", "#repeatParrword", { executeAllRules: true });
+                $fields.find("#repeatParrword").val("p");
+                ok(!$fields.igValidator("isValid", "#repeatParrword"), "Second should not be valid match");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword").length, 2, "Second should have two error message");
+                equal($fields.igValidator("getErrorMessages", "#repeatParrword").toString(), "Entry should be at least 8 character(s) long,The two values do not match", "Should have both messages");
             });
 
             testId = '#1102 Setting valueRange min/max to null causes exceptions';

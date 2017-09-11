@@ -1052,9 +1052,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				this._evalMessageTarget(this.options);
 				if (oldVisible) {
 					if (this.options.isValid) {
-						this._showSuccess(this.options, { message: this.options._currentMessages[0] });
+						this._showSuccess(this.options, { message: this.options._currentMessages[ 0 ] });
 					} else {
-						this._showError(this.options, { message: this.options._currentMessages[0] });
+						this._showError(this.options, { messages: this.options._currentMessages });
 					}
 				}
 				break;
@@ -1464,6 +1464,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			value: value,
 			owner: this,
 			messages: [],
+			rules: [],
 			fieldOptions: options === this.options ? null : opts
 		};
 
@@ -1483,7 +1484,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					break;
 				}
 				continue;
-			} 
+			}
 			ruleResult = rule.isValid(options, value);
 			result = result ? ruleResult : result;
 			if (!ruleResult) {
@@ -1491,10 +1492,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					this._getLocalizedMessage(rule.getMessageType(options));
 
 				ruleMessage = rule.formatMessage(ruleMessage);
-
-				args.message = args.message || ruleMessage;
 				args.messages.push(ruleMessage);
-				args.rule = rule.name;
+				args.rules.push(rule.name);
 				if (!options.executeAllRules) {
 					break;
 				}
@@ -1503,11 +1502,14 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 
 		if (result) {
 			// Success
-			options.successMessage && args.messages.push(options.successMessage);
-			args.message = options.successMessage;
+			if (options.successMessage) {
+				args.messages.push(options.successMessage);
+			}
+			delete args.rules;
 			this._success(options, args, evt);
 			return true;
 		} else {
+			args.rule = args.rules[ 0 ];
 			this._showError(options, args, evt);
 			return false;
 		}
@@ -1515,6 +1517,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 	_success: function (options, args, evt) {
 		// Success
 		args.valid = true;
+		args.message = args.messages[ 0 ] || null;
 		if (evt) {
 			this._trigger(this.events.validated, evt, args);
 			this._trigger(this.events.success, evt, args);
@@ -1524,6 +1527,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 	},
 	_showError: function (options, args, evt) {
 		args.valid = false;
+		if (args.messages.length && options.executeAllRules) {
+			args.message = "<ul><li>" + args.messages.join("</li><li>") + "</li></ul>";
+		} else {
+			args.message = args.messages[ 0 ] || null;
+		}
 		if (evt) {
 			this._trigger(this.events.validated, evt, args);
 			this._trigger(this.events.error, evt, args);
@@ -2167,7 +2175,7 @@ $.ig.igValidatorRequiredRule = $.ig.igValidatorRequiredRule || $.ig.igValidatorB
 			return this.name;
 		}
 	},
-	shouldRun: function(options, value) {
+	shouldRun: function(options) {
 		return options[ this.name ];
 	},
 	isValid: function(options, value) {
@@ -2190,7 +2198,6 @@ $.ig.igValidatorControlRule = $.ig.igValidatorControlRule || $.ig.igValidatorBas
 		return options.errorMessage ||
 			options._control._currentMessage || "";
 	},
-	
 	shouldRun: function(options, value) {
 		return options._control &&
 			typeof options._control.isValid === "function" && value;
@@ -2392,7 +2399,7 @@ $.ig.igValidatorCustomRule = $.ig.igValidatorCustomRule || $.ig.igValidatorBaseR
 	getMessageType: function (/* options */) {
 		return "default";
 	},
-	shouldRun: function(options, value) {
+	shouldRun: function(options) {
 		return options[ this.name ];
 	},
 	isValid: function(options, value) {
