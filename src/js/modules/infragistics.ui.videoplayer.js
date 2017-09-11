@@ -2463,7 +2463,7 @@
 				this.currentVideo.hide();
 
 				//this._renderUnsupportedBrowser();
-				$.ig.util._renderUnsupportedBrowser(this, $.ig.VideoPlayer.locale);
+				$.ig.util._renderUnsupportedBrowser(this, this._getLocaleDictionary());
 			}
 			/* if rendered, move it to be always last element in the widget */
 

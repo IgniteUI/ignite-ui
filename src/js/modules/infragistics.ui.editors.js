@@ -1202,7 +1202,7 @@
 			this._restoreDOMStructure();
 			this._deleteInternalProperties();
 			delete this.options;
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
@@ -9484,9 +9484,13 @@
 				}
 			} else {
 
-				// extractedDate = this._dateObjectValue;
 				// N.A. 11/10/2015 Bug #207560: Set new date using timestamp.
-				extractedDate = new Date(this._dateObjectValue.getTime());
+				// N.A. September 4th, 2017 #1109: When displayTimeOffset is defined and mask of that editor doesn't contain hours, then date needs offset.
+				if (this.options.displayTimeOffset !== null) {
+					extractedDate = this._getDateOffset(this._dateObjectValue);
+				} else {
+					extractedDate = new Date(this._dateObjectValue.getTime());
+				}
 			}
 			if (yearField !== null && yearField !== undefined) {
 				this._setDateField("FullYear", extractedDate, yearField);
@@ -11305,7 +11309,7 @@
 			```
 			*/
 			this._editorInput.datepicker("destroy");
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});

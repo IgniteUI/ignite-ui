@@ -3553,7 +3553,7 @@
 			*/
 			/* M.H. 28 Jul 2011 - fix bug 77183 - set logic for removing html markup into separate function */
 			this._destroyMarkup();
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		/* Get file Size Before Start Upload */
 		_getFileSize: function (formNumber, key) {
