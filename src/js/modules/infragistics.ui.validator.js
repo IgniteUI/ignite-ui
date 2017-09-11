@@ -576,9 +576,10 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.value to get current value in target.
-			ui.fieldOptions is populated with options for the specific field in the collection or null. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.value" argType="object" Gets the current value in target.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		validating: "validating",
 		/* cancel="false" Event which is raised after value was validated but before any action takes effect.
 		```
@@ -589,12 +590,6 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				ui.value;
 				//determine the outcome of the validation
 				ui.valid;
-				//gets text of message if available
-				ui.message;
-				//get name of the rule that failed validation, if any.
-				ui.rule;
-				//get the options of the specific field in the collection
-				ui.fieldOptions;
 			});
 
 			//Initialize
@@ -605,12 +600,15 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.value to get current value in target.
-			Use ui.valid to determine the outcome of the validation.
-			Use ui.message to get text of message.
-			ui.rule is populated with the name of the rule that failed validation, if any.
-			ui.fieldOptions is populated with options for the specific field in the collection or null. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.value" argType="object" Gets the current value in target.
+			eventArgument="ui.valid" argType="bool" Determine the outcome of the validation.
+			eventArgument="ui.message" argType="string" Get the formatted message text, if any.
+			eventArgument="ui.messages" argType="array" Get all messages, if any. May be more than one if [executeAllRules](ui.igvalidator#options:executeAllRules) is enabled.
+			eventArgument="ui.rule" argType="string" Deprecated. Populated with the name of the rule that failed validation, if any.
+			eventArgument="ui.rules" argType="array" Populated with the names of rule that failed validation, if any.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		validated: "validated",
 		/* cancel="false" Event raised for valid field after value was validated but before any action takes effect.
 			Function takes arguments evt and ui.
@@ -633,11 +631,12 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					}
 				});
 			```
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.value to get current value in target.
-			Use ui.valid to determine the outcome of the validation.
-			Use ui.message to get text of message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.value" argType="object" Gets the current value in target.
+			eventArgument="ui.valid" argType="bool" Determine the outcome of the validation.
+			eventArgument="ui.message" argType="string" Get the formatted message text, if any.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		success: "success",
 		/* cancel="false" Event raised for invalid field after value was validated but before any action takes effect.
 			Function takes arguments evt and ui.
@@ -647,10 +646,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					ui.owner;
 					//get current value in target
 					ui.value;
-					//determine the outcome of the validation
-					ui.valid;
-					//get name of the rule that failed validation
-					ui.rule;
+					//get rules that failed validation
+					ui.rules;
 					//gets text of message
 					ui.message;
 					//get the options of the specific field in the collection
@@ -664,12 +661,15 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					}
 				});
 			```
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.value to get current value in target.
-			Use ui.valid to determine the outcome of the validation.
-			Use ui.message to get text of message.
-			ui.rule is populated with the name of the rule that failed validation.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.value" argType="object" Gets the current value in target.
+			eventArgument="ui.valid" argType="bool" Determine the outcome of the validation.
+			eventArgument="ui.message" argType="string" Get the formatted message text.
+			eventArgument="ui.messages" argType="array" Get all messages. May be more than one if [executeAllRules](ui.igvalidator#options:executeAllRules) is enabled.
+			eventArgument="ui.rule" argType="string" Deprecated. Populated with the name of the rule that failed validation.
+			eventArgument="ui.rules" argType="array" Populated with the names of rule that failed validation.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		error: "error",
 		/* cancel="true" Event which is raised before error message is displayed.
 			Return false in order to prevent error message display.
@@ -693,10 +693,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		errorShowing: "errorShowing",
 		/* cancel="true" Event which is raised before error message is hidden.
 			Return false in order to keep the error message displayed.
@@ -721,10 +722,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		errorHiding: "errorHiding",
 		/* cancel="false" Event which is raised after error message was displayed.
 		```
@@ -747,10 +749,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		errorShown: "errorShown",
 		/* cancel="false" Event which is raised after error message was hidden.
 		```
@@ -773,10 +776,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		errorHidden: "errorHidden",
 		/* cancel="true" Event which is raised before success message is displayed.
 			Return false in order to prevent success message display.
@@ -800,10 +804,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		successShowing: "successShowing",
 		/* cancel="true" Event which is raised before success message is hidden.
 			Return false in order to keep success message displayed.
@@ -827,10 +832,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		successHiding: "successHiding",
 		/* cancel="false" Event which is raised after success message was displayed.
 			```
@@ -853,10 +859,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		successShown: "successShown",
 		/* cancel="false" Event which is raised after success message was hidden.
 		```
@@ -879,10 +886,11 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.message to get text of message.
-			Use ui.target to get reference to the target of the message.
-			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.message" argType="string" Gets the text of message.
+			eventArgument="ui.target" argType="$" Gets reference to the target of the message.
+			eventArgument="ui.fieldOptions" argType="object" Populated with options for the specific field in the collection or null. */
 		successHidden: "successHidden",
 		/* cancel="true" Event triggered on Validator instance level before handling a form submit event.
 			Return false to cancel to skip validating and potentially allow the submit if no other other validators return error.
@@ -902,8 +910,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.target to get reference of the event target form. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.target" argType="$" Gets reference to the event target form. */
 		formValidating: "formValidating",
 		/* cancel="false" Event triggered on Validator instance level after validation on form submit event..
 		```
@@ -924,9 +933,10 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.target to get reference of the event target form.
-			Use ui.valid to determine the outcome of the validation. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.target" argType="$" Gets reference to the event target form.
+			eventArgument="ui.valid" argType="bool" Determine the outcome of the validation. */
 		formValidated: "formValidated",
 		/* cancel="false" Event triggered on Validator instance level after failed validation on form submit event.
 		```
@@ -945,8 +955,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.target to get reference of the event target form. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.target" argType="$" Gets reference to the event target form. */
 		formError: "formError",
 		/* cancel="false" Event triggered on Validator instance level after successful validation on form submit event.
 		```
@@ -965,8 +976,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				});
 		```
 			Function takes arguments evt and ui.
-			Use ui.owner to get reference to the igValidator widget.
-			Use ui.target to get reference of the event target form. */
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets reference to the igValidator widget.
+			eventArgument="ui.target" argType="$" Gets reference to the event target form. */
 		formSuccess: "formSuccess"
 	},
 	/* defaults for the notifier */
@@ -1463,8 +1475,6 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		args = {
 			value: value,
 			owner: this,
-			messages: [],
-			rules: [],
 			fieldOptions: options === this.options ? null : opts
 		};
 
@@ -1474,6 +1484,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		}
 
 		args.messages = opts._currentMessages = [];
+		args.rules = [];
 
 		for (var i = 0; i < this.rules.length; i++) {
 			// execute rules
