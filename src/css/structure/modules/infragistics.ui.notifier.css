@@ -5,18 +5,28 @@
 	font-style: normal;
 }
 
+.ui-widget.ui-ignotify.ui-ignotify-inline {
+	position: static;
+	margin-bottom: 5px;
+	font-size:0.8em;
+}
 .ui-ignotify-icon-container {
     display: inline-block;
     vertical-align: middle;
     padding-right: 2px;
     height: 1.3em;
 }
-
-.ui-widget.ui-ignotify.ui-ignotify-inline {
-    position: static;
-    margin-bottom: 5px;
-    font-size:0.8em;
+.ui-ignotify-icon-container.hidden {
+    display: none;
 }
+.ui-ignotify-content > ul, .ui-ignotify-content > ol {
+	/* Adjust list positioning */
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	list-style-position: inside;
+}
+
 
 /* Notification States (theme?) */
 .ui-ignotify-success
