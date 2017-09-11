@@ -588,7 +588,7 @@
 				*/
 				targetKey: "Target",
 				/* type="string" Gets the name of the data source property the value of which would hold the node`s
-								expanded state.
+								expanded state. The expanded state is represented by a boolean.
 					```
 					$(".selector").igTree({
 						dataSource: data,
@@ -603,7 +603,8 @@
 				*/
 				expandedKey: "__expanded__",
 				/* type="string" Gets the name of the data source property the value of which would hold the node's
-								check state.
+								check state. The check state itself is represented by a string enumeration with the
+								checked|partially checked|unchecked states being respectively "on|partial|off".
 					```
 					$(".selector").igTree({
 						dataSource: data,
@@ -1996,9 +1997,7 @@
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
-				schema.expanded = { name: "__expanded__", type: "boolean" };
 				opt.bindings.expandedKey = "__expanded__";
-				schema.checked = { name: "__checked__", type: "boolean" };
 				opt.bindings.checkedKey = "__checked__";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
@@ -2033,8 +2032,12 @@
 				schema.targetKey = bindings.targetKey;
 			}
 			if (bindings.expandedKey) {
-				schema.fields.push({ name: "Expanded", type: "boolean" });
+				schema.fields.push({ name: bindings.expandedKey, type: "boolean" });
 				schema.expandedKey = bindings.expandedKey;
+			}
+			if (bindings.checkedKey) {
+				schema.fields.push({ name: bindings.checkedKey, type: "string" });
+				schema.checkedKey = bindings.checkedKey;
 			}
 			if (bindings.primaryKey) {
 				schema.fields.push({ name: bindings.primaryKey, type: "string" });
