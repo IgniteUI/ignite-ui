@@ -1448,7 +1448,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			return true;
 		}
 		var options = this._addGlobalSettings(opts), valueString, hasLength,
-			 args, result = true, rule, ruleResult, ruleMessage;
+			args, result = true, rule, ruleResult, ruleMessage;
 
 		// Called per field with optional value to check, event and blur flag
 		value = value !== undefined ? value : this._getTargetValue(options);
