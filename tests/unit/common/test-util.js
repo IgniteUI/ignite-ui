@@ -127,7 +127,12 @@
 			if (this.keyPressChar(key, target, special)) {
 				prevented = true;
 			}
-			textInput = target[0].selectionEnd !== undefined && target[0].selectionEnd !== null;
+			try {
+				textInput = target[0]["selectionEnd"] !== undefined && target[0]["selectionEnd"] !== null;
+			} catch (error) {
+				/* Phantom throws when trying to check for selectionEnd instead of returning null on checkbox */
+				textInput = false;
+			}
 			if (!prevented && textInput && char) {
 				endPos = target[0].selectionEnd;
 				startPos = target[0].selectionStart;
