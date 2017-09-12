@@ -578,18 +578,20 @@ span.ui-iggrid-headertext {
     padding: 0 1.8em 0 0 !important;
     text-align: right !important;
 }
-
-.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer,
-.ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer {
-    float: right;
-    margin-top: 0;
+.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer, 
+.ui-iggrid-filtercell .ui-igeditor-input-container+.ui-iggrid-indicatorcontainer
+{
+    float:right; 
+	margin-top:0;
 }
-
-/*.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
+/*
+BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the cell
+.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
 {
     float:left;
 	width:calc(100% - 10px);
 }
+*/
 .ui-iggrid-filtercell  .ui-igedit-button-common~.ui-igeditor-input-container
 {
     float:left;
@@ -598,7 +600,7 @@ span.ui-iggrid-headertext {
 .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer+.ui-igeditor-input-container
 {
     width:auto;
-}*/
+}
 
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
 .ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer a:before {
@@ -1578,6 +1580,11 @@ td.ui-iggrid-addrow {
 
 .ui-iggrid .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
     border-bottom-color: #aaa;
+}
+
+.ui-iggrid .ui-iggrid-physicalmergedcell
+{
+	vertical-align: top;
 }
 
 /**********************

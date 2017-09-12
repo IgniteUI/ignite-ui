@@ -198,10 +198,80 @@
 		};
 	}
 
-	//$.ig = $.ig || { _isNamespace: true };
 	$.ig.util = $.ig.util || {};
 
 	$.ig.util.browserVersion = "";
+
+	$.ig.util.language = "en";
+	$.ig.util.regional = "en-US";
+	$.ig.util.widgetStack = [];
+
+	$.ig._regional = {
+		monthNames: [ "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" ],
+		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday",
+			"Thursday", "Friday", "Saturday" ],
+		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+		am: "AM",
+		pm: "PM",
+		datePattern: "M/d/yyyy",
+		dateLongPattern: "dddd, MMMM dd, yyyy",
+		dateTimePattern: "M/d/yyyy h:mm tt",
+		timePattern: "h:mm tt",
+		timeLongPattern: "h:mm:ss tt",
+		dateTitleFullPattern: "dd MM yy",
+		dateTitleMonthPattern: "MM yy",
+		negativeSign: "-",
+		numericNegativePattern: "-$n",
+		numericDecimalSeparator: ".",
+		numericGroupSeparator: ",",
+		numericGroups: [ 3 ],
+		numericMaxDecimals: 2,
+		numericMinDecimals: 0,
+		currencyPositivePattern: "$n",
+		currencyNegativePattern: "-$n",
+		currencySymbol: "$",
+		currencyDecimalSeparator: ".",
+		currencyGroupSeparator: ",",
+		currencyGroups: [ 3 ],
+		currencyMaxDecimals: 2,
+		currencyMinDecimals: 2,
+		percentPositivePattern: "n$",
+		percentNegativePattern: "-n$",
+		percentSymbol: "%",
+		percentDecimalSeparator: ".",
+		percentGroupSeparator: ",",
+		percentGroups: [ 3 ],
+		percentDisplayFactor: 100,
+		percentMaxDecimals: 2,
+		percentMinDecimals: 2
+	};
+	$.ig.regional = $.ig.regional || {};
+	$.ig.regional.defaults = $.ig._regional;
+
+	$.ig.util.changeGlobalLanguage = function (language) {
+		$.ig.util.language = language;
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalLanguage();
+		}
+	};
+
+	$.ig.util.changeGlobalRegional = function (regional) {
+		$.ig.util.regional = regional;
+		$.ig.regional.defaults = $.extend($.ig._regional,
+			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalRegional();
+		}
+	};
+
+	$.ig.util.getLocaleValue = function (collection, key) {
+		var language = $.ig.util.language,
+			locale = $.ig.locale[ language ][ collection ];
+		return locale[ key ] || "";
+	};
 
 	//D.A. 11th November 2013, Updated the isIE & browserVersion to be compatible with IE11+
 	$.ig.util.isIE = window.navigator.userAgent.indexOf("MSIE") > -1 || !!window.navigator.userAgent.match(/trident/i);
@@ -1444,6 +1514,27 @@
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
 		var result;
 		provider = provider || $.ig.CultureInfo.prototype.currentCulture(); // TODO: Use the provider below
+		var mmm = function(value, provider) {
+			// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
+			var cultureName = provider.name();
+			if (cultureName == "ja-JP") {
+				result = value.toLocaleString("en-US", { month: "numeric" })
+					.replace(/\u200E/g, "");
+			} else {
+				result = value.toLocaleString(provider.name(), { month: "short" })
+					.replace(/\u200E/g, "");
+			}
+
+			if (result.contains(" ")) {
+
+				// Date.toLocaleString is not supported fully
+				// TODO: Handle other cultures?
+				return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ value.getMonth() ];
+			}
+
+			return result;
+		};
 		switch (format) {
 			case "s":
 				{
@@ -1458,28 +1549,7 @@
 				}
 
 			case "MMM":
-				{
-
-					// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
-					var cultureName = provider.name();
-					if (cultureName == "ja-JP") {
-						result = value.toLocaleString("en-US", { month: "numeric" })
-							.replace(/\u200E/g, "");
-					} else {
-						result = value.toLocaleString(provider.name(), { month: "short" })
-							.replace(/\u200E/g, "");
-					}
-
-					if (result.contains(" ")) {
-
-						// Date.toLocaleString is not supported fully
-						// TODO: Handle other cultures?
-						return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-							"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ value.getMonth() ];
-					}
-
-					return result;
-				}
+				return mmm(value, provider);
 
 			case "MMMM":
 				return value.toLocaleString(provider.name(), { month: "long" })
@@ -1511,8 +1581,12 @@
 			case "%t":
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
 		}
-
-		throw new $.ig.FormatException(1, "Unknown Date format: " + format);
+		result = format;
+		result = result.replace("yyyy", value.getFullYear().toString());
+		result = result.replace("MMM", mmm(value, provider));
+		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1"));
+		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
+		return result;
 	};
 
 	// implement casting
@@ -5809,7 +5883,7 @@
 	};
 
 	$.ig.util.summaries = $.ig.util.summaries || {};
-	$.ig.util.summaries.min = function (data, dataType) {
+	$.ig.util.summaries.min = function (data, dataType, fullData) {
 		if (data.length === 0) {
 			if (dataType === "date") {
 				return null;
@@ -5819,7 +5893,7 @@
 		return Math.min.apply(Math, data);
 	};
 
-	$.ig.util.summaries.max = function (data, dataType) {
+	$.ig.util.summaries.max = function (data, dataType, fullData) {
 		if (data.length === 0) {
 			if (dataType === "date") {
 				return null;
@@ -5829,7 +5903,7 @@
 		return Math.max.apply(Math, data);
 	};
 
-	$.ig.util.summaries.sum = function (data, dataType) {
+	$.ig.util.summaries.sum = function (data, dataType, fullData) {
 		var sum = 0,
 			i;
 		for (i = 0; i < data.length; i++) {
@@ -5838,18 +5912,25 @@
 		return sum;
 	};
 
-	$.ig.util.summaries.avg = function (data, dataType) {
+	$.ig.util.summaries.avg = function (data, dataType, fullData) {
 		if (data.length === 0) {
 			return 0;
 		}
 		return $.ig.util.summaries.sum(data) / data.length;
 	};
 
-	$.ig.util.summaries.count = function (data, dataType) {
+	$.ig.util.summaries.count = function (data, dataType, fullData) {
 		return data.length;
 	};
 
-	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
+	/**	Calculates the summaries based on the function or function name provided
+	*	summaryFunction - specifies the name of the summary function that will be used
+	*	data - data that will be used to calculate the summary value. Contains usually the column data the summary is for.
+	*	caller - custom summary function that will be used when summaryFunction = "custom"
+	*	dataType - the type of the column the 'colData' is applicable for
+	*	fullData - contains the full data for all summaries. In general full row records used in the current summary row. In GroupBy scenario, will contain only the group records.
+	**/
+	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType, fullData) {
 		// M.H. 16 Nov. 2011 Fix for bug 97886
 		summaryFunction = summaryFunction.toLowerCase();
 		if (summaryFunction.startsWith("custom")) {
@@ -5858,26 +5939,26 @@
 
 		switch (summaryFunction) {
 			case "min":
-				return $.ig.util.summaries.min(data, dataType);
+				return $.ig.util.summaries.min(data, dataType, fullData);
 			case "max":
-				return $.ig.util.summaries.max(data, dataType);
+				return $.ig.util.summaries.max(data, dataType, fullData);
 			case "sum":
-				return $.ig.util.summaries.sum(data, dataType);
+				return $.ig.util.summaries.sum(data, dataType, fullData);
 			case "avg":
-				return $.ig.util.summaries.avg(data, dataType);
+				return $.ig.util.summaries.avg(data, dataType, fullData);
 			case "count":
-				return $.ig.util.summaries.count(data, dataType);
+				return $.ig.util.summaries.count(data, dataType, fullData);
 			case "custom":
 
 				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
 				if (caller !== undefined && caller !== null) {
 					if (typeof caller === "function") {
-						return caller(data, dataType);
+						return caller(data, dataType, fullData);
 					}
 					if (typeof caller === "string") {
 						/*jshint evil:true */
 						caller = eval(caller);
-						return caller(data, dataType);
+						return caller(data, dataType, fullData);
 					}
 				} else {
 					return null;
@@ -5889,7 +5970,8 @@
 	$.ig.util.defaultSummaryMethods = [
 		{
 			/* type="string" Label that will be applied to the result of the summary function */
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelCount : "Count = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelCount") : "Count = ",
 			/* type="string" Name of the summary that can be set as an option inside the igGrid for example */
 			"name": "count",
 			/* type="function" Speficies the function that will be used when calculating the summary */
@@ -5905,7 +5987,8 @@
 			"applyFormat": false
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMin : "Min = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
 			"dataType": [ "number", "date", "numeric" ],
@@ -5914,7 +5997,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMax : "Max = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
 			"dataType": [ "number", "date", "numeric" ],
@@ -5923,7 +6007,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelSum : "Sum = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelSum") : "Sum = ",
 			"name": "sum",
 			"summaryFunction": $.ig.util.summaries.sum,
 			"dataType": [ "number", "numeric" ],
@@ -5932,7 +6017,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelAvg : "Avg = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelAvg") : "Avg = ",
 			"name": "avg",
 			"summaryFunction": $.ig.util.summaries.avg,
 			"dataType": [ "number", "numeric" ],

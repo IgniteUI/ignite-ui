@@ -13,9 +13,10 @@
  *	jquery.ui.draggable.js
  *	jquery.ui.droppable.js
  *	infragistics.templating.js
-  *	infragistics.util.js
+ *	infragistics.util.js
  *  infragistics.util.jquery.js
  *	infragistics.dataSource.js
+ *  infragistics.ui.widget.js
  *	infragistics.ui.tree-en.js
  */
 
@@ -24,10 +25,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.shared"
@@ -48,7 +46,7 @@
 		data sources via load on demand. The igTree can be bound to various types of data such as JSON, XML, Remote data
 		providers, etc.
 	*/
-	$.widget("ui.igTree", {
+	$.widget("ui.igTree", $.ui.igWidget, {
 		_const: {
 			dragCursorAt: {
 				top: -10,
@@ -589,8 +587,8 @@
 				```
 				*/
 				targetKey: "Target",
-				/* type="string" Gets the name of the data source property the value of which would indicate that the
-								node is expanded on initial load.
+				/* type="string" Gets the name of the data source property the value of which would hold the node`s
+								expanded state. The expanded state is represented by a boolean.
 					```
 					$(".selector").igTree({
 						dataSource: data,
@@ -603,7 +601,23 @@
 					});
 					```
 				*/
-				expandedKey: "Expanded",
+				expandedKey: "__expanded__",
+				/* type="string" Gets the name of the data source property the value of which would hold the node's
+								check state. The check state itself is represented by a string enumeration with the
+								checked|partially checked|unchecked states being respectively "on|partial|off".
+					```
+					$(".selector").igTree({
+						dataSource: data,
+						dataSourceType: "xml",
+						initialExpandDepth: 0,
+						pathSeparator: ".",
+						bindings: {
+							checkedKey: "Checked"
+						}
+					});
+					```
+				*/
+				checkedKey: "__checked__",
 				/* type="string" Gets the name of the data source property the value of which is the primary key attribute
 								for the data. This property is used when load on demand is enabled and if specified the node paths
 								would be generated using primary keys instead of indices.
@@ -1740,25 +1754,14 @@
 		_createWidget: function (options) {
 			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
 			this.options.bindings = null;
-			if (options && options.dragAndDrop) {
-				this.options.dragAndDropSettings.moveToMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
-				this.options.dragAndDropSettings.moveBetweenMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveBetween + "</p></div>";
-				this.options.dragAndDropSettings.moveAfterMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveAfter + "</p></div>";
-				this.options.dragAndDropSettings.moveBeforeMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveBefore + "</p></div>";
-				this.options.dragAndDropSettings.copyToMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyTo + "</p></div>";
-				this.options.dragAndDropSettings.copyBetweenMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyBetween + "</p></div>";
-				this.options.dragAndDropSettings.copyAfterMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyAfter + "</p></div>";
-				this.options.dragAndDropSettings.copyBeforeMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyBefore + "</p></div>";
+			if (options && options.bindings) {
+				this._populateStateKeys(options.bindings);
 			}
-			$.Widget.prototype._createWidget.apply(this, arguments);
+
+			if (options && options.dragAndDrop) {
+				this.changeLocale();
+			}
+			this._superApply(arguments);
 		},
 		_create: function () {
 			var opt = this.options;
@@ -1777,10 +1780,7 @@
 		},
 		_setOption: function (option, value) {
 			var css = this.css, elements, prevValue = this.options[ option ];
-			if (prevValue === value) {
-				return;
-			}
-			$.Widget.prototype._setOption.apply(this, arguments);
+			this._super(option, value);
 
 			switch (option) {
 			case "width":
@@ -1794,7 +1794,7 @@
 				if (elements.length > 0) {
 					elements.attr("src", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "parentNodeImageTooltip":
@@ -1805,7 +1805,7 @@
 				if (elements.length > 0) {
 					elements.attr("title", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "parentNodeImageClass":
@@ -1814,7 +1814,7 @@
 					elements.removeClass();
 					elements.addClass(value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "leafNodeImageUrl":
@@ -1822,7 +1822,7 @@
 				if (elements.length > 0) {
 					elements.attr("src", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "leafNodeImageTooltip":
@@ -1833,7 +1833,7 @@
 				if (elements.length > 0) {
 					elements.attr("title", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "leafNodeImageClass":
@@ -1842,7 +1842,7 @@
 					elements.removeClass();
 					elements.addClass(value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "hotTracking":
@@ -1895,10 +1895,28 @@
 			case "defaultNodeTarget":
 
 				// K.D. April 14th, 2014 Bug #169669 Throwing an error on bindings
-				throw new Error($.ig.Tree.locale.setOptionError + option);
+				throw new Error(this._getLocaleValue("setOptionError") + option);
 			default:
 				break;
 			}
+		},
+		changeLocale: function () {
+			this.options.dragAndDropSettings.moveToMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveTo") + "</p></div>";
+			this.options.dragAndDropSettings.moveBetweenMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveBetween") + "</p></div>";
+			this.options.dragAndDropSettings.moveAfterMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveAfter") + "</p></div>";
+			this.options.dragAndDropSettings.moveBeforeMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveBefore") + "</p></div>";
+			this.options.dragAndDropSettings.copyToMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyTo") + "</p></div>";
+			this.options.dragAndDropSettings.copyBetweenMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyBetween") + "</p></div>";
+			this.options.dragAndDropSettings.copyAfterMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyAfter") + "</p></div>";
+			this.options.dragAndDropSettings.copyBeforeMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyBefore") + "</p></div>";
 		},
 		_removeCheckboxes: function () {
 			this.element.find("span[data-role=checkbox]").remove();
@@ -1979,8 +1997,8 @@
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
-				schema.expanded = { name: "Expanded", type: "boolean" };
-				opt.bindings.expandedKey = "Expanded";
+				opt.bindings.expandedKey = "__expanded__";
+				opt.bindings.checkedKey = "__checked__";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
 				if (bindings.searchFieldXPath) {
@@ -2014,8 +2032,12 @@
 				schema.targetKey = bindings.targetKey;
 			}
 			if (bindings.expandedKey) {
-				schema.fields.push({ name: "Expanded", type: "boolean" });
+				schema.fields.push({ name: bindings.expandedKey, type: "boolean" });
 				schema.expandedKey = bindings.expandedKey;
+			}
+			if (bindings.checkedKey) {
+				schema.fields.push({ name: bindings.checkedKey, type: "string" });
+				schema.checkedKey = bindings.checkedKey;
 			}
 			if (bindings.primaryKey) {
 				schema.fields.push({ name: bindings.primaryKey, type: "string" });
@@ -2591,7 +2613,7 @@
 				}
 			});
 		},
-		_initChildrenRecursively: function (path, data, depth, checkFlag, indexFeed) {
+		_initChildrenRecursively: function (path, data, depth, indexFeed) {
 			var childUl, opt = this.options, childPath, binding, value, display,
 				liStr = [], i = 0, li, children;
 
@@ -2642,19 +2664,21 @@
 				}
 				if ((children && children.length > 0) || (children && opt.loadOnDemand)) {
 					if ((depth <= opt.initialExpandDepth &&
-						!opt.loadOnDemand) || (binding.hasOwnProperty("expandedKey") &&
-						data[ i ].hasOwnProperty(binding.expandedKey) &&
+						!opt.loadOnDemand) || (data[ i ].hasOwnProperty(binding.expandedKey) &&
 						data[ i ][ binding.expandedKey ])) {
-						li += this._renderExpanderImage(true);
+						li += this._renderExpanderImage(data[ i ][ binding.expandedKey ] = true);
 						display = "block";
 					} else {
-						li += this._renderExpanderImage(false);
+						li += this._renderExpanderImage(data[ i ][ binding.expandedKey ] = false);
 						display = "none";
 					}
 				}
 
 				if (opt.checkboxMode && opt.checkboxMode.toLowerCase() !== "off") {
-					li += this._renderCheckbox(checkFlag);
+					if (typeof data[ i ][ binding.checkedKey ] !== "string") {
+						data[ i ][ binding.checkedKey ] = "off";
+					}
+					li += this._renderCheckbox(data[ i ][ binding.checkedKey ]);
 				}
 				li += this._renderNodeImage(data[ i ], binding);
 				if (!binding.nodeContentTemplate) {
@@ -2666,7 +2690,7 @@
 				if ((children && children.length > 0) || (children && opt.loadOnDemand)) {
 					childUl = "<ul style='display: " + display + "' data-depth='" + (depth + 1) + "'";
 					if (children.length > 0 && !opt.loadOnDemand) {
-						childUl += ">" + this._initChildrenRecursively(childPath, children, depth + 1, checkFlag);
+						childUl += ">" + this._initChildrenRecursively(childPath, children, depth + 1);
 					} else {
 						childUl += " data-populated='false'>";
 					}
@@ -2784,11 +2808,22 @@
 			}
 			return html;
 		},
-		_renderCheckbox: function (checkFlag) {
-			var self = this, css = self.css;
-			return "<span data-chk='" + (checkFlag ? "on" : "off") + "' data-role='checkbox' class='" +
-				css.checkbox + "'><span class='" + (checkFlag ?
-				css.checkboxOn : css.checkboxOff) + "'></span></span>";
+		_renderCheckbox: function (checkstate) {
+			var css = this.css,
+				stateClass;
+			switch (checkstate) {
+			case "on":
+				stateClass = css.checkboxOn;
+				break;
+			case "partial":
+				stateClass = css.checkboxPartial;
+				break;
+			default:
+				stateClass = css.checkboxOff;
+				break;
+			}
+			return "<span data-chk='" + checkstate + "' data-role='checkbox' class='" +
+				css.checkbox + "'><span class='" + stateClass + "'></span></span>";
 		},
 		_renderNodeImage: function (data, binding) {
 			var opt = this.options, hasChildren, img = "", src;
@@ -3032,19 +3067,38 @@
 			}
 			return result;
 		},
+		_populateStateKeys: function (bindings) {
+			if (bindings && !bindings.hasOwnProperty("expandedKey")) {
+				bindings.expandedKey = "__expanded__";
+			}
+			if (bindings && !bindings.hasOwnProperty("checkedKey")) {
+				bindings.checkedKey = "__checked__";
+			}
+			if (bindings.bindings) {
+				this._populateStateKeys(bindings.bindings);
+			}
+		},
+		_populateCheckedStates: function (data, bindings, state) {
+			for (var i = 0; i < data.length; i++) {
+				data[ i ][ bindings.checkedKey ] = state;
+			}
+		},
 		_populatingNode: null,
 		_populateNodeData: function (success, msg, data) {
 			if (!success) {
-				throw new Error($.ig.Tree.locale.errorOnRequest + msg);
+				throw new Error(this._getLocaleValue("errorOnRequest") + msg);
 			}
 			var ul = this._populatingNode.ul, node = this._populatingNode.node,
-				originalData = this.nodeDataFor(node.attr("data-path")),
+				path = node.attr("data-path"),
+				originalData = this.nodeDataFor(path),
 				depth = ul.attr("data-depth"),
 				binding = this._retrieveCurrentDepthBinding(depth - 1),
-				checked, newData = data.data();
+				newData = data.data();
 
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
-				checked = this.isChecked(node);
+				if (this.isChecked(node)) {
+					this._populateCheckedStates(newData, binding.bindings || binding, "on");
+				}
 			}
 
 			// Clear the loading indicator space
@@ -3063,8 +3117,7 @@
 			this._triggerRendering(newData);
 
 			// K.D. August 16th, 2013 Bug #149438 Keeping the already rendered nodes and rendering the loaded ones after
-			ul.append(this._initChildrenRecursively(node.attr("data-path"),
-				newData, parseInt(ul.attr("data-depth"), 10), checked));
+			ul.append(this._initChildrenRecursively(path, newData, depth));
 			ul.attr("data-populated", true);
 			if (this.options.dragAndDrop) {
 				this._initDragAndDrop(ul);
@@ -3133,10 +3186,14 @@
 			dataSource.dataBind(this._populateNodeData, this);
 		},
 		_renderOnDemand: function (node, data) {
-			var ul, checked;
+			var ul, bindings, depth;
 			ul = node.children("ul");
+			depth = parseInt(ul.attr("data-depth"), 10);
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
-				checked = this.isChecked(node);
+				if (this.isChecked(node)) {
+					bindings = this._retrieveCurrentDepthBinding(depth);
+					this._populateCheckedStates(data, bindings, "on");
+				}
 			}
 			this._triggerNodePopulated(null, node);
 			this._triggerRendering(data);
@@ -3144,8 +3201,7 @@
 			// K.D. November 4th, 2013 Bug #156776 When we have render on demand and drag and drop we need to clear the container
 			// because we've added the data to the data source and we've rendered an item upon drop and thus we end up with two
 			// items when we pass through this method
-			ul.html(this._initChildrenRecursively(node.attr("data-path"),
-				data, parseInt(ul.attr("data-depth"), 10), checked));
+			ul.html(this._initChildrenRecursively(node.attr("data-path"), data, depth));
 			ul.attr("data-populated", true);
 			if (this.options.dragAndDrop) {
 				this._initDragAndDrop(ul);
@@ -3161,7 +3217,7 @@
 			if (opt.dataSourceUrl && opt.dataSourceUrl.lastIndexOf("?") === -1) {
 				opt.dataSourceUrl += "?";
 			} else if (!opt.dataSourceUrl) {
-				throw new Error($.ig.Tree.locale.noDataSourceUrl);
+				throw new Error(this._getLocaleValue("noDataSourceUrl"));
 			}
 
 			// K.D. April 26, 2016 Bug #217440 Response data key is not correctly set on additional LOD requests
@@ -3643,8 +3699,81 @@
 				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
 				element.children("img[data-role=node-image]").attr("src", value);
 				break;
+			case binding.expandedKey:
+				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
+				if (value) {
+					this.expand(element);
+				} else {
+					this.collapse(element);
+				}
+				break;
+			case binding.checkedKey:
+				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
+				switch (value) {
+				case "on":
+					this.checkNode(node);
+					break;
+				case "partial":
+					this.partiallyCheckNode(node);
+					break;
+				case "off":
+					this.uncheckNode(node);
+					break;
+				default:
+					break;
+				}
+				break;
 			default:
 				break;
+			}
+		},
+		_cascadeUncheck: function (nodeObj, cascadeDir) {
+			var children = nodeObj.element.find("li[data-role=node]"),
+				self = this,
+				parent;
+
+			// Down cascade up and down from every node.
+			if (!cascadeDir || cascadeDir === "down") {
+				children.each(function () {
+					self.uncheckNode(self._constructNodeObject($(this)), "down");
+				});
+			}
+
+			if (!cascadeDir || cascadeDir === "up") {
+				parent = this.parentNode(nodeObj.element);
+
+				if (parent) {
+					if (parent.find("ul > li > span[data-chk=on]").length <= 0) {
+						this.uncheckNode(this._constructNodeObject(parent), "up");
+					} else {
+						this.partiallyCheckNode(this._constructNodeObject(parent), "up");
+					}
+				}
+			}
+		},
+		_cascadeCheck: function (nodeObj, cascadeDir) {
+			var children = nodeObj.element.find("li[data-role=node]"),
+				self = this,
+				parent;
+
+			// Down cascade up and down from every node.
+			if (!cascadeDir || cascadeDir === "down") {
+				children.each(function () {
+					self.checkNode(self._constructNodeObject($(this)), "down");
+				});
+			}
+
+			if (!cascadeDir || cascadeDir === "up") {
+				parent = this.parentNode(nodeObj.element);
+
+				if (parent) {
+					if (parent.find("ul > li > span[data-chk=on]").length ===
+						parent.find("ul > li").length) {
+						this.checkNode(this._constructNodeObject(parent), "up");
+					} else {
+						this.partiallyCheckNode(this._constructNodeObject(parent), "up");
+					}
+				}
 			}
 		},
 		dataBind: function () {
@@ -3668,95 +3797,108 @@
 				paramType="object" optional="false" Specifies the node element the checkbox of which would be toggled.
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
-			var self = this, opt = self.options, css = self.css, childCheckboxes, childCheckIcons,
-				checkbox, checkIcon, parentLi, noCancel;
+			var self = this, opt = self.options, state, noCancel = true, nodeObject;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
 				return;
 			}
 
-			checkbox = node.children("span[data-role=checkbox]");
-			checkIcon = checkbox.children("span");
-			noCancel = self._triggerNodeCheckstateChanging(event, node);
+			nodeObject = this._constructNodeObject(node);
+			if (event) {
+				noCancel = this._triggerNodeCheckstateChanging(event, nodeObject);
+			}
 			if (noCancel) {
-				if (opt.checkboxMode.toLowerCase() === "tristate") {
-					if (checkbox.attr("data-chk") === "on" || checkbox.attr("data-chk") === "partial") {
-						childCheckboxes = node.find("span[data-role=checkbox]");
-						childCheckIcons = childCheckboxes.children("span");
-						checkbox.attr("data-chk", "off");
-						checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOff);
-						childCheckboxes.attr("data-chk", "off");
-						childCheckIcons.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOff);
-
-						parentLi = checkbox.parent().parent().parent();
-						while (parentLi && parentLi.is("li")) {
-
-							// All child checkboxes are unchecked
-							if (parentLi.find("ul > li > span[data-chk=on]").length <= 0) {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "off");
-								checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-									.addClass(css.checkboxOff);
-								parentLi = this.parentNode(parentLi);
-							} else {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "partial");
-								checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
-									.addClass(css.checkboxPartial);
-								parentLi = this.parentNode(parentLi);
-							}
-						}
-					} else {
-						childCheckboxes = node.find("span[data-role=checkbox]");
-						childCheckIcons = childCheckboxes.children("span");
-						checkbox.attr("data-chk", "on");
-						checkIcon.removeClass(css.checkboxOff).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOn);
-						childCheckboxes.attr("data-chk", "on");
-						childCheckIcons.removeClass(css.checkboxOff).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOn);
-
-						parentLi = checkbox.parent().parent().parent();
-						while (parentLi && parentLi.is("li")) {
-
-							// All childcheckboxes are checked
-							if (parentLi.find("ul > li > span[data-chk=on]").length ===
-									parentLi.find("ul > li").length) {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "on");
-								checkIcon.removeClass(css.checkboxOff).removeClass(css.checkboxPartial)
-									.addClass(css.checkboxOn);
-								parentLi = this.parentNode(parentLi);
-							} else {
-								checkbox = parentLi.children("span[data-role=checkbox]");
-								checkIcon = checkbox.children("span");
-								checkbox.attr("data-chk", "partial");
-								checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
-									.addClass(css.checkboxPartial);
-								parentLi = this.parentNode(parentLi);
-							}
-						}
-					}
+				state = nodeObject.data[ nodeObject.binding.checkedKey ];
+				if (state === "on" || state === "partial") {
+					this.uncheckNode(nodeObject);
 				} else {
-					if (checkbox.attr("data-chk") === "on" || checkbox.attr("data-chk") === "partial") {
-						checkbox.attr("data-chk", "off");
-						checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-							.addClass(css.checkboxOff);
-					} else {
-						checkbox.attr("data-chk", "on");
-						checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
-					}
+					this.checkNode(nodeObject);
 				}
-				self._triggerNodeCheckstateChanged(event, node);
+				if (event) {
+					this._triggerNodeCheckstateChanged(event, nodeObject);
+				}
+			}
+		},
+		checkNode: function (nodeObj, cascadeDir) {
+			/* Applies a checked state to a node.
+			```
+				$(".selector").igTree("checkNode", targetNode);
+			```
+				paramType="object" optional="false" Specifies the node element to apply the state to.
+			*/
+			var opt = this.options,
+				css = this.css,
+				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
+				checkIcon = checkbox.children("span");
+
+			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
+				return;
+			}
+
+			checkbox.attr("data-chk", "on");
+			checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
+			nodeObj.data[ nodeObj.binding.checkedKey ] = "on";
+
+			if (opt.checkboxMode.toLowerCase() === "tristate") {
+				this._cascadeCheck(nodeObj, cascadeDir);
+			}
+		},
+		uncheckNode: function (nodeObj, cascadeDir) {
+			/* Applies an unchecked state to a node.
+			```
+				$(".selector").igTree("uncheckNode", targetNode);
+			```
+				paramType="object" optional="false" Specifies the node element to apply the state to.
+			*/
+			var opt = this.options,
+				css = this.css,
+				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
+				checkIcon = checkbox.children("span");
+
+			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
+				return;
+			}
+
+			checkbox.attr("data-chk", "off");
+			checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
+				.addClass(css.checkboxOff);
+			nodeObj.data[ nodeObj.binding.checkedKey ] = "off";
+
+			if (opt.checkboxMode.toLowerCase() === "tristate") {
+				this._cascadeUncheck(nodeObj, cascadeDir);
+			}
+		},
+		partiallyCheckNode: function (nodeObj, cascadeDir) {
+			/* Applies a partially checked state to a node.
+			```
+				$(".selector").igTree("partiallyCheckNode", targetNode);
+			```
+				paramType="object" optional="false" Specifies the node element to apply the state to.
+			*/
+			var opt = this.options,
+				css = this.css,
+				checkbox = nodeObj.element.children("span[data-role=checkbox]"),
+				checkIcon = checkbox.children("span"),
+				parentNode;
+
+			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
+				return;
+			}
+
+			checkbox.attr("data-chk", "partial");
+			checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
+				.addClass(css.checkboxPartial);
+			nodeObj.data[ nodeObj.binding.checkedKey ] = "partial";
+
+			if (opt.checkboxMode.toLowerCase() === "tristate" || cascadeDir) {
+				parentNode = this.parentNode(nodeObj.element);
+				if (parentNode) {
+					this.partiallyCheckNode(this._constructNodeObject(parentNode), "up");
+				}
 			}
 		},
 		toggle: function (node, event) {
@@ -3767,65 +3909,10 @@
 				paramType="object" optional="false" Specifies the node element the checkbox of which would be toggled.
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
-			var self = this, opt = self.options, css = self.css, noCancel, sibling,
-				siblingExpander, i = 0, expander;
-
-			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
-			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
-			}
-			if (!event) {
-				expander = node.children("." + css.nodeExpander);
+			if (this.isExpanded(node)) {
+				this.collapse(node, event);
 			} else {
-				expander = $(event.target).closest("span[data-role=expander]");
-			}
-
-			if (node.children("ul").attr("data-populated") &&
-				node.children("ul").attr("data-populated") === "false") {
-				this._prepareRequest(node, event);
-				return;
-			}
-
-			if (expander.attr("data-exp") && expander.attr("data-exp") !== "false") {
-				noCancel = self._triggerNodeCollapsing(event, node);
-
-				if (noCancel) {
-					$(node).children("ul").hide(opt.animationDuration, function () {
-						self._triggerNodeCollapsed(event, node);
-					});
-					expander.removeClass(css.collapseIcon).addClass(css.expandIcon).attr("data-exp", false);
-				}
-			} else {
-				noCancel = self._triggerNodeExpanding(event, node);
-
-				if (noCancel) {
-
-					// Performing collapse on the same level if single expand is enabled
-					if (opt.singleBranchExpand) {
-						sibling = node.siblings();
-
-						for (i; i < sibling.length; i++) {
-							siblingExpander = $(sibling[ i ]).children("." + css.nodeExpander);
-							if (siblingExpander.length > 0 && (siblingExpander.attr("data-exp") === "true" ||
-								siblingExpander.attr("data-exp") === true)) {
-								noCancel = self._triggerNodeCollapsing(event, $(sibling[ i ]));
-
-								if (noCancel) {
-									$(sibling[ i ]).children("ul").hide(opt.animationDuration,
-										$.proxy(this._triggerNodeCollapsed(event,
-											$(sibling[ i ])), this));
-									siblingExpander.removeClass(css.collapseIcon).addClass(css.expandIcon)
-										.attr("data-exp", false);
-								}
-							}
-						}
-					}
-
-					node.children("ul").show(opt.animationDuration, function () {
-						self._triggerNodeExpanded(event, node);
-					});
-					expander.removeClass(css.expandIcon).addClass(css.collapseIcon).attr("data-exp", true);
-				}
+				this.expand(node, event);
 			}
 		},
 		expandToNode: function (node, toSelect) {
@@ -3854,75 +3941,91 @@
 				cachedanimationDuration = this.options.animationDuration;
 				this.options.animationDuration = 0;
 				while (parentNode) {
-					if (!this.isExpanded(parentNode)) {
-						this.toggle(parentNode);
-					}
+					this.expand(parentNode);
 					parentNode = this.parentNode(parentNode);
 				}
 				this.options.animationDuration = cachedanimationDuration;
 			}
 		},
-		expand: function (node) {
+		expand: function (node, event) {
 			/* Expands the specified node.
 			```
 				$(".selector").igTree("expand", targetNode);
 			```
-				paramType="object" optional="false" Specifies the node element to expand.
+				paramType="$" optional="false" Specifies the node element to expand.
+				paramType="event" optional="true" The original browser event that triggered the expand.
 			*/
-			var self = this, opt = self.options, css = self.css, sibling, siblingExpander, i = 0, expander;
+			var self = this, opt = self.options, css = self.css, i = 0, expander,
+				nodeObject, noCancel = true, siblings;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
-
 			if (node.children("ul").attr("data-populated") &&
 					node.children("ul").attr("data-populated") === "false") {
 				this._prepareRequest(node);
 				return;
 			}
 
+			nodeObject = this._constructNodeObject(node);
 			expander = node.children("." + css.nodeExpander);
 
-			if (!expander.attr("data-exp") || expander.attr("data-exp") === "false") {
+			if (!this.isExpanded(node)) {
 
 				// Performing collapse on the same level if single expand is enabled
 				if (opt.singleBranchExpand) {
-					sibling = node.siblings();
+					siblings = node.siblings();
 
-					for (i; i < sibling.length; i++) {
-						siblingExpander = $(sibling[ i ]).children("." + css.nodeExpander);
-						if (siblingExpander.length > 0 && (siblingExpander.attr("data-exp") === "true" ||
-							siblingExpander.attr("data-exp") === true)) {
-							$(sibling[ i ]).children("ul").hide(opt.animationDuration);
-							siblingExpander.removeClass(css.collapseIcon).addClass(css.expandIcon)
-								.attr("data-exp", false);
-						}
+					for (i; i < siblings.length; i++) {
+						this.collapse($(siblings[ i ]));
 					}
 				}
-
-				node.children("ul").show(opt.animationDuration);
-				expander.removeClass(css.expandIcon).addClass(css.collapseIcon).attr("data-exp", true);
+				if (event) {
+					noCancel = this._triggerNodeExpanding(event, nodeObject);
+				}
+				if (noCancel) {
+					node.children("ul").show(opt.animationDuration, function () {
+						if (event) {
+							self._triggerNodeExpanded(event, nodeObject);
+						}
+					});
+					expander.removeClass(css.expandIcon).addClass(css.collapseIcon).attr("data-exp", true);
+					nodeObject.data[ nodeObject.binding.expandedKey ] = true;
+				}
 			}
 		},
-		collapse: function (node) {
+		collapse: function (node, event) {
 			/* Collapses the specified node.
 			```
 				$(".selector").igTree("collapse", targetNode);
 			```
-				paramType="object" optional="false" Specifies the node element to collapse.
+				paramType="$" optional="false" Specifies the node element to collapse.
+				paramType="event" optional="true" The original browser event that triggered the collapse.
 			*/
-			var self = this, opt = self.options, css = self.css, expander;
+			var self = this, opt = self.options, css = self.css, expander,
+				nodeObject, noCancel = true;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
+			nodeObject = this._constructNodeObject(node);
 			expander = node.children("." + css.nodeExpander);
 
-			if (expander.attr("data-exp") && expander.attr("data-exp") !== "false") {
-				$(node).children("ul").hide(opt.animationDuration);
-				expander.removeClass(css.collapseIcon).addClass(css.expandIcon).attr("data-exp", false);
+			if (this.isExpanded(node)) {
+				if (event) {
+					noCancel = this._triggerNodeCollapsing(event, nodeObject);
+				}
+				if (noCancel) {
+					$(node).children("ul").hide(opt.animationDuration, function () {
+						if (event) {
+							self._triggerNodeCollapsed(event, nodeObject);
+						}
+					});
+					expander.removeClass(css.collapseIcon).addClass(css.expandIcon).attr("data-exp", false);
+					nodeObject.data[ nodeObject.binding.expandedKey ] = false;
+				}
 			}
 		},
 		parentNode: function (node) {
@@ -3934,7 +4037,7 @@
 				returnType="object" Returns the parent node element, null if the node provided as parameter is a root level node.
 			*/
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			var parent = node.parent().closest("li[data-role=node]");
 			return parent.length > 0 ? parent : null;
@@ -4016,7 +4119,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			var css = this.css, nodeId = node.attr("data-path"), noCancel, prevent = false;
 
@@ -4069,7 +4172,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			var css = this.css, nodeId = node.attr("data-path");
 
@@ -4215,7 +4318,7 @@
 				}
 				return children;
 			}
-			throw new Error($.ig.Tree.locale.incorrectNodeObject);
+			throw new Error(this._getLocaleValue("incorrectNodeObject"));
 		},
 		childrenByPath: function (path) {
 			/* Retrieves a node object collection of the immediate children of the node with the provided path.
@@ -4237,7 +4340,7 @@
 				}
 				return children;
 			}
-			throw new Error($.ig.Tree.locale.incorrectPath + path);
+			throw new Error(this._getLocaleValue("incorrectPath") + path);
 		},
 		isSelected: function (node) {
 			/* Returns true if the provided node element is selected and false otherwise.
@@ -4253,7 +4356,7 @@
 			if (node && node.length > 0) {
 				return this._selectedNode[ 0 ].path === node.attr("data-path");
 			}
-			throw new Error($.ig.Tree.locale.incorrectNodeObject);
+			throw new Error(this._getLocaleValue("incorrectNodeObject"));
 		},
 		isExpanded: function (node) {
 			/* Returns true if the provided node element is expanded and false otherwise.
@@ -4268,8 +4371,9 @@
 				if (expander.length > 0) {
 					return expander.attr("data-exp") === "true";
 				}
+				return false;
 			} else {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 		},
 		isChecked: function (node) {
@@ -4285,8 +4389,9 @@
 				if (checkbox.length > 0) {
 					return checkbox.attr("data-chk") === "on";
 				}
+				return false;
 			} else {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 		},
 		checkState: function (node) {
@@ -4303,7 +4408,7 @@
 					return checkbox.attr("data-chk");
 				}
 			} else {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 		},
 		addNode: function (node, parent, nodeIndex) {
@@ -4328,7 +4433,7 @@
 				}
 				return;
 			}
-			var ul, path, checked, isLi, li, isEmpty, r, binding;
+			var ul, path, isLi, li, isEmpty, r, binding, depth;
 
 			// Root node is to be used
 			if (!parent) {
@@ -4360,10 +4465,13 @@
 				ul = $("<ul data-depth='" + (parseInt(parent.parent().attr("data-depth"), 10) + 1) +
 					"' style='display: none'></ul>").appendTo(parent);
 			}
+			depth = parseInt(ul.attr("data-depth"), 10);
 			path = isLi ? parent.attr("data-path") : "";
-			binding = this._retrieveCurrentDepthBinding(parseInt(ul.attr("data-depth"), 10));
+			binding = this._retrieveCurrentDepthBinding(depth);
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
-				checked = isLi ? this.isChecked(parent) : false;
+				if (this.isChecked(parent)) {
+					this._populateCheckedStates($.isArray(node) ? node : [ node ], binding, "on");
+				}
 			}
 
 			// K.D. July 3rd, 2012 Bug #116064 We need the parent UL depth not the current UL. This would be at least 0 because the root insert is
@@ -4372,17 +4480,16 @@
 			this._triggerRendering(node);
 			isEmpty = ul.children("li").length <= 0;
 			if (nodeIndex === 0) {
-				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
-						checked, ul.children("li").length)).prependTo(ul);
+				li = $(this._initChildrenRecursively(path, node, depth, ul.children("li").length))
+						.prependTo(ul);
 				if (!binding.hasOwnProperty("primaryKey")) {
 					this._recalculatePaths(path);
 				}
 			} else if (!nodeIndex) {
-				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
-						checked, ul.children("li").length)).appendTo(ul);
+				li = $(this._initChildrenRecursively(path, node, depth, ul.children("li").length))
+						.appendTo(ul);
 			} else {
-				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
-						checked, ul.children("li").length))
+				li = $(this._initChildrenRecursively(path, node, depth, ul.children("li").length))
 						.insertBefore(ul.children("li:eq(" + nodeIndex + ")"));
 				if (!binding.hasOwnProperty("primaryKey")) {
 					this._recalculatePaths(path);
@@ -4484,7 +4591,7 @@
 			```
 				returnType="array" The transaction log stack.
 			*/
-			return this.options.dataSource.root()._transactionLog;
+			return this.options.dataSource.root().pendingTransactions();
 		},
 		_triggerSelectionChanging: function (event, node) {
 			var args = {
@@ -4504,34 +4611,34 @@
 
 			this._trigger(this.events.selectionChanged, event, args);
 		},
-		_triggerNodeCollapsing: function (event, node) {
+		_triggerNodeCollapsing: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			return this._trigger(this.events.nodeCollapsing, event, args);
 		},
-		_triggerNodeCollapsed: function (event, node) {
+		_triggerNodeCollapsed: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			this._trigger(this.events.nodeCollapsed, event, args);
 		},
-		_triggerNodeExpanding: function (event, node) {
+		_triggerNodeExpanding: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			return this._trigger(this.events.nodeExpanding, event, args);
 		},
-		_triggerNodeExpanded: function (event, node) {
+		_triggerNodeExpanded: function (event, nodeObj) {
 			var args = {
 					owner: this,
-					node: this._constructNodeObject(node)
+					node: nodeObj
 				};
 
 			this._trigger(this.events.nodeExpanded, event, args);
@@ -4544,10 +4651,10 @@
 			var args = this._constructNodeObject(node);
 			this._trigger(this.events.nodePopulated, event, args);
 		},
-		_triggerNodeCheckstateChanging: function (event, node) {
-			var state = node.children("span[data-role=checkbox]").attr("data-chk"), args = {
+		_triggerNodeCheckstateChanging: function (event, nodeObj) {
+			var state = nodeObj.data[ nodeObj.binding.checkedKey ], args = {
 				owner: this,
-				node: this._constructNodeObject(node),
+				node: nodeObj,
 				currentState: state,
 				newState: state === "off" ? "on" : "off",
 				currentCheckedNodes: this.checkedNodes()
@@ -4555,10 +4662,10 @@
 
 			return this._trigger(this.events.nodeCheckstateChanging, event, args);
 		},
-		_triggerNodeCheckstateChanged: function (event, node) {
-			var state = node.children("span[data-role=checkbox]").attr("data-chk"), args = {
+		_triggerNodeCheckstateChanged: function (event, nodeObj) {
+			var state = nodeObj.data[ nodeObj.binding.checkedKey ], args = {
 				owner: this,
-				node: this._constructNodeObject(node),
+				node: nodeObj,
 				newState: state,
 				newCheckedNodes: this.checkedNodes(),
 				newPartiallyCheckedNodes: this.partiallyCheckedNodes()
@@ -4722,7 +4829,7 @@
 				$(".selector").igTree("destroy");
 			```
 			*/
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 
 			// K.D. February 17th, 2014 Bug #164398 Attaching events only on create as delegate is used instead of bind now.
 			this.element.undelegate();
