@@ -8006,7 +8006,7 @@
 				this._displayFormat = this._inputFormat;
 			}
 		},
-		changeRegional: function() {
+		changeRegional: function() { //igDateEditor
 			var timeouts = this._timeouts;
 			this._initialize();
 			this._timeouts = timeouts;
@@ -11241,6 +11241,18 @@
 		},
 
 		// igDatePicker public methods
+		changeRegional: function() { //igDatePicker
+			var regional, opts = this.options.datepickerOptions;
+			regional = $.extend({}, this._dpRegion());
+			if (opts && typeof opts === "object") {
+				//Update from options for regionals only(!):
+				for (var key in regional) {
+					regional[ key ] = opts[ key ] || regional[ key ];
+				}
+			}
+			this._editorInput.datepicker("option", regional);
+			this._super();
+		},
 		getCalendar: function () {
 			/* Returns a reference to the jQuery calendar used as a picker selector
 			```
