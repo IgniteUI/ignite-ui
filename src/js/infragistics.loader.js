@@ -387,11 +387,11 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.dv_interactivity.js" ]
 	},
 	{
-	    widget: "_ig_datachart_interactivity",
-	    group: $.ig.loaderClass.locale.dvGroup,
-	    dependency: [ { name: "_ig_dv_interactivity" } ],
-	    internal: true,
-	    scripts: [ "$path$/modules/infragistics.datachart_interactivity.js" ]
+        widget: "_ig_datachart_interactivity",
+        group: $.ig.loaderClass.locale.dvGroup,
+        dependency: [ { name: "_ig_dv_interactivity" } ],
+        internal: true,
+        scripts: [ "$path$/modules/infragistics.datachart_interactivity.js" ]
 	},
 	{
 		widget: "_ig_dv_visualdata",
@@ -531,18 +531,18 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
 	},
 	{
-	    widget: "Interactivity",
-	    parentWidget: "igDataChart",
-		dependency: [ { name: "_ig_datachart_interactivity" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-	    description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+        widget: "Interactivity",
+        parentWidget: "igDataChart",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
     },
 	{
-	    widget: "VisualData",
-	    parentWidget: "igDataChart",
-		dependency: [ { name: "_ig_datachart_visualdata" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-	    description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+        widget: "VisualData",
+        parentWidget: "igDataChart",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
     },
 	{
 		widget: "igDataChart.*",
@@ -692,21 +692,21 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.categoryChartDescription
 	},
 	{
-	    widget: "Interactivity",
-	    parentWidget: "igCategoryChart",
-		dependency: [ { name: "_ig_datachart_interactivity" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-	    description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+        widget: "Interactivity",
+        parentWidget: "igCategoryChart",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
     },
 	{
-	    widget: "VisualData",
-	    parentWidget: "igCategoryChart",
-		dependency: [ { name: "_ig_datachart_visualdata" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-	    description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+        widget: "VisualData",
+        parentWidget: "igCategoryChart",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
     },
 	{
-	    widget: "igCategoryChart.*",
+        widget: "igCategoryChart.*",
 		dependency: [ { name: "Interactivity", parentWidget: "igCategoryChart" },
 					{ name: "VisualData", parentWidget: "igCategoryChart" }
 		]
@@ -731,13 +731,13 @@ $.ig.dependencies = [
 	},
 
 	{
-	    widget: "_encoding_core",
-	    dependency: [
+        widget: "_encoding_core",
+        dependency: [
 			{ name: "_ig_ext_text" },
 			{ name: "_ig_ext_collections" }
-	    ],
-	    scripts: [ "$path$/modules/infragistics.encoding.core.js" ],
-	    internal: true
+        ],
+        scripts: [ "$path$/modules/infragistics.encoding.core.js" ],
+        internal: true
 	},
 	{
 		widget: "_barcode_core",
@@ -1351,21 +1351,21 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.mapDescription
 	},
 	{
-	    widget: "Interactivity",
-	    parentWidget: "igMap",
-		dependency: [ { name: "_ig_datachart_interactivity" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-	    description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+        widget: "Interactivity",
+        parentWidget: "igMap",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
     },
 	{
-	    widget: "VisualData",
-	    parentWidget: "igMap",
-		dependency: [ { name: "_ig_datachart_visualdata" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-	    description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+        widget: "VisualData",
+        parentWidget: "igMap",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
     },
 	{
-	    widget: "igMap.*",
+        widget: "igMap.*",
 		dependency: [ { name: "Interactivity", parentWidget: "igMap" },
 					{ name: "VisualData", parentWidget: "igMap" }
 		]
