@@ -4371,6 +4371,7 @@
 				if (expander.length > 0) {
 					return expander.attr("data-exp") === "true";
 				}
+				return false;
 			} else {
 				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
@@ -4388,6 +4389,7 @@
 				if (checkbox.length > 0) {
 					return checkbox.attr("data-chk") === "on";
 				}
+				return false;
 			} else {
 				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
@@ -4589,7 +4591,7 @@
 			```
 				returnType="array" The transaction log stack.
 			*/
-			return this.options.dataSource.root()._transactionLog;
+			return this.options.dataSource.root().pendingTransactions();
 		},
 		_triggerSelectionChanging: function (event, node) {
 			var args = {
