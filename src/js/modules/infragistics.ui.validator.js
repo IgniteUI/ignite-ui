@@ -2093,7 +2093,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			}
 		}
 		this._detachFromForm();
-		$.Widget.prototype.destroy.apply(this, arguments);
+		this._superApply(arguments);
 	}
 });
 $.extend($.ui.igValidator, { version: "<build_number>" });

@@ -582,7 +582,7 @@
 				```
 			*/
 			this._setTargetState(true);
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});

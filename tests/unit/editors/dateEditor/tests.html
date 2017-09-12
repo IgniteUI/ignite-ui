@@ -375,6 +375,44 @@
 
 			});
 
+			var testId = 'Set dateDisplayFormat';
+			test(testId, 8, function () {
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDateEditor({
+						value: new Date(2017, 7, 30, 15, 45, 55)
+					});
+				
+				$editor.igDateEditor("option", "dateDisplayFormat", "dateTime");
+				equal($editor.val(), "8/30/2017 3:45 PM", "Runtime dateTime display format not applied");
+				$editor.trigger("focus");
+				$editor.trigger("blur");
+				equal($editor.val(), "8/30/2017 3:45 PM", "Runtime dateTime display format not applied");
+				$editor.focus();
+				$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
+				equal($editor.val(), "08/30/2017", "Edit text should not change when seeting display format");
+				$editor.blur();
+				equal($editor.val(), "Wednesday, August 30, 2017", "Runtime dateLong display format not applied after exiting edit mode");
+				$editor.remove();
+
+				// test with predefined formats and swap with masks
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDateEditor({
+						dateInputFormat: "timeLong",
+						dateDisplayFormat: "time",
+						value: new Date(2017, 3, 13, 10, 12, 43)
+					});
+
+				$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
+				equal($editor.val(), "13 Apr 17 10:12:43 AM", "Runtime dateDisplayFormat display format not applied");
+				$editor.focus();
+				equal($editor.val(), "10:12:43 AM", "Edit text not correct");
+				$editor.igDateEditor("option", "dateDisplayFormat", "time");
+				equal($editor.val(), "10:12:43 AM", "Edit text should not change");
+				$editor.blur();
+				equal($editor.val(), "10:12 AM", "Runtime time display format not applied");
+				$editor.remove();
+			});
+
 			var testId = 'Initialize minVal and maxVal with wrong values';
 			test(testId, 2, function () {
 				// init MinVal
@@ -3883,7 +3921,7 @@
 			});
 
 			testId = 'Runtime changes for local and regional options';
-			test(testId, 6, function () {
+			test(testId, 9, function () {
 				var $editor = $("<input/>").appendTo("#testBedContainer").igDateEditor({ buttonType: "spin", dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
 
 				equal($editor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
@@ -3897,6 +3935,24 @@
 				$editor.igDateEditor("option", "regional", "en");
 				equal($editor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
 				$editor.trigger("blur").remove();
+
+				//regional with display format change in between:
+				$editor = $("<input/>").appendTo("#testBedContainer")
+					.igDateEditor({
+						regional: "en-US",
+						dateInputFormat: "dateTime",
+						value: new Date(2017, 3, 13, 10, 12, 43)
+					});
+				$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
+				$editor.igDateEditor("option", "regional", "ja");
+				equal($editor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
+				$editor.focus();
+				equal($editor.val(), "2017/04/13 10:12", "Edit text not correct");
+				$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
+				$editor.igDateEditor("option", "regional", "de");
+				$editor.blur();
+				equal($editor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
+				$editor.remove();
 			});
 		});
 

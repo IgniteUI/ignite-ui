@@ -1968,7 +1968,7 @@ $.extend($.ig.loaderClass, {
 		autoDetectLocale: false,
 		/* type="string" Two letter code for current locale. Defaults to "en". */
 		locale: null,
-		/* type="string" Regional code. Can be two or five characters long ("en", "en-GB"). Defaults to "en". */
+		/* type="string" A list of regional codes separated with ',' that will be loaded by the loader. Example: "en,fr,de". Each regional code can be two or five characters long ("en", "en-GB"). Defaults to "en". */
 		regional: null,
 		/* type="function" A function to call when all resources are loaded but before the "ready" notification is sent. */
 		preinit: null,
@@ -2161,7 +2161,8 @@ $.extend($.ig.loaderClass, {
 			useLocale = (type === "script" && this.settings.locale),
 			useRegional = (type === "script" && this.settings.regional),
 			localeScripts,
-			regionalScripts;
+			regionalScripts,
+			locales, regionals, k, regionalScr, localeScr;
 
 		for (i = 0; i < len; i++) {
 			scriptData = (type === "script" ? this._resources[ i ].scripts : this._resources[ i ].css);
@@ -2170,15 +2171,23 @@ $.extend($.ig.loaderClass, {
 				if (this._resources[ i ].locale) {
 					localeScripts = this._resources[ i ].locale.slice(0);
 					while (localeScripts.length > 0) {
-						scriptData.unshift(localeScripts.pop().replace("$locale$", this.settings.locale));
+						locales = this.settings.locale.split(",");
+						localeScr = localeScripts.pop();
+						for ( k = 0; k < locales.length; k++) {
+							scriptData.unshift(localeScr.replace("$locale$", $.trim(locales[ k ])));
+						}
 					}
 				}
 			}
 			if (useRegional) {
 				if (this._resources[ i ].regional) {
+					regionals = this.settings.regional.split(",");
 					regionalScripts = this._resources[ i ].regional.slice(0);
 					while (regionalScripts.length > 0) {
-						scriptData.unshift(regionalScripts.pop().replace("$regional$", this.settings.regional));
+						regionalScr = regionalScripts.pop();
+						for ( k = 0; k < regionals.length; k++) {
+							scriptData.unshift(regionalScr.replace("$regional$", $.trim(regionals[ k ])));
+						}
 					}
 				}
 			}
