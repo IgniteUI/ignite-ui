@@ -177,10 +177,10 @@
 }
 
 .ui-dialog .ui-dialog-content {
-    padding: 2rem 1rem;
+    padding: 1rem;
     margin: 0 auto;
-    width: 100% !important;
-/ / Remove this line after we stop calc the the width wit JS
+    width: 100% !important; /*Remove this line after we stop calc the the width wit JS*/
+    box-sizing: border-box;
 }
 
 .ui-igdialog.ui-dialog .ui-dialog-buttonpane,

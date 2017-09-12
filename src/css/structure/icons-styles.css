@@ -156,7 +156,7 @@
     margin: -0.9em 0 0 0;
     padding: 0;
     position: absolute;
-    right: 0.3em;
+    right: 1em;
     top: 50%;
     width: 1.8em;
 }
@@ -650,6 +650,54 @@
 .ui-igbutton-backcolor:before{content:"\e91e"}
 .ui-igbutton-underline:before{content:"\e91f"}
 .ui-igbutton-viewsource-icon:before{content:"\e920"}
+
+
+.ui-igspreadsheet-copy-icon:before {content:"\e688"}
+.ui-igspreadsheet-cut-icon:before {content:"\e689"}
+.ui-igspreadsheet-paste-icon:before {content:"\e68a"}
+
+
+
+.ui-igspreadsheet-clearcontents-icon:before {content:"\e68f"}
+
+.ui-igspreadsheet-insertnewworksheets-icon:before {content: "\e681"}
+
+.ui-igspreadsheet-renameworksheet-icon:before {content: "\e68e"}
+
+.ui-igspreadsheet-deleteworksheets-icon:before {content:"\e68f"}
+.ui-igspreadsheet-deletecells-icon:before {content:"\e68f"}
+
+/*.ui-igspreadsheet-hiderows-icon:before {content:"\e6da"}*/
+.ui-igspreadsheet-unhiderows-icon:before {content:"\e6da"}
+
+/*.ui-igspreadsheet-autofitrowheight-icon:before {content:"\e6da"}*/
+
+.ui-igspreadsheet-insertcells-icon:before {content:"\e6de"}
+
+/*.ui-igspreadsheet-unselectworksheets-icon:before {content: "\"}
+.ui-igspreadsheet-selectallworksheets-icon:before {content: "\"}*/
+
+
+.ui-igspreadsheet-deletecellsshiftup-icon:before{content:"\e600"}
+
+.ui-igspreadsheet-insertcellsshiftdown-icon:before{content:"\e604"}
+
+.ui-igspreadsheet-deletecellsshiftleft-icon:before{content:"\e606"}
+
+.ui-igspreadsheet-insertcellsshiftright-icon:before{content:"\e602"}
+
+
+
+
+/* Row */
+.ui-igspreadsheet-insertrows-icon:before{content:"\e918"}
+.ui-igspreadsheet-deleterows-icon:before{content:"\e918"}
+
+/* Column */
+.ui-igspreadsheet-insertcolumns-icon:before{content:"\e917"}
+.ui-igspreadsheet-deletecolumns-icon:before{content:"\e917"}
+
+
 
 /* animated font glyphs */
 .ui-loading-icon.ui-icon-balls:before  { content: '\e712'; }
