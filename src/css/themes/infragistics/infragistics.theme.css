@@ -517,7 +517,7 @@ html .ui-button.ui-state-disabled:active {
   color: #444444;
 }
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
-  background: transparent;
+  background: #fff;
   color: #444444;
 }
 .ui-state-default a,
@@ -839,12 +839,12 @@ a.ui-button:active,
 }
 .ui-iggrid-deletebutton.ui-state-active,
 .ui-iggrid-deletebutton.ui-state-hover {
-  background: #FFFFFF;
+  background: #4897AA;
   border-color: #4897AA;
 }
 .ui-iggrid-deletebutton.ui-state-active .ui-icon,
 .ui-iggrid-deletebutton.ui-state-hover .ui-icon {
-  color: #a8d6e1;
+  color: #fff;
 }
 .ui-ig-record td.ui-state-hover,
 .ui-ig-record td.ui-state-active {
@@ -858,7 +858,7 @@ a.ui-button:active,
   color: #444444;
 }
 .ui-iggrid-header.ui-state-default {
-  border-color: #dadada;
+  border-color: #888888;
   background: #777777;
   color: #fff;
 }
@@ -1129,7 +1129,7 @@ a.ui-button:active,
 }
 .ui-iggrid th .ui-icon .ui-icon,
 .ui-iggrid th.ui-widget-header .ui-icon {
-  color: #888888;
+  color: #fff;
 }
 .ui-iggrid tbody td,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
@@ -1451,7 +1451,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   color: #222222;
 }
 .ui-iggrid-indicatorcontainer .ui-iggrid-moving-indicator {
-  background-color: #888888;
+  background-color: #fff;
 }
 @-webkit-keyframes addingHighlight {
   0% {
@@ -2764,7 +2764,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   border-right: 1px solid #dadada;
 }
 .ui-igtreegrid-contextrow-icon.ui-icon.ui-icon-bookmark {
-  color: #888888;
+  color: #fff;
 }
 /* ============
   Scheduler
@@ -3195,10 +3195,10 @@ Spreadsheet colors END
   outline: none;
   border-left-color: transparent;
   border-top-color: transparent;
-  border-bottom-color: #dadada;
+  border-bottom-color: #888888;
 }
 .ui-iggrid-table th.ui-iggrid-header:first-of-type {
-  border-left: 1px solid #dadada;
+  border-left: 1px solid #888888;
 }
 .ui-iggrid-table th.ui-iggrid-header.ui-state-hover {
   border-bottom-color: #a8d6e1;

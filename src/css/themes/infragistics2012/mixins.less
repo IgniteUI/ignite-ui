@@ -9,26 +9,26 @@
 
 // states
 .stateNormal {
-  border-color: @igGray5;
+  border-color: @table-border-color;
   color: @text-color;
-
 }
+
 .stateHover {
   border-color: @accent1;
-  background-color: @accent2;
-  color: @accent1;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
+  color: #fff;
 }
 
 .stateActive {
   border-color: @accent2;
-  background-color: @accent1;
-  color: @accent2;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
+  color: #fff;
 }
 
 .stateFocused {
   border-color: @accent2;
-  background-color: @accent1;
-  color: @accent2;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
+  color: #fff;
 }
 
 

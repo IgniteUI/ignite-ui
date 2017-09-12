@@ -52,10 +52,10 @@
 
 .ui-iggrid-deletebutton.ui-state-active,
 .ui-iggrid-deletebutton.ui-state-hover {
-  background: @body-bg;
-  border-color: @accent2;
+  background: @accent1;
+  border-color: @accent1;
   .ui-icon {
-    color: @accent1;
+    color: #fff;
   }
 }
 
@@ -75,7 +75,7 @@
 // Widget header
 .ui-iggrid-header.ui-state-default {
   border-color: @grid-header-border;
-  background: @grid-header-bg;
+  .grafient-mixin(@gradient-2-1, @gradient-2-2);
   color: @grid-header-text;
 }
 
@@ -109,12 +109,6 @@
 .ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item .ui-iggrid-page.ui-state-default {
   background: transparent;
   border-color: transparent;
-  a,
-  .ui-icon,
-  .ui-iggrid-nextpagelabel,
-  .ui-iggrid-prevpagelabel {
-    color: @grid-footer-color;
-  }
 }
 
 .ui-iggrid .ui-iggrid-footer .ui-iggrid-paging .ui-iggrid-page.ui-state-hover,
@@ -125,7 +119,7 @@
 .ui-iggrid-paging .ui-iggrid-paging-item.ui-state-hover .ui-icon,
 .ui-iggrid-paging .ui-iggrid-paging-item.ui-state-active .ui-icon,
 .ui-iggrid-paging .ui-iggrid-paging-item.ui-state-focus .ui-icon {
-  color: @accent1;
+  color: @accent2;
 }
 
 .ui-iggrid .ui-iggrid-paging-item.ui-state-focus,
@@ -163,9 +157,9 @@
 .ui-widget-content.ui-iggrid-buttoncontainer {
   .boxShadow-3;
   .ui-iggrid-button.ui-state-hover {
-    color: @text-color-light;
+    color: @text-color;
     .ui-icon {
-      color: @text-color-light;
+      color: @text-color;
     }
   }
 }
@@ -236,7 +230,7 @@
 
 .ui-iggrid-summaries-footer-dialog-buttons-container {
   .ui-button.ui-state-hover {
-    color: @text-color-light;
+    color: @text-color;
   }
 }
 
@@ -299,12 +293,12 @@
 }
 
 .ui-iggrid th.ui-state-hover {
-  background: @grid-header-active-bg;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
 }
 
 .ui-iggrid th.ui-state-active,
 .ui-iggrid th.ui-state-focus {
-  background: @grid-header-active-bg;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
   color: @grid-header-text-active;
 }
 
@@ -313,7 +307,7 @@
 }
 
 .ui-iggrid .ui-iggrid-footer {
-  background-color: @grid-footer-bg;
+  .grafient-mixin(@gradient-1-1, @gradient-1-2);
   color: @grid-footer-color;
 }
 
@@ -338,7 +332,7 @@
 }
 
 .ui-iggrid .ui-iggrid-toolbar {
-  background: @grid-toolbar-bg;
+  .grafient-mixin(@gradient-0-1, @gradient-0-2);
   border-color: @table-border-color;
 }
 
@@ -370,9 +364,13 @@
   text-decoration: none;
 }
 
-.ui-iggrid tbody .ui-icon,
-.ui-iggrid .ui-iggrid-addrow .ui-icon {
+.ui-iggrid tbody .ui-icon
+{
   color: @ui-icons-dark;
+}
+
+.ui-iggrid .ui-iggrid-addrow .ui-icon {
+  color: @ui-icons-accent;
 }
 
 .ui-iggrid .ui-igedit-button .ui-icon,
@@ -421,7 +419,7 @@
 
   // highlight cell in selected col
   .ui-iggrid-colasc.ui-state-highlight.ui-state-hover {
-    background: lighten(@accent1, 37%);
+    background: lighten(@accent1, 47%);
     color: @iggrid-highlight-color;
   }
   .ui-iggrid-colasc.ui-state-active.ui-state-highlight.ui-state-hover {
@@ -432,7 +430,7 @@
 .ui-iggrid-pagesizedropdown.ui-state-hover,
 .ui-iggrid-pagedropdowncontainer .ui-igedit.ui-state-hover {
   .ui-igedit-button-common {
-    background: @accent1;
+    .grafient-mixin(@gradient-3-1, @gradient-3-2);
   }
 }
 
@@ -1609,7 +1607,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 .ui-igcombo.ui-state-active .ui-igcombo-button,
 .ui-igcombo.ui-state-active .ui-igcombo-buttonicon,
 .ui-igcombo.ui-state-hover .ui-igcombo-button {
-  background-color: @accent1;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
   border-color: @accent1;
   color: @text-color-light;
 }
@@ -2892,9 +2890,6 @@ Spreadsheet colors END
 
 .ui-iggrid .ui-iggrid-addrow {
   border-color: @table-border-color;
-  .ui-icon {
-    color: @ui-icons-accent;
-  }
 }
 
 .ui-iggrid-table th.ui-iggrid-header {
@@ -2906,7 +2901,7 @@ Spreadsheet colors END
     border-left: 1px solid @grid-header-border;
   }
   &.ui-state-hover {
-    border-bottom-color: @table-border-color-active;
+    border-bottom-color: @grid-header-border;
   }
 }
 

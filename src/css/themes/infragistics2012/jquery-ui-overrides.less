@@ -109,7 +109,7 @@
 }
 
 .ui-datepicker .ui-datepicker-header {
-  background: @accent1;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
   color: #fff;
 }
 
@@ -299,7 +299,7 @@
   padding: .5em .5em 0;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  background: @tabs-header-bg;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
 }
 
 .ui-tabs .ui-tabs-nav li {
@@ -308,7 +308,7 @@
 }
 
 .ui-tabs .ui-tabs-nav li.ui-state-default {
-  background: @tabs-normal-tab-bg;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
   border-color: @tabs-normal-tab-border;
   .ui-tabs-anchor {
     color: @tabs-normal-tab-color
@@ -316,8 +316,8 @@
 }
 
 .ui-tabs .ui-tabs-nav li.ui-state-hover {
-  background: @igGray10;
-  border-color: @igGray10;
+  .grafient-mixin(darken(@gradient-3-1,7%), darken(@gradient-3-2,7%));
+  border-color: @tabs-normal-tab-border;
   .ui-tabs-anchor {
     color: #fff;
   }
@@ -401,7 +401,7 @@ html .ui-button.ui-state-disabled:active {
 }
 
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
-  background: transparent;
+  background: @edit-container-bg;
   color: @text-color;
 }
 
@@ -609,7 +609,7 @@ a.ui-button:active,
 }
 
 .ui-igedit-button-common.ui-state-hover {
-  background: @accent1;
+  .grafient-mixin(@gradient-3-1, @gradient-3-2);
   .ui-icon {
     color: @text-color-light;
   }
@@ -618,7 +618,7 @@ a.ui-button:active,
 .ui-igscheduler-appointment-form-group .ui-state-hover,
 .ui-igscheduler-appointment-form-group .ui-state-focus {
   .ui-igedit-button-common {
-    background: @accent1;
+    .grafient-mixin(@gradient-3-1, @gradient-3-2);
   }
 }
 

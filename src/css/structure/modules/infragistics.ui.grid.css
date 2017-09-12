@@ -1457,7 +1457,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-iggrid-button .ui-icon + span {
-    padding: .4rem .5rem .3rem 2.8rem;
+    padding: .3rem .5rem .3rem 2.8rem;
 }
 
 .ui-iggrid-button:first-of-type {

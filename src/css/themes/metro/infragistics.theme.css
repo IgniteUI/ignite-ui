@@ -519,7 +519,7 @@ html .ui-button.ui-state-disabled:active {
   color: #000000;
 }
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
-  background: transparent;
+  background: #fff;
   color: #000000;
 }
 .ui-state-default a,

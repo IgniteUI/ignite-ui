@@ -687,7 +687,7 @@ html .ui-button.ui-state-disabled:active {
   color: #000000;
 }
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
-  background: transparent;
+  background: #fff;
 }
 .ui-state-default a,
 .ui-state-default a:link,
@@ -1956,6 +1956,7 @@ background-color: @igGray3;*/
   border: 1px solid #cccccc;
   background-color: #e5f2ff;
   color: #007aff;
+  color: #000000;
 }
 .ui-ightmleditor {
   background-color: #cccccc;
