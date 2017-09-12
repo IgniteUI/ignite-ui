@@ -3940,9 +3940,9 @@
 				var $editor = $("<input/>").appendTo("#testBedContainer").igDateEditor({ value: new Date(2017, 7, 18, 18, 6) });
 				equal($editor.igDateEditor("displayValue"), "8/18/2017", "Format should be in English");
 				$editor.igDateEditor("option", "regional", "ja");
-				equal($editor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in German");
+				equal($editor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in Japanese");
 				$editor.igDateEditor("setFocus");
-				equal($editor.igDateEditor("field").val(), "2017/08/18", "Display Format should be in German");
+				equal($editor.igDateEditor("field").val(), "2017/08/18", "Input Format should be in Japanese");
 				$editor.igDateEditor("option", "regional", "en");
 				equal($editor.igDateEditor("field").val(), "08/18/2017", "Format should be in English");
 				$editor.trigger("blur").remove();

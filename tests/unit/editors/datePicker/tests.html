@@ -1134,9 +1134,9 @@
 				$editor.igDatePicker("option", "language", "ja");
 				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.ja.Editor.datePickerButtonTitle, "Title of the button should be in Japanese");
 				$editor.igDatePicker("option", "regional", "ja");
-				equal($editor.igDatePicker("displayValue"), "2017/08/18", "Display Format should be in German");
+				equal($editor.igDatePicker("displayValue"), "2017/08/18", "Display Format should be in Japanese");
 				$editor.igDatePicker("setFocus");
-				equal($editor.igDatePicker("field").val(), "2017/08/18", "Display Format should be in German");
+				equal($editor.igDatePicker("field").val(), "2017/08/18", "Input Format should be in Japanese");
 				$editor.igDatePicker("option", "regional", "en");
 				equal($editor.igDatePicker("field").val(), "08/18/2017", "Format should be in English");
 				$editor.trigger("blur").remove();
