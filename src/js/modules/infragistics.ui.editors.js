@@ -7899,7 +7899,7 @@
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
-				this._convertDateMaskToDigitMask(this.options.dateInputFormat);
+				this._convertDateMaskToDigitMask(this._inputFormat);
 			this._setNumericType();
 
 			// RegEx for /Date(milisecond)/
@@ -7958,7 +7958,6 @@
 			case "dateDisplayFormat":
 
 				// D.P. 30th Aug 2017 #1162 Runtime set of predefined dateDisplayFormat doesn't produce the expected pattern
-				delete this._dispalyFormat;
 				this._applyRegionalSettings();
 				if (!this._editMode) {
 					this._editorInput.val(this._getDisplayValue());
@@ -7980,31 +7979,31 @@
 				break;
 			}
 		},
-		_applyRegionalSettings: function () { //DateEditor
-			if (this.options.dateInputFormat !== null) {
-				if (this._inputFormat === undefined) {
-					this._inputFormat = this.options.dateInputFormat;
-				}
-				if (this._inputFormat === "date" || this._inputFormat === "dateLong" ||
-					this._inputFormat === "dateTime" || this._inputFormat === "time" ||
-					this._inputFormat === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalValue(this._inputFormat + "Pattern");
+		_applyRegionalSettings: function () { // DateEditor
+			var iFormat = this.options.dateInputFormat,
+				dFormat = this.options.dateDisplayFormat;
+
+			// N.A. September 12th, 2017 #1180 Preserve dateInputFormat and dateDisplayFormat options.
+			if (iFormat !== null) {
+				if (iFormat === "date" || iFormat === "dateLong" || iFormat === "dateTime" ||
+					iFormat === "time" || iFormat === "timeLong") {
+					this._inputFormat = this._getRegionalValue(iFormat + "Pattern");
+				} else {
+					this._inputFormat = iFormat;
 				}
 			} else {
-				this.options.dateInputFormat = this._getRegionalValue("datePattern");
+				this._inputFormat = this._getRegionalValue("datePattern");
 			}
-			if (this.options.dateDisplayFormat !== null) {
-				if (this._dispalyFormat === undefined) {
-					this._dispalyFormat = this.options.dateDisplayFormat;
-				}
-				if (this._dispalyFormat === "date" || this._dispalyFormat === "dateLong" ||
-					this._dispalyFormat === "dateTime" || this._dispalyFormat === "time" ||
-					this._dispalyFormat === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalValue(this._dispalyFormat + "Pattern");
+
+			if (dFormat !== null) {
+				if (dFormat === "date" || dFormat === "dateLong" || dFormat === "dateTime" ||
+					dFormat === "time" || dFormat === "timeLong") {
+					this._displayFormat = this._getRegionalValue(dFormat + "Pattern");
+				} else {
+					this._displayFormat = dFormat;
 				}
 			} else {
-				this.options.dateDisplayFormat = this.options.dateInputFormat;
-				this._dispalyFormat = this._inputFormat;
+				this._displayFormat = this._inputFormat;
 			}
 		},
 		changeRegional: function() {
@@ -9546,7 +9545,7 @@
 				dateObject = this._getDateOffset(dateObject);
 			}
 
-			return $.ig.formatDate(this.options.dateDisplayFormat, dateObject, this.options.regional);
+			return $.ig.formatDate(this._displayFormat, dateObject, this.options.regional);
 		},
 		_valueFromText: function (text) { //igDateEditor
 			// TODO Verify
