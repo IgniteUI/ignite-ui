@@ -6328,7 +6328,8 @@
 
             // R.K 18th October 2016: #434 Filtering event returns wrong expression
             filtering.type = type;
-            filtering.caseSensitive = this.options.caseSensitive;
+			filtering.caseSensitive = this.options.caseSensitive;
+			// A.K. September 13th, 2017 #1184 igCombo filters its items when loading next chunk of data
             filtering.expressions = expressions;
             filtering.expressions.forEach(function(element) {
                 if (element.fieldName === undefined) {
@@ -6336,6 +6337,7 @@
                 }
             });
 
+			// A.K. September 13th, 2017 #1183 igCombo filtered event is fired, even if filtering event is cancelled
             noCancel = event ? this._triggerFiltering(event) : true;
             if (noCancel) {
 
