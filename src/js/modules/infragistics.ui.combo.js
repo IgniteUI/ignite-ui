@@ -6276,17 +6276,26 @@
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
                 returnType="object" Returns reference to this igCombo.
             */
-            var expressions = [];
+			var expressions = [],
+				type = this.options.filteringType,
+				clearFiltering = texts === "",
+				ds = this.options.dataSource;
 
             if (!this._isFilteringEnabled()) {
                 return this;
-            }
+			}
+			
+			expressions = this._options.expression =
+				this._generateExpressions(texts);
 
-            expressions = this._options.expression =
-                this._generateExpressions(texts);
+			if (type === "local") {
+				if (clearFiltering) {
+					this._options.expression = null;
+					ds.clearLocalFilter();
+				}
+			}		
 
-            this.filterByExpressions(expressions, event);
-
+			this.filterByExpressions(expressions, event);
         },
         filterByExpressions: function (expressions, event) {
             /* Creates expressions for filtering.
@@ -6306,7 +6315,6 @@
             */
             var noCancel,
 				logic = this.options.filteringLogic,
-				clearFiltering = expressions[ 0 ] ? expressions[ 0 ].expr : "",
                 filterExprUrlKey = this.options.filterExprUrlKey,
                 type = this.options.filteringType,
                 ds = this.options.dataSource,
@@ -6316,12 +6324,12 @@
 
             if (!this._isFilteringEnabled()) {
                 return this;
-            }
+			}
 
             // R.K 18th October 2016: #434 Filtering event returns wrong expression
             filtering.type = type;
             filtering.caseSensitive = this.options.caseSensitive;
-            filtering.expressions = this._options.expression = expressions;
+            filtering.expressions = expressions;
             filtering.expressions.forEach(function(element) {
                 if (element.fieldName === undefined) {
                     element.fieldName = textKeyValueOption;
@@ -6333,12 +6341,7 @@
 
                 // Handle local filtering
                 if (type === "local") {
-                    if (clearFiltering) {
-                        this._options.expression = null;
-                        ds.clearLocalFilter();
-                    } else {
-                        ds.filter(filtering.expressions, logic, true);
-                    }
+					ds.filter(filtering.expressions, logic, true);
 
                     if (this.options.virtualization) {
                         this._handleLocalFilteringWithVirt(ds);
