@@ -6306,7 +6306,7 @@
             */
             var noCancel,
 				logic = this.options.filteringLogic,
-				clearFiltering = expressions[0] ? expressions[0].expr : "",
+				clearFiltering = expressions[ 0 ] ? expressions[ 0 ].expr : "",
                 filterExprUrlKey = this.options.filterExprUrlKey,
                 type = this.options.filteringType,
                 ds = this.options.dataSource,
