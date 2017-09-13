@@ -6261,119 +6261,118 @@
 				this._itemsFromData(this._options.selectedData) : null;
 		},
 		filter: function (texts, event) {
-			/* Triggers filtering.
-			```
-				//filter by string
-				$(".selector").igCombo("filter", "Bob");
+            /* Triggers filtering.
+            ```
+                //filter by string
+                $(".selector").igCombo("filter", "Bob");
 
-				//filter by array of strings
-				$(".selector").igCombo("filter", ["Smith", "Mary"], true);
+                //filter by array of strings
+                $(".selector").igCombo("filter", ["Smith", "Mary"], true);
 
-				//filter by string and trigger events
-				$(".selector").igCombo("filter", "Bob", true);
-			```
-				paramType="string|array" optional="true" Filter by string, or array of strings.
-				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-				returnType="object" Returns reference to this igCombo.
-			*/
-			var clearFiltering = texts === "",
-				type = this.options.filteringType,
-				ds = this.options.dataSource,
-				expressions = [];
+                //filter by string and trigger events
+                $(".selector").igCombo("filter", "Bob", true);
+            ```
+                paramType="string|array" optional="true" Filter by string, or array of strings.
+                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+                returnType="object" Returns reference to this igCombo.
+            */
+            var expressions = [];
 
-			if (!this._isFilteringEnabled()) {
-				return this;
-			}
+            if (!this._isFilteringEnabled()) {
+                return this;
+            }
 
-			if (type === "local") {
-				if (clearFiltering) {
-					this._options.expression = null;
-					ds.clearLocalFilter();
+            expressions = this._options.expression =
+                this._generateExpressions(texts);
+
+            this.filterByExpressions(expressions, event);
+
+        },
+        filterByExpressions: function (expressions, event) {
+            /* Creates expressions for filtering.
+            ```
+                //filter by expression
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
+
+                //filter by array of expressions
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
+
+                //filter by array of expressions and trigger events
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
+            ```
+                paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
+                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+                returnType="object" Returns reference to this igCombo.
+            */
+            var noCancel,
+				logic = this.options.filteringLogic,
+				clearFiltering = expressions[0] ? expressions[0].expr : "",
+                filterExprUrlKey = this.options.filterExprUrlKey,
+                type = this.options.filteringType,
+                ds = this.options.dataSource,
+                paging = ds.settings.paging,
+                filtering = ds.settings.filtering,
+                textKeyValueOption = this.options.textKey;
+
+            if (!this._isFilteringEnabled()) {
+                return this;
+            }
+
+            // R.K 18th October 2016: #434 Filtering event returns wrong expression
+            filtering.type = type;
+            filtering.caseSensitive = this.options.caseSensitive;
+            filtering.expressions = this._options.expression = expressions;
+            filtering.expressions.forEach(function(element) {
+                if (element.fieldName === undefined) {
+                    element.fieldName = textKeyValueOption;
+                }
+            });
+
+            noCancel = event ? this._triggerFiltering(event) : true;
+            if (noCancel) {
+
+                // Handle local filtering
+                if (type === "local") {
+                    if (clearFiltering) {
+                        this._options.expression = null;
+                        ds.clearLocalFilter();
+                    } else {
+                        ds.filter(filtering.expressions, logic, true);
+                    }
+
+                    if (this.options.virtualization) {
+                        this._handleLocalFilteringWithVirt(ds);
+                    } else {
+                        this._handleLocalFiltering(ds);
+                    }
+                }
+
+				if (type === "remote") {
+					if (paging) {
+						paging.pageIndex = 0;
+						paging.appendPage = false;
+					}
+
+					if (filterExprUrlKey) {
+						filtering.filterExprUrlKey = filterExprUrlKey;
+					}
+
+					// Cache the evt to use it when firing filtered
+					this._options.remoteFilteringTriggerEvt = event;
+					ds.dataBind(this._handleRemoteFiltering, this);
+				}
+
+				if (this._options.dropDownOpened) {
+					this.listScrollTop(0);
+				}
+
+				if (event && !this._options.remoteFilteringTriggerEvt) {
+					this._triggerFiltered(event);
 				}
 			}
 
-			expressions = this._options.expression =
-				this._generateExpressions(texts);
-
-			this.filterByExpressions(expressions, event);
-
-		},
-		filterByExpressions: function (expressions, event) {
-			/* Creates expressions for filtering.
-			```
-				//filter by expression
-				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
-
-				//filter by array of expressions
-				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
-
-				//filter by array of expressions and trigger events
-				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
-			```
-				paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
-				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-				returnType="object" Returns reference to this igCombo.
-			*/
-			var logic = this.options.filteringLogic,
-				filterExprUrlKey = this.options.filterExprUrlKey,
-				type = this.options.filteringType,
-				ds = this.options.dataSource,
-				paging = ds.settings.paging,
-				filtering = ds.settings.filtering,
-				textKeyValueOption = this.options.textKey;
-
-			if (!this._isFilteringEnabled()) {
-				return this;
-			}
-
-			// R.K 18th October 2016: #434 Filtering event returns wrong expression
-			filtering.type = type;
-			filtering.caseSensitive = this.options.caseSensitive;
-			filtering.expressions = this._options.expression = expressions;
-			filtering.expressions.forEach(function(element) {
-				if (element.fieldName === undefined) {
-					element.fieldName = textKeyValueOption;
-				}
-			});
-
-			if (event) {
-				this._triggerFiltering(event);
-			}
-
-			if (type === "local") {
-				ds.filter(filtering.expressions, logic, true);
-				if (this.options.virtualization) {
-					this._handleLocalFilteringWithVirt(ds);
-				} else {
-					this._handleLocalFiltering(ds);
-				}
-			}
-
-			if (type === "remote") {
-				if (paging) {
-					paging.pageIndex = 0;
-					paging.appendPage = false;
-				}
-
-				if (filterExprUrlKey) {
-					filtering.filterExprUrlKey = filterExprUrlKey;
-				}
-
-				// Cache the evt to use it when firing filtered
-				this._options.remoteFilteringTriggerEvt = event;
-				ds.dataBind(this._handleRemoteFiltering, this);
-			}
-
-			if (this._options.dropDownOpened) {
-				this.listScrollTop(0);
-			}
-
-			if (event && !this._options.remoteFilteringTriggerEvt) {
-				this._triggerFiltered(event);
-			}
-
-			return this;
-		},
+            return this;
+        },
 		clearFiltering: function (event) {
 			/* Clears filtering.
 			```
