@@ -7668,7 +7668,7 @@
 			}
 
 			_options = null;
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
