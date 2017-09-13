@@ -40,6 +40,15 @@
     box-sizing: content-box;
 }
 
+.comboItemContainer {
+    display: flex;
+    align-content: center;
+}
+
+.empImage a {
+  display: block;
+}
+
 .ui-igcombo-mode-readonly .ui-igcombo-button, .ui-igcombo-mode-readonly .ui-igcombo-clear {
     cursor: default;
 }
