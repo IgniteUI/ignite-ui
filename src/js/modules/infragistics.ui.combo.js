@@ -6284,7 +6284,7 @@
             if (!this._isFilteringEnabled()) {
                 return this;
 			}
-			
+
 			expressions = this._options.expression =
 				this._generateExpressions(texts);
 
@@ -6293,7 +6293,7 @@
 					this._options.expression = null;
 					ds.clearLocalFilter();
 				}
-			}		
+			}
 
 			this.filterByExpressions(expressions, event);
         },
