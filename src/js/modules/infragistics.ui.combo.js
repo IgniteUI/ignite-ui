@@ -6329,6 +6329,7 @@
             // R.K 18th October 2016: #434 Filtering event returns wrong expression
             filtering.type = type;
 			filtering.caseSensitive = this.options.caseSensitive;
+
 			// A.K. September 13th, 2017 #1184 igCombo filters its items when loading next chunk of data
             filtering.expressions = expressions;
             filtering.expressions.forEach(function(element) {
