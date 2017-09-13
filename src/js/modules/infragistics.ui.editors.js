@@ -11247,7 +11247,9 @@
 			if (opts && typeof opts === "object") {
 				//Update from options for regionals only(!):
 				for (var key in regional) {
-					regional[ key ] = opts[ key ] || regional[ key ];
+					if (regional.hasOwnProperty(key)) {
+						regional[ key ] = opts[ key ] || regional[ key ];
+					}
 				}
 			}
 			this._editorInput.datepicker("option", regional);

@@ -3932,7 +3932,7 @@
 				equal($editor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
 				$editor.igDateEditor("setFocus");
 				equal($editor.igDateEditor("field").val(), "2017/08/18 18:06", "Display Format should be in German");
-				$editor.igDateEditor("option", "regional", "en");
+				$editor.igDateEditor("option", "regional", "en-US");
 				equal($editor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
 				$editor.trigger("blur").remove();
 
@@ -3943,7 +3943,7 @@
 				equal($editor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in Japanese");
 				$editor.igDateEditor("setFocus");
 				equal($editor.igDateEditor("field").val(), "2017/08/18", "Input Format should be in Japanese");
-				$editor.igDateEditor("option", "regional", "en");
+				$editor.igDateEditor("option", "regional", "en-US");
 				equal($editor.igDateEditor("field").val(), "08/18/2017", "Format should be in English");
 				$editor.trigger("blur").remove();
 

@@ -1150,7 +1150,7 @@
 				$editor.igDatePicker("option", "datepickerOptions", { 
 					monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'S', 'Oct(custom)', 'Nov', 'Dec'],
 				 });
-				$editor.igDatePicker("option", "regional", "en");
+				$editor.igDatePicker("option", "regional", "en-US");
 				equal($editor.igDatePicker("field").val(), "10/18/2017 06:06 PM", "Format should be in English");
 				checkCalendarTitle("Oct(custom) 2017", "English(custom)");
 				$editor.remove();
@@ -1165,7 +1165,7 @@
 				equal($editor.igDatePicker("displayValue"), "2017/08/18", "Display Format should be in Japanese");
 				$editor.igDatePicker("setFocus");
 				equal($editor.igDatePicker("field").val(), "2017/08/18", "Input Format should be in Japanese");
-				$editor.igDatePicker("option", "regional", "en");
+				$editor.igDatePicker("option", "regional", "en-US");
 				equal($editor.igDatePicker("field").val(), "08/18/2017", "Format should be in English");
 				$editor.remove();
 			});
