@@ -15,6 +15,8 @@
 * jquery.ui.resizable.js
 * infragistics.util.js
 * infragistics.util.jquery.js
+* infragistics.ui.widget.js
+*
 * Example to use:
 *	<script type="text/javascript">
 *	$(function () {
@@ -29,10 +31,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery"
+			"./infragistics.ui.widget"
 		], factory );
 	} else {
 
@@ -123,7 +122,7 @@
 		Note: if application uses tabIndex attributes for child elements of dialog-content, then it is not recommended to have mixed values of tabIndexes for
 		elements located inside and outside of dialog.
 	*/
-	$.widget("ui.igDialog", {
+	$.widget("ui.igDialog", $.ui.igWidget, {
 		options: {
 			/* type="dom" Gets the jquery DIV object which is used as the main container for the dialog.
 				Notes:
@@ -607,96 +606,128 @@
 				```
 			*/
 			trackFocus: true,
-			/* type="string" Gets/Sets the title/tooltip for the close button in the dialog. That is an override for $.ig.Dialog.locale.closeButtonTitle.
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the close button in the dialog. Use option [locale.closeButtonTitle](ui.igdialog#options:locale.closeButtonTitle).*/
+			closeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the minimize button in the dialog. Use option [locale.minimizeButtonTitle](ui.igdialog#options:locale.minimizeButtonTitle).*/
+			minimizeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the maximize button in the dialog. Use option [locale.minimizeButtonTitle](ui.igdialog#options:locale.minimizeButtonTitle).*/
+			maximizeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the pin button in the dialog. Use option [locale.pinButtonTitle](ui.igdialog#options:locale.pinButtonTitle).*/
+			pinButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the unpin button in the dialog. Use option [locale.unpinButtonTitle](ui.igdialog#options:locale.unpinButtonTitle).*/
+			unpinButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the restore button in the dialog.  Use option [locale.restoreButtonTitle](ui.igdialog#options:locale.restoreButtonTitle).*/
+			restoreButtonTitle: undefined,
+			locale: {
+				/* type="string" Gets/Sets the title/tooltip for the close button in the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
-					closeButtonTitle : "X"
+					locale: {
+						closeButtonTitle : "Close"
+					}
 				});
 
 				//Get
-				var title = $(".selector").igDialog("option", "closeButtonTitle");
+				var text = $(".selector").igDialog("option", "locale").closeButtonTitle;
 
 				//Set
-				$(".selector").igDialog("option", "closeButtonTitle", "X");
+				$(".selector").igDialog("option", "locale", { closeButtonTitle: "Close"});
 				```
-			*/
-			closeButtonTitle: null,
-			/* type="string" Gets/Sets the title/tooltip for the minimize button in the dialog. That is an override for $.ig.Dialog.locale.minimizeButtonTitle.
+				*/
+				closeButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the minimize button in the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
-					minimizeButtonTitle : "MIN"
+					locale: {
+						minimizeButtonTitle : "Minimize"
+					}
 				});
 
 				//Get
-				var title = $(".selector").igDialog("option", "minimizeButtonTitle");
+				var text = $(".selector").igDialog("option", "locale").minimizeButtonTitle;
 
 				//Set
-				$(".selector").igDialog("option", "minimizeButtonTitle", "MIN");
+				$(".selector").igDialog("option", "locale", { minimizeButtonTitle: "Minimize"});
 				```
-			*/
-			minimizeButtonTitle: null,
-			/* type="string" Gets/Sets the title/tooltip for the maximize button in the dialog. That is an override for $.ig.Dialog.locale.maximizeButtonTitle.
+				*/
+				minimizeButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the maximize button in the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
-					maximizeButtonTitle : "MAX"
+					locale: {
+						maximizeButtonTitle : "Maximize"
+					}
 				});
 
 				//Get
-				var title = $(".selector").igDialog("option", "maximizeButtonTitle");
+				var text = $(".selector").igDialog("option", "locale").maximizeButtonTitle;
 
 				//Set
-				$(".selector").igDialog("option", "maximizeButtonTitle", "MAX");
+				$(".selector").igDialog("option", "locale", { maximizeButtonTitle: "Maximize"});
 				```
-			*/
-			maximizeButtonTitle: null,
-			/* type="string" Gets/Sets the title/tooltip for the pin button in the dialog. That is an override for $.ig.Dialog.locale.pinButtonTitle.
+				*/
+				maximizeButtonTitle: undefined,
+				/* type="string"  Gets/Sets the title/tooltip for the pin button in the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
-					pinButtonTitle : "PIN"
+					locale: {
+						pinButtonTitle : "Pin"
+					}
 				});
 
 				//Get
-				var tilte = $(".selector").igDialog("option", "pinButtonTitle");
+				var text = $(".selector").igDialog("option", "locale").pinButtonTitle;
 
 				//Set
-				$(".selector").igDialog("option", "pinButtonTitle", "PIN");
+				$(".selector").igDialog("option", "locale", { pinButtonTitle: "Pin"});
 				```
-			*/
-			pinButtonTitle: null,
-			/* type="string" Gets/Sets the title/tooltip for the unpin button in the dialog. That is an override for $.ig.Dialog.locale.unpinButtonTitle.
+				*/
+				pinButtonTitle: undefined,
+				/* type="string"  Gets/Sets the title/tooltip for the pin button in the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
-					unpinButtonTitle : "UNPIN"
+					locale: {
+						unpinButtonTitle : "Unpin"
+					}
 				});
 
 				//Get
-				var title = $(".selector").igDialog("option", "unpinButtonTitle");
+				var text = $(".selector").igDialog("option", "locale").unpinButtonTitle;
 
 				//Set
-				$(".selector").igDialog("option", "unpinButtonTitle", "UNPIN");
+				$(".selector").igDialog("option", "locale", { unpinButtonTitle: "Unpin"});
 				```
-			*/
-			unpinButtonTitle: null,
-			/* type="string" Gets/Sets the title/tooltip for the restore button in the dialog. That is an override for $.ig.Dialog.locale.restoreButtonTitle.
+				*/
+				unpinButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the restore button in the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
-					restoreButtonTitle : "RESTORE"
+					locale: {
+						restoreButtonTitle : "Restore"
+					}
 				});
 
 				//Get
-				var title = $(".selector").igDialog("option", "restoreButtonTitle");
+				var text = $(".selector").igDialog("option", "locale").restoreButtonTitle;
 
 				//Set
-				$(".selector").igDialog("option", "restoreButtonTitle", "RESTORE");
+				$(".selector").igDialog("option", "locale", { restoreButtonTitle: "Restore"});
 				```
-			*/
-			restoreButtonTitle: null,
+				*/
+				restoreButtonTitle: undefined
+			},
 			/* type="string" Gets/Sets the temporary value for src, which is used while changing the parent of the base element if it is an instance of IFRAME. That allows getting around possible JavaScript exceptions under IE.
 				```
 				//Initialize
@@ -1173,7 +1204,7 @@
 			// } else {
 				// dad.appendChild(elem0);
 			// }
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		},
 		state: function (state) {
@@ -1619,7 +1650,7 @@
 					$("<span />").addClass(css[ id + "Icon" ]).appendTo(button);
 
 					// i=order of buttons in header:pin,min,max,close
-					self._loc(button, i === 3 ? CLOSE : (i === 2 ? MAX : (i === 1 ? MIN : PIN)));
+					self._setButtonAttributes(button, i === 3 ? CLOSE : (i === 2 ? MAX : (i === 1 ? MIN : PIN)));
 				}
 			}
 			if (!o.showHeader) {
@@ -1660,7 +1691,7 @@
 			if (e && e.type && min && this._max) {
 				this._onMax(false, true, true);
 			}
-			this._loc(but, min ? RESTORE : MIN);
+			this._setButtonAttributes(but, min ? RESTORE : MIN);
 			if (min) {
 				header.addClass(css.headerMinimized);
 				if (bar) {
@@ -1715,7 +1746,7 @@
 			but = header.find("." + css.maximize);
 			but.find("*").removeClass(max ? css.maximizeIcon : css.restoreIcon)
 				.addClass(max ? css.restoreIcon : css.maximizeIcon);
-			this._loc(but, max ? RESTORE : MAX);
+			this._setButtonAttributes(but, max ? RESTORE : MAX);
 
 			if (max) {
 				header.addClass(css.unmovable);
@@ -1750,7 +1781,7 @@
 			if (this._max && pin) {
 				this._onMax(false, false, true);
 			}
-			this._loc(but, pin ? UNPIN : PIN);
+			this._setButtonAttributes(but, pin ? UNPIN : PIN);
 			if (pin) {
 				header.addClass(css.unmovable);
 			} else {
@@ -2587,19 +2618,33 @@
 				}
 			}
 		},
-		_loc: function (but, state) {
+		_setButtonAttributes: function (but, state) {
 			state = ((state === MIN) ? "minimize" : ((state === MAX) ? "maximize" : ((state === RESTORE) ?
 					"restore" : ((state === CLOSE) ? "close" : ((state === PIN) ?
 					"pin" : ((state === UNPIN) ? "unpin" : "open")))))) + "ButtonTitle";
-			var val = this.options[ state ] || ($.ig && $.ig.Dialog && $.ig.Dialog.locale ?
-				$.ig.Dialog.locale[ state ] : null) || "";
-			but.attr("title", val).attr("longdesc", val);
+			var val = this._getLocaleValue(state);
+			but.attr({
+				"title": val,
+				"longdesc": val,
+				"data-localeid": state,
+				"data-dialog-button": true
+			});
+		},
+		changeLocale: function () {
+			var self = this;
+			this._header.find("[data-dialog-button]").each(function () {
+				var $button = $(this), value = self._getLocaleValue($button.attr("data-localeid"));
+				$button.attr({
+					"title": value,
+					"longdesc": value
+				});
+			});
 		},
 		_setOption: function (key, val) {
 			var pos, size, drag, resize,
 				elem = this.element, o = this.options, container = key === "container";
 			if ((key === "mainElement") || (key === "imageClass")) {
-				throw new Error($.ig.Dialog.locale.setOptionError + key);
+				throw new Error(this._getLoacleValue("setOptionError") + key);
 			}
 			if (!elem || !key || o[ key ] === val) {
 				return this;
@@ -2620,7 +2665,7 @@
 					resize = true;
 				}
 			}
-			$.Widget.prototype._setOption.apply(this, arguments);
+			this._super(key, val);
 			if (typeof val === "function") {
 				return this;
 			}

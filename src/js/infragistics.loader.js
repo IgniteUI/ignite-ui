@@ -131,6 +131,9 @@ $.ig.loaderClass.locale.descriptions = {
 	overviewPlusDetailPaneDescription: "Component that display an OverviewPlusDetailPane over the igDataChart plot area.",
 	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls.",
 	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side.",
+	visualDataDescription: "Enables visual data exporting for automated testing.",
+	chartVisualDataDescription: "Enables visual data exporting for automated testing for the charts.",
+	chartInteractivityDescription: "Provides support for user interaction such as panning, zooming, dragging, etc.",
 	schedulerDescription: "Component that provides scheduling solution for presenting and managing time periods and associated activities."
 };
 
@@ -163,6 +166,14 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.utilDescription
 	},
 	{
+		widget: "igWidget",
+		priority: true,
+		scripts: [ "$path$/modules/infragistics.ui.widget.js" ],
+		dependency: [ { name: "igUtil" } ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		description: $.ig.loaderClass.locale.descriptions.utilDescription
+	},
+	{
 		widget: "igDataSource",
 		dependency: [ { name: "igUtil" } ],
 		priority: true,
@@ -173,8 +184,16 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.dataSourceDescription
 	},
 	{
+        widget: "_igOlap",
+        dependency: [ { name: "igUtil" } ],
+        scripts: [ "$path$/modules/infragistics.olap.js" ],
+        group: $.ig.loaderClass.locale.frameworkGroup,
+        internal: true,
+        css: []
+	},
+	{
 		widget: "igOlapXmlaDataSource",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "_igOlap" } ],
 		scripts: [ "$path$/modules/infragistics.olapxmladatasource.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
 		css: [  ],
@@ -182,7 +201,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igOlapFlatDataSource",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "_igOlap" } ],
 		scripts: [ "$path$/modules/infragistics.olapflatdatasource.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
 		css: [  ],
@@ -199,7 +218,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igScroll",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
 		locale: [ "$localePath$/infragistics.ui.scroll-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -360,6 +379,41 @@ $.ig.dependencies = [
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv_dataseriesadapter.js" ]
 	},
+	{
+		widget: "_ig_dv_interactivity",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_core" }],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_interactivity.js" ]
+	},
+	{
+        widget: "_ig_datachart_interactivity",
+        group: $.ig.loaderClass.locale.dvGroup,
+        dependency: [ { name: "_ig_dv_interactivity" } ],
+        internal: true,
+        scripts: [ "$path$/modules/infragistics.datachart_interactivity.js" ]
+	},
+	{
+		widget: "_ig_dv_visualdata",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_visualdata" }],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_visualdata.js" ]
+	},
+	{
+		widget: "_ig_datachart_visualdata",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_visualdata" }],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.datachart_visualdata.js" ]
+	},
+	{
+		widget: "VisualData",
+		group: $.ig.loaderClass.locale.miscGroup,
+		dependency: [ { name: "_ig_dv_visualdata" }],
+		internal: true,
+		description: $.ig.loaderClass.locale.descriptions.visualDataDescription
+	},
 
 	{
 		widget: "igChartLegend",
@@ -477,6 +531,20 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
 	},
 	{
+        widget: "Interactivity",
+        parentWidget: "igDataChart",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+    },
+	{
+        widget: "VisualData",
+        parentWidget: "igDataChart",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+    },
+	{
 		widget: "igDataChart.*",
 		dependency: [ { name: "Category" },
 					{ name: "RangeCategory" },
@@ -487,12 +555,14 @@ $.ig.dependencies = [
 					{ name: "Radial" },
 					{ name: "Scatter" },
 					{ name: "Stacked" },
-					{ name: "Annotation" } ]
+					{ name: "Annotation" },
+					{ name: "Interactivity", parentWidget: "igDataChart" },
+					{ name: "VisualData", parentWidget: "igDataChart" }]
 	},
 
 	{
 		widget: "igPieChart",
-		dependency: [ { name: "igDataChart" } ],
+		dependency: [ { name: "igDataChart" }, { name: "_ig_dv_interactivity" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.piechart.js"
@@ -516,7 +586,8 @@ $.ig.dependencies = [
 	{
 		widget: "igFunnelChart",
 		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igTemplating" }, { name: "igDataSource" } ],
+					{ name: "igTemplating" }, { name: "igDataSource" },
+					{ name: "_ig_dv_interactivity" } ],
 		scripts: [
 			"$path$/modules/infragistics.funnelchart.js",
 			"$path$/modules/infragistics.ui.basechart.js",
@@ -527,13 +598,6 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.funnelChartDescription
 	},
 
-	{
-		widget: "_ig_dv_simple_core",
-		priority: true,
-		group: $.ig.loaderClass.locale.dvGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.dv.simple.core.js" ]
-	},
 	{
 		widget: "_ig_simple_datachart_core",
 		dependency: [ { name: "igUtil" }, { name: "igTemplating" },
@@ -550,10 +614,13 @@ $.ig.dependencies = [
 
 	{
 		widget: "igSparkline",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_simple_core" },
-					{ name: "_ig_simple_datachart_core" } ],
+		dependency: [
+			{ name: "_ig_simple_datachart_core" },
+			{ name: "_ig_dv_geometry" },
+			{ name: "_ig_dv_interactivity" }
+		],
 		scripts: [
-			"$path$/modules/infragistics.chart_sparkline.js",
+			"$path$/modules/infragistics.sparkline.js",
 			"$path$/modules/infragistics.ui.sparkline.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
@@ -563,7 +630,11 @@ $.ig.dependencies = [
 
 	{
 		widget: "igRadialGauge",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
+		dependency: [
+			{ name: "_ig_dv_geometry" },
+			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_dv_interactivity" }
+		],
 		scripts: [
 			"$path$/modules/infragistics.radialgauge.js",
 			"$path$/modules/infragistics.ui.radialgauge.js"
@@ -575,7 +646,11 @@ $.ig.dependencies = [
 
 	{
 		widget: "igLinearGauge",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
+		dependency: [
+			{ name: "_ig_dv_geometry" },
+			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_dv_interactivity" }
+		],
 		scripts: [
 			"$path$/modules/infragistics.lineargauge.js",
 			"$path$/modules/infragistics.ui.lineargauge.js"
@@ -586,7 +661,11 @@ $.ig.dependencies = [
 
 	{
 		widget: "igBulletGraph",
-		dependency: [ { name: "_ig_dv_geometry" } ],
+		dependency: [
+			{ name: "_ig_dv_geometry" },
+			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_dv_interactivity" }
+		],
 		scripts: [
 			"$path$/modules/infragistics.ui.bulletgraph.js",
 			"$path$/modules/infragistics.bulletgraph.js"
@@ -612,17 +691,38 @@ $.ig.dependencies = [
 			],
 		description: $.ig.loaderClass.locale.descriptions.categoryChartDescription
 	},
+	{
+        widget: "Interactivity",
+        parentWidget: "igCategoryChart",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+    },
+	{
+        widget: "VisualData",
+        parentWidget: "igCategoryChart",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+    },
+	{
+        widget: "igCategoryChart.*",
+		dependency: [ { name: "Interactivity", parentWidget: "igCategoryChart" },
+					{ name: "VisualData", parentWidget: "igCategoryChart" }
+		]
+	},
 /* /// End Data Visualization /// */
 
 	{
 		widget: "igRadialMenu",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "_ig_ext_collections_extended" },
 			{ name: "_ig_dv_core" },
+			{ name: "_ig_dv_interactivity" },
 			{ name: "_ig_dv_jquerydom" }
 			],
 		scripts: [
-			"$path$/modules/infragistics.radialmenu_core.js",
+			"$path$/modules/infragistics.radialmenu.js",
 			"$path$/modules/infragistics.ui.radialmenu.js"
 			],
 		group: $.ig.loaderClass.locale.interactionsGroup,
@@ -631,24 +731,39 @@ $.ig.dependencies = [
 	},
 
 	{
+        widget: "_encoding_core",
+        dependency: [
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_collections" }
+        ],
+        scripts: [ "$path$/modules/infragistics.encoding.core.js" ],
+        internal: true
+	},
+	{
+		widget: "_barcode_core",
+		dependency: [
+			{ name: "_encoding_core" },
+			{ name: "_ig_dv_core" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_collections_extended" }
+		],
+		scripts: [ "$path$/modules/infragistics.barcode_core.js" ],
+		internal: true,
+		locale: [ "$localePath$/infragistics.ui.barcode-$locale$.js" ]
+	},
+	{
 		widget: "igQRCodeBarcode",
 		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_dv_simple_core" },
+			{ name: "igWidget" },
+			{ name: "_barcode_core" },
 			{ name: "_ig_dv_jquerydom" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.barcode_qrcodebarcode.js",
-			"$path$/modules/infragistics.ui.barcode.js"
+			"$path$/modules/infragistics.ui.qrcodebarcode.js"
 			],
-		locale: [ "$localePath$/infragistics.ui.barcode-$locale$.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		description: $.ig.loaderClass.locale.descriptions.qrCodeBarcodeDescription
-	},
-	{
-		widget: "igQRCodeBarcode.*",
-		dependency: [ { name: "igQRCodeBarcode" } ],
-		scripts: [ "$path$/modules/encoding/infragistics.encoding.js" ]
 	},
 	{
 		widget: "Big5",
@@ -656,7 +771,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_big5.js"
 			]
 	},
@@ -666,7 +780,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_cp437.js"
 			]
 	},
@@ -676,7 +789,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_gb2312.js"
 			]
 	},
@@ -686,7 +798,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso646-us.js"
 			]
 	},
@@ -696,7 +807,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-1.js"
 			]
 	},
@@ -706,7 +816,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-2.js"
 			]
 	},
@@ -716,7 +825,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-3.js"
 			]
 	},
@@ -726,7 +834,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-4.js"
 			]
 	},
@@ -736,7 +843,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-5.js"
 			]
 	},
@@ -746,7 +852,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-6.js"
 			]
 	},
@@ -756,7 +861,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-7.js"
 			]
 	},
@@ -766,7 +870,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-8.js"
 			]
 	},
@@ -776,7 +879,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-9.js"
 			]
 	},
@@ -786,7 +888,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-11.js"
 			]
 	},
@@ -796,7 +897,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-13.js"
 			]
 	},
@@ -806,7 +906,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_iso-8859-15.js"
 			]
 	},
@@ -816,7 +915,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_ksc5601.js"
 			]
 	},
@@ -826,7 +924,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_shift_jis.js"
 			]
 	},
@@ -836,7 +933,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_windows-1250.js"
 			]
 	},
@@ -846,7 +942,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_windows-1251.js"
 			]
 	},
@@ -856,7 +951,6 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_windows-1252.js"
 			]
 	},
@@ -866,20 +960,45 @@ $.ig.dependencies = [
 		dependency: [ { name: "igQRCodeBarcode" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/encoding/infragistics.encoding.core.js",
 			"$path$/modules/encoding/infragistics.encoding_windows-1256.js"
 			]
+	},
+	{
+		widget: "igQRCodeBarcode.*",
+		dependency: [ { name: "Big5" },
+					{ name: "CP437" },
+					{ name: "GB2312" },
+					{ name: "ISO646-US" },
+					{ name: "ISO-8859-1" },
+					{ name: "ISO-8859-2" },
+					{ name: "ISO-8859-3" },
+					{ name: "ISO-8859-4" },
+					{ name: "ISO-8859-5" },
+					{ name: "ISO-8859-6" },
+					{ name: "ISO-8859-7" },
+					{ name: "ISO-8859-8" },
+					{ name: "ISO-8859-9" },
+					{ name: "ISO-8859-11" },
+					{ name: "ISO-8859-13" },
+					{ name: "ISO-8859-15" },
+					{ name: "KSC5601" },
+					{ name: "Shift_JIS" },
+					{ name: "Windows-1250" },
+					{ name: "Windows-1251" },
+					{ name: "Windows-1252" },
+					{ name: "Windows-1256" }
+		]
 	},
 
 	{
 		widget: "igCombo",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igDataSource" },
 			{ name: "igTemplating" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
-			],
+		],
 		scripts: [ "$path$/modules/infragistics.ui.combo.js" ],
 		locale: [ "$localePath$/infragistics.ui.combo-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -891,7 +1010,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igDialog",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.dialog.js" ],
 		locale: [ "$localePath$/infragistics.ui.dialog-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -901,7 +1020,7 @@ $.ig.dependencies = [
 	{
 		widget: "igEditors",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "regional" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
@@ -917,7 +1036,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igZoombar",
-		dependency: [ { name: "igUtil" }, { name: "igShared" } ],
+		dependency: [ { name: "igWidget" }, { name: "igShared" } ],
 		scripts: [ "$path$/modules/infragistics.ui.zoombar.js" ],
 		locale: [ "$localePath$/infragistics.ui.zoombar-$locale$.js" ],
 		css: [
@@ -931,7 +1050,7 @@ $.ig.dependencies = [
 	{
 		widget: "igGrid",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "regional" },
 			{ name: "igDataSource" },
 			{ name: "igTemplating" },
@@ -1196,7 +1315,7 @@ $.ig.dependencies = [
 	{
 		widget: "igHtmlEditor",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igPopover" },
 			{ name: "igSplitButton" },
 			{ name: "igColorPicker" },
@@ -1230,6 +1349,26 @@ $.ig.dependencies = [
 			"$path$/structure/modules/infragistics.ui.map.css"
 			],
 		description: $.ig.loaderClass.locale.descriptions.mapDescription
+	},
+	{
+        widget: "Interactivity",
+        parentWidget: "igMap",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+    },
+	{
+        widget: "VisualData",
+        parentWidget: "igMap",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+    },
+	{
+        widget: "igMap.*",
+		dependency: [ { name: "Interactivity", parentWidget: "igMap" },
+					{ name: "VisualData", parentWidget: "igMap" }
+		]
 	},
 /*/ end igMap /// */
 
@@ -1288,7 +1427,7 @@ $.ig.dependencies = [
 		widget: "igRating",
 		/* I.K. March 6th, 2013 Bug #135150 The rating now depends on util */
 		/* as of jQuery 1.9 because browser specific checks are now in util */
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.rating.js" ],
 		locale: [ "$localePath$/infragistics.ui.rating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -1315,7 +1454,7 @@ $.ig.dependencies = [
 	{
 		widget: "igTree",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" },
 			{ name: "igTemplating" },
 			{ name: "igDataSource" }
@@ -1328,7 +1467,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igPopover",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.popover.js" ],
 		locale: [ "$localePath$/infragistics.ui.popover-$locale$.js" ],
 		css: [ "$path$/structure/modules/infragistics.ui.popover.css" ],
@@ -1372,7 +1511,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igLayoutManager",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.layoutmanager.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ],
@@ -1395,7 +1534,7 @@ $.ig.dependencies = [
 	{
 		widget: "igUpload",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.upload.js" ],
@@ -1406,7 +1545,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igValidator",
-		dependency: [ { name: "igUtil" }, { name: "igNotifier" } ],
+		dependency: [ { name: "igWidget" }, { name: "igNotifier" } ],
 		scripts: [ "$path$/modules/infragistics.ui.validator.js" ],
 		locale: [ "$localePath$/infragistics.ui.validator-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -1419,7 +1558,7 @@ $.ig.dependencies = [
 	{
 		widget: "igVideoPlayer",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.videoplayer.js" ],
@@ -1433,7 +1572,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igSplitter",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.splitter.js" ],
 		locale: [ "$localePath$/infragistics.ui.splitter-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -1454,7 +1593,7 @@ $.ig.dependencies = [
 	{
 		widget: "igToolbar",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igToolbarButton" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.toolbar.js" ],
@@ -1755,7 +1894,7 @@ $.ig.dependencies = [
 	{
 		widget: "igSpreadsheet",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "_ig_ext_core" },
 			{ name: "_ig_ext_collections" },
 			{ name: "_ig_ext_collections_extended" },
@@ -1785,7 +1924,7 @@ $.ig.dependencies = [
     {
         widget: "igScheduler",
         dependency: [
-            { name: "igUtil" },
+            { name: "igWidget" },
             { name: "_ig_ext_core" },
             { name: "_ig_ext_collections" },
             { name: "_ig_ext_collections_extended" },
@@ -1797,6 +1936,7 @@ $.ig.dependencies = [
             { name: "igScroll" },
             { name: "_ig_dv_core" },
             { name: "_ig_dv_jquerydom" },
+			{ name: "_ig_dv_interactivity" },
             { name: "igDataSource" },
             { name: "igShared" },
             { name: "igCombo" },
@@ -1960,7 +2100,7 @@ $.extend($.ig.loaderClass, {
 		autoDetectLocale: false,
 		/* type="string" Two letter code for current locale. Defaults to "en". */
 		locale: null,
-		/* type="string" Regional code. Can be two or five characters long ("en", "en-GB"). Defaults to "en". */
+		/* type="string" A list of regional codes separated with ',' that will be loaded by the loader. Example: "en,fr,de". Each regional code can be two or five characters long ("en", "en-GB"). Defaults to "en". */
 		regional: null,
 		/* type="function" A function to call when all resources are loaded but before the "ready" notification is sent. */
 		preinit: null,
@@ -2153,7 +2293,8 @@ $.extend($.ig.loaderClass, {
 			useLocale = (type === "script" && this.settings.locale),
 			useRegional = (type === "script" && this.settings.regional),
 			localeScripts,
-			regionalScripts;
+			regionalScripts,
+			locales, regionals, k, regionalScr, localeScr;
 
 		for (i = 0; i < len; i++) {
 			scriptData = (type === "script" ? this._resources[ i ].scripts : this._resources[ i ].css);
@@ -2162,15 +2303,23 @@ $.extend($.ig.loaderClass, {
 				if (this._resources[ i ].locale) {
 					localeScripts = this._resources[ i ].locale.slice(0);
 					while (localeScripts.length > 0) {
-						scriptData.unshift(localeScripts.pop().replace("$locale$", this.settings.locale));
+						locales = this.settings.locale.split(",");
+						localeScr = localeScripts.pop();
+						for ( k = 0; k < locales.length; k++) {
+							scriptData.unshift(localeScr.replace("$locale$", $.trim(locales[ k ])));
+						}
 					}
 				}
 			}
 			if (useRegional) {
 				if (this._resources[ i ].regional) {
+					regionals = this.settings.regional.split(",");
 					regionalScripts = this._resources[ i ].regional.slice(0);
 					while (regionalScripts.length > 0) {
-						scriptData.unshift(regionalScripts.pop().replace("$regional$", this.settings.regional));
+						regionalScr = regionalScripts.pop();
+						for ( k = 0; k < regionals.length; k++) {
+							scriptData.unshift(regionalScr.replace("$regional$", $.trim(regionals[ k ])));
+						}
 					}
 				}
 			}

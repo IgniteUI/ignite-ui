@@ -9,25 +9,23 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
-    $.ig = $.ig || {};
+(function () {
+		$ = $ || {};
+		$.ig = $.ig || {};
+		$.ig.Scroll = $.ig.Scroll || {};
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.ru = $.ig.locale.ru || {};
 
-    if (!$.ig.Scroll) {
-	    $.ig.Scroll = {};
-
-	    $.extend($.ig.Scroll, {
-		    locale: {
+	    $.ig.locale.ru.Scroll = {
 		        errorNoElementLink: 'Связанный элемент не найден.',
 		        errorNoScrollbarLink: 'Связанный элемент "полоса прокрутки" не найден.'
-		    }
-	    });
+		}
 
-    }
+		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.ru.Scroll;
+		return $.ig.locale.ru.Scroll;
 }));// REMOVE_FROM_COMBINED_FILES

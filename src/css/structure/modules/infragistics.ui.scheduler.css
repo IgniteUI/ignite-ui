@@ -228,6 +228,11 @@
     width: 4px !important;
 }
 
+.ui-igscheduler-monthview-day-today span {
+    font-weight: bold !important;
+}
+
+
 /* Popup styles */
 .ui-dialog {
     box-sizing: border-box;
@@ -242,6 +247,14 @@
 }
 
 .ui-igscheduler-appointment-form-group .ui-igedit-container {
+
+    margin-bottom: 10px;
+}
+
+.ui-igscheduler-appointment-form-group .ui-igedit-container,
+/* TFS #238883 - 5.07.2017 - Marin Popov - fix combo field alignment in popup  */
+.ui-igscheduler-appointment-form-group .ui-igcombo-wrapper {
+
     width: 100%;
 }
 
@@ -263,6 +276,10 @@
 
 .ui-igscheduler-appointment-dialog-form > .ui-igscheduler-appointment-form-group:last-of-type {
     margin: 1rem 0 0 0;
+}
+
+.ui-igscheduler-appointment-dialog-form > .ui-igscheduler-appointment-form-group:last-of-type {
+    margin: 15px 0 10px 0;
 }
 
 .ui-igscheduler-side-by-side-group .ui-igscheduler-appointment-form-group {
@@ -300,6 +317,7 @@
 .ui-igscheduler-appointment-form-group.ui-igscheduler-side-by-side-group .ui-igedit-container {
     width: 49%;
     margin: 0 0 2.5rem 2%;
+
     float: left;
 }
 
@@ -422,11 +440,13 @@ input.ui-igscheduler-appointment-popover-open-button {
     cursor: pointer;
 }
 
+
 .ui-igscheduler-resources-combo-item-text {
     padding-left: 20px;
 }
 
 /* Popup styles END */
+
 @media (max-width: 575px) {
     .touch .ui-igscheduler-popover.ui-igpopover {
         width: 188px !important;
@@ -509,6 +529,7 @@ input.ui-igscheduler-appointment-popover-open-button {
     .ui-igscheduler-core .ui-igscheduler-agenda-appt-location span,
     .ui-igscheduler-core .ui-igscheduler-agenda-appt-subject span {
         font-size: 12px!important;
+
     }
 
     .ui-igscheduler-monthview-day,

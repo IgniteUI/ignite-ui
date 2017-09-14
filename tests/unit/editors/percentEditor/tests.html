@@ -14,13 +14,18 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                  
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -761,7 +766,24 @@
 			ok($editor.igPercentEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
 			$editor.remove();
 		});
+
+		testId = 'Runtime changes for local and regional options';
+		test(testId, 6, function () {
+			var $editor = $("<input/>").appendTo("#testBedContainer").igPercentEditor({ buttonType: "spin", value: 1234567.123, displayFactor: 1 });
+
+			equal($editor.igPercentEditor("displayValue"), "1,234,567.12%", "Format should be in English");
+			equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+			$editor.igPercentEditor("option", "language", "de");
+			equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+			$editor.igPercentEditor("option", "regional", "de");
+			equal($editor.igPercentEditor("displayValue"), "1.234.567,12%", "Format should be in German");
+			$editor.igPercentEditor("setFocus");
+			equal($editor.igPercentEditor("field").val(), "1234567,12", "Input Format should be in German");
+			$editor.igPercentEditor("option", "regional", "en");
+			equal($editor.igPercentEditor("field").val(), "1234567.12", "Input Format should be in German");
+			$editor.trigger("blur").remove();
 		});
+	});
 	</script>
 </head>
 <body>

@@ -585,11 +585,13 @@ span.ui-iggrid-headertext {
     margin-top: 0;
 }
 
-/*.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
+/*
+.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
 {
     float:left;
 	width:calc(100% - 10px);
 }
+
 .ui-iggrid-filtercell  .ui-igedit-button-common~.ui-igeditor-input-container
 {
     float:left;
@@ -1578,6 +1580,11 @@ td.ui-iggrid-addrow {
 
 .ui-iggrid .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
     border-bottom-color: #aaa;
+}
+
+.ui-iggrid .ui-iggrid-physicalmergedcell
+{
+	vertical-align: top;
 }
 
 /**********************

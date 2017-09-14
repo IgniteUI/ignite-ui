@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<!--<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>-->
 
@@ -57,6 +58,7 @@
 				eventTriggered = true;
 			};
 			this.isDisabled =  ko.observable(false);
+			this.nullValue = ko.observable(null);
 		};
 		
 		model = new viewModel();
@@ -391,6 +393,18 @@
 			$editor.remove();
 			$chk.remove();
 		});
+
+		var testId = 'Test null binding';
+		test(testId, 3, function () {
+			var $editor = $("#nullBoundEditor");
+
+			equal($editor.igPercentEditor("value"), null, "Editor should have null as a value");
+			model.nullValue(23);
+			equal($editor.igPercentEditor("value"), 23, "Editor should have 23 as a value");
+			model.nullValue(null);
+			equal($editor.igPercentEditor("value"), null, "Editor should have null as a value");
+			$editor.remove();
+		});
 	});//document ready
 
 	function mouseInteraction(type, element) {
@@ -595,6 +609,8 @@
 		}, igEditorDisable: isDisabled" />
 
 	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
+
+	<input id="nullBoundEditor" data-bind="igPercentEditor: { value: nullValue, allowNullValue: true }" />
 </div>
 </body>
 </html>
