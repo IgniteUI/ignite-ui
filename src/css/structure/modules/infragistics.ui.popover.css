@@ -30,8 +30,9 @@
     width: 0;
     height: 0;
     z-index: 11000;
-    -moz-box-sizing: content-box;
-    -webkit-box-sizing: content-box;
+    border-width: 11px;
+    border-style: solid;
+    border-color: transparent;
     box-sizing: content-box;
 }
 
@@ -40,6 +41,7 @@
     bottom: 0;
     margin-left: -11px;
     border-bottom-width: 0;
+    border-top-color: #E5E5E5;
 }
 
 .ui-igpopover-arrow-top {
@@ -47,6 +49,7 @@
     top: 0;
     margin-left: -11px;
     border-top-width: 0;
+    border-bottom-color: #E5E5E5;
 }
 
 .ui-igpopover-arrow-right {
@@ -54,6 +57,7 @@
     right: 0;
     margin-top: -11px;
     border-right-width: 0;
+    border-left-color: #E5E5E5;
 }
 
 .ui-igpopover-arrow-left {
@@ -61,6 +65,7 @@
     left: 0;
     margin-top: -11px;
     border-left-width: 0;
+    border-right-color: #E5E5E5;
 }
 
 .ui-igpopover-title {
