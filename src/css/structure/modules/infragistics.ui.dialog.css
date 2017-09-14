@@ -50,13 +50,14 @@
     top:0.6em;
     */
     margin-left: .5em;
-    float: right;
     cursor: pointer;
     width: 1.6em;
     height: 1.6em;
     overflow: hidden;
     position: relative;
-    box-sizing: content-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ui-igdialog-minimize-icon {
@@ -165,7 +166,7 @@
 }
 
 .ui-dialog .ui-dialog-titlebar {
-    display: flex;
+    display: flex !important;
     align-items: center;
     margin: -.1rem -.1rem 0 -.1rem;
     position: relative;

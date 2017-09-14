@@ -1293,8 +1293,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 .ui-iggrid-hiding-dropdown-list.ui-state-hover a,
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-hover,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
-.ui-igcombo-listitemholder li.ui-state-hover,
-.ui-igcombo-listitemholder li.ui-state-hover a {
+.ui-igcombo-listitemholder li.ui-state-hover {
   border: 1px solid #b3e6f5;
   background-color: #00bef8;
   color: #fff;

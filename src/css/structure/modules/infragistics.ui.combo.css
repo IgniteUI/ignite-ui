@@ -51,6 +51,22 @@
   display: block;
 }
 
+.empInfo {
+    margin-left: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.empName {
+    font-weight:bold;
+    white-space: normal;
+}
+
+.empInfo p {
+    margin: 0;
+}
+
 .ui-igcombo-mode-readonly .ui-igcombo-button, .ui-igcombo-mode-readonly .ui-igcombo-clear {
     cursor: default;
 }

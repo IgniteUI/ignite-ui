@@ -778,10 +778,6 @@ a.ui-button:active,
 .ui-widget-header.ui-state-hover a {
   color: #0055b3;
 }
-.ui-widget-header.ui-state-focus a,
-.ui-widget-header.ui-state-active a {
-  color: #fff;
-}
 /* Interaction Cues
 ----------------------------------*/
 .ui-iggrid-colasc .ui-state-highlight {
@@ -971,6 +967,9 @@ a.ui-button:active,
   border: 1px solid #cccccc;
   background-color: #f8f8f8;
   color: #000000;
+}
+.ui-igdialog-headerbutton .ui-icon:before {
+  font-size: 12px;
 }
 .ui-dialog .ui-widget-header {
   background: #007aff;
@@ -1416,8 +1415,7 @@ a.ui-button:active,
 .ui-iggrid-hiding-dropdown-list.ui-state-hover a,
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-hover,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
-.ui-igcombo-listitemholder li.ui-state-hover,
-.ui-igcombo-listitemholder li.ui-state-hover a {
+.ui-igcombo-listitemholder li.ui-state-hover {
   border: 1px solid #007aff;
   background-color: #007aff;
   color: #FFFFFF;
@@ -2265,9 +2263,6 @@ background-color: @igGray3;*/
 }
 .ui-igcombo-listitem-match {
   font-weight: bold;
-}
-.ui-igcombo-list {
-  line-height: 2.4em;
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
 .ui-igedit-list .ui-igedit-listitem.ui-state-active,
