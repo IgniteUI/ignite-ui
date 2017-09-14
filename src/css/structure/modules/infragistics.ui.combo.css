@@ -4,6 +4,8 @@
     /* K.D. March 2nd, 2015 Bug #188517 The combo wrapper should not have a z-index because it hides other combo lists */
     /*z-index: 1000;*/
     height: 32px;
+    width: 200px;
+    display: inline-block;
 }
 
 .ui-igcombo {
@@ -207,7 +209,7 @@
     border-bottom: 0;
 }
 
-.ui-igcombo-orientation-bottom {
+.ui-widget.ui-widget-content.ui-igcombo-orientation-bottom {
     border-top: 0;
     border-bottom: 1px solid #ccc;
 }
