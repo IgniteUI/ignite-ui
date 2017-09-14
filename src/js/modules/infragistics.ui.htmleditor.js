@@ -1592,7 +1592,11 @@
             this._selectionWrapperSaved.focus();
 
             // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
-            this._selectionWrapperSaved._updateSelection(this._selectionWrapperSaved._getRange());
+            // R.K. 14th September 2017 #1188: Text in html editor is not styled in corresponding font-color
+            if ($.ig.util.isIE) {
+                this._selectionWrapperSaved._updateSelection(
+                    this._selectionWrapperSaved._getRange());
+            }
             this._selectionWrapperSaved.execCommand(name.toLowerCase(), args);
             this._onSelectionChange();
         },
