@@ -49,10 +49,10 @@
     margin:-10px 0 0 0.3em;
     top:0.6em;
     */
-    margin-left: .5em;
+    margin-left: 5px;
     cursor: pointer;
-    width: 1.6em;
-    height: 1.6em;
+    width: 16px;
+    height: 16px;
     overflow: hidden;
     position: relative;
     display: flex;
@@ -170,7 +170,7 @@
     align-items: center;
     margin: -.1rem -.1rem 0 -.1rem;
     position: relative;
-    padding: 1rem;
+    padding: 0 .3rem;
 }
 
 .ui-dialog-title {
@@ -184,8 +184,7 @@
     box-sizing: border-box;
 }
 
-.ui-igdialog.ui-dialog .ui-dialog-buttonpane,
-.ui-igdialog.ui-dialog .ui-dialog-titlebar {
+.ui-igdialog.ui-dialog .ui-dialog-buttonpane{
     padding: 1rem;
 }
 
