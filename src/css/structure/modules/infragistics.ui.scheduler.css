@@ -31,9 +31,11 @@
     line-height: 30px;
     outline: none;
     padding: 0 8px 0 20px;
-    margin-left: 15px;
+	margin-left: 15px;
+	transition: all .218s;
     -o-transition: all .218s;
-    -webkit-transition: all .218s;
+	-webkit-transition: all .218s;
+	user-select: none;
     -webkit-user-select: none;
 }
 
@@ -104,7 +106,8 @@
     transition: all .218s;
     -moz-transition: all .218s;
     -o-transition: all .218s;
-    -webkit-transition: all .218s;
+	-webkit-transition: all .218s;
+	user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     margin-left: 15px;

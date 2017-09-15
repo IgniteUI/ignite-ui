@@ -294,7 +294,8 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
     margin: 0 0.1em;
 }
 
-.ui-iggrid-colindicator { /* padding-right: 4px;*/
+.ui-iggrid-colindicator { 
+  /* padding-right: 4px;*/
 }
 
 .ui-iggrid .ui-iggrid-filterbutton {
@@ -343,8 +344,8 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
 
 .ui-iggrid-sortableheader > a,
 span.ui-iggrid-headertext {
-
-    min-height: 18px; /*float:left;*/
+    min-height: 18px; 
+  /*float:left;*/
 }
 
 .ui-iggrid-headertext {
@@ -600,7 +601,9 @@ span.ui-iggrid-headertext {
 .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer+.ui-igeditor-input-container
 {
     width:auto;
-}*/
+}
+*/
+
 
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
 .ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer a:before {

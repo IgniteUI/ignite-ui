@@ -2730,6 +2730,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 /****************/
 .ui-state-hover .ui-igtile-inner-container {
   color: #444444;
+
 }
 /***********/
 /* Popover */
@@ -2743,6 +2744,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 .ui-igpopover.ui-ignotify-error .ui-icon {
   color: #ffffff;
 }
+
 .ui-igpopover.ui-ignotify-error.ui-ignotify-inline .ui-icon {
   color: #888888;
 }
@@ -3175,6 +3177,7 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 0 0 0;
+
 }
 /*
 =========================
@@ -3185,6 +3188,7 @@ Spreadsheet colors END
 .ui-iggrid-groupbylabelrightedgeend.ui-state-default {
   border-color: #FFFFFF #FFFFFF #FFFFFF transparent;
 }
+
 .ui-iggrid .ui-iggrid-addrow {
   border-color: #dadada;
 }

@@ -863,6 +863,7 @@ a.ui-button:active,
   border-color: #ebebeb;
   background: #fff;
   color: #000000;
+
 }
 .ui-iggrid-header.ui-state-active,
 .ui-iggrid-header.ui-state-hover {
@@ -1484,6 +1485,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   animation-timing-function: ease-in-out;
   animation-duration: 1s;
 }
+
 .ui-iggrid-modifiedrecord > td {
   background-color: transparent;
   color: #999999;

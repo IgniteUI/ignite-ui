@@ -826,6 +826,7 @@ a.ui-button:active,
 .ui-widget-content .ui-state-disabled,
 .ui-widget-header .ui-state-disabled {
   cursor: default !important;
+
 }
 /* Icons
 ----------------------------------*/
@@ -951,6 +952,7 @@ a.ui-button:active,
   opacity: .20;
   filter: alpha(opacity=20);
 }
+
 .ui-iggrid-fixedcontainer-left {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -968,9 +970,11 @@ a.ui-button:active,
   background-color: #f8f8f8;
   color: #000000;
 }
+
 .ui-igdialog-headerbutton .ui-icon:before {
   font-size: 12px;
 }
+
 .ui-dialog .ui-widget-header {
   background: #007aff;
   color: #fff;
