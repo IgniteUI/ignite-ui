@@ -742,10 +742,14 @@ a.ui-button:active,
 .ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon {
   color: #ffffff;
 }
-.ui-state-hover.ui-state-default .ui-igcombo-clearicon.ui-icon,
+/*
+
+// EXCEPTION: inputs have a white bg, so icons inside can't be white
+.ui-state-hover.ui-state-default .ui-igcombo-clearicon.ui-icon, // EXCEPTION: hover on combo but not on the dropdown button itself
 .ui-state-hover .ui-state-default > .ui-icon {
-  color: #ffffff;
+  color: @ui-icons-light;
 }
+*/
 /*dropdown pressed*/
 .ui-igedit.ui-state-focus .ui-igedit-button-common .ui-icon,
 .ui-igedit.ui-state-active .ui-igedit-button-common .ui-icon,
