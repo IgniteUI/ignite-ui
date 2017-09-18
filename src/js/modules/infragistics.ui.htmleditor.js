@@ -1777,7 +1777,11 @@
             this._selectionWrapperSaved.focus();
 
             // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
-            this._selectionWrapperSaved._updateSelection(this._selectionWrapperSaved._getRange());
+            // R.K. 14th September 2017 #1188: Text in html editor is not styled in corresponding font-color
+            if ($.ig.util.isIE) {
+                this._selectionWrapperSaved._updateSelection(
+                    this._selectionWrapperSaved._getRange());
+            }
             this._selectionWrapperSaved.execCommand(name.toLowerCase(), args);
             this._onSelectionChange();
         },
@@ -3792,8 +3796,8 @@
 
             // K.D. November 1st, 2012 Bug #125724 The combo values do not contain ' or " so they need to be removed before sending the value
             fontName = fontName.replace(/'|"/g, "");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale
-                .fontNames[ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontNames")
+                [ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
         },
         _onFontSize: function () {
 
@@ -3812,13 +3816,14 @@
                 pxTbl[ Math.round(parseFloat(this._computedStyles.fontSize)) ],
                 fontSizeUnitsStr = fontSizeUnits ? fontSizeUnits.toString() : "",
                 combo = this._toolbars.textToolbar.igToolbar("getItem", "fontSize");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.fontSizes, fontSizeUnitsStr);
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontSizes"),
+                fontSizeUnitsStr);
         },
         _onHeader: function (element) {
 
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name.
             var combo = this._toolbars.textToolbar.igToolbar("getItem", "formatsList");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.formatsList,
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "formatsList"),
                 element[ 0 ].nodeName.toLowerCase());
         },
         _onTable: function () {
