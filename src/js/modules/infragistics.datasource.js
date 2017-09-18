@@ -4357,6 +4357,32 @@
 			}
 			return this._dataSummaries;
 		},
+		_applySchema: function (forceApply) {
+			var schema = this.schema(), ds,
+				s = this.settings.sorting,
+					p = this.settings.paging,
+					filtering = this.settings.filtering;
+			if (schema && schema.fields && schema.fields().length > 0 &&
+				(this.settings.localSchemaTransform || forceApply)) {
+				schema._type = $.type(this._data);
+				ds = schema.transform(this._data);
+				this._data = ds;
+				this._dataView = this._data;
+
+				if (filtering.type === "local" && filtering.defaultFields.length > 0) {
+					this.filter(filtering.defaultFields);
+				}
+				if (s.type === "local" && s.defaultFields.length > 0) {
+					this.sort(s.defaultFields, s.defaultDirection);
+				} else if (this.isGroupByApplied(s.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData : this._data,
+											s.expressions);
+				}
+				if (p.enabled && p.type === "local") {
+					this._page();
+				}
+			}
+		},
 		_populateTransformedData: function (data) {
 			// M.H. populate summaries data
 			// when datasource is local and we want to get summaries when summaryExecution is afterfilteringbeforepaging
@@ -9656,6 +9682,13 @@
 				fields.push({ name: key });
 			}
 		},
+		_applySchema: function (forceApply) {
+			var s = this.schema();
+			s.transform = $.proxy(this._transformSchema, this);
+			this._checkGeneratedSchema();
+			this._super(forceApply);
+			this.generateFlatDataView();
+		},
 		dataBind: function (callback, callee) {
 			/* data binds to the current data source
 			databinding works using the following workflow:
@@ -9773,7 +9806,10 @@
 			this._super(callDatabound);
 		},
 		_completeCallback: function () {
-			this.generateFlatDataView();
+			/*Tree data source does not generate proper expansion states if localSchemaTransform is false. */
+			if (!this.settings.localSchemaTransform) {
+				this._applySchema(true);
+			}
 			this._super();
 		},
 		getDataBoundDepth: function () {
@@ -9971,7 +10007,7 @@
 				isRootLevel = true;
 				level = 0;
 			}
-			if (!data || !this.settings.localSchemaTransform) {
+			if (!data) {
 				return data;
 			}
 			if ($.type(data) === "array") {
