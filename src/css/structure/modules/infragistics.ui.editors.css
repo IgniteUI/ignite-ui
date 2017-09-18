@@ -15,7 +15,7 @@
 	display: inline-block;
 	position: relative;
 	height: 32px;
-
+	width: 200px;
 }
 .ui-igedit-checkbox-container {
 	-webkit-box-sizing: border-box;
