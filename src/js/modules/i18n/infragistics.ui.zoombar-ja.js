@@ -9,25 +9,28 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-    $.ig = $.ig || {};
-	$.ig.Zoombar = $.ig.Zoombar || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ja = $.ig.locale.ja || {};
+(function ($) {
+$.ig = $.ig || {};
 
-	$.ig.locale.ja.Zoombar = {
+if (!$.ig.Zoombar) {
+	$.ig.Zoombar = {};
+
+	$.extend($.ig.Zoombar, {
+
+		locale: {
 			zoombarTargetNotSpecified: "igZoombar を有効なターゲットにアタッチする必要があります。",
 			zoombarTypeNotSupported: "ズームバーにアタッチするウィジェット タイプはサポートされません。",
 			zoombarProviderNotRecognized: "igZoombar が指定したクラスからプロバイダーを初期化できなかったか、渡された値がクラスではありません。",
 			optionChangeNotSupported: "igZoombar が作成された後のこのオプションの変更はサポートされません:"
-	}
+		}
+	});
 
-	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.ja.Zoombar;
-	return $.ig.locale.ja.Zoombar;
+}
 }));// REMOVE_FROM_COMBINED_FILES

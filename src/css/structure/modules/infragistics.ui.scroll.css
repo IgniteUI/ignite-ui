@@ -20,11 +20,11 @@
 .igscroll-content {
 	overflow: hidden;
 	position: absolute;
-	-webkit-transform: translateZ(0);
-	-moz-transform: translateZ(0);
-	-ms-transform: translateZ(0);
-	-o-transform: translateZ(0);
-	transform: translateZ(0);
+	-webkit-transform: translatez(0);
+	-moz-transform: translatez(0);
+	-ms-transform: translatez(0);
+	-o-transform: translatez(0);
+	transform: translatez(0);
 }
 
 .igscroll-select-disabled {
@@ -42,39 +42,29 @@
 	position: absolute;
 	right: 0px;
 	top: 0px;
-	height: 100%;
 }
 
 .igscroll-vtrack {
-	top: 15px;
-	bottom: 30px;
-	position: absolute;
-	width: 15px;
-}
 
-.igscroll-vtrack-single {
-	bottom: 15px;
 }
 
 /* Vertical arrow - general */
 .igscroll-varrow {
 	width: 15px;
 	height: 15px;
-	opacity: 0.9;
-	transition: opacity .1s linear;
 }
 
 .igscroll-varrow:hover {
 	background: #999999;
 }
 
-.igscroll-varrow:active {
+.igscroll-varrow:active { 
 	background: #757575;
 }
 
 .igscroll-varrow:before {
 	width: 15px;
-	height: 15px;
+	height: 15px;		
 	position: absolute;
 	content: '';
 	background-image: url('../images/igScroll/up.png');
@@ -82,30 +72,7 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	pointer-events: none;
-	opacity: 0.9;
-	transition: opacity .1s linear;
-}
-
-.igscroll-varrow-hidden {
-	width: 15px;
-	height: 15px;
-	opacity: 0;
-	transition: opacity .1s linear;
-}
-
-.igscroll-varrow-hidden:before {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	content: '';
-	background-image: url('../images/igScroll/up.png');
-	background-size: 9px 9px;
-	background-repeat: no-repeat;
-	background-position: center;
-	pointer-events: none;
-	opacity: 0;
-	transition: opacity .1s linear;
-}
+}		
 
 /* Arrow Up */
 .igscroll-uparrow:before {
@@ -114,9 +81,9 @@
 	-ms-transform: rotate(0);
 	-o-transform: rotate(0);
 	transform: rotate(0);
-}
+}		
 
-.igscroll-uparrow:active:before {
+.igscroll-uparrow-active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(0);
 	-moz-transform: rotate(0);
@@ -126,15 +93,6 @@
 }
 
 /* Arrow Down */
-.igscroll-downarrow {
-	bottom: 15px;
-	position: absolute;
-}
-
-.igscroll-downarrow-single {
-	bottom: 0px;
-}
-
 .igscroll-downarrow:before {
 	-webkit-transform: rotate(-180deg);
 	-moz-transform: rotate(-180deg);
@@ -143,7 +101,7 @@
 	transform: rotate(-180deg);
 }		
 
-.igscroll-downarrow:active:before {
+.igscroll-downarrow-active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(-180deg);
 	-moz-transform: rotate(-180deg);
@@ -165,30 +123,12 @@
 .igscroll-vdrag-thin {
 	left: 5px;
 	width: 5px;
-	opacity: 0.9;
-	transition-property: left, width, opacity;
-	transition-duration: .1s;
-	transition-timing-function: ease-in;
 }
 
 .igscroll-vdrag-big {
 	left: 3px;
 	width: 9px;
-	opacity: 0.9;
-	transition-property: left, width, opacity;
-	transition-duration: .1s;
-	transition-timing-function: ease-in;
 }
-
-.igscroll-vdrag-hidden {
-	left: 5px;
-	width: 5px;
-	opacity: 0;
-	transition-property: left, width, opacity;
-	transition-duration: .1s;
-	transition-timing-function: ease-in;
-}
-
 
 .igscroll-vdrag:hover { 
 	background: #737373;
@@ -206,19 +146,11 @@
 	height: 15px;
 	position: absolute;
 	bottom: 0px;
-	width: 100%;
 }
 
 .igscroll-htrack {
 	height: 15px;
 	float: left;
-	left: 15px;
-	right: 30px;
-	position: absolute;
-}
-
-.igscroll-htrack-single {
-	right: 15px;
 }
 
 /* Horizontal arrow - general */
@@ -226,8 +158,6 @@
 	width: 15px;
 	height: 15px;
 	float: left;
-	opacity: 0.9;
-	transition: opacity .1s linear;
 }
 
 .igscroll-harrow:hover {
@@ -240,7 +170,7 @@
 
 .igscroll-harrow:before {
 	width: 15px;
-	height: 15px;
+	height: 15px;		
 	position: absolute;
 	content: '';
 	background-image: url('../images/igScroll/up.png');
@@ -248,31 +178,8 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	pointer-events: none;
-	opacity: 0.9;
-	transition: opacity .1s linear;
-}
+}		
 
-.igscroll-harrow-hidden {
-	width: 15px;
-	height: 15px;
-	float: left;
-	opacity: 0;
-	transition: opacity .1s linear;
-}
-
-.igscroll-harrow-hidden:before {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	content: '';
-	background-image: url('../images/igScroll/up.png');
-	background-size: 9px 9px;
-	background-repeat: no-repeat;
-	background-position: center;
-	pointer-events: none;
-	opacity: 0;
-	transition: opacity .1s linear;
-}
 /* Arrow Left */
 .igscroll-leftarrow:before {
 	-webkit-transform: rotate(-90deg);
@@ -280,9 +187,9 @@
 	-ms-transform: rotate(-90deg);
 	-o-transform: rotate(-90deg);
 	transform: rotate(-90deg);
-}
+}	
 
-.igscroll-leftarrow:active:before {
+.igscroll-leftarrow-active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(-90deg);
 	-moz-transform: rotate(-90deg);
@@ -292,24 +199,15 @@
 }
 
 /* Arrow Right */
-.igscroll-rightarrow {
-	right: 15px;
-	position: absolute;
-}
-
-.igscroll-rightarrow-single {
-	right: 0px;
-}
-
 .igscroll-rightarrow:before {
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
 	-ms-transform: rotate(90deg);
 	-o-transform: rotate(90deg);
 	transform: rotate(90deg);
-}
+}		
 
-.igscroll-rightarrow:active:before {
+.igscroll-rightarrow-active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
@@ -331,28 +229,11 @@
 .igscroll-hdrag-thin {
 	top: 5px;
 	height: 5px;
-	opacity: 0.9;
-	transition-property: top, height, opacity;
-	transition-duration: .1s;
-	transition-timing-function: ease-in;
 }
 
 .igscroll-hdrag-big {
 	top: 3px;
 	height: 9px;
-	opacity: 0.9;
-	transition-property: top, height, opacity;
-	transition-duration: .1s;
-	transition-timing-function: ease-in;
-}
-
-.igscroll-hdrag-hidden {
-	top: 5px;
-	height: 5px;
-	opacity: 0;
-	transition-property: top, height, opacity;
-	transition-duration: .1s;
-	transition-timing-function: ease-in;
 }
 
 .igscroll-hdrag:hover { 
@@ -368,42 +249,34 @@
 *  Native Scrollbars  *
 ***********************/
 .igscroll-vnative-outer {
-	position: absolute;
+	position: relative;
 	float: right;
 	width: 18px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	top: 0;
 	right: 0px;
-}
-
-.igscroll-vnative-outer-single {
-	bottom: 0px;
 }
 
 .igscroll-vnative-inner {
-	width: 1px;
+	width: 17px;
 }
 
 .igscroll-hnative-outer {
-	position: absolute;
+	position: relative;
 	height: 18px;
+	bottom: 2px;
 	overflow-x: auto;
 	overflow-y: hidden;
-	left: 0px;
-	bottom: 0px;
-}
-
-.igscroll-hnative-outer-single {
-	right: 0px;
 }
 
 .igscroll-hnative-inner {
-	height: 1px;
+	height: 17px;
 }
 
 .igscroll-filler {
 	position: absolute;
+	width: 17px;
+	height: 17px;
 	right: 0px;
 	bottom: 0px;
 	background-color: white;

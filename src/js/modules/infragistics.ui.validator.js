@@ -8,10 +8,8 @@
 * jquery-1.9.1.js
 * jquery.ui.core.js
 * jquery.ui.widget.js
-* jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
-* infragistics.ui.widget.js
 * infragistics.ui.popover.js
 * infragistics.ui.notifier.js
 
@@ -30,7 +28,10 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"./infragistics.ui.widget",
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.notifier"
 		], factory );
 	} else {
@@ -53,7 +54,7 @@
 	Example:
 	$.ui.igValidator.defaults.showAllErrorsOnSubmit = false;
 */
-$.widget("ui.igValidator",  $.ui.igWidget, {
+$.widget("ui.igValidator", {
 	options: {
 		/* type="bool"  Gets/Sets whether validation is triggered when the text in editor changes.
 			Note that this is more appropriate for selection controls such as checkbox, combo or rating.
@@ -1074,7 +1075,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 				break;
 
 		}
-		this._super(option, value);
+		$.Widget.prototype._setOption.apply(this, arguments);
 	},
 	_initalizeRules: function () {
 		// prevent using the prototype array
@@ -1668,9 +1669,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 	},
 	_getLocalizedMessage: function (key, postfix) {
 		key += postfix || "Message";
-		var message = this._getLocaleValue(key);
+		var message = this.options.locale ? this.options.locale[ key ] : null;
 		if (!message && $.ig && $.ig.Validator && $.ig.Validator.locale) {
-			message = this._getLocaleValue(key);
+			message = $.ig.Validator.locale[ key ];
 		}
 		return message || "";
 	},
@@ -2049,7 +2050,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			}
 		}
 		this._detachFromForm();
-		this._superApply(arguments);
+		$.Widget.prototype.destroy.apply(this, arguments);
 	}
 });
 $.extend($.ui.igValidator, { version: "<build_number>" });
@@ -2258,61 +2259,58 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 		return this._lastMessageType;
 	},
 	isValid: function(options, value) {
-		var min = false, max = false, //error flags
-			minValue, maxValue, hasMin, hasMax,
+		var min, max,
 			isNumber = this._isNumber(options, value),
 			isDateParsable = !isNaN(new Date(value).getSeconds());
 
-		if (!isDateParsable && !isNumber) {
-			//can't be handled by this rule
-			return true;
-		}
-		minValue = options.valueRange.push ? options.valueRange[ 0 ] : options.valueRange.min;
-		maxValue = options.valueRange.push ? options.valueRange[ 1 ] : options.valueRange.max;
+		if (isDateParsable || isNumber) {
+			var minValue = options.valueRange.push ? options.valueRange[ 0 ] : options.valueRange.min,
+				maxValue = options.valueRange.push ? options.valueRange[ 1 ] : options.valueRange.max,
 
-		// must be type checked, 0 should be valid
-		hasMin = typeof minValue === "number" || minValue;
-		hasMax = typeof maxValue === "number" || maxValue;
+				// must be type checked, 0 should be valid
+				hasMin = typeof minValue === "number" || minValue,
+				hasMax = typeof maxValue === "number" || maxValue;
 
-		if (!hasMin && !hasMax) {
-			//no usable range
-			return true;
-		}
-		if (isNumber && !options.date) {
-			value = this._parseNumber(value, options);
-			if (hasMin) {
-				min = value < minValue;
-			}
-			if (hasMax) {
-				max = value > maxValue;
-			}
-		} else if (isDateParsable && !options.number) {
-			value = new Date(value);
-			if (hasMin) {
-				minValue = new Date(minValue);
-				min = value < minValue;
-				minValue = minValue.toLocaleString();
-			}
-			if (hasMax) {
-				maxValue = new Date(maxValue);
-				max = value > maxValue;
-				maxValue = maxValue.toLocaleString();
-			}
-		}
+			if ((hasMin || hasMax)) {
+				if (isNumber && !options.date) {
+					value = this._parseNumber(value, options);
+					min = hasMin && minValue;
+					min = value < min ? min.toString() : null;
+					max = hasMax && maxValue;
+					max = value > max ? max.toString() : null;
+				} else if (isDateParsable && !options.number) {
+					value = new Date(value);
+					if (hasMin) {
+						min = minValue = new Date(minValue);
+						minValue = minValue.toLocaleString();
+					}
+					min = value < min ? min.toLocaleString() : null;
 
-		if (hasMin && hasMax && (min || max)) {
-			// range message
-			this._lastMessageType = "rangeValue";
-			this.formatItems = [ minValue, maxValue ];
-		} else if (min) {
-			this._lastMessageType = "minValue";
-			this.formatItems = [ minValue ];
-		} else if (max) {
-			this._lastMessageType = "maxValue";
-			this.formatItems = [ maxValue ];
-		}
+					if (hasMax) {
+						max = maxValue = new Date(maxValue);
+						maxValue = maxValue.toLocaleString();
+					}
+					max = value > max ? max.toLocaleString() : null;
+				}
 
-		return !(min || max);
+				if (hasMin && hasMax && (min || max)) {
+					// range message
+					this._lastMessageType = "rangeValue";
+					this.formatItems = [ min || minValue, max || maxValue ];
+				} else if (min) {
+					this._lastMessageType = "minValue";
+					this.formatItems = [ min ];
+				} else if (max) {
+					this._lastMessageType = "maxValue";
+					this.formatItems = [ max ];
+				}
+
+				if (min || max) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 });
 

@@ -1,5 +1,0 @@
-{
-	"config": [
-		"<%= config.modulesDir%>/infragistics.ui.widget.js"
-	]
-}

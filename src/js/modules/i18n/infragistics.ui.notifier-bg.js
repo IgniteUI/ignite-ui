@@ -9,27 +9,28 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-	$.ig = $.ig || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.bg = $.ig.locale.bg || {};
-	$.ig.Notifier = $.ig.Notifier || {};
-	
-	$.ig.locale.bg.Notifier = {
-		successMsg: "Успех",
-		errorMsg: "Грешка",
-		warningMsg: "Внимание",
-		infoMsg: "Информация",
-		notSupportedState: "Неподдържано състояние на нотификациите! Използвайте някое от поддържаните състояния 'success', 'info', 'warning', 'error’.",
-		notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някой от поддържаните режими 'auto', 'popover', 'inline'."
-	};
+(function($) {
+$.ig = $.ig || {};
 
-$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.bg.Notifier;
-return $.ig.locale.bg.Notifier;
+if (!$.ig.Notifier) {
+	$.ig.Notifier = {};
+
+	$.extend($.ig.Notifier, {
+		locale: {
+			successMsg: "Успех",
+			errorMsg: "Грешка",
+			warningMsg: "Внимание",
+			notSupportedState: "Неподдържано състояние на нотификациите! Използвайте някое от поддържаните състояния 'success', 'info', 'warning', 'error’.",
+			notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някой от поддържаните режими 'auto', 'popover', 'inline'."
+		}
+	});
+
+}
 }));// REMOVE_FROM_COMBINED_FILES

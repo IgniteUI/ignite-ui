@@ -9,27 +9,28 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-	$.ig = $.ig || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.fr = $.ig.locale.fr || {};
-	$.ig.Notifier = $.ig.Notifier || {};
-	
-	$.ig.locale.fr.Notifier = {
-		successMsg: "Réussite",
-		errorMsg: "Erreur",
-		warningMsg: "Avertissement",
-		infoMsg: "Information",
-		notSupportedState: "État de notification non pris en charge ! Utilisez un des états pris en charge 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Mode de notification non pris en charge ! Utilisez un des modes pris en charge 'auto', 'popover', 'inline'"
-};
+(function($) {
+$.ig = $.ig || {};
 
-$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.fr.Notifier;
-return $.ig.locale.fr.Notifier;
+if (!$.ig.Notifier) {
+	$.ig.Notifier = {};
+
+	$.extend($.ig.Notifier, {
+		locale: {
+		    successMsg: "Réussite",
+		    errorMsg: "Erreur",
+		    warningMsg: "Avertissement",
+		    notSupportedState: "État de notification non pris en charge ! Utilisez un des états pris en charge 'success', 'info', 'warning', 'error'",
+		    notSupportedMode: "Mode de notification non pris en charge ! Utilisez un des modes pris en charge 'auto', 'popover', 'inline'"
+		}
+	});
+
+}
 }));// REMOVE_FROM_COMBINED_FILES

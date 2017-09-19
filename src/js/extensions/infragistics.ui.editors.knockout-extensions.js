@@ -289,8 +289,7 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			// N.A. August 14th, 2017 #1078: Allow setting null values.
-			if (value !== "" && value !== null) {
+			if (value !== "") {
 				// K.D. Good!
 				if (isNaN(value)) {
 					value = undefined;
@@ -353,8 +352,7 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			// N.A. August 14th, 2017 #1078: Allow setting null values.
-			if (value !== "" && value !== null) {
+			if (value !== "") {
 				if (isNaN(value)) {
 					value = undefined;
 				}
@@ -415,8 +413,7 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			// N.A. August 14th, 2017 #1078: Allow setting null values.
-			if (value !== "" && value !== null) {
+			if (value !== "") {
 				if (isNaN(value)) {
 					value = undefined;
 				}
@@ -521,11 +518,12 @@
 					"igDateEditor", "igDatePicker", "igCheckboxEditor" ],
 				name;
 
-			// N.A. September 5th, 2017 #1168 Unwrap observable and using it instead of checking if it is such.
-			disabled = ko.utils.unwrapObservable(disabled);
+            if (!ko.isObservable(disabled)) {
+                return;
+            }
 			for (name in editor.data()) {
 				if ($.inArray(name, widgetNames) !== -1) {
-					editor[ name ]("option", "disabled", disabled);
+					editor[ name ]("option", "disabled", disabled());
 					break;
 				}
 			}

@@ -52,7 +52,7 @@
 	    currencyNegativePattern: '-n $',
 	    currencySymbol: 'դր.'
     };
-    if ($.ig.util && $.ig.util.changeGlobalRegional) {
-	    $.ig.util.changeGlobalRegional('hy');
+    if ($.ig.setRegionalDefault) {
+	    $.ig.setRegionalDefault('hy');
     }
 }));// REMOVE_FROM_COMBINED_FILES

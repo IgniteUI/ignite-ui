@@ -59,7 +59,7 @@
 	    percentDecimalSeparator: ',',
 	    percentGroupSeparator: '.'
     };
-    if ($.ig.util && $.ig.util.changeGlobalRegional) {
-	    $.ig.util.changeGlobalRegional('da');
+    if ($.ig.setRegionalDefault) {
+	    $.ig.setRegionalDefault('da');
     }
 }));// REMOVE_FROM_COMBINED_FILES

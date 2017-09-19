@@ -9,19 +9,22 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ja = $.ig.locale.ja || {};;
 
-	$.ig.locale.ja.VideoPlayer = {
+    if (!$.ig.VideoPlayer) {
+	    $.ig.VideoPlayer = {};
+
+	    $.extend($.ig.VideoPlayer, {
+
+		    locale: {
 			    liveStream: "ライブ ビデオ",
 			    live: "ライブ",
 			    paused: "一時停止",
@@ -57,8 +60,8 @@
 			    replayButton: '再生',
 			    replayTooltip: 'クリックすると、前回再生したビデオを再生します',
 				noCommercials: 'ブラウザー コントロールでコマーシャルはサポートされません。'
-	}
+		    }
+	    });
 
-	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.ja.VideoPlayer;
-	return $.ig.locale.ja.VideoPlayer;
+    }
 }));// REMOVE_FROM_COMBINED_FILES

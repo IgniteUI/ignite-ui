@@ -11,7 +11,6 @@
  * jquery.ui.widget.js
  * infragistics.util.js
  * infragistics.util.jquery.js
- * infragistics.ui.widget.js
  * infragistics.ui.shared.js
 */
 
@@ -21,7 +20,10 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"./infragistics.ui.widget",
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.shared"
 		], factory );
 	} else {
@@ -34,7 +36,7 @@
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
 	*/
-	$.widget("ui.igZoombar", $.ui.igWidget, {
+	$.widget("ui.igZoombar", {
 		options: {
 			/* type="object" Specifies a provider class which interfaces the widget that is being zoomed.
 				object Provider class to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
@@ -568,7 +570,7 @@
 				this._responsive.removeCallback(this._callBackId);
 			}
 			this.container().remove();
-			this._superApply(arguments);
+			$.Widget.prototype.destroy.apply(this, arguments);
 			return this;
 		},
 		_setOption: function (key, value) {
@@ -584,7 +586,7 @@
 				case "zoomWindowMoveDistance":
 					break;
 				default:
-					throw new Error(this._getLocaleValue("optionChangeNotSupported") + " " + key);
+					throw new Error($.ig.Zoombar.locale.optionChangeNotSupported + " " + key);
 			}
 			$.Widget.prototype._setOption.apply(this, arguments);
 		},
@@ -1099,7 +1101,7 @@
 					this._target = $(opts.target[ 0 ]);
 				}
 			} else {
-				throw new Error(this._getLocaleValue("zoombarTargetNotSpecified"));
+				throw new Error($.ig.Zoombar.locale.zoombarTargetNotSpecified);
 			}
 			if (opts.provider === $.ig.ZoombarProviderDataChart) {
 				// the target widget should have an igDataChart initialized on it
@@ -1109,7 +1111,7 @@
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				} else {
-					throw new Error(this._getLocaleValue("zoombarTypeNotSupported"));
+					throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
 				}
 			} else {
 				try {
@@ -1117,7 +1119,7 @@
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				} catch (e) {
-					throw new Error(this._getLocaleValue("zoombarProviderNotRecognized") + " " + e);
+					throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized + " " + e);
 				}
 			}
 			this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });

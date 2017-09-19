@@ -9,19 +9,22 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.Upload = $.ig.Upload || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.en = $.ig.locale.en || {};
 
-	$.ig.locale.en.Upload = {
+    if (!$.ig.Upload) {
+	    $.ig.Upload = {};
+
+	    $.extend($.ig.Upload, {
+
+		    locale: {
 			    labelUploadButton: "Upload File",
 			    labelAddButton: "Add",
 			    labelClearAllButton: "Clear Uploaded",
@@ -65,8 +68,8 @@
 			    // M.H. 1 June 2011 Fix bug #77532
 			    titleSingleUploadButtonContinue: "Upload",
 			    titleClearAllButton: "Clear Uploaded"
-	}
-		
-	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.en.Upload;
-	return $.ig.locale.en.Upload;
+		    }
+	    });
+
+    }
 }));// REMOVE_FROM_COMBINED_FILES

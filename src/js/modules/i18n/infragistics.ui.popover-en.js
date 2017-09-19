@@ -9,23 +9,24 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-	$.ig = $.ig || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.en = $.ig.locale.en || {};
-	$.ig.Popover = $.ig.Popover || {};
-	
-	$.ig.locale.en.Popover = {
-		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
-	};
+(function($) {
+$.ig = $.ig || {};
 
-$.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.en.Popover;
-return $.ig.locale.en.Popover;
+if (!$.ig.Popover) {
+	$.ig.Popover = {};
+
+	$.extend( $.ig.Popover, {
+		locale: {
+			popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
+			popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+		}
+	});
+}
 }));// REMOVE_FROM_COMBINED_FILES

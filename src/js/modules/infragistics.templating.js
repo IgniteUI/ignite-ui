@@ -370,11 +370,6 @@
 			}
 			return result;
 		},
-		_getUndefinedArgLocale: function() {
-			return $.ig.util ?
-				$.ig.util.getLocaleValue("Templating", "undefinedArgument") :
-				$.ig.Templating.locale.undefinedArgument;
-		},
 		_compileTemplate: function (template, data) {
 			var i, j, k, result = "", temp, tempArgs = [ ], arg = "", f;
 			if ($.type(data) !== "array") {
@@ -389,7 +384,7 @@
 						}
 					}
 					if (arg === undefined) {
-						throw new Error(this._getUndefinedArgLocale() + this.tokens[ i ][ 0 ]);
+						throw new Error($.ig.Templating.locale.undefinedArgument + this.tokens[ i ][ 0 ]);
 					}
 					if (typeof arg === "string") {
 						arg = arg.replace(this.regExp.index, 0);
@@ -416,7 +411,7 @@
 							}
 						}
 						if (arg === undefined) {
-							throw new Error(this._getUndefinedArgLocale() + this.tokens[ i ][ 0 ]);
+							throw new Error($.ig.Templating.locale.undefinedArgument + this.tokens[ i ][ 0 ]);
 						}
 						if (typeof arg === "string") {
 							arg = arg.replace(this.regExp.index, j);

@@ -25,8 +25,8 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<!--<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>-->
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.editors.js"></script>
@@ -62,8 +62,7 @@
 				eventTriggered = true;
 			};
 			this.isDisabled =  ko.observable(false);
-			this.isDisabledNotObsFalse = false;
-			this.isDisabledNotObsTrue = true;
+			this.isDisabledNotObs = true;
 		};
 		
 		model = new viewModel();
@@ -340,8 +339,9 @@
 		});
 
 		var testId = 'Test disabled binding';
-		test(testId, 28, function () {
+		test(testId, 20, function () {
 			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
 			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
 			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
 			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
@@ -362,6 +362,7 @@
 			$chk.remove();
 
 			$editor = $("#edDisabledNotObs"), $chk = $("#edDisabledNotObs");
+			
 			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
 			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
 			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
@@ -371,19 +372,6 @@
 			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
 			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
 			ok(!$editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
-			$editor.remove();
-			$chk.remove();
-
-			$editor = $("#edDisabledNotObs1"), $chk = $("#edDisabledNotObs1");
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
-			$chk.click();
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 			$editor.remove();
 			$chk.remove();
 		});
@@ -598,13 +586,8 @@
 
 		<input id="edDisabledNotObs" data-bind="igTextEditor: {
 				width: '200'
-          }, igEditorDisable: isDisabledNotObsFalse" />
-		<input id="chkDisabledNotObs" type="checkbox" data-bind="checked: isDisabledNotObsFalse"/>
-
-		<input id="edDisabledNotObs1" data-bind="igTextEditor: {
-			width: '200'
-	  }, igEditorDisable: isDisabledNotObsTrue" />
-	<input id="chkDisabledNotObs1" type="checkbox" data-bind="checked: isDisabledNotObsTrue"/>
+          }, igEditorDisable: isDisabledNotObs" />
+		<input id="chkDisabledNotObs" type="checkbox" data-bind="checked: isDisabledNotObs"/>
 </div>
 </body>
 </html>

@@ -2166,7 +2166,7 @@
                     $(".selector").igLayoutManager("destroy");
                     ```
                 */
-                this._superApply(arguments);
+                $.Widget.prototype.destroy.apply(this, arguments);
                 this.element.removeClass(this.css.container);
                 switch (this.options.layoutMode) {
                     case "grid":

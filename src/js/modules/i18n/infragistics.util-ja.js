@@ -9,19 +9,22 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.util = $.ig.util || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ja = $.ig.locale.ja || {};
 
-	$.ig.locale.ja.util = {
+    if (!$.ig.util) {
+	    $.ig.util = {};
+
+	    $.extend($.ig.util, {
+
+		    locale: {
 			    unsupportedBrowser: "現在のブラウザーは HTML5 ビデオをサポートしません。<br/>以下のバージョンにアップグレードしてください。",
 			    currentBrowser: "現在のブラウザー: {0}",
 			    ie9: "Microsoft Internet Explorer 9+",
@@ -39,8 +42,8 @@
 			    defaultSummaryMethodLabelSum: "合計 = ",
 			    defaultSummaryMethodLabelAvg: "平均 = ",
 			    defaultSummaryMethodLabelCount: "数値の個数 = "
-	}
+		    }
+	    });
 
-	$.ig.util.locale = $.ig.util.locale || $.ig.locale.ja.util;
-	return $.ig.locale.ja.util;
+    }
 }));// REMOVE_FROM_COMBINED_FILES

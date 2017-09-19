@@ -539,7 +539,7 @@
                 return;
             }
 
-            this._superApply(arguments);
+            $.Widget.prototype._setOption.apply(this, arguments);
 
             switch (key) {
                 case "defaultItemName":

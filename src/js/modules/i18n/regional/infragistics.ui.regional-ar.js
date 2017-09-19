@@ -37,7 +37,7 @@ $.ig.regional.ar = {
 	percentPositivePattern: 'n $',
 	percentNegativePattern: '-n $'
 };
-if ($.ig.util && $.ig.util.changeGlobalRegional) {
-	$.ig.util.changeGlobalRegional('ar');
+if ($.ig.setRegionalDefault) {
+	$.ig.setRegionalDefault('ar');
 }
 }));// REMOVE_FROM_COMBINED_FILES
