@@ -9,19 +9,21 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.Tree = $.ig.Tree || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ru = $.ig.locale.ru || {};
 
-	$.ig.locale.ru.Tree = {
+    if (!$.ig.Tree) {
+	    $.ig.Tree = {};
+
+	    $.extend($.ig.Tree, {
+		    locale: {
 			    invalidArgumentType: 'Неправильный тип аргумента.',
 			    errorOnRequest: 'Произошла ошибка при запросе данных: ',
 			    noDataSourceUrl: 'Необходимо установить опцию dataSourceUrl, чтобы igTree смог произвести запрос данных с указанного URL.',
@@ -37,8 +39,8 @@
 			    copyAfter: '<strong>Копировать после</strong> {0}',
 			    copyBefore: '<strong>Копировать до</strong> {0}',
 			    and: 'и'
-	}
-		
-	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.ru.Tree;
-	return $.ig.locale.ru.Tree;
+		    }
+	    });
+
+    }
 }));// REMOVE_FROM_COMBINED_FILES

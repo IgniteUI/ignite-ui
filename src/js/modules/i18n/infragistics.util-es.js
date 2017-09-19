@@ -9,19 +9,22 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.util = $.ig.util || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.es = $.ig.locale.es || {};
 
-	$.ig.locale.es.util = {
+    if (!$.ig.util) {
+	    $.ig.util = {};
+
+	    $.extend($.ig.util, {
+
+		    locale: {
 			    unsupportedBrowser: "El explorador actual no admite el elemento canvas de HTML5. <br/>Intente actualizar a una de las siguientes versiones:",
 			    currentBrowser: "Explorador actual: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -39,8 +42,8 @@
 			    defaultSummaryMethodLabelSum: "Suma = ",
 			    defaultSummaryMethodLabelAvg: "Prom. = ",
 			    defaultSummaryMethodLabelCount: "Recuento = "
-	}
+		    }
+	    });
 
-	$.ig.util.locale = $.ig.util.locale || $.ig.locale.es.util;
-	return $.ig.locale.es.util;
+    }
 }));// REMOVE_FROM_COMBINED_FILES

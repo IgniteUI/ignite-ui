@@ -11,7 +11,6 @@
  *  jquery.ui.widget.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
- *  infragistics.ui.widget.js
  */
 
 /*global HTMLElement */
@@ -20,7 +19,10 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"./infragistics.ui.widget"
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
@@ -29,7 +31,7 @@
 	}
 }
 (function ($) {
-	$.widget("ui.igPopover", $.ui.igWidget, {
+	$.widget("ui.igPopover", {
 		css: {
 			/* classes applied to the main popover container */
 			baseClasses: "ui-widget ui-igpopover",
@@ -455,20 +457,38 @@
 			if (options && options.directionPriority !== this.options.directionPriority) {
 				options.directionPriority = this._normalizePriority(options.directionPriority);
 			}
-			this._superApply(arguments);
+			$.Widget.prototype._createWidget.apply(this, arguments);
 			this.element = $(element);
 			if (element && element.nodeType !== undefined) {
 				this._renderPopover();
 			}
 		},
 		_setOption: function (key, value) {
-			this._super(key, value);
 			switch (key) {
 				case "direction":
+					this.options.direction = value;
 					this._resizeHandler();
 					break;
 				case "directionPriority":
 					this.options.directionPriority = this._normalizePriority(value);
+					break;
+				case "contentTemplate":
+					if (typeof value === "string") {
+						this.options.contentTemplate = value;
+					}
+					break;
+				case "animationDuration":
+					if (typeof value === "number") {
+						this.options.animationDuration = value;
+					}
+					break;
+				case "containment":
+					if (value instanceof $) {
+						this.options.containment = value;
+					}
+					break;
+				case "closeOnBlur":
+					this.options.closeOnBlur = value;
 					break;
 				case "headerTemplate":
 				case "selectors":
@@ -478,9 +498,9 @@
 				case "maxHeight":
 				case "minWidth":
 				case "showOn":
-					throw new Error(this._getLocaleValue("popoverOptionChangeNotSupported") + " " + key);
+					throw new Error($.ig.Popover.locale.popoverOptionChangeNotSupported + " " + key);
 				default:
-					break;
+					$.Widget.prototype._setOption.apply(this, arguments);
 			}
 		},
 		destroy: function () {
@@ -492,7 +512,7 @@
 			this._detachEventsFromTarget();
 			$(window).off("resize.popover", this._resizeHandler);
 			this.popover.remove();
-			this._superApply(arguments);
+			$.Widget.prototype.destroy.call(this);
 			return this;
 		},
 		id: function () {
@@ -532,7 +552,7 @@
 			}
 			/*T.G. 23 Jan 2014 Fix for bug 162111 - An error is thrown when calling igPopover.show method when the igPopover.selectors is set*/
 			if (target === null) {
-				throw new Error(this._getLocaleValue("popoverShowMethodWithoutTarget"));
+				throw new Error($.ig.Popover.locale.popoverShowMethodWithoutTarget);
 			}
 			this._openPopover(target, true);
 		},

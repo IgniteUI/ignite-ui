@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Localizing Editors Sample - Localizing Editors with Editors Control - Ignite UIï¿½</title>
+    <title>Localizing Editors Sample - Localizing Editors with Editors Control - Ignite UI™</title>
 
     <!-- Ignite UI Required Combined CSS Files -->
     <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
@@ -28,7 +28,6 @@
         <div id="enUsDatePicker"></div>
         <div id="enUsTimeEditor"></div>
         <div id="enUsCurrencyEditor"></div>
-		<button id="changeUSLocale">Change Locale</button>
 
         <h4>Japan (ja)</h4>
         <div id="jaDatePicker"></div>
@@ -73,16 +72,6 @@
                 value: 86753.09,
                 regional: "en-US"
             }); // ----- END en-US -----
-
-			
-
-			$("#changeUSLocale").click(function () {
-				$("#enUsDatePicker").igDatePicker("option", "locale", {
-					datePickerButtonTitle: "New DD Title",
-					spinUpperTitle: "New SU Title",
-					spinLowerTitle: "New SL Title"
-				});
-			});
 
 
             // --------- ja ----------

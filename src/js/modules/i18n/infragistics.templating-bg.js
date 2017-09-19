@@ -9,22 +9,23 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
+(function ($) {
 	$.ig = $.ig || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.bg = $.ig.locale.bg || {};
-	$.ig.Templating = $.ig.Templating || {};
-	
-	$.ig.locale.bg.Templating = {
-			undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
-	};
 
-	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.bg.Templating;
-	return $.ig.locale.bg.Templating;
+	if (!$.ig.Templating) {
+		$.ig.Templating = {};
+
+		$.extend($.ig.Templating, {
+			locale: {
+				undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
+			}
+		});
+	}
 }));// REMOVE_FROM_COMBINED_FILES

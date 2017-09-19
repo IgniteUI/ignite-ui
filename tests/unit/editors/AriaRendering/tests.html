@@ -18,7 +18,6 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                    
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script> 
@@ -59,15 +58,6 @@
 					placeHolder: "Select Date",
 					width: 400
 				});
-
-				$("#changeUSLocale").click(function () {
-					$("#divEditor3").igDatePicker("option", "locale", {
-						datePickerButtonTitle: "New DD Title",
-						spinUpperTitle: "New SU Title",
-						spinLowerTitle: "New SL Title"
-					});
-				});
-
 				$("#divEditor4").igMaskEditor({
 					buttonType: "clear",
 					placeHolder: "Fill Mask",
@@ -89,7 +79,6 @@
 				
 			});
 		}
-
 		initialized = false;
 		module("igEditors ARIA rendering", {
 			setup: function() {
@@ -112,7 +101,7 @@
 			dropDownButton = $("#divEditor").data("igTextEditor")._dropDownButton;
 
 			equal(dropDownButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(dropDownButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("buttonTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("buttonTitle"));
+			equal(dropDownButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaDropDownButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaDropDownButton"));
 			equal(dropDownButton.attr("id"), "divEditor_dropDownButton", "The id of the dropDownButton should be divEditor_dropDownButton");
 			// Bug 214846:igGrid Paging dropdown in the header has negative tabindex
 			// Make sure tabIndex is only applied when set
@@ -121,15 +110,15 @@
 
 			clearButton = $("#divEditor").data("igTextEditor")._clearButton;
 			equal(clearButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(clearButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("clearTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("clearTitle"));
+			equal(clearButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaClearButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaClearButton"));
 			equal(clearButton.attr("id"), "divEditor_clearButton", "The id of the clearButton should be divEditor_clearButton");
 			spinUpButton = $("#divEditor").data("igTextEditor")._spinUpButton;
 			equal(spinUpButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(spinUpButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("spinUpperTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("spinUpperTitle"));
+			equal(spinUpButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinUpButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinUpButton"));
 			equal(spinUpButton.attr("id"), "divEditor_spinUpButton", "The id of the spinUpButton should be divEditor_spinUpButton");
 			spinDownButton = $("#divEditor").data("igTextEditor")._spinDownButton;
 			equal(spinDownButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(spinDownButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("spinLowerTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("spinLowerTitle"));
+			equal(spinDownButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinDownButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinDownButton"));
 			equal(spinDownButton.attr("id"), "divEditor_spinDownButton", "The id of the spinDownButton should be divEditor_spinDownButton");
 			ddlist = $("#divEditor").data("igTextEditor")._dropDownList;
 			equal(ddlist.attr("id"), "divEditor_list", "The list id should be divEditor_list");
@@ -143,39 +132,32 @@
 			equal(listitem.attr("title"), "item4", "The title of the item should be item4");
 			//AriaLabelText for all editors. 
 			equal($("#divEditor").igTextEditor("field").attr("aria-label"),
-				$("#divEditor").data("igTextEditor")._getLocaleValue("ariaTextEditorFieldLabel"),
-				"The aria-label should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("ariaTextEditorFieldLabel"));
+				$("#divEditor").data("igTextEditor")._getLocaleOption("ariaTextEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaTextEditorFieldLabel"));
 			equal($("#divEditor1").igCurrencyEditor("field").attr("aria-label"),
-				$("#divEditor1").data("igCurrencyEditor")._getLocaleValue("ariaCurrencyEditorFieldLabel"),
-				"The aria-label should be: " + $("#divEditor1").data("igCurrencyEditor")._getLocaleValue("ariaCurrencyEditorFieldLabel"));
+				$("#divEditor1").data("igCurrencyEditor")._getLocaleOption("ariaCurrencyEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor1").data("igCurrencyEditor")._getLocaleOption("ariaCurrencyEditorFieldLabel"));
 			equal($("#divEditor2").igDateEditor("field").attr("aria-label"),
-				$("#divEditor2").data("igDateEditor")._getLocaleValue("ariaDateEditorFieldLabel"),
-				"The aria-label should be: " + $("#divEditor2").data("igDateEditor")._getLocaleValue("ariaDateEditorFieldLabel"));
+				$("#divEditor2").data("igDateEditor")._getLocaleOption("ariaDateEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor2").data("igDateEditor")._getLocaleOption("ariaDateEditorFieldLabel"));
 			equal($("#divEditor3").igDatePicker("field").attr("aria-label"),
-				$("#divEditor3").data("igDatePicker")._getLocaleValue("ariaDatePickerFieldLabel"),
-				"The aria-label should be: " + $("#divEditor3").data("igDatePicker")._getLocaleValue("ariaDatePickerFieldLabel"));
+				$("#divEditor3").data("igDatePicker")._getLocaleOption("ariaDatePickerFieldLabel"),
+				"The aria-label should be: " + $("#divEditor3").data("igDatePicker")._getLocaleOption("ariaDatePickerFieldLabel"));
 			equal($("#divEditor4").igMaskEditor("field").attr("aria-label"),
-				$("#divEditor4").data("igMaskEditor")._getLocaleValue("ariaMaskEditorFieldLabel"),
-				"The aria-label should be: " + $("#divEditor4").data("igMaskEditor")._getLocaleValue("ariaMaskEditorFieldLabel"));
+				$("#divEditor4").data("igMaskEditor")._getLocaleOption("ariaMaskEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor4").data("igMaskEditor")._getLocaleOption("ariaMaskEditorFieldLabel"));
 			equal($("#divEditor5").igNumericEditor("field").attr("aria-label"),
-				$("#divEditor5").data("igNumericEditor")._getLocaleValue("ariaNumericEditorFieldLabel"),
-				"The aria-label should be: " + $("#divEditor5").data("igNumericEditor")._getLocaleValue("ariaNumericEditorFieldLabel"));
+				$("#divEditor5").data("igNumericEditor")._getLocaleOption("ariaNumericEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor5").data("igNumericEditor")._getLocaleOption("ariaNumericEditorFieldLabel"));
 			equal($("#divEditor6").igPercentEditor("field").attr("aria-label"),
-				$("#divEditor6").data("igPercentEditor")._getLocaleValue("ariaPercentEditorFieldLabel"),
-				"The aria-label should be: " + $("#divEditor6").data("igPercentEditor")._getLocaleValue("ariaPercentEditorFieldLabel"));
+				$("#divEditor6").data("igPercentEditor")._getLocaleOption("ariaPercentEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor6").data("igPercentEditor")._getLocaleOption("ariaPercentEditorFieldLabel"));
 		});
-		testId = 'Aria List Rendering';
+		var testId = 'Aria List Rendering';
 		test(testId, 0, function () {
 
 		});
-
-		testId = "Change locale";
-		test(testId, 3, function () {
-			$("#changeUSLocale").click();
-			equal($("#divEditor3").find("#divEditor3_calendarButton").attr("title"), "New DD Title", "The Drop Down title locale didn't change");
-			equal($("#divEditor3").find("#divEditor3_spinUpButton").attr("title"), "New SU Title", "The Spin Up title locale didn't change");
-			equal($("#divEditor3").find("#divEditor3_spinDownButton").attr("title"), "New SL Title", "The Spin Down title locale didn't change");
-		});
+		
 	});
 	</script>
 
@@ -197,7 +179,6 @@
 	</div>
 	<div id="divEditor3">
 	</div>
-	<button id="changeUSLocale">Change Locale</button>
 	<div id="divEditor4">
 	</div>
 	<div id="divEditor5">
@@ -205,8 +186,6 @@
 	<div id="divEditor6">
 	</div>
 	<div id="divEditor7">
-	</div>
-</div>
-</body>
+	</div></body>
 </html>
 

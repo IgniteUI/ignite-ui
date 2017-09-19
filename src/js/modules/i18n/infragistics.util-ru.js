@@ -9,19 +9,22 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.util = $.ig.util || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ru = $.ig.locale.ru || {};
 
-	$.ig.locale.ru.util = {
+    if (!$.ig.util) {
+	    $.ig.util = {};
+
+	    $.extend($.ig.util, {
+
+		    locale: {
 			    unsupportedBrowser: "Ваш браузер не поддерживает HTML5 canvas элемент. <br/>Попробуйте воспользоваться следующими версиями браузеров:",
 			    currentBrowser: "Ваш браузер: {0}",
 			    ie9: "Microsoft Internet Explorer 9+",
@@ -39,8 +42,8 @@
 			    defaultSummaryMethodLabelSum: "Сумма = ",
 			    defaultSummaryMethodLabelAvg: "Ср. = ",
 			    defaultSummaryMethodLabelCount: "Кол-во = "
-	}
+		    }
+	    });
 
-	$.ig.util.locale = $.ig.util.locale || $.ig.locale.ru.util;
-	return $.ig.locale.ru.util;
+    }
 }));// REMOVE_FROM_COMBINED_FILES

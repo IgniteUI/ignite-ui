@@ -9,23 +9,25 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.Splitter = $.ig.Splitter || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.bg = $.ig.locale.bg || {};
-	
-	   $.ig.locale.bg.Splitter = {
+
+    if (!$.ig.Splitter) {
+	    $.ig.Splitter = {};
+
+	    $.extend($.ig.Splitter, {
+		    locale: {
 		        errorPanels: 'Броят на панелите не може да надвишава два.',
 		        errorSettingOption: 'Грешка в настройката на опцията.'
 		    }
+	    });
 
-		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.bg.Splitter;
-		return $.ig.locale.bg.Splitter;
+    }
 }));// REMOVE_FROM_COMBINED_FILES

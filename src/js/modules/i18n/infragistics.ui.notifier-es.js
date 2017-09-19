@@ -9,27 +9,28 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-	$.ig = $.ig || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.es = $.ig.locale.es || {};
-	$.ig.Notifier = $.ig.Notifier || {};
-	
-	$.ig.locale.es.Notifier = {
-		successMsg: "Correcto",
-		errorMsg: "Error",
-		warningMsg: "Advertencia",
-		infoMsg: "Información",
-		notSupportedState: "¡Estado de notificación no admitido! Utilice uno de los estados admitidos 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "¡Modo de notificación no admitido! Utilice uno de los modos admitidos 'auto', 'popover', 'inline'"
-};
+(function($) {
+$.ig = $.ig || {};
 
-$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.es.Notifier;
-return $.ig.locale.fr.Notifier;
+if (!$.ig.Notifier) {
+	$.ig.Notifier = {};
+
+	$.extend($.ig.Notifier, {
+		locale: {
+		    successMsg: "Correcto",
+		    errorMsg: "Error",
+		    warningMsg: "Advertencia",
+		    notSupportedState: "¡Estado de notificación no admitido! Utilice uno de los estados admitidos 'success', 'info', 'warning', 'error'",
+		    notSupportedMode: "¡Modo de notificación no admitido! Utilice uno de los modos admitidos 'auto', 'popover', 'inline'"
+		}
+	});
+
+}
 }));// REMOVE_FROM_COMBINED_FILES

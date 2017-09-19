@@ -9,19 +9,21 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.Tree = $.ig.Tree || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.en = $.ig.locale.en || {};
 
-	$.ig.locale.en.Tree = {
+    if (!$.ig.Tree) {
+	    $.ig.Tree = {};
+
+	    $.extend($.ig.Tree, {
+		    locale: {
 			    invalidArgumentType: 'Invalid argument type provided.',
 			    errorOnRequest: 'An error has occurred while retrieving data: ',
 			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
@@ -37,8 +39,8 @@
 			    copyAfter: '<strong>Copy after</strong> {0}',
 			    copyBefore: '<strong>Copy before</strong> {0}',
 			    and: 'and'
-	}
-		
-	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.en.Tree;
-	return $.ig.locale.en.Tree;
+		    }
+	    });
+
+    }
 }));// REMOVE_FROM_COMBINED_FILES

@@ -52,7 +52,7 @@
 	    currencyNegativePattern: '$-n',
 	    currencySymbol: '￥'
     };
-    if ($.ig.util && $.ig.util.changeGlobalRegional) {
-	    $.ig.util.changeGlobalRegional('zh-CN');
+    if ($.ig.setRegionalDefault) {
+	    $.ig.setRegionalDefault('zh-CN');
     }
 }));// REMOVE_FROM_COMBINED_FILES

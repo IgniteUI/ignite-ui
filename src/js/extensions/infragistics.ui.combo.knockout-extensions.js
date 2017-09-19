@@ -155,16 +155,14 @@
 
             if (dataSource) {
                 for (i = 0; i < $comboList.length; i++) {
-                    if (ko.isObservable($comboList[ i ])) {
-                        ko.applyBindingsToNode($comboList[ i ], {
-                            igComboItem: {
-                                combo: combo,
-                                value: dataSource[ i ],
-                                index: i,
-                                options: options
-                            }
-                        }, dataSource[ i ]);
-                    }
+                    ko.applyBindingsToNode($comboList[ i ], {
+                        igComboItem: {
+                            combo: combo,
+                            value: dataSource[ i ],
+                            index: i,
+                            options: options
+                        }
+                    }, dataSource[ i ]);
                 }
             }
         },
@@ -180,16 +178,14 @@
                     $comboList = combo.igCombo("listItems");
                     if (dataSource) {
                         for (i = 0; i < $comboList.length; i++) {
-                            if (ko.isObservable($comboList[ i ])) {
-                                ko.applyBindingsToNode($comboList[ i ], {
-                                    igComboItem: {
-                                        combo: combo,
-                                        value: dataSource[ i ],
-                                        index: i,
-                                        options: options
-                                    }
-                                }, dataSource[ i ]);
-                            }
+                            ko.applyBindingsToNode($comboList[ i ], {
+                                igComboItem: {
+                                    combo: combo,
+                                    value: dataSource[ i ],
+                                    index: i,
+                                    options: options
+                                }
+                            }, dataSource[ i ]);
                         }
                     }
                     selectItems(combo, valueAccessor().selectedItems);

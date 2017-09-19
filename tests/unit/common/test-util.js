@@ -113,7 +113,7 @@
 		 */
 		keyInteraction: function (key, target, special) {
 			// could use an update in the future - https://www.w3.org/TR/DOM-Level-3-Events/#keypress-event-order
-			var char, startPos, endPos, newPos;
+			var char, endPos;
 			char = (key > 31) ? String.fromCharCode(key) : "";
 			if (special && char) {
 				char = special === "shiftKey" ? char.toUpperCase() : "";
@@ -127,19 +127,11 @@
 			}
 			if (char && target[0].selectionEnd !== undefined) {
 				endPos = target[0].selectionEnd;
-				startPos = target[0].selectionStart;
 				target[0].value =
-					target[0].value.substring(0, startPos) +
+					target[0].value.substring(0, target[0].selectionStart) +
 					char +
 					target[0].value.substring(endPos);
-				if (startPos !== endPos) {
-					// replaced selection, cursor goes to start + char
-					newPos = startPos + 1;
-				} else {
-					//typing move the cursor +1
-					newPos = endPos + 1;
-				}
-				target[0].selectionStart = target[0].selectionEnd = newPos;
+				target[0].selectionStart = target[0].selectionEnd = endPos + 1;
 			}
 			this.keyUpChar(key, target, special);
 		},

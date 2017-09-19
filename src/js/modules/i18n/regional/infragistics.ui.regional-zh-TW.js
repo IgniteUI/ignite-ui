@@ -52,7 +52,7 @@
 	    currencyNegativePattern: '-$n',
 	    currencySymbol: 'NT$'
     };
-    if ($.ig.util && $.ig.util.changeGlobalRegional) {
-	    $.ig.util.changeGlobalRegional('zh-TW');
+    if ($.ig.setRegionalDefault) {
+	    $.ig.setRegionalDefault('zh-TW');
     }
 }));// REMOVE_FROM_COMBINED_FILES

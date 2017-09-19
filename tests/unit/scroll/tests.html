@@ -16,7 +16,6 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.scroll.js"></script>
 	<script type="text/javascript" src="jquery.simulate.js"></script>
 	<script type="text/javascript" src="simInteractions.js"></script>
@@ -196,15 +195,6 @@
 		"</table>" +
 		"<div>Text text</div>";
 		
-		var hiddenVBarClass = $.ui.igScroll.prototype.css.verticalScrollThumbDragHidden,
-			hiddenHBarClass = $.ui.igScroll.prototype.css.horizontalScrollThumbDragHidden,
-			hiddenVArrowClass = $.ui.igScroll.prototype.css.verticalScrollArrowHidden,
-			hiddenHArrowClass = $.ui.igScroll.prototype.css.horizontalScrollArrowHidden,
-			vBarThinClass = $.ui.igScroll.prototype.css.verticalScrollThumbDragThin,
-			vBarBigClass = $.ui.igScroll.prototype.css.verticalScrollThumbDragBig,
-			hBarThinClass = $.ui.igScroll.prototype.css.horizontalScrollThumbDragThin,
-			hBarBigClass = $.ui.igScroll.prototype.css.horizontalScrollThumbDragBig;
-			
 		function getTransform3dValueX (jqElem) {
 			var matrix, values, posX;
 			if (jqElem.css("-webkit-transform")) {
@@ -398,8 +388,8 @@
 		var testId_124 = 'linking two different igScroll to a third one by different orientation scrolls the proper one accordingly.';
 		var testId_125 = 'linking two different igScroll to a third one by different orientation scrolls the proper one accordingly on mobile.';
 		
-		var testId_126 = 'setting scrollWidth updates the custom horizontal scrollbar width and its visibility.';
-		var testId_127 = 'setting scrollHeight updates the custom vertical scrollbar width and its visibility.';
+		var testId_126 = 'setting scrollWidth updates the horizontal scrollbar width and its visibility.';
+		var testId_127 = 'setting scrollHeight updates the vertical scrollbar width and its visibility.';
 		
 		var testId_128 = 'linked element that can be scrolled only vertically updates its position only vertically on touch.';
 		var testId_129 = 'linked element that can be scrolled only horizontally updates its position only horizontally on touch.';
@@ -408,16 +398,11 @@
 		var testId_131 = 'scrolling the container while the scrollbarType is none and setting after that the scrollbarType to native the scrollbars indicate proper scroll position on touch.';
 		var testId_132 = 'scrolling the container while the scrollbarType is none and setting after that the scrollbarType to custom the scrollbars indicate proper scroll position.';
 		
-		var testId_133 = 'changing the width of the main element should auto update the igScroll container and custom scrollbar sizes.';
-		var testId_134 = 'changing the height of the main element should auto update the igScroll container and custom scrollbar sizes.';
-		var testId_135 = 'changing the width of the main element twice should auto hide and then show the custom horizontal scrollbar and the custom vertical scrollbar should update correctly';
-		var testId_136 = 'changing the width of the main element twice should auto hide and then show the custom vertical scrollbar and the custom horizontal scrollbar should update correctly';
-		var testId_137 = 'changing the width of the main element twice should auto hide and then show the native horizontal scrollbar and the native vertical scrollbar should update correctly';
-		var testId_138 = 'changing the width of the main element twice should auto hide and then show the native vertical scrollbar and the native horizontal scrollbar should update correctly';
+		var testId_133 = 'changing the width of the main element should update the igScroll container and scrollbar sizes.';
+		var testId_134 = 'changing the height of the main element should update the igScroll container and scrollbar sizes.';
 		
-		var testId_140 = 'setting scrollTop during vertical inertia stops the inertia and executes the set scrollTop on touch.';
-		var testId_141 = 'setting scrollLeft during horizontal inertia stops the inertia and executes the set scrollLeft on touch.';
-		
+		var testId_135 = 'setting scrollTop during vertical inertia stops the inertia and executes the set scrollTop on touch.';
+		var testId_136 = 'setting scrollLeft during horizontal inertia stops the inertia and executes the set scrollLeft on touch.';
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -847,8 +832,8 @@
 			var hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "300px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "500px", "igScroll container did not update it's width");
-			equal(vBarContainer.height(), 300, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 500, "igScroll did not update horizontal scrollbar container width");			
+			equal(vBarContainer.height(), 300 - 15, "igScroll did not update vertical scrollbar container height");
+			equal(hBarContainer.width(), 500 - 15, "igScroll did not update horizontal scrollbar container width");			
 			ok(300 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 300 - 3 * 15 + 1, "igScroll did not update vertical track height");
 			ok(500 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update horizontal track width");
 			ok(vDragHeight - 1 <= parseInt(vDrag.css("height"), 10) && parseInt(vDrag.css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
@@ -863,8 +848,8 @@
 			hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "500px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "700px", "igScroll container did not update it's width");
-			equal(vBarContainer.height(), 500, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 700, "igScroll did not update horizontal scrollbar container width");		
+			equal(vBarContainer.height(), 500 - 15, "igScroll did not update vertical scrollbar container height");
+			equal(hBarContainer.width(), 700 - 15, "igScroll did not update horizontal scrollbar container width");		
 			ok(500 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update vertical track height");
 			ok(700 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 700 - 3 * 15 + 1, "igScroll did not update horizontal track width");
 			ok(vDragHeight - 1 <= parseInt(vDrag.css("height"), 10) && parseInt(vDrag.css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
@@ -882,8 +867,7 @@
 			var vBarContainer = $("#elemVH_vBar"),
 				hBarContainer = $("#elemVH_hBar"),
 				elemContainer = $("#elemVH_container"),
-				elemContent = $("#elemVH_content"),
-				nativeScrollSize =  $.ig.util.getScrollWidth();
+				elemContent = $("#elemVH_content");
 
 			//Make it smaller
 			$('#elemVH').css("height", "300px");
@@ -892,8 +876,8 @@
 			
 			equal(elemContainer.css("height"), "300px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "500px", "igScroll container did not update it's width");
-			equal(vBarContainer.height(), 300 - nativeScrollSize, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 500 - nativeScrollSize, "igScroll did not update horizontal scrollbar container width");			
+			equal(vBarContainer.height(), 300 - 15, "igScroll did not update vertical scrollbar container height");
+			equal(hBarContainer.width(), 500 - 15, "igScroll did not update horizontal scrollbar container width");			
 			
 			//Make it bigger
 			$('#elemVH').css("height", "500px");
@@ -902,8 +886,8 @@
 			
 			equal(elemContainer.css("height"), "500px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "700px", "igScroll container did not update it's width");
-			equal(vBarContainer.height(), 500 - nativeScrollSize, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 700 - nativeScrollSize, "igScroll did not update horizontal scrollbar container width");			
+			equal(vBarContainer.height(), 500 - 15, "igScroll did not update vertical scrollbar container height");
+			equal(hBarContainer.width(), 700 - 15, "igScroll did not update horizontal scrollbar container width");			
 			$("#elemVH").remove();
 	    });
 				
@@ -998,7 +982,7 @@
 					equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb drag is visible");
 					$("#elemVH").remove();
 					start();
-				}, 2100);
+				}, 1000);
 			}, 650);
 	    });
 		
@@ -1070,14 +1054,12 @@
 			elemContainer.mouseleave();
 			stop();
 			setTimeout(function () {
-				ok(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
-				ok(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
+				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
+				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
 				
 				elemContainer.mouseenter();
-				console.log(vDrag.attr("class"));
-				notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-				notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
-				
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
 				$("#elemVH").remove();
 				start();
 			},2100);
@@ -1099,24 +1081,22 @@
 				elemContainer = $("#elemVH_container");
 
 			elemContainer.mouseenter();
-			ok(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-			ok(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-			ok(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-			ok(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-			notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-			notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+			equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+			equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+			equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+			equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
 			
 			vScrollbarContainer.mouseenter();
-			notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-			notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-			notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-			notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-			notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-			notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
-			ok(vDrag.hasClass(vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
-			notOk(vDrag.hasClass(vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
-			ok(hDrag.hasClass(hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
-			notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+			equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+			equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
 			$("#elemVH").remove();
 	    });
 
@@ -1180,20 +1160,18 @@
 			elemContainer.mouseleave();
 			stop();
 			setTimeout(function () {
-				ok(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
-				ok(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
+				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
+				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
 				
 				vScrollbarContainer.mouseenter();
-				notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-				notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-				notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-				notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-				notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-				notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
-				ok(vDrag.hasClass(vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
-				notOk(vDrag.hasClass(vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
-				ok(hDrag.hasClass(hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
-				notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
 				$("#elemVH").remove();
 				start();
 			},2100);
@@ -1239,7 +1217,7 @@
 			
 			$('#elemVH').igScroll("option", "scrollTop", elemContent.height() - elemContainer.height());
 			vScrollbarContainer.mouseenter();
-			notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 			
 			$.ig.TestUtil.simulateSingleClick(arrowDown);
 			equal(elemContainer.scrollTop(), elemContent.height() - elemContainer.height(), "igScroll did not scroll properly");
@@ -1669,7 +1647,7 @@
 			
 			$('#elemVH').igScroll("option", "scrollLeft", elemContent.width() - elemContainer.width());
 			hScrollbarContainer.mouseenter();
-			notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 			
 			$.ig.TestUtil.simulateSingleClick(arrowRight);
 			equal(elemContainer.scrollLeft(), elemContent.width() - elemContainer.width(), "igScroll did not scroll properly");
@@ -1984,7 +1962,7 @@
 		 			var scrollbarPixelContentRatio = ($('#elemVH').width() - 3 * 15) / elemContent.width();
 		 			equal(getTransform3dValueX(hDrag), 0, "igScroll did not scroll properly");
 					
-		 			$("#elemVH").remove();
+		 			//$("#elemVH").remove();
 		 			start();
 		 		}, 500);
 		 	}, 500);
@@ -2717,28 +2695,24 @@
 			setTimeout(function () {
 				$('#elemVH').igScroll("option", "alwaysVisible", true);
 			
-				notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-				notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-				notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-				notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-				notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
-				notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
-				ok(vDrag.hasClass(vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
-				notOk(hDrag.hasClass(vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
-				ok(hDrag.hasClass(hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
-				notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
 				
-				setTimeout(function () {					
-					notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-					notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-					notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-					notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-					notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
-					notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
-					ok(vDrag.hasClass(vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
-					notOk(hDrag.hasClass(vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
-					ok(hDrag.hasClass(hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
-					notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+				setTimeout(function () {
+					ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+					ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+					ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+					ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+					ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+					ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+					equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+					equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
 					
 					$("#elemVH").remove();
 					start();
@@ -3551,19 +3525,22 @@
 	        $('#elemVH').igScroll();
 		
 			// Claclulating the drag width and height is based on the formula used in the igScroll implementation
+			// vDragHeight = (elemHeight - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewV;
+			// hDragWidth = (elemWidth - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewH;
 			var elemContent = $("#elemVH_content"),
-				hDragWidthPercentage = (600 / elemContent.width()) * 100,
-				vDragHeightPercentage = (400 / elemContent.height()) * 100;
+				hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / elemContent.width()),
+				vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / elemContent.height());
+				
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has proper initial width");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has proper initial height");
 
-			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
-			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
+			$('#elemVH').igScroll("option", "scrollWidth", 700);
 			
-			$('#elemVH').igScroll("option", "scrollWidth", 700);		
-			hDragWidthPercentage = (600 / elemContent.width()) * 100;
-			vDragHeightPercentage = (400 / elemContent.height()) * 100;
+			hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / 700),
+			vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / elemContent.height());
 			
-			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
-			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has updated its width after setting scrollWidth");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has its height unchanged after setting scrollWidth");
 			
 			$('#elemVH').igScroll("option", "scrollWidth", 500);
 			
@@ -3578,19 +3555,22 @@
 	        $('#elemVH').igScroll();
 		
 			// Claclulating the drag width and height is based on the formula used in the igScroll implementation
+			// vDragHeight = (elemHeight - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewV;
+			// hDragWidth = (elemWidth - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewH;
 			var elemContent = $("#elemVH_content"),
-				hDragWidthPercentage = (600 / elemContent.width()) * 100,
-				vDragHeightPercentage = (400 / elemContent.height()) * 100;
+				hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / elemContent.width()),
+				vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / elemContent.height());
 				
-			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
-			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has proper initial width");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has proper initial height");
 
-			$('#elemVH').igScroll("option", "scrollHeight", 1000);			
-			hDragWidthPercentage = (600 / elemContent.width()) * 100;
-			vDragHeightPercentage = (400 / elemContent.height()) * 100;
+			$('#elemVH').igScroll("option", "scrollHeight", 1000);
 			
-			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
-			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
+			hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / elemContent.width()),
+			vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / 1000);
+			
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has not changed its width after setting scrollWidth");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has updated its height after setting scrollHeight");
 			
 			$('#elemVH').igScroll("option", "scrollHeight", 300);
 			
@@ -3756,19 +3736,19 @@
 			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
 			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 			
 			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("width", "300px");
+			$("#elemVH").css("width", "300px")
 			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
 			
 			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH").css("width"), "300px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "300px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "300px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "285px", "tabindex is the same as the main element");
 	        $("#elemVH").remove();
 	    });
 		
@@ -3780,241 +3760,23 @@
 			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
 			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 			
 			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("height", "600px");
+			$("#elemVH").css("height", "600px")
 			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
 			
 			equal($("#elemVH").css("height"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "585px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "585px", "tabindex is the same as the main element");
 	        $("#elemVH").remove();
 	    });
 		
 		test(testId_135, function () {
-	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 400px; overflow: hidden;" tabindex="1"></div>').append(contentScrollV));
-	        $('#elemVH').igScroll();
-			
-			equal($("#elemVH").css("height"), "400px", "Initial height of the main element is correct");
-			equal($("#elemVH").css("width"), "400px", "Initial width of the main element is correct");
-			equal($("#elemVH_container").css("height"), "400px", "Initial height of the igScroll main container is correct");
-			equal($("#elemVH_container").css("width"), "400px", "Initial height of the igScroll main container is correct");
-			
-			equal($("#elemVH_vBar").css("height"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_vBar_track").css("bottom"), "30px", "Initial empty space under the custom vertical scrollbar track is correct");
-			equal($("#elemVH_vBar_arrowDown").css("bottom"), "15px", "Initial empty space under the custom vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").css("width"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_hBar_track").css("right"), "30px", "Initial empty space right of the custom vertical scrollbar track is correct");
-			equal($("#elemVH_hBar_arrowRight").css("right"), "15px", "Initial empty space right of the custom vertical scrollbar track is correct");
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("width", "600px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "400px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "600px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "600px", "Width of the igScroll main container is correct after changing width");
-			
-			equal($("#elemVH_vBar").length, 1, "Custom vertical scrollbar should be visible");
-			equal($("#elemVH_vBar").css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_vBar_track").css("bottom"), "15px", "Empty space under the custom vertical scrollbar track is correct");
-			equal($("#elemVH_vBar_arrowDown").css("bottom"), "0px", "Empty space under the custom down arrow is correct");
-			
-			equal($("#elemVH_hBar").length, 0, "Custom horizontal scrollbar should not be visible");	
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("width", "400px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "400px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "400px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "400px", "Width of the igScroll main container is correct after changing width");
-			
-			equal($("#elemVH_vBar").length, 1, "Custom vertical scrollbar should be visible");
-			equal($("#elemVH_vBar").css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_vBar_track").css("bottom"), "30px", "Empty space under the custom vertical scrollbar track is correct");
-			equal($("#elemVH_vBar_arrowDown").css("bottom"), "15px", "Empty space under the custom vertical scrollbar down arrow is correct");
-			
-			equal($("#elemVH_hBar").length, 1, "Custom horizontal scrollbar should be visible");
-			equal($("#elemVH_hBar").css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
-			equal($("#elemVH_hBar_track").css("right"), "30px", "Empty space right of the custom horizontal scrollbar track is correct");
-			equal($("#elemVH_hBar_arrowRight").css("right"), "15px", "Empty space right of the custom right arrow is correct");
-	        $("#elemVH").remove();
-	    });
-		
-		test(testId_136, function () {
-	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 400px; overflow: hidden;" tabindex="1"></div>').append(contentScrollV));
-	        $('#elemVH').igScroll();
-			
-			equal($("#elemVH").css("height"), "400px", "Initial height of the main element is correct");
-			equal($("#elemVH").css("width"), "400px", "Initial width of the main element is correct");
-			equal($("#elemVH_container").css("height"), "400px", "Initial height of the igScroll main container is correct");
-			equal($("#elemVH_container").css("width"), "400px", "Initial height of the igScroll main container is correct");
-			
-			equal($("#elemVH_vBar").css("height"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_vBar_track").css("bottom"), "30px", "Initial empty space under the custom vertical scrollbar track is correct");
-			equal($("#elemVH_vBar_arrowDown").css("bottom"), "15px", "Initial empty space under the custom vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").css("width"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_hBar_track").css("right"), "30px", "Initial empty space right of the custom vertical scrollbar track is correct");
-			equal($("#elemVH_hBar_arrowRight").css("right"), "15px", "Initial empty space right of the custom vertical scrollbar track is correct");
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("height", "1500px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "1500px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "400px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "1500px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "400px", "Width of the igScroll main container is correct after changing width");
-			
-			equal($("#elemVH_vBar").length, 0, "Custom vertical scrollbar should be visible");
-			
-			equal($("#elemVH_hBar").length, 1, "Custom horizontal scrollbar should not be visible");	
-			equal($("#elemVH_hBar").css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
-			equal($("#elemVH_hBar_track").css("right"), "15px", "Empty space right of the custom horizontal scrollbar track is correct");
-			equal($("#elemVH_hBar_arrowRight").css("right"), "0px", "Empty space right of the custom right arrow is correct");
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("height", "400px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "400px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "400px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "400px", "Width of the igScroll main container is correct after changing width");
-			
-			equal($("#elemVH_vBar").length, 1, "Custom vertical scrollbar should be visible");
-			equal($("#elemVH_vBar").css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
-			equal($("#elemVH_vBar_track").css("bottom"), "30px", "Empty space under the custom vertical scrollbar track is correct");
-			equal($("#elemVH_vBar_arrowDown").css("bottom"), "15px", "Empty space under the custom vertical scrollbar down arrow is correct");
-			
-			equal($("#elemVH_hBar").length, 1, "Custom horizontal scrollbar should be visible");
-			equal($("#elemVH_hBar").css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
-			equal($("#elemVH_hBar_track").css("right"), "30px", "Empty space right of the custom horizontal scrollbar track is correct");
-			equal($("#elemVH_hBar_arrowRight").css("right"), "15px", "Empty space right of the custom right arrow is correct");
-	        $("#elemVH").remove();
-	    });
-		
-		test(testId_137, function () {
-			var nativeScrollSize = $.ig.util.getScrollWidth();
-	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 400px; overflow: hidden;" tabindex="1"></div>').append(contentScrollV));
-	        $('#elemVH').igScroll({
-				scrollbarType: "native"
-			});
-			
-			equal($("#elemVH").css("height"), "400px", "Initial height of the main element is correct");
-			equal($("#elemVH").css("width"), "400px", "Initial width of the main element is correct");
-			equal($("#elemVH_container").css("height"), "400px", "Initial height of the igScroll main container is correct");
-			equal($("#elemVH_container").css("width"), "400px", "Initial height of the igScroll main container is correct");
-			equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
-			
-			equal($("#elemVH_vBar").css("height"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_vBar").css("bottom"), nativeScrollSize + "px", "Initial empty space under the native vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").css("width"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_hBar").css("right"), nativeScrollSize + "px", "Initial empty space right of the native vertical scrollbar track is correct");
-					
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("width", "700px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "400px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "700px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "700px", "Width of the igScroll main container is correct after changing width");
-			equal($("#elemVH_scrollbarFiller").length, 0, "Native scrollbars filler should not be visible");
-			
-			equal($("#elemVH_vBar").length, 1, "native vertical scrollbar should be visible");
-			equal($("#elemVH_vBar").css("height"), "400px", "Initial height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_vBar").css("bottom"), "0px", "Initial empty space under the native vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").length, 0, "native horizontal scrollbar should not be visible");
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("width", "400px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "400px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "400px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "400px", "Width of the igScroll main container is correct after changing width");
-			equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
-			
-			equal($("#elemVH_vBar").length, 1, "native vertical scrollbar should be visible");
-			equal($("#elemVH_vBar").css("height"), (400 - nativeScrollSize) +  "px", "Height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_vBar").css("bottom"), nativeScrollSize + "px", "Empty space under the native vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").length, 1, "native horizontal scrollbar should be visible");
-			equal($("#elemVH_hBar").css("width"), (400 - nativeScrollSize) + "px", "Width of the native horizontal scrollbar container is correct");
-			equal($("#elemVH_hBar").css("right"), nativeScrollSize + "px", "Empty space right of the native horizontal scrollbar track is correct");
-	        $("#elemVH").remove();
-	    });
-		
-		test(testId_138, function () {
-			var nativeScrollSize = $.ig.util.getScrollWidth();
-	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 400px; overflow: hidden;" tabindex="1"></div>').append(contentScrollV));
-	        $('#elemVH').igScroll({
-				scrollbarType: "native"
-			});
-			
-			equal($("#elemVH").css("height"), "400px", "Initial height of the main element is correct");
-			equal($("#elemVH").css("width"), "400px", "Initial width of the main element is correct");
-			equal($("#elemVH_container").css("height"), "400px", "Initial height of the igScroll main container is correct");
-			equal($("#elemVH_container").css("width"), "400px", "Initial height of the igScroll main container is correct");
-			equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
-			
-			equal($("#elemVH_vBar").css("height"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_vBar").css("bottom"), nativeScrollSize + "px", "Initial empty space under the native vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").css("width"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_hBar").css("right"), nativeScrollSize + "px", "Initial empty space right of the native vertical scrollbar track is correct");
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("height", "1500px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "1500px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "400px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "1500px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "400px", "Width of the igScroll main container is correct after changing width");
-			equal($("#elemVH_scrollbarFiller").length, 0, "Native scrollbars filler should not be visible");
-			
-			equal($("#elemVH_vBar").length, 0, "native vertical scrollbar should be visible");
-			
-			equal($("#elemVH_hBar").length, 1, "native horizontal scrollbar should not be visible");
-			equal($("#elemVH_hBar").css("width"), "400px", "Width of the native horizontal scrollbar container is correct");
-			equal($("#elemVH_hBar").css("right"), "0px", "Empty space right of the native horizontal scrollbar track is correct");
-			
-			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-			$("#elemVH").css("height", "400px");
-			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
-			
-			equal($("#elemVH").css("height"), "400px", "Height of the main element is correct after changing width");
-			equal($("#elemVH").css("width"), "400px", "Width of the main element is correct after changing width");
-			equal($("#elemVH_container").css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-			equal($("#elemVH_container").css("width"), "400px", "Width of the igScroll main container is correct after changing width");
-			equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
-			
-			equal($("#elemVH_vBar").length, 1, "native vertical scrollbar should be visible");
-			equal($("#elemVH_vBar").css("height"), (400 - nativeScrollSize) +  "px", "Height of the native vertical scrollbar container is correct");
-			equal($("#elemVH_vBar").css("bottom"), nativeScrollSize + "px", "Empty space under the native vertical scrollbar track is correct");
-			
-			equal($("#elemVH_hBar").length, 1, "native horizontal scrollbar should be visible");
-			equal($("#elemVH_hBar").css("width"), (400 - nativeScrollSize) + "px", "Width of the native horizontal scrollbar container is correct");
-			equal($("#elemVH_hBar").css("right"), nativeScrollSize + "px", "Empty space right of the native horizontal scrollbar track is correct");
-	        $("#elemVH").remove();
-	    });
-		
-		test(testId_140, function () {
 			$.ig.util.isTouchDevice = function () { return true; };
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({
@@ -4054,7 +3816,7 @@
 			}, 500);		
 	    });
 		
-		test(testId_141, function () {
+		test(testId_136, function () {
 			$.ig.util.isTouchDevice = function () { return true; };
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({

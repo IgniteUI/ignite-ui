@@ -1,5 +1,0 @@
-{
-	"config": [
-		"<%= config.devTestsDir %>/locale/**/*test*.htm*"
-	]
-}

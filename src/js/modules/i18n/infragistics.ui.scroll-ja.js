@@ -9,23 +9,25 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-		$ = $ || {};
-		$.ig = $.ig || {};
-		$.ig.Scroll = $.ig.Scroll || {};
-		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.ja = $.ig.locale.ja || {};
+(function ($) {
+    $.ig = $.ig || {};
 
-	    $.ig.locale.ja.Scroll = {
+    if (!$.ig.Scroll) {
+	    $.ig.Scroll = {};
+
+	    $.extend($.ig.Scroll, {
+		    locale: {
 		        errorNoElementLink: 'リンクされている要素が存在しません。',
 		        errorNoScrollbarLink: 'リンクされているスクロールバー要素が存在しません。'
 		    }
-			
-		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.ja.Scroll;
-		return $.ig.locale.ja.Scroll;
+	    });
+
+    }
 }));// REMOVE_FROM_COMBINED_FILES

@@ -9,23 +9,23 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory(jQuery);
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.Rating = $.ig.Rating || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.fr = $.ig.locale.fr || {};
 
+    if (!$.ig.Rating) {
+	    $.ig.Rating = {};
 
-	$.ig.locale.fr.Rating = {
-			setOptionError: "Les modifications de temps d'exécution ne sont pas autorisées pour l'option suivante : "
-	}
-	
-	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.fr.Rating;
-	return $.ig.locale.fr.Rating;
+	    $.extend($.ig.Rating, {
+		    locale: {
+			    setOptionError: "Les modifications de temps d'exécution ne sont pas autorisées pour l'option suivante : "
+		    }
+	    });
+    }
 }));// REMOVE_FROM_COMBINED_FILES

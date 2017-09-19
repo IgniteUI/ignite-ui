@@ -1,0 +1,264 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+.paragraph-styles p {
+  margin: 0;
+}
+.paragraph-styles,
+.brand-color {
+  display: flex;
+}
+.container {
+  max-width: 960px;
+  margin: 100px auto;
+}
+.style-guide-header {
+  margin-bottom: 40px;
+}
+.g-row {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.brand-color {
+  color: #fff;
+}
+.g-title-small {
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+.container :first-of-type .g-title-small {
+  border: none;
+}
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd;
+}
+.g-box-color {
+  flex: 1;
+  margin: 10px 20px;
+  padding: 20px;
+  text-align: center;
+}
+.g-box-text {
+  flex: 1;
+  margin: 10px 20px;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.inherit {
+  color: #555;
+}
+.section {
+  margin-bottom: 50px;
+}
+.flex-group {
+  display: flex;
+}
+.flex-group > * {
+  flex: 1;
+  margin: 10px 20px;
+}
+.serif-font {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+.section-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.section-column .g-input-field {
+  width: 100%;
+}
+.g-input-field {
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+.g-input-field:last-of-type {
+  margin-bottom: 0;
+}
+.g-label {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+.g-flex-row-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.checkbox-wrap {
+  margin-bottom: 10px;
+}
+.checkbox-wrap:last-of-type {
+  margin-bottom: 0;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 5px 2px 0;
+}
+/*
+      STYLE  GUIDE STYLES
+    =======================
+*/
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fff;
+  color: #222222;
+  line-height: 1.4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  line-height: 1.1;
+  color: inherit;
+}
+h1 {
+  font-size: 39px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 26px;
+}
+h4 {
+  font-size: 19px;
+}
+h5 {
+  font-size: 15px;
+}
+h6 {
+  font-size: 13px;
+}
+a {
+  color: #008cba;
+}
+a:hover {
+  color: #008cba;
+}
+.bg-primary {
+  background: #008cba;
+}
+.bg-success {
+  background: #43ac6a;
+}
+.bg-info {
+  background: #5bc0de;
+}
+.bg-warning {
+  background: #E99002;
+}
+.bg-danger {
+  background: #F04124;
+}
+.bg-gray-darker {
+  background: #222222;
+}
+.bg-gray-dark {
+  background: #333333;
+}
+.bg-gray {
+  background: #6f6f6f;
+}
+.bg-gray-light {
+  background: #999999;
+}
+.bg-gray-lighter {
+  background: #eeeeee;
+}
+.text-color {
+  color: #222222;
+}
+.text-muted {
+  color: #999999;
+}
+.alert-box {
+  padding: 5px;
+}
+.text-success {
+  color: #43ac6a;
+  background: #dff0d8;
+  border: 1px solid #3c9a5f;
+}
+.text-info {
+  color: #5bc0de;
+  background: #d9edf7;
+  border: 1px solid #3db5d8;
+}
+.text-warning {
+  color: #E99002;
+  background: #fcf8e3;
+  border: 1px solid #d08002;
+}
+.text-danger {
+  color: #F04124;
+  background: #f2dede;
+  border: 1px solid #ea2f10;
+}
+/* Forms, inputs...*/
+.g-input-field {
+  height: 39px;
+  background: #fff;
+  color: #6f6f6f;
+  border: 1px solid #ccc;
+  border-radius: 0;
+}
+.g-input-field:focus {
+  border-color: #66afe9;
+}
+.input--large {
+  height: 60px;
+}
+.input--small {
+  height: 36px;
+}
+.g-input-field[disabled] {
+  background: #eeeeee;
+}
+.has-error .g-label {
+  color: #F04124;
+}
+.has-error .g-input-field {
+  border-color: #F04124;
+}
+.has-warning .g-label {
+  color: #E99002;
+}
+.has-warning .g-input-field {
+  border-color: #E99002;
+}
+.has-success .g-label {
+  color: #43ac6a;
+}
+.has-success .g-input-field {
+  border-color: #43ac6a;
+}
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #999999;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #999999;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #999999;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #999999;
+}

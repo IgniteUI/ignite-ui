@@ -54,7 +54,7 @@ $.ig.regional.ja = {
 	currencyMaxDecimals: 0,
 	currencyMinDecimals: 0
 };
-if ($.ig.util && $.ig.util.changeGlobalRegional) {
-	$.ig.util.changeGlobalRegional('ja');
+if ($.ig.setRegionalDefault) {
+	$.ig.setRegionalDefault('ja');
 }
 }));// REMOVE_FROM_COMBINED_FILES

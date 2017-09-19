@@ -9,29 +9,27 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		factory();
+		factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-	$.ig = $.ig || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ja = $.ig.locale.ja || {};
-	$.ig.Dialog = $.ig.Dialog || {};
-	
-	$.ig.locale.ja.Dialog = {
-			closeButtonTitle: "閉じる",
-			minimizeButtonTitle: "最小化",
-			maximizeButtonTitle: "最大化",
-			pinButtonTitle: "ピン固定",
-			unpinButtonTitle: "ピン固定の解除",
-			restoreButtonTitle: "元に戻す",
-			setOptionError: '次のオプションはランタイムで変更できません: '
+(function ($) {
+    $.ig = $.ig || {};
 
-	};
-
-	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.ja.Dialog;
-	return $.ig.locale.ja.Dialog;
+    if (!$.ig.Dialog) {
+	    $.ig.Dialog = {
+		    locale: {
+			    closeButtonTitle: "閉じる",
+			    minimizeButtonTitle: "最小化",
+			    maximizeButtonTitle: "最大化",
+			    pinButtonTitle: "ピン固定",
+			    unpinButtonTitle: "ピン固定の解除",
+			    restoreButtonTitle: "元に戻す",
+				setOptionError: '次のオプションはランタイムで変更できません: '
+		    }
+	    };
+    }
 }));// REMOVE_FROM_COMBINED_FILES

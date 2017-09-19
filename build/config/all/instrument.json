@@ -3,7 +3,6 @@
 		"<%= config.extensions%>",
 		"<%= config.modulesDir%>/infragistics.datasource.js",
 		"<%= config.modulesDir%>/infragistics.templating.js",
-		"<%= config.modulesDir%>/infragistics.ui.widget.js",
 		"<%= config.modulesDir%>/infragistics.ui.colorpicker.js",
 		"<%= config.modulesDir%>/infragistics.ui.colorpickersplitbutton.js",
 		"<%= config.modulesDir%>/infragistics.ui.combo*.js",

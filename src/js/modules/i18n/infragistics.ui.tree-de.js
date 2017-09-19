@@ -9,19 +9,21 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
     $.ig = $.ig || {};
-	$.ig.Tree = $.ig.Tree || {};
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.de = $.ig.locale.de || {};
 
-	$.ig.locale.de.Tree = {
+    if (!$.ig.Tree) {
+	    $.ig.Tree = {};
+
+	    $.extend($.ig.Tree, {
+		    locale: {
 			    invalidArgumentType: 'Ungültiger Argumenttyp angegeben.',
 			    errorOnRequest: 'Beim Abrufen von Daten ist ein Fehler aufgetreten: ',
 			    noDataSourceUrl: 'Für die igTree Steuerung muss eine dataSourceUrl angegeben werden, um eine Anforderung für Daten an diese URL zu initiieren.',
@@ -37,8 +39,8 @@
 			    copyAfter: '<strong>Kopieren nach</strong> {0}',
 			    copyBefore: '<strong>Kopieren vor</strong> {0}',
 			    and: 'und'
-	}
+		    }
+	    });
 
-    $.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.de.Tree;
-	return $.ig.locale.de.Tree;
+    }
 }));// REMOVE_FROM_COMBINED_FILES

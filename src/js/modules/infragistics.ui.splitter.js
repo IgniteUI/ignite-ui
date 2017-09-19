@@ -11,7 +11,6 @@
  *	jquery.ui.widget.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
- *  infragistics.ui.widget.js
  *	infragistics.ui.splitter-en.js
  */
 
@@ -20,7 +19,10 @@
 
         // AMD. Register as an anonymous module.
         define([
-            "infragistics.ui.widget"
+            "jquery",
+            "jquery-ui",
+            "./infragistics.util",
+			"./infragistics.util.jquery"
         ], factory);
     } else {
 
@@ -32,7 +34,7 @@
         /*
             igSplitter is a widget based on jQuery UI that manages layout into two panels with split bar and providers the end user with a rich interaction functionality including the ability to expand/collapse panel, and resize panels via split bar.
         */
-        $.widget("ui.igSplitter", $.ui.igWidget, {
+        $.widget("ui.igSplitter", {
             _const: {
                 orientations: {
                     horizontal: {
@@ -488,13 +490,13 @@
                         }
                     }
                 };
-                this._superApply(arguments);
+                $.Widget.prototype._createWidget.apply(this, arguments);
             },
             _create: function () {
                 var splitters, length = $(this.element.children("div")).length;
                 this._htmlMarkup = this.element.html();
                 if (this.options.panels.length > 2 || length > 2) {
-                    throw new Error(this._getLocaleValue("errorPanels"));
+                    throw new Error($.ig.Splitter.locale.errorPanels);
                 }
                 if (length === 1) {
                     this.element.append("<div/>");
@@ -530,7 +532,7 @@
                     return;
                 }
 
-                this._super(option, value);
+                $.Widget.prototype._setOption.apply(this, arguments);
 
                 switch (option) {
                     case "width":
@@ -555,7 +557,7 @@
                         break;
                     case "orientation":
                     case "panels":
-                        throw new Error(this._getLocaleValue("errorSettingOption"));
+                        throw new Error($.ig.Splitter.locale.errorSettingOption);
                     default:
                         break;
                 }
@@ -2279,7 +2281,7 @@
                 $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
                 $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
                 $(window).unbind("resize", evtHandlers.windowResize);
-                this._superApply(arguments);
+                $.Widget.prototype.destroy.apply(this, arguments);
                 this._opt = null;
                 return this;
             }

@@ -14,18 +14,14 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -40,8 +36,8 @@
 			$(function () {
 				$("#inputEditor1").igNumericEditor({
 					value: 10,
-					numericMaxDecimals: 5,
-					numericMinDecimals: 4
+					numericMaxDecimals: 4,
+					numericMinDecimals: 5
 				});
 				$("#divEditor1").igNumericEditor({
 					value: 30,
@@ -948,17 +944,17 @@
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", " ");
 			$("#inputEditor1").igNumericEditor("option", "decimalSeparator", ",");
 			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
-			equal(containerInput.val(), "1 264,8900", "The decimal value is not correct");
+			equal(containerInput.val(), "1 264,89000", "The decimal value is not correct");
 
 			// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", "");
 			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
-			equal($("#inputEditor1").igNumericEditor("displayValue"), "1264,8900", "The decimal value is not correct");
+			equal($("#inputEditor1").igNumericEditor("displayValue"), "1264,89000", "The decimal value is not correct");
 
 			// For when 208296 gets fixed
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", ".");
 			$("#inputEditor1").igNumericEditor("option", "value", "1264,89");
-			equal(containerInput.val(), "1.264,8900", "The group separator was not applied is not correct");
+			equal(containerInput.val(), "1.264,89000", "The group separator was not applied is not correct");
 			equal($("#inputEditor1").igNumericEditor("value"), 1264.89, "Decimal value not parsed correctly with decimal ','");
 
 			// For 207448: exception is thrown when trying to spin the value (with modified decimalSeparator)
@@ -1674,13 +1670,13 @@
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
 
-		testId = 'Option cannot be set for numeric editor';
+		testId = 'Cannot set on runtime';
 		test(testId, 1, function () {
 			throws(function () {
-					$('#numericEditorRuntime').igNumericEditor("option", "excludeKeys", "asds");
+					$('#numericEditorRuntime').igNumericEditor("option", "regional", "ru-Ru")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.numericEditorNoSuchOption) > -1;
-				}, Error($.ig.Editor.locale.numericEditorNoSuchOption));
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "not shown");
 		});
 		
 		testId = 'spinDown button not disabled'
@@ -2156,10 +2152,10 @@
 	});
 
 	testId = "Test minDecimals/maxDecimals options";
-	test(testId, 78, function() {
+	test(testId, 62, function() {
 		var $editorRound, $editorTrunc, testData, errorMessage, mode, boundary;
 
-		testData = [ null, undefined ];
+		testData = [ null, undefined];
 		for(index = 0; index < testData.length; index++) {
 			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
 				minDecimals: testData[index],
@@ -2227,35 +2223,6 @@
 		equal($editor.igNumericEditor("option", "minDecimals"), 10, "minDecimal should be set");
 		equal($editor.igNumericEditor("option", "maxDecimals"), 10, "minDecimal should be the same as minDecimals");
 		$editor.remove();
-
-		// Test Invalid min/max decimals:
-
-		function testDecimalBoundary(mode, option, value, boundary) {
-			throws(function () {
-					var options = { dataMode: mode };
-					options[ option ] = value;
-					var $editor = $("<input id='editor'/>").
-					appendTo("#testBedContainer").igNumericEditor(options);
-				},
-				Error($.ig.Editor.locale.decimalNumber.replace("{0}", mode).replace("{1}", option).replace("{2}", boundary)),
-				$.ig.Editor.locale.decimalNumber + "not shown"
-			);
-			strictEqual($editor.data("igNumericEditor"), undefined, "Widget should not be created with wrong maxDecimals.")
-			$editor.remove();
-		}
-		var decimalOptions = [
-			["double", "maxDecimals", 16, 15],
-			["double", "minDecimals", -1, 15],
-			["double", "maxDecimals", -16, 15],
-			["double", "minDecimals", 150, 15],
-			["float", "maxDecimals", 14, 7],
-			["float", "minDecimals", 55, 7],
-			["float", "maxDecimals", -13, 7],
-			["float", "minDecimals", 77, 7]
-		];
-		for (var i = 0; i < decimalOptions.length; i++) {
-			testDecimalBoundary.apply(this, decimalOptions[i]);
-		}
 	});
 	
 	testId = "Test decimalSeparator on initialization #769";
@@ -2325,51 +2292,12 @@
 		});
 		
 	testId = "Test allowNullValue and NullValue at initialization #779";
-	test(testId, 9, function(){
+	test(testId, 1, function(){
 		var $editor = $("<input id='editor'/>").
 				appendTo("#testBedContainer").igNumericEditor({ allowNullValue: true, nullValue: 0});
 			
 			var currentValue = $editor.igNumericEditor("value");
 			equal(currentValue, 0, "The value is not 0, although the nullValue is set to 0.")
-			$editor.remove();
-
-			// test invalid nullValue
-			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
-				.igNumericEditor({ 
-					buttonType: "clear", 
-					nullValue: "abc",
-					allowNullValue: true
-				});
-
-			equal($editor.val(), "", "Display did not initialize correctly");
-			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on init");
-			//check clear also ignores the wrong nullValue:
-			$editor.igNumericEditor("value", 5);
-			$editor.igNumericEditor("clearButton").trigger("click");
-			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on clear");
-			$editor.igNumericEditor("value", 5);
-			$editor.igNumericEditor("value", null);
-			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on set");
-			//verify empty string is still accepted
-			$editor.igNumericEditor("value", "");
-			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");
-			$editor.remove();
-
-			//nullValue outside min/max:
-			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
-				.igNumericEditor({ 
-					buttonType: "clear", 
-					nullValue: 5,
-					maxValue: -3,
-					allowNullValue: true 
-				});
-			equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on init and default to max.");
-			$editor.igNumericEditor("value", -5);
-			$editor.igNumericEditor("clearButton").trigger("click");
-			equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on clear and default to max.");
-			//verify empty string is still accepted
-			$editor.igNumericEditor("value", "");
-			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");
 			$editor.remove();
 		});
 
@@ -2527,23 +2455,6 @@
 			$("#editorGroupSeparators").igNumericEditor("option", "groupSeparator", "/");
 			$editor.remove();
 		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
-	});
-
-	testId = 'Runtime changes for local and regional options';
-	test(testId, 6, function () {
-		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({ buttonType: "spin", value: 1234567.123 });
-
-		equal($editor.igNumericEditor("displayValue"), "1,234,567.12", "Format should be in English");
-		equal($editor.igNumericEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
-		$editor.igNumericEditor("option", "language", "de");
-		equal($editor.igNumericEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
-		$editor.igNumericEditor("option", "regional", "de");
-		equal($editor.igNumericEditor("displayValue"), "1.234.567,12", "Format should be in German");
-		$editor.igNumericEditor("setFocus");
-		equal($editor.igNumericEditor("field").val(), "1234567,12", "Input Format should be in German");
-		$editor.igNumericEditor("option", "regional", "en");
-		equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in German");
-		$editor.trigger("blur").remove();
 	});
 });
 	function testSelection(input, start, end) {
