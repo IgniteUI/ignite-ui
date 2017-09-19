@@ -1227,7 +1227,7 @@
                     analyzedColumnHeight = this._analyzeGlColumnHeight(columnHeight, elHeight, mt);
                     gl.columnHeight = analyzedColumnHeight.columnHeight;
                     gl.columnHeightRatio = analyzedColumnHeight.columnHeightRatio;
-                    gl.columnHeightHasAsterisk = analyzedColumnHeight.columnHeightHasAsterisk;
+                    gl.colHeightHasAsterisk = analyzedColumnHeight.columnHeightHasAsterisk;
                 } else if (columnsHeight.length > 0) {
                     for (i = 0; i < columnsHeight.length; i++) {
                         analyzedColumnHeight = this._analyzeGlColumnHeight(
