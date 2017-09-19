@@ -4369,14 +4369,14 @@
 				this._data = ds;
 				this._dataView = this._data;
 
-				if (filtering.type === "local" && filtering.defaultFields.length > 0) {
-					this.filter(filtering.defaultFields);
-				}
 				if (s.type === "local" && s.defaultFields.length > 0) {
 					this.sort(s.defaultFields, s.defaultDirection);
 				} else if (this.isGroupByApplied(s.expressions)) {
 					this._generateGroupByData(this._filter ? this._filteredData : this._data,
 											s.expressions);
+				}
+				if (filtering.type === "local" && filtering.defaultFields.length > 0) {
+					this.filter(filtering.defaultFields);
 				}
 				if (p.enabled && p.type === "local") {
 					this._page();
@@ -9806,9 +9806,8 @@
 			this._super(callDatabound);
 		},
 		_completeCallback: function () {
-			/*Tree data source does not generate proper expansion states if localSchemaTransform is false. */
-			if (!this.settings.localSchemaTransform) {
-				this._applySchema(true);
+			if (this.settings.localSchemaTransform) {
+				this.generateFlatDataView();
 			}
 			this._super();
 		},
