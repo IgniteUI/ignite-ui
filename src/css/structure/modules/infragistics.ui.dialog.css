@@ -6,7 +6,7 @@
 .ui-igdialog .ui-igdialog-content,
 .ui-igdialog-content {
     position: relative;
-    box-sizing: border-box;
+    box-sizing: content-box;
     padding: 0.5em 1em 1em;
     border: 0;
     background: none;
@@ -15,7 +15,7 @@
 }
 
 .ui-igdialog .ui-igdialog-content-iframe, .ui-igdialog-content-iframe {
-    padding: 0;
+    padding: 0px;
 }
 
 .ui-igdialog .ui-igdialog-header {
@@ -30,9 +30,11 @@
     float: left;
     overflow: hidden;
     white-space: nowrap;
-    margin: 0 !important; /* Bug 211422, 06.01.2016 S.D., Close button vertical align fix line-height:1.4em;*/
-    line-height: 1.8em;
+    margin: 0px !important; /* Bug 211422, 06.01.2016 S.D., Close button vertical align fix line-height:1.4em;*/
+    line-height: 18px;
 }
+
+
 
 .ui-igdialog-headertext-minimized {
     width: 2em;
@@ -40,35 +42,33 @@
 
 .ui-igdialog-headerimage {
     float: left;
-    margin-top: .3em;
-    margin-right: .2em;
+    margin-top: 3px;
+    margin-right: 2px;
 }
 
 .ui-igdialog-headerbutton {
-    /* Bug 211422, 21.12.2015 S.D., Close button vertical align fix 
+    /* Bug 211422, 21.12.2015 S.D., Close button vertical align fix
     margin:-10px 0 0 0.3em;
     top:0.6em;
     */
-    margin-left: 5px;
+    float: right;
     cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: hidden;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    box-sizing: content-box;
 }
 
 .ui-igdialog-minimize-icon {
-    margin-top: .3em;
+    margin-top: 3px;
 }
 
 .ui-igdialog-footer {
     white-space: nowrap;
     cursor: default;
     font-weight: normal;
-    border-width: .1em 0 0;
+    border-width: 1px 0 0;
     line-height: 1.4em;
     margin: 0;
     padding: 0.3em 1em 0.5em 0.4em;
@@ -97,15 +97,15 @@
 }
 
 .ui-igdialog .ui-resizable-se {
-    width: 1.4em;
-    height: 1.4em;
-    right: .3em;
-    bottom: .3em;
+    width: 14px;
+    height: 14px;
+    right: 3px;
+    bottom: 3px;
 }
 
 .ui-igdialog-buttonpane {
     text-align: left;
-    border-width: .1em 0 0 0;
+    border-width: 1px 0 0 0;
     background-image: none;
     margin: 0.5em 0 0 0;
     padding: 0.3em 1em 0.5em 0.4em;
@@ -138,13 +138,6 @@
     padding: 1em !important;
 }
 
-.ui-dialog-titlebar {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    -moz-border-radius-bottomleft: 0;
-    -moz-border-radius-bottomright: 0;
-}
-
 .touch .ui-igdialog .ui-igdialog-headerbutton,
 .touchevents .ui-igdialog .ui-igdialog-headerbutton,
 .pointerevents .ui-igdialog .ui-igdialog-headerbutton {
@@ -165,39 +158,61 @@
     margin-left: -8px;
 }
 
-.ui-dialog .ui-dialog-titlebar {
-    display: flex !important;
-    align-items: center;
-    margin: -.1rem -.1rem 0 -.1rem;
-    position: relative;
-    padding: 0 .3rem;
+/* this makes resizable handlers responsive */
+.ui-resizable-handle {
+    display: block;
+    font-size: 1em;
+    position: absolute;
 }
-
-.ui-dialog-title {
-    flex: 1;
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+    display: none;
 }
-
-.ui-dialog .ui-dialog-content {
-    padding: 1rem;
-    margin: 0 auto;
-    width: 100% !important; /*Remove this line after we stop calc the the width wit JS*/
-    box-sizing: border-box;
+.ui-dialog .ui-resizable-n,
+.ui-dialog .ui-resizable-s {
+    height: 1em;
+    left: 0;
+    width: 100%;
 }
-
-.ui-igdialog.ui-dialog .ui-dialog-buttonpane{
-    padding: 1rem;
+.ui-dialog .ui-resizable-n {
+    top: -0.5em;
 }
-
-.ui-dialog button.ui-button-icon-only {
-    padding: 0;
+.ui-dialog .ui-resizable-s {
+    bottom: -0.5em;
 }
-
-.ui-dialog button {
-    cursor: pointer;
-    margin: 0 0 0 .5rem;
-    padding: .4rem 1.5rem;
+.ui-dialog .ui-resizable-e,
+.ui-dialog .ui-resizable-w {
+    height: 100%;
+    top: 0;
+    width: 1em;
 }
-
-.ui-dialog .ui-dialog-buttonpane {
-    margin-top: 0;
+.ui-dialog .ui-resizable-e {
+    right: -0.5em;
+}
+.ui-dialog .ui-resizable-w {
+    left: -0.5em;
+}
+.ui-dialog .ui-resizable-se {
+    bottom: 1px;
+    height: 1em;
+    right: 1px;
+    width: 1em;
+}
+.ui-dialog .ui-resizable-nw,
+.ui-dialog .ui-resizable-sw {
+    height: 1em;
+    left: -0.5em;
+    width: 1em;
+}
+.ui-dialog .ui-resizable-sw {
+    bottom: -0.5em;
+}
+.ui-dialog .ui-resizable-nw {
+    top: -0.5em;
+}
+.ui-dialog .ui-resizable-ne {
+    width: 1em;
+    height: 1em;
+    right: -0.5em;
+    top: -0.5em;
 }

@@ -335,9 +335,9 @@ body {
   padding: .4em 1em;
   position: relative;
 }
-.ui-dialog .ui-dialog-title {
+/*.ui-dialog .ui-dialog-title {
   max-width: 100%;
-}
+}*/
 .ui-dialog .ui-dialog-buttonpane,
 .ui-dialog .ui-dialog-titlebar {
   padding: 1rem;
@@ -350,7 +350,7 @@ body {
   width: 100%;
 }
 .ui-dialog .ui-dialog-titlebar {
-  margin-bottom: 1rem;
+  /*margin-bottom: 1rem;*/
   position: relative;
 }
 .ui-dialog button {
@@ -382,11 +382,14 @@ body {
   font-weight: normal;
 }
 .ui-dialog .ui-dialog-titlebar.ui-state-focus {
-  background: #a8d6e1;
+  background: #4897AA;
   border-color: #4897AA;
 }
 .ui-dialog .ui-state-focus .ui-dialog-title {
-  color: #FFFFFF;
+  color: #fff;
+}
+.ui-dialog .ui-resizable-handle {
+  color: #fff;
 }
 /************************
 * jQuery UI Progressbar *
