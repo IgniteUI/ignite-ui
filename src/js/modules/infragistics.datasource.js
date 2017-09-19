@@ -4361,14 +4361,15 @@
 			var schema = this.schema(), ds,
 				s = this.settings.sorting,
 					p = this.settings.paging,
-					filtering = this.settings.filtering;
+					filtering = this.settings.filtering,
+					resKey = this.settings.responseDataKey;
 			if (schema && schema.fields && schema.fields().length > 0 &&
 				(this.settings.localSchemaTransform || forceApply)) {
+				this._origDs = this._data;
 				schema._type = $.type(this._data);
 				ds = schema.transform(this._data);
 				this._data = ds;
 				this._dataView = this._data;
-
 				if (s.type === "local" && s.defaultFields.length > 0) {
 					this.sort(s.defaultFields, s.defaultDirection);
 				} else if (this.isGroupByApplied(s.expressions)) {
