@@ -123,11 +123,63 @@
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
 
-	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
-		displayStyle, labelText, tabIndex) {
-		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
-			gr0, grps, curS, percS, cur, perc, prefix, i, d = val && val.getTime,
-			reg = $.ig.regional.defaults, pow, tDate,
+	$.ig.encode = function (value) {
+		/* Encode string.
+			paramType="string" The string to be encoded.
+			returnType="string" Returns the encoded string.
+		*/
+		return value !== null && value !== undefined ?
+			value.toString()
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/'/g, "&#39;")
+			.replace(/"/g, "&#34;") : "";
+	};
+
+	$.ig.millisecondsToString = function(milliseconds, flag) {
+		var result = parseInt(milliseconds / Math.pow(10, flag.length - 1)).toString();
+			if (flag === "ff") {
+				if (result.length !== 2) {
+					while (result.length < 2) {
+						result = "0" + result;
+					}
+				}
+			} else if (flag === "f") {
+				if (result.length !== 3) {
+					while (result.length < 3) {
+						result = "0" + result;
+					}
+				}
+			}
+			return result;
+	};
+
+	// Flag values are dddd, ddd, dd, d - according to the
+	$.ig.secondsToString = function (seconds, flag) {
+		var result;
+		if (flag === "ss" && seconds < 10) {
+			result = "0" + seconds.toString();
+		} else {
+			result = seconds.toString();
+		}
+		return result;
+	};
+
+	$.ig.minutesToString = function (minutes, flag) {
+		var result;
+		if (flag === "mm" && minutes < 10) {
+			result = "0" + minutes.toString();
+		} else {
+			result = minutes.toString();
+		}
+		return result;
+	};
+
+	// Get before midday, or after middday
+	$.ig.amPmToString = function (hours, flag, regional) {
+		var result;
+		if (hours >= 12) {
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
@@ -361,7 +413,7 @@
 			}
 		}
 		return (val || val === 0) ? val : "&nbsp;";
-	};
+	}
 	$.ig._regional = {
 		monthNames: [ "January", "February", "March", "April", "May", "June",
 			"July", "August", "September", "October", "November", "December" ],
