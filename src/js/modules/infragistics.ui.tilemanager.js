@@ -1913,7 +1913,7 @@
             if (rightPanelTilesWidth) {
                 return rightPanelTilesWidth;
             } else if (gl.columnsWidth.length > 0) {
-                return gl.columnsWidth[gl.columnsWidth.length - 1];
+                return gl.columnsWidth[ gl.columnsWidth.length - 1 ];
             } else {
                 return gl.columnWidth;
             }
@@ -1925,7 +1925,7 @@
             if (rightPanelTilesHeight) {
                 return rightPanelTilesHeight;
             } else if (gl.columnsHeight.length > 0) {
-                return gl.columnsHeight[gl.columnsHeight.length - 1];
+                return gl.columnsHeight[ gl.columnsHeight.length - 1 ];
             } else {
                 return gl.columnHeight;
             }
@@ -1986,10 +1986,10 @@
                 minWidth, i;
 
             if (gl.columnsWidth.length > 0) {
-                minWidth = gl.columnsWidth[0];
+                minWidth = gl.columnsWidth[ 0 ];
                 for (i = 0; i < gl.columnsWidth.length; i++) {
-                    if (minWidth > gl.columnsWidth[i]) {
-                        minWidth = gl.columnsWidth[i];
+                    if (minWidth > gl.columnsWidth[ i ]) {
+                        minWidth = gl.columnsWidth[ i ];
                     }
                 }
 
@@ -1998,6 +1998,7 @@
                 return gl.columnWidth;
             }
         },
+
         // tiles - the tiles to be positioned
         // maximizingTileIndex - the index of the tile that is simultaneously maximizing
         // In case of setOption, this is the index of the tile that is already maximized
