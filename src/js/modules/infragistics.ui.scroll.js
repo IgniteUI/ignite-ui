@@ -888,6 +888,8 @@
 			}
 		},
 
+		changeLocale: function () {},
+
 		_setOption: function (key, value) {
 			this._super(key, value);
 
