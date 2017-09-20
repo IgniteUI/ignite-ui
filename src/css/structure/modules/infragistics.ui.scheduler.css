@@ -228,22 +228,20 @@
     width: 4px !important;
 }
 
-.ui-igscheduler-monthview-day-today span {
-    font-weight: bold !important;
-}
-
 /* Popup styles */
 .ui-dialog {
     box-sizing: border-box;
 }
 
 .ui-igscheduler-appointment-form-group {
-    margin-bottom: 10px;
+    margin: 1rem 0;
 }
 
-.ui-igscheduler-appointment-form-group .ui-igedit-container,
-/* TFS #238883 - 5.07.2017 - Marin Popov - fix combo field alignment in popup  */
-.ui-igscheduler-appointment-form-group .ui-igcombo-wrapper {
+.ui-igscheduler-appointment-form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+.ui-igscheduler-appointment-form-group .ui-igedit-container {
     width: 100%;
 }
 
@@ -260,16 +258,16 @@
 .ui-igscheduler-appointment-form-group label,
 .ui-igscheduler-side-by-side-group label {
     display: block;
-    margin: 15px 0 5px 0;
+    margin: 0 0 .5rem 0;
 }
 
 .ui-igscheduler-appointment-dialog-form > .ui-igscheduler-appointment-form-group:last-of-type {
-    margin: 15px 0 10px 0;
+    margin: 1rem 0 0 0;
 }
 
 .ui-igscheduler-side-by-side-group .ui-igscheduler-appointment-form-group {
     width: 49%;
-    margin: 0 0 20px 2%;
+    margin: 0 0 1rem 2%;
     float: left;
 }
 
@@ -282,7 +280,7 @@
 }
 
 .ui-igscheduler-appointment-dialog-from-date-time-label {
-    margin: 5px 0;
+    margin: .5rem 0;
     display: block;
 }
 
@@ -291,8 +289,8 @@
 }
 
 .ui-widget.ui-ignotify.ui-ignotify-inline {
-    margin-bottom: -20px;
-    min-height: 20px;
+    margin-bottom: -2rem;
+    min-height: 2rem;
 }
 
 .ui-widget.ui-ignotify.ui-ignotify-inline .ui-ignotify-icon-container {
@@ -301,7 +299,7 @@
 
 .ui-igscheduler-appointment-form-group.ui-igscheduler-side-by-side-group .ui-igedit-container {
     width: 49%;
-    margin: 0 0 25px 2%;
+    margin: 0 0 2.5rem 2%;
     float: left;
 }
 
@@ -328,7 +326,8 @@
     padding-right: 10px !important;
 }
 
-.ui-igscheduler-agenda-appt-subject {
+.ui-igscheduler-agenda-appt-subject,
+.ui-igscheduler-agenda-appt-location {
     padding-left: 10px !important;
 }
 
@@ -414,22 +413,20 @@ input.ui-igscheduler-appointment-popover-open-button {
     left: 5px;
 }
 
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
+    margin: 10px 0;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+    cursor: pointer;
+}
+
 .ui-igscheduler-resources-combo-item-text {
     padding-left: 20px;
 }
 
 /* Popup styles END */
-
-/*
-.ui-igscheduler-monthview-day-appointment {
-   height: 24px!important;
-   padding:2px 8px!important;
- }
-.ui-igscheduler-monthview-day-appointment  span {
-  font-size: 12px!important;
-}
-*/
-
 @media (max-width: 575px) {
     .touch .ui-igscheduler-popover.ui-igpopover {
         width: 188px !important;
@@ -509,8 +506,9 @@ input.ui-igscheduler-appointment-popover-open-button {
 @media (max-width: 767px) {
     .ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time span,
     .ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time span,
+    .ui-igscheduler-core .ui-igscheduler-agenda-appt-location span,
     .ui-igscheduler-core .ui-igscheduler-agenda-appt-subject span {
-        font-size: 12px;
+        font-size: 12px!important;
     }
 
     .ui-igscheduler-monthview-day,
@@ -518,7 +516,7 @@ input.ui-igscheduler-appointment-popover-open-button {
     .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing,
     .ui-igscheduler-core .ui-igscheduler-monthview-day-selected,
     .ui-igscheduler-monthview-day-today {
-        font-size: 12px;
+        font-size: 12px!important;
     }
 
     .ui-igscheduler-header {
