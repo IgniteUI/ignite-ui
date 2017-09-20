@@ -992,6 +992,7 @@
 			}
 		},
 		_setFocus: function (event) {
+
 			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
 			if (this._focused) {
 				return;
@@ -1051,6 +1052,16 @@
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
 				this._clearEditorNotifier();
+
+				// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLength one.
+				if (this.options.maxLength) {
+					if (newValue && newValue.toString().length > this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._sendNotification("warning",
+							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+								this.options.maxLength));
+					}
+				}
 				if (this._validateValue(newValue)) {
 					if (this.options.toUpper) {
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
@@ -1563,7 +1574,24 @@
 				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
 			```
 			*/
-			suppressNotifications: false
+			suppressNotifications: false,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				Note: When drop down is opened the only way to close it will be using the drop down button.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		css: {
 			/* igWidget element classes go here */
@@ -1778,7 +1806,12 @@
 					}
 					break;
 				case "listItems":
-					this._deleteList();
+
+					// A. M. April, 4th 2017 #921 "Cannot apply `listItems` to `igNumericEditor` after initialization"
+					// This is the same fix made on Nov 8, 2016 by M. S. for Issue #481 in version 17.1
+					if (prevValue !== null) {
+						this._deleteList();
+					}
 					this._createList();
 					this._clearValue();
 					break;
@@ -2140,9 +2173,6 @@
 				 if (val.toString().length <= this.options.maxLength) {
 					result = true;
 				} else {
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
 					result = false;
 				}
 			} else {
@@ -2595,10 +2625,11 @@
 				"compositionend.editor": function () {
 					setTimeout(function () {
 						var value, pastedValue, widgetName = self.widgetName,
-							cursorPosition = self._getCursorPosition();
+							cursorPosition = self._getCursorPosition(),
+							selection = { start: cursorPosition, end: cursorPosition };
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
-						if (self._inComposition !== true) {
+						if (self._focused !== true) {
 							return;
 						}
 						switch (widgetName) {
@@ -2617,6 +2648,11 @@
 									pastedValue = value = self._parseValueByMask(value);
 									if (value !== self._maskWithPrompts) {
 										value = self._parseDateFromMaskedValue(value);
+									} else if (self.options.revertIfNotValid) {
+										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+										pastedValue = value = self._maskedValue;
+										selection.start = 0;
+										selection.end = value.length;
 									}
 								}
 								break;
@@ -2631,20 +2667,9 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						if (self._validateValue(value)) {
-							self._insert(pastedValue, self._compositionStartValue);
-							self._setCursorPosition(cursorPosition);
-						} else {
-							if (self.options.revertIfNotValid) {
-								value = self._valueInput.val();
-								self._updateValue(value);
-							} else {
-								self._clearValue();
-							}
-							if (self._focused) {
-								self._enterEditMode();
-							}
-						}
+
+						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
+						self._insert(pastedValue, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -2654,6 +2679,14 @@
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
+					if (typeof self._copositionStartIndex === "undefined") {
+						//D.P. Chrome on Adroid will not fire compositionstart if replacing the entire selection
+						//In this case patch start index and value:
+						var startIndex = self._getCursorPosition();
+						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
+						self._copositionStartIndex = startIndex;
+						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
+					}
 					setTimeout(function () {
 						self._currentCompositionValue =
 							$(evt.target)
@@ -2690,19 +2723,32 @@
 			}
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
-				if (this._validateValue(value)) {
+			//D.P. 3rd Aug 2017 #1043 Make sure maxLength is respected when typing handlers can't prevent entry
+			if (this.options.maxLength) {
+				if (value && value.toString().length > this.options.maxLength) {
+					value = value.toString().substring(0, this.options.maxLength);
+
+					//Raise warning
+					this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+				}
+			}
+			if (this._validateValue(value)) {
+				this._updateValue(value);
+			} else {
+
+				// If the value is not valid, we clear the editor
+				if (this.options.revertIfNotValid) {
+					value = this._valueInput.val();
 					this._updateValue(value);
 				} else {
-
-					// If the value is not valid, we clear the editor
-					if (this.options.revertIfNotValid) {
-						value = this._valueInput.val();
-						this._updateValue(value);
-					} else {
-						this._clearValue();
-						value = this._valueInput.val();
-					}
+					this._clearValue();
+					value = this._valueInput.val();
 				}
+			}
 		},
 		_triggerKeyDown: function (event) { //TextEditor
 			//cancellable
@@ -2733,10 +2779,19 @@
 								this._triggerListItemClick(activeItem);
 							} else {
 								this._processValueChanging(currentInputVal);
+								this._enterEditMode();
 							}
 						} else {
+
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
+
+							//I.G. 20/07/2017 # 1090 'igTextEditor in multiline mode removes the existing text on Enter key'
+							if (this.options.textMode !== "multiline") {
+
+							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+							this._enterEditMode();
+							}
 						}
 					}
 				} else if (this._dropDownList) {
@@ -2772,7 +2827,7 @@
 				} else if (this.options.maxLength) {
 					currentInputVal = this._editorInput.val();
 					if (currentInputVal.length === this.options.maxLength &&
-							e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+							(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 						selection = this._getSelection(this._editorInput[ 0 ]);
 						if (selection.start === selection.end) {
 							e.preventDefault();
@@ -3302,8 +3357,11 @@
 
 					// Proceed with hiding
 					// D.P. 21 Jun 2016 Bug 220712: igTextEditor - typed text is reverted to previous value in case the drop down is opened
-					if (!this._editMode) {
+					if (!this._editMode && !this.options.suppressKeyboard) {
 						this._editorInput.focus();
+					}
+					if (this._editMode && this.options.suppressKeyboard) {
+						this._editorInput.blur();
 					}
 					this._showDropDownList();
 				}
@@ -3377,7 +3435,7 @@
 			if (input.setSelectionRange) {
 				// IE specific issue when the editor is detached
 				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
 					return;
 				}
 				input.setSelectionRange(selectionStart, selectionEnd);
@@ -3743,7 +3801,7 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text in the editor.
+			/* Gets the selected text from the editor in edit mode. This can be done on key event like keydown or keyup. This method can be used only when the editor is focused. If you call this method in display mode (The editor input is blured) the returned value will be an empty string.
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -4014,7 +4072,10 @@
 				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igNumericEditor#options:minValue) and [maxValue](ui.igNumericEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igNumericEditor#options:minDecimals) and [maxDecimals](ui.igNumericEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4027,16 +4088,16 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
-				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
-				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
-				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ulong type="string" the Number object is used with limits of unsigned long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				int type="string" the Number object is used with limits of signed int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				uint type="string" the Number object is used with limits of unsigned int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				short type="string" the Number object is used with limits of signed short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ushort type="string" the Number object is used with limits of unsigned short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				sbyte type="string" the Number object is used with limits of signed byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
+				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
+				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				long type="string" the Number object is used with the limits of a signed long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ulong type="string" the Number object is used with the limits of an unsigned long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				int type="string" the Number object is used with the limits of a signed int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				uint type="string" the Number object is used with the limits of an unsigned int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				short type="string" the Number object is used with the limits of a signed short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ushort type="string" the Number object is used with the limits of an unsigned short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				sbyte type="string" the Number object is used with the limits of a signed byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
 			*/
 			dataMode: "double",
 			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
@@ -4339,15 +4400,26 @@
 						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
 					} else if (this.options.scientificFormat) {
 						this.options[ option ] = Number(value.toExponential());
-			}
+					}
 					break;
 				}
-
-				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 				case "minValue":
-					this._setSpinButtonsState(this.value());
-					break;
 				case "maxValue":
+					if (isNaN(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					if (value === null) {
+						// ensure dataMode defaults
+						this._applyDataModeSettings();
+					} else {
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
+					}
+
+					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 					this._setSpinButtonsState(this.value());
 					break;
 				case "minDecimals",
@@ -4407,10 +4479,6 @@
 				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
-					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
-
 					//Raise warning
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
@@ -4419,10 +4487,6 @@
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
-
-					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
@@ -4489,6 +4553,7 @@
 
 						// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput
 						this._processValueChanging(currentInputVal);
+						this._enterEditMode();
 					}
 
 				} else if (e.keyCode === 38) {
@@ -5786,7 +5851,10 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igPercentEditor#options:minValue) and [maxValue](ui.igPercentEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igPercentEditor#options:minDecimals) and [maxDecimals](ui.igPercentEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -6273,7 +6341,9 @@
 
 			```
 			*/
-			value: null
+			value: null,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* igWidget events go here */
@@ -6940,7 +7010,9 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+
+				// D.P. #446 Ignore empty value. Mask editor required prompts validation now allows empty value.
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -7405,7 +7477,6 @@
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7414,12 +7485,14 @@
 
 					//Get
 					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "minValue", new Date(1980, 6, 1));
 				```
 				*/
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7428,6 +7501,9 @@
 
 					//Get
 					var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "maxValue", new Date(2020, 11, 21));
 				```
 				*/
 			maxValue: null,
@@ -7680,7 +7756,9 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
-			toLower: false
+			toLower: false,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
@@ -7715,9 +7793,9 @@
 		},
 		_setOption: function (option, value) { // igDateEditor
 			/* igDateEditor custom setOption goes here */
-			var prevValue = this.options[ option ];
+			var prevValue = this.options[ option ], date;
 			if ($.type(prevValue) === "date") {
-				var date = this._getDateObjectFromValue(value);
+				date = this._getDateObjectFromValue(value);
 				if ($.type(date) === "date" && (prevValue.getTime() === date.getTime())) {
 					return;
 				}
@@ -7729,15 +7807,22 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "minValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMinValue);
-				}
-				case "maxValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
-				}
+				case "minValue":
+				case "maxValue":
+					if (!this._isValidDate(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					if (value !== null) {
+						this.options[ option ] = this._getDateObjectFromValue(value);
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+							this._currentInputTextValue = this._editorInput.val();
+						}
+					}
 					break;
+				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -7956,6 +8041,14 @@
 					date.setMilliseconds(newValue);
 				}
 			}
+			return date;
+		},
+		_setNewDateMidnight: function () {
+			var date = new Date();
+			this._setDateField("hours", date, 0);
+			this._setDateField("minutes", date, 0);
+			this._setDateField("seconds", date, 0);
+			this._setDateField("milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
@@ -10317,7 +10410,7 @@
 		selectDate: function (date) {
 			/* Sets selected date.
 			```
-				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+				$(".selector").%%WidgetName%%("selectDate", new Date (2016, 2, 3));
 			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
@@ -10326,7 +10419,7 @@
 		spinUp: function (delta) {
 			/* Increases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinUp", 2);
+				$(".selector").%%WidgetName%%("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
 			this._spin(delta ? delta : this.options.spinDelta);
@@ -10334,7 +10427,7 @@
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinDown", 3);
+				$(".selector").%%WidgetName%%("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
 			this._spin(delta ? -delta : -this.options.spinDelta);
@@ -10342,7 +10435,7 @@
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
 			```
-			$(".selector").igDateEditor("spinUpButton");
+			$(".selector").%%WidgetName%%("spinUpButton");
 			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
@@ -10350,7 +10443,7 @@
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
 			```
-				$(".selector").igDateEditor("spinDownButton");
+				$(".selector").%%WidgetName%%("spinDownButton");
 			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
@@ -10451,7 +10544,7 @@
 				spin type="string" Spin buttons are located on the right side of the editor.
 			*/
 			buttonType: "dropdown",
-			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
+			/* type="object" Gets/Sets the options supported by the [jquery.ui.datepicker](http://api.jqueryui.com/datepicker/). Only options related to the drop-down calendar are supported.
 			```
 			//Initialize
 			$(".selector").igDatePicker({
@@ -10489,7 +10582,23 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
-			listWidth: 0
+			listWidth: 0,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		events: {
 			/* cancel="true" Event which is raised when the drop down is opening.
@@ -10613,6 +10722,14 @@
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+		_setFocus: function (event) {
+			if (this._shouldNotFocusInput) {
+				event.target.blur();
+				delete this._shouldNotFocusInput;
+				return;
+			}
+			this._super(event);
+		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
 				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
@@ -10639,7 +10756,8 @@
 
 						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
 						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
-						date = new Date();
+						//D.P. 16th Mar 2017 #876: Warning popup is displayed when maxValue date is selected on the dropdown calendar.
+						date = self._setNewDateMidnight();
 					}
 					date = self._setDateField("year", date, dateFromPicker.getFullYear());
 
@@ -10657,7 +10775,9 @@
 						self._exitEditMode();
 					} else {
 						self._focused = false;
-						self._editorInput.focus();
+						if (!self.options.suppressKeyboard) {
+							self._editorInput.focus();
+						}
 					}
 				},
 				beforeShow: function(/*input*/) {
@@ -10710,6 +10830,21 @@
 					isbeforeShow.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
 						self.options.datepickerOptions.beforeShow.call(this, input);
+					}
+				};
+			}
+			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
+				var isOnChangeMonthYear = regional.onChangeMonthYear;
+				options.onChangeMonthYear  = function () {
+					isOnChangeMonthYear.call(this);
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			} else {
+				options.onChangeMonthYear  = function () {
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
 					}
 				};
 			}
@@ -10823,17 +10958,25 @@
 						(this._editorInput.data("datepicker").settings.minDate !==
 							this.options.minValue))
 					{
-						this.options.minValue =
-							this._editorInput.data("datepicker").settings.minDate;
+						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
 					}
 					if (value.maxDate &&
 						(this._editorInput.data("datepicker").settings.maxDate !==
 							this.options.maxValue))
 					{
-						this.options.maxValue =
-							this._editorInput.data("datepicker").settings.maxDate;
+						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
 					}
 				}
+					break;
+				case "minValue":
+				case "maxValue":
+					this.options[ option ] = prevValue;
+					this._super(option, value);
+					this._editorInput.datepicker("option", "minDate", this.options.minValue);
+					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+					// prevent datepicker from updating the input text (if min/max change selection)
+					this._editorInput.val(this._currentInputTextValue);
 					break;
 				default: {
 
@@ -10918,7 +11061,6 @@
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
-
 			this._dropDownOpened = true;
 
 			// Open Dropdown
@@ -10952,6 +11094,16 @@
 				currentInputValue = this._editorInput.val();
 			}
 			try {
+				if (this.options.suppressKeyboard) {
+					if (this._focused) {
+
+						// If we are in edit mode and virtual keyboard is visible, we want to hide it before the drop down is opened.
+						this._editorInput.blur();
+					}
+
+					// When suppressKeyboard option for igDatePicker is true, we don't want to focus input.
+					this._shouldNotFocusInput = true;
+				}
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
 				// $(this._dropDownList).show("blind", { direction: direction }, this.options.dropDownAnimationDuration);

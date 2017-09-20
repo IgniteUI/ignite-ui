@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../sample-data/local-data.js"></script>
+    <script type="text/javascript" src="../sample-data/remote-data.js"></script>
+    <script type="text/javascript" src="../test-shared.js"></script>
+    <style>
+        .cont {
+            margin-top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100; position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div class="cont">
+        <div id="combo-lod"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-autoComplete"></div>
+        <div id="combo-autoComplete-multi"></div>
+        <div id="combo-autoComplete-case-sensitive"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-grouping-base"></div>
+        <div id="combo-grouping-sort"></div>
+        <div id="combo-grouping-select"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-lod-items-count"></div>
+        <div id="combo-virtualization-grouping"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-lastItem"></div>
+        <div id="combo-mouse-events"></div>
+    </div>
+    <div class="cont">
+        <div id="lodpagesize-scroll"></div>
+        <div id="lodpagesize-keyboard"></div>
+    </div>
+
+    <script>
+        $(function() {
+            var testId_1 = 'Load on demand last item and scroll visibility',
+                testId_2 = 'autoComplete',
+                testId_3 = 'autoComplete with multiple selection',
+                testId_4 = 'autoComplete with case sensitivity',
+                testId_5 = 'Grouping base functionality',
+			    testId_6 = 'Grouping sort functionality',
+                testId_7 = 'Grouping select item/header',
+                testId_8 = 'Load on demand items count when loading new items',
+                testId_9 = 'Virtualization with grouping and LOD',
+                testId_10 = 'The last item is not displayed in the dropdown list if virtualization is enabled.',
+                testId_11 = 'Mouse events',
+                testId_12 = "Small pageSize does not trigger load on demand (scroll)",
+                testId_13 = "Small pageSize does not trigger load on demand (keyboard)";
+
+            $.mockjaxSettings.logging = 0;
+
+            $.mockjax({
+                url: "http://localhost/api/invoices*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+                    if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
+                        responseText = $.map(responseText, function (val, i) {
+                            if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
+                                return val;
+                            }
+                        });
+                    }
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            $.mockjax({
+                url: "http://localhost/api/employees*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            module("IgCombo - Virtualization, LoD, Grouping and Autocompletion", {
+                setup: function() {},
+                teardown: function() {}
+            });
+
+            // Load on demand last item and scroll visibility
+            test(testId_1, function () {
+                var $dropDownCont, dropDownContHeight, actualHeight, expectedHeight,
+					$comboElem = $("#combo-lod"),
+					pageSize = 16;
+
+                $comboElem.igCombo({
+                    width: 200,
+                    height: 30,
+                    textKey: 'ProductName',
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    dataSourceType: "json",
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false,
+                    loadOnDemandSettings: {
+                        enabled: true
+                    },
+                    itemsRendered: function (evt, ui) {
+                        ui.owner.openDropDown(function () {
+                            $dropDownCont = $comboElem.find('.ui-igcombo-list');
+                            lastItemHeight = $dropDownCont.find("li:last-child").outerHeight();
+                            dropDownContHeight = $dropDownCont.height();
+                            actualHeight = dropDownContHeight + lastItemHeight;
+                            expectedHeight = pageSize * lastItemHeight;
+
+                            equal(actualHeight, expectedHeight, "Last item should be hidden when virtualization is enabled.");
+
+                            notEqual($dropDownCont.prop('scrollHeight'), $dropDownCont.height(), "Scroll should be visible.");
+
+                            start();
+
+                            ui.owner.closeDropDown();
+                        });
+                    }
+                });
+
+                stop();
+            });
+
+            // Test autocomplete
+            asyncTest(testId_2, 8, function () {
+                var $input, selectedText, selectPositions,
+                    $combo = $('#combo-autoComplete'),
+                    dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Mike" },
+						{ ID: 6, Name: "Michael" },
+						{ ID: 7, Name: "Michele" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    autoComplete: true
+                });
+
+                $input = $combo.igCombo('textInput');
+
+                typeInInput('t', $input);
+                setTimeout(function () {
+                    start();
+                    strictEqual($input.val(), 'tom', 'Input value is incorrect');
+
+                    // test highlighting
+                    selectedText = getHighlightedText($input);
+                    strictEqual(selectedText, 'om', 'Selected text is incorrect');
+
+                    // Invalid value
+                    typeInInput('Tx', $input);
+                    setTimeout(function () {
+                        start();
+                        strictEqual($input.val(), 'Tx', 'Input value is incorrect');
+
+                        // Multiple entries with same starting letter(s)
+                        typeInInput('M', $input);
+                        setTimeout(function () {
+                            start();
+                            strictEqual($input.val(), 'Mary', 'Input value is incorrect');
+
+                            typeInInput('Mi', $input);
+                            setTimeout(function () {
+                                start();
+                                strictEqual($input.val(), 'Mike', 'Input value is incorrect');
+
+                                // Test right arrow
+                                emulateKeyBoard('right', false, false, false, $input);
+                                setTimeout(function () {
+                                    start();
+                                    strictEqual($input.val(), 'Mike', 'Input value is incorrect');
+
+                                    typeInInput('M', $input);
+                                    setTimeout(function () {
+                                        start();
+
+                                        // Test left arrow
+                                        emulateKeyBoard('left', false, false, false, $input);
+                                        strictEqual($input.val(), 'Mary', 'Input value is incorrect');
+                                        selectPositions = getInputSelection($input);
+                                        strictEqual(selectPositions.start, 1, 'Caret is not at the correct position');
+                                    }, 100);
+                                    stop();
+                                }, 100);
+                                stop();
+                            }, 100);
+                            stop();
+                        }, 100);
+                        stop();
+                    }, 100);
+                    stop();
+                }, 100);
+            });
+
+            // Autocomplete with multiple selection
+            asyncTest(testId_3, 5, function () {
+                var $input,
+                    $combo = $('#combo-autoComplete-multi'),
+                    dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    autoComplete: true,
+                    multiSelection: {
+                        enabled: true
+                    }
+                });
+
+                $input = $combo.igCombo('textInput');
+                typeInInput('a', $input);
+                setTimeout(function () {
+                    start();
+                    strictEqual($input.val(), 'anna', 'Input value is incorrect');
+
+                    typeInInput('a,', $input);
+                    setTimeout(function () {
+                        start();
+                        strictEqual($input.val(), 'a,', 'Input value is incorrect');
+
+                        typeInInput('a, ', $input);
+                        setTimeout(function () {
+                            start();
+                            isValueCorrect = $input.val() === 'Anna, ' || $input.val() === 'Anna';
+                            ok(isValueCorrect, 'Input value is incorrect');
+
+                            typeInInput('Anna,', $input);
+                            setTimeout(function () {
+                                start();
+                                strictEqual($input.val(), 'Anna,', 'Input value is incorrect');
+
+                                typeInInput("Anna, B", $input);
+                                setTimeout(function () {
+                                    start();
+                                    strictEqual($input.val(), 'Anna, Bob', 'Input value is incorrect');
+                                }, 100);
+                                stop();
+                            }, 100);
+                            stop();
+                        }, 100);
+                        stop();
+                    }, 100);
+                    stop();
+                }, 100);
+            });
+
+            // Autocomplete with case sensitivity
+            asyncTest(testId_4, 3, function () {
+                var $input,
+                    $combo = $('#combo-autoComplete-case-sensitive'),
+                    dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    autoComplete: true,
+                    caseSensitive: true
+                });
+
+                $input = $combo.igCombo('textInput');
+
+                typeInInput('b', $input);
+                setTimeout(function () {
+                    start();
+                    strictEqual($input.val(), 'b', 'Input value is incorrect');
+
+                    typeInInput('B', $input);
+                    setTimeout(function () {
+                        start();
+
+                        strictEqual($input.val(), 'Bob', 'Input value is incorrect');
+
+                        typeInInput('BO', $input);
+                        setTimeout(function () {
+                            start();
+
+                            strictEqual($input.val(), 'BO', 'Input value is incorrect');
+                        }, 100);
+                        stop();
+                    }, 100);
+                    stop();
+                }, 100);
+            });
+
+            // Grouping base functionality
+            test(testId_5, function () {
+                var $liItem, $headers, headersState, allItemsState, dataAttrState,
+                    $combo = $("#combo-grouping-base"),
+			        type1 = "German car",
+                    type2 = "Russian car",
+			        type3 = "Swedish car",
+                    typesCount = 3,
+                    car1 = "Saab",
+                    car2 = "Volvo",
+                    car3 = "Mercedes",
+                    car4 = "Moscvitch",
+                    car5 = "Audi",
+                    car6 = "Lada",
+                    car7 = "VW",
+                    car8 = "Kamaz",
+                    car9 = "Porsche",
+                    car10 = "Zil",
+			        ds = [
+                            { ID: '1', Name: car1, Type: type3 },
+                            { ID: '2', Name: car2, Type: type3 },
+                            { ID: '3', Name: car3, Type: type1 },
+                            { ID: '4', Name: car4, Type: type2 },
+                            { ID: '5', Name: car5, Type: type1 },
+                            { ID: '6', Name: car6, Type: type2 },
+                            { ID: '7', Name: car7, Type: type1 },
+                            { ID: '8', Name: car8, Type: type2 },
+                            { ID: '9', Name: car9, Type: type1 },
+                            { ID: '10', Name: car10, Type: type2 }
+			        ];
+
+                $combo.igCombo({
+                    dataSource: ds,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    grouping: {
+                        key: 'Type',
+                        dir: 'asc'
+                    }
+                });
+
+                $liItems = $combo.igCombo('dropDown').find('li');
+                $headers = $liItems.filter(".ui-igcombo-group-header");
+
+                headersState = function () {
+                    return $headers.eq(0).text() === type1 &&
+                        $headers.eq(1).text() === type2 &&
+                        $headers.eq(2).text() === type3;
+                }
+
+                allItemsState = function () {
+                    return $liItems.eq(0).text() === type1 &&
+                        $liItems.eq(1).text() === car3 &&
+                        $liItems.eq(2).text() === car5 &&
+                        $liItems.eq(3).text() === car7 &&
+                        $liItems.eq(4).text() === car9 &&
+
+                        $liItems.eq(5).text() === type2 &&
+			            $liItems.eq(6).text() === car4 &&
+                        $liItems.eq(7).text() === car6 &&
+                        $liItems.eq(8).text() === car8 &&
+                        $liItems.eq(9).text() === car10 &&
+
+                        $liItems.eq(10).text() === type3 &&
+			            $liItems.eq(11).text() === car1 &&
+                        $liItems.eq(12).text() === car2;
+                }
+
+                dataAttrState = function () {
+                    var result = true;
+
+                    for (var i = 0; i < typesCount + ds.length; i++) {
+                        if (i === 0 || i === 5 || i === 10) {
+                            result = result && !$liItems.eq(i).attr("data-value");
+                        } else {
+                            result = result && $liItems.eq(i).attr("data-value");
+                        }
+                    }
+
+                    return !!result;
+                }
+
+                ok(allItemsState(), 'Drop down correctly group its items');
+                ok(headersState(), 'Drop down correctly heads its groups');
+                ok(dataAttrState(), 'Drop down correctly set data-value attribute');
+
+                $combo.igCombo("openDropDown");
+
+                ok(allItemsState(), 'Drop down correctly group its items');
+                ok(headersState(), 'Drop down correctly heads its groups');
+                ok(dataAttrState(), 'Drop down correctly set data-value attribute');
+            });
+
+            // Grouping sort functionality
+            test(testId_6, function () {
+                var $headers, ascState, descState,
+                    $combo = $("#combo-grouping-sort"),
+			        type1 = "German car",
+                    type2 = "Russian car",
+			        type3 = "Swedish car",
+                    car1 = "Saab",
+                    car2 = "Volvo",
+                    car3 = "Mercedes",
+                    car4 = "Moscvitch",
+                    car5 = "Audi",
+                    car6 = "Lada",
+                    car7 = "VW",
+                    car8 = "Kamaz",
+                    car9 = "Porsche",
+                    car10 = "Zil",
+			        ds = [
+                            { ID: '1', Name: car1, Type: type3 },
+                            { ID: '2', Name: car2, Type: type3 },
+                            { ID: '3', Name: car3, Type: type1 },
+                            { ID: '4', Name: car4, Type: type2 },
+                            { ID: '5', Name: car5, Type: type1 },
+                            { ID: '6', Name: car6, Type: type2 },
+                            { ID: '7', Name: car7, Type: type1 },
+                            { ID: '8', Name: car8, Type: type2 },
+                            { ID: '9', Name: car9, Type: type1 },
+                            { ID: '10', Name: car10, Type: type2 }
+			        ];
+
+                $combo.igCombo({
+                    dataSource: ds,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    grouping: {
+                        key: 'Type',
+                        dir: 'asc'
+                    }
+                });
+
+                $headers = $combo.igCombo('dropDown').find('li').filter(".ui-igcombo-group-header");
+
+                ascState =
+                    $headers.eq(0).text() === type1 &&
+			        $headers.eq(1).text() === type2 &&
+			        $headers.eq(2).text() === type3;
+
+                ok(ascState, 'Drop down correctly sort headers in ASC order');
+
+                $combo.igCombo("openDropDown");
+
+                ok(ascState, 'Drop down correctly sort headers in ASC order');
+
+                $combo.igCombo("option", "grouping", {
+                    key: 'Type',
+                    dir: 'desc'
+                });
+
+                $headers = $combo.igCombo('dropDown').find('li').filter(".ui-igcombo-group-header");
+
+                descState =
+                    $headers.eq(0).text() === type3 &&
+			        $headers.eq(1).text() === type2 &&
+			        $headers.eq(2).text() === type1;
+
+                ok(descState, 'Drop down correctly sort headers in DESC order');
+
+                $combo.igCombo("closeDropDown");
+
+                ok(descState, 'Drop down correctly sort headers in DESC order');
+            });
+
+            // Grouping select item/header
+            test(testId_7, function () {
+                var $liItems, state, selectedItem,
+                    $combo = $("#combo-grouping-select"),
+			        type1 = "German car",
+                    type2 = "Russian car",
+			        type3 = "Swedish car",
+                    car1 = "Saab",
+                    car2 = "Volvo",
+                    car3 = "Mercedes",
+                    car4 = "Moscvitch",
+                    car5 = "Audi",
+			        ds = [
+                            { ID: "1", Name: car1, Type: type3 },
+                            { ID: "2", Name: car2, Type: type3 },
+                            { ID: "3", Name: car3, Type: type1 },
+                            { ID: "4", Name: car4, Type: type2 },
+                            { ID: "5", Name: car5, Type: type1 }
+			        ];
+
+                $combo.igCombo({
+                    dataSource: ds,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    closeDropDownOnBlur: false,
+                    initialSelectedItems: [{ index: 0 }],
+                    grouping: {
+                        key: 'Type',
+                        dir: 'asc'
+                    }
+                });
+
+                // code selection
+                equal($combo.igCombo("text"), car3, 'Drop down selected item by index');
+
+                $combo.igCombo('index', 1);
+                equal($combo.igCombo("text"), car5, 'Drop down select item by index');
+
+                $combo.igCombo('index', 5);
+                ok(!$combo.igCombo("text"), 'Drop down correctly does not select item');
+
+                $combo.igCombo('value', 1);
+                equal($combo.igCombo("text"), car1, 'Drop down select item by value');
+
+                $combo.igCombo('value', 6);
+                ok(!$combo.igCombo("text"), 'Drop down correctly does not select item');
+
+                // mouse selection
+                $combo.igCombo("openDropDown");
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    $liItems = $combo.igCombo('dropDown').find('li');
+
+                    // click on header
+                    clickElement($liItems.eq(0), false, false);
+                    stop();
+                    setTimeout(function () {
+                        start();
+                        ok(!$combo.igCombo("selectedItems"), "Combo does not select group header.");
+
+                        // click on item
+                        clickElement($liItems.eq(4), false, false);
+
+                        stop();
+                        setTimeout(function () {
+                            start();
+                            selectedItem = $combo.igCombo("selectedItems");
+                            state = selectedItem.length === 1 && selectedItem[0] && selectedItem[0].data && selectedItem[0].data === ds[2];
+
+                            ok(state, "Combo selects item.");
+                        }, 100);
+                    }, 100);
+                }, 200);
+            });
+
+            // Load on demand items count when loading new items
+            test(testId_8, function () {
+                var $listItems,
+					$comboElem = $("#combo-lod-items-count"),
+					itemsRenderedFiredCount = 0,
+					pageSize = 16,
+                    itemsRenderedFiredCountForNextChunk = [1, 2, 3, 4],
+                    itemsRenderedFiredCountForFinishingTest = 5;
+
+                $comboElem.igCombo({
+                    width: 200,
+                    height: 30,
+                    textKey: 'ProductName',
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    dataSourceType: "json",
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false,
+                    loadOnDemandSettings: {
+                        enabled: true
+                    },
+                    itemsRendered: function (evt, ui) {
+                        itemsRenderedFiredCount++;
+                        $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children();
+                        equal($listItems.length, pageSize * itemsRenderedFiredCount, pageSize * itemsRenderedFiredCount + " items should be loaded when load on demand is enabled.");
+
+                        if ($.inArray(itemsRenderedFiredCount, itemsRenderedFiredCountForNextChunk) != -1) {
+                            ui.owner._nextChunk();
+                        }
+
+                        if (itemsRenderedFiredCount == itemsRenderedFiredCountForFinishingTest) {
+                            start();
+                        }
+                    }
+                });
+
+                stop();
+            });
+
+            // Virtualization with grouping and LOD tests
+            test(testId_9, function () {
+                var $dropDown, $listItems, data, headersState, selectedItem,
+					$comboElem = $("#combo-virtualization-grouping");
+
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $comboElem.igCombo({
+                    virtualization: true,
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    width: 200,
+                    height: 30,
+                    loadOnDemandSettings: { enabled: true, pageSize: 2 },
+                    visibleItemsCount: 4,
+                    grouping: { key: 'SupplierName' },
+                    multiSelection: {
+                        enabled: true,
+                    }
+                });
+
+                combo = $comboElem.data().igCombo;
+                $comboElem.igCombo('openDropDown');
+                $dropDown = $comboElem.igCombo("dropDown");
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                // items list does not contain the group header
+                equal($listItems.length, 2, "2 items should be rendered.");
+
+                $headers = $dropDown.find('li').filter(".ui-igcombo-group-header");
+
+                headersState = function () {
+                    return $headers.eq(0).text() === 'Cooperativa de Quesos Las Cabras' &&
+                           $headers.eq(1).text() === 'Exotic Liquids'
+                }
+                ok(headersState(), 'Drop down correctly heads its groups');
+                $comboElem.igCombo('openDropDown');
+                combo.listScrollTop(200);
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                equal($listItems.length, 2, "2 items should be rendered.");
+                $comboElem.igCombo('closeDropDown');
+
+                $comboElem.igCombo("select", $($listItems[0]));
+                selectedItem = $comboElem.igCombo("itemsFromIndex", [0]);
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+                selectedItem = $comboElem.igCombo("itemsFromIndex", [1]);
+                equal($listItems[1], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+
+                $comboElem.igCombo("select", $($listItems[1]));
+                selectedItem = $comboElem.igCombo("itemsFromValue", [11]);
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+
+                selectedItem = $comboElem.igCombo("itemsFromElement", $($listItems));
+                var selectedItems = $comboElem.igCombo("selectedItems");
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+                equal($listItems[1], selectedItem[1].element[0], "itemsFromIndex returns the selected item li element");
+            });
+
+            // The last item is not displayed in the dropdown list if virtualization is enabled.
+            test(testId_10, function () {
+                var $listItems,
+                    $combo = $("#combo-lastItem");
+
+                data = [
+			        { "cd": "001", "cdName": "0000001" },
+			        { "cd": "002", "cdName": "0000002" },
+			        { "cd": "003", "cdName": "0000003" },
+			        { "cd": "004", "cdName": "0000004" },
+			        { "cd": "005", "cdName": "0000005" },
+			        { "cd": "006", "cdName": "0000006" },
+			        { "cd": "007", "cdName": "0000007" },
+			        { "cd": "008", "cdName": "0000008" },
+			        { "cd": "009", "cdName": "0000009" },
+			        { "cd": "010", "cdName": "00000010" },
+			        { "cd": "011", "cdName": "00000011" }
+                ];
+
+                $combo.igCombo({
+                    mode: 'editable',
+                    width: '80px',
+                    dropDownWidth: '280px',
+                    itemTemplate: '<div style="display: block;" title="${cdName}"><span style="width: 80px; display: inline-block;">${cd}</span><span style="width: 200px; display: inline-block;">${cdName}</span></div>',
+                    dataSource: data,
+                    enableClearButton: false,
+                    virtualization: true,
+                    delayFilteringOnKeyUp: 0,
+                    placeHolder: " ",
+                    textKey: 'cd',
+                    valueKey: 'cd',
+                    filteringType: "none",
+                    highlightMatchesMode: "startsWith",
+                    visibleItemsCount: 5,
+                });
+
+                $listItems = $combo.igCombo("items");
+
+                $combo.igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 3 });
+                equal(data.length, $listItems.length, "All items are visible");
+
+            });
+
+            // When virtualization is true and scroll with mouse wheel the page is scrolled
+            test(testId_11, function () {
+                var $dropDownButton, $clearCont,
+                    $combo = $("#combo-mouse-events");
+
+                data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
+		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
+		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate: "/Date(1078992096827)/" },
+		            { ID: 5, Name: "3", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 4, Name: "test dsf", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 3, Name: "Bob ", Age: 27, ModifiedDate: "\/Date(1078992096827)\/" }];
+
+                $combo.igCombo({
+                    dataSource: data,
+                    textKey: "Name",
+                    valueKey: "ID",
+                });
+
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+                $clearCont = $combo.data().igCombo._options.$clearCont;
+
+                // verify combo element mouse events
+                emulateMouseActions($combo, "mouseenter");
+                emulateMouseActions($combo, "mouseleave");
+                equal($combo.children().attr("class").contains("ui-state-hover"), false, "ui-state-hover class is not applied");
+                emulateMouseActions($combo, "mousedown");
+                emulateMouseActions($combo, "mouseup");
+                equal($combo.children().attr("class").contains("ui-state-active"), false, "ui-state-active class is not applied");
+
+                // verify dropDownButton element mouse events
+                emulateMouseActions($dropDownButton, "mousedown");
+                emulateMouseActions($dropDownButton, "mouseup");
+                emulateMouseActions($dropDownButton, "mouseenter");
+                equal($dropDownButton.attr("class").contains("ui-state-hover"), true, "ui-state-hover class is applied");
+                equal($combo.children().attr("class").contains("ui-state-hover"), true, "ui-state-hover class is applied");
+                emulateMouseActions($dropDownButton, "mouseleave");
+                equal($dropDownButton.attr("class").contains("ui-state-hover"), false, "ui-state-hover class is not applied");
+                equal($combo.children().attr("class").contains("ui-state-hover"), false, "ui-state-hover class is not applied");
+
+                // verify clear button element mouse events
+                emulateMouseActions($clearCont, "mousedown");
+                emulateMouseActions($clearCont, "mouseup");
+                emulateMouseActions($clearCont, "mouseenter");
+                equal($clearCont.attr("class").contains("ui-igcombo-clear-hover ui-state-hover"), true, "ui-igcombo-clear-hover ui-state-hover class is applied");
+                equal($combo.children().attr("class").contains("ui-state-hover"), true, "ui-state-hover class is applied");
+                emulateMouseActions($clearCont, "mouseleave");
+                equal($clearCont.attr("class").contains("ui-igcombo-clear-hover ui-state-hover"), false, "ui-igcombo-clear-hover ui-state-hover class is not applied");
+                equal($combo.children().attr("class").contains("ui-state-hover"), false, "ui-state-hover class is not applied");
+                equal($combo.igCombo("text"), "", "Text in input is correct");
+
+                $combo.igCombo("option", "disabled", true);
+                emulateMouseActions($combo, "mouseenter");
+                emulateMouseActions($combo, "mouseleave");
+                emulateMouseActions($combo, "mousedown");
+                emulateMouseActions($combo, "mouseup");
+                emulateMouseActions($dropDownButton, "mouseenter");
+                emulateMouseActions($dropDownButton, "mouseleave");
+                emulateMouseActions($dropDownButton, "mousedown");
+                emulateMouseActions($dropDownButton, "mouseup");
+                emulateMouseActions($clearCont, "mouseenter");
+                emulateMouseActions($clearCont, "mouseleave");
+                emulateMouseActions($clearCont, "mousedown");
+                emulateMouseActions($clearCont, "mouseup");
+
+                equal($combo.igCombo("text"), "", "Text in input is correct");
+            });
+
+            // Small pageSize does not trigger load on demand (scroll)
+            asyncTest(testId_12, function() {
+                var $combo = $("#lodpagesize-scroll"),
+                    $dropDown,
+                    $listCont,
+                    $scrollCont,
+                    options,
+                    lod;
+
+                options = {
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    loadOnDemandSettings: {
+                        enabled: true,
+                        pageSize: 3
+                    },
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    valueKey: "UnitPrice",
+                    textKey: "Salesperson",
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    width: "400px",
+                    virtualization: true,
+                    autoComplete: true,
+                    headerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>",
+                    footerTemplate: "<div class='dropDownHeaderFooter'>Product Count: {0} / {3}</div>",
+                    itemTemplate: "<div>${ProductName} (${QuantityPerUnit})</div>",
+                    placeHolder: "Please, select a product",
+                    filterExprUrlKey: 'startsWith',
+                    highlightMatchesMode: "startsWith",
+                    filteringCondition: "startsWith",
+                };
+
+                $combo.igCombo(options);
+                lod = $combo.igCombo("option", "loadOnDemandSettings");
+
+                $combo.igCombo("openDropDown");
+                $listCont = $combo.data().igCombo._options.$dropDownListCont;
+                $scrollCont = $combo.data().igCombo._options.$dropDownScrollCont;
+
+                setTimeout(function() {
+                    start();
+
+                    equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                    equal($scrollCont.is(":visible"), true, "Scrollbar is shown");
+                    $listItems = $combo.igCombo("listItems");
+                    equal(lod.pageSize, 5, "Page size minimum should be 5");
+                    equal($listItems.length, lod.pageSize, "Visible rendered items match 'pageSize'");
+                    $listCont.scrollTop(1000);
+                    $listCont.trigger("scroll");
+                    stop();
+
+                    setTimeout(function() {
+                        start();
+                        $listItems = $combo.igCombo("listItems");
+                        equal($listItems.length, lod.pageSize * 2, "Load on demand succeeded");
+                    }, 550);
+
+                }, 500);
+            });
+
+            // Small pageSize does not trigger load on demand (keyboard)
+            asyncTest(testId_13, function() {
+                var $combo = $("#lodpagesize-keyboard"),
+                    $dropDown,
+                    $listCont,
+                    $scrollCont,
+                    options,
+                    lod;
+
+                options = {
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    loadOnDemandSettings: {
+                        enabled: true,
+                        pageSize: 3
+                    },
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    valueKey: "UnitPrice",
+                    textKey: "Salesperson",
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    width: "400px",
+                    virtualization: true,
+                    autoComplete: true,
+                    headerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>",
+                    footerTemplate: "<div class='dropDownHeaderFooter'>Product Count: {0} / {3}</div>",
+                    itemTemplate: "<div>${ProductName} (${QuantityPerUnit})</div>",
+                    placeHolder: "Please, select a product",
+                    filterExprUrlKey: 'startsWith',
+                    highlightMatchesMode: "startsWith",
+                    filteringCondition: "startsWith",
+                };
+
+                $combo.igCombo(options);
+                lod = $combo.igCombo("option", "loadOnDemandSettings");
+
+                $combo.igCombo("openDropDown");
+                $listCont = $combo.data().igCombo._options.$dropDownListCont;
+                $scrollCont = $combo.data().igCombo._options.$dropDownScrollCont;
+
+                setTimeout(function() {
+                    start();
+
+                    equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                    equal($scrollCont.is(":visible"), true, "Scrollbar is shown");
+                    $listItems = $combo.igCombo("listItems");
+                    equal(lod.pageSize, 5, "Page size minimum should be 5");
+                    equal($listItems.length, lod.pageSize, "Visible rendered items match 'pageSize'");
+
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    stop();
+
+                    setTimeout(function() {
+                        start();
+                        $listItems = $combo.igCombo("listItems");
+                        equal($listItems.length, lod.pageSize * 2, "Load on demand succeeded");
+                    }, 550);
+
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

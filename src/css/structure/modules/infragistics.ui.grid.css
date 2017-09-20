@@ -13,6 +13,11 @@
 /* Bug 214589 S.D., 22.02.2016, Missing borders; new classes for a MRL grid; header cell misalignment issue */
 .ui-iggrid-table-mrl,.ui-iggrid-headertable-mrl {border-collapse:collapse;table-layout:fixed;}
 
+/* BUG:229991 Marin Popov 1.23.2017; When grid is MRL and width is in % the header cells and content cells are misaligned.*/
+.ui-iggrid-headertable-mrl {
+	width: 100%;
+}
+
 .ui-iggrid>.ui-widget-header.ui-helper-reset {border-width:0;}
 
 .ui-widget-content.ui-iggrid-filterddlist, .ui-widget-content.ui-iggrid-hiding-dropdown-list, .ui-widget-content.ui-iggrid-columnmoving-dropdown-list, .ui-widget-content.ui-iggrid-featurechooser-list, .ui-iggrid-summaries-dropdown-listcontainer
@@ -193,7 +198,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .ui-iggrid-colheaderdesc .ui-iggrid-headertext,
 .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
-    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
+    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/ 
     width: -moz-calc(100% - 34px)!important; /**  FF 4-15  **/
     width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
     display:block;
@@ -235,9 +240,9 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .pointerevents .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext
 {    
 
-    width: -webkit-calc(100% - 28px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 28px)!important; /**  FF 4-15  **/
-    width: calc(100% - 28px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
+    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
+    width: -moz-calc(100% - 34px)!important; /**  FF 4-15  **/
+    width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
     line-height: 1.8em;
 }
 
@@ -391,12 +396,15 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 {
     float:right; 
 	margin-top:0;
-} 
+}
+/*
+BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the cell
 .ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
 {
     float:left;
 	width:calc(100% - 10px);
-} 
+}
+*/
 .ui-iggrid-filtercell  .ui-igedit-button-common~.ui-igeditor-input-container
 {
     float:left;

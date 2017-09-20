@@ -22,6 +22,7 @@
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -92,7 +93,7 @@
 			}
 
 			initialized = false;
-			module("Date Picker ", {
+			module("igDatePicker", {
 				setup: function () {
 					//pause testing until editors are initialized
 					if (!initialized) {
@@ -148,6 +149,57 @@
 				editor.igDatePicker("option", "isLimitedToListValues", false);
 			});
 
+			var testId = 'Date Picker min/max values.';
+			test(testId, 16, function () {
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({
+						dateInputFormat: "dateTime"
+					}),
+					$ddButton = $editor.igDatePicker("dropDownButton"),
+					$calendar = $editor.igDatePicker("getCalendar");
+				
+				$editor.igDatePicker("option", "minValue", new Date(2017, 0, 10).toLocaleString());
+				equal($editor.igDatePicker("option", "minValue").getTime(), new Date(2017, 0, 10).getTime(), "minValue not set correctly");
+				equal($editor.datepicker("option", "minDate").getTime(), new Date(2017, 0, 10).getTime(), "minValue not set to picker");
+
+				$editor.igDatePicker("option", "maxValue", new Date(2017, 0, 31).toLocaleString());
+				equal($editor.igDatePicker("option", "maxValue").getTime(), new Date(2017, 0, 31).getTime(), "maxValue not set correctly");
+				equal($editor.datepicker("option", "maxDate").getTime(), new Date(2017, 0, 31).getTime(), "maxValue not set to picker");
+
+				// set through datepickerOptions (support for #84)
+				$editor.igDatePicker("value", new Date(2017, 0, 10));
+				$editor.igDatePicker({ datepickerOptions: { minDate : new Date(2017, 0, 11) } });
+				equal($editor.igDatePicker("option", "minValue").getTime(), new Date(2017, 0, 11).getTime(), "minValue not set correctly through datepickerOptions");
+				equal($editor.datepicker("option", "minDate").getTime(), new Date(2017, 0, 11).getTime(), "minDate not set through datepickerOptions");
+				equal($editor.igDatePicker("value").getTime(), new Date(2017, 0, 11).getTime(), "Value not updated when below min set through datepickerOptions");
+
+				$editor.igDatePicker({ datepickerOptions: { maxDate : new Date(2017, 1, 1) } });
+				equal($editor.igDatePicker("option", "maxValue").getTime(), new Date(2017, 1, 1).getTime(), "maxValue not set correctly through datepickerOptions");
+				equal($editor.datepicker("option", "maxDate").getTime(), new Date(2017, 1, 1).getTime(), "maxDate not set through datepickerOptions");
+				
+
+				$editor.igDatePicker("value", new Date(2017, 0, 11));
+				$editor.igDatePicker("option", "minValue", new Date(2017, 0, 12));
+				equal($editor.igDatePicker("value").getTime(), new Date(2017, 0, 12).getTime(), "Value not updated when setting minValue after that time.");
+				equal($editor.igDatePicker("field").val(), "1/12/2017 12:00 AM", "Text not updated when setting minValue after that time.");
+
+				$ddButton.click();
+				stop();
+				$calendar.promise().done(function () {
+					start();
+					equal($calendar.find("td.ui-datepicker-current-day").text(), "12", "Picker selection not correct");
+					
+					$editor.igDatePicker("option", "minValue", new Date(2017, 0, 13));
+					equal($editor.igDatePicker("field").val(), "01/12/2017 12:00 AM", "Text should not update.");
+					equal($calendar.find("td.ui-datepicker-current-day").text(), "13", "Picker selection not correct");
+					ok($calendar.find("td:contains(12)").hasClass("ui-state-disabled"), "MinValue did not update currently visible calendar");
+					
+					$editor.igDatePicker("option", "maxValue", new Date(2017, 0, 30).toLocaleString());
+					ok($calendar.find("td:contains(31)").hasClass("ui-state-disabled"), "MaxValue did not update currently visible calendar");
+					$editor.remove();
+				});
+			});
+
 			var testId = 'Date Picker onSelect event.';
 			test(testId,2,function(){
 				var editor = $('#inputEditor2').igDatePicker("field"),
@@ -179,7 +231,7 @@
 								start();
 								var newDate = $("#inputEditor2").igDatePicker("value");
 
-								ok(!newDate.toString().contains("00:00:00"), "The time is not correct.")
+								ok(newDate.toString().contains("00:00:00"), "The time is not correct.")
 							},100);
 						},100);
 					},100);
@@ -366,6 +418,75 @@
 				ok($editor.igDatePicker("clearButton").is(":visible"), "Clear button is not visible");
 				$editor.remove();
 			});
+			var testId = 'Test suppressKeyboard option';
+			test(testId, 17, function () {
+				var $editor, ddButton;
+				
+				// Test that the input DOESN'T have focus after the drop down is opened
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+
+				// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+ 				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+ 				ok(!$input.is(":focus"), "The input should not be focused");
+ 				$ddButton.click();
+ 				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-next").click();
+ 				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				$editor.remove();
+				 
+				// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed and defined onChangeMonthYear is fired
+				var definedOnChangeMonthYearFired = false;
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true, datepickerOptions: { onChangeMonthYear: function () { definedOnChangeMonthYearFired = true; }} });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-next").click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				ok(definedOnChangeMonthYearFired, "The defined onChangeMonthYear event should be fired.");
+				$ddButton.click();
+				delete definedOnChangeMonthYearFired;
+				$editor.remove();
+
+				// Test that the input DOESN'T have focus after the drop down is opened (before that the input is focused)
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				$editor.igDatePicker("setFocus");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$input.blur();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+
+				// Test that the input DOES have focus after the drop down is opened
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: false });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok($input.is(":focus"), "The input should be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+				ok($input.is(":focus"), "The input should be focused");
+				$ddButton.click();
+				ok($input.is(":focus"), "The input should be focused");
+				$input.blur();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+			});
+
 	    });
 		function mouseInteraction(type, element) {
 		    // create a mouse click event

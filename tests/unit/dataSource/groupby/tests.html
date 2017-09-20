@@ -55,6 +55,28 @@
 				}
 				$tbody.html(html)
 			}
+			function testGroupByData(actualData, expectedData, keyToTest) {
+				var i, len = actualData.length, aRec, eRec;
+				if (len !== expectedData.length) {
+					return false;
+				}
+				for (i = 0; i < len; i++) {
+					aRec = actualData[i];
+					eRec = expectedData[i];
+					if (aRec.__gbRecord !== eRec.__gbRecord) {
+						return false;
+					}
+					if (!aRec.__gbRecord) {
+						if (keyToTest !== undefined &&
+							aRec[keyToTest] !== eRec[keyToTest]) {
+							return false;
+						}
+					} else if (eRec.val !== undefined && aRec.val !== eRec.val) {
+						return false;
+					}
+				}
+				return true;
+			}
 			function generateData(count, key, dir) {
 				var i, count = count || 4, data = [];
 				for (i = 0; i < count; i++) {
@@ -141,6 +163,37 @@
 			module("igDataSource groupby with type: local", {
 				setup: function () {
 				}
+			});
+			test("Test sorting dataSource for grouped columns with specific layout", function () {
+				var se = [], i, ds = createDataSource(), data, 
+					dataView, gbDataView;
+				// this sorting expression should be ignored
+				se.push({
+					fieldName: "OtherID",
+					isGroupBy: true,
+					dir: "desc",
+					layout: "SomeLayout"
+				});
+				se.push({
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "desc"
+				});
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.defaultFields = se;
+				ds.dataBind();
+				data = ds.data();
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(gbDataView[0].__gbRecord && gbDataView[0].id === "Id:51" && gbDataView[0].len === 1 &&
+					gbDataView[1].Id === 3 &&
+					gbDataView[7].Id === 0,
+					"Test content of data view");
+				equal(data.length, 4, "Group by Id desc(initial sorting) - Test count of data records");
+				equal(gbDataView.length, data.length * 2, "Group by Id desc(initial sorting) - Test count of dataView records");
+				ok(data[0].Id === 3 && data[3].Id === 0, "Group by Id desc(initial sorting) - Test whether properly is sorted data");
+				ok(ds.isGroupByApplied(), "Test 'isGroupByApplied'");
+				renderData(data);
 			});
 			test("Test sorting dataSource for grouped columns", function () {
 				var se = [], i, ds = createDataSource(), data, 
@@ -311,6 +364,112 @@
 					"Test groupByDataView records");
 				renderData(gbDataView);
 			});
+			test("Test groupby + paging with pagingMode: dataRecordsOnly", function () {
+				var se = [], i, ds = createDataSource(), gbDataView;
+				se = [{
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// enable paging
+				ds.settings.paging.enabled = true;
+				ds.settings.paging.pageSize = 5;
+				ds.settings.paging.type = "local";
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				// set paginMode to "dataRecordsOnly"
+				ds.settings.groupby.pagingMode = "dataRecordsOnly";
+				ds.dataBind();
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 8 &&
+					gbDataView[0].__gbRecord === true &&
+					gbDataView[1].Id === 0 &&
+					gbDataView[7].Id === 3, "Test gbDataView");
+				// set page size to 3
+				ds.settings.paging.pageSize = 3;
+				ds.dataBind();
+				gbDataView = ds.groupByDataView();
+				ok(gbDataView.length === 6 &&
+					gbDataView[0].__gbRecord === true &&
+					gbDataView[1].Id === 0 &&
+					gbDataView[5].Id === 2,
+					"Test gbDataView after changing pageSize to 3");
+				// collapse first record
+				ds.toggleGroupByRecord(gbDataView[0].id, true);
+				gbDataView = ds.groupByDataView();
+				ok(gbDataView.length === 5 &&
+					gbDataView[0].__gbRecord === true &&
+					gbDataView[1].__gbRecord === true &&
+					gbDataView[4].Id === 2, 
+					"Test gbDataView with pageSize: 3 and collapse first group-by record");
+				// go to 2nd page
+				ds.pageIndex(1);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView)
+				ok(testGroupByData(gbDataView, [{__gbRecord: true}, {Id: 3}], "Id"), 
+					"Test gbDataView length with pageSize: 3 and collapse first group-by record and pageIndex = 1");
+			});
+			test("Test groupby + paging with pagingMode: dataRecordsOnly and group 3 columns", function () {
+				var se = [], i, ds = createDataSource(), gbDataView;
+				se = [{
+					fieldName: "Promotion",
+					isGroupBy: true,
+					dir: "asc"
+				}, {
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "asc"
+				}, {
+					fieldName: "Price",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// enable paging
+				ds.settings.paging.enabled = true;
+				ds.settings.paging.pageSize = 3;
+				ds.settings.paging.type = "local";
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				// set paginMode to "dataRecordsOnly"
+				ds.settings.groupby.pagingMode = "dataRecordsOnly";
+				ds.dataBind();
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 11 &&  
+					gbDataView[0].__gbRecord && gbDataView[1].__gbRecord && gbDataView[2].__gbRecord &&
+					gbDataView[10].Id === 1,
+					"Test 1st page");
+				// collapse group-by record with val:true
+				ds.toggleGroupByRecord(gbDataView[7].id, true);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 8 &&  
+					gbDataView[0].__gbRecord && gbDataView[1].__gbRecord && gbDataView[2].__gbRecord &&
+					gbDataView[7].__gbRecord && gbDataView[7].val === true,
+					"Test 1st page after collapsing record");
+				// go to 2nd page
+				ds.pageIndex(1);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 1 &&  
+					gbDataView[0].__gbRecord && gbDataView[0].val === true,
+					"Test 2nd page");
+				// expand group-by record
+				ds.toggleGroupByRecord(gbDataView[0].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(testGroupByData(gbDataView, 
+							[{__gbRecord: true}, {__gbRecord: true}, {__gbRecord: true}, {Id: 3}],
+							"Id"),
+					"Test 2nd page, after expanding group-by record");
+			});
+
+
 			test("Test groupby + paging + filtering", function () {
 				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData;
 				se = [{
@@ -400,9 +559,9 @@
 				gbDataView = ds.groupByDataView();
 				dataView = ds.dataView();
 				renderData(gbDataView);
-				ok(gbDataView.length === 10 &&
-					gbDataView[8].__gbRecord === true &&
-					gbDataView[9].Id === i &&
+				ok(gbDataView.length === 9 &&
+					gbDataView[8].__gbRecord === undefined &&
+					gbDataView[8].Id === i &&
 					dataView.length === 5,
 				 	"Test groupByDataView and dataView after new row is added");
 				// test delete row
@@ -435,7 +594,7 @@
 			/* Test GroupBy with type: "local"*/
 
 			/* Test GroupBy with type: "remote"*/
-			module("Remote GroupBy", {
+			module("igDataSource Remote GroupBy", {
 				setup: function () {
 					stop();
 					__init = false;

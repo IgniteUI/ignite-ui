@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -66,8 +75,6 @@
 			    datePickerEditorNoSuchMethod: "Der Daten-Editor unterstützt diese Methode nicht.",
 			    datePickerNoSuchMethodDropDownContainer: "Der Daten-Editor unterstützt diese Methode nicht. Verwenden Sie stattdessen „getCalendar“.",
 			    buttonTypeIsDropDownOnly: "Der Datepicker erlaubt nur Dropdown und Wert löschen für die buttonType-Option.",
-			    dateEditorMinValue: "MinValue-Option kann nicht zur Laufzeit festgelegt werden.",
-			    dateEditorMaxValue: "MaxValue-Option kann nicht zur Laufzeit festgelegt werden.",
 			    cannotSetRuntime: "Diese Option kann nicht zur Laufzeit festgelegt werden",
                 invalidDate: "Ungültiges Datum",
                 maskMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden',
@@ -78,4 +85,4 @@
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

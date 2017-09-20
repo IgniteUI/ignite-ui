@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -66,8 +75,6 @@
 			    datePickerEditorNoSuchMethod: "El editor de fechas no admite este método.",
 			    datePickerNoSuchMethodDropDownContainer: "El editor de fechas no admite este método. En su lugar, utilice 'getCalendar' uno.",
 			    buttonTypeIsDropDownOnly: "Datepicker sólo admite valores de desplegar menú y de borrar para la opción buttonType.",
-			    dateEditorMinValue: "La opción MinValue no puede establecer un tiempo de ejecución.",
-			    dateEditorMaxValue: "La opción MaxValue no puede establecer un tiempo de ejecución.",
 			    cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",
 			    maskMessage: 'Deben rellenarse todas las posiciones requeridas.',
@@ -78,4 +85,4 @@
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

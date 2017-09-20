@@ -2203,6 +2203,7 @@
             var markup, dropDownScrollHeight, schema, noCancel,
 				options = this.options,
 				_options = this._options,
+                lod = this.options.loadOnDemandSettings,
 				dataView = data.dataView(),
 				dataLen = this._itemsToRenderCount();
 
@@ -2253,6 +2254,12 @@
                     // D.A. 19th March 2015, Bug #190783 In Nexus virtualization does not have scroll bar
                     _options.$dropDownScrollCont.width($.ig.util.getScrollWidth() + 1);
                     this._updateVirtualScrollVisibility();
+
+                    // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
+                    if (lod && lod.enabled && lod.pageSize <= options.visibleItemsCount) {
+                        _options.$dropDownScroll.height(dropDownScrollHeight + this._itemHeight());
+                        _options.$dropDownScrollCont.removeClass(this.css.hidden);
+                    }
                 }
 
                 this._updateFooterVariables();
@@ -2878,7 +2885,8 @@
 
             // D.A. 20th March 2015, Bug #190591 In Chrome when mode is dropdown and selecting an item, the carret is not moved and the selected element is not visible
             // Remove readonly during the focus
-            if (readonly) {
+            // R.K. 29th August 2017, #1155 Combo in dropdown mode accepts keypress values in its input in IE/Edge
+            if (readonly && !($.ig.util.isEdge || $.ig.util.isIE)) {
                 this._options.$input.removeAttr("readonly");
             }
 
@@ -3718,6 +3726,7 @@
                 self = this,
 				options = this.options,
 				_options = this._options,
+                lod = this.options.loadOnDemandSettings,
 				multiSelection = options.multiSelection.enabled,
 				$keyNavItem = this._$keyNavItem(),
 				$visibleItems = this._$items().filter(":visible"),
@@ -3786,6 +3795,13 @@
                     // S.T. March 9th, 2015 Bug #188227: Handling DOWN arrow with virtualization.
                     if (options.virtualization && (activeIndex >= visibleItemsCount)) {
                         this.listScrollTop(currentScrollTop + itemHeight + 1);
+                    }
+
+                    // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
+                    if (options.virtualization && lod && lod.enabled &&
+                        (this.activeIndex() + 1 === this.listItems().length) &&
+                        (this.listItems().length < options.visibleItemsCount)) {
+                            self._callNextChunk(_options.$dropDownListCont, self._itemHeight());
                     }
                 }
 
@@ -5005,7 +5021,11 @@
                     this._options.$input.attr("tabIndex", value);
                     break;
                 case "validatorOptions":
-                    this.validator();
+                    if (this._options.validator) {
+                        this.element.igValidator(this.options.validatorOptions);
+                    } else {
+                        this.validator();
+                    }
                     break;
                 case "dropDownButtonTitle":
                     _options.$dropDownBtnCont.attr("title", value);
@@ -6226,14 +6246,51 @@
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
                 returnType="object" Returns reference to this igCombo.
             */
-            var noCancel,
-                ds = this.options.dataSource,
+            var expressions = [],
                 type = this.options.filteringType,
+                clearFiltering = texts === "",
+                ds = this.options.dataSource;
+
+            if (!this._isFilteringEnabled()) {
+                return this;
+            }
+
+            expressions = this._options.expression =
+                this._generateExpressions(texts);
+
+            if (type === "local") {
+                if (clearFiltering) {
+                    this._options.expression = null;
+                    ds.clearLocalFilter();
+                }
+            }
+
+            this.filterByExpressions(expressions, event);
+        },
+        filterByExpressions: function (expressions, event) {
+            /* Creates expressions for filtering.
+            ```
+                //filter by expression
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
+
+                //filter by array of expressions
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
+
+                //filter by array of expressions and trigger events
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
+            ```
+                paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
+                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+                returnType="object" Returns reference to this igCombo.
+            */
+            var noCancel,
                 logic = this.options.filteringLogic,
                 filterExprUrlKey = this.options.filterExprUrlKey,
+                type = this.options.filteringType,
+                ds = this.options.dataSource,
                 paging = ds.settings.paging,
                 filtering = ds.settings.filtering,
-                clearFiltering = texts === "";
+                textKeyValueOption = this.options.textKey;
 
             if (!this._isFilteringEnabled()) {
                 return this;
@@ -6241,21 +6298,23 @@
 
             // R.K 18th October 2016: #434 Filtering event returns wrong expression
             filtering.type = type;
-            filtering.expressions = this._options.expression =
-                this._generateExpressions(texts);
             filtering.caseSensitive = this.options.caseSensitive;
 
+            // A.K. September 13th, 2017 #1184 igCombo filters its items when loading next chunk of data
+            filtering.expressions = expressions;
+            filtering.expressions.forEach(function(element) {
+                if (element.fieldName === undefined) {
+                    element.fieldName = textKeyValueOption;
+                }
+            });
+
+            // A.K. September 13th, 2017 #1183 igCombo filtered event is fired, even if filtering event is cancelled
             noCancel = event ? this._triggerFiltering(event) : true;
             if (noCancel) {
 
                 // Handle local filtering
                 if (type === "local") {
-                    if (clearFiltering) {
-                        this._options.expression = null;
-                        ds.clearLocalFilter();
-                    } else {
-                        ds.filter(filtering.expressions, logic, true);
-                    }
+                    ds.filter(filtering.expressions, logic, true);
 
                     if (this.options.virtualization) {
                         this._handleLocalFilteringWithVirt(ds);
@@ -6264,7 +6323,6 @@
                     }
                 }
 
-                // Handle remote filtering
                 if (type === "remote") {
                     if (paging) {
                         paging.pageIndex = 0;
@@ -6673,14 +6731,17 @@
                     keepNavItem (boolean): Set to true to keep current navigation item unchanged after the selection. By default the navigation item is changed to the new selected item.
                     keepScrollPosition (boolean): Set to true to keep current scroll position. By default the scroll position will change so that the last selected item is visible.
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger selection changed event.
-                returnType="object" Returns reference to this igCombo.
+                returnType="object" Returns an object consisting of the following members.
+                    combo (object): Reference to this combo.
+                    selectionCanceled (boolean): Whether or not the selectionChanging event was canceled.
             */
             var items, itemsLen, selectedValues, newSelItems, selAutoSelectedItem,
                 selChanged, additive, prevSelValues, newSelData, skipEventTrigger, noCancel, i,
                 comboOptions = this.options,
                 _options = this._options,
                 multiSelEnabled = comboOptions.multiSelection.enabled,
-                prevSelItems = this.selectedItems();
+                prevSelItems = this.selectedItems(),
+                returnValue = { combo: this, selectionCanceled: false };
 
             // Use first data when multi selection is not enabled
             data = ($.type(data) === "array" && !multiSelEnabled) ? data[ 0 ] : data;
@@ -6695,7 +6756,7 @@
                     this.deselectAll(options, event);
                 }
 
-                return this;
+                return returnValue;
             }
 
             if ($.type(items) !== "array") {
@@ -6761,6 +6822,9 @@
                 } else {
                     noCancel = true;
                 }
+
+                // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+                returnValue.selectionCanceled = !noCancel;
 
                 if (noCancel) {
 
@@ -6849,7 +6913,7 @@
                 }
             }
 
-            return this;
+            return returnValue;
         },
         value: function (value, options, event) {
             /* Selects list item/items from the drop-down list by specified value or array of values. When called witout params will return the value of the selected item or if [multiSelection](ui.igcombo#options:multiSelection) is enabled array of selected values.
@@ -6888,7 +6952,7 @@
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [selectionChanging](ui.igcombo#events:selectionChanging) and [selectionChanged](ui.igcombo#events:selectionChanged) events.
                 returnType="object" Returns reference to this igCombo, or array of values if the value parameter is provided.
             */
-            var selectedValues, selectedItems, i;
+            var selectedValues, selectedItems, i, retValue;
 
             // Return value of the value input when called without params
             if (value === undefined) {
@@ -6911,8 +6975,11 @@
                 return selectedValues;
             }
 
-            this._selectData(this._dataForValues(value), options, event);
-            if (this.options.allowCustomValue && !this.selectedItems()) {
+            retValue = this._selectData(this._dataForValues(value), options, event);
+
+            // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+            if (this.options.allowCustomValue && !this.selectedItems() &&
+                    !retValue.selectionCanceled) {
                 this._options.$input.val(value);
                 this._updateInputValues();
 
@@ -7262,7 +7329,7 @@
                 $(".selector").igCombo("deselectAll");
 
                 //deselect all, focus combo, keep input text and trigger events
-                $(".selector").igCombo("deselectAll", { focusCombo: ture, keepInputText: true }, true);
+                $(".selector").igCombo("deselectAll", { focusCombo: true, keepInputText: true }, true);
             ```
                 paramType="object" optional="true" Object with set of options controlling the behavior of this api method.
                     focusCombo (boolean): Set to true to focus combo after the deselection.
@@ -7429,12 +7496,6 @@
                 this._options.validator = validator =
                     this.element.igValidator(validatorOptions).data("igValidator");
                 this._options.validator.owner = this;
-
-                // A.M. May 12th, 2015 Bug #193960 "The validatorOptions are not reflected when set at runtime"
-            } else if (validator && !destroy &&
-                validatorOptions && this.element.igValidator) {
-                this._options.validator = validator =
-                    this.element.igValidator(validatorOptions).data("igValidator");
             }
 
             return validator;

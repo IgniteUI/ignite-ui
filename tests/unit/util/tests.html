@@ -27,7 +27,7 @@
 }
 </style>
 	<script type="text/javascript">		
-		module("Basic Tests");
+		module("igUtil Basic Tests");
         // run tests
 		
 		test("Test getColType function",function(){
@@ -70,6 +70,12 @@
 			ok($("#span2").parent().parent().offset().left - $("#span2").parent().parent().scrollLeft() === relOffset.left && $("#span2").parent().parent().offset().top - $("#span2").parent().parent().scrollTop() === relOffset.top, "The element offset should be correct.");
 		});
 
+		test("Test $.ig.encode", function () {
+			equal($.ig.encode("<div></div>"), "&lt;div&gt;&lt;/div&gt;", "Should encode div element");
+			equal($.ig.encode("&lt;div&gt;&lt;/div&gt;"), "&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;", "Should encode encoded div element");
+			equal($.ig.encode("<span id='span1'></span>"), "&lt;span id=&#39;span1&#39;&gt;&lt;/span&gt;", "Should encode span element with attribute and single quote");
+			equal($.ig.encode("<span id=\"span1\"></span>"), "&lt;span id=&#34;span1&#34;&gt;&lt;/span&gt;", "Should encode span element with attribute and double quote")
+		});
 	</script>
 </head>
 <body>

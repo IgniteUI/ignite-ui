@@ -1485,7 +1485,20 @@
 					});
 				```
 				*/
-				defaultCollapseState: false
+				defaultCollapseState: false,
+				/* type="allRecords|dataRecordsOnly". Specifies how paging should be applied when there is at least one grouped column
+				```
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							pagingMode: "allRecords"
+						}
+					});
+				```
+				allRecords type="string" Paging is applied for all records - data and non-data records(like group-by records)
+				dataRecordsOnly type="string" Paging is applied ONLY for data records. Non-data records are disregarded in paging calculations.
+				*/
+				pagingMode: "allRecords"
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -3087,11 +3100,6 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
-			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData :
-															this._data,
-										this.settings.sorting.expressions);
-			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3280,7 +3288,11 @@
 		},
 		/* END Transactions for igTree */
 		_addTransaction: function (t) {
-			var exists = false, i = 0, prop, globalt, j, dirty = true, k;
+			var exists = false, i = 0, prop, globalt, j, dirty = true, k,
+				shouldAggregateTransactions = this.settings.autoCommit === false &&
+					this.settings.aggregateTransactions === true,
+				isSameAsOrigValue = false,
+				rec = shouldAggregateTransactions ? this.findRecordByKey(t.rowId) : null;
 			if (t.type === "cell") {
 				// check if we don't have an existing transaction and if we do, overwrite it
 				for (i = 0; i < this._transactionLog.length; i++) {
@@ -3288,26 +3300,26 @@
 						exists = true;
 						/* add extra check to see if the "new" value isn't the same as the
 						original one, in that case remove the existing transaction */
-						if (this.settings.autoCommit === false && this.settings.aggregateTransactions === true) {
+						if (shouldAggregateTransactions) {
 							/* we need to find the data source row corresponding to rowId */
-							for (j = 0; j < this.dataView().length; j++) {
-								if (this.dataView()[ j ][ this.settings.primaryKey ] === t.rowId &&
-									this.dataView()[ j ][ t.col ] === t.value) {
-									for (k = 0; k < this._accumulatedTransactionLog.length; k++) {
-										if (this._accumulatedTransactionLog[ k ].rowId === this._transactionLog[ i ].rowId) {
-											$.ig.removeFromArray(this._accumulatedTransactionLog, k);
-										}
+							if (rec && rec[ t.col ] === t.value) {
+								for (k = 0; k < this._accumulatedTransactionLog.length; k++) {
+									if (this._accumulatedTransactionLog[ k ].rowId === this._transactionLog[ i ].rowId) {
+										$.ig.removeFromArray(this._accumulatedTransactionLog, k);
 									}
-									/* remove the transaction because the last entered value is the same as the first one */
-									this._removeTransactionByTransactionId(this._transactionLog[ i ].tid);
-									dirty = false;
 								}
+								/* remove the transaction because the last entered value is the same as the first one */
+								this._removeTransactionByTransactionId(this._transactionLog[ i ].tid);
+								dirty = false;
 							}
 						}
 						if (dirty) {
 							this._transactionLog[ i ].value = t.value;
 							this._syncGlobalTransaction(this._transactionLog[ i ]);
 						}
+					}
+					if (shouldAggregateTransactions && rec && rec[ t.col ] === t.value) {
+						isSameAsOrigValue = true;
 					}
 				}
 				/* ensure we check the newly added rows as well */
@@ -3329,33 +3341,28 @@
 				for (i = 0; i < this._transactionLog.length; i++) {
 					if (this._transactionLog[ i ].rowId === t.rowId && this._transactionLog[ i ].type !== "cell") {
 						exists = true;
-						if (this.settings.autoCommit === false && this.settings.aggregateTransactions === true) {
+						if (shouldAggregateTransactions) {
 							dirty = false;
-							for (j = 0; j < this.dataView().length; j++) {
-								if (this.dataView()[ j ][ this.settings.primaryKey ] === t.rowId) {
-									/* now verify all values in the row correspond to the original ones */
-									for (prop in t.row) {
-										if (t.row.hasOwnProperty(prop) && t.row[ prop ] !== this.dataView()[ j ][ prop ]) {
-											dirty = true;
-											break;
-										}
-									}
+							/* now verify all values in the row correspond to the original ones */
+							for (prop in t.row) {
+								if (rec && t.row.hasOwnProperty(prop) && t.row[ prop ] !== rec[ prop ]) {
+									dirty = true;
 									break;
 								}
 							}
-							/* ensure we check the newly added rows as well */
-							for (j = 0, !dirty; j < this._transactionLog.length; j++) {
-								if (this._transactionLog[ j ].type === "newrow" &&
-									this._transactionLog[ j ].rowId === t.rowId) {
-									/* copy the t.row into newrow's row */
-									this._transactionLog[ j ].row = t.row;
-									/* we need to find and sync the global transaction */
-									this._syncGlobalTransaction(this._transactionLog[ j ]);
-									/* don't add "t" */
-									return;
-								}
+						/* ensure we check the newly added rows as well */
+						for (j = 0, !dirty; j < this._transactionLog.length; j++) {
+							if (this._transactionLog[ j ].type === "newrow" &&
+								this._transactionLog[ j ].rowId === t.rowId) {
+								/* copy the t.row into newrow's row */
+								this._transactionLog[ j ].row = t.row;
+								/* we need to find and sync the global transaction */
+								this._syncGlobalTransaction(this._transactionLog[ j ]);
+								/* don't add "t" */
+								return;
 							}
 						}
+					}
 						if (dirty) {
 							this._transactionLog[ i ].row = t.row;
 							this._syncGlobalTransaction(this._transactionLog[ i ]);
@@ -3370,6 +3377,15 @@
 						}
 					}
 				}
+				if (shouldAggregateTransactions) {
+					for (prop in t.row) {
+						isSameAsOrigValue = true;
+						if (!(t.row.hasOwnProperty(prop) && rec && t.row[ prop ] === rec[ prop ])) {
+							isSameAsOrigValue = false;
+							break;
+						}
+					}
+				}
 			} else if (t.type === "addnode" || t.type === "removenode") {
 				/* K.D. November 11th, 2013 Bug #155067 A deep copy of the object here throws
 				call stack exceeded with recursive objects, so moving the transaction push here and exiting. */
@@ -3378,7 +3394,7 @@
 				this._accumulatedTransactionLog.push(t);
 				return;
 			}
-			if (!exists) {
+			if (!exists && !isSameAsOrigValue) {
 				this._transactionLog.push(t);
 				/* A.T. 27 Sept. we need this change only for the global transaction log,
 				since it's the one that will go to the server for the local transaction log,
@@ -3611,6 +3627,11 @@
 					this.removeRecordByIndex(parseInt(t.rowId, 10), origDs);
 				} else {
 					this.removeRecordByKey(t.rowId, origDs);
+				}
+				if (this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
 				}
 			} else if (t.type === "newrow") {
 				this._addRow(t.row, -1, origDs);
@@ -4351,8 +4372,8 @@
 				/*A.T. workaround for jQuery's 1.5 and above bug related to dataFilter and success callback.
 				We need to explicitly set the dataType to "text" when manually parsing it */
 				/* get jquery version */
-				if (jQuery.fn.jquery) {
-					ver = jQuery.fn.jquery.split(".");
+				if ($.fn.jquery) {
+					ver = $.fn.jquery.split(".");
 				}
 				if (ver && ver.length >= 2) {
 					/* if jQuery is 1.5 and greater or if the first major version is greater than 1 (when jQuery 2 comes out)
@@ -5178,37 +5199,110 @@
 				this._dataView = [];
 			}
 			data = this._filter ? this._filteredData : this._data;
-			this._generatePageData(this.isGroupByApplied() ?
-										this.visibleGroupByData() :
-										data,
-									count);
+			this._generatePageData(data, count);
 		},
-		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+		_getPageStartEndIndex: function (data) {
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
-			startIndex = this.pageIndex() * this.pageSize();
+			var startIndex = this.pageIndex() * this.pageSize(), endIndex;
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			if (this.isGroupByApplied()) {
-				this._dataView = [];
-				this._gbDataView = [];
-				for (i = startIndex; i < endIndex; i++) {
-					this._gbDataView.push(data[ i ]);
-					if (!data[ i ].__gbRecord) {
-						this._dataView.push(data[ i ]);
+			return {
+				startIndex: startIndex,
+				endIndex: endIndex
+			};
+		},
+		_generateGroupByPageDataForAllRecords: function () {
+			var i, data = this.visibleGroupByData(),
+				metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._gbDataView.push(data[ i ]);
+				if (!data[ i ].__gbRecord) {
+					this._dataView.push(data[ i ]);
+				}
+			}
+		},
+		_generateGroupByPageDataForDataRecordsOnly: function (data) {
+			/* Populates _gbDataView and _dataView collections. This function should be called only when - group by and paging are applied and this.settings.groupby.pagingMode is set to "dataRecordsOnly"
+			First record(s) is/are group-by record(s) in visible group-by data view collection.
+			*/
+			var i, rec, startIndex = 0, parents = [],
+				visible = true, level = 100, levelCollapsed,
+				gbData = this.groupByData(), len = gbData.length,
+				metadata = this._getPageStartEndIndex(data),
+				startDataRec = data[ metadata.startIndex ],
+				endDataRec = data[ metadata.endIndex - 1 ];
+			/*find start index(first data record in page)*/
+			for (i = 0; i < len; i++) {
+				if (gbData[ i ] === startDataRec ) {
+					startIndex = i;
+					break;
+				}
+			}
+			/* find groupby parent records for the first(in the page) data record*/
+			for (i = startIndex - 1; i >= 0; i--) {
+				rec = gbData[ i ];
+				if (rec.__gbRecord) {
+					if (level > rec.level) {
+						level = rec.level;
+						parents.unshift(rec);
+						/* detect whether data records are visible(according to collapse state of parent group-by record(s))
+						insert in _gbDataView visible parent group-by records
+						*/
+						this._gbDataView.unshift(rec);
+						if (rec.collapsed) {
+							this._gbDataView = [ rec ];
+							visible = false;
+							levelCollapsed = level;
+						}
+						if (!level) {
+							break;
+						}
 					}
 				}
-			} else {
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = data[ i ];
+			}
+			/* populate _gbDataView(visible group-by data view collection) and _dataView, collapsed records are not added in _gbDataView */
+			for (i = startIndex; i < len; i++) {
+				rec = gbData[ i ];
+				if (rec.__gbRecord) {
+					if (rec.level <= levelCollapsed || visible) {
+						levelCollapsed = rec.level;
+						visible = !(rec.collapsed);
+						this._gbDataView.push(rec);
+					}
+				} else {
+					this._dataView.push(rec);
+					if (visible) {
+						this._gbDataView.push(rec);
+					}
+					if (rec === endDataRec) {
+						break;
+					}
 				}
+			}
+		},
+		_generateGroupByPageData: function (data) {
+			this._dataView = [];
+			this._gbDataView = [];
+			return (this.settings.groupby.pagingMode === "allRecords") ?
+					this._generateGroupByPageDataForAllRecords(data) :
+					this._generateGroupByPageDataForDataRecordsOnly(data);
+		},
+		_generatePageData: function (data, count) {
+			if (this.isGroupByApplied()) {
+				return this._generateGroupByPageData(data, count);
+			}
+			var i, metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._dataView[ count++ ] = data[ i ];
 			}
 		},
 		_compareValues: function (x, y) {
@@ -5355,10 +5449,11 @@
 			if ($.type(fields) === "string") {
 				fields = this._parseSortExpressions(fields);
 			}
-			isGb = this.isGroupByApplied(fields);
 			if (fields === undefined || fields === null) {
 				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
 			}
+			fields = this._findSortingExpressionsForLayout(fields, this.settings.key);
+			isGb = this.isGroupByApplied(fields);
 			if (s.applyToAllData && s.type === "local") {
 				/* M.H. 11 Mar 2013 Fix for bug #135542: When filtering is applied and then sort
 				any column and there is remote paging, all of the records for the current page
@@ -6383,7 +6478,8 @@
 			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				return this._vgbData.length;
 			}
 			if (!this._filter) {
@@ -6406,10 +6502,11 @@
 
 				var count = ds.pageCount();
 			```
-			returnType="number" total number fo pages
+			returnType="number" total number of pages
 			*/
 			var c, realCount;
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				realCount = this._vgbData.length;
 			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
@@ -6912,7 +7009,7 @@
 			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
 			var i, newgb = [];
 			data = data || this._data;
-			gbExprs = gbExprs || [];
+			gbExprs = this._findSortingExpressionsForLayout(gbExprs || [], this.settings.key);
 			this._gbData = [];
 			this._vgbData = [];
 			this._gbDataView = [];
@@ -6963,8 +7060,15 @@
 			```
 			paramType="array" optional="true" array of sorting expressions. If not set check expressions defined in sorting settings
 			returnType="bool" Returns true if grouping is applied */
-			exprs = exprs || this.settings.sorting.expressions;
+			exprs = this._findSortingExpressionsForLayout(exprs || this.settings.sorting.expressions,
+															this.settings.key);
 			return !!(exprs && exprs.length && exprs[ 0 ].isGroupBy);
+		},
+		/* M.H. 23 Mar 2017 Fix for bug 232173: In remote GroupBy scenario the child layouts cannot be grouped */
+		_findSortingExpressionsForLayout: function (expressions, layout) {
+			return (expressions || []).filter(function (expr) {
+				return (!expr.layout && !layout) || expr.layout === layout;
+			});
 		}
 		/* //GroupBy functionallity*/
 	});
@@ -7782,8 +7886,9 @@
 			return true;
 		},
 		fields: function () {
-			/* type="array" A list of field definitions specifying the schema of the data source.
-			Field objects description: {fieldName, [fieldDataType], [fieldXPath]} */
+			/* A list of field definitions specifying the schema of the data source.
+			Field objects description: {fieldName, [fieldDataType], [fieldXPath]}
+			returnType="array"*/
 			return this.schema.fields;
 		}
 	});
@@ -9065,17 +9170,17 @@
 				initialFlatDataView: false,
 				/*type="function" Specifies a custom function to be called when requesting data to the server - usually when expanding/collapsing record. If set the function should return the encoded URL. It takes as parameters: data record(type: object), expand - (type: bool).
 				```
- +				var ds = new $.%%WidgetName%%({
- +								dataSource: products,
- +								treeDS: {
- +									customEncodeUrlFunc: function(record, expand){
- +										var dsUrl = ds.settings.treeDS.dataSourceUrl;
- +										var path = ds.getPathBy(record);
- +										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
- +									}
- +								}
- +							});
- +				```
+ 				var ds = new $.%%WidgetName%%({
+ 								dataSource: products,
+ 								treeDS: {
+ 									customEncodeUrlFunc: function(record, expand){
+ 										var dsUrl = ds.settings.treeDS.dataSourceUrl;
+ 										var path = ds.getPathBy(record);
+ 										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
+ 									}
+ 								}
+ 							});
+ 				```
 				*/
 				customEncodeUrlFunc: null,
 				/*type="bool" If true save expansion states in internal list and send it to the server. Applying to one of the main constraint of the REST architecture  Stateless Interactions - client specific data(like expansion states) should NOT be stored on the server
@@ -9234,7 +9339,10 @@
 			var s = this.schema();
 			this.isTransformedToHierarchicalData(false);
 			if (s) {
-				this._checkGeneratedSchema();
+				if (this.schema().schema.fields.length !== 0 ||
+					this.settings.treeDS.enableRemoteLoadOnDemand) {
+					this._checkGeneratedSchema();
+				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
 				if (!this._transformCallback) {
 					this._transformCallback = $.proxy(s.transform, s);
@@ -10384,7 +10492,7 @@
 
 				var count = ds.pageCount();
 			```
-			returnType="number" total number fo pages
+			returnType="number" total number of pages
 			*/
 			var p = this.settings.paging;
 			if (p.enabled && p.type === "local" &&

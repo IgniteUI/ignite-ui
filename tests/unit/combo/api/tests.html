@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../sample-data/local-data.js"></script>
+    <script type="text/javascript" src="../sample-data/remote-data.js"></script>
+    <script type="text/javascript" src="../test-shared.js"></script>
+    <style>
+        .cont {
+            margin-top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100; position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div class="cont">
+        <div id="combo-multiSelectionEnabled"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-modeLOD"></div>
+        <div id="combo-textKey"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-nullPageSize"></div>
+        <div id="combo-disabledOption"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-enableCheckboxes"></div>
+        <div id="combo-header-footer"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-inputName"></div>
+        <div id="combo-inputName-element-name"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-null-inputName"></div>
+        <div id="combo-noMatchFoundText"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-null-noMatchFoundText"></div>
+        <div id="combo-locale-noMatchFoundText"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-override-locale-noMatchFoundText"></div>
+        <div id="combo-placeHolder"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-null-placeHolder"></div>
+        <div id="combo-locale-placeHolder"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-override-locale-placeHolder"></div>
+        <div id="combo-no-TextKey-prototype"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-dropdown-orientation-with-templates"></div>
+        <div id="combo-dropdown-orientation-with-templates-bottom"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-dropdown-orientation"></div>
+        <div id="combo-json-ds"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-option-branch"></div>
+        <div id="ltr-testing"></div>
+    </div>
+    <div class="cont" style="min-height: 600px;">
+        <div id="combo-open-bottom"></div>
+        <div id="mouse-interactions"></div>
+    </div>
+    <div class="cont">
+        <div id="header-footer-setters"></div>
+        <div id="combo-focus-blur"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-exception"></div>
+        <div id="combo-keyNavItem"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-remove-separators"></div>
+        <div id="combo-add-separators"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-enableClearButton"></div>
+        <div id="combo-paste"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-validator"></div>
+    </div>
+
+    <script>
+        $(function() {
+            var testId_1 = 'Default value of enable clear button',
+                testId_2 = 'Different mode, LOD, textKey',
+				testId_3 = 'Null pageSize',
+                testId_4 = 'Disabled Combo',
+				testId_5 = 'Enable Checkboxes',
+				testId_6 = 'Header/footer templates',
+				testId_7 = 'Specify inputName',
+				testId_8 = 'Specify inputName with element name set',
+				testId_9 = 'Set inputName to null',
+                testId_10 = 'Set noMatchFoundText',
+				testId_11 = 'Null noMatchFoundText',
+				testId_12 = 'Locale setting noMatchFoundText',
+				testId_13 = 'Override locale setting noMatchFoundText',
+				testId_14 = 'Set placeHolder',
+				testId_15 = 'Null placeHolder',
+				testId_16 = 'Locale setting placeHolder',
+				testId_17 = 'Override locale setting placeHolder',
+				testId_18 = 'No TextKey, data with prototypes',
+                testId_19 = 'Auto drop down orientation',
+				testId_20 = 'Bottom drop down orientation when there is space for top also',
+				testId_21 = 'Drop down orientation set from options',
+                testId_22 = 'Allow custom values with default configuration',
+                testId_23 = '_setOption branching tests',
+                testId_24 = 'LTR coverage',
+                testId_25 = 'Header/Footer Getters/Setters',
+                testId_26 = 'Combo focus blur',
+                testId_27 = 'Open dropDown via API with bottom dropDownOrientation',
+                testId_28 = 'Mouse interacting',
+                testId_29 = 'Handled exceptions',
+                testId_30 = 'Key Navigation Item',
+                testId_31 = 'Combo remove separators',
+                testId_32 = 'Combo add separators',
+                testId_33 = 'Changing enableClearButton option at runtime does not work',
+                testId_34 = 'combo input paste handling',
+                testId_35 = 'Test areSetsEqual method';
+                testId_36 = 'Test setting validator options at runtime';
+
+            $.mockjaxSettings.logging = 0;
+
+            $.mockjax({
+                url: "http://localhost/api/invoices*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+                    if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
+                        responseText = $.map(responseText, function (val, i) {
+                            if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
+                                return val;
+                            }
+                        });
+                    }
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            $.mockjax({
+                url: "http://localhost/api/employees*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            module("IgCombo - API and options", {
+                setup: function() {},
+                teardown: function() {}
+            });
+
+            // Default value of enable clear button
+            test(testId_1, function () {
+                var enableClearButtonValue,
+					$combo = $('#combo-multiSelectionEnabled'),
+					dataSource = [{ ID: 1, Name: "John", IsFemale: false },
+						{ ID: 2, Name: "Mary", IsFemale: true },
+						{ ID: 3, Name: "Bob", IsFemale: false }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    mode: 'dropdown',
+                    multiSelection: {
+                        enabled: true
+                    }
+                });
+
+                enableClearButtonValue = $combo.igCombo('option', 'enableClearButton');
+                ok(enableClearButtonValue, 'Enable clear button value is incorrect');
+            });
+
+            // Different mode, LOD, textKey
+            test(testId_2, function () {
+                var lod, comboMode, isValidMode, isValidPageSize, firstComboOptions, secondComboOptions, hasTextKey,
+					$firstCombo = $('#combo-modeLOD'),
+					$secondCombo = $('#combo-textKey'),
+					defaultPageSize = 5,
+					dataSource = [{ ID: 1, Name: "John", IsFemale: false },
+						{ ID: 2, Name: "Mary", IsFemale: true },
+						{ ID: 3, Name: "Bob", IsFemale: false }];
+
+                $firstCombo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    mode: 'test',
+                    loadOnDemandSettings: {
+                        enabled: true,
+                        pageSize: 4
+                    }
+                });
+
+                firstComboOptions = $firstCombo.igCombo('option');
+                lod = firstComboOptions.loadOnDemandSettings;
+                comboMode = firstComboOptions.mode;
+
+                isValidMode = (comboMode !== 'editable' &&
+					comboMode !== 'dropdown' &&
+					comboMode !== 'readonly' &&
+					comboMode !== 'readonlylist') ? false : true;
+
+                isValidPageSize = (lod && lod.enabled && lod.pageSize &&
+					firstComboOptions.loadOnDemandSettings.pageSize < 5) ? true : false;
+
+                // Check combo mode and page size
+                ok(isValidMode, 'Combo mode doesn`t exist');
+                strictEqual(isValidPageSize, false, "Invalid pageSize");
+
+                // Missing textKey
+                $secondCombo.igCombo({
+                    dataSource: dataSource,
+                    valueKey: 'ID'
+                });
+
+                secondComboOptions = $secondCombo.igCombo('option');
+                hasTextKey = ((!secondComboOptions.textKey) && (secondComboOptions.valueKey)) ? true : false;
+
+                strictEqual(hasTextKey, false, 'Missing textKey');
+            });
+
+            // Null pageSize
+            test(testId_3, function () {
+                var lod, comboOptions, invalidPageSize,
+					$combo = $('#combo-nullPageSize'),
+					expVisibleItemCount = 10,
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" },
+						{ ID: 9, Name: "Scott" },
+						{ ID: 10, Name: "Jason" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    visibleItemsCount: expVisibleItemCount,
+                    loadOnDemandSettings: {
+                        enabled: true,
+                        pageSize: null
+                    }
+                });
+
+                lod = $combo.igCombo('option', 'loadOnDemandSettings');
+                comboOptions = $combo.igCombo('option');
+                invalidPageSize = (lod && lod.enabled &&
+					(lod.pageSize === expVisibleItemCount + 1)) ? true : false;
+
+                ok(invalidPageSize, 'Invalid pageSize');
+            });
+
+            // Disable option
+            test(testId_4, function () {
+                var $combo = $('#combo-disabledOption'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    disabled: true
+                });
+
+                testComboIsDisabled($combo);
+
+                // Enabling again the combo through the options
+                $combo.igCombo("option", "disabled", false);
+                testComboIsEnabled($combo);
+
+                // Disabling the combo through the options
+                $combo.igCombo("option", "disabled", true);
+                testComboIsDisabled($combo);
+            });
+
+            // Enable checkboxes
+            test(testId_5, function () {
+                var $listItems,
+					$combo = $('#combo-enableCheckboxes'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    dropDownAttachedToBody: false,
+                    multiSelection: {
+                        enabled: true,
+                        showCheckboxes: true
+                    }
+                });
+
+                $listItems = $combo.igCombo("listItems");
+
+                // Check if checkbox styles are applied to the elements li > span, li > span > span and li > div
+                testCheckboxComboItemsExistence($listItems);
+            });
+
+            // Header/footer templates
+            test(testId_6, function () {
+                var $dropDown, $header, $footer, headerOffsetTop, footerOffsetTop, footerExpOffsetTop,
+					$combo = $('#combo-header-footer');
+
+                $combo.igCombo({
+                    dataSource: localData,
+                    textKey: 'name',
+                    valueKey: 'id',
+                    headerTemplate: 'Header',
+                    footerTemplate: 'Footer',
+                    animationDuration: 0,
+                    closeDropDownOnBlur: false,
+                    dropDownOrientation: 'bottom'
+                });
+
+                $combo.igCombo('openDropDown');
+
+                $dropDown = $combo.igCombo('dropDown');
+                $list = $combo.igCombo('list');
+
+                // Header
+                $header = $dropDown.children('.ui-igcombo-header');
+                headerOffsetTop = $header.offset().top - $dropDown.offset().top;
+
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok($header.outerHeight() - 3 <= 21 && $header.outerHeight() + 3 >= 21, 21, 'Header height did not match')
+                //strictEqual($header.outerHeight(), 21, 'Header height did not match');
+                strictEqual(headerOffsetTop, 0, 'Header top position did not match');
+
+                // Footer
+                $footer = $dropDown.children('.ui-igcombo-footer');
+                footerOffsetTop = $footer.offset().top - $dropDown.offset().top;
+                footerExpOffsetTop = $header.outerHeight() + $list.outerHeight();
+
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok($footer.outerHeight() - 3 <= 21 && $footer.outerHeight() + 3 >= 21, 21, 'Footer height did not match')
+                //strictEqual($footer.outerHeight(), 21, 'Footer height did not match');
+                strictEqual(footerOffsetTop, footerExpOffsetTop, 'Footer top position did not match');
+
+                // Scroll the drop down
+                $list.scrollTop(200);
+
+                // Header after scrolling
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok($header.outerHeight() - 3 <= 21 && $header.outerHeight() + 3 >= 21, 21, 'Header height did not match')
+                //strictEqual($header.outerHeight(), 21, 'Header height did not match');
+                strictEqual(headerOffsetTop, 0, 'Header top position did not match');
+
+                // Footer after scrolling
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok($footer.outerHeight() - 3 <= 21 && $footer.outerHeight() + 3 >= 21, 21, 'Footer height did not match')
+                //strictEqual($footer.outerHeight(), 21, 'Footer height did not match');
+                strictEqual(footerOffsetTop, footerExpOffsetTop, 'Footer top position did not match');
+                $combo.igCombo('closeDropDown');
+            });
+
+            // Specify inputName
+            test(testId_7, function () {
+                var $comboWrapper = $('#combo-inputName'),
+					$hiddenInput,
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }];
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    inputName: 'combo-hidden-name'
+                });
+
+                $hiddenInput = $('#combo-inputName input.ui-igcombo-hidden-field');
+                equal($hiddenInput.attr("name"), "combo-hidden-name", "The inputName setting was not applied to the hidden input");
+            });
+
+            // Specify inputName and element name
+            test(testId_8, function () {
+                var inputName,
+                    $comboWrapper = $('#combo-inputName-element-name'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }];
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    inputName: 'new-input-name'
+                });
+
+                inputName = $comboWrapper.igCombo('option', 'inputName');
+                equal(inputName, "new-input-name", "The element name attribute overwrote the inputName option");
+            });
+
+            // Set inputName to null
+            test(testId_9, function () {
+                var $comboWrapper = $('#combo-null-inputName'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					inputName;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    inputName: null
+                });
+
+                inputName = $comboWrapper.igCombo('option', 'inputName');
+                equal(inputName, null, "The inputName setting was not set to null");
+            });
+
+            // Set noMatchFoundText
+            test(testId_10, function () {
+                var $comboWrapper = $('#combo-noMatchFoundText'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					noMatchFoundText;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    noMatchFoundText: 'No matches'
+                });
+
+                noMatchFoundText = $comboWrapper.igCombo('option', 'noMatchFoundText');
+                equal(noMatchFoundText, 'No matches', 'The noMatchFoundText was not properly applied');
+            });
+
+            // Use default value of noMatchFoundText
+            test(testId_11, function () {
+                var $comboWrapper = $('#combo-null-noMatchFoundText'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					noMatchFoundText;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                noMatchFoundText = $comboWrapper.igCombo('option', 'noMatchFoundText');
+                equal(noMatchFoundText, 'No matches found', 'The noMatchFoundText default value was not properly applied');
+            });
+
+            // Use noMatchFoundText of locale settings
+            test(testId_12, function () {
+                var $comboWrapper = $('#combo-locale-noMatchFoundText'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					noMatchFoundText,
+					locale = $.ig.Combo.locale;
+
+                $.ig.Combo.locale = {
+                    noMatchFoundText: 'No Results locale test'
+                };
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                noMatchFoundText = $comboWrapper.igCombo('option', 'noMatchFoundText');
+                equal(noMatchFoundText, 'No Results locale test', 'The locale noMatchFoundText was not applied');
+
+                $.ig.Combo.locale = locale;
+            });
+
+            // Override locale noMatchFoundText
+            test(testId_13, function () {
+                var $comboWrapper = $('#combo-override-locale-noMatchFoundText'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					noMatchFoundText,
+					locale = $.ig.Combo.locale;
+
+                $.ig.Combo.locale = {
+                    noMatchFoundText: 'No Results locale test'
+                };
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    noMatchFoundText: 'Matches not found'
+                });
+
+                noMatchFoundText = $comboWrapper.igCombo('option', 'noMatchFoundText');
+                equal(noMatchFoundText, 'Matches not found', 'The locale noMatchFoundText was not overridden');
+
+                $.ig.Combo.locale = locale;
+            });
+
+            // Set placeHolder
+            test(testId_14, function () {
+                var $comboWrapper = $('#combo-placeHolder'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					placeHolder;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    placeHolder: 'Select value'
+                });
+
+                placeHolder = $comboWrapper.igCombo('option', 'placeHolder');
+                equal(placeHolder, 'Select value', 'The placeHolder was not properly applied');
+            });
+
+            // Use default value of placeHolder
+            test(testId_15, function () {
+                var $comboWrapper = $('#combo-null-placeHolder'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					placeHolder;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                placeHolder = $comboWrapper.igCombo('option', 'placeHolder');
+                equal(placeHolder, 'select...', 'The placeHolder default value was not properly applied');
+            });
+
+            // Use locale setting for placeHolder
+            test(testId_16, function () {
+                var $comboWrapper = $('#combo-locale-placeHolder'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					placeHolder,
+					locale = $.ig.Combo.locale;
+
+                $.ig.Combo.locale = {
+                    placeHolder: 'Please select...'
+                };
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                placeHolder = $comboWrapper.igCombo('option', 'placeHolder');
+                equal(placeHolder, 'Please select...', 'The locale placeHolder was not applied');
+
+                $.ig.Combo.locale = locale;
+            });
+
+            // Override locale setting of placeHolder
+            test(testId_17, function () {
+                var $comboWrapper = $('#combo-override-locale-placeHolder'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }],
+					placeHolder,
+					locale = $.ig.Combo.locale;
+
+                $.ig.Combo.locale = {
+                    placeHolder: 'Please select...'
+                };
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    placeHolder: 'Select!'
+                });
+
+                placeHolder = $comboWrapper.igCombo('option', 'placeHolder');
+                equal(placeHolder, 'Select!', 'The locale placeHolder was not overridden');
+
+                $.ig.Combo.locale = locale;
+            });
+
+            // Use default value of textKey when data items do not have their own properties
+            test(testId_18, function () {
+                var $comboWrapper = $('#combo-no-TextKey-prototype'),
+					list,
+					textKey;
+
+                function testObj() {
+                }
+
+                testObj.prototype.key = 5;
+
+                list = [new testObj()];
+
+                $comboWrapper.igCombo({
+                    dataSource: list
+                });
+
+                textKey = $comboWrapper.igCombo('option', 'textKey');
+                equal(textKey, 'text', 'Default value of textKey was not used');
+            });
+
+            // DropDownOrientation auto
+            test(testId_19, function () {
+                var offset, dropDownExpPosTop = 184, dropDownExpPosBottom = 307, dropDownExpPosLeft = 250,
+                    cssClassOrientaitonBottom = "ui-igcombo-orientation-bottom",
+					cssClassOrientaitonTop = "ui-igcombo-orientation-top",
+					$comboWrapper = $("#combo-dropdown-orientation-with-templates"),
+					ds = [
+						{ ID: 1, Name: "John" }, { ID: 2, Name: "Mary" }, { ID: 3, Name: "Bob" }, { ID: 4, Name: "Jack" },
+						{ ID: 5, Name: "Dean" }, { ID: 6, Name: "RIchard" }, { ID: 7, Name: "Abraham" }, { ID: 8, Name: "Bobby" },
+						{ ID: 9, Name: "Dick" }, { ID: 10, Name: "Debby" }, { ID: 11, Name: "Jacky" }, { ID: 12, Name: "Zuzi" }
+					],
+					cssOptionsBottom = {
+					    position: "absolute",
+					    top: "200px",
+					    left: "250px"
+					},
+					cssOptionsTop = {
+					    position: "absolute",
+					    top: "500px",
+					    left: "250px"
+					};
+
+                $comboWrapper.igCombo({
+                    dataSource: ds,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    headerTemplate: "<div><b>Header template</b></div>",
+                    footerTemplate: "<div><b>Footer template</b></div>",
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    closeDropDownOnBlur: false,
+                    dropDownAttachedToBody: false
+                });
+
+                // Apply style for 'bottom' drop down orientation
+                $($comboWrapper.parent()[0]).css(cssOptionsBottom);
+                $comboWrapper.igCombo("openDropDown");
+
+                // The combo should open to the bottom
+                ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonBottom), 'Drop down opened to the bottom');
+
+                // And should be at position:
+                offset = $comboWrapper.find(".ui-igcombo-dropdown").offset();
+                //ok((offset.top - 50 <= dropDownExpPosBottom && offset.top + 50 >= dropDownExpPosBottom) && (offset.left - 50 <= dropDownExpPosLeft && offset.left + 50 >= dropDownExpPosLeft), 'Drop down opened at the expected position');
+
+                $comboWrapper.igCombo("closeDropDown");
+
+                // Apply style for 'top' drop down orientation
+                $($comboWrapper.parent()[0]).css(cssOptionsTop);
+                $comboWrapper.igCombo("openDropDown");
+
+                // The combo should open to the bottom
+                ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonTop), 'Drop down opened to the top');
+
+                // And should be at position:
+                offset = $comboWrapper.find(".ui-igcombo-dropdown").offset();
+                //ok((offset.top - 50 <= dropDownExpPosTop && offset.top + 50 >= dropDownExpPosTop) && (offset.left - 50 <= dropDownExpPosLeft && offset.left + 50 >= dropDownExpPosLeft), 'Drop down opened at the expected position');
+            });
+
+            // DropDownOrientation bottom
+            test(testId_20, function () {
+                var cssClassOrientaitonBottom = "ui-igcombo-orientation-bottom",
+					$comboWrapper = $("#combo-dropdown-orientation-with-templates-bottom"),
+					ds = [
+						{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }
+					],
+					cssOptions = {
+					    position: "absolute",
+					    top: "250px",
+					    left: "550px"
+					};
+
+                $comboWrapper.igCombo({
+                    dataSource: ds,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    headerTemplate: "<div><b>Header template</b></div>",
+                    footerTemplate: "<div><b>Footer template</b></div>",
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    closeDropDownOnBlur: false,
+                    dropDownAttachedToBody: false
+                });
+
+                // Apply style for centered combo, this means that combo can be opened to both top and bottom directions.
+                // Although it should open to the bottom.
+                $($comboWrapper.parent()[0]).css(cssOptions);
+                $comboWrapper.igCombo("openDropDown");
+
+                // The combo should open to bottom
+                ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonBottom), 'Drop down opened to the bottom and not to the top');
+            });
+
+            // Drop down orientation set from options
+            test(testId_21, function () {
+                var cssClassOrientaitonBottom = "ui-igcombo-orientation-bottom",
+					cssClassOrientaitonTop = "ui-igcombo-orientation-top",
+					$comboWrapper = $("#combo-dropdown-orientation"),
+					ds = [
+						{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }
+					];
+
+                $comboWrapper.igCombo({
+                    dataSource: ds,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false,
+                    dropDownOrientation: "top"
+                });
+
+                $comboWrapper.igCombo("openDropDown");
+
+                // Check 'top' drop down orientation
+                ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonTop), 'Drop down is correctly opened to the top');
+
+                // Set 'bottom' drop down orientation
+                $comboWrapper.igCombo("option", "dropDownOrientation", "bottom");
+
+                // Recalculate the drop down orientation by close and open the drop down again
+                $comboWrapper.igCombo("closeDropDown");
+                $comboWrapper.igCombo("openDropDown");
+
+                // Check 'bottom' drop down orientation
+                ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonBottom), 'Drop down is correctly opened to the bottom');
+            });
+
+            // Allow custom values with default configuration
+            test(testId_22, function () {
+                var i, ds,
+					$comboWrapper = $('#combo-json-ds'),
+					$hiddenInput,
+					$input,
+					dataSource = [{ ID: 1, Name: "John Smith", Age: 45 },
+						{ ID: 2, Name: "Mary Johnson", Age: 32 },
+						{ ID: 3, Name: "Bob Ferguson", Age: 27 }],
+					expSchema = [{
+					    name: 'ID',
+					    type: 'number'
+					}, {
+					    name: 'Name',
+					    type: 'string'
+					}, {
+					    name: 'Age',
+					    type: 'number'
+					}];
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    allowCustomValue: true
+                });
+                $input = $comboWrapper.igCombo("textInput");
+                $hiddenInput = $comboWrapper.igCombo("valueInput");
+                $input.click();
+                typeInInput("a", $input);
+                $comboWrapper.igCombo("refreshValue");
+                equal($input.val(), "a", "The value of the input is not the input 'a'");
+                equal($hiddenInput.val(), "a", "The value of the hidden input is not the input 'a'");
+                equal($comboWrapper.igCombo("text"), "a", "The text API didn't return the correct value.");
+                equal($comboWrapper.igCombo("value"), "a", "The value API didn't return the correct value.");
+                $comboWrapper.igCombo("value", "ab");
+                equal($input.val(), "ab", "The value of the input is not the input 'ab' after using the value setter");
+                equal($hiddenInput.val(), "ab", "The value of the hidden input is not the input 'ab' after using the value setter");
+                equal($comboWrapper.igCombo("text"), "ab", "The text API didn't return the correct value.");
+                equal($comboWrapper.igCombo("value"), "ab", "The value API didn't return the correct value.");
+                $comboWrapper.igCombo("text", "abc");
+                equal($input.val(), "abc", "The value of the input is not the input 'ab' after using the text setter");
+                equal($hiddenInput.val(), "ab", "The value of the hidden input is not the input 'ab' after using the text setter");
+                equal($comboWrapper.igCombo("text"), "abc", "The text API didn't return the correct value.");
+                equal($comboWrapper.igCombo("value"), "ab", "The value API didn't return the correct value.");
+                $comboWrapper.igCombo("clearInput");
+                equal($input.val(), "", "The value of the input is not the input 'ab' after using the text setter");
+                equal($hiddenInput.val(), "", "The value of the hidden input is not the input 'ab' after using the text setter");
+                equal($comboWrapper.igCombo("text"), "", "The text API didn't return the correct value.");
+                equal($comboWrapper.igCombo("value"), "", "The value API didn't return the correct value.");
+                $comboWrapper.igCombo("destroy");
+            });
+
+            // _setOption branching tests
+            test(testId_23, function () {
+
+
+                var $comboWrapper = $("#combo-option-branch");
+                $comboWrapper.igCombo({
+                    dataSource: [
+                        { "ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0 },
+                        { "ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1 },
+                        { "ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2 },
+                        { "ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3 },
+                        { "ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4 },
+                        { "ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5 },
+                        { "ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6 },
+                    ],
+                    virtualization: false,
+                    filteringType: "local",
+                    placeHolder: '',
+                    valueKey: "ID",
+                    textKey: "Name",
+                    width: '370px',
+                    grouping: {
+                        key: 'Country',
+                        dir: 'asc'
+                    },
+                    multiSelection: {
+                        enabled: true,
+                    }
+                });
+
+                // igCombo options that throw errors during set
+                throws(
+                    function () { $comboWrapper.igCombo('option', 'virtualization', true); },
+                    $.ig.Combo.locale.notSupported,
+                    "Setting 'virtualization; on initialized combo throws error"
+                );
+                throws(
+                    function () { $comboWrapper.igCombo('option', 'mode', 'readOnly'); },
+                    $.ig.Combo.locale.notSupported,
+                    "Setting 'mode' on initialized combo throws error"
+                );
+                throws(
+                    function () { $comboWrapper.igCombo('option', 'dropDownAttachedToBody', false); },
+                    $.ig.Combo.locale.notSupported,
+                    "Setting 'dropDownAttachedToBody' on initialized combo throws error"
+                );
+                throws(
+                    function () { $comboWrapper.igCombo('option', 'format', false); },
+                    $.ig.Combo.locale.notSupported,
+                    "Setting 'format' on initialized combo throws error"
+                );
+
+                // Testing set/get options
+
+                $comboWrapper.igCombo('option', 'width', 400);
+                $comboWrapper.igCombo('option', 'height', 35);
+
+                equal($comboWrapper.igCombo('option', 'width'), '400', 'width matching');
+                equal($comboWrapper.igCombo('option', 'height'), '35', 'height matching');
+
+                $comboWrapper.igCombo('option', 'dropDownButtonTitle', 'Drop down button');
+                strictEqual($comboWrapper.igCombo('option', 'dropDownButtonTitle'), 'Drop down button', 'Drop down title matches');
+
+                $comboWrapper.igCombo('option', 'inputName', 'newHiddenInputName');
+                strictEqual($comboWrapper.igCombo('option', 'inputName'), 'newHiddenInputName', 'New input name attribute matches');
+
+                $comboWrapper.igCombo('option', 'multiSelection.enabled', false);
+                strictEqual($comboWrapper.igCombo('option', 'multiSelection.enabled'), false, 'multiSelection option disabled');
+
+                $comboWrapper.igCombo("option", 'placeHolder', 'Testing placeHolder option');
+                strictEqual($comboWrapper.igCombo('option', 'placeHolder'), 'Testing placeHolder option', 'placeHolder option matches');
+
+                $comboWrapper.igCombo("option", 'visibleItemsCount', 3);
+                strictEqual($comboWrapper.igCombo('option', 'visibleItemsCount'), 3, 'visibleItemsCount matches');
+
+                $comboWrapper.igCombo('option', 'tabIndex', 1);
+                strictEqual($comboWrapper.igCombo('option', 'tabIndex'), 1, 'tabIndex matches');
+
+                $comboWrapper.igCombo('option', 'clearButtonTitle', 'Clear button');
+                strictEqual($comboWrapper.igCombo('option', 'clearButtonTitle'), 'Clear button', 'clearButtonTitle matches');
+
+                $comboWrapper.igCombo('option', 'textKey', 'Age');
+                strictEqual($comboWrapper.igCombo('option', 'textKey'), 'Age', 'Changing textKey matches');
+                $comboWrapper.igCombo('option', 'textKey', 'Name');
+
+                $comboWrapper.igCombo('option', 'valueKey', 'SEQ');
+                strictEqual($comboWrapper.igCombo('option', 'valueKey'), 'SEQ', 'Changing valueKey matches');
+
+                $comboWrapper.igCombo('option', 'dropDownWidth', $comboWrapper.igCombo('option', 'width'));
+                strictEqual($comboWrapper.igCombo('option', 'dropDownWidth'), $comboWrapper.igCombo('option', 'width'), 'dropDownWidth matches');
+
+                $comboWrapper.igCombo('value', 0);
+                equal($comboWrapper.igCombo('valueInput').attr('placeholder'), undefined, 'No placeholder when an empty input value is selected');
+                $comboWrapper.igCombo('deselectAll');
+                $comboWrapper.igCombo('clearInput');
+
+                var newDataSource = [
+                    { "ID": 0, "Name": "", "Age": 0, "SEQ": 0 },
+                    { "ID": 1, "Name": "John Doe", "Age": 23, "SEQ": 1 },
+                ];
+
+
+                // Invalid grouping key in dataSource
+                throws(
+                    function () { $comboWrapper.igCombo('option', 'dataSource', newDataSource); },
+                    new Error($.ig.Combo.locale.errorIncorrectGroupingKey),
+                    "Invalid dataSource with missing group key throws error"
+                );
+            });
+
+            // LTR testing
+            asyncTest(testId_24, function () {
+
+                var data = [
+                    { 'ID': 1, 'Name': 'C#', 'Type': 'Compiled', 'Paradigm': 'Multi' },
+                    { 'ID': 2, 'Name': 'C++', 'Type': 'Compiled', 'Paradigm': 'Multi' },
+                    { 'ID': 3, 'Name': 'Javascript', 'Type': 'Scripting', 'Paradigm': 'Multi' },
+                    { 'ID': 4, 'Name': 'Python', 'Type': 'Scripting', 'Paradigm': 'Multi' },
+                    { 'ID': 5, 'Name': 'F#', 'Type': 'Compiled', 'Paradigm': 'Functional' },
+                    { 'ID': 6, 'Name': 'Haskell', 'Type': 'Compiled', 'Paradigm': 'Functional' },
+                ];
+
+
+                var $comboWrapper = $("#ltr-testing"), $input,
+                    $listItemsDiv, $items;
+                $comboWrapper.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    dataSource: data,
+                    footerTemplate: "<div class='dropDownFooterClass'><strong><em>Total: {0} out of {1}</em></strong></div>",
+                    headerTemplate: "<div class='dropDownHeaderClass'><em>Available languages</em></div>",
+                    itemTemplate: "<span class='language_class'>${Name} - ${Paradigm}</span>",
+                    grouping: {
+                        key: "Type",
+                        dir: "asc"
+                    },
+                    multiSelection: {
+                        enabled: true,
+                        itemSeparator: ';'
+                    },
+                    placeHolder: "Select language",
+                    filteringCondition: 'startsWith',
+                    filteringType: 'local',
+                    textKey: "Name",
+                    valueKey: "ID",
+                    visibleItemsCount: 10,
+                    width: "370px",
+                    height: "25px"
+                });
+                $input = $comboWrapper.find('.ui-igcombo-field');
+
+                typeInInput('py', $input);
+                setTimeout(function () {
+                    start();
+                    $listItemsDiv = $comboWrapper.igCombo('dropDown');
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                    ok($items.eq(0).hasClass('ui-igcombo-group-header'), 'Header template rendered');
+                    ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'First mathing item should be focused');
+                    emulateKeyBoard('enter', false, false, false, $input);
+                    ok($input.val() === 'Python', 'Select value matches');
+                    emulateKeyBoard('up', false, false, false, $input);
+                    emulateKeyBoard('enter', false, false, false, $input);
+                    emulateKeyBoard('esc', false, false, false, $input);
+                    emulateKeyBoard('down', false, false, false, $input);
+                    ok($comboWrapper.igCombo('dropDown').height() > 0, 'Dropdown is left opened');
+                    emulateKeyBoard('up', false, false, true, $input);
+                    ok($comboWrapper.igCombo('dropDown').height() === 0, 'Dropdown is closed');
+
+                    setTimeout(function () {
+                        start();
+                        data = data.concat([
+                            { 'ID': 7, 'Name': 'Perl', 'Type': 'Scripting', "Paradigm": 'Multi' },
+                            { 'ID': 8, 'Name': 'Java', 'Type': 'Compiled', 'Paradigm': 'Object-oriented' },
+                            { 'ID': 9, 'Name': 'Lisp', 'Type': 'Compiled/Scripting', 'Paradigm': 'Functional' }
+                        ]);
+                        $comboWrapper.igCombo('option', 'dataSource', data);
+                        $listItemsDiv = $comboWrapper.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden').not('.ui-igcombo-group-header');
+                        strictEqual($items.length, data.length, 'Number of items matches');
+                    }, 300);
+                    stop();
+                }, 100);
+            });
+
+            // Header/Footer Getters/Setters
+            test(testId_25, function () {
+
+                var $comboWrapper = $('#header-footer-setters'),
+                    $header, $footer;
+                $comboWrapper.igCombo({
+                    dataSource: [
+                        { "ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0 },
+                        { "ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1 },
+                        { "ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2 },
+                        { "ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3 },
+                        { "ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4 },
+                        { "ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5 },
+                        { "ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6 },
+                    ],
+                    headerTemplate: 'Initial Header',
+                    footerTemplate: 'Initial Footer',
+                    valueKey: "ID",
+                    textKey: "Name"
+                });
+
+                // Initial header/footer exist and matches
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.length, 1, 'Initial header exists');
+                equal($footer.length, 1, 'Initial footer exists');
+                equal($header.text(), 'Initial Header', 'Initial header matches');
+                equal($footer.text(), 'Initial Footer', 'Initial footer matches');
+
+                $comboWrapper.igCombo('destroy');
+
+                $comboWrapper.igCombo({
+                    dataSource: [
+                        { "ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0 },
+                        { "ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1 },
+                        { "ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2 },
+                        { "ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3 },
+                        { "ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4 },
+                        { "ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5 },
+                        { "ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6 },
+                    ],
+                    valueKey: "ID",
+                    textKey: "Name",
+                });
+
+                // No initial header/footer is rendered
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.length, 0, 'No header exists');
+                equal($footer.length, 0, 'No footer exists');
+
+                $comboWrapper.igCombo('option', 'headerTemplate', 'Test Header');
+                $comboWrapper.igCombo('option', 'footerTemplate', 'Test Footer');
+
+                // Setters are working when setting them with initial empty state
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.text(), 'Test Header', 'Header exists and matches');
+                equal($footer.text(), 'Test Footer', 'Footer exists and matches');
+
+                $comboWrapper.igCombo('option', 'headerTemplate', '<div>Changed Header</div>');
+                $comboWrapper.igCombo('option', 'footerTemplate', '<div>Changed Footer</div>');
+
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.text(), 'Changed Header', 'Header exists and matches');
+                equal($footer.text(), 'Changed Footer', 'Footer exists and matches');
+
+                $comboWrapper.igCombo('option', 'footerTemplate', '<div>Total: {0} out of {1}</div>');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($footer.text(), 'Total: 7 out of 7', 'Footer records match');
+
+                var newdata = [
+                    { "ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0 },
+                    { "ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1 },
+                    { "ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2 },
+                    { "ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3 },
+                    { "ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4 },
+                    { "ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5 },
+                    { "ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6 },
+                    { "ID": 7, "Name": "Sarah Sharp1", "Age": 19, "Country": "UK", "SEQ": 7 },
+                    { "ID": 8, "Name": "Sarah Sharp2", "Age": 19, "Country": "UK", "SEQ": 8 },
+                ];
+
+                $comboWrapper.igCombo('option', 'dataSource', newdata);
+                equal($footer.text(), 'Total: 9 out of 9', 'Footer records match');
+            });
+
+            // Change enableClearButton
+            test(testId_26, function () {
+                var $clearButton, data, selectedItems, allItems, filteredItems,
+                    $combo = $("#combo-focus-blur");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    enableClearButton: false,
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    multiSelection: {
+                        enabled: true,
+                    },
+                    initialSelectedItems: [
+                        { index: 0 },
+                        { index: 1 },
+                        { index: 2 }
+                    ]
+                });
+
+                selectedItems = $combo.igCombo("selectedItems");
+                equal(selectedItems.length, 3, "initial selected items number is 3");
+
+                $combo.igCombo("option", "enableClearButton", true);
+                $clearButton = $combo.find(".ui-igcombo-clearicon");
+                $clearButton.trigger("click");
+
+                selectedItems = $combo.igCombo("selectedItems");
+                equal(selectedItems, null, "selectedItems should return null");
+
+                $combo.igCombo("text", "Ch");
+                filteredItems = $combo.igCombo("filteredItems");
+                equal(filteredItems.length, 4, "filtered items number should be 4");
+
+                allItems = $combo.igCombo("items");
+                equal(allItems.length, data.length, "all items number should be 11");
+
+                $combo.igCombo("text", "Ch");
+                filteredItems = $combo.igCombo("filteredItems");
+                equal(filteredItems.length, 4, "filtered items number should be 4");
+
+            });
+
+            // open dropDown via API with bottom dropDownOrientation
+            test(testId_27, function () {
+                var data,
+                    $combo = $("#combo-open-bottom");
+
+                data = [{ "ProductID": 318, "Name": "ML Crankarm" },
+                         { "ProductID": 319, "Name": "HL Crankarm" },
+                         { "ProductID": 320, "Name": "Chainring Bolts" },
+                         { "ProductID": 321, "Name": "Chainring Nut" },
+                         { "ProductID": 322, "Name": "Chainring" },
+                         { "ProductID": 323, "Name": "Crown Race" },
+                         { "ProductID": 324, "Name": "Chain Stays" },
+                         { "ProductID": 325, "Name": "Decal 1" },
+                         { "ProductID": 326, "Name": "Decal 2" },
+                         { "ProductID": 327, "Name": "Down Tube" },
+                         { "ProductID": 328, "Name": "Mountain End Caps" },
+                         { "ProductID": 329, "Name": "Road End Caps" },
+                         { "ProductID": 331, "Name": "Fork End" },
+                         { "ProductID": 332, "Name": "Freewheel" },
+                         { "ProductID": 341, "Name": "Flat Washer 1" },
+                         { "ProductID": 342, "Name": "Flat Washer 6" },
+                         { "ProductID": 343, "Name": "Flat Washer 2" },
+                         { "ProductID": 344, "Name": "Flat Washer 9" },
+                         { "ProductID": 345, "Name": "Flat Washer 4" },
+                         { "ProductID": 346, "Name": "Flat Washer 3" },
+                         { "ProductID": 347, "Name": "Flat Washer 8" },
+                         { "ProductID": 348, "Name": "Flat Washer 5" },
+                         { "ProductID": 349, "Name": "Flat Washer 7" },
+                         { "ProductID": 350, "Name": "Fork Crown" },
+                         { "ProductID": 351, "Name": "Front Derailleur Cage" },
+                         { "ProductID": 352, "Name": "Front Derailleur Linkage" },
+                         { "ProductID": 355, "Name": "Guide Pulley" },
+                         { "ProductID": 357, "Name": "ML Grip Tape" },
+                         { "ProductID": 358, "Name": "HL Grip Tape" },
+                         { "ProductID": 359, "Name": "Thin-Jam Hex Nut 9" },
+                         { "ProductID": 360, "Name": "Thin-Jam Hex Nut 10" },
+                         { "ProductID": 361, "Name": "Thin-Jam Hex Nut 1" },
+                         { "ProductID": 362, "Name": "Thin-Jam Hex Nut 2" },
+                         { "ProductID": 363, "Name": "Thin-Jam Hex Nut 15" },
+                         { "ProductID": 364, "Name": "Thin-Jam Hex Nut 16" },
+                         { "ProductID": 365, "Name": "Thin-Jam Hex Nut 5" },
+                         { "ProductID": 367, "Name": "Thin-Jam Hex Nut 3" },
+                         { "ProductID": 369, "Name": "Thin-Jam Hex Nut 13" },
+                         { "ProductID": 370, "Name": "Thin-Jam Hex Nut 14" },
+                         { "ProductID": 371, "Name": "Thin-Jam Hex Nut 7" },
+                         { "ProductID": 372, "Name": "Thin-Jam Hex Nut 8" },
+                         { "ProductID": 373, "Name": "Thin-Jam Hex Nut 12" },
+                         { "ProductID": 374, "Name": "Thin-Jam Hex Nut 11" },
+                         { "ProductID": 376, "Name": "Hex Nut 6" },
+                         { "ProductID": 377, "Name": "Hex Nut 16" },
+                          { "ProductID": 378, "Name": "Hex Nut 17" },
+                          { "ProductID": 379, "Name": "Hex Nut 7" },
+                          { "ProductID": 380, "Name": "Hex Nut 8" },
+                          { "ProductID": 381, "Name": "Hex Nut 9" },
+                          { "ProductID": 382, "Name": "Hex Nut 22" },
+                          { "ProductID": 383, "Name": "Hex Nut 23" },
+                          { "ProductID": 384, "Name": "Hex Nut 12" },
+                          { "ProductID": 385, "Name": "Hex Nut 13" },
+                          { "ProductID": 386, "Name": "Hex Nut 1" }, ]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    virtualization: true,
+                    valueKey: "ProductID",
+                    textKey: 'Name',
+                    width: 200,
+                    height: 100,
+                    allowCustomValues: true,
+                    initialSelectedItems: [
+                        { index: 0 },
+                        { index: 1 },
+                        { index: 2 }
+                    ]
+                });
+
+                $combo.igCombo('openDropDown');
+                equal($combo.igCombo("dropDown").hasClass("ui-igcombo-orientation-bottom"), true, "DropDown div has class 'ui-igcombo-orientation-bottom'");
+                equal($combo.igCombo("dropDown").hasClass("ui-igcombo-orientation-top"), false, "DropDown div doesnt have class 'ui-igcombo-orientation-top'");
+                $combo.igCombo('closeDropDown');
+            });
+
+            // Mouse interacting
+            test(testId_28, function () {
+                var data, $input,
+                $combo = $("#mouse-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "editable",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    initialSelectedItems: [{ index: 1 }]
+                });
+
+                $input = $combo.igCombo("textInput");
+                notEqual(document.activeElement, $input[0], "Input is not focused");
+                clickElement($input, false, false);
+                equal(document.activeElement, $input[0], "Input is focused");
+                $input.blur();
+                $combo.igCombo("option", "disabled", true);
+                clickElement($input, false, false);
+                notEqual(document.activeElement, $input[0], "Input is not focused");
+            });
+
+            // Handled exceptions
+            test(testId_29, function () {
+                var $combo = $("#combo-exception");
+
+                $combo.igCombo({
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    valueKey: "CustomerID",
+                    textKey: "Salesperson",
+                    loadOnDemandSettings: { enabled: true, pageSize: 5 },
+                    visibleItemsCount: 4,
+                    responseDataKey: "d.results.Results",
+                    filteringType: "remote",
+                });
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    throws(
+                        function () {
+                            $combo.igCombo("option", "grouping", { key: 'ProductNamee' });
+                        },
+                        new Error($.ig.Combo.locale.errorIncorrectGroupingKey),
+                        'Error("Grouping key is not correct.")'
+                    );
+                }, 2000);
+
+            });
+
+            // Key Navigation Item
+            asyncTest(testId_30, function () {
+                var $combo = $("#combo-keyNavItem"),
+                $listItems, $selectedItems, $dropDownButton;
+
+                $combo.igCombo({
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    valueKey: "CustomerID",
+                    textKey: "Salesperson",
+                    responseDataKey: "d.results.Results",
+                    loadOnDemandSettings: { enabled: true, pageSize: 25 },
+                    filteringType: "remote",
+                    autoComplete: true,
+                });
+
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+                $combo.igCombo("openDropDown");
+
+
+                setTimeout(function () {
+                    start();
+
+                    equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+
+                    $listItems = $combo.igCombo("dropDown").find('.ui-igcombo-listitem');
+                    $combo.igCombo("select", $($listItems[0]));
+                    var dataItem = $combo.igCombo("dataForValue", 44);
+                    equal(dataItem, null, "There is no item with value 44");
+                    $combo.igCombo("deselectAll");
+                    $selectedItems = $combo.igCombo('selectedItems');
+                    strictEqual($selectedItems, null, 'Selected items is null');
+                }, 3000);
+
+            });
+
+            // remove separator
+            test(testId_31, function () {
+                var data, $input, $listItems,
+                    $combo = $("#combo-remove-separators");
+
+                data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
+		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
+		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate: "/Date(1078992096827)/" },
+		            { ID: 5, Name: "3", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 4, Name: "test dsf", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 3, Name: "Bob ", Age: 27, ModifiedDate: "\/Date(1078992096827)\/" }];
+
+                $combo.igCombo({
+                    dataSource: data,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    filteringType: "remote",
+                    multiSelection: {
+                        enabled: true,
+                        itemSeparator: ', '
+                    }
+                });
+
+                $listItems = $combo.igCombo("items");
+                $combo.igCombo("select", $combo.igCombo("items")[0].element);
+                $input = $combo.igCombo("textInput");
+                $combo.igCombo("openDropDown");
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    equal($combo.igCombo("text"), "John, ", "Text in input is correct");
+                    $input.blur();
+                    equal($combo.igCombo("text"), "John", "Text in input is correct");
+                    $input.focus();
+                }, 3000);
+            });
+
+            // add separator
+            test(testId_32, function () {
+                var data, $input, $listItems,
+                    $combo = $("#combo-add-separators");
+
+                data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
+		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
+		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate: "/Date(1078992096827)/" },
+		            { ID: 5, Name: "3", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 4, Name: "test dsf", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 3, Name: "Bob ", Age: 27, ModifiedDate: "\/Date(1078992096827)\/" }];
+
+                $combo.igCombo({
+                    dataSource: data,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    filteringType: "remote",
+                    multiSelection: {
+                        enabled: true,
+                        itemSeparator: ', '
+                    }
+                });
+
+                $listItems = $combo.igCombo("items");
+                $combo.igCombo("select", $combo.igCombo("items")[0].element);
+                $input = $combo.igCombo("textInput");
+                equal($combo.igCombo("text"), "John", "Text in input is correct");
+                $input.focus();
+                $input.click();
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    equal($combo.igCombo("text"), "John, ", "Text in input is correct");
+                }, 3000);
+            });
+
+            // Changing enableClearButton option at runtime does not work
+            test(testId_33, function () {
+                var $listItems,
+                    $combo = $("#combo-enableClearButton");
+
+                data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
+		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
+		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate: "/Date(1078992096827)/" },
+		            { ID: 5, Name: "3", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 4, Name: "test dsf", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 3, Name: "Bob ", Age: 27, ModifiedDate: "\/Date(1078992096827)\/" }];
+
+                $combo.igCombo({
+                    dataSource: data,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    filteringType: "remote",
+                    closeDropDownOnBlur: false,
+                    enableClearButton: false
+                });
+
+                $listItems = $combo.igCombo("items");
+                $combo.igCombo("select", $combo.igCombo("items")[0].element);
+                $combo.igCombo("option", "enableClearButton", true);
+                equal($combo.igCombo("option", "enableClearButton"), true, "enableClearButton option is set to true");
+                equal($combo.find(".ui-igcombo-clearicon").length, 1, "enableClearButton button is rendered on the page");
+                $combo.igCombo("option", "enableClearButton", false);
+                equal($combo.igCombo("option", "enableClearButton"), false, "enableClearButton option is set to true");
+                equal($combo.find(".ui-igcombo-clearicon").html(), "", "enableClearButton is not rendered on the page");
+
+                $combo.igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 3 });
+                equal($combo.igCombo("option", "loadOnDemandSettings").enabled, true, "loadOnDemand is enabled");
+
+            });
+
+            // combo input paste handling
+            test(testId_34, function () {
+                var $input,
+                    $combo = $("#combo-paste");
+
+                data = [
+			        { "cd": "001", "cdName": "0000001" },
+			        { "cd": "002", "cdName": "0000002" },
+			        { "cd": "003", "cdName": "0000003" },
+			        { "cd": "004", "cdName": "0000004" },
+			        { "cd": "005", "cdName": "0000005" },
+			        { "cd": "006", "cdName": "0000006" },
+			        { "cd": "007", "cdName": "0000007" },
+			        { "cd": "008", "cdName": "0000008" },
+			        { "cd": "009", "cdName": "0000009" },
+			        { "cd": "010", "cdName": "00000010" },
+			        { "cd": "011", "cdName": "00000011" }
+                ];
+
+                $combo.igCombo({
+                    mode: 'editable',
+                    dataSource: data,
+                    textKey: 'cdName',
+                    valueKey: 'cd',
+                });
+
+                $input = $combo.igCombo("textInput");
+                $.ig.TestUtil.paste($input[0], "test val");
+                equal($combo.igCombo("text"), "test val", "Text in input is correct");
+                $combo.igCombo("option", "disabled", true);
+                $.ig.TestUtil.paste($input[0], "");
+                equal($combo.igCombo("text"), "test val", "Text in input is correct");
+                emulateKeyBoard(86, false, false, false, $input);
+                equal($combo.igCombo("text"), "test val", "Text in input is correct");
+                clickElement($input, false, false);
+                $input.blur();
+                equal($combo.igCombo("text"), "test val", "Text in input is correct");
+            });
+
+            // Test areSetsEqual method
+            test(testId_35, function () {
+                var x = [1, 2, 3], y = [3, 2, 1], someObject = null;
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+                equal(y[0] === 3, true, "Array order is not changed y: " + y);
+
+                x = [1, 2, 3];
+                y = [1, 2, 3];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 2, 3];
+                y = [1, 2, 3, 4];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, 3];
+                y = [1, 1, 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, 3];
+                y = [1, undefined, 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, undefined];
+                y = [2, undefined , 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 3, undefined];
+                y = [2, undefined , 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, undefined];
+                y = [1, undefined];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [undefined];
+                y = [undefined];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                someObject = {firstName: 'name'};
+                x = [1, 2, someObject];
+                y = [1, someObject, 2];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 2, {firstName: 'name'}];
+                y = [1, {firstName: 'name'}, 2];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 1, null];
+                y = [1, null, 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, null, 1];
+                y = [1, null, 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, null, 1];
+                y = [1, null, 2];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, null];
+                y = [1, null];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [null];
+                y = [null];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [null];
+                y = [undefined];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [];
+                y = [];
+                equal($.ig.util.areSetsEqual(x, y), true, "x = []; and y=[]; are equal");
+                equal($.ig.util.areSetsEqual(), false, "Not equal, when sets are missing");
+                equal($.ig.util.areSetsEqual(x), false, "Arrays x:" + x + " and missing y are not equal");
+                equal($.ig.util.areSetsEqual(undefined), false, "Arrays x:undefined and missing y are not equal");
+                equal($.ig.util.areSetsEqual(undefined, y), false, "Arrays x:undefined and y are not equal");
+                equal($.ig.util.areSetsEqual(undefined, null), false, "undefined and null are not equal");
+                equal($.ig.util.areSetsEqual(null, undefined), false, "null and undefined are not equal");
+                equal($.ig.util.areSetsEqual(null), false, "null and undefined are not equal");
+                equal($.ig.util.areSetsEqual(null, null), false, "Null and Null are not equal");
+
+                x = [1, 2, 3];
+                y = x;
+
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal (same reference)");
+                equal($.ig.util.areSetsEqual(x, x), true, "Arrays x:" + x + " and x:" + x + " are equal");
+            });
+            
+            // Test setting validator options runtime
+            test(testId_36, function () {
+                var $listItems,
+                    $combo = $('#combo-validator'),
+                    dataSource = [{ ID: 1, Name: "John" },
+                        { ID: 2, Name: "Mary" },
+                        { ID: 3, Name: "Bob" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                });
+
+                equal($combo.igCombo("option", "validatorOptions"), null, "No validator options set");
+                $combo.igCombo("option", "validatorOptions", {required: true, errorMessage: "You must populate this field !", successMessage: "Well done!"});
+                equal($combo.igCombo("option", "validatorOptions").required, true, "Required must be set to true");
+                equal($combo.igCombo("option", "validatorOptions").errorMessage, "You must populate this field !", "error message is correct");
+                equal($combo.igCombo("option", "validatorOptions").successMessage, "Well done!", "success message is correct");
+                $combo.igCombo("option", "validatorOptions", {required: false, errorMessage: "Try again", successMessage: "Checked"});
+                equal($combo.igCombo("option", "validatorOptions").required, false, "Required must be set to false");
+                equal($combo.igCombo("option", "validatorOptions").errorMessage, "Try again", "error message is correct");
+                equal($combo.igCombo("option", "validatorOptions").successMessage, "Checked", "success message is correct");
+            });
+        });
+    </script>
+</body>
+</html>

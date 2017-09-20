@@ -2076,6 +2076,9 @@ body .ui-tooltip {
 .ui-iggrid.ui-igpivotgrid > table > tbody tr:first-child th {
   border-top: none!important;
 }
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid #4e5d6c !important;
+}
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
@@ -2313,6 +2316,11 @@ body .ui-tooltip {
   background-color: #2b3e50;
   border: 1px solid transparent;
 }
+
+.ui-iggrid-featurechooser-list li.ui-state-default:hover .ui-iggrid-featurechooserddlistitemtext {
+ color: #555;
+}
+
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover,
 .ui-igedit-list .ui-igedit-listitem.ui-state-hover,
 .ui-iggrid-filterddlist li.ui-state-hover,

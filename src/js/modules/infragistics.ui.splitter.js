@@ -20,8 +20,7 @@
         define([
             "jquery",
             "jquery-ui",
-            "./infragistics.util",
-            "./infragistics.ui.splitter-en"
+            "./infragistics.util"
         ], factory);
     } else {
 

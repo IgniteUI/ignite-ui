@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -66,8 +75,6 @@
 			    datePickerEditorNoSuchMethod: "日付エディターはこのメソッドをサポートしません。",
 			    datePickerNoSuchMethodDropDownContainer: "日付エディターはこのメソッドをサポートしません。'getCalendar' メソッドを使用してください。",
 			    buttonTypeIsDropDownOnly: "Datepicker の buttonType オプションの有効な値は dropdown および clear 値のみです。",
-			    dateEditorMinValue: "MinValue オプションはランタイムに設定できません。",
-			    dateEditorMaxValue: "MaxValue オプションはランタイムに設定できません。",
 			    cannotSetRuntime: "このオプションはランタイムに設定できません。",
 			    invalidDate: "無効な日付",
 			    maskMessage: 'すべての必須文字を入力してください',
@@ -78,4 +85,4 @@
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES
