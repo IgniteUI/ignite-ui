@@ -141,12 +141,12 @@
 			returnType="string" Returns the encoded string.
 		*/
 		return value !== null && value !== undefined ?
-		value.toString()
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/'/g, "&#39;")
-		.replace(/"/g, "&#34;") : "";
+			value.toString()
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/'/g, "&#39;")
+			.replace(/"/g, "&#34;") : "";
 	};
 
 	$.ig.millisecondsToString = function(milliseconds, flag) {
