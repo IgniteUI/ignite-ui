@@ -760,6 +760,7 @@
 		return maxZ;
 	};
 	$.ig.getZIndex = function (elem) {
+		var position, value;
 		while (elem.length && elem[ 0 ] !== document) {
 			position = elem.css( "position" );
 			if (position === "absolute" || position === "relative" || position === "fixed") {
