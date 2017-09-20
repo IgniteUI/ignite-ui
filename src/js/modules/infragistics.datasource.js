@@ -4361,8 +4361,7 @@
 			var schema = this.schema(), ds,
 				s = this.settings.sorting,
 					p = this.settings.paging,
-					filtering = this.settings.filtering,
-					resKey = this.settings.responseDataKey;
+					filtering = this.settings.filtering;
 			if (schema && schema.fields && schema.fields().length > 0 &&
 				(this.settings.localSchemaTransform || forceApply)) {
 				this._origDs = this._data;
