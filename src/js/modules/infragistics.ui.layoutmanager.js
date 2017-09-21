@@ -1590,12 +1590,12 @@
                     // The effective width of the container, the width without the vertical scrollbar
                     // The initial value is be set to the full container's width.
                     // When vertical scroll appear or disappear the value is recalculated accordingly
-                    containerWidth: e.width(),
+                    containerWidthNoScroll: e.width(),
 
                     // The effective height of the container, the height without the horizontal scrollbar
                     // The initial value is be set to the full container's height
                     // When horizontal scroll appear or disappear the value is recalculated accordingly
-                    containerHeight: e.height(),
+                    containerHeightNoScroll: e.height(),
 
                     // Items are considered resizable when their width or height is set in percent
                     resizeItems: false,
@@ -1975,26 +1975,56 @@
 
                 gl.initialItems = $.extend(true, [], this.options.items);
             },
+            _getContainerWidthNoScroll: function () {
+                var widthNoScroll;
 
+                // D.A. 23th September 2014, Bug #181578 jQuery width rounding issue causes maximum callstack exceeded exception in Chrome.
+                // Leaving this fix for WebKit only, because of browsers inconsistencies with getComputedStyle.
+                // Chrome and IE don't include the scrollbarWidth in the computed value while Firefox does.
+                // D.A. 20th January 2015, Bug #187424 Same as above bug in IE9
+                if ($.ig.util.isWebKit && window.getComputedStyle) {
+                    widthNoScroll = parseInt(window.getComputedStyle(this.element[0]).width, 10);
+                } else {
+                    widthNoScroll = this.element.width() -
+                        ($.ig.util.hasVerticalScroll(this.element) ? this._opt.scrollBarWidth : 0);
+                }
+
+                return widthNoScroll;
+            },
+            _getContainerHeightNoScroll: function () {
+                var heightNoScroll;
+
+                // Look _getContainerWidthNoScroll comments
+                if ($.ig.util.isWebKit && window.getComputedStyle) {
+                    heightNoScroll =
+                        parseInt(window.getComputedStyle(this.element[0]).height, 10);
+                } else {
+                    heightNoScroll = this.element.height() -
+                        ($.ig.util.hasHorizontalScroll(this.element) ?
+                            this._opt.scrollBarHeight : 0);
+                }
+
+                return heightNoScroll;
+            },
             // returnType='boolean' Returns "true" when grid layout reflow is needed
             // to adjust the tiles in case scrollbars appeared or disappeared.
             _glReflowNeeded: function () {
                 var gl = this._opt.gridLayout,
-                    newContainerWidth = this.element.width(),
-                    newContainerHeight = this.element.height(),
+                    newContainerWidthNoScroll = this._getContainerWidthNoScroll(),
+                    newContainerHeightNoScroll = this._getContainerHeightNoScroll(),
                     reflowNeeded = false,
                     colsCouldBeAdjusted = false;
 
                 // Reflow is needed when vertical scrollbar appeared or disappeared and columnWidth/columnsWidth
                 // is in percent or is fixed and enough space for new column is available.
-                colsCouldBeAdjusted = gl.columnWidth && (gl.cols !== Math.floor(newContainerWidth /
+                colsCouldBeAdjusted = gl.columnWidth && (gl.cols !== Math.floor(newContainerWidthNoScroll /
                     (gl.columnWidth + gl.marginLeft)));
-                reflowNeeded = (gl.containerWidth !== newContainerWidth &&
+                reflowNeeded = (gl.containerWidthNoScroll !== newContainerWidthNoScroll &&
                     (this._hasGlColumnsWidthRatio() || colsCouldBeAdjusted));
 
                 // Reflow is needed also when horizontal scrollbar appeared or disappeared and
                 // columnHeight/columnsHeight is in percent.
-                reflowNeeded = reflowNeeded || ((gl.containerHeight !== newContainerHeight) &&
+                reflowNeeded = reflowNeeded || ((gl.containerHeightNoScroll !== newContainerHeightNoScroll) &&
                     this._hasGlColumnsHeightRatio());
 
                 return reflowNeeded;
@@ -2006,8 +2036,8 @@
                     ml = gl.marginLeft,
                     mt = gl.marginTop,
                     items = this.options.items,
-                    newContainerWidth = e.width(),
-                    newContainerHeight = e.height(),
+                    newContainerWidthNoScroll = this._getContainerWidthNoScroll(),
+                    newContainerHeightNoScroll = this._getContainerHeightNoScroll(),
                     leftOffset = gl.useOffset ? e.offset().left : 0,
                     topOffset = gl.useOffset ? e.offset().top : 0,
                     colsWidth = null, colsHeight = null,
@@ -2032,15 +2062,15 @@
 
                 if (items) {
                     // Update columnWidth/columnsWidth when it is set in percent and container width changed
-                    if (gl.containerWidth !== newContainerWidth) {
-                        colWidthChanged = this._updateGlColumnWidthByRatio(newContainerWidth);
+                    if (gl.containerWidthNoScroll !== newContainerWidthNoScroll) {
+                        colWidthChanged = this._updateGlColumnWidthByRatio(newContainerWidthNoScroll);
                     } else {
                         colWidthChanged = false;
                     }
 
                     // Update columnHeight/columnsHeight when it is set in percent and container height changed
-                    if (gl.containerHeight !== newContainerHeight) {
-                        colHeightChanged = this._updateGlColumnHeightByRatio(newContainerHeight);
+                    if (gl.containerHeightNoScroll !== newContainerHeightNoScroll) {
+                        colHeightChanged = this._updateGlColumnHeightByRatio(newContainerHeightNoScroll);
                     } else {
                         colHeightChanged = false;
                     }
@@ -2049,21 +2079,21 @@
                     // width when the container's height changed and the height should be autoadjusted.
                     // This might happen only when no options specifying the columnWidth were set by the user
                     // (columnWidth, cols and items) and the items are rearrangeable or reflow was forced.
-                    if (gl.autoAdjustColumnWidth && ((gl.containerHeight !==
-                        newContainerHeight && gl.rearrangeItems) || forceReflow)) {
-                        gl.rows = Math.max(Math.floor(newContainerHeight /
+                    if (gl.autoAdjustColumnWidth && ((gl.containerHeightNoScroll !==
+                        newContainerHeightNoScroll && gl.rearrangeItems) || forceReflow)) {
+                        gl.rows = Math.max(Math.floor(newContainerHeightNoScroll /
                             (gl.columnHeight + mt)), 1);
                         gl.columnWidthRatio = 1 / Math.ceil(items.length / gl.rows);
                         gl.columnWidth = Math.floor(
-                            newContainerWidth * gl.columnWidthRatio - ml);
+                            newContainerWidthNoScroll * gl.columnWidthRatio - ml);
                         colWidthChanged = true;
                     }
 
                     // Update the container width value
-                    gl.containerWidth = newContainerWidth;
+                    gl.containerWidthNoScroll = newContainerWidthNoScroll;
 
                     // Update the container height value
-                    gl.containerHeight = newContainerHeight;
+                    gl.containerHeightNoScroll = newContainerHeightNoScroll;
 
                     // Rearrange items
                     if (gl.rearrangeItems || forceReflow) {
@@ -2071,7 +2101,7 @@
                             if (gl.columnWidthRatio) {
                                 newColCount = Math.floor(1 / gl.columnWidthRatio);
                             } else if (gl.columnWidth) {
-                                newColCount = Math.floor(newContainerWidth /
+                                newColCount = Math.floor(newContainerWidthNoScroll /
                                     (gl.columnWidth + ml));
 
                             } else {
@@ -2098,7 +2128,7 @@
                             } else if (gl.autoAdjustColumnHeight) {
 
                                 // Update the column value when autoAdjustment is necessary
-                                newColCount = Math.floor(newContainerWidth /
+                                newColCount = Math.floor(newContainerWidthNoScroll /
                                     (gl.columnWidth + ml));
                             } else {
 
@@ -2193,7 +2223,7 @@
                                 if (gl.autoAdjustColumnHeight && gl.rows !== helperArray.length) {
                                     gl.columnHeightRatio = 1 / helperArray.length;
                                     gl.columnHeight = Math.floor(
-                                        newContainerHeight * gl.columnHeightRatio - mt);
+                                        newContainerHeightNoScroll * gl.columnHeightRatio - mt);
                                     colHeightChanged = true;
                                 }
 
@@ -2288,7 +2318,7 @@
                     }
                 }
             },
-            _updateGlColumnWidthByRatio: function (newContainerWidth) {
+            _updateGlColumnWidthByRatio: function (newContainerWidthNoScroll) {
                 var gl = this._opt.gridLayout,
                     ml = gl.marginLeft,
                     columnWidthUpdated = false,
@@ -2296,13 +2326,13 @@
 
                 if (gl.columnWidthRatio) {
                     gl.columnWidth = Math.floor(
-                        newContainerWidth * gl.columnWidthRatio - ml);
+                        newContainerWidthNoScroll * gl.columnWidthRatio - ml);
                     columnWidthUpdated = true;
                 } else if (gl.columnsWidthRatio.length > 0) {
                     for (i = 0; i < gl.columnsWidthRatio.length; i++) {
                         if (gl.columnsWidthRatio[ i ]) {
                             gl.columnsWidth[ i ] = Math.floor(
-                                newContainerWidth * gl.columnsWidthRatio[ i ] - ml);
+                                newContainerWidthNoScroll * gl.columnsWidthRatio[ i ] - ml);
                             columnWidthUpdated = true;
                         }
                     }
@@ -2311,7 +2341,7 @@
                 columnWidthUpdated = this._analyzeGlWidthAsterisks() || columnWidthUpdated;
                 return columnWidthUpdated;
             },
-            _updateGlColumnHeightByRatio: function (newContainerHeight) {
+            _updateGlColumnHeightByRatio: function (newContainerHeightNoScroll) {
                 var gl = this._opt.gridLayout,
                     mt = gl.marginTop,
                     columnHeightUpdated = false,
@@ -2319,13 +2349,13 @@
 
                 if (gl.columnHeightRatio) {
                     gl.columnHeight = Math.floor(
-                        newContainerHeight * gl.columnHeightRatio - mt);
+                        newContainerHeightNoScroll * gl.columnHeightRatio - mt);
                     columnHeightUpdated = true;
                 } else if (gl.columnsHeightRatio.length > 0) {
                     for (i = 0; i < gl.columnsHeightRatio.length; i++) {
                         if (gl.columnsHeightRatio[ i ]) {
                             gl.columnsHeight[ i ] = Math.floor(
-                                newContainerHeight * gl.columnsHeightRatio[ i ] - mt);
+                                newContainerHeightNoScroll * gl.columnsHeightRatio[ i ] - mt);
                             columnHeightUpdated = true;
                         }
                     }
