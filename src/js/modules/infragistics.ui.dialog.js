@@ -1594,9 +1594,10 @@
 					} catch (ex) {}
 					_stopEvt(e);
 				},
-				touchstart: function (e) { this._drag = null; _stopEvt(e); },
-				touchmove: function (e) { this._drag = 1; _stopEvt(e); },
-				touchend: function () { if (!this._drag) { $(this).trigger("click"); } }
+				touchmove: function (e) { _stopEvt(e); }
+
+				// N.A. September 21th, 2017, #1112: Don't cancel event propagation and default action, in touch events, cause now new browsers under touch devices also cancel click event.
+				// It seems that if we start drag and drop over header buttons, it should be terminated as an action.
 			};
 
 			// i=order of buttons in header:pin,min,max,close
@@ -2007,11 +2008,6 @@
 				var act, e = evt.originalEvent,
 					touches = e ? e.touches : null,
 					one = touches && touches.length === 1;
-
-				// type: null-end
-				if (one && type) {
-					_stopEvt(evt);
-				}
 
 				// !one: scrolling should be ended
 				one = one && type === "move";
