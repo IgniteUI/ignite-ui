@@ -5118,8 +5118,8 @@
 						if (scientificPrecision > 0) {
 							stringValue = this._convertScientificToNumeric(stringValue);
 						} else {
-							if (scientificPrecision < this.options.maxDecimals) {
-								scientificPrecision = this.options.maxDecimals;
+							if (scientificPrecision < this.options.minDecimals) {
+								scientificPrecision = this.options.minDecimals;
 							}
 							stringValue = stringValue.toFixed(Math.abs(scientificPrecision));
 						}
