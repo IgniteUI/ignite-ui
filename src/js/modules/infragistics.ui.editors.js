@@ -5118,9 +5118,11 @@
 						if (scientificPrecision > 0) {
 							stringValue = this._convertScientificToNumeric(stringValue);
 						} else {
+							if (scientificPrecision < this.options.maxDecimals) {
+								scientificPrecision = this.options.maxDecimals;
+							}
 							stringValue = stringValue.toFixed(Math.abs(scientificPrecision));
 						}
-
 					}
 
 					// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
