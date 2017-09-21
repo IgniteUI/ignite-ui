@@ -2049,7 +2049,7 @@
 				// type: null-end
 				// N.A. September 21th, 2017, #1112: Cancel propagation of event when dialog is dragged. This will prevent the browser window from moving along with the dialog.
 				if (one && type && !self._headerButtonClicked) {
-					_stopEvt(e);
+					_stopEvt(evt);
 				}
 
 				// !one: scrolling should be ended
