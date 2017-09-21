@@ -9,6 +9,7 @@
  *
  * Depends on:
  *	jquery-1.9.1.js
+ *  infragistics.util.jquery.js
  */
 
  /*
@@ -108,19 +109,6 @@
 		clearTmplCache: function () {
 			delete this._internalTmplCache;
 			this._internalTmplCache = {};
-		},
-		encode: function (value) {
-			/* Encoding < > ' and "
-				paramType="string" The string to be encoded.
-				returnType="string" Returns the encoded string.
-			 */
-		    return value !== null && value !== undefined ?
-            value.toString()
-				.replace(this.regExp.amp, "&amp;")
-				.replace(this.regExp.lt, "&lt;")
-				.replace(this.regExp.gt, "&gt;")
-				.replace(this.regExp.ap, "&#39;")
-				.replace(this.regExp.ic, "&#34;") : "";
 		},
 		/* type="RegExp" Used to tokenize the template string. */
 		regExp: {
