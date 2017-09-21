@@ -1626,6 +1626,7 @@
 					try {
 						self[ "_" + $(this).attr("data-id") ](e);
 					} catch (ex) {}
+					$(this).removeClass(css.headerButtonHover); // This is needed to remove selected class under touch devices
 					_stopEvt(e);
 				},
 				touchmove: function (e) { _stopEvt(e); }
