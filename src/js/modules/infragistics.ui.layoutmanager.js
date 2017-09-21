@@ -1406,7 +1406,7 @@
             // Analyze * in columnWidth/columnsWidth
             _analyzeGlWidthAsterisks: function () {
                 var gl = this._opt.gridLayout,
-                    elWidth = this.element.width(),
+                    elWidth = this._getContainerWidthNoScroll(),
                     ml = gl.marginLeft,
                     asterisksCount = 0, i = 0,
                     occupiedWidth = 0,
@@ -1443,7 +1443,7 @@
             // Analyze * in columnHeight/columnsHeight
             _analyzeGlHeightAsterisks: function () {
                 var gl = this._opt.gridLayout,
-                    elHeight = this.element.height(),
+                    elHeight = this._getContainerHeightNoScroll(),
                     mt = gl.marginTop,
                     asterisksCount = 0, i = 0,
                     occupiedHeight = 0,
@@ -1983,7 +1983,7 @@
                 // Chrome and IE don't include the scrollbarWidth in the computed value while Firefox does.
                 // D.A. 20th January 2015, Bug #187424 Same as above bug in IE9
                 if ($.ig.util.isWebKit && window.getComputedStyle) {
-                    widthNoScroll = parseInt(window.getComputedStyle(this.element[0]).width, 10);
+                    widthNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).width, 10);
                 } else {
                     widthNoScroll = this.element.width() -
                         ($.ig.util.hasVerticalScroll(this.element) ? this._opt.scrollBarWidth : 0);
@@ -1997,7 +1997,7 @@
                 // Look _getContainerWidthNoScroll comments
                 if ($.ig.util.isWebKit && window.getComputedStyle) {
                     heightNoScroll =
-                        parseInt(window.getComputedStyle(this.element[0]).height, 10);
+                        parseInt(window.getComputedStyle(this.element[ 0 ]).height, 10);
                 } else {
                     heightNoScroll = this.element.height() -
                         ($.ig.util.hasHorizontalScroll(this.element) ?
@@ -2006,6 +2006,7 @@
 
                 return heightNoScroll;
             },
+
             // returnType='boolean' Returns "true" when grid layout reflow is needed
             // to adjust the tiles in case scrollbars appeared or disappeared.
             _glReflowNeeded: function () {
@@ -2017,14 +2018,15 @@
 
                 // Reflow is needed when vertical scrollbar appeared or disappeared and columnWidth/columnsWidth
                 // is in percent or is fixed and enough space for new column is available.
-                colsCouldBeAdjusted = gl.columnWidth && (gl.cols !== Math.floor(newContainerWidthNoScroll /
-                    (gl.columnWidth + gl.marginLeft)));
+                colsCouldBeAdjusted = gl.columnWidth && (gl.cols !==
+                    Math.floor(newContainerWidthNoScroll /  (gl.columnWidth + gl.marginLeft)));
                 reflowNeeded = (gl.containerWidthNoScroll !== newContainerWidthNoScroll &&
                     (this._hasGlColumnsWidthRatio() || colsCouldBeAdjusted));
 
                 // Reflow is needed also when horizontal scrollbar appeared or disappeared and
                 // columnHeight/columnsHeight is in percent.
-                reflowNeeded = reflowNeeded || ((gl.containerHeightNoScroll !== newContainerHeightNoScroll) &&
+                reflowNeeded = reflowNeeded ||
+                    ((gl.containerHeightNoScroll !== newContainerHeightNoScroll) &&
                     this._hasGlColumnsHeightRatio());
 
                 return reflowNeeded;
@@ -2063,14 +2065,16 @@
                 if (items) {
                     // Update columnWidth/columnsWidth when it is set in percent and container width changed
                     if (gl.containerWidthNoScroll !== newContainerWidthNoScroll) {
-                        colWidthChanged = this._updateGlColumnWidthByRatio(newContainerWidthNoScroll);
+                        colWidthChanged = this._updateGlColumnWidthByRatio(
+                            newContainerWidthNoScroll);
                     } else {
                         colWidthChanged = false;
                     }
 
                     // Update columnHeight/columnsHeight when it is set in percent and container height changed
                     if (gl.containerHeightNoScroll !== newContainerHeightNoScroll) {
-                        colHeightChanged = this._updateGlColumnHeightByRatio(newContainerHeightNoScroll);
+                        colHeightChanged = this._updateGlColumnHeightByRatio(
+                            newContainerHeightNoScroll);
                     } else {
                         colHeightChanged = false;
                     }
