@@ -1596,11 +1596,13 @@
 						self[ "_" + $(this).attr("data-id") ](e);
 					} catch (ex) {}
 					$(this).removeClass(css.headerButtonHover); // This is needed to remove selected class under touch devices
+					delete self._headerButtonClicked;
 					_stopEvt(e);
 				},
+				touchstart: function () { self._headerButtonClicked = true; },
 				touchmove: function (e) { _stopEvt(e); }
 
-				// N.A. September 21th, 2017, #1112: Don't cancel event propagation and default action, in touch events, cause now new browsers under touch devices also cancel click event.
+				// N.A. September 21th, 2017, #1112: When clicking dialog header buttons, don't cancel event propagation and default action, because some new browsers under touch devices, will not fire the click event.
 				// It seems that if we start drag and drop over header buttons, it should be terminated as an action.
 			};
 
@@ -2012,6 +2014,12 @@
 				var act, e = evt.originalEvent,
 					touches = e ? e.touches : null,
 					one = touches && touches.length === 1;
+
+				// type: null-end
+				// N.A. September 21th, 2017, #1112: Cancel propagation of event when dialog is dragged. This will prevent the browser window from moving along with the dialog.
+				if (one && type && !self._headerButtonClicked) {
+					_stopEvt(e);
+				}
 
 				// !one: scrolling should be ended
 				one = one && type === "move";
