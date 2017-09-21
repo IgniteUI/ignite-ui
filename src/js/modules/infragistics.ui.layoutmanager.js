@@ -1502,7 +1502,7 @@
                 }
             },
 
-            // Checks whether some of the columns has width in percent
+            // Checks whether any of the columns has width in percent
             // and therefore has a column width ratio.
             _hasGlColumnsWidthRatio: function () {
                 var gl = this._opt.gridLayout, i;
@@ -1520,7 +1520,7 @@
                 return false;
             },
 
-            // Checks whether some of the columns has height in percent
+            // Checks whether any of the columns has height in percent
             // and therefore has a column height ratio.
             _hasGlColumnsHeightRatio: function () {
                 var gl = this._opt.gridLayout, i;
@@ -1531,6 +1531,40 @@
 
                 for (i = 0; i < gl.columnsHeightRatio.length; i++) {
                     if (gl.columnsHeightRatio[ i ]) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
+
+            // Checks whether any of the columns width has an asterisk
+            _hasGlColumnsWidthAsterisks: function () {
+                var gl = this._opt.gridLayout, i;
+
+                if (gl.colWidthHasAsterisk) {
+                    return true;
+                }
+
+                for (i = 0; i < gl.colsWidthHaveAsterisks.length; i++) {
+                    if (gl.colsWidthHaveAsterisks[ i ]) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
+
+            // Checks whether any of the columns height has an asterisk
+            _hasGlColumnsHeightAsterisks: function () {
+                var gl = this._opt.gridLayout, i;
+
+                if (gl.colHeightHasAsterisk) {
+                    return true;
+                }
+
+                for (i = 0; i < gl.colsHeightHaveAsterisks.length; i++) {
+                    if (gl.colsHeightHaveAsterisks[ i ]) {
                         return true;
                     }
                 }
@@ -2019,15 +2053,16 @@
                 // Reflow is needed when vertical scrollbar appeared or disappeared and columnWidth/columnsWidth
                 // is in percent or is fixed and enough space for new column is available.
                 colsCouldBeAdjusted = gl.columnWidth && (gl.cols !==
-                    Math.floor(newContainerWidthNoScroll /  (gl.columnWidth + gl.marginLeft)));
+                    Math.floor(newContainerWidthNoScroll / (gl.columnWidth + gl.marginLeft)));
                 reflowNeeded = (gl.containerWidthNoScroll !== newContainerWidthNoScroll &&
-                    (this._hasGlColumnsWidthRatio() || colsCouldBeAdjusted));
+                    (this._hasGlColumnsWidthRatio() || this._hasGlColumnsWidthAsterisks() ||
+                        colsCouldBeAdjusted));
 
                 // Reflow is needed also when horizontal scrollbar appeared or disappeared and
                 // columnHeight/columnsHeight is in percent.
                 reflowNeeded = reflowNeeded ||
                     ((gl.containerHeightNoScroll !== newContainerHeightNoScroll) &&
-                    this._hasGlColumnsHeightRatio());
+                        (this._hasGlColumnsHeightRatio() || this._hasGlColumnsHeightAsterisks()));
 
                 return reflowNeeded;
             },
