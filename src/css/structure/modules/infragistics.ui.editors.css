@@ -1,12 +1,10 @@
 ﻿.ui-igedit,
 .ui-widget .ui-igedit
 {
-    background: #ffffff;
-    font-size: 1em;
-     /* Prevent background color leak outs */
-  -webkit-background-clip: padding-box; 
-  -moz-background-clip:    padding; 
-  background-clip:         padding-box;
+	/* Prevent background color leak outs */
+	-webkit-background-clip: padding-box;
+	-moz-background-clip:    padding;
+	background-clip:         padding-box;
   
 }
 .ui-igedit-container
@@ -16,9 +14,8 @@
 	box-sizing: border-box;
 	display: inline-block;
 	position: relative;
-	width: 200px;
 	height: 32px;
-
+	width: 200px;
 }
 .ui-igedit-checkbox-container {
 	-webkit-box-sizing: border-box;
@@ -35,7 +32,9 @@
 .ui-igeditor-input-container {
 	height: 100%;
 	overflow: hidden;
+	color: #444;
 }
+
 .ui-igedit-buttonimage {
 	position: absolute;
 	top: 50%;
@@ -174,23 +173,6 @@
 .ui-iggrid .ui-iggrid-footer .ui-igedit-button-rtl,
 .ui-iggrid .ui-iggrid-toolbar .ui-igedit-button-rtl {
 	border-width: 0 1px 0 0;
-}
-
-.ui-igedit-placeholder::-webkit-input-placeholder {
-	color: rgba(128, 128, 128, .5);
-	
-}
-.ui-igedit-placeholder::-moz-placeholder {
-	color: rgba(128, 128, 128, .5);
-	
-}
-.ui-igedit-placeholder:-moz-placeholder {   /* Older versions of Firefox */
-	color: rgba(128, 128, 128, .5);
-	
-}
-.ui-igedit-placeholder:-ms-input-placeholder { 
-	color: rgba(128, 128, 128, .5);
-	
 }
 
 .ui-checkbox-container {
