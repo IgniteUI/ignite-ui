@@ -303,7 +303,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			object type="object" A RegExp object or an object with expression and errorMessage properties.
 		*/
 		pattern: null,
-		/* type="bool" Gets/Sets If all rules for a field should be checked, so even if one fails checks will continue executing.
+		/* type="bool" Gets/Sets if all rules for a field should be checked, so even if one fails the rest will continue executing.
+			Note: This will not force checks on an empty field for rules that don't normally execute without a value.
 		```
 			//Initialize
 			$('.selector').igValidator({
