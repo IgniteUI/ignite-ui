@@ -66,8 +66,8 @@
   color: #000000;
 }
 .stateHover-C {
-  border: 1px solid #ffffff;
-  background-color: #ffffff;
+  border: 1px solid #ffe0dc;
+  background-color: #ffe0dc;
   color: #000000;
 }
 .stateActive-C {
@@ -809,7 +809,7 @@ a.ui-button:active,
 .ui-widget-content .ui-state-error,
 .ui-widget-header .ui-state-error {
   border: 1px solid #fd472b;
-  background: #ffffff;
+  background: #ffe0dc;
   color: #fd472b;
 }
 .ui-state-error a,
@@ -1525,8 +1525,8 @@ a.ui-button:active,
   font-size: .8em;
 }
 .ui-iggrid-modaldialog-caption-buttoncontainer .ui-button.ui-state-hover {
-  border: 1px solid #ffffff;
-  background-color: #ffffff;
+  border: 1px solid #ffe0dc;
+  background-color: #ffe0dc;
   color: #000000;
 }
 .ui-iggrid-dialog-groupby-button a,
