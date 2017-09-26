@@ -2568,7 +2568,7 @@
             this.element.removeClass(this.css.container);
             this._destroyTiles();
             this._removeEventHandlers();
-            this._super();
+            this._superApply(arguments);
             return this;
         }
     });

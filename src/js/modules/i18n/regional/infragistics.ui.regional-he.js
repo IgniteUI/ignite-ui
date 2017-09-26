@@ -51,7 +51,7 @@
 	    currencyNegativePattern: '$-n',
 	    currencySymbol: 'KM'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('he');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('he');
     }
 }));// REMOVE_FROM_COMBINED_FILES
