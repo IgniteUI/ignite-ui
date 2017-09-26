@@ -35,8 +35,8 @@
 (function () {
 	window.igRoot = window.igRoot || {};
 	/* jshint ignore:start */
-	if (window.$ !== undefined || typeof $ === "function") {
-		window.igRoot = window.$ || $;
+	if (window.jQuery !== undefined || typeof jQuery === "function") {
+		window.igRoot = window.jQuery || jQuery;
 	}
 	/* jshint ignore:end */
 
