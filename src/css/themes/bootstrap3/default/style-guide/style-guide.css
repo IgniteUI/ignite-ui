@@ -1,0 +1,264 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+.paragraph-styles p {
+  margin: 0;
+}
+.paragraph-styles,
+.brand-color {
+  display: flex;
+}
+.container {
+  max-width: 960px;
+  margin: 100px auto;
+}
+.style-guide-header {
+  margin-bottom: 40px;
+}
+.g-row {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.brand-color {
+  color: #fff;
+}
+.g-title-small {
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+.container :first-of-type .g-title-small {
+  border: none;
+}
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd;
+}
+.g-box-color {
+  flex: 1;
+  margin: 10px 20px;
+  padding: 20px;
+  text-align: center;
+}
+.g-box-text {
+  flex: 1;
+  margin: 10px 20px;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.inherit {
+  color: #555;
+}
+.section {
+  margin-bottom: 50px;
+}
+.flex-group {
+  display: flex;
+}
+.flex-group > * {
+  flex: 1;
+  margin: 10px 20px;
+}
+.serif-font {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+.section-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.section-column .g-input-field {
+  width: 100%;
+}
+.g-input-field {
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+.g-input-field:last-of-type {
+  margin-bottom: 0;
+}
+.g-label {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+.g-flex-row-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.checkbox-wrap {
+  margin-bottom: 10px;
+}
+.checkbox-wrap:last-of-type {
+  margin-bottom: 0;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 5px 2px 0;
+}
+/*
+      STYLE  GUIDE STYLES
+    =======================
+*/
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fff;
+  color: #333333;
+  line-height: 1.42857143;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+h1 {
+  font-size: 36px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 14px;
+}
+h6 {
+  font-size: 12px;
+}
+a {
+  color: #428bca;
+}
+a:hover {
+  color: #2a6496;
+}
+.bg-primary {
+  background: #428bca;
+}
+.bg-success {
+  background: #5cb85c;
+}
+.bg-info {
+  background: #5bc0de;
+}
+.bg-warning {
+  background: #f0ad4e;
+}
+.bg-danger {
+  background: #d9534f;
+}
+.bg-gray-darker {
+  background: #222222;
+}
+.bg-gray-dark {
+  background: #333333;
+}
+.bg-gray {
+  background: #555555;
+}
+.bg-gray-light {
+  background: #999999;
+}
+.bg-gray-lighter {
+  background: #eeeeee;
+}
+.text-color {
+  color: #333333;
+}
+.text-muted {
+  color: #999999;
+}
+.alert-box {
+  padding: 5px;
+}
+.text-success {
+  color: #3c763d;
+  background: #dff0d8;
+  border: 1px solid #d6e9c6;
+}
+.text-info {
+  color: #31708f;
+  background: #d9edf7;
+  border: 1px solid #bce8f1;
+}
+.text-warning {
+  color: #8a6d3b;
+  background: #fcf8e3;
+  border: 1px solid #faebcc;
+}
+.text-danger {
+  color: #a94442;
+  background: #f2dede;
+  border: 1px solid #ebccd1;
+}
+/* Forms, inputs...*/
+.g-input-field {
+  height: 34px;
+  background: #fff;
+  color: #555555;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.g-input-field:focus {
+  border-color: #66afe9;
+}
+.input--large {
+  height: 46px;
+}
+.input--small {
+  height: 30px;
+}
+.g-input-field[disabled] {
+  background: #eeeeee;
+}
+.has-error .g-label {
+  color: #d9534f;
+}
+.has-error .g-input-field {
+  border-color: #d9534f;
+}
+.has-warning .g-label {
+  color: #f0ad4e;
+}
+.has-warning .g-input-field {
+  border-color: #f0ad4e;
+}
+.has-success .g-label {
+  color: #5cb85c;
+}
+.has-success .g-input-field {
+  border-color: #5cb85c;
+}
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #999999;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #999999;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #999999;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #999999;
+}

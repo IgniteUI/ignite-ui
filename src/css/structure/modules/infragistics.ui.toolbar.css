@@ -1,16 +1,12 @@
 .ui-igtoolbar .ui-button {
 	width:18px;
 	height:18px;
-	margin-left:4px;
 }
 
 .ui-ightmleditor  .ui-button.ui-state-hover .ui-button-text {
 	box-shadow:none;
 }
 
-.ui-ightmleditor .ui-igtoolbar>.ui-button:first-child {
-    margin-left:0;
-}
  
 .ui-igtoolbar ul li.ui-igcombo-listitem {
     margin-left: 0;
