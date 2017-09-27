@@ -1,0 +1,269 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+.paragraph-styles p {
+  margin: 0;
+}
+.paragraph-styles,
+.brand-color {
+  display: flex;
+}
+.container {
+  max-width: 960px;
+  margin: 100px auto;
+}
+.style-guide-header {
+  margin-bottom: 40px;
+}
+.g-row {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.brand-color {
+  color: #fff;
+}
+.g-title-small {
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+.container :first-of-type .g-title-small {
+  border: none;
+}
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd;
+}
+.g-box-color {
+  flex: 1;
+  margin: 10px 20px;
+  padding: 20px;
+  text-align: center;
+}
+.g-box-text {
+  flex: 1;
+  margin: 10px 20px;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.inherit {
+  color: #555;
+}
+.section {
+  margin-bottom: 50px;
+}
+.flex-group {
+  display: flex;
+}
+.flex-group > * {
+  flex: 1;
+  margin: 10px 20px;
+}
+.serif-font {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+.section-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.section-column .g-input-field {
+  width: 100%;
+}
+.g-input-field {
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+.g-input-field:last-of-type {
+  margin-bottom: 0;
+}
+.g-label {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+.g-flex-row-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.checkbox-wrap {
+  margin-bottom: 10px;
+}
+.checkbox-wrap:last-of-type {
+  margin-bottom: 0;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 5px 2px 0;
+}
+/*
+      STYLE  GUIDE STYLES
+    =======================
+*/
+body {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fff;
+  color: #2C3E50;
+  line-height: 1.42857143;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.1;
+  color: inherit;
+}
+h1 {
+  font-size: 39px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 26px;
+}
+h4 {
+  font-size: 19px;
+}
+h5 {
+  font-size: 15px;
+}
+h6 {
+  font-size: 13px;
+}
+a {
+  color: #18BC9C;
+}
+a:hover {
+  color: #18BC9C;
+}
+.bg-primary {
+  background: #2C3E50;
+}
+.bg-success {
+  background: #18BC9C;
+}
+.bg-info {
+  background: #3498DB;
+}
+.bg-warning {
+  background: #F39C12;
+}
+.bg-danger {
+  background: #E74C3C;
+}
+
+.bg-gray-base {
+  background: #000;
+}
+
+.bg-gray-darker {
+  background: #222222;
+}
+.bg-gray-dark {
+  background: #7b8a8b;
+}
+.bg-gray {
+  background: #95a5a6;
+}
+.bg-gray-light {
+  background: #b4bcc2;
+}
+.bg-gray-lighter {
+  background: #ecf0f1;
+}
+.text-color {
+  color: #2C3E50;
+}
+.text-muted {
+  color: #b4bcc2;
+}
+.alert-box {
+  padding: 5px;
+}
+.text-success {
+  color: #fff;
+  background: #18BC9C;
+  border: 1px solid #18BC9C;
+}
+.text-info {
+  color: #fff;
+  background: #3498DB;
+  border: 1px solid #3498DB;
+}
+.text-warning {
+  color: #fff;
+  background: #F39C12;
+  border: 1px solid #F39C12;
+}
+.text-danger {
+  color: #fff;
+  background: #E74C3C;
+  border: 1px solid #E74C3C;
+}
+/* Forms, inputs...*/
+.g-input-field {
+  height: 45px;
+  background: #fff;
+  color: #2C3E50;
+  border: 1px solid #dce4ec;
+  border-radius: 4px;
+}
+.g-input-field:focus {
+  border-color: #2C3E50;
+}
+.input--large {
+  height: 66px;
+}
+.input--small {
+  height: 35px;
+}
+.g-input-field[disabled] {
+  background: #ecf0f1;
+}
+.has-error .g-label {
+  color: #E74C3C;
+}
+.has-error .g-input-field {
+  border-color: #E74C3C;
+}
+.has-warning .g-label {
+  color: #F39C12;
+}
+.has-warning .g-input-field {
+  border-color: #F39C12;
+}
+.has-success .g-label {
+  color: #18BC9C;
+}
+.has-success .g-input-field {
+  border-color: #18BC9C;
+}
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #acb6c0;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #acb6c0;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #acb6c0;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #acb6c0;
+}
