@@ -1,28 +1,45 @@
 /******************************************/
 /* Infragistics Ignite UI Bootstrap theme */
 /******************************************/
-/*  MIXINS  */
-/************/
+@import "../../../structure/fonts/style.css";
+@import "../../../structure/jquery-ui.css";
+@import "../../../structure/icons-styles.css";
+body {
+  background: #2B3E50;
+}
 /* states */
+.stateHover,
+.stateFocused,
+.stateActive {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+}
 .stateNormal {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
 }
+.btn-state-hover,
+.btn-state-focus,
+.btn-state-active {
+  border-color: transparent;
+  background: #DF691A;
+  color: #fff;
+}
+.btn-state-hover .ui-icon {
+  color: #fff;
+}
+.btn-state-hover a {
+  color: #fff;
+}
+.btn-state-hover.btn-state-hover,
+.btn-state-hover.btn-state-active,
+.btn-state-hover,
+.stateHover.stateFocused,
+.stateHover.stateActive,
 .stateHover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
-  color: #fff;
-}
-.stateActive {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
-  color: #fff;
-}
-.stateFocused {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
-  color: #fff;
+  background: #e6772c;
 }
 .chartPalette1 {
   background-color: #DF691A !important;
@@ -76,841 +93,420 @@
   background-color: #761c19 !important;
   border: 1px solid #5a1614 !important;
 }
+.doughnutPalette1 {
+  background-color: #DF691A !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette2 {
+  background-color: #e6772c !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette3 {
+  background-color: #e98643 !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette4 {
+  background-color: #ec945a !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette5 {
+  background-color: #eea371 !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette6 {
+  background-color: #f1af83 !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette7 {
+  background-color: #f3bb95 !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette8 {
+  background-color: #f5c6a7 !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette9 {
+  background-color: #f7d2ba !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette10 {
+  background-color: #f9decc !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette11 {
+  background-color: #fbeade !important;
+  border: 1px solid #fff !important;
+}
+.doughnutPalette12 {
+  background-color: #fdf6f0 !important;
+  border: 1px solid #fff !important;
+}
+.boxShadow-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.boxShadow-2 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.boxShadow-3 {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.boxShadow-4 {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.boxShadow-5 {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+/*! jQuery UI - v1.12.1 - 2016-09-14 */
 /*
-    Spreadsheet
-  =================
+
+  List with Overwritten components
+
+  1. jQuery UI Accordion
+  2. jQuery UI Auto complete
+  3. jQuery UI Menu
+  4. jQuery UI Button
+  5. jQuery UI Dialog
+  6. jQuery UI Slider
+  7. jQuery UI Tabs
+  8. jQuery UI Tooltip
+  9. jQuery UI Date picker
+  10. jQuery UI Spinner
+  11. jQuery UI Progressbar
+
 */
-/* needs to be improved with mixin*/
-/*  Misc    */
-/************/
-.boxShadow {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+/**********************
+* jQuery UI Accordion *
+**********************/
+.ui-accordion .ui-accordion-content {
+  background: #546575;
+  padding: 15px;
+  color: #333333;
+  border-color: transparent;
 }
-/********************/
-/* JQuery UI styles */
-/********************/
-/***************************/
-/* JQuery Framework styles */
-/***************************/
-/*!
- * jQuery UI CSS Framework 1.11.1
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/category/theming/
- */
-/* Layout helpers
-----------------------------------*/
-.ui-helper-hidden {
-  display: none;
+.ui-accordion .ui-accordion-header.ui-state-hover {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
 }
-.ui-helper-hidden-accessible {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+.ui-accordion .ui-accordion-header.ui-state-active {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
 }
-.ui-helper-reset {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  line-height: 1.3;
-  text-decoration: none;
-  font-size: 100%;
-  list-style: none;
-}
-.ui-helper-clearfix:before,
-.ui-helper-clearfix:after {
-  content: "";
-  display: table;
-  border-collapse: collapse;
-}
-.ui-helper-clearfix:after {
-  clear: both;
-}
-.ui-helper-clearfix {
-  min-height: 0;
-  /* support: IE7 */
-}
-.ui-helper-zfix {
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  opacity: 0;
-  filter: alpha(opacity=0);
-  /* support: IE8 */
-}
-.ui-front {
-  z-index: 100;
-}
-/* Interaction Cues
-----------------------------------*/
-.ui-state-disabled {
-  cursor: default !important;
-}
-/* Icons
-----------------------------------*/
-/* states and images */
-.ui-icon {
-  display: block;
-  text-indent: -99999px;
-  overflow: hidden;
-  background-repeat: no-repeat;
-}
-/* Misc visuals
-----------------------------------*/
-/* Overlays */
-.ui-widget-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.ui-accordion .ui-accordion-header {
-  display: block;
-  cursor: pointer;
-  position: relative;
-  margin: 2px 0 0 0;
-  padding: .5em .5em .5em .7em;
-  min-height: 0;
-  /* support: IE7 */
-  font-size: 100%;
-}
-.ui-accordion .ui-accordion-icons {
-  padding-left: 2.2em;
-}
-.ui-accordion .ui-accordion-icons .ui-accordion-icons {
-  padding-left: 2.2em;
-}
-.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
-  position: absolute;
-  left: .5em;
-  top: 50%;
-  margin-top: -8px;
+.ui-accordion .ui-accordion-header.ui-accordion-icons {
+  padding-left: 2.8rem;
 }
 .ui-accordion .ui-accordion-content {
-  padding: 1em 2.2em;
-  border-top: 0;
-  overflow: auto;
+  background: #2B3E50;
+  color: #333333;
 }
+/*************************
+* jQuery UI Auto complete *
+**************************/
 .ui-autocomplete {
-  position: absolute;
-  top: 0;
-  left: 0;
-  cursor: default;
+  background: #4E5D6C;
 }
-.ui-button {
-  display: inline-block;
-  position: relative;
-  padding: 0;
-  line-height: normal;
-  margin-right: .1em;
-  cursor: pointer;
-  vertical-align: middle;
-  text-align: center;
-  overflow: visible;
-  /* removes extra width in IE */
+.ui-autocomplete-loading {
+  background: #4E5D6C url('images/ui-anim_basic_16x16.gif') right center no-repeat;
 }
-.ui-button,
-.ui-button:link,
-.ui-button:visited,
-.ui-button:hover,
-.ui-button:active {
-  text-decoration: none;
-}
-/* to make room for the icon, a width needs to be set here */
-.ui-button-icon-only {
-  width: 2.2em;
-}
-/* button elements seem to need a little more width */
-button.ui-button-icon-only {
-  width: 2.4em;
-}
-.ui-button-icons-only {
-  width: 3.4em;
-}
-button.ui-button-icons-only {
-  width: 3.7em;
-}
-/* button text element */
-.ui-button .ui-button-text {
-  display: block;
-  line-height: normal;
-}
-.ui-button-text-only .ui-button-text {
-  padding: .4em 1em;
-}
-.ui-button-icon-only .ui-button-text,
-.ui-button-icons-only .ui-button-text {
-  padding: .4em;
-  text-indent: -9999999px;
-}
-.ui-button-text-icon-primary .ui-button-text,
-.ui-button-text-icons .ui-button-text {
-  padding: .4em 1em .4em 2.1em;
-}
-.ui-button-text-icon-secondary .ui-button-text,
-.ui-button-text-icons .ui-button-text {
-  padding: .4em 2.1em .4em 1em;
-}
-.ui-button-text-icons .ui-button-text {
-  padding-left: 2.1em;
-  padding-right: 2.1em;
-}
-/* no icon support for input elements, provide padding by default */
-input.ui-button {
-  padding: .4em 1em;
-}
-/* button icon element(s) */
-.ui-button-icon-only .ui-icon,
-.ui-button-text-icon-primary .ui-icon,
-.ui-button-text-icon-secondary .ui-icon,
-.ui-button-text-icons .ui-icon,
-.ui-button-icons-only .ui-icon {
-  position: absolute;
-  top: 50%;
-  margin-top: -8px;
-}
-.ui-button-icon-only .ui-icon {
-  left: 50%;
-  margin-left: -8px;
-}
-.ui-button-text-icon-primary .ui-button-icon-primary,
-.ui-button-text-icons .ui-button-icon-primary,
-.ui-button-icons-only .ui-button-icon-primary {
-  left: .5em;
-}
-.ui-button-text-icon-secondary .ui-button-icon-secondary,
-.ui-button-text-icons .ui-button-icon-secondary,
-.ui-button-icons-only .ui-button-icon-secondary {
-  right: .5em;
-}
-/* button sets */
-.ui-buttonset {
-  margin-right: 7px;
-}
-.ui-buttonset .ui-button {
-  margin-left: 0;
-  margin-right: -0.3em;
-}
-/* workarounds */
-/* reset extra padding in Firefox, see h5bp.com/l */
-input.ui-button::-moz-focus-inner,
-button.ui-button::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-.ui-datepicker {
-  width: 17em;
-  padding: .2em .2em 0;
-  display: none;
-}
-.ui-datepicker .ui-datepicker-header {
-  position: relative;
-  padding: .2em 0;
-}
-.ui-datepicker .ui-datepicker-prev,
-.ui-datepicker .ui-datepicker-next {
-  position: absolute;
-  top: 2px;
-  width: 1.8em;
-  height: 1.8em;
-}
-.ui-datepicker .ui-datepicker-prev-hover,
-.ui-datepicker .ui-datepicker-next-hover {
-  top: 1px;
-}
-.ui-datepicker .ui-datepicker-prev {
-  left: 2px;
-}
-.ui-datepicker .ui-datepicker-next {
-  right: 2px;
-}
-.ui-datepicker .ui-datepicker-prev-hover {
-  left: 1px;
-}
-.ui-datepicker .ui-datepicker-next-hover {
-  right: 1px;
-}
-.ui-datepicker .ui-datepicker-prev span,
-.ui-datepicker .ui-datepicker-next span {
-  display: block;
-  position: absolute;
-  left: 50%;
-  margin-left: -8px;
-  top: 50%;
-  margin-top: -8px;
-}
-.ui-datepicker .ui-datepicker-title {
-  margin: 0 2.3em;
-  line-height: 1.8em;
-  text-align: center;
-}
-.ui-datepicker .ui-datepicker-title select {
-  font-size: 1em;
-  margin: 1px 0;
-}
-.ui-datepicker select.ui-datepicker-month,
-.ui-datepicker select.ui-datepicker-year {
-  width: 45%;
-}
-.ui-datepicker table {
-  width: 100%;
-  font-size: .9em;
-  border-collapse: collapse;
-  margin: 0 0 .4em;
-}
-.ui-datepicker th {
-  padding: .7em .3em;
-  text-align: center;
-  font-weight: bold;
-  border: 0;
-}
-.ui-datepicker td {
-  border: 0;
-  padding: 1px;
-}
-.ui-datepicker td span,
-.ui-datepicker td a {
-  display: block;
-  padding: .2em;
-  text-align: right;
-  text-decoration: none;
-}
-.ui-datepicker .ui-datepicker-buttonpane {
-  background-image: none;
-  margin: .7em 0 0 0;
-  padding: 0 .2em;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
-}
-.ui-datepicker .ui-datepicker-buttonpane button {
-  float: right;
-  margin: .5em .2em .4em;
-  cursor: pointer;
-  padding: .2em .6em .3em .6em;
-  width: auto;
-  overflow: visible;
-}
-.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
-  float: left;
-}
-/* with multiple calendars */
-.ui-datepicker.ui-datepicker-multi {
-  width: auto;
-}
-.ui-datepicker-multi .ui-datepicker-group {
-  float: left;
-}
-.ui-datepicker-multi .ui-datepicker-group table {
-  width: 95%;
-  margin: 0 auto .4em;
-}
-.ui-datepicker-multi-2 .ui-datepicker-group {
-  width: 50%;
-}
-.ui-datepicker-multi-3 .ui-datepicker-group {
-  width: 33.3%;
-}
-.ui-datepicker-multi-4 .ui-datepicker-group {
-  width: 25%;
-}
-.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
-.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
-  border-left-width: 0;
-}
-.ui-datepicker-multi .ui-datepicker-buttonpane {
-  clear: left;
-}
-.ui-datepicker-row-break {
-  clear: both;
-  width: 100%;
-  font-size: 0;
-}
-/* RTL support */
-.ui-datepicker-rtl {
-  direction: rtl;
-}
-.ui-datepicker-rtl .ui-datepicker-prev {
-  right: 2px;
-  left: auto;
-}
-.ui-datepicker-rtl .ui-datepicker-next {
-  left: 2px;
-  right: auto;
-}
-.ui-datepicker-rtl .ui-datepicker-prev:hover {
-  right: 1px;
-  left: auto;
-}
-.ui-datepicker-rtl .ui-datepicker-next:hover {
-  left: 1px;
-  right: auto;
-}
-.ui-datepicker-rtl .ui-datepicker-buttonpane {
-  clear: right;
-}
-.ui-datepicker-rtl .ui-datepicker-buttonpane button {
-  float: left;
-}
-.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
-.ui-datepicker-rtl .ui-datepicker-group {
-  float: right;
-}
-.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
-.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
-  border-right-width: 0;
-  border-left-width: 1px;
-}
-.ui-dialog {
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: .2em;
-  outline: 0;
-}
-.ui-dialog .ui-dialog-titlebar {
-  padding: .4em 1em;
-  position: relative;
-}
-.ui-dialog .ui-dialog-title {
-  float: left;
-  margin: .1em 0;
-  white-space: nowrap;
-  /* S.D. July 22nd, 2015 Bug #189608 Buttons for minimize/maximize/etc. are being pushed down by the title after minimize. */
-  /* width: 90%; */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.ui-dialog .ui-dialog-titlebar-close {
-  position: absolute;
-  right: .3em;
-  top: 50%;
-  width: 20px;
-  margin: -10px 0 0 0;
-  padding: 1px;
-  height: 20px;
-}
-.ui-dialog .ui-dialog-content {
-  position: relative;
-  border: 0;
-  padding: .5em 1em;
-  background: none;
-  overflow: auto;
-}
-.ui-dialog .ui-dialog-buttonpane {
-  text-align: left;
-  border-width: 1px 0 0 0;
-  background-image: none;
-  margin-top: .5em;
-  padding: .3em 1em .5em .4em;
-}
-.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-  float: right;
-}
-.ui-dialog .ui-dialog-buttonpane button {
-  margin: .5em .4em .5em 0;
-  cursor: pointer;
-}
-.ui-dialog .ui-resizable-se {
-  width: 12px;
-  height: 12px;
-  right: -5px;
-  bottom: -5px;
-  background-position: 16px 16px;
-}
-.ui-draggable .ui-dialog-titlebar {
-  cursor: move;
-}
-.ui-draggable-handle {
-  -ms-touch-action: none;
-  touch-action: none;
-}
+/*****************
+* jQuery UI Menu *
+******************/
 .ui-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: block;
-  outline: none;
+  background: #4E5D6C;
+  color: #EBEBEB;
 }
 .ui-menu .ui-menu {
   position: absolute;
 }
-.ui-menu .ui-menu-item {
-  position: relative;
-  margin: 0;
-  padding: 3px 1em 3px .4em;
-  cursor: pointer;
-  min-height: 0;
-  /* support: IE7 */
-  /* support: IE10, see #8844 */
-  list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+.ui-widget-content {
+  background: #2B3E50;
+  color: #EBEBEB;
 }
-.ui-menu .ui-menu-divider {
-  margin: 5px 0;
-  height: 0;
-  font-size: 0;
-  line-height: 0;
-  border-width: 1px 0 0 0;
-}
-.ui-menu .ui-state-focus,
-.ui-menu .ui-state-active {
-  margin: -1px;
-}
-/* icon support */
-.ui-menu-icons {
-  position: relative;
-}
-.ui-menu-icons .ui-menu-item {
-  padding-left: 2em;
-}
-/* left-aligned */
-.ui-menu .ui-icon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: .2em;
-  margin: auto 0;
-}
-/* right-aligned */
-.ui-menu .ui-menu-icon {
-  left: auto;
-  right: 0;
-}
-.ui-progressbar {
-  height: 2em;
-  text-align: left;
-  overflow: hidden;
-}
-.ui-progressbar .ui-progressbar-value {
-  margin: -1px;
-  height: 100%;
-}
-.ui-progressbar .ui-progressbar-overlay {
-  background: url("data:image/gif;base64,R0lGODlhKAAoAIABAAAAAP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJAQABACwAAAAAKAAoAAACkYwNqXrdC52DS06a7MFZI+4FHBCKoDeWKXqymPqGqxvJrXZbMx7Ttc+w9XgU2FB3lOyQRWET2IFGiU9m1frDVpxZZc6bfHwv4c1YXP6k1Vdy292Fb6UkuvFtXpvWSzA+HycXJHUXiGYIiMg2R6W459gnWGfHNdjIqDWVqemH2ekpObkpOlppWUqZiqr6edqqWQAAIfkECQEAAQAsAAAAACgAKAAAApSMgZnGfaqcg1E2uuzDmmHUBR8Qil95hiPKqWn3aqtLsS18y7G1SzNeowWBENtQd+T1JktP05nzPTdJZlR6vUxNWWjV+vUWhWNkWFwxl9VpZRedYcflIOLafaa28XdsH/ynlcc1uPVDZxQIR0K25+cICCmoqCe5mGhZOfeYSUh5yJcJyrkZWWpaR8doJ2o4NYq62lAAACH5BAkBAAEALAAAAAAoACgAAAKVDI4Yy22ZnINRNqosw0Bv7i1gyHUkFj7oSaWlu3ovC8GxNso5fluz3qLVhBVeT/Lz7ZTHyxL5dDalQWPVOsQWtRnuwXaFTj9jVVh8pma9JjZ4zYSj5ZOyma7uuolffh+IR5aW97cHuBUXKGKXlKjn+DiHWMcYJah4N0lYCMlJOXipGRr5qdgoSTrqWSq6WFl2ypoaUAAAIfkECQEAAQAsAAAAACgAKAAAApaEb6HLgd/iO7FNWtcFWe+ufODGjRfoiJ2akShbueb0wtI50zm02pbvwfWEMWBQ1zKGlLIhskiEPm9R6vRXxV4ZzWT2yHOGpWMyorblKlNp8HmHEb/lCXjcW7bmtXP8Xt229OVWR1fod2eWqNfHuMjXCPkIGNileOiImVmCOEmoSfn3yXlJWmoHGhqp6ilYuWYpmTqKUgAAIfkECQEAAQAsAAAAACgAKAAAApiEH6kb58biQ3FNWtMFWW3eNVcojuFGfqnZqSebuS06w5V80/X02pKe8zFwP6EFWOT1lDFk8rGERh1TTNOocQ61Hm4Xm2VexUHpzjymViHrFbiELsefVrn6XKfnt2Q9G/+Xdie499XHd2g4h7ioOGhXGJboGAnXSBnoBwKYyfioubZJ2Hn0RuRZaflZOil56Zp6iioKSXpUAAAh+QQJAQABACwAAAAAKAAoAAACkoQRqRvnxuI7kU1a1UU5bd5tnSeOZXhmn5lWK3qNTWvRdQxP8qvaC+/yaYQzXO7BMvaUEmJRd3TsiMAgswmNYrSgZdYrTX6tSHGZO73ezuAw2uxuQ+BbeZfMxsexY35+/Qe4J1inV0g4x3WHuMhIl2jXOKT2Q+VU5fgoSUI52VfZyfkJGkha6jmY+aaYdirq+lQAACH5BAkBAAEALAAAAAAoACgAAAKWBIKpYe0L3YNKToqswUlvznigd4wiR4KhZrKt9Upqip61i9E3vMvxRdHlbEFiEXfk9YARYxOZZD6VQ2pUunBmtRXo1Lf8hMVVcNl8JafV38aM2/Fu5V16Bn63r6xt97j09+MXSFi4BniGFae3hzbH9+hYBzkpuUh5aZmHuanZOZgIuvbGiNeomCnaxxap2upaCZsq+1kAACH5BAkBAAEALAAAAAAoACgAAAKXjI8By5zf4kOxTVrXNVlv1X0d8IGZGKLnNpYtm8Lr9cqVeuOSvfOW79D9aDHizNhDJidFZhNydEahOaDH6nomtJjp1tutKoNWkvA6JqfRVLHU/QUfau9l2x7G54d1fl995xcIGAdXqMfBNadoYrhH+Mg2KBlpVpbluCiXmMnZ2Sh4GBqJ+ckIOqqJ6LmKSllZmsoq6wpQAAAh+QQJAQABACwAAAAAKAAoAAAClYx/oLvoxuJDkU1a1YUZbJ59nSd2ZXhWqbRa2/gF8Gu2DY3iqs7yrq+xBYEkYvFSM8aSSObE+ZgRl1BHFZNr7pRCavZ5BW2142hY3AN/zWtsmf12p9XxxFl2lpLn1rseztfXZjdIWIf2s5dItwjYKBgo9yg5pHgzJXTEeGlZuenpyPmpGQoKOWkYmSpaSnqKileI2FAAACH5BAkBAAEALAAAAAAoACgAAAKVjB+gu+jG4kORTVrVhRlsnn2dJ3ZleFaptFrb+CXmO9OozeL5VfP99HvAWhpiUdcwkpBH3825AwYdU8xTqlLGhtCosArKMpvfa1mMRae9VvWZfeB2XfPkeLmm18lUcBj+p5dnN8jXZ3YIGEhYuOUn45aoCDkp16hl5IjYJvjWKcnoGQpqyPlpOhr3aElaqrq56Bq7VAAAOw==");
-  height: 100%;
-  filter: alpha(opacity=25);
-  /* support: IE8 */
-  opacity: 0.25;
-}
-.ui-progressbar-indeterminate .ui-progressbar-value {
-  background-image: none;
-}
-.ui-resizable {
-  position: relative;
-}
-.ui-resizable-handle {
-  position: absolute;
-  font-size: 0.1px;
-  display: block;
-  -ms-touch-action: none;
-  touch-action: none;
-}
-.ui-resizable-disabled .ui-resizable-handle,
-.ui-resizable-autohide .ui-resizable-handle {
-  display: none;
-}
-.ui-resizable-n {
-  cursor: n-resize;
-  height: 7px;
-  width: 100%;
-  top: -5px;
-  left: 0;
-}
-.ui-resizable-s {
-  cursor: s-resize;
-  height: 7px;
-  width: 100%;
-  bottom: -5px;
-  left: 0;
-}
-.ui-resizable-e {
-  cursor: e-resize;
-  width: 7px;
-  right: -5px;
-  top: 0;
-  height: 100%;
-}
-.ui-resizable-w {
-  cursor: w-resize;
-  width: 7px;
-  left: -5px;
-  top: 0;
-  height: 100%;
-}
-.ui-resizable-se {
-  cursor: se-resize;
-  width: 12px;
-  height: 12px;
-  right: 1px;
-  bottom: 1px;
-}
-.ui-resizable-sw {
-  cursor: sw-resize;
-  width: 9px;
-  height: 9px;
-  left: -5px;
-  bottom: -5px;
-}
-.ui-resizable-nw {
-  cursor: nw-resize;
-  width: 9px;
-  height: 9px;
-  left: -5px;
-  top: -5px;
-}
-.ui-resizable-ne {
-  cursor: ne-resize;
-  width: 9px;
-  height: 9px;
-  right: -5px;
-  top: -5px;
-}
-.ui-selectable {
-  -ms-touch-action: none;
-  touch-action: none;
-}
-.ui-selectable-helper {
-  position: absolute;
-  z-index: 100;
-  border: 1px dotted black;
-}
-.ui-selectmenu-menu {
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: none;
-}
-.ui-selectmenu-menu .ui-menu {
-  overflow: auto;
-  /* Support: IE7 */
-  overflow-x: hidden;
-  padding-bottom: 1px;
-}
-.ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
-  font-size: 1em;
-  font-weight: bold;
-  line-height: 1.5;
-  padding: 2px 0.4em;
-  margin: 0.5em 0 0 0;
-  height: auto;
-  border: 0;
-}
-.ui-selectmenu-open {
-  display: block;
-}
-.ui-selectmenu-button {
-  display: inline-block;
-  overflow: hidden;
-  position: relative;
+.ui-widget-content .ui-menu-item a {
+  color: #EBEBEB;
   text-decoration: none;
-  cursor: pointer;
 }
-.ui-selectmenu-button span.ui-icon {
-  right: 0.5em;
-  left: auto;
-  margin-top: -8px;
-  position: absolute;
-  top: 50%;
+.ui-widget-content .ui-menu-item.ui-state-hover {
+  color: #fff;
+  text-decoration: none;
 }
-.ui-selectmenu-button span.ui-selectmenu-text {
-  text-align: left;
-  padding: 0.4em 2.1em 0.4em 1em;
-  display: block;
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.ui-slider {
+.ui-menu-item {
+  list-style-image: none;
   position: relative;
-  text-align: left;
+  padding: .5rem 1.7rem .5rem .7rem;
+  color: #EBEBEB;
 }
-.ui-slider .ui-slider-handle {
-  position: absolute;
-  z-index: 2;
-  width: 1.2em;
-  height: 1.2em;
-  cursor: default;
-  -ms-touch-action: none;
-  touch-action: none;
+.ui-menu.ui-iggrid-columnmoving-dropdown-list {
+  background: #2B3E50;
+}
+.ui-iggrid-columnmoving-dropdown-ddlistitemicons {
+  padding: .5rem 1.7rem .5rem .7rem;
+}
+.ui-widget-content .ui-menu-item.ui-state-focus {
+  color: #EBEBEB;
+  background: #485563;
+  border: 1px solid #3d4954;
+}
+.ui-widget-content .ui-menu-item.ui-state-focus .ui-menu-icon {
+  color: #EBEBEB;
+}
+.ui-widget-content .ui-menu-item.ui-state-active {
+  color: #fff;
+  background: #DF691A;
+  border: 1px solid #c85e17;
+}
+.ui-menu .ui-menu-item.ui-state-active a,
+.ui-menu .ui-menu-item.ui-state-active a:link,
+.ui-menu .ui-menu-item.ui-state-active a:visited {
+  text-decoration: none;
+  color: #EBEBEB;
+}
+.ui-menu > .ui-menu-item.ui-state-active > a,
+.ui-menu > .ui-menu-item.ui-state-active > a:link,
+.ui-menu > .ui-menu-item.ui-state-active > a:visited {
+  color: #fff;
+}
+.ui-menu-item.ui-state-focus a,
+.ui-menu-item.ui-state-focus a:link,
+.ui-menu-item.ui-state-focus a:visited {
+  color: #EBEBEB;
+  border-color: #c85e17;
+}
+/*******************
+* jQuery UI Button *
+********************/
+.ui-button-text-only {
+  color: #fff;
+  padding: .5rem .7rem;
+}
+/********************
+* jQuery UI Dialog *
+*******************/
+.ui-dialog {
+  background: #546575;
+  border: 1px solid transparent;
+}
+.ui-dialog .ui-dialog-titlebar {
+  background: #f5f5f5;
+  color: #333333;
+  border-color: transparent;
+}
+.ui-dialog .ui-dialog-title {
+  max-width: 100%;
+}
+.ui-dialog .ui-dialog-content {
+  outline-color: transparent;
+}
+.ui-dialog .ui-dialog-buttonpane {
+  position: static;
+  width: 100%;
+}
+.ui-dialog-titlebar .ui-state-hover .ui-icon,
+.ui-dialog-titlebar .ui-state-hover.ui-state-default {
+  color: #ffffff;
+}
+.ui-dialog button.ui-button-icon-only {
+  padding: 0;
+}
+.ui-iggrid-headercaption {
+  background: #fff;
+  border-color: #4E5D6C;
+  border-width: 1px;
+  text-align: center;
+}
+.ui-igdialog {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.ui-dialog,
+.ui-dialog.ui-igdialog {
+  background: #2B3E50;
+  border: 1px solid #ccc;
+  padding: 0;
+}
+.ui-dialog .ui-dialog-titlebar {
+  background: #888;
+  border: 1px solid #777;
+  color: #FFFFFF;
+}
+.ui-dialog .ui-dialog-title,
+.ui-dialog.ui-igdialog .ui-dialog-title {
+  font-weight: normal;
+}
+.ui-dialog .ui-dialog-titlebar.ui-state-focus {
+  background: #DF691A;
+}
+.ui-dialog .ui-state-focus .ui-dialog-title {
+  color: #fff;
+}
+.ui-iggrid-filtertable .ui-igedit.ui-igedit-container {
+  width: 100%;
+}
+/*******************
+* jQuery UI Slider *
+********************/
+.ui-slider {
+  background: #4E5D6C;
 }
 .ui-slider .ui-slider-range {
-  position: absolute;
-  z-index: 1;
-  font-size: .7em;
-  display: block;
-  border: 0;
-  background-position: 0 0;
+  background: #DF691A;
 }
-/* support: IE8 - See #6727 */
-.ui-slider.ui-state-disabled .ui-slider-handle,
-.ui-slider.ui-state-disabled .ui-slider-range {
-  filter: inherit;
+.ui-slider-handle:focus {
+  outline: none;
+  background: #DF691A;
 }
-.ui-slider-horizontal {
-  height: 10px;
+.ui-widget.ui-widget-content .ui-slider-handle.ui-state-focus {
+  background: #DF691A;
 }
-.ui-slider-horizontal .ui-slider-handle {
-  top: -0.3em;
-  margin-left: -0.6em;
-}
-.ui-slider-horizontal .ui-slider-range {
-  top: 0;
-  height: 100%;
-}
-.ui-slider-horizontal .ui-slider-range-min {
-  left: 0;
-}
-.ui-slider-horizontal .ui-slider-range-max {
-  right: 0;
-}
-.ui-slider-vertical {
-  width: .8em;
-  height: 100px;
-}
-.ui-slider-vertical .ui-slider-handle {
-  left: -0.3em;
-  margin-left: 0;
-  margin-bottom: -0.6em;
-}
-.ui-slider-vertical .ui-slider-range {
-  left: 0;
-  width: 100%;
-}
-.ui-slider-vertical .ui-slider-range-min {
-  bottom: 0;
-}
-.ui-slider-vertical .ui-slider-range-max {
-  top: 0;
-}
-.ui-sortable-handle {
-  -ms-touch-action: none;
-  touch-action: none;
-}
-.ui-spinner {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  padding: 0;
-  vertical-align: middle;
-}
-.ui-spinner-input {
-  border: none;
-  background: none;
-  color: inherit;
-  padding: 0;
-  margin: .2em 0;
-  vertical-align: middle;
-  margin-left: .4em;
-  margin-right: 22px;
-}
-.ui-spinner-button {
-  width: 16px;
-  height: 50%;
-  font-size: .5em;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  position: absolute;
-  cursor: default;
-  display: block;
-  overflow: hidden;
-  right: 0;
-}
-/* more specificity required here to override default borders */
-.ui-spinner a.ui-spinner-button {
-  border-top: none;
-  border-bottom: none;
-  border-right: none;
-}
-/* vertically center icon */
-.ui-spinner .ui-icon {
-  position: absolute;
-  margin-top: -8px;
-  top: 50%;
-  left: 0;
-}
-.ui-spinner-up {
-  top: 0;
-}
-.ui-spinner-down {
-  bottom: 0;
-}
-/* TR overrides */
-.ui-spinner .ui-icon-triangle-1-s {
-  /* need to fix icons sprite */
-  background-position: -65px -16px;
-}
+/*****************
+* jQuery UI Tabs *
+******************/
 .ui-tabs {
-  position: relative;
-  /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-  padding: .2em;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.ui-tabs li a {
+  outline: none;
+}
+.ui-tabs.ui-widget.ui-widget-content {
+  border: none;
 }
 .ui-tabs .ui-tabs-nav {
-  margin: 0;
-  padding: .2em .2em 0;
+  padding: 0;
+  border: none;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
 }
 .ui-tabs .ui-tabs-nav li {
-  list-style: none;
-  float: left;
-  position: relative;
-  top: 0;
-  margin: 1px .2em 0 0;
-  border-bottom-width: 0;
-  padding: 0;
-  white-space: nowrap;
+  color: #DF691A;
 }
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-  float: left;
-  padding: .5em 1em;
-  text-decoration: none;
-}
-.ui-tabs .ui-tabs-nav li.ui-tabs-active {
-  margin-bottom: -1px;
-  padding-bottom: 1px;
-}
-.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
-.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
-.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
-  cursor: text;
-}
-.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
-  cursor: pointer;
+.ui-tabs .ui-tabs-nav li:focus {
+  outline-color: transparent;
 }
 .ui-tabs .ui-tabs-panel {
-  display: block;
-  border-width: 0;
-  padding: 1em 1.4em;
-  background: none;
+  border: 1px solid transparent;
+  border-top-width: 0;
+  margin-top: -1px;
 }
+.ui-tabs .ui-tabs-nav li.ui-state-default {
+  background: transparent;
+  border-color: transparent;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-default .ui-tabs-anchor {
+  /*custom default state colour */
+  color: #DF691A;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-hover {
+  background: #4E5D6C;
+  border-bottom: 1px solid #4E5D6C;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-hover .ui-tabs-anchor {
+  /*custom hover state colour */
+  color: #DF691A;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-active {
+  background-color: #2B3E50;
+  border: 1px solid transparent;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-active .ui-tabs-anchor {
+  /*custom active state colour */
+  color: #EBEBEB;
+}
+/********************
+* jQuery UI Tooltip *
+*********************/
 .ui-tooltip {
-  padding: 8px;
-  position: absolute;
-  z-index: 9999;
-  max-width: 300px;
-  -webkit-box-shadow: 0 0 5px #aaa;
-  box-shadow: 0 0 5px #aaa;
+  max-width: 200px;
+  opacity: 0.9;
+  color: #fff;
+  background: #000;
 }
-body .ui-tooltip {
-  border-width: 2px;
+.ui-tooltip.ui-widget,
+.ui-iggrid .ui-tooltip.ui-widget {
+  background-color: #000;
 }
-/* jQuery UI CSS theme */
+/************************
+* jQuery UI Date picker *
+*************************/
+.ui-datepicker {
+  background: #546575;
+}
+.ui-datepicker .ui-datepicker-header {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-datepicker .ui-datepicker-header .ui-icon {
+  color: #fff;
+}
+.ui-datepicker .ui-datepicker-header .ui-state-hover,
+.ui-datepicker .ui-datepicker-header .ui-state-disabled {
+  background: transparent;
+  border: 1px solid transparent;
+}
+.ui-datepicker thead {
+  background: #f5f5f5;
+}
+.ui-datepicker th {
+  color: #333333;
+  font-size: 0.9em;
+}
+.ui-datepicker .ui-datepicker-calendar a {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #EBEBEB;
+}
+.ui-datepicker .ui-datepicker-calendar a.ui-state-active {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+}
+.ui-datepicker .ui-datepicker-calendar a.ui-state-hover {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
+.ui-datepicker .ui-datepicker-calendar a.ui-state-highlight.ui-state-hover,
+.ui-datepicker .ui-datepicker-calendar a.ui-state-highlight.ui-state-focus,
+.ui-datepicker .ui-datepicker-calendar a.ui-state-highlight.ui-state-active {
+  color: #fff;
+}
+.ui-datepicker .ui-datepicker-calendar a.ui-state-highlight {
+  color: #DF691A;
+  font-weight: bold;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-state-disabled {
+  border: 1px solid transparent;
+  background-color: #546575;
+  color: 1;
+  text-align: right;
+  padding-right: 5px;
+}
+/********************
+* jQuery UI Spinner *
+*********************/
+.touch .ui-spinner-button,
+.touchevents .ui-spinne r-button,
+.pointerevents .ui-spinner-button {
+  width: 1.4em;
+  height: 1.4em;
+  display: inline-block;
+  position: relative;
+}
+/************************
+* jQuery UI Progressbar *
+************************/
+.ui-progressbar {
+  height: 13px;
+  background: #4E5D6C;
+}
+.ui-progressbar .ui-progressbar-value {
+  background: #DF691A;
+}
 /* Component containers
 ----------------------------------*/
 .ui-widget {
@@ -928,64 +524,149 @@ body .ui-tooltip {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1em;
 }
-.ui-widget-content {
-  border: 1px solid #19242f;
-  background: #2B3E50;
-  color: #EBEBEB;
+.ui-widget.ui-widget-content {
+  border: 1px solid #4E5D6C;
 }
-.ui-widget a {
+.ui-widget-content a {
   color: #DF691A;
 }
-.ui-widget a:hover {
+.ui-widget-content a:hover {
   color: #DF691A;
 }
 .ui-widget-header {
-  background: #DF691A;
-  border: 1px solid #b15315;
-  color: #fff;
+  background: transparent;
+  border-color: #4E5D6C;
   font-weight: normal;
 }
 .ui-widget-header a {
   color: #fff;
 }
+th.ui-widget-header {
+  color: #fff;
+}
 /* Interaction states
 ----------------------------------*/
 .ui-state-default,
-.ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
 }
 .ui-state-default a,
 .ui-state-default a:link,
-.ui-state-default a:visited {
-  color: #fff;
-}
-.ui-state-hover,
-.ui-widget-content .ui-state-hover,
-.ui-widget-header .ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
-  color: #fff;
-}
-.ui-state-focus,
-.ui-widget-content .ui-state-focus,
-.ui-widget-header .ui-state-focus {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
-  color: #fff;
-}
+.ui-state-default a:visited,
+a:visited,
 .ui-state-hover a,
-.ui-state-hover a:hover {
+.ui-state-hover a:hover,
+.ui-state-hover a:link,
+.ui-state-hover a:visited,
+.ui-state-focus a,
+.ui-state-focus a:link {
+  color: #DF691A;
+}
+.ui-igdialog-header a,
+.ui-igdialog-header.ui-state-focus a,
+.ui-igdialog-header a:link,
+.ui-igdialog-header.ui-state-focus a:link {
+  color: #fff;
+  background: transparent;
+  border: none;
+}
+html .ui-button.ui-state-disabled:hover,
+html .ui-button.ui-state-disabled:active {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button,
+.ui-iggrid-modaldialog-caption-buttoncontainer a.ui-button,
+.ui-iggrid-modaldialog-caption-buttoncontainer a:link.ui-button,
+.ui-iggrid-modaldialog-caption-buttoncontainer a:visited.ui-button {
+  font-size: 1.2rem;
+  background: transparent;
+  border-color: transparent;
+  color: #fff;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button:hover,
+.ui-iggrid-modaldialog-caption-buttoncontainer a.ui-button:hover,
+.ui-iggrid-modaldialog-caption-buttoncontainer a:link.ui-button:hover,
+.ui-iggrid-modaldialog-caption-buttoncontainer a:visited.ui-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.ui-button,
+a.ui-button,
+a:link.ui-button,
+a:visited.ui-button,
+[type="button"] {
+  border: 1px solid transparent;
+  background: #4E5D6C;
+  color: #fff;
+}
+.ui-button:hover,
+a.ui-button:hover,
+a:link.ui-button:hover,
+a:visited.ui-button:hover,
+[type="button"]:hover,
+.ui-button:active,
+a.ui-button:active,
+a:link.ui-button:active,
+a:visited.ui-button:active,
+[type="button"]:active,
+.ui-button:focus,
+a.ui-button:focus,
+a:link.ui-button:focus,
+a:visited.ui-button:focus,
+[type="button"]:focus {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
+.ui-button.ui-state-hover,
+a.ui-button.ui-state-hover,
+a:link.ui-button.ui-state-hover,
+a:visited.ui-button.ui-state-hover {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  background: #DF691A;
+  border-color: transparent;
+}
+.ui-state-hover {
+  border-color: #DF691A;
+}
+.ui-state-focus,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-widget-header .ui-state-focus {
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
+}
+.ui-widget-content .ui-state-focus {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
+.ui-visual-focus {
+  box-shadow: 0 0 2px 1px #DF691A;
+}
+.ui-icon-background {
+  border: #DF691A;
+  background-color: #fff;
 }
 .ui-state-active a,
 .ui-state-active a:link,
@@ -994,27 +675,12 @@ body .ui-tooltip {
     text-decoration: none;
     */
   text-decoration: underline;
-}
-.ui-widget-header.ui-state-default {
-  background: #DF691A;
-  color: #fff;
-  font-weight: normal;
-  border: 0;
+  color: #EBEBEB;
 }
 .ui-widget-header.ui-state-active {
   background: #DF691A;
   color: #fff;
   font-weight: normal;
-}
-.ui-widget-header.ui-state-hover {
-  font-weight: normal;
-}
-.ui-widget-header.ui-state-default a,
-.ui-widget-header.ui-state-active a,
-.ui-widget-header.ui-state-hover a {
-  color: #fff;
-  font-weight: normal;
-  border: 0;
 }
 /* Bug #741 S.D. 20.04.2017 When bootstrap theme used with bootstrap css text in editor can't be seen when editor has focus*/
 .ui-state-focus input:focus {
@@ -1029,14 +695,27 @@ body .ui-tooltip {
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+}
+.ui-state-checked {
+  border: 1px solid #c15b17;
+  background: #DF691A;
 }
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
   color: #fff;
+}
+.ui-iggrid-colasc .ui-state-highlight {
+  border-bottom: 0;
+  border-top: 0;
+}
+.ui-state-highlight p,
+.ui-state-error p {
+  font-size: 0.8em;
+  line-height: 16px;
 }
 .ui-state-error,
 .ui-widget-content .ui-state-error,
@@ -1069,14 +748,12 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-disabled,
 .ui-widget-header .ui-state-disabled {
   opacity: .35;
-  nowhitespace: afterproperty;
+  /*
+     Marin Popov - This is NOT valid css
+     nowhitespace: afterproperty;
+ */
   filter: alpha(opacity=35);
-  cursor: default!important;
-}
-.ui-state-highlight p,
-.ui-state-error p {
-  font-size: 0.8em;
-  line-height: 16px;
+  cursor: default !important;
 }
 /* Icons
 ----------------------------------*/
@@ -1086,575 +763,51 @@ body .ui-tooltip {
   height: 16px;
   background-position: 16px 16px;
 }
-.ui-widget-header .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
-}
-.ui-icon,
-.ui-widget-content .ui-icon,
-.ui-state-default .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
-}
 .ui-state-default .ui-widget-header.ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #222222;
 }
 .ui-state-focus > .ui-icon,
 .ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-igedit.ui-state-focus .ui-igcombo-button .ui-icon,
 .ui-iggrid .ui-igcombo.ui-state-focus .ui-igcombo-button .ui-icon,
 .ui-igcombo-button-focus .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  color: #888888;
 }
-.ui-state-hover .ui-icon,
-.ui-state-hover.ui-state-default .ui-icon,
-.ui-igedit.ui-state-hover .ui-igedit-button-common.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-focus .ui-igedit-button-common.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-active .ui-igedit-button-common.ui-state-hover .ui-icon,
-.ui-state-hover .ui-igcombo-button .ui-igcombo-clearicon.ui-icon,
-.ui-state-default.ui-state-hover.ui-igedit-button .ui-icon,
-.ui-state-default.ui-state-hover.ui-igcombo-button .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+.ui-state-hover.ui-state-default.ui-iggrid-button .ui-icon,
+.ui-state-default.ui-state-hover.ui-igcombo-button {
+  color: #ffffff;
 }
-.ui-state-active .ui-icon,
-.ui-state-active.ui-state-hover .ui-icon,
+.ui-widget-header.ui-state-default.ui-state-active .ui-icon {
+  color: #888888;
+}
+.ui-state-hover.ui-state-default .ui-igcombo-clearicon.ui-icon {
+  color: #888888;
+}
 .ui-igcombo-button.ui-state-active .ui-icon,
 .ui-igedit-button.ui-state-active .ui-icon,
-.ui-iggrid .ui-igcombo-button.ui-state-active .ui-icon,
-.ui-igedit.ui-state-focus .ui-igedit-button-common .ui-icon,
-.ui-igedit.ui-state-active .ui-igedit-button-common .ui-icon,
-.ui-state-hover.ui-state-highlight.ui-igedit-button .ui-icon,
-.ui-state-hover.ui-state-highlight.ui-igcombo-button .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+.ui-iggrid .ui-igcombo-button.ui-state-active .ui-icon {
+  color: #ffffff;
 }
 .ui-iggrid .ui-state-hover.ui-state-highlight.ui-igedit-button .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
-}
-.ui-state-highlight .ui-icon,
-.ui-state-highlight.ui-igedit-button .ui-icon,
-.ui-state-highlight.ui-igcombo-button .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #222222;
 }
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #222222;
 }
 .ui-igcombo-button .ui-state-default {
-  border: 0!important;
+  border: 0 !important;
 }
 /* positioning */
-.ui-icon-carat-1-n {
-  background-position: 0 0;
-}
-.ui-icon-carat-1-ne {
-  background-position: -16px 0;
-}
-.ui-icon-carat-1-e {
-  background-position: -32px 0;
-}
-.ui-icon-carat-1-se {
-  background-position: -48px 0;
-}
-.ui-icon-carat-1-s {
-  background-position: -64px 0;
-}
-.ui-icon-carat-1-sw {
-  background-position: -80px 0;
-}
-.ui-icon-carat-1-w {
-  background-position: -96px 0;
-}
-.ui-icon-carat-1-nw {
-  background-position: -112px 0;
-}
-.ui-icon-carat-2-n-s {
-  background-position: -128px 0;
-}
-.ui-icon-carat-2-e-w {
-  background-position: -144px 0;
-}
-.ui-icon-triangle-1-n {
-  background-position: 0 -16px;
-}
-.ui-icon-triangle-1-ne {
-  background-position: -16px -16px;
-}
-.ui-icon-triangle-1-e {
-  background-position: -32px -16px;
-}
-.ui-icon-triangle-1-se {
-  background-position: -48px -16px;
-}
-.ui-icon-triangle-1-s {
-  background-position: -64px -16px;
-}
-.ui-icon-triangle-1-sw {
-  background-position: -80px -16px;
-}
-.ui-icon-triangle-1-w {
-  background-position: -96px -16px;
-}
-.ui-icon-triangle-1-nw {
-  background-position: -112px -16px;
-}
-.ui-icon-triangle-2-n-s {
-  background-position: -128px -16px;
-}
-.ui-icon-triangle-2-e-w {
-  background-position: -144px -16px;
-}
-.ui-icon-arrow-1-n {
-  background-position: 0 -32px;
-}
-.ui-icon-arrow-1-ne {
-  background-position: -16px -32px;
-}
-.ui-icon-arrow-1-e {
-  background-position: -32px -32px;
-}
-.ui-icon-arrow-1-se {
-  background-position: -48px -32px;
-}
-.ui-icon-arrow-1-s {
-  background-position: -64px -32px;
-}
-.ui-icon-arrow-1-sw {
-  background-position: -80px -32px;
-}
-.ui-icon-arrow-1-w {
-  background-position: -96px -32px;
-}
-.ui-icon-arrow-1-nw {
-  background-position: -112px -32px;
-}
-.ui-icon-arrow-2-n-s {
-  background-position: -128px -32px;
-}
-.ui-icon-arrow-2-ne-sw {
-  background-position: -144px -32px;
-}
-.ui-icon-arrow-2-e-w {
-  background-position: -160px -32px;
-}
-.ui-icon-arrow-2-se-nw {
-  background-position: -176px -32px;
-}
-.ui-icon-arrowstop-1-n {
-  background-position: -192px -32px;
-}
-.ui-icon-arrowstop-1-e {
-  background-position: -208px -32px;
-}
-.ui-icon-arrowstop-1-s {
-  background-position: -224px -32px;
-}
-.ui-icon-arrowstop-1-w {
-  background-position: -240px -32px;
-}
-.ui-icon-arrowthick-1-n {
-  background-position: 0 -48px;
-}
-.ui-icon-arrowthick-1-ne {
-  background-position: -16px -48px;
-}
-.ui-icon-arrowthick-1-e {
-  background-position: -32px -48px;
-}
-.ui-icon-arrowthick-1-se {
-  background-position: -48px -48px;
-}
-.ui-icon-arrowthick-1-s {
-  background-position: -64px -48px;
-}
-.ui-icon-arrowthick-1-sw {
-  background-position: -80px -48px;
-}
-.ui-icon-arrowthick-1-w {
-  background-position: -96px -48px;
-}
-.ui-icon-arrowthick-1-nw {
-  background-position: -112px -48px;
-}
-.ui-icon-arrowthick-2-n-s {
-  background-position: -128px -48px;
-}
-.ui-icon-arrowthick-2-ne-sw {
-  background-position: -144px -48px;
-}
-.ui-icon-arrowthick-2-e-w {
-  background-position: -160px -48px;
-}
-.ui-icon-arrowthick-2-se-nw {
-  background-position: -176px -48px;
-}
-.ui-icon-arrowthickstop-1-n {
-  background-position: -192px -48px;
-}
-.ui-icon-arrowthickstop-1-e {
-  background-position: -208px -48px;
-}
-.ui-icon-arrowthickstop-1-s {
-  background-position: -224px -48px;
-}
-.ui-icon-arrowthickstop-1-w {
-  background-position: -240px -48px;
-}
-.ui-icon-arrowreturnthick-1-w {
-  background-position: 0 -64px;
-}
-.ui-icon-arrowreturnthick-1-n {
-  background-position: -16px -64px;
-}
-.ui-icon-arrowreturnthick-1-e {
-  background-position: -32px -64px;
-}
-.ui-icon-arrowreturnthick-1-s {
-  background-position: -48px -64px;
-}
-.ui-icon-arrowreturn-1-w {
-  background-position: -64px -64px;
-}
-.ui-icon-arrowreturn-1-n {
-  background-position: -80px -64px;
-}
-.ui-icon-arrowreturn-1-e {
-  background-position: -96px -64px;
-}
-.ui-icon-arrowreturn-1-s {
-  background-position: -112px -64px;
-}
-.ui-icon-arrowrefresh-1-w {
-  background-position: -128px -64px;
-}
-.ui-icon-arrowrefresh-1-n {
-  background-position: -144px -64px;
-}
-.ui-icon-arrowrefresh-1-e {
-  background-position: -160px -64px;
-}
-.ui-icon-arrowrefresh-1-s {
-  background-position: -176px -64px;
-}
-.ui-icon-arrow-4 {
-  background-position: 0 -80px;
-}
-.ui-icon-arrow-4-diag {
-  background-position: -16px -80px;
-}
-.ui-icon-extlink {
-  background-position: -32px -80px;
-}
-.ui-icon-newwin {
-  background-position: -48px -80px;
-}
-.ui-icon-refresh {
-  background-position: -64px -80px;
-}
-.ui-icon-shuffle {
-  background-position: -80px -80px;
-}
-.ui-icon-transfer-e-w {
-  background-position: -96px -80px;
-}
-.ui-icon-transferthick-e-w {
-  background-position: -112px -80px;
-}
-.ui-icon-folder-collapsed {
-  background-position: 0 -96px;
-}
-.ui-icon-folder-open {
-  background-position: -16px -96px;
-}
-.ui-icon-document {
-  background-position: -32px -96px;
-}
-.ui-icon-document-b {
-  background-position: -48px -96px;
-}
-.ui-icon-note {
-  background-position: -64px -96px;
-}
-.ui-icon-mail-closed {
-  background-position: -80px -96px;
-}
-.ui-icon-mail-open {
-  background-position: -96px -96px;
-}
-.ui-icon-suitcase {
-  background-position: -112px -96px;
-}
-.ui-icon-comment {
-  background-position: -128px -96px;
-}
-.ui-icon-person {
-  background-position: -144px -96px;
-}
-.ui-icon-print {
-  background-position: -160px -96px;
-}
-.ui-icon-trash {
-  background-position: -176px -96px;
-}
-.ui-icon-locked {
-  background-position: -192px -96px;
-}
-.ui-icon-unlocked {
-  background-position: -208px -96px;
-}
-.ui-icon-bookmark {
-  background-position: -224px -96px;
-}
-.ui-icon-tag {
-  background-position: -240px -96px;
-}
-.ui-icon-home {
-  background-position: 0 -112px;
-}
-.ui-icon-flag {
-  background-position: -16px -112px;
-}
-.ui-icon-calendar {
-  background-position: -32px -112px;
-}
-.ui-icon-cart {
-  background-position: -48px -112px;
-}
-.ui-icon-pencil {
-  background-position: -64px -112px;
-}
-.ui-icon-clock {
-  background-position: -80px -112px;
-}
-.ui-icon-disk {
-  background-position: -96px -112px;
-}
-.ui-icon-calculator {
-  background-position: -112px -112px;
-}
-.ui-icon-zoomin {
-  background-position: -128px -112px;
-}
-.ui-icon-zoomout {
-  background-position: -144px -112px;
-}
-.ui-icon-search {
-  background-position: -160px -112px;
-}
-.ui-icon-wrench {
-  background-position: -176px -112px;
-}
-.ui-icon-gear {
-  background-position: -192px -112px;
-}
-.ui-icon-heart {
-  background-position: -208px -112px;
-}
-.ui-icon-star {
-  background-position: -224px -112px;
-}
-.ui-icon-link {
-  background-position: -240px -112px;
-}
-.ui-icon-cancel {
-  background-position: 0 -128px;
-}
-.ui-icon-plus {
-  background-position: -16px -128px;
-}
-.ui-icon-plusthick {
-  background-position: -32px -128px;
-}
-.ui-icon-minus {
-  background-position: -48px -128px;
-}
-.ui-icon-minusthick {
-  background-position: -64px -128px;
-}
-.ui-icon-close {
-  background-position: -80px -128px;
-}
-.ui-icon-closethick {
-  background-position: -96px -128px;
-}
-.ui-icon-key {
-  background-position: -112px -128px;
-}
-.ui-icon-lightbulb {
-  background-position: -128px -128px;
-}
-.ui-icon-scissors {
-  background-position: -144px -128px;
-}
-.ui-icon-clipboard {
-  background-position: -160px -128px;
-}
-.ui-icon-copy {
-  background-position: -176px -128px;
-}
-.ui-icon-contact {
-  background-position: -192px -128px;
-}
-.ui-icon-image {
-  background-position: -208px -128px;
-}
-.ui-icon-video {
-  background-position: -224px -128px;
-}
-.ui-icon-script {
-  background-position: -240px -128px;
-}
-.ui-icon-alert {
-  background-position: 0 -144px;
-}
-.ui-icon-info {
-  background-position: -16px -144px;
-}
-.ui-icon-notice {
-  background-position: -32px -144px;
-}
-.ui-icon-help {
-  background-position: -48px -144px;
-}
-.ui-icon-check {
-  background-position: -64px -144px;
-}
-.ui-icon-bullet {
-  background-position: -80px -144px;
-}
-.ui-icon-radio-on {
-  background-position: -96px -144px;
-}
-.ui-icon-radio-off {
-  background-position: -112px -144px;
-}
-.ui-icon-pin-w {
-  background-position: -128px -144px;
-}
-.ui-icon-pin-s {
-  background-position: -144px -144px;
-}
-.ui-icon-play {
-  background-position: 0 -160px;
-}
-.ui-icon-pause {
-  background-position: -16px -160px;
-}
-.ui-icon-seek-next {
-  background-position: -32px -160px;
-}
-.ui-icon-seek-prev {
-  background-position: -48px -160px;
-}
-.ui-icon-seek-end {
-  background-position: -64px -160px;
-}
-.ui-icon-seek-start {
-  background-position: -80px -160px;
-}
-/* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
-.ui-icon-seek-first {
-  background-position: -80px -160px;
-}
-.ui-icon-stop {
-  background-position: -96px -160px;
-}
-.ui-icon-eject {
-  background-position: -112px -160px;
-}
-.ui-icon-volume-off {
-  background-position: -128px -160px;
-}
-.ui-icon-volume-on {
-  background-position: -144px -160px;
-}
-.ui-icon-power {
-  background-position: 0 -176px;
-}
-.ui-icon-signal-diag {
-  background-position: -16px -176px;
-}
-.ui-icon-signal {
-  background-position: -32px -176px;
-}
-.ui-icon-battery-0 {
-  background-position: -48px -176px;
-}
-.ui-icon-battery-1 {
-  background-position: -64px -176px;
-}
-.ui-icon-battery-2 {
-  background-position: -80px -176px;
-}
-.ui-icon-battery-3 {
-  background-position: -96px -176px;
-}
-.ui-icon-circle-plus {
-  background-position: 0 -192px;
-}
-.ui-icon-circle-minus {
-  background-position: -16px -192px;
-}
-.ui-icon-circle-close {
-  background-position: -32px -192px;
-}
-.ui-icon-circle-triangle-e {
-  background-position: -48px -192px;
-}
-.ui-icon-circle-triangle-s {
-  background-position: -64px -192px;
-}
-.ui-icon-circle-triangle-w {
-  background-position: -80px -192px;
-}
-.ui-icon-circle-triangle-n {
-  background-position: -96px -192px;
-}
-.ui-icon-circle-arrow-e {
-  background-position: -112px -192px;
-}
-.ui-icon-circle-arrow-s {
-  background-position: -128px -192px;
-}
-.ui-icon-circle-arrow-w {
-  background-position: -144px -192px;
-}
-.ui-icon-circle-arrow-n {
-  background-position: -160px -192px;
-}
-.ui-icon-circle-zoomin {
-  background-position: -176px -192px;
-}
-.ui-icon-circle-zoomout {
-  background-position: -192px -192px;
-}
-.ui-icon-circle-check {
-  background-position: -208px -192px;
-}
-.ui-icon-circlesmall-plus {
-  background-position: 0 -208px;
-}
-.ui-icon-circlesmall-minus {
-  background-position: -16px -208px;
-}
-.ui-icon-circlesmall-close {
-  background-position: -32px -208px;
-}
-.ui-icon-squaresmall-plus {
-  background-position: -48px -208px;
-}
-.ui-icon-squaresmall-minus {
-  background-position: -64px -208px;
-}
-.ui-icon-squaresmall-close {
-  background-position: -80px -208px;
-}
 /* Scheduler icons */
 .ui-igscheduler .ui-igscheduler-tabs.ui-igscheduler-tabs-selected .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #222222;
 }
 .ui-igscheduler .ui-igscheduler-tabs:hover .ui-icon,
 .ui-igscheduler .ui-igscheduler-today-button:hover .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #222222;
 }
 .ui-igscheduler .ui-icon-calendar-day {
   background-position: -96px -208px;
@@ -1666,21 +819,6 @@ body .ui-tooltip {
   background-position: -128px -208px;
 }
 /* Scheduler icons END */
-.ui-icon-grip-dotted-vertical {
-  background-position: 0 -224px;
-}
-.ui-icon-grip-dotted-horizontal {
-  background-position: -16px -224px;
-}
-.ui-icon-grip-solid-vertical {
-  background-position: -32px -224px;
-}
-.ui-icon-grip-solid-horizontal {
-  background-position: -48px -224px;
-}
-.ui-icon-gripsmall-diagonal-se {
-  background-position: -64px -224px;
-}
 .ui-icon-grip-diagonal-se,
 .ui-dialog .ui-icon-grip-diagonal-se {
   background-position: -80px -224px;
@@ -1688,27 +826,36 @@ body .ui-tooltip {
 /* Misc visuals
 ----------------------------------*/
 /* Corner radius */
-.ui-corner-all,
-.ui-corner-top,
-.ui-corner-left,
+.ui-corner-all {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.ui-corner-top {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.ui-corner-left {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.ui-corner-right {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
 .ui-corner-tl {
   border-top-left-radius: 0;
 }
-.ui-corner-all,
-.ui-corner-top,
-.ui-corner-right,
 .ui-corner-tr {
   border-top-right-radius: 0;
 }
-.ui-corner-all,
-.ui-corner-bottom,
-.ui-corner-left,
+.ui-corner-bottom {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 .ui-corner-bl {
   border-bottom-left-radius: 0;
 }
-.ui-corner-all,
-.ui-corner-bottom,
-.ui-corner-right,
 .ui-corner-br {
   border-bottom-right-radius: 0;
 }
@@ -1716,8 +863,7 @@ body .ui-tooltip {
 .ui-widget-overlay {
   background: #000;
   opacity: 0.5;
-  filter: alpha(opacity=60) !important;
-  /*!important needed for ie7 and ie8*/
+  filter: alpha(opacity=60);
 }
 .ui-widget-shadow {
   margin: -5px 0 0 -5px;
@@ -1726,220 +872,6 @@ body .ui-tooltip {
   opacity: .20;
   filter: alpha(opacity=20);
 }
-/*
- * jQuery UI Accordion Overrides
- */
-.ui-accordion .ui-accordion-content {
-  background: #546575;
-  padding: 15px;
-  color: #333333;
-}
-/*
- * jQuery UI Autocomplete Overrides
- */
-.ui-autocomplete {
-  background: #4E5D6C;
-}
-.ui-autocomplete-loading {
-  background: #4E5D6C url('images/ui-anim_basic_16x16.gif') right center no-repeat;
-}
-/*
- * jQuery UI Menu Overrides
- */
-.ui-menu {
-  background: #4E5D6C;
-  color: #EBEBEB;
-}
-.ui-menu .ui-menu-item.ui-state-focus {
-  color: #EBEBEB;
-  background: #485563;
-  border: 1px solid #3d4954;
-}
-.ui-menu .ui-menu-item.ui-state-active {
-  color: #fff;
-  background: #DF691A;
-  border: 1px solid #c85e17;
-}
-.ui-menu .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
-}
-.ui-menu .ui-menu-item.ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
-}
-.ui-menu .ui-menu-item.ui-state-active .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
-}
-/*
- * jQuery UI Button Overrides
- */
-.ui-button .ui-button-text {
-  color: #fff;
-}
-/*
- * jQuery UI Dialog Overrides
- */
-.ui-dialog {
-  background: #546575;
-  border: 1px solid transparent;
-}
-.ui-dialog .ui-dialog-titlebar {
-  background: #f5f5f5;
-  color: #333333;
-  border-color: transparent;
-}
-.ui-dialog .ui-dialog-titlebar.ui-state-focus {
-  background: #DF691A;
-}
-.ui-dialog .ui-state-focus .ui-dialog-title {
-  color: #fff;
-}
-/*
- * jQuery UI Slider Overrides
- */
-.ui-slider {
-  background: #4E5D6C;
-}
-.ui-slider .ui-slider-range {
-  background: #DF691A;
-}
-/*
- * jQuery UI Tabs Overrides
- */
-.ui-tabs {
-  background: transparent;
-  border: 0px none;
-}
-.ui-tabs .ui-tabs-nav {
-  padding: 0;
-  background: transparent;
-  border: 0 none;
-  border-bottom: 1px solid transparent;
-  border-radius: 0;
-}
-.ui-tabs .ui-tabs-nav li {
-  color: #DF691A;
-}
-.ui-tabs .ui-tabs-panel {
-  border: 1px solid transparent;
-  border-top-width: 0;
-  margin-top: -1px;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-default {
-  background: transparent;
-  border-color: transparent;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-default a {
-  /*custom default state colour */
-  color: #DF691A;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-hover {
-  background: #4E5D6C;
-  border-bottom: 1px solid #4E5D6C;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-hover a {
-  /*custom hover state colour */
-  color: #DF691A;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-active {
-  background-color: #2B3E50;
-  border: 1px solid #4E5D6C;
-  border-bottom-color: transparent;
-  cursor: default;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-active a {
-  /*custom active state colour */
-  color: #EBEBEB;
-}
-/*
- * jQuery UI Tooltip Overrides
- */
-.ui-tooltip {
-  max-width: 200px;
-  opacity: 0.9;
-  color: #fff;
-  background: #000;
-}
-.ui-tooltip.ui-widget,
-.ui-iggrid .ui-tooltip.ui-widget {
-  background-color: #000;
-}
-/*
- * jQuery UI Datepicker Overrides
- */
-.ui-datepicker {
-  background: #546575;
-}
-.ui-datepicker .ui-datepicker-header {
-  background: #DF691A;
-  color: #fff;
-}
-.ui-datepicker .ui-widget-header .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
-}
-.ui-datepicker .ui-datepicker-prev .ui-icon {
-  background-position: -96px -16px !important;
-}
-.ui-datepicker .ui-datepicker-next .ui-icon {
-  background-position: -32px -16px !important;
-}
-.ui-datepicker .ui-datepicker-header .ui-state-hover,
-.ui-datepicker .ui-datepicker-header .ui-state-disabled {
-  background: transparent;
-  border: 1px solid transparent;
-}
-.ui-datepicker thead {
-  background: #f5f5f5;
-}
-.ui-datepicker th {
-  color: #333333;
-  font-size: 0.9em;
-}
-.ui-datepicker .ui-datepicker-calendar a {
-  background: transparent;
-  border: 1px solid transparent;
-  color: #333333;
-}
-.ui-datepicker .ui-datepicker-calendar a.ui-state-active {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
-  color: #fff;
-}
-.ui-datepicker .ui-datepicker-calendar a.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
-  color: #fff;
-}
-.ui-datepicker .ui-datepicker-calendar .ui-state-disabled {
-  border: 1px solid transparent;
-  background-color: #546575;
-}
-.ui-datepicker .ui-datepicker-today a {
-  font-weight: bold;
-}
-/*!
- * jQuery UI Spinner Overrides
- */
-.touch .ui-spinner-button,
-.touchevents .ui-spinne r-button,
-.pointerevents .ui-spinner-button {
-  width: 1.4em;
-  height: 1.4em;
-  display: inline-block;
-  position: relative;
-}
-/*
- * jQuery UI Progressbar Overrides
- */
-.ui-progressbar {
-  height: 13px;
-  background: #4E5D6C;
-}
-.ui-progressbar .ui-progressbar-value {
-  background: #DF691A;
-}
-/********************/
-/* Ignite UI styles */
-/********************/
 /***********************************/
 /* Infragistics Ignite UI Controls */
 /***********************************/
@@ -1948,20 +880,86 @@ body .ui-tooltip {
 /************/
 .ui-igdialog-footer {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
+}
+.ui-iggrid-summaries-dialog-listitem {
+  cursor: pointer;
+}
+.ui-iggrid-summaries-dialog-listitem label {
+  cursor: pointer;
+  margin-bottom: 0;
 }
 /**********/
 /* igGrid */
 /**********/
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-  /*padding: 10px;*/
+.ui-iggrid-groupbyareatext a {
+  color: #DF691A;
+}
+.ui-iggrid .ui-widget-header.ui-iggrid-headercaption {
+  background: #fff;
+  border-color: #4E5D6C;
+  border-left: 1px solid #4E5D6C;
+}
+.ui-iggrid .ui-iggrid-content {
+  border-color: #4E5D6C;
+}
+.ui-iggrid .ui-iggrid-scrolldiv {
+  background-color: #4E5D6C;
+  box-shadow: inset 0 0 0 1px #4E5D6C;
+  border-bottom: 1px solid #4E5D6C !important;
+  /* !important needed because layout css removes borders */
+}
+.ui-iggrid .ui-iggrid-scrolldiv:first-child,
+.ui-iggrid > table tr:first-child td,
+.ui-iggrid-responsive-vertical,
+.ui-iggrid > table tr:first-child th.ui-iggrid-rowselector-class {
+  border-top: 1px solid #4E5D6C !important;
+  /* border-top for tables without headers */
+}
+.ui-iggrid-deletebutton {
+  background: #4E5D6C;
+}
+.ui-icon {
+  cursor: pointer;
+}
+.ui-iggrid-deletebutton.ui-state-focus,
+.ui-iggrid-deletebutton.ui-state-active,
+.ui-iggrid-deletebutton.ui-state-hover {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-iggrid-deletebutton.ui-state-focus .ui-icon,
+.ui-iggrid-deletebutton.ui-state-active .ui-icon,
+.ui-iggrid-deletebutton.ui-state-hover .ui-icon {
+  color: #fff;
+}
+.ui-ig-record td.ui-state-hover {
+  border-color: transparent;
+}
+.ui-iggrid-header.ui-draggable {
+  color: #fff;
+}
+.ui-iggrid-header.ui-state-default {
+  background: #888;
+  color: #ffffff;
+  font-weight: normal;
+}
+.ui-iggrid-header.ui-state-active,
+.ui-iggrid-header.ui-state-hover {
+  background: #DF691A;
+  color: #fff;
+  font-weight: normal;
+}
+.ui-iggrid-header.ui-state-default a,
+.ui-iggrid-header.ui-state-hover a,
+.ui-iggrid-header.ui-state-active a {
+  color: #EBEBEB;
+  font-weight: normal;
 }
 .ui-iggrid th,
 .ui-iggrid th.ui-widget-header.ui-state-default {
-  border-top: 1px solid #4E5D6C;
+  border-bottom: 1px solid #4E5D6C;
 }
 .ui-iggrid .ui-iggrid-groupbyarea {
   background-color: #2B3E50;
@@ -1975,47 +973,95 @@ body .ui-tooltip {
   border-color: #2B3E50 #2B3E50 #2B3E50 transparent !important;
 }
 /*grid paging*/
-.ui-iggrid-pagelist li {
+.ui-iggrid-paging .ui-iggrid-pagelist li {
   padding: 0.2em 0.5em !important;
 }
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage,
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-prevpage,
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage,
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-lastpage,
+.ui-iggrid-paging .ui-iggrid-pagelist li a {
+  text-decoration: none;
+}
+.ui-iggrid-paging .ui-iggrid-pagelist .ui-iggrid-pagecurrent a {
+  color: #fff;
+}
+.ui-iggrid-paging .ui-iggrid-firstpage,
+.ui-iggrid-paging .ui-iggrid-prevpage,
+.ui-iggrid-paging .ui-iggrid-nextpage,
+.ui-iggrid-paging .ui-iggrid-lastpage,
 .ui-iggrid-pagedropdownlabels {
-  padding-top: 0.2em!important;
-  padding-bottom: 0.2em!important;
+  padding-top: 0.2em !important;
+  padding-bottom: 0.2em !important;
 }
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item.ui-state-default,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item .ui-iggrid-page.ui-state-default {
+.ui-iggrid-paging-item.ui-state-default,
+.ui-iggrid-paging-item .ui-iggrid-page.ui-state-default {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
 }
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging .ui-iggrid-page.ui-state-hover,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging .ui-iggrid-paging-item.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
+.ui-iggrid-paging .ui-iggrid-page.ui-state-hover,
+.ui-iggrid-paging .ui-iggrid-paging-item.ui-state-hover {
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
+}
+.ui-iggrid-paging-item.ui-state-focus,
+.ui-iggrid-paging-item.ui-state-default.ui-state-focus,
+.ui-iggrid-paging-item .ui-iggrid-page.ui-state-focus,
+.ui-iggrid-paging-item .ui-iggrid-page.ui-state-default.ui-state-focus {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+}
+.ui-iggrid-page .ui-state-default {
+  border: 1px solid transparent;
+  background: #4E5D6C;
+  color: #fff;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item.ui-iggrid-prevpage {
+  border-left-color: transparent;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item.ui-iggrid-nextpage {
+  border-right-color: transparent;
 }
 .ui-iggrid-paging .ui-iggrid-pagelist {
-  background: none!important;
-  border: none!important;
+  background: none !important;
+  border: none !important;
 }
 /*row selectors*/
 .ui-iggrid tbody > tr > th.ui-iggrid-rowselector-class {
-  border-right: 0 none!important;
+  border-right: none !important;
   background-color: transparent;
 }
 .ui-iggrid th.ui-iggrid-rowselector-class > .ui-icon {
-  margin-right: 0!important;
+  margin-right: 0 !important;
   margin-top: 0.2em;
+  cursor: default;
 }
+.ui-iggrid-rowselector-header,
 .ui-iggrid .ui-iggrid-addrow th {
   border: 0;
 }
-.ui-widget-content.ui-iggrid-buttoncontainer {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+.ui-widget .ui-igedit {
+  color: #EBEBEB;
+}
+.ui-iggrid .ui-widget-content.ui-iggrid-buttoncontainer {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  border: 1px solid #4E5D6C;
+}
+.ui-iggrid .ui-iggrid-addrow {
+  border-top: none;
+}
+.ui-iggrid .ui-iggrid-addrow:hover {
+  cursor: pointer;
+  color: #DF691A;
+}
+.ui-iggrid .ui-iggrid-addrow:hover .ui-icon {
+  color: #DF691A;
+}
+.ui-iggrid table th.ui-iggrid-rowselector-header {
+  padding: 0;
+}
+.ui-iggrid table th.ui-iggrid-rowselector-header > .ui-state-default {
+  margin: 4px;
 }
 .ui-iggrid .ui-iggrid-content {
   border-color: #4E5D6C;
@@ -2036,8 +1082,7 @@ body .ui-tooltip {
 .ui-iggrid thead .ui-iggrid-editingcell:last-child {
   border-right: 1px solid #4E5D6C;
 }
-.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-coldesc,
-.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-colasc {
+.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-coldesc {
   border-bottom: 1px solid #4E5D6C;
 }
 .ui-iggrid .ui-iggrid-addrow {
@@ -2053,56 +1098,47 @@ body .ui-tooltip {
 }
 .ui-iggrid tfoot tr:first-child td,
 .ui-iggrid > table tfoot tr:first-child td {
-  border-top-width: 0!important;
+  border-top-width: 0 !important;
 }
 .ui-iggrid .ui-iggrid-footertable tfoot tr:last-child td {
-  border-bottom-width: 0!important;
+  border-bottom-width: 0 !important;
+}
+.ui-iggrid .ui-iggrid-summaries-footer-icon-container a {
+  color: #EBEBEB;
 }
 .ui-iggrid .ui-iggrid-summaries-footer-icon-container.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
-  color: #fff;
+  outline: none;
+  border-color: transparent;
+  background: transparent;
+  color: #DF691A;
 }
 .ui-iggrid .ui-iggrid-summaries-footer-icon-container.ui-state-active {
-  border: 1px solid #c15b17 !important;
-  background-color: #DF691A !important;
-  color: #fff !important;
-}
-.ui-iggrid .ui-iggrid-summaries-footer-icon-container.ui-state-active .ui-icon {
-  background-image: url(images/igGrid/filter-icons-FFFFFF.png) !important;
+  border-color: transparent;
+  background: transparent;
+  color: #DF691A;
 }
 .ui-iggrid tfoot,
 .ui-iggrid-footer {
   border-bottom: 1px solid #4E5D6C !important;
 }
-.ui-iggrid .ui-iggrid-scrolldiv {
-  background-color: #4E5D6C;
-  box-shadow: inset 0 0 0 1px #4E5D6C;
+.ui-iggrid-scrolldiv {
+  /* Bug #228441 // 18.02.2016 // M.Popov // Fix misalignment between fixed and unfixed container */
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-top: none;
+  background-color: #f0f0f0;
   border-bottom: 1px solid #4E5D6C !important;
   /* !important needed because layout css removes borders */
-}
-.ui-iggrid .ui-iggrid-scrolldiv:first-child,
-.ui-iggrid > table tr:first-child td,
-.ui-iggrid-responsive-vertical,
-.ui-iggrid > table tr:first-child th.ui-iggrid-rowselector-class {
-  border-top: 1px solid #4E5D6C !important;
-  /* border-top for tables without headers */
 }
 .ui-iggrid.ui-igpivotgrid > table tr:first-child td {
   border-bottom: 1px solid #4E5D6C !important;
 }
 .ui-iggrid.ui-igpivotgrid > table > tbody tr:first-child th {
-  border-top: none!important;
+  border-top: none !important;
 }
 .ui-iggrid-layout-helper {
   border-bottom: 1px solid #4E5D6C;
-}
-.ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
-.ui-iggrid > table > thead + tbody > tr:first-child td,
-.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td {
-  /* border-top: 0 none!important;
-   border-top removed for tables with virtualization, or headers */
 }
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -2111,7 +1147,7 @@ body .ui-tooltip {
   color: #EBEBEB;
   border-color: #4E5D6C;
   border-right: 1px solid #4E5D6C;
-  border-left: 0 none;
+  border-left: none;
 }
 .ui-iggrid th .ui-iggrid-indicatorcontainer .ui-iggrid-summaries-header-icon.ui-icon {
   background: url(images/igGrid/filter-icons-333333.png) no-repeat scroll -416px 0 transparent;
@@ -2152,45 +1188,66 @@ body .ui-tooltip {
   color: #EBEBEB;
   border: none;
 }
-.ui-iggrid .ui-iggrid-footer .ui-state-default,
-.ui-iggrid .ui-iggrid-toolbar .ui-state-default,
-.ui-iggrid .ui-iggrid-footer .ui-state-hover {
-  background-color: #485563;
-  color: #EBEBEB;
+.ui-iggrid .ui-iggrid-footer .ui-state-default {
   text-decoration: none;
 }
-.ui-iggrid .ui-iggrid-footer .ui-state-default a,
+.ui-iggrid .ui-iggrid-footer .ui-state-hover {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
 .ui-iggrid .ui-iggrid-toolbar .ui-state-default a,
 .ui-iggrid .ui-iggrid-addrow td a,
-.ui-iggrid .ui-iggrid-footer .ui-state-default a {
+.ui-iggrid-footer .ui-state-default a {
   color: #fff;
   text-decoration: none;
 }
+.ui-iggrid-footer .ui-state-default a {
+  color: #fff;
+  text-decoration: none;
+}
+.ui-iggrid-footer .ui-state-focus a,
+.ui-iggrid-footer .ui-state-hover a {
+  color: #fff;
+}
 .ui-iggrid tbody .ui-icon,
 .ui-iggrid .ui-iggrid-addrow td .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
 .ui-iggrid .ui-igedit-button .ui-icon,
 .ui-igpivot-metadataitem .ui-icon-close {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
 .ui-igpivot-metadataitem {
   outline: red !important;
 }
-.ui-iggrid th .ui-icon,
-.ui-iggrid th.ui-state-active.ui-state-hover .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+.ui-iggrid th .ui-icon {
+  color: #888888;
 }
-.ui-iggrid th.ui-state-hover .ui-icon,
-.ui-iggrid th.ui-state-active.ui-state-hover .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
-}
-.ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
 .ui-iggrid tfoot td {
   border-top: 1px solid transparent;
   border-bottom: 1px solid #4E5D6C;
+  border-left: 1px solid transparent;
+}
+.ui-iggrid tbody td {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid #4E5D6C;
+}
+.ui-widget-header.ui-state-default.ui-state-active .ui-icon.ui-iggrid-header-icon-mouseover,
+.ui-widget-header.ui-state-default.ui-state-hover .ui-icon.ui-iggrid-header-icon-mouseover,
+.ui-widget-header.ui-state-default.ui-state-focus .ui-icon.ui-iggrid-header-icon-mouseover,
+.ui-widget-header.ui-state-default .ui-icon.ui-iggrid-header-icon-mouseover:focus,
+.ui-widget-header.ui-state-default .ui-icon.ui-iggrid-header-icon-mouseover:hover {
+  color: #DF691A;
+}
+.ui-widget-header.ui-state-default.ui-state-active:focus .ui-icon.ui-iggrid-colindicator {
+  color: #DF691A;
+}
+.ui-widget-header.ui-state-default.ui-state-hover .ui-icon.ui-iggrid-colindicator {
+  color: #DF691A;
 }
 /*sorting*/
 .ui-iggrid td.ui-state-highlight {
@@ -2200,12 +1257,16 @@ body .ui-tooltip {
   font-weight: normal;
   border: 0 none;
 }
+.ui-iggrid .ui-iggrid-colasc.ui-state-highlight.ui-state-hover {
+  background-color: #3d4954;
+}
+.ui-iggrid .ui-iggrid-colasc.ui-state-active.ui-state-highlight.ui-state-hover {
+  background-color: #485563;
+}
 /* hover */
 .ui-iggrid td.ui-state-hover,
 .ui-iggrid .ui-ig-altrecord td.ui-state-hover,
 .ui-iggrid .ui-ig-altrecord td.ui-state-default.ui-state-hover,
-.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-hover,
-.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-hover,
 .ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-default.ui-state-hover,
 .ui-iggrid-responsive-vertical tr > td.ui-state-hover:first-child,
 .ui-iggrid-responsive-vertical tr.ui-ig-altrecord > td.ui-state-hover:first-child {
@@ -2213,6 +1274,16 @@ body .ui-tooltip {
   background: #485563;
   border-top: 1px solid transparent;
   border-bottom: 1px solid #4E5D6C;
+}
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-hover {
+  color: #EBEBEB;
+  background: #485563;
+}
+.ui-iggrid td.ui-state-hover,
+.ui-iggrid-selectedcell.ui-state-active {
+  border-left: none;
+  border-right: none;
 }
 .ui-iggrid td.ui-state-hover a,
 .ui-iggrid .ui-ig-altrecord td.ui-state-hover a {
@@ -2222,6 +1293,15 @@ body .ui-tooltip {
 .ui-iggrid td.ui-state-hover a:hover,
 .ui-iggrid .ui-ig-altrecord td.ui-state-hover a:hover {
   color: #DF691A;
+}
+/* Grid hover transition */
+.ui-iggrid td,
+.ui-iggrid tr,
+.ui-iggrid th {
+  -webkit-transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  -moz-transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 /* active cells */
 .ui-iggrid td.ui-state-focus,
@@ -2234,38 +1314,32 @@ body .ui-tooltip {
 }
 /* active rows */
 .ui-iggrid tr.ui-state-focus {
-  background: transparent none;
+  background: none;
 }
 .ui-iggrid .ui-ig-altrecord.ui-state-focus {
-  background: #4E5D6C none;
+  background: #4E5D6C;
 }
 .ui-iggrid tr.ui-state-focus td,
 .ui-iggrid tr.ui-state-focus th,
 .ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
 .ui-iggrid tr.ui-ig-altrecord.ui-state-focus th {
-  border-top: 1px solid #DF691A !important;
-  border-bottom: 1px solid #DF691A !important;
+  border-top: 1px solid #DF691A;
+  border-bottom: 1px solid #DF691A;
+  color: #EBEBEB;
+}
+.ui-iggrid tr {
+  outline-color: transparent;
 }
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
   border: 1px solid #DF691A !important;
 }
-/*fix padding to prevent jump when adding borders on focus*/
-.ui-iggrid tr.ui-state-focus td,
-.ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
-.ui-iggrid td.ui-state-active.ui-state-focus,
-.ui-iggrid td.ui-state-focus {
-  padding-left: 3px;
-  padding-right: 3px;
-}
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
-  border-color: transparent!important;
+  border-color: transparent !important;
 }
 /* selected rows */
 .ui-iggrid td.ui-state-active,
 .ui-iggrid .ui-ig-altrecord td.ui-state-active,
-.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-active,
-.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-active,
 .ui-iggrid tbody .ui-iggrid-mergedcell.ui-state-active,
 .ui-iggrid tbody .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-active,
 .ui-iggrid tbody .ui-iggrid-mergedcellstop.ui-state-active,
@@ -2274,31 +1348,44 @@ body .ui-tooltip {
   color: #EBEBEB;
   border-color: #485563;
 }
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-active,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-active {
+  color: #EBEBEB;
+  background: #485563;
+}
+.ui-iggrid .ui-ig-altrecord.ui-state-focus td,
+.ui-iggrid .ui-ig-altrecord td {
+  border-right: 0;
+  border-left: 0;
+}
 /* Focus state on paging buttons */
 .ui-iggrid .ui-iggrid-paging-item.ui-state-focus,
 .ui-iggrid .ui-iggrid-paging-item.ui-state-default.ui-state-focus,
 .ui-iggrid .ui-iggrid-page.ui-state-focus,
 .ui-iggrid .ui-iggrid-pageui-state-default.ui-state-focus {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
-.ui-iggrid .ui-iggrid-paging-item.ui-state-focus span,
-.ui-iggrid .ui-iggrid-paging-item.ui-state-default.ui-state-focus span,
 .ui-iggrid .ui-iggrid-page.ui-state-focus a,
 .ui-iggrid .ui-iggrid-pageui-state-default.ui-state-focus a {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
+}
+.ui-iggrid .ui-iggrid-paging-item.ui-state-focus span,
+.ui-iggrid .ui-iggrid-paging-item.ui-state-default.ui-state-focus span {
+  color: #fff;
+  outline: none;
 }
 .ui-iggrid-page .ui-state-default {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
 }
 .ui-iggrid .ui-iggrid-paging-item.ui-state-focus .ui-icon,
 .ui-iggrid .ui-iggrid-paging-item.ui-state-default.ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
 /* Dropdowns */
 .ui-igedit-list .ui-igedit-listitem {
@@ -2309,23 +1396,38 @@ body .ui-tooltip {
   border: 1px solid transparent;
 }
 .ui-igedit-dropdown,
-.ui-iggrid-filterdd,
 .ui-iggrid-featurechooser-dropdown-dialog,
 .ui-widget.ui-widget-content.ui-igpivot-filterdropdown,
 .ui-widget.ui-widget-content.ui-igpivot-metadatadropdown {
   background: #2B3E50;
-  border: 1px solid #EBEBEB;
+  border: 1px solid #4E5D6C;
+}
+.ui-iggrid-filterdd {
+  background: #2B3E50;
+  border: 1px solid #4E5D6C;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.ui-slider.ui-widget.ui-widget-content {
+  border-color: #4E5D6C;
+}
+.ui-iggrid-filterddlist .ui-state-default,
+.ui-iggrid-filterddlist .ui-widget-content .ui-state-default {
+  background: transparent;
+  color: #EBEBEB;
 }
 /*fix dialogs*/
 .ui-iggrid-summaries-dialog {
-  background-color: #2B3E50 !important;
+  background-color: #2B3E50;
+  border: 1px solid #4E5D6C;
+}
+.ui-iggrid-summaries-dialog:focus {
+  outline: none;
 }
 .ui-iggrid-summaries-dialog label {
   color: #EBEBEB;
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-default,
 .ui-igedit-list .ui-igedit-listitem.ui-state-default,
-.ui-iggrid-filterddlist li.ui-state-default,
 .ui-iggrid-featurechooser-list li.ui-state-default,
 .ui-iggrid-hiding-dropdown-list li.ui-state-default,
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-default,
@@ -2333,6 +1435,14 @@ body .ui-tooltip {
   color: #EBEBEB;
   background-color: #2B3E50;
   border: 1px solid transparent;
+}
+.ui-iggrid-featurechooser-dr,
+.ui-iggrid-hiding-dropdown-d,
+.ui-iggrid-columnmoving-drop,
+.ui-iggrid-summaries-dialog,
+.ui-igpivot-filterdropdown,
+.ui-igpivot-metadatadropdown {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 .ui-iggrid-featurechooser-list li.ui-state-default:hover .ui-iggrid-featurechooserddlistitemtext {
   color: #555555;
@@ -2348,9 +1458,15 @@ body .ui-tooltip {
 .ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
 .ui-igcombo-listitemholder li.ui-state-hover,
 .ui-igcombo-listitemholder li.ui-state-hover a {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
+}
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover a,
+.ui-igedit-list .ui-igedit-listitem.ui-state-hover a,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active a {
+  color: #FFFFFF;
 }
 .ui-iggrid-filterddlist li.ui-state-active,
 .ui-iggrid-filterddlistitem.ui-state-active a,
@@ -2362,22 +1478,17 @@ body .ui-tooltip {
 .ui-iggrid-columnmoving-dropdown-list.ui-state-active a,
 .ui-igcombo-listitemholder li.ui-state-active,
 .ui-igcombo-listitemholder li.ui-state-active a {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-highlight,
 .ui-igedit-list .ui-igedit-listitem.ui-state-highlight,
 .ui-igcombo-listitemholder li.ui-state-highlight,
 .ui-igcombo-listitemholder li.ui-state-highlight a {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
-}
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover a,
-.ui-igedit-list .ui-igedit-listitem.ui-state-hover a,
-.ui-igedit-list .ui-igedit-listitem.ui-state-active a {
-  color: #FFFFFF;
 }
 /* Group by */
 .ui-iggrid tbody td.ui-iggrid-nongrouprowemptycell,
@@ -2389,7 +1500,9 @@ body .ui-tooltip {
   background-image: none;
 }
 .ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-nongrouprowemptycell.ui-iggrid-last-emptycell {
-  /*box-shadow: inset 0 -1px 0 #E2E2E2;*/
+  border-bottom: 1px solid #4E5D6C;
+}
+.ui-iggrid .ui-iggrid-tablebody td {
   border-bottom: 1px solid #4E5D6C;
 }
 .ui-draggable-dragging .ui-iggrid-headertext {
@@ -2400,12 +1513,12 @@ body .ui-tooltip {
 }
 /* Hierarchical grid */
 .ui-iggrid-expandcolumn-expanded {
-  border-bottom-width: 0!important;
-  box-shadow: none!important;
+  border-bottom-width: 0 !important;
+  box-shadow: none !important;
   /*tabbed look*/
 }
 .ui-iggrid-expandcolumn-expanded.ui-state-focus {
-  border-bottom-width: 1px!important;
+  border-bottom-width: 1px !important;
   /*tabbed look*/
 }
 .ui-ig-altrecord + tr > td.ui-iggrid-childarea {
@@ -2424,13 +1537,10 @@ body .ui-tooltip {
 /* modal dialog */
 .ui-iggrid .ui-widget-content.ui-dialog {
   border: 1px solid transparent;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button.ui-state-hover {
+.ui-dialog .ui-widget-header {
   background: #DF691A;
-  border: 1px solid transparent;
-  box-shadow: none;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button.ui-state-hover .ui-button-text {
   color: #fff;
 }
 .ui-iggrid-dialog-groupby-button a,
@@ -2455,15 +1565,14 @@ body .ui-tooltip {
 .ui-iggrid tfoot td.ui-state-hover {
   background-color: #485563;
 }
-.ui-iggrid tfoot td.ui-state-default .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
-}
 /* Column Moving custom icons */
 .ui-iggrid-columnmoving-dragtop {
-  background: transparent url(images/ui-icons_222222_256x240.png) no-repeat scroll -65px -12px !important;
+  /*background: transparent @ui-icons-darker no-repeat scroll -65px -12px !important;*/
+  color: #222222;
 }
 .ui-iggrid-columnmoving-dragbottom {
-  background: transparent url(images/ui-icons_222222_256x240.png) no-repeat scroll 0 -20px !important;
+  /*background: transparent @ui-icons-darker no-repeat scroll 0 -20px !important;*/
+  color: #222222;
 }
 .ui-iggrid-indicatorcontainer .ui-iggrid-moving-indicator {
   background-image: url(images/igGrid/filter-icons-333333.png);
@@ -2515,7 +1624,6 @@ body .ui-tooltip {
 .ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-highlight,
 .ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-mergedcell.ui-iggrid-coldesc,
 .ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-mergedcell.ui-iggrid-colasc {
-  color: #EBEBEB;
   border-bottom-color: transparent;
 }
 .ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell,
@@ -2599,7 +1707,7 @@ body .ui-tooltip {
   height: 20px;
 }
 /***********************
-  IG video player 
+  IG video player
   Fixed colours since it works with fixed images
 ************************/
 .ui-igplayer .ui-igplayer-controls,
@@ -2612,9 +1720,9 @@ body .ui-tooltip {
 }
 .ui-igplayer-tooltip .ui-widget-content,
 .ui-igtooltip > .ui-widget-content {
-  background-color: #e5e5e5!important;
-  background-image: none!important;
-  border: 1px solid #c6c6c6!important;
+  background-color: #e5e5e5 !important;
+  background-image: none !important;
+  border: 1px solid #c6c6c6 !important;
   color: #EBEBEB !important;
 }
 .ui-igtooltip > .ui-widget-content {
@@ -2624,22 +1732,22 @@ body .ui-tooltip {
 .ui-igtooltip-arrow-top,
 .ui-igtooltip-arrow-left,
 .ui-igtooltip-arrow-right {
-  background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
+  background-image: url(../../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 .ui-igtooltip .ui-icon.ui-icon-close {
-  background-image: url(images/ui-icons_222222_256x240.png) !important;
+  background-image: #222222 !important;
 }
 .ui-igplayer .ui-state-active,
 .ui-igplayer .ui-state-focus {
-  border-width: 1px!important;
+  border-width: 1px !important;
   outline: none;
 }
 .ui-igplayer .ui-state-hover .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  color: #888888;
 }
 .ui-igplayer .ui-state-focus .ui-icon,
 .ui-igplayer .ui-state-active .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  color: #888888;
 }
 .ui-igplayer .ui-igplayer-bookmark-item-title:hover {
   text-decoration: none;
@@ -2651,19 +1759,20 @@ body .ui-tooltip {
 }
 .ui-igplayer .ui-igbutton.ui-state-hover,
 .ui-igplayer .ui-button.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
 }
 .ui-igplayer .ui-igbutton.ui-state-active,
 .ui-igplayer .ui-button.ui-state-active {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-igplayer .ui-igbutton.ui-state-active .ui-icon,
 .ui-igplayer .ui-button.ui-state-active .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-igplayer .ui-igbutton.ui-state-focus,
 .ui-igplayer .ui-button.ui-state-focus {
@@ -2678,7 +1787,7 @@ body .ui-tooltip {
 }
 .ui-igplayer-related-list .ui-igplayer-related-video-hover img {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
   border-width: 3px;
 }
@@ -2712,18 +1821,18 @@ body .ui-tooltip {
 .ui-igplayer-related-video-container a.ui-button.ui-igbutton,
 .ui-igplayer-related-video-bar .ui-button.ui-igbutton {
   border: 1px solid transparent;
-  background-color: #4E5D6C;
+  background: #4E5D6C;
   color: #fff;
 }
 .ui-igplayer-related-video-container a.ui-button.ui-igbutton.ui-state-hover,
 .ui-igplayer-related-video-bar .ui-button.ui-igbutton.ui-state-hover {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-igplayer-related-video-container a.ui-button.ui-igbutton.ui-state-hover .ui-icon,
 .ui-igplayer-related-video-bar .ui-button.ui-igbutton.ui-state-hover .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  background-image: #ffffff;
 }
 .ui-igplayer-bookmark-list li:hover {
   background-color: #EBEBEB;
@@ -2751,7 +1860,7 @@ body .ui-tooltip {
   background: url(images/icon_sprite.png) 0 -192px no-repeat !important;
 }
 .ui-igupload-cancel-button .ui-button-icon-primary {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
 .ui-state-hover.ui-igupload-cancel-button {
   background-color: transparent !important;
@@ -2761,18 +1870,18 @@ body .ui-tooltip {
 }
 .ui-igupload-cancel-button.ui-state-hover .ui-icon-closethick,
 .ui-igupload-cancel-button.ui-state-focus .ui-icon-closethick {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  background-image: #222222;
 }
 .ui-igupload .ui-igprogressbar {
   background-color: #4E5D6C;
-  height: 11px!important;
-  border: 0!important;
+  height: 11px !important;
+  border: 0 !important;
 }
 .ui-igupload-progressbar-filesize {
-  color: gray;
+  color: #EBEBEB;
 }
 .ui-igupload-summaryprogress-label {
-  color: gray;
+  color: #EBEBEB;
   top: 10px;
 }
 .ui-igupload-summaryprogress-secondary-label {
@@ -2787,26 +1896,14 @@ body .ui-tooltip {
 }
 .ui-igtree a {
   color: #EBEBEB;
-  padding: 5px!important;
 }
-.ui-igtree a.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
-  color: #fff;
+.ui-igtree a {
   border: 1px solid transparent;
 }
-.ui-igtree a.ui-state-hover,
-.ui-igtree a.ui-state-active,
 .ui-igtree a.ui-state-focus {
-  padding: 4px!important;
-}
-.ui-igtree a.ui-state-focus {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
-}
-.ui-igtree-dropindicator.ui-state-highlight .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
 }
 .ui-igtree-insertline.ui-state-default {
   -webkit-border-image: -webkit-gradient(linear, left top, right top, color-stop(0.8, #535353), color-stop(1, transparent)) 100 0 stretch stretch;
@@ -2824,7 +1921,7 @@ body .ui-tooltip {
 .ui-igcheckbox-small.ui-state-hover,
 .ui-igcheckbox-normal.ui-state-hover,
 .ui-igcombo-checkbox.ui-state-hover {
-  border: 1px solid rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0);
 }
 .ui-igcheckbox-small.ui-state-focus,
 .ui-igcheckbox-normal.ui-state-focus,
@@ -2843,13 +1940,12 @@ body .ui-tooltip {
 .ui-iggrid th .ui-igcheckbox-normal.ui-state-default .ui-icon,
 .ui-igcombo-checkbox .ui-icon,
 .ui-state-hover .ui-igcombo-checkbox .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #222222;
 }
 .ui-icon-check-f {
   background-position: -64px -144px;
 }
 .ui-icon-check-p {
-  /*background-position: -96px -160px;*/
   background-color: #333333;
   background-image: none !important;
   border: 2px solid #2B3E50;
@@ -2859,8 +1955,8 @@ body .ui-tooltip {
 /* HTML Editor */
 /***************/
 .ui-igbutton .ui-igbutton-table {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-ightmleditor {
@@ -2895,29 +1991,30 @@ body .ui-tooltip {
   background-color: #DF691A;
 }
 .ui-splitbutton-arrow .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  background-image: #222222;
 }
 .ui-splitbutton-arrow.ui-state-hover .ui-icon,
 .ui-splitbutton-arrow.ui-state-active .ui-icon,
 .ui-splitbutton-arrow.ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
 .ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
 }
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-focus,
 .ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-focus {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-active,
 .ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
-  border: 1px solid #c15b17;
-  background-color: #DF691A;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
 }
 .ui-ightmleditor .ui-igcombo-fieldholder {
@@ -2931,14 +2028,16 @@ body .ui-tooltip {
   background-position: -32px -160px;
 }
 .ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-hover {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
 }
 .ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-hover.ui-state-active {
-  border-color: rgba(0, 0, 0, 0);
-  background-color: #3d4954;
+  border-color: #DF691A;
+  background: #DF691A;
   color: #fff;
+  background: #e6772c;
 }
 .ui-igbutton.ui-state-active .ui-igbutton-collapse,
 .ui-igbutton.ui-state-focus .ui-igbutton-collapse {
@@ -3095,8 +2194,8 @@ body .ui-tooltip {
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
   border: 1px solid transparent;
-  -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-  -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+  -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
   box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
@@ -3119,9 +2218,45 @@ body .ui-tooltip {
 /***********/
 /* igCombo */
 /***********/
-.ui-igedit.ui-state-hover,
+.ui-igcombo-field {
+  padding-left: .5rem;
+}
+.ui-igcombo.ui-state-default .ui-igcombo-button {
+  border: 1px solid transparent;
+  background: #4E5D6C;
+  color: #fff;
+}
+.ui-igcombo.ui-state-default .ui-igcombo-field {
+  border-radius: 0;
+  color: #222222;
+}
 .ui-igcombo.ui-state-hover {
-  border-color: transparent;
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
+.ui-igcombo.ui-state-hover .ui-igcombo-button.ui-state-hover {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+  background: #e6772c;
+}
+.ui-igcombo.ui-state-active {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+}
+.ui-igcombo.ui-state-active .ui-igcombo-button {
+  border-color: #DF691A;
+  background: #DF691A;
+  color: #fff;
+}
+.ui-igcombo-listitem-match {
+  font-weight: bold;
+}
+.ui-igcombo-field {
+  color: #EBEBEB;
 }
 .ui-igedit-button-common.ui-state-highlight,
 .ui-igedit-button-common.ui-state-hover,
@@ -3131,32 +2266,17 @@ body .ui-tooltip {
 .ui-igcombo-button.ui-state-hover {
   border: inherit;
 }
-.ui-igedit.ui-state-focus,
-.ui-igcombo.ui-state-focus,
-.ui-igedit.ui-state-focus.ui-state-hover,
-.ui-igcombo.ui-state-focus.ui-state-hover {
-  border-color: transparent;
-}
-.ui-igedit.ui-state-focus .ui-igedit-button-common,
-.ui-igedit.ui-state-active .ui-igedit-button-common,
-.ui-igcombo.ui-state-focus .ui-igcombo-button,
-.ui-igcombo.ui-state-active .ui-igcombo-button {
-  background-color: #DF691A;
-  border-color: transparent;
-}
-.ui-igcombo.ui-state-hover,
-.ui-igcombo.ui-state-default {
-  background-color: transparent;
+.ui-iggrid-filterrow .ui-igedit.ui-state-focus .ui-igedit-input {
+  outline: 1px solid transparent;
 }
 .ui-igedit-input,
-.ui-igcombo-fieldholder,
 .ui-igcombo.ui-widget .ui-igcombo-clear.ui-unselectable,
 .ui-igedit-cleararea,
 .ui-igedit-cleararea.ui-state-hover,
 .ui-igedit.ui-state-hover .ui-igedit-cleararea,
 .ui-igedit.ui-state-focus .ui-igedit-cleararea {
-  background: none #fff;
-  border: 0 none;
+  background: #fff;
+  border: none;
 }
 .ui-igcombo-clear .ui-icon,
 .ui-igedit-buttonclear .ui-icon,
@@ -3164,7 +2284,7 @@ body .ui-tooltip {
 .ui-igedit.ui-state-focus .ui-igedit-cleararea .ui-icon,
 .ui-igedit.ui-state-active .ui-igedit-cleararea .ui-icon,
 .ui-igcombo.ui-state-active.ui-state-hover .ui-igcombo-clear .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
 .ui-igedit-cleararea.ui-state-hover .ui-icon,
 .ui-igedit-cleararea.ui-state-default.ui-state-hover .ui-icon,
@@ -3174,19 +2294,10 @@ body .ui-tooltip {
 .ui-igedit-buttonclear.ui-state-default.ui-state-hover .ui-icon,
 .ui-igcombo-clear.ui-igcombo-clear-hover.ui-state-hover .ui-icon,
 .ui-igcombo.ui-state-active .ui-igcombo-clear.ui-state-hover .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
-}
-.ui-igcombo-listitem-match {
-  font-weight: bold;
-}
-.ui-igcombo-field {
-  color: #333;
+  background-image: #222222;
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
-.ui-igedit-list .ui-igedit-listitem.ui-state-active,
-.ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
-.ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
-.ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
+.ui-igedit-list .ui-igedit-listitem.ui-state-active {
   background: #DF691A;
   color: #FFF;
   opacity: 0.8;
@@ -3282,7 +2393,7 @@ body .ui-tooltip {
   border: 0;
 }
 .ui-sparkline-tooltip {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   padding: 3px;
 }
 .ui-sparkline-sparkpath {
@@ -3290,7 +2401,7 @@ body .ui-tooltip {
   border: 1px solid;
 }
 .ui-sparkline-negativesparkpath {
-  background: #B9242E;
+  background: #43ABD5;
   border: 1px solid;
 }
 .ui-sparkline-trendline {
@@ -3342,15 +2453,16 @@ body .ui-tooltip {
 .ui-funnel {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  color: #555555;
+  color: #ccc;
   border: 0;
 }
 .ui-funnel-tooltip {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
-  padding: 3px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border: 1px solid #888;
+  padding: .5rem .8rem;
 }
 .ui-funnel-slice {
-  color: #FFFFFF;
+  color: #fff;
   border: 0;
 }
 .ui-funnel-slice-selected {
@@ -3369,7 +2481,57 @@ body .ui-tooltip {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .ui-doughnut-tooltip {
-  /*add styles*/
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  border: 1px solid #888;
+  padding: .5rem .8rem;
+}
+.ui-doughnut-palette-1 {
+  background-color: #DF691A !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-2 {
+  background-color: #e6772c !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-3 {
+  background-color: #e98643 !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-4 {
+  background-color: #ec945a !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-5 {
+  background-color: #eea371 !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-6 {
+  background-color: #f1af83 !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-7 {
+  background-color: #f3bb95 !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-8 {
+  background-color: #f5c6a7 !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-9 {
+  background-color: #f7d2ba !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-10 {
+  background-color: #f9decc !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-11 {
+  background-color: #fbeade !important;
+  border: 1px solid #fff !important;
+}
+.ui-doughnut-palette-12 {
+  background-color: #fdf6f0 !important;
+  border: 1px solid #fff !important;
 }
 /**************/
 /* igSplitter */
@@ -3390,29 +2552,40 @@ body .ui-tooltip {
 /****************/
 /* igPivot Grid */
 /****************/
-.ui-igpivot-metadataitem.ui-state-default {
-  background: #4E5D6C;
-  border: 1px solid transparent;
+.ui-igpivotdataselector {
+  background: #2B3E50;
+}
+.ui-igpivotgrid-header .ui-icon:hover,
+.ui-igpivotgrid-header .ui-icon:focus {
+  color: #DF691A;
+}
+.ui-igpivot-metadataitem span {
   color: #fff;
+}
+.ui-igpivot-metadataitem .ui-icon:hover {
+  color: #DF691A;
 }
 .ui-igpivot-metadataitem .ui-widget .ui-corner-all .ui-state-default .ui-draggable {
   color: #EBEBEB;
 }
 .ui-igpivot-metadataitem .ui-icon.ui-icon-close {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
 .ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter,
 .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
   background-position: -64px 0 !important;
 }
-.ui-igpivot-filterdropdown .ui-igtree-node {
-  line-height: 2em!important;
+.ui-igpivotdataselector-dropareas th {
+  color: #EBEBEB;
 }
-.ui-igpivot-filterdropdown .ui-igtree-expander {
-  top: 1em!important;
+.ui-igtree-node a:hover {
+  color: #fff;
 }
-.ui-igpivot-filterdropdown span[data-role=checkbox] {
-  margin-top: 0.65em;
+.ui-igtree-expander:hover {
+  color: #DF691A;
+}
+.ui-igtree-expander.ui-icon-triangle-1-s {
+  color: #DF691A;
 }
 /***********************/
 /* igRadialGauge Chart */
@@ -3434,7 +2607,7 @@ body .ui-tooltip {
 }
 .ui-radialgauge-tick {
   background-color: #222222;
-  border-top-color: none;
+  border-top-color: transparent;
 }
 .ui-radialgauge-minorTick {
   background-color: #222222;
@@ -3628,30 +2801,56 @@ body .ui-tooltip {
   font-size: 12px;
   color: #EBEBEB;
 }
-/***********************/
-/* Tile manager        */
-/***********************/
+/****************/
+/* Tile manager */
+/****************/
 .ui-state-hover .ui-igtile-inner-container {
   color: #EBEBEB;
 }
-/*****************/
-/* Popover       */
-/****************/
+/***********/
+/* Popover */
+/***********/
 .ui-igpopover > .ui-widget-content {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  background: #2B3E50;
+  border: 1px solid #4E5D6C !important;
 }
-/*****************/
-/* Notifier      */
-/****************/
+.ui-igpopover-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.ui-igpopover-arrow-top {
+  border-width: 0 12px 14px 12px;
+  border-color: transparent transparent #4E5D6C transparent;
+}
+.ui-igpopover-arrow-bottom {
+  border-width: 14px 12px 0 12px;
+  border-color: #4E5D6C transparent transparent transparent;
+}
+.ui-igpopover-arrow-right {
+  border-width: 12px 0 12px 14px;
+  border-color: transparent transparent transparent #4E5D6C;
+}
+.ui-igpopover-arrow-left {
+  border-width: 12px 14px 12px 0;
+  border-color: transparent #4E5D6C transparent transparent;
+}
+.ui-igpopover-title {
+  border-bottom: 1px solid #4E5D6C;
+}
+/************/
+/* Notifier */
+/************/
 .ui-igpopover.ui-ignotify-error .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  background-image: #ffffff;
 }
 .ui-igpopover.ui-ignotify-error.ui-ignotify-inline .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png);
+  background-image: #888888;
 }
-/***********************/
-/* TreeGrid            */
-/***********************/
+/************/
+/* TreeGrid */
+/************/
 /*TreeGrid Paging Context Row*/
 .ui-igtreegrid-contextrow {
   background-color: transparent;
@@ -3817,6 +3016,9 @@ body .ui-tooltip {
 Spreadsheet colors
 =========================
 */
+.ui-igspreadsheet {
+  background: #fff;
+}
 .ui-igspreadsheet-inputmessage {
   background-color: #dadada;
   border-color: #777;
@@ -3832,7 +3034,7 @@ Spreadsheet colors
 .ui-igspreadsheet-rowsplitter,
 .ui-igspreadsheet-columnsplitter,
 .ui-igspreadsheet-splitterintersection {
-  background-color: #dadada;
+  background-color: #bcbcbc;
 }
 /* SelectAll */
 .ui-igspreadsheet-selectall {
@@ -3840,16 +3042,16 @@ Spreadsheet colors
 }
 .ui-igspreadsheet-selectall.ui-state-active {
   color: #DF691A;
-  background-color: #ec945a;
+  background-color: #DF691A;
 }
 /* SpreadSheet Header & Footer background */
 .ui-igspreadsheet-tabareabackground,
 .ui-igspreadsheet-formulabar {
-  background-color: #4E5D6C;
+  background-color: #2B3E50;
 }
 /* SpreadSheet Footer top border */
 .ui-igspreadsheet-tabareaborder {
-  background-color: #6f8397;
+  background-color: #466582;
 }
 /* Splitter icon */
 .ui-igspreadsheet-tabareasplitter,
@@ -3861,12 +3063,12 @@ Spreadsheet colors
  */
 /* Unselected tab */
 .ui-igspreadsheet-tabitem {
-  border-right: 1px solid #6f8397;
-  border-left: 1px solid #6f8397;
+  border-right: 1px solid #466582;
+  border-left: 1px solid #466582;
   background-color: transparent;
   border-bottom: 2px solid transparent;
   /* reserved space so we don't see jumping when the tab is selected */
-  color: #ddd;
+  color: #DF691A;
 }
 /* Tab hover */
 .ui-igspreadsheet-tabitem.ui-state-hover {
@@ -3978,15 +3180,15 @@ Spreadsheet colors
 /* Cols & Rows Headers */
 .ui-igspreadsheet-columnheader,
 .ui-igspreadsheet-rowheader {
-  background-color: #4E5D6C;
-  color: #eea371;
+  background-color: #2B3E50;
+  color: #fff;
 }
 /* Cols & Rows Headers borders  */
 .ui-igspreadsheet-columnheader {
-  border-right-color: #63768a;
+  border-right-color: #2b3e50;
 }
 .ui-igspreadsheet-rowheader {
-  border-bottom-color: #63768a;
+  border-bottom-color: #2b3e50;
 }
 /* Cols & Rows Header, Selected  */
 .ui-igspreadsheet-columnheader-selected {
@@ -3999,7 +3201,7 @@ Spreadsheet colors
 .ui-igspreadsheet-columnheader-selected,
 .ui-igspreadsheet-rowheader-selected {
   background-color: #DF691A;
-  color: #fefcfa;
+  color: #fff;
 }
 .ui-igspreadsheet-columnheader-selected.ui-state-highlight,
 .ui-igspreadsheet-rowheader-selected.ui-state-highlight {
@@ -4008,21 +3210,21 @@ Spreadsheet colors
 /* Selected cel, header col & row background and color */
 .ui-igspreadsheet-columnheader-selectedcells,
 .ui-igspreadsheet-rowheader-selectedcells {
-  background-color: #6f8397;
-  color: #f4c19e;
+  background-color: #DF691A;
+  color: #fff;
 }
 /* Selected cel, header col & row border color */
 .ui-igspreadsheet-columnheader-selectedcells {
-  border-right-color: #596a7b;
+  border-right-color: #b15315;
 }
 .ui-igspreadsheet-rowheader-selectedcells {
-  border-bottom-color: #596a7b;
+  border-bottom-color: #b15315;
 }
 /* Selected cel, header hover col & row  background & colors */
 .ui-igspreadsheet-columnheader-hover,
 .ui-igspreadsheet-rowheader-hover {
-  background-color: #e98643;
-  color: #f4c19e;
+  background-color: #e57123;
+  color: #fff;
 }
 .ui-igspreadsheet-columnheader-hover {
   border-right-color: #b15315;
@@ -4050,9 +3252,9 @@ Spreadsheet colors
 .ui-igspreadsheet-nameboxcontainer,
 .ui-igspreadsheet-formulabartextareacontainer,
 .ui-igspreadsheet-formulabarbuttoncontainer {
-  border: 1px solid #bcbcbc;
+  border: 1px solid #3d5871;
   box-sizing: border-box;
-  background-color: #e8e8e8;
+  background-color: #2B3E50;
   border-radius: 0;
 }
 /* Enabled buttons */
@@ -4090,69 +3292,157 @@ Spreadsheet colors
   background-color: #DF691A;
   border-color: #dadada;
 }
-/* Icons image */
-.ui-icon.ui-igspreadsheet-copy-icon,
-.ui-icon.ui-igspreadsheet-cut-icon,
-.ui-icon.ui-igspreadsheet-paste-icon,
-.ui-icon.ui-igspreadsheet-paste-icon,
-.ui-icon.ui-igspreadsheet-clearcontents-icon,
-.ui-icon.ui-igspreadsheet-insertcellsshiftright-icon,
-.ui-icon.ui-igspreadsheet-insertcellsshiftdown-icon,
-.ui-icon.ui-igspreadsheet-insertrows-icon,
-.ui-icon.ui-igspreadsheet-insertcolumns-icon,
-.ui-icon.ui-igspreadsheet-deletecellsshiftleft-icon,
-.ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
-.ui-icon.ui-igspreadsheet-deleterows-icon,
-.ui-icon.ui-igspreadsheet-deletecolumns-icon {
-  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png) !important;
-  left: 0.5em;
-  width: 16px;
-  height: 16px;
-}
-.ui-igspreadsheet-copy-icon {
-  background-position: -16px 0;
-}
-.ui-igspreadsheet-cut-icon {
-  background-position: -16px -16px;
-}
-.ui-igspreadsheet-paste-icon {
-  background-position: -16px -32px;
-}
-.ui-igspreadsheet-clearcontents-icon {
-  background-position: -16px -128px;
-}
-.ui-igspreadsheet-insertcellsshiftdown-icon {
-  background-position: -16px -112px;
-}
-.ui-igspreadsheet-insertcellsshiftright-icon {
-  background-position: -16px -96px;
-}
-.ui-igspreadsheet-deletecellsshiftup-icon {
-  background-position: -16px -80px;
-}
-.ui-igspreadsheet-deletecellsshiftleft-icon {
-  background-position: -16px -64px;
-}
-.ui-igspreadsheet-insertrows-icon,
-.ui-igspreadsheet-deleterows-icon {
-  background-position: -16px -160px;
-}
-.ui-igspreadsheet-insertcolumns-icon,
-.ui-igspreadsheet-deletecolumns-icon {
-  background-position: -16px -144px;
-}
 .ui-igspreadsheet .ui-menu {
-  box-shadow: 0 0 10px #bcbcbc;
-}
-.ui-igspreadsheet .ui-menu-item .ui-menu {
-  border-radius: 0 0 0 0;
-}
-.ui-igspreadsheet .ui-menu-item:hover {
-  background: rgba(223, 105, 26, 0.22);
-  border-radius: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 /*
 =========================
 Spreadsheet colors END
 =========================
 */
+/**************
+* Filter row *
+**************/
+.ui-iggrid-groupbylabelrightedgeend,
+.ui-iggrid-groupbylabelrightedgeend.ui-state-default {
+  border-color: #2B3E50 #2B3E50 #2B3E50 transparent;
+}
+.ui-iggrid .ui-iggrid-addrow {
+  border-color: #4E5D6C;
+}
+.ui-iggrid .ui-iggrid-addrow:focus {
+  color: #DF691A;
+}
+.ui-iggrid-table th.ui-iggrid-header {
+  outline: none;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: #4E5D6C;
+}
+.ui-iggrid-table th.ui-iggrid-header:first-of-type {
+  border-left: 1px solid #4E5D6C;
+  border-bottom: 1px solid #4E5D6C;
+}
+.ui-iggrid-filterddlistitemicons {
+  cursor: pointer;
+}
+.ui-widget-content .ui-state-default.ui-iggrid-filterddlistitemicons {
+  border: none;
+}
+.ui-igedit.ui-igedit-container.ui-widget.ui-state-default {
+  background: #2B3E50;
+}
+.ui-iggrid-filterrow .ui-state-default {
+  border-color: transparent;
+}
+.ui-iggrid-filterrow.ui-widget .ui-iggrid-indicatorcontainer a {
+  text-decoration: none;
+}
+.ui-iggrid-filterrow.ui-widget .ui-iggrid-filterbutton {
+  color: #EBEBEB;
+}
+.ui-iggrid-filterrow.ui-widget .ui-iggrid-filterbutton.ui-state-hover,
+.ui-iggrid-filterrow.ui-widget .ui-iggrid-filterbutton.ui-state-focus {
+  color: #DF691A;
+  border: none;
+}
+.ui-iggrid-filterrow.ui-widget .ui-iggrid-filterbutton.ui-state-active {
+  color: #DF691A;
+  border: none;
+}
+.ui-iggrid-filterrow td {
+  border-right: 1px solid #4E5D6C;
+  border-bottom: 1px solid #4E5D6C;
+}
+.ui-iggrid-filterrow td:first-of-type {
+  border-bottom: 1px solid #4E5D6C;
+  border-left: 1px solid #4E5D6C;
+}
+.ui-iggrid-filterrow td.ui-iggrid-expandheadercellgb {
+  border-right: none;
+}
+.ui-iggrid-filterddlistitemactive.ui-state-active,
+.ui-iggrid-filterddlistitemactive {
+  color: #EBEBEB;
+}
+.ui-iggrid-filtercell input {
+  border-top: 1px solid #FFF;
+  border-bottom: 1px solid #FFF;
+  background: transparent;
+  color: #EBEBEB;
+}
+.ui-iggrid-filtercell input:focus {
+  color: #EBEBEB;
+}
+.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before {
+  color: #EBEBEB;
+}
+.ui-iggrid-filterrow .ui-igedit.ui-state-hover,
+.ui-iggrid-filterrow .ui-igedit.ui-state-hover,
+.ui-iggrid-filterrow .ui-widget-content .ui-state-hover,
+.ui-iggrid-filterrow .ui-igedit.ui-state-focus,
+.ui-iggrid-filterrow .ui-igedit.ui-state-hover,
+.ui-iggrid-filterrow .ui-widget-content .ui-state-focus {
+  background: transparent;
+}
+.ui-igedit-placeholder::-webkit-input-placeholder {
+  color: #ffffff;
+}
+.ui-igedit-placeholder::-moz-placeholder {
+  color: #ffffff;
+}
+.ui-igedit-placeholder:-moz-placeholder {
+  /* Older versions of Firefox */
+  color: #ffffff;
+}
+.ui-igedit-placeholder:-ms-input-placeholder {
+  color: #ffffff;
+}
+.ui-iggrid .ui-iggrid-filterrow td > div {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+/**************************
+* ui-iggrid-headercaption *
+***************************/
+.ui-iggrid-headercaption {
+  background: #fff;
+  border-color: #4E5D6C;
+  border-width: 1px;
+  text-align: center;
+}
+.ui-igeditor-input-container {
+  color: #fff;
+}
+* {
+  outline-color: #DF691A;
+}
+.ui-state-active:focus {
+  outline: none !important;
+}
+.ui-state-focus .ui-igedit-dropdown-button {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-iggrid-fixedcontainer .ui-iggrid-table.ui-widget-content {
+  border: none;
+}
+.ui-iggrid-fixedcontainer-left {
+  border-right: 2px solid #DF691A;
+}
+.ui-iggrid-fixedcontainer-right {
+  border-left: 2px solid #DF691A;
+}
+label {
+  color: #EBEBEB;
+  font-weight: normal;
+}
+.ui-igpivot-filterdropdown .ui-igtree-node a {
+  font-size: .8em;
+  display: inline-block;
+}
+.ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-metadataitem {
+  background: #4E5D6C;
+  border: none;
+}
