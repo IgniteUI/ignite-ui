@@ -575,6 +575,10 @@
 			if (specId) {
 			    this.specializationCache[ specId ] = ret;
 			    ret.stringId = ret.generateString();
+			} else {
+			    // the self referencing type needs to be able to put itself into the specialization cache
+			    // of the original type
+			    ret.specializationCache = this.specializationCache;
 			}
 
 			var _self = this;
