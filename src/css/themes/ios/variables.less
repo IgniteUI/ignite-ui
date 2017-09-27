@@ -1,35 +1,78 @@
 // Font
-@fontfamily: "HelveticaNeue-Light",
-"Helvetica Neue Light",
-"Helvetica Neue",
-Helvetica,
-Arial,
-"Lucida Grande",
-sans-serif;
+@font-family-base: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+@text-color: @igGray10;
+@text-color-light: #fff;
+@highlight-color:#0c2837;
+@text-muted: fade(@text-color, 70%);
+@edit-container-bg: #fff;
 
 // * Radius */
 @radius: 6px;
+@border-radius-base:@radius;
 /* Palettes */
 
 
 // highlighters
-@accent1: #007aff; //blue
-@accent2: #4cd864; //green
-@accent3: #fd472b; //red
-@accent1-light: lighten(@accent1,
-45%);
-@accent1-mid: lighten(@accent1,
-20%);
-@accent3-light: lighten(@accent3,
-45%);
-@accent3-mid: lighten(@accent3,
-20%);
-// additional highlighters, used mostly in charts
-@accent4: #5ac8fa;
-@accent5: #ffcc00;
-@accent6: #ff9500;
-@accent7: #ff2d55;
-@accent8: #8e8e93;
+
+@accent1: #007aff;
+@accent2: #4cd864;
+@accent3: #fd472b;
+
+@accent1-light: lighten(@accent1, 45%);
+@accent1-mid: lighten(@accent1, 20%);
+@accent1-mid-2: lighten(@accent1, 40%);
+@accent3-light: lighten(@accent3, 35%);
+@accent3-mid: lighten(@accent3, 20%);
+
+@dialog-header:@accent1;
+
+
+@chartPalette-BG-1: @accent1;
+@chartPalette-BG-2: @accent2;
+@chartPalette-BG-3: @accent3;
+@chartPalette-BG-4: #ffcc00;
+@chartPalette-BG-5: #879922;
+@chartPalette-BG-6: #ff9500;
+@chartPalette-BG-7: #ff2d55;
+@chartPalette-BG-8: #8e8e93;
+@chartPalette-BG-9: #f1bd5c;
+@chartPalette-BG-10: #65ab88;
+@chartPalette-BG-11: #7e7bc1;
+@chartPalette-BG-12: #9f725f;
+@chartPalette-border-1: transparent;
+@chartPalette-border-2: transparent;
+@chartPalette-border-3: transparent;
+@chartPalette-border-4: transparent;
+@chartPalette-border-5: transparent;
+@chartPalette-border-6: transparent;
+@chartPalette-border-7: transparent;
+@chartPalette-border-8: transparent;
+@chartPalette-border-9: transparent;
+@chartPalette-border-10: transparent;
+@chartPalette-border-11: transparent;
+@chartPalette-border-12: transparent;
+
+@chartPaletteNegative: #c33d4a;
+@chartPaletteNegative-border: #872933;
+
+
+
+// Sparkline
+@ui-sparkline-BG-sparkpath:#43ABD5;
+@ui-sparkline-BG-negativesparkpath:#B9242E;
+@ui-sparkline-BG-trendline:#7F7F7F;
+@ui-sparkline-BG-markers:@ui-sparkline-BG-sparkpath;
+@ui-sparkline-BG-firstmarker:#237FA7;
+@ui-sparkline-BG-lastmarker:#FBC139;
+@ui-sparkline-BG-highmarker:#A3B929;
+@ui-sparkline-BG-lowmarker:#AF39FF;
+@ui-sparkline-BG-negativemarkers:#E5516F;
+@ui-sparkline-BG-range:#808080;
+
+@ui-sparkline-axis-border:#989EA3;
+@ui-sparkline-axis-color:#406090;
+
+
 // swatches
 @header-bg-A: @igGray2;
 @header-active-bg-A: @accent1-light;
@@ -40,6 +83,7 @@ sans-serif;
 @text-color-A: @igGray10;
 @link-color-A: @igGray10;
 @accent-color-A: @accent1;
+
 @header-bg-B: @igGray1;
 @header-active-bg-B: @accent1;
 @header-text-B: @accent1;
@@ -49,6 +93,7 @@ sans-serif;
 @text-color-B: @igGray10;
 @link-color-B: @igGray10;
 @accent-color-B: @accent1;
+
 @header-bg-C: @igGray2;
 @header-active-bg-C: @accent3;
 @header-text-C: @igGray10;
@@ -58,6 +103,7 @@ sans-serif;
 @text-color-C: @igGray10;
 @link-color-C: @igGray10;
 @accent-color-C: @accent3;
+
 @jq-icons-base: url(images/ui-icons_8e8e93_256x240.png);
 @jq-icons-accent: url(images/ui-icons_007aff_256x240.png);
 @jq-icons-dark: url(images/ui-icons_000000_256x240.png);
@@ -65,8 +111,8 @@ sans-serif;
 @jq-icons-error: url(images/ui-icons_fd472b_256x240.png);
 @iggrid-icons-dark: url(images/igGrid/filter-icons-333333.png);
 @iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
-// * Colour Variables: */
-// *1-10 are brightness levels, 1 is the lightest and 10 is the darkest*/
+
+
 // * grays */
 @igGray1: #FFFFFF;
 @igGray2: #f8f8f8;
@@ -78,26 +124,60 @@ sans-serif;
 @igGray8: #787878;
 @igGray9: #303030;
 @igGray10: #000000;
+
+
+// Icons
+@ui-icons-darker: @igGray10;
+@ui-icons-dark: #888888;
+@ui-icons-light: #ffffff;
+@ui-icons-accent: @accent1;
+
+
+// Variables for Grids
+@body-bg: #FFFFFF;
+@table-bg: @body-bg; // table bg
+@table-border-color: @igGray5;
+@table-bg-accent: @igGray1; // alt row bg
+@table-bg-hover: @igGray6;
+@table-bg-active: @accent1; // select
+@iggrid-icons-dark: url(../../structure/images/igGrid/filter-icons-333333.png); //dark filter icons
+@iggrid-icons-light: url(../../structure/images/igGrid/filter-icons-FFFFFF.png); //white filter icons
+
+
+// Dropdowns and Menus
+@dropdown-bg: @body-bg;
+@dropdown-link-color: @text-color;
+@dropdown-link-hover-color: @text-color;
+@dropdown-link-hover-bg: @igGray6;
+@dropdown-link-active-color: @text-color;
+@dropdown-link-active-bg: @accent1;
+
+
 // Gradual palette, used mainly for bulletGraph and linearGauge
 @chartGradualPalette1: @accent1;
-@chartGradualPalette2: lighten(@accent1,
-5%);
-@chartGradualPalette3: lighten(@accent1,
-10%);
-@chartGradualPalette4: lighten(@accent1,
-15%);
-@chartGradualPalette5: lighten(@accent1,
-20%);
-@chartGradualPalette6: lighten(@accent1,
-24%);
-@chartGradualPalette7: lighten(@accent1,
-28%);
-@chartGradualPalette8: lighten(@accent1,
-32%);
-@chartGradualPalette9: lighten(@accent1,
-36%);
-@chartGradualPalette10: lighten(@accent1,
-40%);
+@chartGradualPalette2: lighten(@accent1, 5%);
+@chartGradualPalette3: lighten(@accent1, 10%);
+@chartGradualPalette4: lighten(@accent1, 15%);
+@chartGradualPalette5: lighten(@accent1, 20%);
+@chartGradualPalette6: lighten(@accent1, 24%);
+@chartGradualPalette7: lighten(@accent1, 28%);
+@chartGradualPalette8: lighten(@accent1, 32%);
+@chartGradualPalette9: lighten(@accent1, 36%);
+@chartGradualPalette10: lighten(@accent1, 40%);
+@chartGradualPalette11: lighten(@accent1, 44%);
+@chartGradualPalette12: lighten(@accent1, 48%);
+
+
+//lineargauge, bulletgraph, radialgauge range palette
+@range-1:#005E9C;
+@range-2:#0078C8;
+@range-3:#0092F4;
+@range-4:#21A7FF;
+@range-5:#4FB9FF;
+
+
+//* igChart colors */
+@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
 
 
 /*
@@ -107,28 +187,17 @@ sans-serif;
 
 @bar-background: #e4e4e4;
 @row-col-bar-border: #cccccc;
-
 @tab-bar-border: #999;
-
 @spreadsheet-accent: #007AFF;
 @spreadsheet-icon:#666;
-
 @spreadsheet-cell-selection: #007AFF;
 @spreadsheet-cell-selection-rgba: rgba(0,122,255, .22);
-
 @spreadsheet-text-color:#111;
 @spreadsheet-wight-text: #fff;
-
 @spreadsheet-empty-bg: #fff;
-
 @spreadsheet-disabled: #c4c4c4;
-
 @spreadsheet-danger: #FF1A1E;
-
 @spreadsheet-menu-item-bg-hover: @spreadsheet-cell-selection-rgba;
-
-@spreadsheet-formula-btn-bg: @igGray6;
-
+@spreadsheet-formula-btn-bg: @igGray5;
 @spreadsheet-tab-text-color: #666;
-
 @spreadsheet-formula-btn-color: #111;
