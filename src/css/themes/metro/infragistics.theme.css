@@ -2773,6 +2773,9 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 #scheduler {
   background: #fff;
 }
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #00aade;
+}
 .ui-igscheduler-core .ui-igscheduler-agendaview {
   background-color: transparent;
 }
