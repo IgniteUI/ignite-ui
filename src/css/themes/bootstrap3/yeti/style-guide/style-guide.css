@@ -164,6 +164,9 @@ a:hover {
 .bg-danger {
   background: #F04124;
 }
+.bg-gray-base {
+  background: #000;
+}
 .bg-gray-darker {
   background: #222222;
 }

@@ -1,6 +1,10 @@
+/* Palettes */
 body {
   padding: 0;
   margin: 0;
+}
+a {
+  color: #2686ae;
 }
 .paragraph-styles p {
   margin: 0;
@@ -122,34 +126,43 @@ h6 {
   margin-bottom: 10px;
 }
 .accent1 {
-  background: #00aade;
+  background: #2686ae;
 }
 .accent2 {
-  background: #80D5EF;
+  background: #a5d2dd;
+}
+.error-color {
+  background: #3a0d11;
 }
 .igGray1 {
   background: #FFFFFF;
+  color: #222;
 }
 .igGray2 {
   background: #f8f8f8;
+  color: #222;
 }
 .igGray3 {
   background: #ececec;
+  color: #222;
 }
 .igGray4 {
   background: #ebebeb;
+  color: #222;
 }
 .igGray5 {
   background: #D9D9D9;
+  color: #222;
 }
 .igGray6 {
   background: #cccccc;
+  color: #222;
 }
 .igGray7 {
-  background: #999999;
+  background: #a1a1a1;
 }
 .igGray8 {
-  background: #787878;
+  background: #535353;
 }
 .igGray9 {
   background: #303030;

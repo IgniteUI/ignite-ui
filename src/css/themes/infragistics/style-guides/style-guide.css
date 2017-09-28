@@ -2,6 +2,9 @@ body {
   padding: 0;
   margin: 0;
 }
+a {
+  color: #4897AA;
+}
 .paragraph-styles p {
   margin: 0;
 }
@@ -110,7 +113,7 @@ input[type="checkbox"] {
 */
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  color: #000000;
+  color: #444444;
 }
 h1,
 h2,
@@ -122,44 +125,56 @@ h6 {
   margin-bottom: 10px;
 }
 .accent1 {
-  background: #00aade;
+  background: #a8d6e1;
 }
 .accent2 {
-  background: #80D5EF;
+  background: #4897AA;
+}
+.error-color {
+  background: #3a0d11;
 }
 .igGray1 {
-  background: #FFFFFF;
+  background: #F0F0F0;
+  color: #222;
 }
 .igGray2 {
-  background: #f8f8f8;
+  background: #eeeeee;
+  color: #222;
 }
 .igGray3 {
-  background: #ececec;
+  background: #e8e8e8;
+  color: #222;
 }
 .igGray4 {
-  background: #ebebeb;
+  background: #dadada;
+  color: #222;
 }
 .igGray5 {
-  background: #D9D9D9;
+  background: #bcbcbc;
+  color: #222;
 }
 .igGray6 {
   background: #cccccc;
+  color: #222;
 }
 .igGray7 {
   background: #999999;
 }
 .igGray8 {
-  background: #787878;
+  background: #888888;
 }
 .igGray9 {
-  background: #303030;
+  background: #777777;
 }
 .igGray10 {
-  background: #000000;
+  background: #444444;
+}
+.igGray11 {
+  background: #666;
 }
 .text-color {
-  color: #000000;
+  color: #444444;
 }
 .text-muted {
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(68, 68, 68, 0.7);
 }
