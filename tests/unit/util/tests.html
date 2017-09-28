@@ -171,6 +171,7 @@
 			equal($.ig.Date.prototype.toStringFormat(dt, "MMM dd"), "Oct 11", "Date.toStringFormat formats MMM dd correctly");
 			equal($.ig.Date.prototype.toStringFormat(dt, "MMM"), "Oct", "Date.toStringFormat formats MMM correctly");
 			equal($.ig.Date.prototype.toStringFormat(dt, "yyyy"), "1980", "Date.toStringFormat formats yyyy correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "yy"), "80", "Date.toStringFormat formats yy correctly");
 		});
 
 		test("Test IsAssignableFrom", function () {
