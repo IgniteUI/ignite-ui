@@ -5291,6 +5291,9 @@
 			num = num / 1;
 			scientificPrecision = Math.abs(scientificPrecision);
 			if (scientificPrecision <= 20) {
+				if (scientificPrecision < this.options.minDecimals) {
+					scientificPrecision = this.options.minDecimals;
+				}
 				stringValue = num.toFixed(scientificPrecision);
 			}
 			return stringValue;

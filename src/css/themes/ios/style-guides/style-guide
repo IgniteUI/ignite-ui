@@ -1,10 +1,14 @@
-@import "../../metro/variables";
+@import "../variables";
 
-// STYLES NOT RELATED TO THE STYLE GUIDE
 body {
   padding: 0;
   margin: 0;
 }
+
+a {
+  color: @accent1;
+}
+
 .paragraph-styles p {
   margin: 0;
 }
@@ -24,6 +28,7 @@ body {
 .style-guide-header {
   margin-bottom: 40px;
 }
+
 .g-row {
   margin-left: -20px;
   margin-right: -20px;
@@ -38,8 +43,13 @@ body {
   border-top: 1px solid #ddd;
 }
 
-.container :first-of-type .g-title-small {border: none}
-.container .flex-group .g-title-small {border-top: 1px solid #ddd}
+.container :first-of-type .g-title-small {
+  border: none
+}
+
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd
+}
 
 .g-box-color {
   flex: 1;
@@ -79,8 +89,8 @@ body {
 
 .flex-group {
   display: flex;
-  >* {
-    flex:1;
+  > * {
+    flex: 1;
     margin: 10px 20px;
   }
 }
@@ -90,7 +100,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   .g-input-field {
-   width: 100%;
+    width: 100%;
   }
 }
 
@@ -115,26 +125,24 @@ body {
 
 .checkbox-wrap {
   margin-bottom: 10px;
-  &:last-of-type{
+  &:last-of-type {
     margin-bottom: 0;
   }
 }
 
 input[type="radio"],
-input[type="checkbox"]
-{
+input[type="checkbox"] {
   margin: 0 5px 2px 0;
 }
 
 // STYLES NOT RELATED TO THE STYLE GUIDE END!!!
-
 
 /*
       STYLE  GUIDE STYLES
     =======================
 */
 body {
-  font-family: @fontfamily;
+  font-family: @font-family-base;
   color: @text-color;
 }
 
@@ -142,7 +150,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 10px;
 }
-
 
 // Brand colors
 .accent1 {
@@ -153,29 +160,64 @@ h1, h2, h3, h4, h5, h6 {
   background: @accent2;
 }
 
+.accent3 {
+  background: @accent3;
+}
+
+.accent1-light {
+  background: @accent1-light;
+  color:#222;
+}
+
+.accent1-mid {
+  background: @accent1-mid;
+}
+
+.accent1-mid-2 {
+  background: @accent1-mid-2;
+  color:#222;
+}
+
+.accent3-light {
+  background: lighten(@accent3, 35%);
+  color:#222;
+}
+
+.accent3-mid {
+  background: @accent3-mid;
+}
+
+
+
 // Gray colors
 .igGray1 {
   background: @igGray1;
+  color: #222;
 }
 
 .igGray2 {
   background: @igGray2;
+  color: #222;
 }
 
 .igGray3 {
   background: @igGray3;
+  color: #222;
 }
 
 .igGray4 {
   background: @igGray4;
+  color: #222;
 }
 
 .igGray5 {
   background: @igGray5;
+  color: #222;
 }
 
 .igGray6 {
   background: @igGray6;
+  color: #222;
 }
 
 .igGray7 {
@@ -189,6 +231,7 @@ h1, h2, h3, h4, h5, h6 {
 .igGray9 {
   background: @igGray9;
 }
+
 .igGray10 {
   background: @igGray10;
 }

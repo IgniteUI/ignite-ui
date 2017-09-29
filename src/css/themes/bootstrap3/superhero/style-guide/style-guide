@@ -203,6 +203,10 @@ a {
 }
 
 // Gray colors
+.bg-gray-base {
+  background: @gray-base;
+}
+
 .bg-gray-darker {
   background: @gray-darker;
 }

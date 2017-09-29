@@ -13,9 +13,9 @@ Bootstrap 3 Themes
 ### Themes - file structure
 
 
-* **images** - Contain all images related to the theme (This will be removed after we implement the web font in each theme)
+* **images** - Contain all images related to the theme
  
-* **infragistics.theme.less** - The root file which import all partial.
+* **infragistics.theme.less** - The root file which import all partial files.
  
 * **infragistics-ignite-ui-controls** - Contain all theme styles related to ignite ui controls
  
@@ -80,4 +80,6 @@ To add/remove/change icons form the web font:
 
 
 **IMPORTANT:**
-in order the font to work you need to specify the prefix for the icons clsss. In "icomoon.io", font settings. The prefix should be "ui-icon-". Keep the name for the font the same in order to override the existing font.
+in order the font to work you need to specify the prefix for the icons clsss. 
+In "icomoon.io", font settings. The prefix should be "ui-icon-".
+Keep the name for the font the same in order to override the existing font.

@@ -1520,6 +1520,61 @@
 					}, 0);
 				}, 0);
 			});
+			testId = 'Bug 1205 Decimal numbers are rounded when the editor is blurred';
+			test(testId, 1, function () {
+				var $editor;
+
+				// value not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+				.igNumericEditor({
+					minDecimals: 10,
+					maxDecimals: 10
+				});
+				$editor.trigger("focus").val("0.0000005880").blur();
+				
+					
+				
+				equal($editor.val(), "0.0000005880", "(wrong value) Numeric editor display value is not: 0.0000005880.");
+				$editor.remove();
+				/* 
+				// nullValue not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						 inputMask : "AA??",
+						 allowNullValue: true,
+						 nullValue: "#5a" //wrong first char
+					 });
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(97, $editor);
+					$.ig.TestUtil.keyInteraction(98, $editor);
+					$.ig.TestUtil.keyInteraction(99, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(wrong nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "abc_", "(wrong nullValue) Typing did not update Edit text.");
+				$editor.remove();
+
+				// nullValue not a string
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({
+						 allowNullValue: true,
+						 nullValue: 0
+					 });
+				equal($editor.val(), "0", "Null value not applied on Display text.")
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(49, $editor);
+					$.ig.TestUtil.keyInteraction(50, $editor);
+					$.ig.TestUtil.keyInteraction(51, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(numeric nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text."); */
+				$editor.remove();
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
