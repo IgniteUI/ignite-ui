@@ -13,14 +13,14 @@
 .ui-iggrid-table {
     table-layout: fixed;
     width: 100%;
-    /*border-collapse: separate;*/
+    border-collapse: collapse;
 }
 
 .ui-iggrid-headertable {
     table-layout: fixed;
     width: 100%;
     white-space: normal;
-    border-collapse: separate;
+    border-collapse: collapse;
 }
 
 .ui-iggrid table th,
