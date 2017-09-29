@@ -63,6 +63,7 @@
     white-space: nowrap;
     cursor: default;
     line-height: 1.2em;
+    height: 18px;
 }
 
 .ui-igdialog .ui-igdialog-headertext {
