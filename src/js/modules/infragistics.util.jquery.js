@@ -1071,9 +1071,11 @@
 			}
 
 			$("<div></div>").addClass("ui-html5-current-browser-label")
+				.attr("data-localeid", "currentBrowser")
 				.html(locale.currentBrowser.replace("{0}", browserUnsupported))
 				.appendTo(container);
 			$("<div></div>").addClass("ui-html5-non-html5-text")
+				.attr("data-localeid", "unsupportedBrowser")
 				.html(locale.unsupportedBrowser).appendTo(container);
 			ul = $("<ul></ul>").addClass("ui-html5-browsers-list").appendTo(container);
 			$("<a></a>").attr("href", locale.chromeDownload).attr("target", "_blank")
