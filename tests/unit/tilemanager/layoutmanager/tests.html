@@ -485,8 +485,8 @@
                         width: "800px",
                         height: "500px",
                         gridLayout: {
-                            columnsHeight: ["20%", "200px", "*"],
-                            columnsWidth: ["20%", "*", "*"]
+                            columnHeight: ["20%", "200px", "*"],
+                            columnWidth: ["20%", "*", "*"]
                         },
                         items: [
                             {
@@ -533,7 +533,7 @@
                     checkGridLayoutItemSize(fourthElement, "4th element", 800, 200, 300 + offset.top + "px", offset.left + "px");
 
                     container.igLayoutManager("option", "gridLayout", {
-                        columnsHeight: ["20%", "200px", "*"],
+                        columnHeight: ["20%", "200px", "*"],
                         columnWidth: "*",
                         cols: 3
                     });
@@ -545,7 +545,7 @@
                     
                     container.igLayoutManager("option", "gridLayout", {
                         columnHeight: "*",
-                        columnsWidth: ["20%", "*", "*"],
+                        columnWidth: ["20%", "*", "*"],
                         rows: 3
                     });
 

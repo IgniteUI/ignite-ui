@@ -114,7 +114,7 @@
                 null type="object" The height width can be set as a number in pixels.
             */
             height: null,
-            /* type="string|number|null" Gets/Sets the width of each column in the container.
+            /* type="string|number|array|null" Gets/Sets the width of each column in the container.
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -129,29 +129,11 @@
             ```
                 string type="string" The column width can be set in pixels (px), percentage (%) or asterisk (*) which will distribute all the width between all the columns equally.
                 number type="number" The column width can be set as a number representing value in pixels.
+                array type="array" The column width can be set as an array, specifying width for each column. If more than one column has an asterisk value, the remaining width will be equally distributed between these columns.
                 null type="object" The column width will be calculated based on the container width and the other options.
             */
             columnWidth: null,
-            /* type="array" Gets/sets a list of column widths. Each width could be a number,
-                string with height in px, percents
-                or asterisk (*) which will fill the remaining width.
-                If more than one column has an asterisk value, the remaining width will
-                be equally distributed between the columns.
-            ```
-                // Initialize
-                $('.selector').igTileManager({
-                    columnsWidth: ["200px", "10%", "*", "*"]
-                });
-
-                // Get
-                var columnsWidth = $('.selector').igTileManager('option', 'columnsWidth');
-
-                // Set
-                $('.selector').igTileManager('option', 'columnsWidth', ["200px", "10%", "*", "250px"]);
-            ```
-            */
-            columnsWidth: [],
-            /* type="string|number|null" Gets/Sets the height of each column in the container.
+            /* type="string|number|array|null" Gets/Sets the height of each column in the container.
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -166,28 +148,10 @@
             ```
                 string type="string" The column height can be set in pixels (px), percentage (%) or asterisk (*) which will distribute all the height between all the columns equally.
                 number type="number" The column height can be set as a number representing value in pixels.
+                array type="array" The column height can be set as an array, specifying height for each column. If more than one column has an asterisk value, the remaining height will be equally distributed between these columns.
                 null type="object" The column height will be calculated based on the container height and the other options.
             */
             columnHeight: null,
-            /* type="array" Gets/sets a list of column heights. Each height could be a number,
-                string with height in px, percents
-                or asterisks (*) which will fill the remaining height.
-                If more than one column has an asterisk value, the remaining height will
-                be equally distributed between the columns.
-            ```
-                // Initialize
-                $('.selector').igTileManager({
-                    columnsHeight: ["200px", "10%", "*", "*"]
-                });
-
-                // Get
-                var columnsHeight = $('.selector').igTileManager('option', 'columnsHeight');
-
-                // Set
-                $('.selector').igTileManager('option', 'columnsHeight', ["200px", "10%", "*", "250px"]);
-            ```
-            */
-            columnsHeight: [],
             /* type="number|null" Gets/Sets the columns count in the container.
             ```
                 //Initialize
@@ -1053,9 +1017,7 @@
                     this.reflow(true, 0);
                     break;
                 case "columnWidth":
-                case "columnsWidth":
                 case "columnHeight":
-                case "columnsHeight":
                 case "cols":
                 case "rows":
                 case "marginLeft":
@@ -1407,9 +1369,7 @@
                         items: items,
                         gridLayout: {
                             columnWidth: opt.columnWidth,
-                            columnsWidth: opt.columnsWidth,
                             columnHeight: opt.columnHeight,
-                            columnsHeight: opt.columnsHeight,
                             cols: opt.cols,
                             rows: opt.rows,
                             marginLeft: opt.marginLeft,
@@ -1477,9 +1437,7 @@
                         items: items,
                         gridLayout: {
                             columnWidth: opt.columnWidth,
-                            columnsWidth: opt.columnsWidth,
                             columnHeight: opt.columnHeight,
-                            columnsHeight: opt.columnsHeight,
                             cols: opt.cols,
                             rows: opt.rows,
                             marginLeft: opt.marginLeft,
@@ -1912,8 +1870,8 @@
 
             if (rightPanelTilesWidth) {
                 return rightPanelTilesWidth;
-            } else if (gl.columnsWidth.length > 0) {
-                return gl.columnsWidth[ gl.columnsWidth.length - 1 ];
+            } else if ($.isArray(gl.columnWidth)) {
+                return gl.columnWidth[ gl.columnWidth.length - 1 ];
             } else {
                 return gl.columnWidth;
             }
@@ -1924,8 +1882,8 @@
 
             if (rightPanelTilesHeight) {
                 return rightPanelTilesHeight;
-            } else if (gl.columnsHeight.length > 0) {
-                return gl.columnsHeight[ gl.columnsHeight.length - 1 ];
+            } else if ($.isArray(gl.columnHeight)) {
+                return gl.columnHeight[ gl.columnHeight.length - 1 ];
             } else {
                 return gl.columnHeight;
             }
@@ -1985,11 +1943,11 @@
             var gl = this._options.gridLayout,
                 minWidth, i;
 
-            if (gl.columnsWidth.length > 0) {
-                minWidth = gl.columnsWidth[ 0 ];
-                for (i = 0; i < gl.columnsWidth.length; i++) {
-                    if (minWidth > gl.columnsWidth[ i ]) {
-                        minWidth = gl.columnsWidth[ i ];
+            if ($.isArray(gl.columnWidth)) {
+                minWidth = gl.columnWidth[ 0 ];
+                for (i = 0; i < gl.columnWidth.length; i++) {
+                    if (minWidth > gl.columnWidth[ i ]) {
+                        minWidth = gl.columnWidth[ i ];
                     }
                 }
 
