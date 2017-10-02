@@ -736,7 +736,7 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_text" },
 			{ name: "_ig_ext_collections" }
         ],
-        scripts: [ "$path$/modules/infragistics.encoding.core.js" ],
+        scripts: [ "$path$/modules/encoding/infragistics.encoding.core.js" ],
         internal: true
 	},
 	{
