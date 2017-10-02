@@ -9,16 +9,19 @@
 }
 
 .ui-ightmleditor .ig-toolbar-buttons-holder .ui-button-text {
-    font-size: 0px;
+    font-size: 0;
 }
 
-.ui-ightmleditor  .ig-toolbar-buttons-holder,
-.ui-ightmleditor  .ig-toolbar-buttons-holder .ui-splitbutton {
+.ui-ightmleditor .ig-toolbar-buttons-holder,
+.ui-ightmleditor .ig-toolbar-buttons-holder .ui-splitbutton {
     vertical-align: top;
 }
 
 .ui-ightmleditor .ig-toolbar-buttons-holder {
-    height: 26px;
+    min-height: 26px;
+    display: flex !important;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .ui-ightmleditor-content iframe {
@@ -30,6 +33,7 @@
     position: relative;
     margin: 0;
 }
+
 /*D.A. Bug #144045 September 17th, 2013
 Overrides the default browser textarea display:inline-block. Needed for jQuery's
  show/hide methods to toggle between display:block and display:none */
@@ -38,8 +42,8 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
     border-width: 1px;
     display: block;
     width: 100%;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     overflow: auto;
     overflow-x: auto;
     overflow-y: auto;
@@ -63,28 +67,30 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 }
 
 .ui-ightmleditor .ui-igtoolbars-holder {
-    padding: 0 4px;
-    /* K.D. September 20th, 2012 Bug #121864 Misaligned breadcrumbs tags in HTML editor footer */
-    display: block;
-    margin: 4px;
+    padding: .4em .4em 0 .4em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .ui-ightmleditor .ui-igtoolbar {
-    margin: 4px 4px 0 0;
-    /* Bug #108479. The last toolbar on the row is not rendered correctly. */
-    /* float:left; */
+    display: flex;
+    align-items: center;
+    padding: .4em;
+    margin: 0 .4em .4em 0;
 }
 
 .ui-ightmleditor .ui-igtoolbar .ui-button {
     width: 18px;
     height: 18px;
-    margin-left: 4px;
+    padding: 1rem;
+    margin-right: 0.2rem;
 }
 
 .ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-button {
     margin-left: 0;
 }
-
 
 /* Buttons START*/
 
@@ -99,6 +105,7 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 .ui-ightmleditor .ui-button-icon-only .ui-button-text {
     padding: 0;
 }
+
 /* END */
 
 /* igTablePropertiesDialog START */
@@ -119,20 +126,21 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
     font-weight: bold;
     padding-bottom: 2px;
 }
+
 /* END */
 
 /* igPathFinder CSS*/
 
 .ui-ightmleditor .ui-igbutton-viewsource {
-    margin: 5px;
-    height: 18px;
+    margin: .4rem;
+    height: 2rem;
     float: left;
 }
 
 .ui-igPathFinder {
     float: left;
     height: 20px;
-    margin: 5px 5px 5px 0;
+    margin: .4em;
     font-size: 0.75em;
     overflow: hidden;
 }
@@ -145,7 +153,8 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
     -moz-box-sizing: content-box;
     box-sizing: content-box;
     position: relative;
-    padding-left: 10px;
+    padding-left: .5em;
+    display: inline-flex;
 }
 
 .ui-igPathFinder .ui-first-button {
@@ -158,16 +167,16 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 
 .ui-igPathFinder .ui-button::after {
     content: '';
-    height: 13px;
-    width: 13px;
+    height: 14px;
+    width: 14px;
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
     display: block;
     position: absolute;
-    top: 2px;
-    right: -7px;
+    top: .2em;
+    right: -.4em;
     z-index: -1;
 
 }
@@ -241,8 +250,6 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
     margin-bottom: 0.5em;
 }
 
-
-
 /* igImageProperties Dialog*/
 .ui-igimagepropertiesdialog label {
     line-height: 1.91em;
@@ -285,6 +292,7 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 #imageSrc {
     width: 239px;
 }
+
 /* END */
 
 /* igTableProprties Dialog */
@@ -307,6 +315,7 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
     cursor: pointer;
     background-color: white;
 }
+
 /* END */
 
 .ui-ightmleditor .ui-igcombo-list {
@@ -329,21 +338,18 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 
 /* END */
 
-
 /* Touch support */
 
 .touch .ui-ightmleditor .ui-igtoolbar .ui-button,
 .touchevents .ui-ightmleditor .ui-igtoolbar .ui-button,
-.pointerevents .ui-ightmleditor .ui-igtoolbar .ui-button
-{
+.pointerevents .ui-ightmleditor .ui-igtoolbar .ui-button {
     height: 44px;
     width: 44px;
 }
 
 .touch .ui-igPathFinder,
 .touchevents .ui-igPathFinder,
-.pointerevents .ui-igPathFinder
-{
+.pointerevents .ui-igPathFinder {
     font-size: 1em;
 }
 
@@ -352,24 +358,21 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 .pointerevents .ui-ightmleditor .ui-igtoolbar .ui-igcombo,
 .touch .ui-ightmleditor-dialog .ui-igcombo,
 .touchevents .ui-ightmleditor-dialog .ui-igcombo,
-.pointerevents .ui-ightmleditor-dialog .ui-igcombo
-{
+.pointerevents .ui-ightmleditor-dialog .ui-igcombo {
     height: 46px; /* 44px + 2px for borders */
 }
 
 .touch .ui-ightmleditor .ui-igcombo-list li,
 .touchevents .ui-ightmleditor .ui-igcombo-list li,
-.pointerevents .ui-ightmleditor .ui-igcombo-list li
-{
-    height: 44px!important;
+.pointerevents .ui-ightmleditor .ui-igcombo-list li {
+    height: 44px !important;
     width: 100% !important;
 }
 
 .touch .ui-combo-fontfamily li,
 .touchevents .ui-combo-fontfamily li,
-.pointerevents .ui-combo-fontfamily li
-{
-    line-height: 44px!important;
+.pointerevents .ui-combo-fontfamily li {
+    line-height: 44px !important;
 }
 
 .touch .ui-ightmleditor .ui-igbutton-viewsource,
@@ -377,8 +380,7 @@ Overrides the default browser textarea display:inline-block. Needed for jQuery's
 .pointerevents .ui-ightmleditor .ui-igbutton-viewsource,
 .touch .ui-igPathFinder .ui-button,
 .touchevents .ui-igPathFinder .ui-button,
-.pointerevents .ui-igPathFinder .ui-button
-{
+.pointerevents .ui-igPathFinder .ui-button {
     height: 44px;
 }
 
