@@ -24,21 +24,14 @@
 	if (typeof define === "function" && define.amd) {
 		define( [
             "jquery",
-            "jquery-ui",
             "knockout",
-            "../modules/infragistics.util",
-			"../modules/infragistics.util.jquery",
-			"../modules/infragistics.util.jquerydeferred",
-            "../modules/infragistics.datasource",
-            "../modules/infragistics.templating",
-            "../modules/infragistics.ui.shared",
             "../modules/infragistics.ui.tree"
             ], factory );
 	} else {
-		factory(jQuery);
+		factory(jQuery, ko);
 	}
 }
-(function ($) {
+(function ($, ko) {
 	ko.bindingHandlers.igTree = {
 		init: function (element, valueAccessor) {
 			var options = $.extend(true, {}, ko.utils.unwrapObservable(valueAccessor())),

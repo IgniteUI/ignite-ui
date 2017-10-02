@@ -17,19 +17,15 @@
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( [
-            "jquery",
-            "jquery-ui",
-            "knockout",
-            "../modules/infragistics.util",
-			"../modules/infragistics.util.jquery",
-			"../modules/infragistics.util.jquerydeferred",
+			"jquery",
+			"knockout",
             "../modules/infragistics.ui.editors"
             ], factory );
 	} else {
-		factory(jQuery);
+		factory(jQuery, ko);
 	}
 }
-(function ($) {
+(function ($, ko) {
 	function updatePropertyValue(element, bindingType, viewModel, newValue) {
 		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*value\\s*:\\s*)?([^{},\\s]+)"),
 			key,

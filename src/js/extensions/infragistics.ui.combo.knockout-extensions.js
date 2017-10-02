@@ -16,19 +16,14 @@
 	if (typeof define === "function" && define.amd) {
 		define( [
             "jquery",
-            "jquery-ui",
             "knockout",
-            "../modules/infragistics.util",
-            "../modules/infragistics.util.jquery",
-            "../modules/infragistics.util.jquerydeferred",
-            "../modules/infragistics.datasource",
             "../modules/infragistics.ui.combo"
             ], factory );
 	} else {
-		factory(jQuery);
+		factory(jQuery, ko);
 	}
 }
-(function ($) {
+(function ($, ko) {
     function selectItems(combo, selectedItems) {
         var valueKey = combo.igCombo("option", "valueKey"),
 			selectedValues = [],
