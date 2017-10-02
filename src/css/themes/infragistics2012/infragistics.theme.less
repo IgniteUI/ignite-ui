@@ -2,36 +2,31 @@
 /* Ignite UI Infragistics theme */
 /********************************/
 
-/* Theme variables */
+// Ignite UI Theme variables
 @import "variables.less";
 
-// Ignite UI mixins
+body {
+  background: @body-bg;
+}
+
+// Ignite UI Mixins
 @import "mixins.less";
 
-// Font https://icomoon.io
+// https://icomoon.io/
 @import (css)"../../structure/fonts/style.css";
 
-
-// jQuery UI
+//JQuery UI styles
 @import (css)"../../structure/jquery-ui.css";
 
-// JQuery UI  Overrides
+//JQuery UI Theme Overrides
 @import "jquery-ui-overrides.less";
 
+//Ignite UI modules
+@import "modules/modules";
 
 
-// Ignite UI controls
-@import "infragistics-ignite-ui-controls.less";
-
-// Icon styles to override jquery ui icon images
+// Font styles
 @import (css)"../../structure/icons-styles.css";
 
-
-// Put your Styles in this file
+// Use this file to override all infragistics & jQuery styles
 @import "overrides";
-
-
-
-
-
-
