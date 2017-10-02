@@ -1272,6 +1272,21 @@
 					}, 0);
 				}, 0);
 			});
+			testId = 'Bug 1205 Decimal numbers are rounded when the editor is blurred';
+ 			test(testId, 1, function () {
+ 				var $editor;
+ 	 				// value not matching mask (fails validation)
+ 				$editor = $('<input/>').appendTo("#testBedContainer")
+ 				.igNumericEditor({
+ 					minDecimals: 10,
+ 					maxDecimals: 10
+ 				});
+ 				$editor.trigger("focus").val("0.0000005880").blur();
+ 				equal($editor.val(), "0.0000005880", "(wrong value) Numeric editor display value is not: 0.0000005880.");
+ 				$editor.remove();
+ 			
+ 				$editor.remove();
+ 			});
 		});
 
 			
