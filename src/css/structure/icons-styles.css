@@ -604,59 +604,24 @@
 .ui-icon-pivot-filters:before,
 .ui-iggrid-filterbutton:before{content:"\e901"}
 
-.ui-iggrid-filtericonclear:before{content:"\e935"}
+.ui-iggrid-filtericonclear:before{content:"\e68f"}
 
 .ui-iggrid-filtericonequals:before{content:"\e66b"}
-.ui-iggrid-filtericondoesnotequal:before{content:"\e93e"}
+.ui-iggrid-filtericondoesnotequal:before{content:"\e66b"}
 
 .ui-iggrid-filtericongreaterthan:before{content:"\e638"}
-.ui-iggrid-filtericongreaterthanorequalto:before{content:"\e93f"}
+.ui-iggrid-filtericongreaterthanorequalto:before{content:"\e638" "\e66b"}
 
 .ui-iggrid-filtericonlessthan:before{content:"\e63c"}
-.ui-iggrid-filtericonlessthanorequalto:before{content:"\e940"}
+.ui-iggrid-filtericonlessthanorequalto:before{content:"\e63c" "\e66b"}
 
 .ui-iggrid-icon-advanced-filter:before{content: "\e901"}
 
 .ui-iggrid-multiheader-expanded:before{content: "\e680"}
 .ui-iggrid-multiheader-collapsed:before{content: "\e686"}
 
-.ui-iggrid-icon-summaries:before{content:'\e93c'}
-.ui-icon-summaries:before{content:'\e93c'}
+.ui-iggrid-icon-summaries:before{content:'\e6ed'}
 
-/* fix unfix col*/
-.ui-iggrid-icon-fix:before{content:'\e6fe'}
-.ui-iggrid-icon-unfix:before{content:'\e6fd'}
-
-/* Hide/Show col */
-.ui-iggrid-icon-show:before{content:'\e6da'}
-.ui-iggrid-icon-hide:before{content:'\e93b'}
-
-
-.ui-iggrid-icon-column-chooser:before{content:'\e900'}
-.ui-iggrid-icon-move:before{content:'\e92d'}
-
-.ui-iggrid-icon-multiple-sorting:before{content: '\e934'}
-
-.ui-iggrid-filtericonafter:before,
-.ui-iggrid-filtericonbefore:before,
-.ui-iggrid-filtericontoday:before,
-.ui-iggrid-filtericonyesterday:before,
-.ui-iggrid-filtericonthismonth:before,
-.ui-iggrid-filtericonlastmonth:before,
-.ui-iggrid-filtericonnextmonth:before,
-.ui-iggrid-filtericonthisyear:before,
-.ui-iggrid-filtericonlastyear:before,
-.ui-iggrid-filtericonnextyear:before,
-.ui-iggrid-filtericonon:before,
-.ui-iggrid-filtericonnoton:before {
-    content: '\e6ef';
-}
-
-.ui-iggrid-filtericonstartswith:before {content: '\e949'}
-.ui-iggrid-filtericonendswith:before {content: '\e947'}
-
-.ui-iggrid-filtericoncontains:before {content: '\e945'}
-.ui-iggrid-filtericondoesnotcontain:before {content: '\e944'}
 
 
 .ui-datepicker .ui-datepicker-prev .ui-icon:before { content: '\e64a'}
