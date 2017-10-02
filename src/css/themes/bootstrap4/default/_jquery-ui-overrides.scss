@@ -163,11 +163,6 @@
   outline-color: transparent;
 }
 
-.ui-dialog .ui-dialog-buttonpane {
-  position: static;
-  width: 100%;
-}
-
 .ui-dialog-titlebar .ui-state-hover .ui-icon,
 .ui-dialog-titlebar .ui-state-hover.ui-state-default {
   color: $ui-icons-light;
@@ -509,7 +504,7 @@ html .ui-button.ui-state-disabled:active {
   a.ui-button,
   a:link.ui-button,
   a:visited.ui-button {
-    font-size: 1.2rem;
+    font-size: 1rem;
     background: transparent;
     border-color: transparent;
     color: #fff;
