@@ -645,6 +645,10 @@
 			if (specId) {
 			    this.specializationCache[ specId ] = ret;
 			    ret.stringId = ret.generateString();
+			} else {
+			    // the self referencing type needs to be able to put itself into the specialization cache
+			    // of the original type
+			    ret.specializationCache = this.specializationCache;
 			}
 
 			var _self = this;
@@ -1582,10 +1586,15 @@
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
 		}
 		result = format;
-		result = result.replace("yyyy", value.getFullYear().toString());
+		var year = value.getFullYear().toString();
+		result = result.replace("yyyy", year);
+		result = result.replace("yy", year.substr(-2));
 		result = result.replace("MMM", mmm(value, provider));
 		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1"));
 		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("HH", value.getHours().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
 		return result;
 	};
 

@@ -1,60 +1,171 @@
-//* VARIABLES */
-//*************/
-
-//* VARIABLES */
-//*************/
-
-@accent1: #4897AA;
-@accent2: #9ECBD6;
-@accent3: #fd472b;
-
-// * Radius */
-@radius: 6px;
-/* Palettes */
+// Font
+@font-family-base: "Segoe UI",Arial,sans-serif;
+@text-color: @igGray10;
+@text-color-light: #fff;
+@highlight-color:#0c2837;
+@text-muted: fade(@text-color, 70%);
+@edit-container-bg: #fff;
 
 
-// * grays */
+// Color palette
+@accent1: #2686ae;
+@accent2: #a5d2dd;
+@accent2-border: #78b5c3;
+@danger: #fd472b;
+@error-border-color: @danger;
+@error-color: #3a0d11;
 
+
+@dialog-header:@accent1;
+
+// grays palette
 @igGray1: #FFFFFF;
 @igGray2: #f8f8f8;
 @igGray3: #ececec;
 @igGray4: #ebebeb;
 @igGray5: #D9D9D9;
 @igGray6: #cccccc;
-@igGray7: #999999;
-@igGray8: #787878;
+@igGray7: #a1a1a1;
+@igGray8: #535353;
 @igGray9: #303030;
 @igGray10: #000000;
 
-/*
-    Spreadsheet
-  =================
-*/
+// * Radius */
+@border-radius-base: 6px;
+/* Palettes */
 
+// Gradual palette, used mainly for bulletGraph and linearGauge
+@chartGradualPalette1: #2380A8;
+@chartGradualPalette2: #333333;
+@chartGradualPalette3: #808080;
+@chartGradualPalette4: #185170;
+@chartGradualPalette5: #879922;
+@chartGradualPalette6: #FBA609;
+@chartGradualPalette7: #FF5559;
+@chartGradualPalette8: #8856b1;
+@chartGradualPalette9: #e3720c;
+@chartGradualPalette10: #582c7d;
+@chartGradualPalette11: #386a23;
+@chartGradualPalette12: #C62D36;
+
+@chartPaletteNegative: #c33d4a;
+
+
+//Radialgauge range palette
+@range-1:#A4bA29;
+@range-2:#FDBD48;
+@range-3:#F79036;
+@range-4:#D3404B;
+@range-5:#9E73C1;
+@range-6:#793BAC;
+
+// bulletgraph,lineargauge range palette
+@shades-range-1:#005E9C;
+@shades-range-2:#0078C8;
+@shades-range-3:#0092F4;
+@shades-range-4:#21A7FF;
+@shades-range-5:#4FB9FF;
+
+
+//* igChart colors */
+@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
+
+// Grids
+@add-row-bg:@igGray2;
+
+@table-bg: @body-bg; // table bg
+@table-border-color: @igGray6;
+@table-border-color-active: @accent1;
+@table-bg-accent: @igGray1; // alt row bg
+@table-bg-hover: #f8f8f8;
+@table-bg-active: @accent1; // select
+
+@grid-header-bg:#5d5d5d;
+@grid-header-border: #4b4b4b;
+@grid-header-active-bg:@accent1;
+@grid-header-text:@text-color-light;
+@grid-header-text-active:@text-color-light;
+
+@grid-footer-bg:#a1a1a1;
+@grid-footer-color:@text-color;
+
+@grid-toolbar-bg:#f8f8f8;
+
+@iggrid-highlight-bg:@accent2;
+@iggrid-highlight-border:darken(@accent2,5%);
+@iggrid-highlight-color:@text-color;
+@iggrid-highlight-color-hover:@text-color-light;
+
+@iggrid-icons:@ui-icons-dark;
+@iggrid-icons-active:@ui-icons-light;
+
+//Gradients
+@gradient-0-1: rgb(245, 245, 245);
+@gradient-0-2: rgb(235, 235, 235);
+
+@gradient-1-1:rgb(211, 211, 211);
+@gradient-1-2:rgb(161, 161, 161);
+
+@gradient-2-1:rgb(117, 117, 117);
+@gradient-2-2:rgb(79, 79, 79);
+
+@gradient-3-1:rgb(59, 183, 235);
+@gradient-3-2:rgb(38, 134, 174);
+
+// Tabs
+@tabs-header-bg:@accent1;
+
+@tabs-normal-tab-bg:@accent1;
+@tabs-normal-tab-border:@accent1;
+@tabs-normal-tab-color:@text-color-light;
+
+@tabs-active-tab-bg:#fff;
+@tabs-active-tab-border:transparent;
+@tabs-active-tab-color:@text-color;
+
+@tabs-panel-border:@table-border-color;
+
+
+// Icons
+@ui-icons-darker: #222222;
+@ui-icons-dark: #888888;
+@ui-icons-light: #ffffff;
+@ui-icons-accent: @accent1;
+
+@link-color:@accent1;
+
+// Variables for Grids
+@body-bg: #FFFFFF;
+@table-bg: @body-bg; // table bg
+@table-border-color: @igGray4;
+@table-bg-accent: @igGray2; // alt row bg
+@table-bg-hover: @igGray6;
+@table-bg-active: @accent1; // select
+@iggrid-icons-dark: url(../../structure/images/igGrid/filter-icons-333333.png); //dark filter icons
+@iggrid-icons-light: url(../../structure/images/igGrid/filter-icons-FFFFFF.png); //white filter icons
+
+// Dropdowns and Menus
+@dropdown-bg: @body-bg;
+@dropdown-link-color: @text-color;
+@dropdown-link-hover-color: @text-color;
+@dropdown-link-hover-bg: @igGray6;
+@dropdown-link-active-color: @text-color;
+@dropdown-link-active-bg: @accent1;
+
+// Spreadsheet
 @bar-background: #e4e4e4;
 @row-col-bar-border: #cccccc;
-
 @tab-bar-border: #999;
-
 @spreadsheet-accent: #4897AA;
 @spreadsheet-icon:#666;
-
 @spreadsheet-cell-selection: #4897AA;
 @spreadsheet-cell-selection-rgba: rgba(72,151,170, .22);
-
 @spreadsheet-text-color:#111;
 @spreadsheet-wight-text: #fff;
-
 @spreadsheet-empty-bg: #fff;
-
 @spreadsheet-disabled: #c4c4c4;
-
-@spreadsheet-danger: @accent3;
-
+@spreadsheet-danger: @danger;
 @spreadsheet-menu-item-bg-hover: @spreadsheet-cell-selection-rgba;
-
 @spreadsheet-formula-btn-bg: @igGray6;
-
 @spreadsheet-tab-text-color: #666;
-
 @spreadsheet-formula-btn-color: #111;

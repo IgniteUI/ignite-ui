@@ -1,0 +1,341 @@
+@import "../variables";
+
+// STYLES NOT RELATED TO THE STYLE GUIDE
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.paragraph-styles p {
+  margin: 0;
+}
+
+.paragraph-styles,
+.brand-color {
+  display: flex;
+}
+
+.container {
+  max-width: 960px;
+  margin: 100px auto;
+}
+
+.style-guide-header {
+  margin-bottom: 40px;
+}
+
+.g-row {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+.brand-color {
+  color: #fff;
+}
+
+.g-title-small {
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.container :first-of-type .g-title-small {
+  border: none
+}
+
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd
+}
+
+.g-box-color {
+  flex: 1;
+  margin: 10px 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.g-box-text {
+  flex: 1;
+  margin: 10px 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.inherit {
+  color: #555;
+}
+
+.section {
+  margin-bottom: 50px;
+}
+
+.flex-group {
+  display: flex;
+  > * {
+    flex: 1;
+    margin: 10px 20px;
+  }
+}
+
+.serif-font {
+  font-family: @font-family-serif;
+}
+
+.section-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .g-input-field {
+    width: 100%;
+  }
+}
+
+.g-input-field {
+  margin-bottom: 15px;
+  padding: 0 10px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.g-label {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+.g-flex-row-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.checkbox-wrap {
+  margin-bottom: 10px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 5px 2px 0;
+}
+
+// STYLES NOT RELATED TO THE STYLE GUIDE END!!!
+
+/*
+      STYLE  GUIDE STYLES
+    =======================
+*/
+body {
+  font-family: @font-family-sans-serif;
+  background: @body-bg;
+  color: @text-color;
+  line-height: @line-height-base;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-family: @headings-font-family;
+  font-weight: @headings-font-weight;
+  line-height: @headings-line-height;
+  color: @headings-color;
+}
+
+// Title styles
+h1 {
+  font-size: @font-size-h1;
+}
+
+h2 {
+  font-size: @font-size-h2;
+}
+
+h3 {
+  font-size: @font-size-h3;
+}
+
+h4 {
+  font-size: @font-size-h4;
+}
+
+h5 {
+  font-size: @font-size-h5;
+}
+
+h6 {
+  font-size: @font-size-h6;
+}
+
+// Links Styles
+a {
+  color: @link-color;
+  &:hover {
+    color: @link-hover-color;
+  }
+}
+
+// Brand colors
+.bg-primary {
+  background: @brand-primary;
+}
+
+.bg-success {
+  background: @brand-success;
+}
+
+.bg-info {
+  background: @brand-info;
+}
+
+.bg-warning {
+  background: @brand-warning;
+}
+
+.bg-danger {
+  background: @brand-danger;
+}
+
+// Gray colors
+.bg-gray-base {
+  background: @gray-base;
+}
+
+.bg-gray-darker {
+  background: @gray-darker;
+}
+
+.bg-gray-dark {
+  background: @gray-dark;
+}
+
+.bg-gray {
+  background: @gray;
+}
+
+.bg-gray-light {
+  background: @gray-light;
+}
+
+.bg-gray-lighter {
+  background: @gray-lighter;
+}
+
+// Text color
+.text-color {
+  color: @text-color;
+}
+
+.text-muted {
+  color: @text-muted;
+}
+
+// Alert text styles
+.alert-box {
+  padding: 5px;
+}
+
+.text-success {
+  color: @state-success-text;
+  background: @state-success-bg;
+  border: 1px solid @state-success-border;
+}
+
+.text-info {
+  color: @state-info-text;
+  background: @state-info-bg;
+  border: 1px solid @state-info-border;
+}
+
+.text-warning {
+  color: @state-warning-text;
+  background: @state-warning-bg;
+  border: 1px solid @state-warning-border;
+}
+
+.text-danger {
+  color: @state-danger-text;
+  background: @state-danger-bg;
+  border: 1px solid @state-danger-border;
+}
+
+/* Forms, inputs...*/
+.g-input-field {
+  height: @input-height-base;
+  background: @input-bg;
+  color: @input-color;
+  border: 1px solid @input-border;
+  border-radius: @input-border-radius;
+  &:focus {
+    border-color: @input-border-focus;
+  }
+}
+
+.input--large {
+  height: @input-height-large;
+}
+
+.input--small {
+  height: @input-height-small;
+}
+
+.g-input-field[disabled] {
+  background: @input-bg-disabled;
+}
+
+.has-error {
+  .g-label {
+    color: @label-danger-bg;
+  }
+  .g-input-field {
+    border-color: @brand-danger;
+  }
+}
+
+.has-warning {
+  .g-label {
+    color: @label-warning-bg;
+  }
+  .g-input-field {
+    border-color: @brand-warning;
+  }
+}
+
+.has-success {
+  .g-label {
+    color: @label-success-bg;
+  }
+  .g-input-field {
+    border-color: @brand-success;
+  }
+}
+
+// Placeholder styles
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: @input-color-placeholder;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+  color: @input-color-placeholder;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+  color: @input-color-placeholder;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: @input-color-placeholder;
+}
+
+

@@ -1626,11 +1626,13 @@
 					try {
 						self[ "_" + $(this).attr("data-id") ](e);
 					} catch (ex) {}
+					$(this).removeClass(css.headerButtonHover); // This is needed to remove selected class under touch devices
 					_stopEvt(e);
 				},
-				touchstart: function (e) { this._drag = null; _stopEvt(e); },
-				touchmove: function (e) { this._drag = 1; _stopEvt(e); },
-				touchend: function () { if (!this._drag) { $(this).trigger("click"); } }
+
+				// N.A. September 21th, 2017, #1112: Don't propagate to touchstart handler on the header (header is parent of the buttons) which prevents default action (in this case click, which is required).
+				touchstart: function (e) { e.stopPropagation(); },
+				touchmove: function (e) { _stopEvt(e); } // Do not drag dialog when touch starts from header buttons.
 			};
 
 			// i=order of buttons in header:pin,min,max,close
