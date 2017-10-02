@@ -24,7 +24,6 @@
 	if (typeof define === "function" && define.amd) {
 		define( [
             "jquery",
-            "jquery-ui",
             "knockout",
             "../modules/infragistics.util",
             "../modules/infragistics.datasource",
@@ -33,10 +32,10 @@
             "../modules/infragistics.ui.tree"
             ], factory );
 	} else {
-		factory(jQuery);
+		factory(jQuery, ko);
 	}
 }
-(function ($) {
+(function ($, ko) {
 	ko.bindingHandlers.igTree = {
 		init: function (element, valueAccessor) {
 			var options = $.extend(true, {}, ko.utils.unwrapObservable(valueAccessor())),
