@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( ["jquery"], factory );
 	} else {
-		return factory();
+		return factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
-    $.ig = $.ig || {};
+(function ($) {
+	$.ig = $.ig || {};
 	$.ig.Tree = $.ig.Tree || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.de = $.ig.locale.de || {};
