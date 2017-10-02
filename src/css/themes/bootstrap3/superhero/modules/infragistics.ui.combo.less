@@ -1,0 +1,97 @@
+/***********/
+/* igCombo */
+/***********/
+
+// Default state
+.ui-igcombo-field {
+  padding-left: .5rem;
+}
+
+.ui-igcombo.ui-state-default {
+  .ui-igcombo-button {
+    .stateNormal;
+  }
+
+  .ui-igcombo-field {
+    border-radius: 0;
+    color: @ui-icons-darker;
+  }
+}
+
+// Hover state
+.ui-igcombo.ui-state-hover {
+  .stateHover;
+  .ui-igcombo-button.ui-state-hover {
+    .stateHover;
+  }
+}
+
+// Active state
+.ui-igcombo.ui-state-active {
+  .stateActive;
+  .ui-igcombo-button {
+    .stateActive;
+  }
+}
+
+.ui-igcombo-listitem-match {
+  font-weight: bold
+}
+
+.ui-igcombo-field {
+  color: @text-color;
+}
+
+.ui-igedit-button-common.ui-state-highlight,
+.ui-igedit-button-common.ui-state-hover,
+.ui-igedit-button.ui-state-highlight,
+.ui-igedit-button.ui-state-hover,
+.ui-igcombo-button.ui-state-highlight,
+.ui-igcombo-button.ui-state-hover {
+  border: inherit;
+}
+
+.ui-iggrid-filterrow {
+  .ui-igedit.ui-state-focus {
+    .ui-igedit-input {
+      outline: 1px solid @input-border-focus;
+    }
+  }
+}
+
+.ui-igedit-input,
+.ui-igcombo.ui-widget .ui-igcombo-clear.ui-unselectable,
+.ui-igedit-cleararea,
+.ui-igedit-cleararea.ui-state-hover,
+.ui-igedit.ui-state-hover .ui-igedit-cleararea,
+.ui-igedit.ui-state-focus .ui-igedit-cleararea {
+  background: @input-bg;
+  border: none;
+}
+
+.ui-igcombo-clear .ui-icon,
+.ui-igedit-buttonclear .ui-icon,
+.ui-igedit-cleararea .ui-icon,
+.ui-igedit.ui-state-focus .ui-igedit-cleararea .ui-icon,
+.ui-igedit.ui-state-active .ui-igedit-cleararea .ui-icon,
+.ui-igcombo.ui-state-active.ui-state-hover .ui-igcombo-clear .ui-icon {
+  background-image: @ui-icons-dark;
+}
+
+.ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit-cleararea.ui-state-default.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-hover .ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-focus .ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-active .ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit-buttonclear.ui-state-default.ui-state-hover .ui-icon,
+.ui-igcombo-clear.ui-igcombo-clear-hover.ui-state-hover .ui-icon,
+.ui-igcombo.ui-state-active .ui-igcombo-clear.ui-state-hover .ui-icon {
+  background-image: @ui-icons-darker;
+}
+
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active {
+  background: @component-active-bg;
+  color: #FFF;
+  opacity: 0.8;
+}

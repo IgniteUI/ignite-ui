@@ -1,7 +1,32 @@
-﻿
+﻿.ui-igrating {
+}
+
 .ui-igrating .ui-icon{ 
 	float		: none !important; 
 }
+
+.ui-igrating-active{
+}
+
+.ui-igrating-hover {
+}
+
+.ui-igrating-vote {
+}
+
+.ui-igrating-voteselected {
+}
+
+.ui-igrating-votehover { 
+}
+
+.ui-igrating-votedisabled {
+}
+
+.ui-igrating-votedisabledselected{
+}
+
+
 
 /* Touch friendly */
 
