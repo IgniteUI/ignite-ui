@@ -1590,7 +1590,9 @@
 		result = result.replace("MMM", mmm(value, provider));
 		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1"));
 		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
-		result = result.replace("HH", value.getHours().toString().replace(/^(\d)$/, "0$1"));
+		var hours = value.getHours();
+		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("hh", (hours % 12).toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
 		return result;
