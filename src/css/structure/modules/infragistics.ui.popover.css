@@ -20,15 +20,15 @@
 
 .ui-igpopover > .ui-widget-content {
     padding: 5px;
-    overflow: hidden;	
-    font-size:11px;		
+    overflow: hidden;
+    font-size:11px;
     background-image:none;
     font-weight:normal;
     border-style: solid;
     border-width: 1px;
 }
 
- .ui-igpopover-arrow {
+.ui-igpopover-arrow {
     position: absolute;
     display: block;
     width: 0;
@@ -41,26 +41,26 @@
     -moz-box-sizing: content-box;
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
- }
+}
 
 .ui-igpopover-arrow-bottom {
     left: 50%;
-    bottom : 0px; 
+    bottom : 0px;
     margin-left: -11px;
     border-bottom-width: 0;
     border-top-color:  #E5E5E5 ;
 }
 
-.ui-igpopover-arrow-top {    
+.ui-igpopover-arrow-top {
     left: 50%;
-    top: 0px; 
+    top: 0px;
     margin-left: -11px;
     border-top-width: 0;
     border-bottom-color: #E5E5E5;
 }
 
 .ui-igpopover-arrow-right {
-    top: 50%;  
+    top: 50%;
     right: 0px;
     margin-top: -11px;
     border-right-width: 0;
@@ -68,8 +68,8 @@
 }
 
 .ui-igpopover-arrow-left  {
-    top: 50%; 
-    left: 0px; 
+    top: 50%;
+    left: 0px;
     margin-top: -11px;
     border-left-width: 0;
     border-right-color:#E5E5E5;
@@ -81,7 +81,7 @@
     font-weight: normal;
     line-height: 18px;
     border-bottom: 1px solid #ebebeb;
- }
+}
 
 .ui-igpopover-close-button {
     position: absolute;
@@ -95,14 +95,14 @@
 .touch .ui-igpopover .ui-widget-content,
 .touchevents .ui-igpopover .ui-widget-content,
 .pointerevents .ui-igpopover .ui-widget-content
-{	
-    font-size:1.1em;			
+{
+    font-size:1.1em;
 }
 
 .touch .ui-igpopover .ui-icon-close,
 .touchevents .ui-igpopover .ui-icon-close,
 .pointerevents .ui-igpopover .ui-icon-close
-{  
+{
     width:20px;
     height:20px;
 }

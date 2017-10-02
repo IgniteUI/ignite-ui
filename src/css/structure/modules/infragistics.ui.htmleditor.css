@@ -21,46 +21,46 @@
     height: 26px;
 }
 
-    .ui-ightmleditor-content iframe {
-        background-color: white;
-        background-image: none;
-        border-width: 1px;
-        display: block;
-        width: 100%;
-        position: relative;
-        margin: 0;
-    }
-    /*D.A. Bug #144045 September 17th, 2013
-    Overrides the default browser textarea display:inline-block. Needed for jQuery's
-     show/hide methods to toggle between display:block and display:none */
-    .ui-ightmleditor-content textarea {
-        resize: none;
-        border-width: 1px;
-        display: block;
-        width: 100%;
-        padding: 0px;
-        margin: 0px;
-        overflow: auto;
-        overflow-x: auto;
-        overflow-y: auto;
-    }
+.ui-ightmleditor-content iframe {
+    background-color: white;
+    background-image: none;
+    border-width: 1px;
+    display: block;
+    width: 100%;
+    position: relative;
+    margin: 0;
+}
+/*D.A. Bug #144045 September 17th, 2013
+Overrides the default browser textarea display:inline-block. Needed for jQuery's
+ show/hide methods to toggle between display:block and display:none */
+.ui-ightmleditor-content textarea {
+    resize: none;
+    border-width: 1px;
+    display: block;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+}
 
-    .ui-ightmleditor-content > div {
-        background-color: white;
-        margin: 5px;
-        padding: 5px;
-        border-top-width: 2px;
-        border-right-width: 2px;
-        border-bottom-width: 2px;
-        border-left-width: 2px;
-        border-top-color: #333333;
-        border-right-color: #333333;
-        border-bottom-color: #333333;
-        border-left-color: #333333;
-        border-top-style: inset;
-        border-left-style: inset;
-        overflow: auto;
-    }
+.ui-ightmleditor-content > div {
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: #333333;
+    border-right-color: #333333;
+    border-bottom-color: #333333;
+    border-left-color: #333333;
+    border-top-style: inset;
+    border-left-style: inset;
+    overflow: auto;
+}
 
 .ui-ightmleditor .ui-igtoolbars-holder {
     padding: 0 4px;
@@ -75,26 +75,26 @@
     /* float:left; */
 }
 
-    .ui-ightmleditor .ui-igtoolbar .ui-button {
-        width: 18px;
-        height: 18px;
-        margin-left: 4px;
-    }
+.ui-ightmleditor .ui-igtoolbar .ui-button {
+    width: 18px;
+    height: 18px;
+    margin-left: 4px;
+}
 
-    .ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-button {
-        margin-left: 0;
-    }
+.ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-button {
+    margin-left: 0;
+}
 
 
-    /* Buttons START*/
+/* Buttons START*/
 
-    .ui-ightmleditor .ui-igtoolbar .ui-button-text,
-    .ui-ightmleditor .ui-igPathFinder .ui-button-text {
-        padding-bottom: 2px;
-        padding-left: 6px;
-        padding-right: 6px;
-        padding-top: 2px;
-    }
+.ui-ightmleditor .ui-igtoolbar .ui-button-text,
+.ui-ightmleditor .ui-igPathFinder .ui-button-text {
+    padding-bottom: 2px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+}
 
 .ui-ightmleditor .ui-button-icon-only .ui-button-text {
     padding: 0;
@@ -108,17 +108,17 @@
     padding: 0;
 }
 
-    .ui-igTablePropertiesDialog-fields li {
-        width: 50%;
-        float: left;
-        padding-bottom: 4px;
-    }
+.ui-igTablePropertiesDialog-fields li {
+    width: 50%;
+    float: left;
+    padding-bottom: 4px;
+}
 
-    .ui-igTablePropertiesDialog-fields label {
-        display: block;
-        font-weight: bold;
-        padding-bottom: 2px;
-    }
+.ui-igTablePropertiesDialog-fields label {
+    display: block;
+    font-weight: bold;
+    padding-bottom: 2px;
+}
 /* END */
 
 /* igPathFinder CSS*/
@@ -137,54 +137,54 @@
     overflow: hidden;
 }
 
-    .ui-igPathFinder .ui-button {
-        height: 18px;
-        padding: 0;
-        margin: 0;
-        -webkit-box-sizing: content-box;
-        -moz-box-sizing: content-box;
-        box-sizing: content-box;
-        position: relative;
-        padding-left: 10px;
-    }
+.ui-igPathFinder .ui-button {
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    position: relative;
+    padding-left: 10px;
+}
 
-    .ui-igPathFinder .ui-first-button {
-        padding-left: 0;
-    }
+.ui-igPathFinder .ui-first-button {
+    padding-left: 0;
+}
 
-    .ui-igPathFinder .ui-button:last-child::after {
-        display: none;
-    }
+.ui-igPathFinder .ui-button:last-child::after {
+    display: none;
+}
 
-    .ui-igPathFinder .ui-button::after {
-        content: '';
-        height: 13px;
-        width: 13px;
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-        display: block;
-        position: absolute;
-        top: 2px;
-        right: -7px;
-        z-index: -1;
+.ui-igPathFinder .ui-button::after {
+    content: '';
+    height: 13px;
+    width: 13px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: -7px;
+    z-index: -1;
 
-    }
+}
 
-    .ui-igPathFinder ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        width: 100%;
-    }
+.ui-igPathFinder ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+}
 
-    .ui-igPathFinder li {
-        padding: 0 3px;
-        float: left;
-        margin: 0 2px;
-        cursor: pointer;
-    }
+.ui-igPathFinder li {
+    padding: 0 3px;
+    float: left;
+    margin: 0 2px;
+    cursor: pointer;
+}
 
 .ui-igpathfinder-overflowMarker {
     float: left;
@@ -205,41 +205,41 @@
 .ui-ightmleditor-dialog {
 }
 
-    .ui-ightmleditor-dialog .ui-igdialog-content {
-        padding: 1em;
-    }
+.ui-ightmleditor-dialog .ui-igdialog-content {
+    padding: 1em;
+}
 
-    .ui-ightmleditor-dialog .layoutList label {
-        display: inline-block;
-        line-height: 0.8em;
-        vertical-align: top;
-    }
+.ui-ightmleditor-dialog .layoutList label {
+    display: inline-block;
+    line-height: 0.8em;
+    vertical-align: top;
+}
 
-    .ui-ightmleditor-dialog .layoutList {
-        margin: 0;
-        padding: 0;
-    }
+.ui-ightmleditor-dialog .layoutList {
+    margin: 0;
+    padding: 0;
+}
 
-        .ui-ightmleditor-dialog .layoutList li {
-            list-style: none;
-            padding: 5px;
-            margin: 0;
-            display: block;
-            padding-right: 3%;
-        }
+.ui-ightmleditor-dialog .layoutList li {
+    list-style: none;
+    padding: 5px;
+    margin: 0;
+    display: block;
+    padding-right: 3%;
+}
 
-        /* Z.K. September 2nd, 2015 Bug #202031 - Dropdown menus on the custom icons are not fully visible on touch device */
-        .ui-ightmleditor-dialog .layoutList > li > input {
-            display: inline-block;
-            width: 97%;
-            margin-bottom: 0.5em;
-        }
+/* Z.K. September 2nd, 2015 Bug #202031 - Dropdown menus on the custom icons are not fully visible on touch device */
+.ui-ightmleditor-dialog .layoutList > li > input {
+    display: inline-block;
+    width: 97%;
+    margin-bottom: 0.5em;
+}
 
-        .ui-ightmleditor-dialog .layoutList select {
-            display: block;
-            width: 100%;
-            margin-bottom: 0.5em;
-        }
+.ui-ightmleditor-dialog .layoutList select {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+}
 
 
 
@@ -270,9 +270,9 @@
     padding: 5px;
 }
 
-    .ui-igimagepropertiesdialog-form label {
-        display: block;
-    }
+.ui-igimagepropertiesdialog-form label {
+    display: block;
+}
 
 .ui-igimagepropertiesdialog-form-input {
     width: 228px;
@@ -292,9 +292,9 @@
     float: left;
 }
 
-    .ui-igtablepropertiesdialog-cols-rows-num input {
-        width: 44px;
-    }
+.ui-igtablepropertiesdialog-cols-rows-num input {
+    width: 44px;
+}
 
 .ui-igtablepropertiesdialog-sample-table {
     /* R.K. 13th December 2016 #652 Force sample table width so it can fill the parent <li> */
@@ -313,10 +313,10 @@
     height: auto !important;
 }
 
-    .ui-ightmleditor .ui-igcombo-list li {
-        height: auto !important;
-        width: 100% !important;
-    }
+.ui-ightmleditor .ui-igcombo-list li {
+    height: auto !important;
+    width: 100% !important;
+}
 
 .ui-ightmleditor .ui-combo-fontfamily .ui-igcombo-list {
     font-size: 1em;

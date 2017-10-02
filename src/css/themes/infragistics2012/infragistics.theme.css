@@ -10,6 +10,12 @@ body {
 }
 .stateNormal {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 .stateHover {
@@ -515,6 +521,12 @@ th.ui-widget-header {
 html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
@@ -1439,6 +1451,12 @@ a.ui-button:active,
 /************/
 .ui-igdialog-footer {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 .ui-igdialog-headerbutton .ui-icon:before {
@@ -1881,6 +1899,12 @@ a.ui-button:active,
 }
 .ui-iggrid-page .ui-state-default {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 .ui-iggrid-paging .ui-iggrid-pagelist {
@@ -2045,6 +2069,12 @@ a.ui-button:active,
 }
 .ui-iggrid .ui-iggrid-toolbar {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 .ui-iggrid .ui-iggrid-addrow td,
@@ -2207,6 +2237,12 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 .ui-iggrid-page .ui-state-default {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 /* Dropdowns */
@@ -3349,6 +3385,12 @@ Spreadsheet
 }
 .ui-igplayer-related-list .ui-igplayer-related-video-hover img {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
   border-width: 3px;
 }
@@ -3382,6 +3424,12 @@ Spreadsheet
 .ui-igplayer-related-video-container a.ui-button.ui-igbutton,
 .ui-igplayer-related-video-bar .ui-button.ui-igbutton {
   border-color: #ebebeb;
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   color: #000000;
 }
 .ui-igplayer-related-video-container a.ui-button.ui-igbutton:hover {
