@@ -28,7 +28,7 @@
 	} else {
 
 		// Browser globals
-		return factory(jQuery);
+		factory(jQuery);
 	}
 }
 (function ($) {
