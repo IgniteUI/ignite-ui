@@ -19,9 +19,6 @@
 		define( [
 			"jquery",
 			"knockout",
-            "../modules/infragistics.util",
-			"../modules/infragistics.util.jquery",
-			"../modules/infragistics.util.jquerydeferred",
             "../modules/infragistics.ui.editors"
             ], factory );
 	} else {
