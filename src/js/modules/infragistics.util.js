@@ -29,7 +29,7 @@
 	} else {
 
 		// Browser globals
-		factory();
+		return factory();
 	}
 }
 (function () {
