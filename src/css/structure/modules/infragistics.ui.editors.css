@@ -5,7 +5,7 @@
 	-webkit-background-clip: padding-box;
 	-moz-background-clip:    padding;
 	background-clip:         padding-box;
-  
+
 }
 .ui-igedit-container
 {
@@ -27,7 +27,7 @@
 }
 .ui-igedit-negative
 {
-    color: #e00000;
+	color: #e00000;
 }
 .ui-igeditor-input-container {
 	height: 100%;
@@ -48,14 +48,14 @@
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
-    border: 0!important;
-    border-radius:0!important;
+	border: 0!important;
+	border-radius:0!important;
 	margin: 0;
 	padding: 1px 2px 1px 2px;
-	outline: 0; 
+	outline: 0;
 }
 .ui-igedit-input::-ms-clear {
-   display: none;
+	display: none;
 }
 .ui-igeditor-button-area {
 	-webkit-box-sizing: border-box;
@@ -70,46 +70,46 @@
 	float: left;
 }
 .ui-igedit-dropdown {
-	  position: absolute;
-	  /* matches the container left border */
-	  left: -1px;
-	  overflow-x: hidden;
-	  overflow-y: auto;
-	  /*border-top: 0; L.A. removed this so the dropdown box has a top border too*/
-	  z-index: 100000;
-	  -webkit-box-sizing: border-box;
-	  -moz-box-sizing: border-box;
-	  box-sizing: border-box;
+	position: absolute;
+	/* matches the container left border */
+	left: -1px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	/*border-top: 0; L.A. removed this so the dropdown box has a top border too*/
+	z-index: 100000;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* Styles copied from combo control adapted for igedit-dropdown */
 
 .ui-igedit-dropdown-orientation-top {
-    border-bottom: 0;
+	border-bottom: 0;
 }
 
 .ui-igedit-dropdown-orientation-bottom {
-    border-top: 0;
+	border-top: 0;
 }
 
 /* Prevent all duplicating borders of drop down list items */
 .ui-igedit-listitem.ui-igedit-listitemselected + .ui-igedit-listitem.ui-state-hover {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 .ui-igedit-listitem.ui-igedit-listitemselected + .ui-igedit-listitem.ui-state-active {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 .ui-igedit-listitem.ui-state-hover + .ui-igedit-listitem.ui-igedit-listitemselected {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 .ui-igedit-listitem.ui-state-active + .ui-igedit-listitem.ui-igedit-listitemselected {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 .ui-igedit-listitem.ui-state-active + .ui-igedit-listitem.ui-state-hover {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 .ui-igedit-listitem.ui-state-hover + .ui-igedit-listitem.ui-state-active {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 
 .ui-igedit-spinarea {
@@ -128,15 +128,15 @@
 }
 .ui-igedit-button-common {
 	float: right;
-	  position: relative;
-	  height: 100%;
-	  min-width: 16px;
-	  min-height: 16px;
-	  cursor: pointer;
-	  padding: 0px 5px;
-	  -webkit-box-sizing: content-box;
-	  -moz-box-sizing: content-box;
-	  box-sizing: content-box;
+	position: relative;
+	height: 100%;
+	min-width: 16px;
+	min-height: 16px;
+	cursor: pointer;
+	padding: 0px 5px;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 }
 .ui-igedit-spinbutton {
 	-webkit-box-sizing: border-box;
@@ -176,28 +176,28 @@
 }
 
 .ui-checkbox-container {
-    /* prevent Bootstrap border-box */
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+	/* prevent Bootstrap border-box */
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	position: relative;
 }
 
 .ui-checkbox-container .ui-icon-custom {
-    margin: auto;
+	margin: auto;
 	position: absolute;
-	top: 0; 
-	left: 0; 
-	bottom: 0; 
+	top: 0;
+	left: 0;
+	bottom: 0;
 	right: 0;
 }
 
 .ui-checkbox-container .ui-icon:focus{
-    outline: none;
+	outline: none;
 }
 
 .ui-state-checkbox-checked {
-	
+
 }
 
 .ui-igedit-textarea {
