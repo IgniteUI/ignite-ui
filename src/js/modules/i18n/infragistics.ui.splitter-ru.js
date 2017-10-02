@@ -10,7 +10,7 @@
 	if (typeof define === "function" && define.amd) {
 		define( ["jquery"], factory );
 	} else {
-		return factory(jQuery);
+		factory(jQuery);
 	}
 }
 (function ($) {
