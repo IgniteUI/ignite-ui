@@ -12,37 +12,37 @@
 
 .ui-igupload .ui-igupload-browsebutton
 {
-   /*display:block;
-    it should be display:block - otherwise if it is display:inline-block - on show details click - does not work correctly in IE
-    */
-   width: 100px;/**/
-   display:inline-block;
+    /*display:block;
+     it should be display:block - otherwise if it is display:inline-block - on show details click - does not work correctly in IE
+     */
+    width: 100px;/**/
+    display:inline-block;
 }
 
 .ui-igupload-container
 {
     display:block;
-    
+
     background:transparent!important;
-    border-left: 0 none !important;
-    border-right: 0 none !important;
-    border-top: 0 none !important;
-    
+    border-left: 0!important;
+    border-right: 0 !important;
+    border-top: 0 !important;
+
     margin-top:15px;
     padding-bottom:3px;
 }
-.ui-iguploadsingle .ui-igupload-container.ui-widget-content 
+.ui-iguploadsingle .ui-igupload-container.ui-widget-content
 {
-    border:none;    
+    border:none;
 }
 
-    
-    /* Cancel button next to file uploading */
-    .ui-igupload-container a
-    {
-        display: inline-block;
-        margin-left: 5px;
-    }
+
+/* Cancel button next to file uploading */
+.ui-igupload-container a
+{
+    display: inline-block;
+    margin-left: 5px;
+}
 
 .ui-igupload-uploadprogress
 {
@@ -50,7 +50,7 @@
 }
 
 
-.ui-igupload .ui-igprogressbar 
+.ui-igupload .ui-igprogressbar
 {
     height:3px;
 }
@@ -59,8 +59,8 @@
 .ui-igupload-progressbar-container
 {
     z-index:10;
-    display:block; 
-    
+    display:block;
+
     line-height: 17px;
     font-size:13px;
 }
@@ -73,52 +73,52 @@
 /* File Extension Icons */
 .ui-igupload-progressbar-icon
 {
-    margin:1px 2px 0 2px;     
+    margin:1px 2px 0 2px;
     float:left;
     margin: 1px 5px;
 }
 
 .ui-igupload-progressbar-icon-exe
-{   
-    background-repeat:no-repeat;    
+{
+    background-repeat:no-repeat;
     width:14px;
     height:15px;
 }
 
 
 .ui-igupload-progressbar-icon-default
-{   
-    background-repeat:no-repeat;    
+{
+    background-repeat:no-repeat;
     width:18px;
     height:15px;
 }
 
 .ui-igupload-progressbar-icon-video
-{   
-    background-repeat:no-repeat;    
+{
+    background-repeat:no-repeat;
     width:16px;
     height:16px;
 }
 
 
 .ui-igupload-progressbar-icon-music
-{   
+{
     margin:1px 2px 0 2px;
-    background-repeat:no-repeat;    
+    background-repeat:no-repeat;
     width:16px;
     height:16px;
 }
 
 .ui-igupload-progressbar-icon-images
-{   
-    background-repeat:no-repeat;    
+{
+    background-repeat:no-repeat;
     width:16px;
     height:16px;
 }
 
 .ui-igupload-progressbar-icon-docs
-{   
-    background-repeat:no-repeat;    
+{
+    background-repeat:no-repeat;
     width:16px;
     height:16px;
 }
@@ -140,7 +140,7 @@
     clear:both;
 }
 
-.ui-igupload-summaryprogress 
+.ui-igupload-summaryprogress
 {
     padding:5px;
 }
@@ -154,7 +154,7 @@
 }
 
 .ui-igupload-progressbar-upload {
-    margin-right: 15px;    
+    margin-right: 15px;
 }
 .ui-iguploadsingle
 {
@@ -181,11 +181,11 @@
 
 .ui-igupload-cancelbutton-disabled
 {
-    display:inline-block;    
+    display:inline-block;
     border:solid 1px #00A000;
     background-position: 0 0;
     width:32px;
-    height:32px;       
+    height:32px;
 }
 /* //Cancel button for progress bar*/
 
@@ -201,15 +201,15 @@
 {
 }
 
-.ui-igupload-showhidedetails-button 
+.ui-igupload-showhidedetails-button
 {
     margin-left:5px;
 }
 
 /* //summary information - uploaded files, show/hide buttons */
-.ui-igupload-summaryprogresscontainer 
+.ui-igupload-summaryprogresscontainer
 {
-   margin-top: 10px;
+    margin-top: 10px;
 }
 
 .ui-igupload-summaryprogresscontainer a
@@ -218,19 +218,19 @@
     margin-top: -2px;
 }
 
-.ui-igupload-summaryprogress-label 
+.ui-igupload-summaryprogress-label
 {
     position: relative;
-    display: block; 
-    width: 100%; 
-    text-align: right; 
-    font-size:17px;    
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-size:17px;
     font-weight:normal!important;
     border:none!important;
     background:none!important;
-    right: 10px; 
-    
-    overflow:hidden;  
+    right: 10px;
+
+    overflow:hidden;
 }
 
 .ui-igupload-summaryprogress-secondary-label
@@ -245,12 +245,12 @@
 }
 
 /* Button Continue/Cancel */
-.ui-igupload-button-continue-cancel 
+.ui-igupload-button-continue-cancel
 {
     width:76px;
 }
 /* Button ClearAllButton */
-.ui-igupload-button-clear-all 
+.ui-igupload-button-clear-all
 {
     text-decoration:underline!important;
     background:none!important;
@@ -263,33 +263,33 @@
 {
     width:16px!important;
     height:16px!important;
-    
+
     border: none!important;
     background: none!important;
-    
+
     margin-right: 16px;
     margin-top:2px;
 }
 
 
-    .ui-igupload-cancel-button .ui-button-icon-primary
-    {
-        top:0;
-        left:0;
-        margin:0;
-        
-        position:relative;
-        display:block;
-    }
+.ui-igupload-cancel-button .ui-button-icon-primary
+{
+    top:0;
+    left:0;
+    margin:0;
+
+    position:relative;
+    display:block;
+}
 
 .ui-igupload .ui-button-icon-primary.ui-icon.ui-icon-check{
     position:relative;
     top:0;
 }
-    
+
 .ui-igupload-progress-container {
-   margin-bottom: 0;
-   padding: 6px 0 6px 12px;
+    margin-bottom: 0;
+    padding: 6px 0 6px 12px;
 }
 
 .ui-container-button-cancel-class {
@@ -311,11 +311,11 @@
 }
 
 .ui-ie6 .ui-igupload {
-    padding-bottom:0px;    
+    padding-bottom:0px;
 }
 
 .ui-ie6 .ui-igupload-cancel-button .ui-button-icon-primary{
-	overflow: hidden;
+    overflow: hidden;
 }
 
 .ui-ie6 .ui-igupload-progressbar-upload {
@@ -332,36 +332,36 @@
 }
 
 .ui-ie6 .ui-igupload-progressbar-upload {
-	margin-right: -24px;
+    margin-right: -24px;
 }
 
 .ui-ie6 .ui-igprogressbar-range {
-	height:2px!important;
-	
-	position: absolute; 
-    z-index: 1; 
-    font-size: .7em; 
+    height:2px!important;
+
+    position: absolute;
+    z-index: 1;
+    font-size: .7em;
     display: block;
-    border:1px solid #2686ae; 
-    background-position: 0 0; 
-    
+    border:1px solid #2686ae;
+    background-position: 0 0;
+
 }
 
 .ui-ie6 .ui-igupload-summaryprogressbar .ui-igprogressbar-range {
-	height:22px!important;
-	
-	position: absolute; 
-    z-index: 1; 
-    font-size: .7em; 
-    border:1px solid #2686ae; 
-    display: block; 
-    background-position: 0 0; 
+    height:22px!important;
+
+    position: absolute;
+    z-index: 1;
+    font-size: .7em;
+    border:1px solid #2686ae;
+    display: block;
+    background-position: 0 0;
 }
 
 /* Fix bug #75947 M.H. 27 May 2011 */
 .ui-ie6 .ui-iguploadmultiple, .ui-ie6 .ui-igupload-basemaincontainer
 {
-    position: relative !important;    
+    position: relative !important;
 }
 
 /* Fix bug #73126 M.H. 28 May 2011 */
@@ -377,11 +377,11 @@
 }
 
 .ui-ie7 .ui-igupload {
-    padding-bottom:0px;    
+    padding-bottom:0px;
 }
 
 .ui-ie7 .ui-igupload-cancel-button .ui-button-icon-primary{
-	overflow: hidden;
+    overflow: hidden;
 }
 
 .ui-ie7 .ui-igupload-progressbar-upload {
@@ -398,7 +398,7 @@
 }
 
 .ui-ie7 .ui-igupload-progressbar-upload {
-	margin-right: -24px;
+    margin-right: -24px;
 }
 
 /* Fix bug #75947 M.H. 27 May 2011 */
