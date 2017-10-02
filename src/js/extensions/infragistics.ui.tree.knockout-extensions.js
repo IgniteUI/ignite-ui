@@ -25,10 +25,6 @@
 		define( [
             "jquery",
             "knockout",
-            "../modules/infragistics.util",
-            "../modules/infragistics.datasource",
-            "../modules/infragistics.templating",
-            "../modules/infragistics.ui.shared",
             "../modules/infragistics.ui.tree"
             ], factory );
 	} else {
