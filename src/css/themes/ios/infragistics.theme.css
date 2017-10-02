@@ -3103,9 +3103,14 @@ Spreadsheet colors
 Spreadsheet colors END
 =========================
 */
-/* SChEDULER START */
+/* ============
+  Scheduler
+============= */
 #scheduler {
   background: #fff;
+}
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #007aff;
 }
 .ui-igscheduler-core .ui-igscheduler-agendaview {
   background-color: transparent;

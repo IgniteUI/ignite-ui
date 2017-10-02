@@ -2860,6 +2860,9 @@ a.ui-button:active,
 #scheduler {
   background: #fff;
 }
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #428bca;
+}
 .ui-igscheduler-core .ui-igscheduler-agendaview {
   background-color: transparent;
 }
