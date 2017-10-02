@@ -11926,5 +11926,5 @@
 			}
 		}
 	});
-
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

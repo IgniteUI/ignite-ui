@@ -277,5 +277,5 @@
     });
 
     $.extend($.ui.igColorPicker, { version: "<build_number>" });
-    return $.ui.igColorPicker;// REMOVE_FROM_COMBINED_FILES
+    return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

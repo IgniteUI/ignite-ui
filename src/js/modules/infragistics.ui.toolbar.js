@@ -1377,5 +1377,5 @@
     });
 
     $.extend($.ui.igToolbar, { version: "<build_number>" });
-    return $.ui.igToolbar;// REMOVE_FROM_COMBINED_FILES
+    return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

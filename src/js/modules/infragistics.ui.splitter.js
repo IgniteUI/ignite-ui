@@ -2285,5 +2285,5 @@
             }
         });
         $.extend($.ui.igSplitter, { version: "<build_number>" });
-        return $.ui.igSplitter;// REMOVE_FROM_COMBINED_FILES
+        return $;// REMOVE_FROM_COMBINED_FILES
     }));// REMOVE_FROM_COMBINED_FILES

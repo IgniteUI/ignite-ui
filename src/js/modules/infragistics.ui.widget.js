@@ -187,5 +187,5 @@
 	});
 
 	$.extend($.ui.igWidget, { version: "<build_number>" });
-	return $.ui.igWidget;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
