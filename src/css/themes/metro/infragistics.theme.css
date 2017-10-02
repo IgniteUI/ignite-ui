@@ -329,40 +329,6 @@
 /*******************
 * jQuery UI Dialog *
 ********************/
-.ui-dialog {
-  padding: 0;
-  box-sizing: border-box;
-}
-.ui-dialog .ui-dialog-titlebar {
-  padding: .4em 1em;
-  position: relative;
-}
-.ui-dialog .ui-dialog-title {
-  max-width: 100%;
-}
-.ui-dialog .ui-dialog-buttonpane,
-.ui-dialog .ui-dialog-titlebar {
-  padding: 1rem;
-}
-.ui-dialog .ui-dialog-buttonpane {
-  margin-top: 1rem;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-}
-.ui-dialog .ui-dialog-titlebar {
-  margin-bottom: 1rem;
-  position: relative;
-}
-.ui-dialog button {
-  cursor: pointer;
-  margin: 0 0 0 .5rem;
-  padding: .4rem 1.5rem;
-}
-.ui-dialog button.ui-button-icon-only {
-  padding: 0;
-}
 .ui-iggrid-headercaption {
   background: #fff;
   border-color: #ebebeb;

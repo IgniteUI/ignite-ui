@@ -89,13 +89,6 @@
   .ui-icon {
     color: #fff;
   }
-  &.ui-widget-content {
-    .ui-state-hover {
-      .ui-icon {
-        color: #ddd;
-      }
-    }
-  }
   .ui-state-hover {
     .ui-icon {
       color: #ddd;
@@ -104,12 +97,12 @@
   .ui-datepicker-prev.ui-state-hover,
   .ui-datepicker-next.ui-state-hover {
     background: transparent;
-    border: none;
+    border-color: transparent;
   }
 }
 
 .ui-datepicker .ui-datepicker-header {
-  background: @accent1;
+  background: @igGray8;
   color: #fff;
 }
 
@@ -161,54 +154,12 @@
 }
 
 .ui-datepicker .ui-datepicker-today a.ui-state-active {
-  color: @text-color-light;
+  color: @text-color;
 }
 
 /*******************
 * jQuery UI Dialog *
 ********************/
-
-.ui-dialog {
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-  padding: .4em 1em;
-  position: relative;
-}
-
-/*.ui-dialog .ui-dialog-title {
-  max-width: 100%;
-}*/
-
-.ui-dialog .ui-dialog-buttonpane,
-.ui-dialog .ui-dialog-titlebar {
-  padding: 1rem;
-}
-
-.ui-dialog .ui-dialog-buttonpane {
-  margin-top: 1rem;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-  /*margin-bottom: 1rem;*/
-  position: relative;
-}
-
-.ui-dialog button {
-  cursor: pointer;
-  margin: 0 0 0 .5rem;
-  padding: .4rem 1.5rem;
-}
-
-.ui-dialog button.ui-button-icon-only {
-  padding: 0;
-}
 
 .ui-iggrid-headercaption {
   background: #fff;
@@ -226,6 +177,7 @@
 
 .ui-dialog .ui-dialog-titlebar {
   background: @igGray8;
+  border: 1px solid @igGray9;
   color: #FFFFFF;
 }
 
@@ -235,16 +187,12 @@
 }
 
 .ui-dialog .ui-dialog-titlebar.ui-state-focus {
-  background: @accent2;
+  background: @accent1;
   border-color: @accent2;
 }
 
 .ui-dialog .ui-state-focus .ui-dialog-title {
-  color: @text-color-light;
-}
-
-.ui-dialog .ui-resizable-handle {
-  color: @text-color-light;
+  color: #FFFFFF;
 }
 
 /************************
@@ -391,6 +339,10 @@
   }
 }
 
+th.ui-widget-header {
+  color: #fff;
+}
+
 /* Interaction states
 ----------------------------------*/
 
@@ -405,8 +357,7 @@ html .ui-button.ui-state-disabled:active {
 }
 
 .ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
-  background: @edit-container-bg;
-  color: @text-color;
+  background: transparent;
 }
 
 .ui-state-default a,
@@ -433,16 +384,7 @@ a:visited.ui-button,
 
 .ui-widget-content .ui-state-hover,
 .ui-widget-content .ui-state-focus {
-  .ui-icon {
-    color: @text-color;
-  }
-}
-
-.ui-widget-content .ui-state-hover.ui-igdialog-headerbutton,
-.ui-widget-content .ui-state-focus.ui-igdialog-headerbutton {
-  background: transparent;
-  border-color: transparent;
-  color: @text-color-light;
+  color: @text-color;
 }
 
 .ui-state-focus:focus {
@@ -596,11 +538,11 @@ a.ui-button:active,
   color: @ui-icons-light;
 }
 
-/*// EXCEPTION: inputs have a white bg, so icons inside can't be white
+// EXCEPTION: inputs have a white bg, so icons inside can't be white
 .ui-state-hover.ui-state-default .ui-igcombo-clearicon.ui-icon, // EXCEPTION: hover on combo but not on the dropdown button itself
 .ui-state-hover .ui-state-default > .ui-icon {
   color: @ui-icons-light;
-}*/
+}
 
 // Active state (with accent icons)
 
@@ -613,16 +555,9 @@ a.ui-button:active,
 }
 
 .ui-igedit-button-common.ui-state-hover {
-  background: @accent1;
+  background: @accent2;
   .ui-icon {
     color: @text-color-light;
-  }
-}
-
-.ui-igscheduler-appointment-form-group .ui-state-hover,
-.ui-igscheduler-appointment-form-group .ui-state-focus {
-  .ui-igedit-button-common {
-    background: @accent1;
   }
 }
 
@@ -753,5 +688,5 @@ a.ui-button:active,
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  border-right: 2px solid @accent1 !important;
+  border-right: 2px solid @accent1!important;
 }
