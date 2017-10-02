@@ -25,7 +25,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -3893,5 +3893,5 @@
 			container.data("igScroll")._bKeyboardNavigation = false;
 		}
 	});
-	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

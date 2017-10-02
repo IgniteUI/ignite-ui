@@ -26,7 +26,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -4295,5 +4295,5 @@
 		/*************** HELPER FUNCTION ********************/
 	});
 	$.extend($.ui.igUpload, { version: "<build_number>" });
-	return $.ui.igUpload;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
