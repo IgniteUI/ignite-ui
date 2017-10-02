@@ -2744,6 +2744,9 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 #scheduler {
   background: #fff;
 }
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #4897AA;
+}
 .ui-igscheduler-core .ui-igscheduler-agendaview {
   background-color: transparent;
 }
@@ -2802,7 +2805,6 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-day-today {
   color: #4897AA;
-  font-weight: bold !important;
 }
 .ui-igscheduler-monthview-day-today span {
   color: #4897AA;
@@ -2847,7 +2849,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   color: #4897AA;
 }
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
-  color: #a8d6e1;
+  color: #4897AA;
 }
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
   color: #4897AA;
