@@ -471,8 +471,8 @@
 			/* Event which is raised after the editor value is changed. It can be raised after loosing focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.originalValue to obtain the original value.
+				Use ui.newValue to obtain the value entered from the user after internal formatting.
+				Use ui.originalValue to obtain the value entered from the user before internal formatting.
 				Use ui.editorInput to obtain reference to the editor input.
 				```
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
@@ -2710,7 +2710,8 @@
 				"compositionend.editor": function () {
 					setTimeout(function () {
 						var value, pastedValue, widgetName = self.widgetName,
-							cursorPosition = self._getCursorPosition();
+							cursorPosition = self._getCursorPosition(),
+							selection = { start: cursorPosition, end: cursorPosition };
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
 						if (self._focused !== true) {
@@ -2732,6 +2733,11 @@
 									pastedValue = value = self._parseValueByMask(value);
 									if (value !== self._maskWithPrompts) {
 										value = self._parseDateFromMaskedValue(value);
+									} else if (self.options.revertIfNotValid) {
+										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+										pastedValue = value = self._maskedValue;
+										selection.start = 0;
+										selection.end = value.length;
 									}
 								}
 								break;
@@ -2748,8 +2754,7 @@
 						}
 
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
-						self._insert(pastedValue, self._compositionStartValue);
-						self._setCursorPosition(cursorPosition);
+						self._insert(pastedValue, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -5320,6 +5325,9 @@
 			num = num / 1;
 			scientificPrecision = Math.abs(scientificPrecision);
 			if (scientificPrecision <= 20) {
+				if (scientificPrecision < this.options.minDecimals) {
+					scientificPrecision = this.options.minDecimals;
+				}
 				stringValue = num.toFixed(scientificPrecision);
 			}
 			return stringValue;
@@ -9454,9 +9462,13 @@
 				}
 			} else {
 
-				// extractedDate = this._dateObjectValue;
 				// N.A. 11/10/2015 Bug #207560: Set new date using timestamp.
-				extractedDate = new Date(this._dateObjectValue.getTime());
+				// N.A. September 4th, 2017 #1109: When displayTimeOffset is defined and mask of that editor doesn't contain hours, then date needs offset.
+				if (this.options.displayTimeOffset !== null) {
+					extractedDate = this._getDateOffset(this._dateObjectValue);
+				} else {
+					extractedDate = new Date(this._dateObjectValue.getTime());
+				}
 			}
 			if (yearField !== null && yearField !== undefined) {
 				this._setDateField("FullYear", extractedDate, yearField);
