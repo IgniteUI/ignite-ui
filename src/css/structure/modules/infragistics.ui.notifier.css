@@ -6,9 +6,9 @@
 }
 
 .ui-widget.ui-ignotify.ui-ignotify-inline {
-	position: static;
-	margin-bottom: 5px;
-	font-size:0.8em;
+    position: static;
+    margin-bottom: 5px;
+    font-size:0.8em;
 }
 .ui-ignotify-icon-container {
     display: inline-block;
