@@ -1592,7 +1592,8 @@
 		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
 		var hours = value.getHours();
 		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
-		result = result.replace("hh", (hours % 12).toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("tt", hours < 12 ? "AM" : "PM");
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
 		return result;
