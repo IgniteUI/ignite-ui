@@ -5,6 +5,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
 .paragraph-styles p {
   margin: 0;
 }
@@ -37,8 +38,13 @@ body {
   border-top: 1px solid #ddd;
 }
 
-.container :first-of-type .g-title-small {border: none}
-.container .flex-group .g-title-small {border-top: 1px solid #ddd}
+.container :first-of-type .g-title-small {
+  border: none
+}
+
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd
+}
 
 .g-box-color {
   flex: 1;
@@ -74,8 +80,8 @@ body {
 
 .flex-group {
   display: flex;
-  >* {
-    flex:1;
+  > * {
+    flex: 1;
     margin: 10px 20px;
   }
 }
@@ -89,7 +95,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   .g-input-field {
-   width: 100%;
+    width: 100%;
   }
 }
 
@@ -114,19 +120,17 @@ body {
 
 .checkbox-wrap {
   margin-bottom: 10px;
-  &:last-of-type{
+  &:last-of-type {
     margin-bottom: 0;
   }
 }
 
 input[type="radio"],
-input[type="checkbox"]
-{
+input[type="checkbox"] {
   margin: 0 5px 2px 0;
 }
 
 // STYLES NOT RELATED TO THE STYLE GUIDE END!!!
-
 
 /*
       STYLE  GUIDE STYLES
@@ -203,6 +207,10 @@ a {
 }
 
 // Gray colors
+.bg-gray-base {
+  background: @gray-base;
+}
+
 .bg-gray-darker {
   background: @gray-darker;
 }
@@ -232,11 +240,11 @@ a {
   color: @text-muted;
 }
 
-
 // Alert text styles
 .alert-box {
   padding: 5px;
 }
+
 .text-success {
   color: @state-success-text;
   background: @state-success-bg;
@@ -261,24 +269,24 @@ a {
   border: 1px solid @state-danger-border;
 }
 
-
 /* Forms, inputs...*/
 .g-input-field {
   height: @input-height-base;
   background: @input-bg;
-  color:@input-color;
+  color: @input-color;
   border: 1px solid @input-border;
   border-radius: @input-border-radius;
   &:focus {
     border-color: @input-border-focus;
   }
 }
+
 .input--large {
   height: @input-height-large;
 }
 
 .input--small {
-  height:@input-height-small;
+  height: @input-height-small;
 }
 
 .g-input-field[disabled] {
@@ -302,6 +310,7 @@ a {
     border-color: @brand-warning;
   }
 }
+
 .has-success {
   .g-label {
     color: @label-success-bg;
@@ -311,20 +320,20 @@ a {
   }
 }
 
-
-
-
 // Placeholder styles
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: @input-color-placeholder;
 }
+
 ::-moz-placeholder { /* Firefox 19+ */
   color: @input-color-placeholder;
 }
+
 :-ms-input-placeholder { /* IE 10+ */
   color: @input-color-placeholder;
 }
+
 :-moz-placeholder { /* Firefox 18- */
   color: @input-color-placeholder;
 }
