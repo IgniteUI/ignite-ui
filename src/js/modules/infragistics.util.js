@@ -27,9 +27,7 @@
 		define( [
 		], factory );
 	} else {
-
-		// Browser globals
-		factory();
+		return factory();
 	}
 }
 (function () {
