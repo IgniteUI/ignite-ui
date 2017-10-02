@@ -172,6 +172,26 @@
 			equal($.ig.Date.prototype.toStringFormat(dt, "MMM"), "Oct", "Date.toStringFormat formats MMM correctly");
 			equal($.ig.Date.prototype.toStringFormat(dt, "yyyy"), "1980", "Date.toStringFormat formats yyyy correctly");
 		});
+
+		test("Test IsAssignableFrom", function () {
+		    // type itself
+		    ok($.ig.Enum.prototype.$type.isAssignableFrom($.ig.Enum.prototype.$type), "Enum type");
+
+		    // base type
+		    ok($.ig.IEnumerable.prototype.$type.isAssignableFrom($.ig.IList.prototype.$type), "Base type of IList is IEnumerable");
+
+		    // interfaces
+		    ok($.ig.IConvertible.prototype.$type.isAssignableFrom($.ig.Enum.prototype.$type), "Enum implements IConvertible");
+		    ok($.ig.IComparable$1.prototype.$type.specialize($.ig.Int32.prototype.$type).isAssignableFrom($.ig.Int32.prototype.$type), "Int32 implements IComparable<Int32>");
+		    ok($.ig.IEquatable$1.prototype.$type.specialize($.ig.Int32.prototype.$type).isAssignableFrom($.ig.Int32.prototype.$type), "Int32 implements IEquatable<Int32>");
+		});
+
+		test("Test $.ig.encode", function () {
+			equal($.ig.encode("<div></div>"), "&lt;div&gt;&lt;/div&gt;", "Should encode div element");
+			equal($.ig.encode("&lt;div&gt;&lt;/div&gt;"), "&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;", "Should encode encoded div element");
+			equal($.ig.encode("<span id='span1'></span>"), "&lt;span id=&#39;span1&#39;&gt;&lt;/span&gt;", "Should encode span element with attribute and single quote");
+			equal($.ig.encode("<span id=\"span1\"></span>"), "&lt;span id=&#34;span1&#34;&gt;&lt;/span&gt;", "Should encode span element with attribute and double quote")
+		});
 	</script>
 </head>
 <body>

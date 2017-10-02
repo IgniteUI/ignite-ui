@@ -5621,6 +5621,13 @@
 			if (isGb) {
 				this._generateGroupByData(data, fields);
 			}
+			if (resetPaging) {
+				if (!this._filter) {
+					this._data = data;
+				} else {
+					this._filteredData = data;
+				}
+			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
 				/* DAY 2/15/12 101818- when filtering, need to set the filtered data, not _data */
@@ -7290,7 +7297,8 @@
 						sumFuncName,
 						fieldValues,
 						sumFunc,
-						fieldType
+						fieldType,
+						res
 					);
 					if (!gbSummaryRec.summaries[ summary.field ]) {
 						gbSummaryRec.summaries[ summary.field ] = [];

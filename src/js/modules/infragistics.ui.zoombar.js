@@ -568,7 +568,7 @@
 				this._responsive.removeCallback(this._callBackId);
 			}
 			this.container().remove();
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		},
 		_setOption: function (key, value) {

@@ -899,6 +899,8 @@
 			}
 		},
 
+		changeLocale: function () {},
+
 		_setOption: function (key, value) {
 			this._super(key, value);
 
@@ -3874,7 +3876,7 @@
 				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id);
 				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id);
 				$(window).off("resize.igscroll_" + this.element[ 0 ].id);
-				$.Widget.prototype.destroy.apply(this, arguments);
+				this._superApply(arguments);
 			}
 			return this;
 		}

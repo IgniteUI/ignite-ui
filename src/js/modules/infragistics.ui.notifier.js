@@ -559,14 +559,19 @@
 			return template;
 		},
 		_setNewContent: function (nc) {
-			var newContent = nc;
+			var newContent = nc, iconContainer = this.css.iconContainer, icon = "";
 			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;
 			}
-			newContent = newContent.replace(/\{0\}/g, this.css.iconContainer)
-				.replace(/\{1\}/g, this.options.showIcon ? this.css[ this.options.state + "Icon" ] : "")
+			if (this.options.showIcon) {
+				icon = this.css[ this.options.state + "Icon" ];
+			} else {
+				iconContainer += " hidden";
+			}
+			newContent = newContent.replace(/\{0\}/g, iconContainer)
+				.replace(/\{1\}/g, icon)
 				.replace(/\{2\}/g, this._currentText);
 			this.contentInner.html(newContent);
 		},
@@ -577,7 +582,7 @@
 				```
 			*/
 			this._setTargetState(true);
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});

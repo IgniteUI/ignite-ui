@@ -1,0 +1,180 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+a {
+  color: #4897AA;
+}
+.paragraph-styles p {
+  margin: 0;
+}
+.paragraph-styles,
+.brand-color {
+  display: flex;
+  flex-wrap: wrap;
+}
+.container {
+  max-width: 960px;
+  margin: 100px auto;
+  padding: 20px;
+}
+.style-guide-header {
+  margin-bottom: 40px;
+}
+.g-row {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.brand-color {
+  color: #fff;
+}
+.g-title-small {
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+.container :first-of-type .g-title-small {
+  border: none;
+}
+.container .flex-group .g-title-small {
+  border-top: 1px solid #ddd;
+}
+.g-box-color {
+  flex: 1;
+  margin: 10px 20px;
+  padding: 20px;
+  text-align: center;
+  min-width: 120px;
+  max-width: 120px;
+}
+.g-box-text {
+  flex: 1;
+  margin: 10px 20px;
+  min-width: 200px;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.inherit {
+  color: #555;
+}
+.section {
+  margin-bottom: 50px;
+}
+.flex-group {
+  display: flex;
+}
+.flex-group > * {
+  flex: 1;
+  margin: 10px 20px;
+}
+.section-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.section-column .g-input-field {
+  width: 100%;
+}
+.g-input-field {
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+.g-input-field:last-of-type {
+  margin-bottom: 0;
+}
+.g-label {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+.g-flex-row-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.checkbox-wrap {
+  margin-bottom: 10px;
+}
+.checkbox-wrap:last-of-type {
+  margin-bottom: 0;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 5px 2px 0;
+}
+/*
+      STYLE  GUIDE STYLES
+    =======================
+*/
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #444444;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.accent1 {
+  background: #a8d6e1;
+}
+.accent2 {
+  background: #4897AA;
+}
+.error-color {
+  background: #3a0d11;
+}
+.igGray1 {
+  background: #F0F0F0;
+  color: #222;
+}
+.igGray2 {
+  background: #eeeeee;
+  color: #222;
+}
+.igGray3 {
+  background: #e8e8e8;
+  color: #222;
+}
+.igGray4 {
+  background: #dadada;
+  color: #222;
+}
+.igGray5 {
+  background: #bcbcbc;
+  color: #222;
+}
+.igGray6 {
+  background: #cccccc;
+  color: #222;
+}
+.igGray7 {
+  background: #999999;
+}
+.igGray8 {
+  background: #888888;
+}
+.igGray9 {
+  background: #777777;
+}
+.igGray10 {
+  background: #444444;
+}
+.igGray11 {
+  background: #666;
+}
+.text-color {
+  color: #444444;
+}
+.text-muted {
+  color: rgba(68, 68, 68, 0.7);
+}
