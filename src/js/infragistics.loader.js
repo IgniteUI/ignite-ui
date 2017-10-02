@@ -404,7 +404,7 @@ $.ig.dependencies = [
 	{
 		widget: "_ig_dv_visualdata",
 		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_dv_visualdata" }],
+		dependency: [ { name: "_ig_ext_ui" }],
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv_visualdata.js" ]
 	},
@@ -744,7 +744,7 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_text" },
 			{ name: "_ig_ext_collections" }
         ],
-        scripts: [ "$path$/modules/infragistics.encoding.core.js" ],
+        scripts: [ "$path$/modules/encoding/infragistics.encoding.core.js" ],
         internal: true
 	},
 	{

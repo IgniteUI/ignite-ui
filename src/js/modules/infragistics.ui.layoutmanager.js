@@ -21,12 +21,12 @@
             "jquery",
             "jquery-ui",
             "./infragistics.util",
-			"./infragistics.util.jquery"
+            "./infragistics.util.jquery"
         ], factory);
     } else {
 
         // Browser globals
-        factory(jQuery);
+        return factory(jQuery);
     }
 }
     (function ($) {
@@ -294,14 +294,17 @@
                     ```
                     */
                     cols: null,
-                    /* type="string|number" Accepts number or string with height in px or percents
+                    /* type="string|number|array" Accepts number, string with height in px, percents,
+                        or asterisk (*) which will distribute all the height between all the columns equally.
+                        It can also accept an array, specifying height for each column. If more than one column
+                        has an asterisk value, the remaining height will be equally distributed between these columns.
                     ```
                     // Initialize
                     $('.selector').igLayoutManager({
-                    layoutMode: "grid",
-                    gridLayout: {
-                        columnHeight: 200
-                    }
+                        layoutMode: "grid",
+                        gridLayout: {
+                            columnHeight: 200
+                        }
                     });
 
                     // Get
@@ -311,29 +314,34 @@
                     // Set
                     $('.selector').igLayoutManager('option', 'gridLayout', { columnWidth: 400, columnHeight: 500});
                     ```
-                    string The column height can be set in pixels (px), %, em and other units.
+                    string The column height can be set in pixels (px), %, em or *.
                     number The column height can be set as a number.
+                    array The column height can be set as an array of heights.
                     */
                     columnHeight: null,
-                    /* type="string|number" Accepts number or string with width in px or percents
+                    /* type="string|number|array" Accepts number or string with width in px, percents
+                        or asterisk (*) which will distribute all the width between all the columns equally.
+                        It can also accept an array, specifying width for each column. If more than one column
+                        has an asterisk value, the remaining width will be equally distributed between these columns.
                     ```
-                    //Initialize
+                    // Initialize
                     $('.selector').igLayoutManager({
                         layoutMode: "grid",
-                        gridLayout: {
-                        columnWidth: 200
+                            gridLayout: {
+                            columnWidth: 200
                         }
                     });
 
-                    //Get
+                    // Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var columnWidth = gridLayout.columnWidth;
 
                     // Set
                     $('.selector').igLayoutManager('option', 'gridLayout', { columnWidth: 400, columnHeight: 500});
                     ```
-                    string The column width can be set in pixels (px), %, em and other units.
+                    string The column width can be set in pixels (px), %, em or *.
                     number The column width can be set as a number.
+                    array The column width can be set as an array of widths.
                     */
                     columnWidth: null,
                     /* type="number" specifies the margin left css property for items
@@ -1102,6 +1110,132 @@
                     this.element.children().addClass(this.css.verticalItem);
                 }
             },
+            _analyzeGlWidth: function () {
+                var gl = this._opt.gridLayout,
+                    columnWidth = gl.columnWidth,
+                    ml = gl.marginLeft,
+                    elWidth = this.element.width(),
+                    analyzedColumnWidth,
+                    i;
+
+                // Convert the column width option to number value
+                if (columnWidth) {
+                    if (typeof columnWidth === "string") {
+                        analyzedColumnWidth = this._analyzeGlColumnWidth(columnWidth, elWidth, ml);
+                        gl.columnWidth = analyzedColumnWidth.columnWidth;
+                        gl.columnWidthRatio = analyzedColumnWidth.columnWidthRatio;
+                        gl.columnWidthHasAsterisk = analyzedColumnWidth.columnWidthHasAsterisk;
+                    } else if ($.isArray(columnWidth)) {
+                        gl.columnWidthRatio = [];
+                        gl.columnWidthHasAsterisk = [];
+
+                        for (i = 0; i < columnWidth.length; i++) {
+                            analyzedColumnWidth = this._analyzeGlColumnWidth(
+                                columnWidth[ i ], elWidth, ml);
+                            gl.columnWidth[ i ] = analyzedColumnWidth.columnWidth;
+                            gl.columnWidthRatio.push(analyzedColumnWidth.columnWidthRatio);
+                            gl.columnWidthHasAsterisk.push(
+                                analyzedColumnWidth.columnWidthHasAsterisk);
+                        }
+                    }
+                }
+            },
+            _analyzeGlColumnWidth: function (columnWidth, elWidth, marginLeft) {
+                var units,
+                    analyzedColumnWidth = columnWidth,
+                    analyzedColumnWidthRatio = null,
+                    hasAsterisk = false;
+
+                if (columnWidth.indexOf("%") !== -1) {
+                    units = columnWidth.substring(0, columnWidth.length - 1);
+                    units = parseInt(units, 10) / 100;
+                    if (!isNaN(units) && units > 0) {
+
+                        // Keep the ratio to resize the tiles when the container is resized
+                        analyzedColumnWidthRatio = units;
+
+                        // When columnWidth option is set in percent
+                        // consider the margin-left to be part of it for users ease
+                        analyzedColumnWidth = Math.floor(elWidth * units - marginLeft);
+                    }
+                } else if (columnWidth === "*") {
+                    hasAsterisk = true;
+                } else {
+                    // Try to parse the value
+                    units = parseInt(columnWidth, 10);
+                    if (!isNaN(units) && units > 0) {
+                        analyzedColumnWidth = units;
+                    }
+                }
+
+                return {
+                    columnWidth: analyzedColumnWidth,
+                    columnWidthRatio: analyzedColumnWidthRatio,
+                    columnWidthHasAsterisk: hasAsterisk
+                };
+            },
+            _analyzeGlHeight: function () {
+                var i,
+                    gl = this._opt.gridLayout,
+                    columnHeight = gl.columnHeight,
+                    mt = gl.marginTop,
+                    elHeight = this.element.height(),
+                    analyzedColumnHeight;
+
+                // Convert the column height option to number value
+                if (columnHeight) {
+                    if (typeof columnHeight === "string") {
+                        analyzedColumnHeight = this._analyzeGlColumnHeight(
+                            columnHeight, elHeight, mt);
+                        gl.columnHeight = analyzedColumnHeight.columnHeight;
+                        gl.columnHeightRatio = analyzedColumnHeight.columnHeightRatio;
+                        gl.columnHeightHasAsterisk = analyzedColumnHeight.columnHeightHasAsterisk;
+                    } else if ($.isArray(columnHeight)) {
+                        gl.columnHeightRatio = [];
+                        gl.columnHeightHasAsterisk = [];
+
+                        for (i = 0; i < columnHeight.length; i++) {
+                            analyzedColumnHeight = this._analyzeGlColumnHeight(
+                                columnHeight[ i ], elHeight, mt);
+                            gl.columnHeight[ i ] = analyzedColumnHeight.columnHeight;
+                            gl.columnHeightRatio.push(analyzedColumnHeight.columnHeightRatio);
+                            gl.columnHeightHasAsterisk.push(
+                                analyzedColumnHeight.columnHeightHasAsterisk);
+                        }
+                    }
+                }
+            },
+            _analyzeGlColumnHeight: function (columnHeight, elHeight, marginTop) {
+                var units,
+                    analyzedColumnHeight = columnHeight,
+                    analyzedColumnHeightRatio = null,
+                    hasAsterisk = false;
+
+                if (columnHeight.indexOf("%") !== -1) {
+                    units = columnHeight.substring(0, columnHeight.length - 1);
+                    units = parseInt(units, 10) / 100;
+                    if (!isNaN(units) && units > 0) {
+                        analyzedColumnHeightRatio = units;
+
+                        // When columnHeight option is set in percent
+                        // consider the margin-top to be part of it for users ease
+                        analyzedColumnHeight = Math.floor(elHeight * units - marginTop);
+                    }
+                } else if (columnHeight === "*") {
+                    hasAsterisk = true;
+                } else {
+                    units = parseInt(columnHeight, 10);
+                    if (!isNaN(units) && units > 0) {
+                        analyzedColumnHeight = units;
+                    }
+                }
+
+                return {
+                    columnHeight: analyzedColumnHeight,
+                    columnHeightRatio: analyzedColumnHeightRatio,
+                    columnHeightHasAsterisk: hasAsterisk
+                };
+            },
 
             // When items configuration is given get the cols and rows values from it.
             _analyzeGlItems: function () {
@@ -1133,76 +1267,32 @@
                     gl.rows = rows;
                 }
             },
-            _analyzeGlWidth: function () {
-                var gl = this._opt.gridLayout,
-                    columnWidth = gl.columnWidth,
-                    elWidth = this.element.width(),
-                    units;
-
-                // Convert the column width option to number value
-                if (columnWidth) {
-                    if (typeof columnWidth === "string") {
-                        if (columnWidth.indexOf("%") !== -1) {
-                            units = columnWidth.substring(0, columnWidth.length - 1);
-                            units = parseInt(units, 10) / 100;
-                            if (!isNaN(units) && units > 0) {
-
-                                // Keep the ratio to resize the tiles when the container is resized
-                                gl.columnWidthRatio = units;
-
-                                // When columnWidth option is set in percent
-                                // consider the margin-left to be part of it for users ease
-                                gl.columnWidth = Math.floor(elWidth * units - gl.marginLeft);
-                            }
-                        } else {
-                            // Try to parse the value
-                            units = parseInt(columnWidth, 10);
-                            if (!isNaN(units) && units > 0) {
-                                gl.columnWidth = units;
-                            }
-                        }
-                    }
-                }
-            },
-            _analyzeGlHeight: function () {
-                var gl = this._opt.gridLayout,
-                    columnHeight = gl.columnHeight,
-                    elHeight = this.element.height(),
-                    units;
-
-                // Convert the column height option to number value
-                if (columnHeight) {
-                    if (typeof columnHeight === "string") {
-                        if (columnHeight.indexOf("%") !== -1) {
-                            units = columnHeight.substring(0, columnHeight.length - 1);
-                            units = parseInt(units, 10) / 100;
-                            if (!isNaN(units) && units > 0) {
-                                gl.columnHeightRatio = units;
-
-                                // When columnHeight option is set in percent
-                                // consider the margin-top to be part of it for users ease
-                                gl.columnHeight = Math.floor(elHeight * units - gl.marginTop);
-                            }
-                        } else {
-                            units = parseInt(columnHeight, 10);
-                            if (!isNaN(units) && units > 0) {
-                                gl.columnHeight = units;
-                            }
-                        }
-                    }
-                }
-            },
-            _analyzeGlNotSetOptions: function () {
+            _analyzeGlColsRows: function () {
                 var gl = this._opt.gridLayout,
                     elWidth = this.element.width(),
                     elHeight = this.element.height(),
                     itemsLength = this.options.items.length,
-                    columnWidthOption = typeof gl.columnWidth === "number" &&
+                    isColumnWidthNumber = gl.columnWidth && typeof gl.columnWidth === "number" &&
                         gl.columnWidth > 0,
-                    columnHeightOption = typeof gl.columnHeight === "number" &&
-                        gl.columnHeight > 0,
-                    colsOption = typeof gl.cols === "number" && gl.cols > 0,
-                    rowsOption = typeof gl.rows === "number" && gl.rows > 0;
+                    isColumnWidthArray = gl.columnWidth && $.isArray(gl.columnWidth),
+                    isColumnHeightNumber = gl.columnHeight &&
+                        typeof gl.columnHeight === "number" && gl.columnHeight > 0,
+                    isColumnHeightArray = gl.columnHeight && $.isArray(gl.columnHeight),
+                    colsOption = false,
+                    rowsOption = false;
+
+                if (isColumnWidthArray) {
+                    // overriding cols since columnWidth as an array has a presedence over cols option
+                    gl.cols = gl.columnWidth.length;
+                }
+
+                if (isColumnHeightArray) {
+                    // overriding rows since columnHeight as an array has a presedence over rows option
+                    gl.rows = gl.columnHeight.length;
+                }
+
+                colsOption = typeof gl.cols === "number" && gl.cols > 0;
+                rowsOption = typeof gl.rows === "number" && gl.rows > 0;
 
                 // Calculate cols/rows depending on provided options
                 if (!colsOption) {
@@ -1211,13 +1301,13 @@
                         // When rows are given, but cols are not. Calculate cols from the rows.
                         gl.cols = Math.ceil(itemsLength / gl.rows);
                     } else {
-                        if (columnWidthOption) {
+                        if (isColumnWidthNumber) {
 
                             // When cols & rows options are not given, but column width option is given.
                             // Calculate cols/rows from column width.
                             gl.cols = Math.floor(elWidth / (gl.columnWidth + gl.marginLeft));
                             gl.rows = Math.ceil(itemsLength / gl.cols);
-                        } else if (columnHeightOption) {
+                        } else if (isColumnHeightNumber) {
 
                             // When cols, rows and column width options are not given, but column height is given.
                             // Calculate cols/rows from column height.
@@ -1236,37 +1326,229 @@
                     gl.rows = Math.ceil(itemsLength / gl.cols);
                 }
 
+                return {
+                    hasColsInitially: colsOption,
+                    hasRowsInitially: rowsOption
+                };
+            },
+            _analyzeGlNotSetWidthHeight: function () {
+                var gl = this._opt.gridLayout,
+                    elWidth = this.element.width(),
+                    elHeight = this.element.height(),
+                    hasColumnWidth = (typeof gl.columnWidth === "number" &&
+                        gl.columnWidth > 0) || (gl.columnWidth === "*") ||
+                        (gl.columnWidth && $.isArray(gl.columnWidth) &&
+                            this._isColumnsWidthOrHeightValid(gl.columnWidth)),
+                    hasColumnHeight = (typeof gl.columnHeight === "number" &&
+                        gl.columnHeight > 0) || (gl.columnHeight === "*") ||
+                        (gl.columnHeight && $.isArray(gl.columnHeight) &&
+                            this._isColumnsWidthOrHeightValid(gl.columnHeight));
+
                 // When columnWidth is not given. Consider it is set in percent and calculate it from number of cols.
-                if (!columnWidthOption) {
+                if (!hasColumnWidth) {
                     gl.columnWidth = Math.floor(elWidth * (1 / gl.cols) - gl.marginLeft);
                     gl.columnWidthRatio = 1 / gl.cols;
                 }
 
                 // When columnHeight is not set. Consider it is set in percent and calculate it from number of rows.
-                if (!columnHeightOption) {
+                if (!hasColumnHeight) {
                     gl.columnHeight = Math.floor(elHeight * (1 / gl.rows) - gl.marginTop);
                     gl.columnHeightRatio = 1 / gl.rows;
                 }
+            },
+            _isColumnsWidthOrHeightValid: function (arr) {
+                var i, isValid = arr && arr.length > 0;
+
+                for (i = 0; i < arr.length; i++) {
+                    isValid = (typeof arr[ i ] === "number" &&
+                        arr[ i ] > 0) || (arr[ i ] === "*");
+
+                    if (!isValid) {
+                        break;
+                    }
+                }
+
+                return isValid;
+            },
+
+            // Analyze * in columnWidth
+            _analyzeGlWidthAsterisks: function () {
+                var gl = this._opt.gridLayout,
+                    elWidth = this._getContainerWidthNoScroll(),
+                    ml = gl.marginLeft,
+                    asterisksCount = 0, i = 0,
+                    occupiedWidth = 0,
+                    widthForAsterisks, widthPerAsterisk,
+                    updated = false;
+
+                if ($.isArray(gl.columnWidthHasAsterisk)) {
+                    for (i = 0; i < gl.columnWidth.length; i++) {
+                        if (gl.columnWidthHasAsterisk[ i ]) {
+                            asterisksCount++;
+                        } else {
+                            occupiedWidth += gl.columnWidth[ i ] + ml;
+                        }
+                    }
+
+                    if (asterisksCount > 0) {
+                        widthForAsterisks = elWidth - occupiedWidth;
+                        widthPerAsterisk = Math.floor(widthForAsterisks / asterisksCount) - ml;
+                        for (i = 0; i < gl.columnWidth.length; i++) {
+                            if (gl.columnWidthHasAsterisk[ i ]) {
+                                gl.columnWidth[ i ] = widthPerAsterisk;
+                                updated = true;
+                            }
+                        }
+                    }
+                } else if (gl.columnHeightHasAsterisk) {
+                    gl.columnWidth = Math.floor(elWidth / gl.cols) - ml;
+                    updated = true;
+                }
+
+                return updated;
+            },
+
+            // Analyze * in columnHeight
+            _analyzeGlHeightAsterisks: function () {
+                var gl = this._opt.gridLayout,
+                    elHeight = this._getContainerHeightNoScroll(),
+                    mt = gl.marginTop,
+                    asterisksCount = 0, i = 0,
+                    occupiedHeight = 0,
+                    heightForAsterisks, heightPerAsterisk,
+                    updated = false;
+
+                if ($.isArray(gl.columnHeightHasAsterisk)) {
+                    for (i = 0; i < gl.columnHeight.length; i++) {
+                        if (gl.columnHeightHasAsterisk[ i ]) {
+                            asterisksCount++;
+                        } else {
+                            occupiedHeight += gl.columnHeight[ i ] + mt;
+                        }
+                    }
+
+                    if (asterisksCount > 0) {
+                        heightForAsterisks = elHeight - occupiedHeight;
+                        heightPerAsterisk = Math.floor(heightForAsterisks / asterisksCount) - mt;
+                        for (i = 0; i < gl.columnHeight.length; i++) {
+                            if (gl.columnHeightHasAsterisk[ i ]) {
+                                gl.columnHeight[ i ] = heightPerAsterisk;
+                                updated = true;
+                            }
+                        }
+                    }
+                } else if (gl.columnHeightHasAsterisk) {
+                    gl.columnHeight = Math.floor(elHeight / gl.rows) - mt;
+                    updated = true;
+                }
+
+                return updated;
+            },
+            _analyzeGlAutoAdjust: function (hasColsOptionInitially, hasRowsOptionInitially) {
+                var gl = this._opt.gridLayout,
+                    hasColumnWidth = (typeof gl.columnWidth === "number" &&
+                        gl.columnWidth > 0) || ($.isArray(gl.columnWidth)),
+                    hasColumnHeight = (typeof gl.columnHeight === "number" &&
+                        gl.columnHeight > 0) || ($.isArray(gl.columnHeight));
 
                 // Adjust the columnHeight automatically based on the container's height when no options
                 // specifying the columnHeight were provided in the configuration (as columnHeight, cols, items).
                 // This is possible only when the columnWidth is fixed value and the items rearrange.
-                if (!columnHeightOption && !colsOption && !gl.columnWidthRatio) {
+                if (!hasColumnHeight && !hasColsOptionInitially &&
+                    !this._hasGlColumnWidthRatio()) {
                     gl.autoAdjustColumnHeight = true;
                 }
 
                 // Adjust the columnWidth automatically based on the container's width when no options
                 // specifying the columnWidth were provided in the configuration (as columnWidth, rows, items).
                 // This is possible only when the columnHeight is fixed value and the items rearrange.
-                if (!columnWidthOption && !rowsOption && !gl.columnHeightRatio) {
+                if (!hasColumnWidth && !hasRowsOptionInitially &&
+                    !this._hasGlColumnHeightRatio()) {
                     gl.autoAdjustColumnWidth = true;
                 }
             },
+
+            // Checks whether any of the columns has width in percent
+            // and therefore has a column width ratio.
+            _hasGlColumnWidthRatio: function () {
+                var gl = this._opt.gridLayout, i;
+
+                if ($.isArray(gl.columnWidthRatio)) {
+                    for (i = 0; i < gl.columnWidthRatio.length; i++) {
+                        if (gl.columnWidthRatio[ i ]) {
+                            return true;
+                        }
+                    }
+                } else if (gl.columnWidthRatio) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            // Checks whether any of the columns has height in percent
+            // and therefore has a column height ratio.
+            _hasGlColumnHeightRatio: function () {
+                var gl = this._opt.gridLayout, i;
+
+                if ($.isArray(gl.columnHeightRatio)) {
+                    for (i = 0; i < gl.columnHeightRatio.length; i++) {
+                        if (gl.columnHeightRatio[ i ]) {
+                            return true;
+                        }
+                    }
+                } else if (gl.columnHeightRatio) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            // Checks whether any of the columns width has an asterisk
+            _hasGlColumnWidthAsterisks: function () {
+                var gl = this._opt.gridLayout, i;
+
+                if ($.isArray(gl.columnWidthHasAsterisk)) {
+                    for (i = 0; i < gl.columnWidthHasAsterisk.length; i++) {
+                        if (gl.columnWidthHasAsterisk[ i ]) {
+                            return true;
+                        }
+                    }
+                } else if (gl.columnWidthHasAsterisk) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            // Checks whether any of the columns height has an asterisk
+            _hasGlColumnHeightAsterisks: function () {
+                var gl = this._opt.gridLayout, i;
+
+                if ($.isArray(gl.columnHeightHasAsterisk)) {
+                    for (i = 0; i < gl.columnHeightHasAsterisk.length; i++) {
+                        if (gl.columnHeightHasAsterisk[ i ]) {
+                            return true;
+                        }
+                    }
+                } else if (gl.columnHeightHasAsterisk) {
+                    return true;
+                }
+
+                return false;
+            },
             _analyzeGlConfiguration: function () {
+                var hasColsRowsOptionsInitially = null;
+
                 this._analyzeGlWidth();
                 this._analyzeGlHeight();
                 this._analyzeGlItems();
-                this._analyzeGlNotSetOptions();
+                hasColsRowsOptionsInitially = this._analyzeGlColsRows();
+                this._analyzeGlNotSetWidthHeight();
+                this._analyzeGlWidthAsterisks();
+                this._analyzeGlHeightAsterisks();
+                this._analyzeGlAutoAdjust(hasColsRowsOptionsInitially.hasColsInitially,
+                    hasColsRowsOptionsInitially.hasRowsInitially);
             },
             _createGlConfig: function () {
                 var gl,
@@ -1284,8 +1566,14 @@
                     // The column width to container width ratio
                     columnWidthRatio: null,
 
+                    // Whether the column width has a value *
+                    columnWidthHasAsterisk: null,
+
                     // The column height to container height ratio
                     columnHeightRatio: null,
+
+                    // Whether the column height has a value *
+                    columnHeightHasAsterisk: null,
 
                     // The effective width of the container, the width without the vertical scrollbar
                     // The initial value is be set to the full container's width.
@@ -1314,10 +1602,13 @@
                     // D.A. 12th May 2014, Bug #160622, Preserve the initial configuration when reflowing
                     initialCols: 0,
                     initialRows: 0,
+
                     initialColWidth: 0,
                     initialColWidthRatio: null,
+
                     initialColHeight: 0,
-                    initialColHeightRation: null,
+                    initialColHeightRatio: null,
+
                     initialItems: [],
                     initialReflow: true,
                     useOffset: (e.css("position") === "static" || e.css("position") === "fixed") &&
@@ -1338,8 +1629,10 @@
                 // Sets columnWidth/HeightRatio
                 this._analyzeGlConfiguration();
 
-                // Resize the items if columnWidth or columnHeight was set in percent ( % ).
-                gl.resizeItems = !!(gl.columnWidthRatio || gl.columnHeightRatio);
+                // Resize the items if columnWidth
+                // or columnHeight was set in percent( % ).
+                gl.resizeItems = !!(this._hasGlColumnWidthRatio() ||
+                    this._hasGlColumnHeightRatio());
             },
             _glSortItemsByPositionOrder: function () {
                 var items = this.options.items,
@@ -1370,8 +1663,12 @@
                     gl = this._opt.gridLayout,
                     ml = gl.marginLeft,
                     mt = gl.marginTop,
-                    iw = gl.columnWidth,
-                    ih = gl.columnHeight,
+                    colWidth = $.isArray(gl.columnWidth) ? null : gl.columnWidth,
+                    colsWidthMatrix = $.isArray(gl.columnWidth) ?
+                        this._calculateColumnsWidthOrHeightMatrix(gl.columnWidth) : null,
+                    colHeight = $.isArray(gl.columnHeight) ? null : gl.columnHeight,
+                    colsHeightMatrix = $.isArray(gl.columnHeight) ?
+                        this._calculateColumnsWidthOrHeightMatrix(gl.columnHeight) : null,
                     offset = e.offset(),
                     $children = e.children();
 
@@ -1412,10 +1709,12 @@
                         gl.minColCount = colSpan;
                     }
 
-                    width = colSpan * iw + (colSpan - 1) * ml;
-                    height = rowSpan * ih + (rowSpan - 1) * mt;
-                    left = col * iw + (col + 1) * ml;
-                    top = row * ih + (row + 1) * mt;
+                    width = this._calculateGlItemWidth(
+                        col, colSpan, colWidth, colsWidthMatrix, ml);
+                    height = this._calculateGlItemHeight(
+                        row, rowSpan, colHeight, colsHeightMatrix, mt);
+                    left = this._calculateGlItemLeft(col, colWidth, colsWidthMatrix, ml);
+                    top = this._calculateGlItemTop(row, colHeight, colsHeightMatrix, mt);
 
                     if (gl.useOffset) {
                         top += offset.top;
@@ -1457,6 +1756,88 @@
                     });
                 }
             },
+
+            // For any given array of width sizes or height sizes,
+            // the method creates a 2d array holding all possible sizes an item could have.
+            // This is primarily needed when we have an item which has more than one colSpans/rowSpans
+            // and its width/height should be calculated from more than one cols/rows.
+            // The method uses dynamic optimization.
+            _calculateColumnsWidthOrHeightMatrix: function (sizes) {
+                var sizesMatrix = [],
+                    i = 0,
+                    j = 0,
+                    size = sizes.length;
+
+                sizesMatrix.push(sizes.slice());
+
+                for (i = 0; i < size - 1; i++) {
+                    sizesMatrix.push(new Array(size));
+                }
+
+                for (j = 1; j < size; j++) {
+                    for (i = 1; i < size; i++) {
+                        if (sizesMatrix[ i - 1 ][ j - 1 ]) {
+                            sizesMatrix[ i ][ j ] = sizesMatrix[ 0 ][ j ] +
+                                sizesMatrix[ i - 1 ][ j - 1 ];
+                        }
+                    }
+                }
+
+                return sizesMatrix;
+            },
+            _calculateGlItemWidth: function (col, colSpan, colWidth, colsWidthMatrix, marginLeft) {
+                var baseWidth, width;
+
+                if (colWidth) {
+                    baseWidth = colSpan * colWidth;
+                } else {
+                    baseWidth = colsWidthMatrix[ colSpan - 1 ][ col + colSpan - 1 ];
+                }
+
+                width = baseWidth + (colSpan - 1) * marginLeft;
+                return width;
+            },
+            _calculateGlItemHeight: function (row, rowSpan, colHeight, colsHeightMatrix,
+                marginTop) {
+                var baseHeight, height;
+
+                if (colHeight) {
+                    baseHeight = rowSpan * colHeight;
+                } else {
+                    baseHeight = colsHeightMatrix[ rowSpan - 1 ][ row + rowSpan - 1 ];
+                }
+
+                height = baseHeight + (rowSpan - 1) * marginTop;
+                return height;
+            },
+            _calculateGlItemLeft: function (col, colWidth, colsWidthMatrix, marginLeft) {
+                var baseLeft = 0, left;
+
+                if (col > 0) {
+                    if (colWidth) {
+                        baseLeft = col * colWidth;
+                    } else {
+                        baseLeft = colsWidthMatrix[ col - 1 ][ col - 1 ];
+                    }
+                }
+
+                left = baseLeft + (col + 1) * marginLeft;
+                return left;
+            },
+            _calculateGlItemTop: function (row, colHeight, colsHeightMatrix, marginTop) {
+                var baseTop = 0, top;
+
+                if (row > 0) {
+                    if (colHeight) {
+                        baseTop = row * colHeight;
+                    } else {
+                        baseTop = colsHeightMatrix[ row - 1 ][ row - 1 ];
+                    }
+                }
+
+                top = baseTop + (row + 1) * marginTop;
+                return top;
+            },
             _initGlFromItemsConfig: function (initialRendering) {
 
                 // Initialize and analyze the internal grid layout configuration
@@ -1471,37 +1852,52 @@
             _renderGlItemsFromColsRows: function (initialRendering) {
                 var i,
                     j,
+                    width,
+                    height,
                     top,
                     left,
                     item,
+                    e = this.element,
                     gl = this._opt.gridLayout,
                     ml = gl.marginLeft,
                     mt = gl.marginTop,
-                    iw = gl.columnWidth,
-                    ih = gl.columnHeight;
+                    rows = gl.rows,
+                    cols = gl.cols,
+                    colWidth = $.isArray(gl.columnWidth) ? null : gl.columnWidth,
+                    colsWidthMatrix = $.isArray(gl.columnWidth) ?
+                        this._calculateColumnsWidthOrHeightMatrix(gl.columnWidth) : null,
+                    colHeight = $.isArray(gl.columnHeight) ? null : gl.columnHeight,
+                    colsHeightMatrix = $.isArray(gl.columnHeight) ?
+                        this._calculateColumnsWidthOrHeightMatrix(gl.columnHeight) : null,
+                    offset = e.offset();
 
-                for (i = 0; i < gl.rows; i++) {
-                    for (j = 0; j < gl.cols; j++) {
+                for (i = 0; i < rows; i++) {
+                    for (j = 0; j < cols; j++) {
+                        width = this._calculateGlItemWidth(j, 1, colWidth, colsWidthMatrix, ml);
+                        height = this._calculateGlItemHeight(i, 1, colHeight, colsHeightMatrix, mt);
+                        top = this._calculateGlItemTop(i, colHeight, colsHeightMatrix, mt);
+                        left = this._calculateGlItemLeft(j, colWidth, colsWidthMatrix, ml);
+
+                        if (gl.useOffset) {
+                            top += offset.top;
+                            left += offset.left;
+                        }
+
                         item = $("<div>")
                             .appendTo(this.element)
                             .addClass(this.css.item)
                             .addClass(this.css.gridItemAbs)
                             .attr("data-index", i * gl.cols + j)
-                            .width(iw)
-                            .height(ih);
+                            .css({
+                                top: top,
+                                left: left,
+                                width: width,
+                                height: height
+                            });
 
                         // Trigger Item Rendered
                         this._trigger(this.events.itemRendered, null, {
                             item: item
-                        });
-
-                        left = j * iw + (j + 1) * ml;
-                        top = i * ih + (i + 1) * mt;
-                        left += j === 0 ? ml : 0;
-
-                        item.css({
-                            top: top,
-                            left: left
                         });
                     }
                 }
@@ -1537,7 +1933,6 @@
                 if (items && items.length > 0) {
                     this._initGlFromItemsConfig(true);
                 } else if ($children.length === 0) {
-
                     // When there aren't any children, and cols & rows is defined in the gridLayout settings
                     // we are going to create cols * rows number of DIVs
                     this._initGlFromColsRows(true);
@@ -1550,10 +1945,13 @@
 
                 gl.initialCols = gl.cols;
                 gl.initialRows = gl.rows;
-                gl.initialColHeight = gl.columnHeight;
+
                 gl.initialColWidth = gl.columnWidth;
                 gl.initialColWidthRatio = gl.columnWidthRatio;
+
+                gl.initialColHeight = gl.columnHeight;
                 gl.initialColHeightRatio = gl.columnHeightRatio;
+
                 gl.initialItems = $.extend(true, [], this.options.items);
             },
             _getContainerWidthNoScroll: function () {
@@ -1593,18 +1991,25 @@
             _glReflowNeeded: function () {
                 var gl = this._opt.gridLayout,
                     newContainerWidthNoScroll = this._getContainerWidthNoScroll(),
-                    newContainerHeightNoScroll = this._getContainerHeightNoScroll();
+                    newContainerHeightNoScroll = this._getContainerHeightNoScroll(),
+                    reflowNeeded = false,
+                    colsCouldBeAdjusted = false;
 
                 // Reflow is needed when vertical scrollbar appeared or disappeared and columnWidth
                 // is in percent or is fixed and enough space for new column is available.
+                colsCouldBeAdjusted = gl.columnWidth && !$.isArray(gl.columnWidth) && (gl.cols !==
+                    Math.floor(newContainerWidthNoScroll / (gl.columnWidth + gl.marginLeft)));
+                reflowNeeded = (gl.containerWidthNoScroll !== newContainerWidthNoScroll &&
+                    (this._hasGlColumnWidthRatio() || this._hasGlColumnWidthAsterisks() ||
+                        colsCouldBeAdjusted));
+
                 // Reflow is needed also when horizontal scrollbar appeared or disappeared and
                 // columnHeight is in percent.
-                return (gl.containerWidthNoScroll !== newContainerWidthNoScroll &&
-                    (gl.columnWidthRatio ||
-                        gl.cols !== Math.floor(newContainerWidthNoScroll /
-                            (gl.columnWidth + gl.marginLeft)))) ||
-                    (gl.containerHeightNoScroll !== newContainerHeightNoScroll &&
-                        gl.columnHeightRatio);
+                reflowNeeded = reflowNeeded ||
+                    ((gl.containerHeightNoScroll !== newContainerHeightNoScroll) &&
+                        (this._hasGlColumnHeightRatio() || this._hasGlColumnHeightAsterisks()));
+
+                return reflowNeeded;
             },
             _reflowGlConfiguration: function (forceReflow, animationDuration, event) {
                 var self = this,
@@ -1617,6 +2022,7 @@
                     newContainerHeightNoScroll = this._getContainerHeightNoScroll(),
                     leftOffset = gl.useOffset ? e.offset().left : 0,
                     topOffset = gl.useOffset ? e.offset().top : 0,
+                    colWidth, colHeight, colsWidthMatrix, colsHeightMatrix,
                     col, row, colSpan, rowSpan, newColCount, newDim, helperArray, itemData,
                     colWidthChanged, colHeightChanged, positionsChanged, foundMatch,
                     currentRow, item, i, j, k, r, n,
@@ -1637,23 +2043,18 @@
                     };
 
                 if (items) {
-
-                    // Update columnWidth value when it is set in percent and container width changed
-                    if (gl.columnWidthRatio &&
-                        gl.containerWidthNoScroll !== newContainerWidthNoScroll) {
-                        gl.columnWidth = Math.floor(
-                            newContainerWidthNoScroll * gl.columnWidthRatio - ml);
-                        colWidthChanged = true;
+                    // Update columnWidth when it is set in percent and container width changed
+                    if (gl.containerWidthNoScroll !== newContainerWidthNoScroll) {
+                        colWidthChanged = this._updateGlColumnWidthByRatio(
+                            newContainerWidthNoScroll);
                     } else {
                         colWidthChanged = false;
                     }
 
                     // Update columnHeight when it is set in percent and container height changed
-                    if (gl.columnHeightRatio &&
-                        gl.containerHeightNoScroll !== newContainerHeightNoScroll) {
-                        gl.columnHeight = Math.floor(
-                            newContainerHeightNoScroll * gl.columnHeightRatio - mt);
-                        colHeightChanged = true;
+                    if (gl.containerHeightNoScroll !== newContainerHeightNoScroll) {
+                        colHeightChanged = this._updateGlColumnHeightByRatio(
+                            newContainerHeightNoScroll);
                     } else {
                         colHeightChanged = false;
                     }
@@ -1681,11 +2082,25 @@
                     // Rearrange items
                     if (gl.rearrangeItems || forceReflow) {
                         if (gl.rearrangeItems) {
-                            if (gl.columnWidthRatio) {
+                            if (gl.columnWidthRatio && !$.isArray(gl.columnWidthRatio)) {
                                 newColCount = Math.floor(1 / gl.columnWidthRatio);
-                            } else {
+                            } else if (gl.columnWidth && !$.isArray(gl.columnWidth)) {
                                 newColCount = Math.floor(newContainerWidthNoScroll /
                                     (gl.columnWidth + ml));
+
+                            } else {
+                                // Preserve the cols value when the items are not
+                                // rearrangeable, but the reflow was forced.
+                                newColCount = gl.cols;
+                            }
+
+                            if (newColCount !== gl.cols && $.isArray(gl.columnHeight)) {
+                                if (Math.ceil(items.length / newColCount) !==
+                                    gl.columnHeight.length) {
+                                    newColCount = gl.cols;
+                                } else {
+                                    colWidthChanged = colHeightChanged = true;
+                                }
                             }
                         } else {
 
@@ -1795,6 +2210,7 @@
                                         newContainerHeightNoScroll * gl.columnHeightRatio - mt);
                                     colHeightChanged = true;
                                 }
+
                                 gl.rows = helperArray.length;
                             }
 
@@ -1804,6 +2220,13 @@
 
                     // Adjust the items size and position
                     if ((colWidthChanged || colHeightChanged || positionsChanged) || forceReflow) {
+                        colWidth = $.isArray(gl.columnWidth) ? null : gl.columnWidth;
+                        colsWidthMatrix = $.isArray(gl.columnWidth) ?
+                            this._calculateColumnsWidthOrHeightMatrix(gl.columnWidth) : null;
+                        colHeight = $.isArray(gl.columnHeight) ? null : gl.columnHeight;
+                        colsHeightMatrix = $.isArray(gl.columnHeight) ?
+                            this._calculateColumnsWidthOrHeightMatrix(gl.columnHeight) : null;
+
                         gl.animating = (positionsChanged && animationDuration > 0) || gl.animating;
                         for (i = 0; i < items.length; i++) {
                             itemData = items[ i ];
@@ -1815,19 +2238,26 @@
                             newDim = {};
 
                             // Animate to the new values when the items positions changed.
-                            // When the columnWidth/Height is changed while animation is
+                            // When the columnWidth/height is changed while animation is
                             // still running (e.g. from container resizing), animate to the new values.
                             if (positionsChanged || gl.animating) {
-                                newDim.left = (col * gl.columnWidth + (col + 1) * ml) + leftOffset;
-                                newDim.top = (row * gl.columnHeight + (row + 1) * mt) + topOffset;
-                                if (colWidthChanged || forceReflow) {
-                                    newDim.width = colSpan * gl.columnWidth + (colSpan - 1) * ml;
-                                }
-                                if (colHeightChanged || forceReflow) {
-                                    newDim.height = rowSpan * gl.columnHeight + (rowSpan - 1) * mt;
-                                }
-                                if (animationDuration > 0) {
 
+                                newDim.left = this._calculateGlItemLeft(
+                                    col, colWidth, colsWidthMatrix, ml) + leftOffset;
+                                newDim.top = this._calculateGlItemTop(
+                                    row, colHeight, colsHeightMatrix, mt) + topOffset;
+
+                                if (colWidthChanged || forceReflow) {
+                                    newDim.width = this._calculateGlItemWidth(
+                                        col, colSpan, colWidth, colsWidthMatrix, ml);
+                                }
+
+                                if (colHeightChanged || forceReflow) {
+                                    newDim.height = this._calculateGlItemHeight(
+                                        row, rowSpan, colHeight, colsHeightMatrix, mt);
+                                }
+
+                                if (animationDuration > 0) {
                                     // Animate the items to their new positions when animation duration is greater than 0.
                                     // Trigger the internal resized event in the callback.
                                     item.animate(newDim, {
@@ -1840,15 +2270,19 @@
                                 }
                             } else {
                                 if (colWidthChanged || forceReflow) {
-                                    newDim.left =
-                                        (col * gl.columnWidth + (col + 1) * ml) + leftOffset;
-                                    newDim.width = colSpan * gl.columnWidth + (colSpan - 1) * ml;
+                                    newDim.left = this._calculateGlItemLeft(
+                                        col, colWidth, colsWidthMatrix, ml) + leftOffset;
+                                    newDim.width = this._calculateGlItemWidth(
+                                        col, colSpan, colWidth, colsWidthMatrix, ml);
                                 }
+
                                 if (colHeightChanged || forceReflow) {
-                                    newDim.top =
-                                        (row * gl.columnHeight + (row + 1) * mt) + topOffset;
-                                    newDim.height = rowSpan * gl.columnHeight + (rowSpan - 1) * mt;
+                                    newDim.top = this._calculateGlItemTop(
+                                        row, colHeight, colsHeightMatrix, mt) + topOffset;
+                                    newDim.height = this._calculateGlItemHeight(
+                                        row, rowSpan, colHeight, colsHeightMatrix, mt);
                                 }
+
                                 item.css(newDim);
                             }
                         }
@@ -1870,6 +2304,52 @@
                         }
                     }
                 }
+            },
+            _updateGlColumnWidthByRatio: function (newContainerWidthNoScroll) {
+                var gl = this._opt.gridLayout,
+                    ml = gl.marginLeft,
+                    columnWidthUpdated = false,
+                    i;
+
+                if ($.isArray(gl.columnWidthRatio)) {
+                    for (i = 0; i < gl.columnWidthRatio.length; i++) {
+                        if (gl.columnWidthRatio[ i ]) {
+                            gl.columnWidth[ i ] = Math.floor(
+                                newContainerWidthNoScroll * gl.columnWidthRatio[ i ] - ml);
+                            columnWidthUpdated = true;
+                        }
+                    }
+                } else if (gl.columnWidthRatio) {
+                    gl.columnWidth = Math.floor(
+                        newContainerWidthNoScroll * gl.columnWidthRatio - ml);
+                    columnWidthUpdated = true;
+                }
+
+                columnWidthUpdated = this._analyzeGlWidthAsterisks() || columnWidthUpdated;
+                return columnWidthUpdated;
+            },
+            _updateGlColumnHeightByRatio: function (newContainerHeightNoScroll) {
+                var gl = this._opt.gridLayout,
+                    mt = gl.marginTop,
+                    columnHeightUpdated = false,
+                    i;
+
+                if ($.isArray(gl.columnHeightRatio)) {
+                    for (i = 0; i < gl.columnHeightRatio.length; i++) {
+                        if (gl.columnHeightRatio[ i ]) {
+                            gl.columnHeight[ i ] = Math.floor(
+                                newContainerHeightNoScroll * gl.columnHeightRatio[ i ] - mt);
+                            columnHeightUpdated = true;
+                        }
+                    }
+                } else if (gl.columnHeightRatio) {
+                    gl.columnHeight = Math.floor(
+                        newContainerHeightNoScroll * gl.columnHeightRatio - mt);
+                    columnHeightUpdated = true;
+                }
+
+                columnHeightUpdated = this._analyzeGlHeightAsterisks() || columnHeightUpdated;
+                return columnHeightUpdated;
             },
             _initBorderLayout: function () {
                 var left, right, center, header, footer,
@@ -2195,5 +2675,5 @@
             }
         });
         $.extend($.ui.igLayoutManager, { version: "<build_number>" });
-        return $.ui.igLayoutManager;// REMOVE_FROM_COMBINED_FILES
+        return $;// REMOVE_FROM_COMBINED_FILES
     }));// REMOVE_FROM_COMBINED_FILES

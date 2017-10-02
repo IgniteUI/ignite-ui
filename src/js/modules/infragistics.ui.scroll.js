@@ -25,7 +25,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -3882,7 +3882,7 @@
 		}
 	});
 	$.extend($.ui.igScroll, { version: "<build_number>" });
-	$(document).on("igcontrolcreated", function (event, args) {
+	$(document).on("iggridrendered", function (event, args) {
 		/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
 		var container = args.owner.scrollContainer();
 		if (container.length === 0 && args.owner.container) {
@@ -3893,5 +3893,5 @@
 			container.data("igScroll")._bKeyboardNavigation = false;
 		}
 	});
-	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

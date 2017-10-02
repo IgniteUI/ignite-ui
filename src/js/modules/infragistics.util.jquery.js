@@ -694,6 +694,21 @@
 		return maxZ;
 	};
 
+	$.ig.getZIndex = function (elem) {
+		var position, value;
+		while (elem.length && elem[ 0 ] !== document) {
+			position = elem.css( "position" );
+			if (position === "absolute" || position === "relative" || position === "fixed") {
+				value = parseInt( elem.css( "zIndex" ), 10 );
+				if ( !isNaN( value ) && value !== 0 ) {
+					return value;
+				}
+			}
+			elem = elem.parent();
+		}
+		return 0;
+	};
+
 	// generate unique identifiers
 	$.ig.uid = function () {
 		return ((1 + Math.random()) * parseInt("10000", 16)).toString(16).substring(1, 5);
@@ -1056,9 +1071,11 @@
 			}
 
 			$("<div></div>").addClass("ui-html5-current-browser-label")
+				.attr("data-localeid", "currentBrowser")
 				.html(locale.currentBrowser.replace("{0}", browserUnsupported))
 				.appendTo(container);
 			$("<div></div>").addClass("ui-html5-non-html5-text")
+				.attr("data-localeid", "unsupportedBrowser")
 				.html(locale.unsupportedBrowser).appendTo(container);
 			ul = $("<ul></ul>").addClass("ui-html5-browsers-list").appendTo(container);
 			$("<a></a>").attr("href", locale.chromeDownload).attr("target", "_blank")

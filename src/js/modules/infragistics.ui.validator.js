@@ -36,7 +36,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -2465,5 +2465,5 @@ $.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValida
 		return true;
 	}
 });
-
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
