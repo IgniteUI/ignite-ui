@@ -8,12 +8,12 @@
     width: 18px;
     height: 18px;
     padding: 3px;
-    margin-left: 3px;
 }
 
 .ui-igtoolbarbutton.ui-button-text-icon-primary .ui-icon {
     margin-left: 4px;
 }
+/*
 
 .ui-igbutton .ui-igbutton-collapse,
 .ui-igbutton.ui-state-hover .ui-igbutton-collapse {
@@ -242,6 +242,7 @@
     background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
     background-position: 0 -608px;
 }
+*/
 
 /*special buttons forecolor and backcolor*/
 .ui-igbutton .ui-igbutton-forecolor,
