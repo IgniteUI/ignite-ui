@@ -24,9 +24,9 @@
     display:block;
     
     background:transparent!important;
-    border-left: 0!important;
-    border-right: 0 !important;
-    border-top: 0 !important;
+    border-left: 0 none !important;
+    border-right: 0 none !important;
+    border-top: 0 none !important;
     
     margin-top:15px;
     padding-bottom:3px;

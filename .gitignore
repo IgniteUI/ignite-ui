@@ -100,3 +100,13 @@ bootstrap3 theme samples/Pivot-grid/visualization.html
 bootstrap3 theme samples/Editors/icons-and-styles.html
 bootstrap3 theme samples/Data-visualization/financial-series.html
 bootstrap3 theme samples/Data-visualization/chart-types.html
+
+src/css/themes/bootstrap3/default/modules/**/*.css
+src/css/themes/bootstrap3/flatly/modules/**/*.css
+src/css/themes/bootstrap3/superhero/modules/**/*.css
+src/css/themes/bootstrap3/yeti/modules/**/*.css
+src/css/themes/bootstrap4/default/modules/**/*.css
+src/css/themes/infragistics/modules/**/*.css
+src/css/themes/infragistics2012/modules/**/*.css
+src/css/themes/ios/modules/**/*.css
+src/css/themes/metro/modules/**/*.css
