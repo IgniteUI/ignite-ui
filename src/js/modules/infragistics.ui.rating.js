@@ -33,7 +33,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -1134,5 +1134,5 @@
 		}
 	});
 	$.extend($.ui.igRating, { version: "<build_number>" });
-	return $.ui.igRating;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

@@ -26,7 +26,7 @@
  *
  */
 
-/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer, escape */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -39,7 +39,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -4981,7 +4981,7 @@
 							);
 							/* d = ffields[i].expr.getTime(); */
 						} else {
-							d = ffields[ i ].expr;
+							d = escape(ffields[ i ].expr);
 						}
 						if (params.filteringParams[ key ] === undefined) {
 							params.filteringParams[ key ] = ffields[ i ].cond +
@@ -11626,4 +11626,5 @@
 			return ret;
 		}
 	});
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

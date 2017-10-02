@@ -8,14 +8,13 @@
 */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( ["jquery"], factory );
 	} else {
-		return factory();
+		return factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
-    $.ig = $.ig || {};
+(function ($) {
+	$.ig = $.ig || {};
 	$.ig.Splitter = $.ig.Splitter || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ru = $.ig.locale.ru || {};

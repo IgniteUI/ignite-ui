@@ -96,9 +96,11 @@
                 testId_16 = 'igTileManager events.',
                 testId_17 = 'igTileManager splitter events.',
                 testId_18 = 'igTileManager splitter collapsible option.',
-                testId_19 = 'igTileManager splitter collapsed option.'
-                testId_20 = 'igTileManager splitter setting collapsible and collapsed options.';
-				testId_21 = 'igTileManager disabled.';
+                testId_19 = 'igTileManager splitter collapsed option.',
+                testId_20 = 'igTileManager splitter setting collapsible and collapsed options.',
+                testId_21 = 'igTileManager disabled.',
+                testId_22 = 'igTileManager initialize on markup. ColumnWidth and ColumnHeight in *.',
+                testId_23 = 'igTileManager initialize on markup. ColumnWidth and ColumnHeight arrays.';
 
             test(testId_1, function () {
                 ok(typeof $('#tilemanager1').igTileManager === 'function', 'igTileManager is not defined.');
@@ -429,10 +431,10 @@
                    { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 7 }];
 
                 testTileManager(container, containerWidth, containerHeight, cols, rows,
-                   colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-                   rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-                   tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-                   showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
                     splitterInitiallyCollapsed);
             });
 
@@ -1110,7 +1112,8 @@
                     colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
                     rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
                     tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup, splitterInitiallyCollapsed);
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
             });
             
             // Test igTileManager splitter setting collapsbile and collapsed options 
@@ -1194,11 +1197,102 @@
                     colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
                     rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
                     tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup, splitterInitiallyCollapsed, disabled);
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed, disabled);
+            });
+
+            // igTileManager initialize on markup. ColumnWidth and ColumnHeight in *.
+            test(testId_22, function () {
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 800,
+                    containerHeight = 600,
+                    cols = 3, rows = 3,
+                    marginLeft = 0, marginTop = 0,
+                    colWidth = Math.floor(containerWidth / 3),
+                    colHeight = Math.floor(containerHeight / 3),
+                    tilesCount = 9, rightPanelCols = 2,
+                    rightPanelTilesWidth = 100,
+                    rightPanelTilesHeight = 100,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 1, tileToSwap = 0, items = null,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = false, splitterEnabled = true,
+                    useApiMethods = true, fromMarkup = true,
+                    splitterInitiallyCollapsed = false;
+
+                // ColumnWidth/Height in *.
+                $('#tilemanager1').width(800).height(600).igTileManager({
+                    columnWidth: '*',
+                    columnHeight: "*",
+                    marginLeft: 0,
+                    marginTop: 0,
+                    showRightPanelScroll: false,
+                    rightPanelCols: 2,
+                    rightPanelTilesWidth: 100,
+                    rightPanelTilesHeight: 100,
+                    splitterOptions: {
+                        enabled: splitterEnabled
+                    },
+                    animationDuration: 0,
+                    minimizedState: ".minimized",
+                    maximizedState: ".maximized"
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // igTileManager initialize on markup. ColumnWidth and ColumnHeight as arrays.
+            test(testId_23, function () {
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 800,
+                    containerHeight = 600,
+                    cols = 3, rows = 3,
+                    marginLeft = 0, marginTop = 0,
+                    colWidth = [160, 320, 320],
+                    colHeight = [120, 200, 280],
+                    tilesCount = 9, rightPanelCols = 1,
+                    rightPanelTilesWidth = 320,
+                    rightPanelTilesHeight = 280,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 1, tileToSwap = 0, items = null,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = false, splitterEnabled = true,
+                    useApiMethods = true, fromMarkup = true,
+                    splitterInitiallyCollapsed = false;
+
+                // ColumnWidth and ColumnHeight with various values.
+                $('#tilemanager1').width(800).height(600).igTileManager({
+                    columnHeight: ["20%", "200px", "*"],
+                    columnWidth: ["20%", "*", "*"],
+                    marginLeft: 0,
+                    marginTop: 0,
+                    showRightPanelScroll: false,
+                    splitterOptions: {
+                        enabled: splitterEnabled
+                    },
+                    animationDuration: 0,
+                    minimizedState: ".minimized",
+                    maximizedState: ".maximized"
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
             });
 
             // Tests given container's initialization from markup and tiles interactions
-            // Give the expected values as the arguments containerWidth/Height, cols/rows, colWidth/Height, marginTop/Left, tilesCount, items, minimizedState, maximizedState, useApiMethods
+            // Give the expected values as the arguments containerWidth/Height, cols/rows, colWidth/Height,
+            // marginTop / Left, tilesCount, items, minimizedState, maximizedState, useApiMethods
             // Choose which tile to maximize and then which tile to swap by setting tileToMaximize, tileToSwap
             function testTileManager(container, containerWidth, containerHeight, cols, rows,
                 colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
@@ -1219,8 +1313,8 @@
                     padding = 5,
                     tilePaddings = padding * 2 + borderWidth,
                     splitterWidth = splitter.outerWidth(),
-                    rightPanelTilesWidth = rightPanelTilesWidth || colWidth,
-                    rightPanelTilesHeight = rightPanelTilesHeight || colHeight,
+                    rightPanelTilesWidth = rightPanelTilesWidth || ($.isArray(colWidth) ? colWidth[colWidth.length - 1] : colWidth),
+                    rightPanelTilesHeight = rightPanelTilesHeight || ($.isArray(colHeight) ? colHeight[colHeight.length - 1] : colHeight),
                     rightPanelHasScroll = showRightPanelScroll && rightPanelHasScroll,
                     rightPanelWidth = rightPanelCols * (rightPanelTilesWidth + marginLeft) + (rightPanelHasScroll ? scrollWidth : 0),
                     rightPanelHeight = containerHeight,
@@ -1232,7 +1326,8 @@
                     innerContainerMaximizedWidth = maximizedTileWidth - tilePaddings,
                     innerContainerMaximizedHeight = maximizedTileHeight - tilePaddings,
                     innerContainerMinimizedWidth = rightPanelTilesWidth - tilePaddings,
-                    innerContainerMinimizedHeight = rightPanelTilesHeight - tilePaddings;
+                    innerContainerMinimizedHeight = rightPanelTilesHeight - tilePaddings,
+                    i;
 
                 if (splitterInitiallyCollapsed) {
                     leftPanelMaximizedWidth += rightPanelWidth;
@@ -1245,8 +1340,24 @@
                 // Configuration setup
                 equal(layoutConfig.rows, rows, 'Number of rows in the layout configuration did not match.');
                 equal(layoutConfig.cols, cols, 'Number of cols in the layout configuration did not match.');
-                equal(layoutConfig.columnWidth, colWidth, 'The columnWidth in the layout configuration did not match.');
-                equal(layoutConfig.columnHeight, colHeight, 'The columnHeight in the layout configuration did not match.');
+                if ($.isArray(layoutConfig.columnWidth)) {
+                    for (i = 0; i < layoutConfig.columnWidth.length; i++) {
+                        equal(layoutConfig.columnWidth[i], colWidth[i],
+                            'The columnWidth[' + i + '] in the layout configuration did not match.');
+                    }
+                } else {
+                    equal(layoutConfig.columnWidth, colWidth, 'The columnWidth in the layout configuration did not match.');
+                }
+
+                if ($.isArray(layoutConfig.columnHeight)) {
+                    for (i = 0; i < layoutConfig.columnHeight.length; i++) {
+                        equal(layoutConfig.columnHeight[i], colHeight[i],
+                            'The columnHeight[' + i + '] in the layout configuration did not match.');
+                    }
+                } else {
+                    equal(layoutConfig.columnHeight, colHeight, 'The columnHeight in the layout configuration did not match.');
+                }
+                
                 equal(layoutConfig.marginLeft, marginLeft, 'The left margin in the layout configuration did not match.');
                 equal(layoutConfig.marginTop, marginTop, 'The top margin in the layout configuration did not match.');
                 equal(layoutItems.length, tilesCount, 'The items in the layout configuration did not match.');
@@ -1286,7 +1397,9 @@
                         col = index % cols,
                         colSpan = 1,
                         rowSpan = 1,
-                        minimizeBtn, minimizeIcon, tileWidth, tileHeight;
+                        minimizeBtn, minimizeIcon,
+                        tileWidth, tileHeight,
+                        tileLeft, tileTop;
 
                     if (items) {
                         row = layoutItems[index].rowIndex;
@@ -1295,15 +1408,17 @@
                         rowSpan = layoutItems[index].rowSpan;
                     }
 
-                    tileWidth = colSpan * (colWidth + marginLeft) - marginLeft;
-                    tileHeight = rowSpan * (colHeight + marginTop) - marginTop;
+                    tileWidth = getTileManagerTileWidth(col, colSpan, colWidth, marginLeft);
+                    tileHeight = getTileManagerTileHeight(row, rowSpan, colHeight, marginTop);
+                    tileLeft = getTileManagerTileLeft(col, colWidth, marginLeft);
+                    tileTop = getTileManagerTileTop(row, colHeight, marginTop);
 
                     ok(tile.hasClass('ui-widget-content') && tile.hasClass('ui-igtile'), "The content class did not apply to the tile " + index + '.');
                     ok(tile.hasClass('ig-layout-item') && tile.hasClass('ig-layout-griditem-abs'), "The layout manager classes did not apply to the tile " + index + '.');
                     ok(tile.hasClass('ui-igtile-minimized'), "The minimized class did not apply tile " + index + '.');
 
-                    equal(tile.css('left'), (col * (colWidth + marginLeft) + marginLeft) + 'px', 'The left property of the ' + index + ' tile did not match.');
-                    equal(tile.css('top'), (row * (colHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.css('left'), tileLeft + 'px', 'The left property of the ' + index + ' tile did not match.');
+                    equal(tile.css('top'), tileTop + 'px', 'The top property of the ' + index + ' tile did not match.');
                     equal(tile.outerWidth(), tileWidth, 'The width of the ' + index + ' tile did not match.');
                     equal(tile.outerHeight(), tileHeight, 'The height of the ' + index + ' tile did not match.');
                     equal(tile.children().length, 1, 'The children count of the ' + index + ' tile did not match.');
@@ -1662,7 +1777,9 @@
                         col = index % cols,
                         colSpan = 1,
                         rowSpan = 1,
-                        minimizeBtn, minimizeIcon, tileWidth, tileHeight;
+                        minimizeBtn, minimizeIcon,
+                        tileWidth, tileHeight,
+                        tileLeft, tileTop;
 
                     if (items) {
                         row = layoutItems[index].rowIndex;
@@ -1671,15 +1788,17 @@
                         rowSpan = layoutItems[index].rowSpan;
                     }
 
-                    tileWidth = colSpan * (colWidth + marginLeft) - marginLeft;
-                    tileHeight = rowSpan * (colHeight + marginTop) - marginTop;
+                    tileWidth = getTileManagerTileWidth(col, colSpan, colWidth, marginLeft);
+                    tileHeight = getTileManagerTileHeight(row, rowSpan, colHeight, marginTop);
+                    tileLeft = getTileManagerTileLeft(col, colWidth, marginLeft);
+                    tileTop = getTileManagerTileTop(row, colHeight, marginTop);
 
                     ok(tile.hasClass('ui-widget-content') && tile.hasClass('ui-igtile'), "The content class did not apply to the tile " + index + '.');
                     ok(tile.hasClass('ig-layout-item') && tile.hasClass('ig-layout-griditem-abs'), "The layout manager classes did not apply to the tile " + index + '.');
                     ok(tile.hasClass('ui-igtile-minimized'), "The minimized class did not apply tile " + index + '.');
 
-                    equal(tile.css('left'), (col * (colWidth + marginLeft) + marginLeft) + 'px', 'The left property of the ' + index + ' tile did not match.');
-                    equal(tile.css('top'), (row * (colHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.css('left'), tileLeft + 'px', 'The left property of the ' + index + ' tile did not match.');
+                    equal(tile.css('top'), tileTop + 'px', 'The top property of the ' + index + ' tile did not match.');
                     equal(tile.outerWidth(), tileWidth, 'The width of the ' + index + ' tile did not match.');
                     equal(tile.outerHeight(), tileHeight, 'The height of the ' + index + ' tile did not match.');
                     equal(tile.children().length, 1, 'The children count of the ' + index + ' tile did not match.');
@@ -2073,6 +2192,70 @@
                 } else {
                     equal(tiles.length, 0, 'igTileManager did not destroy all tiles.');
                 }
+            }
+
+            function getTileManagerTileWidth(col, colSpan, colWidth, marginLeft) {
+                var baseWidth = 0, width, i;
+
+                if ($.isArray(colWidth)) {
+                    for (i = col; i < col + colSpan; i++) {
+                        baseWidth = baseWidth + colWidth[i];
+                    }
+                } else {
+                    baseWidth = colSpan * colWidth;
+                }
+
+                width = baseWidth + (colSpan - 1) * marginLeft;
+                return width;
+            }
+
+            function getTileManagerTileHeight(row, rowSpan, colHeight, marginTop) {
+                var baseHeight = 0, height, i;
+
+                if ($.isArray(colHeight)) {
+                    for (i = row; i < row + rowSpan; i++) {
+                        baseHeight += colHeight[i];
+                    }
+                } else {
+                    baseHeight = rowSpan * colHeight;
+                }
+
+                height = baseHeight + (rowSpan - 1) * marginTop;
+                return height;
+            }
+
+            function getTileManagerTileLeft(col, colWidth, marginLeft) {
+                var baseLeft = 0, left, i;
+
+                if (col > 0) {
+                    if ($.isArray(colWidth)) {
+                        for (i = 0; i < col; i++) {
+                            baseLeft += colWidth[i];
+                        }
+                    } else {
+                        baseLeft = col * colWidth;
+                    }
+                }
+
+                left = baseLeft + (col + 1) * marginLeft;
+                return left;
+            }
+
+            function getTileManagerTileTop(row, colHeight, marginTop) {
+                var baseTop = 0, top, i;
+
+                if (row > 0) {
+                    if ($.isArray(colHeight)) {
+                        for (i = 0; i < row; i++) {
+                            baseTop += colHeight[i];
+                        }
+                    } else {
+                        baseTop = row * colHeight;
+                    }
+                }
+
+                top = baseTop + (row + 1) * marginTop;
+                return top;
             }
         });
     </script>
