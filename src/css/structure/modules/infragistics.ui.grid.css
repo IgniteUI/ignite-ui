@@ -550,7 +550,7 @@ BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the 
 */
 .ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
     float : left;
-    width : calc(100% - 27px);/* This depend on how big is the button for the dropdown menu*/
+    width : calc(100% - 27px); /* This depend on how big is the button for the dropdown menu*/
 }
 
 .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igeditor-input-container {
@@ -668,11 +668,10 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-iggrid td.ui-iggrid-filtercell {
-    padding    : 0;
-    margin     : 0;
-    /*border:0 none;*/
-    border-top : none;
-    height     : 1.6em;
+    padding : 0;
+    margin  : 0;
+    border  : none;
+    height  : 1.6em;
 }
 
 .ui-iggrid-filtercell input {
@@ -2334,7 +2333,7 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 }
 
 .ui-iggrid-featurechooser-list-submenu li.ui-state-default {
-    white-space: nowrap;
+    white-space : nowrap;
 }
 
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover {

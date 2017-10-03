@@ -11,6 +11,7 @@ body {
 /* states */
 /*! jQuery UI - v1.12.1 - 2016-09-14 */
 /*
+
   List with Overwritten components
 
   1. jQuery UI Accordion
@@ -24,6 +25,7 @@ body {
   9. jQuery UI Date picker
   10. jQuery UI Spinner
   11. jQuery UI Progressbar
+
 */
 /**********************
 * jQuery UI Accordion *
@@ -2391,9 +2393,7 @@ a.ui-button:active,
   color: #5c6164; }
 
 .ui-iggrid .ui-iggrid-filterrow td > div {
-  border-top: none;
-  border-right: none;
-  border-left: none; }
+  border: none; }
 
 /**************************
 * ui-iggrid-headercaption *
