@@ -2393,9 +2393,7 @@ a.ui-button:active,
   color: #5c6164; }
 
 .ui-iggrid .ui-iggrid-filterrow td > div {
-  border-top: none;
-  border-right: none;
-  border-left: none; }
+  border: none; }
 
 /**************************
 * ui-iggrid-headercaption *
