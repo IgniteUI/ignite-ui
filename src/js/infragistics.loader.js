@@ -189,12 +189,12 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.dataSourceDescription
 	},
 	{
-        widget: "_igOlap",
-        dependency: [ { name: "igUtil" } ],
-        scripts: [ "$path$/modules/infragistics.olap.js" ],
-        group: $.ig.loaderClass.locale.frameworkGroup,
-        internal: true,
-        css: []
+		widget: "_igOlap",
+		dependency: [ { name: "igUtil" } ],
+		scripts: [ "$path$/modules/infragistics.olap.js" ],
+		group: $.ig.loaderClass.locale.frameworkGroup,
+		internal: true,
+		css: []
 	},
 	{
 		widget: "igOlapXmlaDataSource",
@@ -539,19 +539,19 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
 	},
 	{
-        widget: "Interactivity",
-        parentWidget: "igDataChart",
-        dependency: [ { name: "_ig_datachart_interactivity" } ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
-    },
+		widget: "Interactivity",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_interactivity" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+	},
 	{
-        widget: "VisualData",
-        parentWidget: "igDataChart",
-        dependency: [ { name: "_ig_datachart_visualdata" } ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
-    },
+		widget: "VisualData",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_visualdata" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+	},
 	{
 		widget: "igDataChart.*",
 		dependency: [ { name: "Category" },
