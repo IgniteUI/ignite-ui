@@ -1538,7 +1538,10 @@
 			return result;
 		};
 		var joinParts = function(options) {
-			if (Intl) return new Intl.DateTimeFormat(provider.name(), options).formatToParts(value).map(function(date) { return date.value; }).join("");
+			if (Intl) {
+				var formatter = new Intl.DateTimeFormat(provider.name(), options);
+				return formatter.formatToParts(value).map(function(date) { return date.value; }).join("");
+			}
 		};
 		switch (format) {
 			case "s":
@@ -1584,23 +1587,31 @@
 			case "D": // long date
 				return joinParts({ weekday: "long", month: "long", day: "numeric", year: "numeric" });
 			case "f": // full datetime (short time)
-				return joinParts({ weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" });
+				return joinParts({ 
+					weekday: "long", month: "long", day: "numeric", year: "numeric", 
+					hour: "numeric", minute: "numeric" });
 			case "F": // full datetime (long time)
-				return joinParts({ weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric" });
+				return joinParts({ 
+					weekday: "long", month: "long", day: "numeric", year: "numeric", 
+					hour: "numeric", minute: "numeric", second: "numeric" });
 			case "g": // general (short time)
-				return joinParts({ month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric"});
+				return joinParts({ 
+					month: "numeric", day: "numeric", year: "numeric", 
+					hour: "numeric", minute: "numeric" });
 			case "G": // general (long time)
-				return joinParts({ month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"});
+				return joinParts({ 
+					month: "numeric", day: "numeric", year: "numeric", 
+					hour: "numeric", minute: "numeric", second: "numeric" });
 			case "M": // month/day
 			case "m":
-				return joinParts({ month: "long", day: "numeric"});
+				return joinParts({ month: "long", day: "numeric" });
 			case "t": // short time
-				return joinParts({ hour: "numeric", minute: "numeric"});
+				return joinParts({ hour: "numeric", minute: "numeric" });
 			case "T": // long time
 				return value.toLocaleTimeString();
 			case "Y": // year/month
 			case "y":
-				return joinParts({ year: "numeric", month: "long"});
+				return joinParts({ year: "numeric", month: "long" });
 		}
 		result = format;
 		var year = value.getFullYear().toString();
@@ -1612,7 +1623,16 @@
 		var hours = value.getHours();
 		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
-		var dayPeriod = Intl ? new Intl.DateTimeFormat(provider.name(), { hour12: true, hour: "numeric" }).formatToParts(value).find(function(part) { return part.type == "dayperiod"; }).value : hours < 12 ? "AM" : "PM";
+		var dayPeriod;
+		if (Intl) {
+			var dayPeriodOptions = { hour12: true, hour: "numeric" };
+			var dayPeriodFormatter = new Intl.DateTimeFormat(provider.name(), dayPeriodOptions);
+			var parts = dayPeriodFormatter.formatToParts(value);
+			dayPeriod = parts.find(function(part) { return part.type == "dayperiod"; }).value;
+		}
+		else {
+			dayPeriod = hours < 12 ? "AM" : "PM";
+		}
 		result = result.replace("tt", dayPeriod);
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
