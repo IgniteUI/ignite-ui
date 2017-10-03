@@ -1577,7 +1577,7 @@
 			case "d":  // short date
 				return value.toLocaleDateString();
 			case "D": // long date
-				return value.toLocaleString(provider.name(), 
+				return value.toLocaleString(provider.name(),
 							    { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 			case "f": // full datetime (short time)
 				return value.toLocaleString(provider.name(), {
