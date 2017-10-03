@@ -1054,9 +1054,7 @@
 }
 
 .ui-iggrid .ui-iggrid-filterrow td > div {
-  border-top: none;
-  border-right: none;
-  border-left: none;
+  border: none;
 }
 
 /**************************
@@ -1122,4 +1120,9 @@ label {
       border: none;
     }
   }
+}
+
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: $brand-primary;
 }

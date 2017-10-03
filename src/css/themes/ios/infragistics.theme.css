@@ -2424,6 +2424,10 @@ background-color: @igGray3;*/
 .ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom: 1px solid #ececec;
 }
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: #007aff;
+}
 /*****************/
 /* Notifier      */
 /****************/
@@ -2641,6 +2645,9 @@ background-color: @igGray3;*/
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
   font-size: .75em;
+}
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #c0c0c0;
 }
 /**************/
 /* igSplitter */

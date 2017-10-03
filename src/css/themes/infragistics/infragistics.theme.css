@@ -2449,9 +2449,6 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   border-top: 1px solid #FFF;
   border-bottom: 1px solid #FFF;
 }
-.ui-iggrid .ui-iggrid-filterrow td > div {
-  border: none;
-}
 .ui-iggrid .ui-widget-content.ui-dialog {
   border: 1px solid #cccccc;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -2464,6 +2461,10 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   border-color: #dadada;
   border-width: 1px;
   text-align: center;
+}
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: #a8d6e1;
 }
 /************/
 /* Notifier */
@@ -2687,6 +2688,9 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
   font-size: .75em;
+}
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #c0c0c0;
 }
 /**************/
 /* igSplitter */

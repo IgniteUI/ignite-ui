@@ -2457,6 +2457,10 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
   border-width: 1px;
   text-align: center;
 }
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: #00aade;
+}
 /************/
 /* Notifier */
 /************/
@@ -2674,6 +2678,9 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 .ui-igscheduler-appointment-popover-from-to {
   color: #00aade;
+}
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #c0c0c0;
 }
 /**************/
 /* igSplitter */

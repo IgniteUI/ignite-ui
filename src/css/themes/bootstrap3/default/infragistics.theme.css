@@ -2584,9 +2584,7 @@ a.ui-button:active,
   color: #595959;
 }
 .ui-iggrid .ui-iggrid-filterrow td > div {
-  border-top: none;
-  border-right: none;
-  border-left: none;
+  border: none;
 }
 /**************************
 * ui-iggrid-headercaption *
@@ -2630,6 +2628,10 @@ label {
 .ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-metadataitem {
   background: #fff;
   border: none;
+}
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: #428bca;
 }
 /************/
 /* Notifier */
@@ -2893,6 +2895,9 @@ label {
 .ui-igscheduler-tabs .ui-icon,
 .ui-igscheduler-today-button .ui-icon {
   margin-top: -9px !important;
+}
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #c0c0c0;
 }
 /**************/
 /* igSplitter */
