@@ -11,6 +11,7 @@ body {
 /* states */
 /*! jQuery UI - v1.12.1 - 2016-09-14 */
 /*
+
   List with Overwritten components
 
   1. jQuery UI Accordion
@@ -24,6 +25,7 @@ body {
   9. jQuery UI Date picker
   10. jQuery UI Spinner
   11. jQuery UI Progressbar
+
 */
 /**********************
 * jQuery UI Accordion *
@@ -2437,6 +2439,10 @@ label {
 .ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-metadataitem {
   background: #fff;
   border: none; }
+
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: #0275d8; }
 
 /************/
 /* Notifier */
