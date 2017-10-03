@@ -2906,6 +2906,9 @@ label {
 .ui-igscheduler-today-button .ui-icon {
   margin-top: -9px !important;
 }
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #4E5D6C;
+}
 /**************/
 /* igSplitter */
 /**************/
