@@ -2629,6 +2629,10 @@ label {
   background: #fff;
   border: none;
 }
+.ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
+.ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
+  background: #428bca;
+}
 /************/
 /* Notifier */
 /************/
