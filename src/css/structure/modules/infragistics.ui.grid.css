@@ -668,10 +668,10 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-iggrid td.ui-iggrid-filtercell {
-    padding    : 0;
-    margin     : 0;
-    border     : none;
-    height     : 1.6em;
+    padding : 0;
+    margin  : 0;
+    border  : none;
+    height  : 1.6em;
 }
 
 .ui-iggrid-filtercell input {
