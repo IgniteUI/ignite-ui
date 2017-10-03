@@ -279,7 +279,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
 .ui-iggrid-scrolldiv {
     border-top       : none !important;
     position         : relative;
-    min-height       : 0%;
+    min-height       : 0;
     background-color : #f3f3f3;
     border-bottom    : 1px solid #dcdcdc;
 }
@@ -550,7 +550,7 @@ BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the 
 */
 .ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
     float : left;
-    width : calc(100% - 35px);
+    width : calc(100% - 27px);/* This depend on how big is the button for the dropdown menu*/
 }
 
 .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igeditor-input-container {
@@ -767,7 +767,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 /* Filtering icons */
 .ui-iggrid-filterbutton {
     /*background : url(../images/igGrid/filter-icons-333333.png) no-repeat -32px 0 !important;*/
-    border     : 1px solid transparent;
+    border : 1px solid transparent;
 }
 
 .ui-iggrid th .ui-iggrid-filterbutton, .ui-iggrid-filterbuttonright {
@@ -936,10 +936,8 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 
 .ui-iggrid-featurechooser-submenu {
     z-index            : 20000;
-    background-color   : #e5e5e5;
     border             : 1px solid #b1b1b1;
     padding            : 4px;
-
     -moz-box-shadow    : 0 0 10px grey;
     -webkit-box-shadow : 0 0 10px grey;
     box-shadow         : 0 0 10px grey;
@@ -1630,13 +1628,12 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-widget-content.ui-iggrid-buttoncontainer {
-    white-space        : nowrap;
-    z-index            : 1;
-    -moz-box-shadow    : 0 0 5px #555;
-    -webkit-box-shadow : 0 0 5px #555;
-    box-shadow         : 0 0 5px #555;
-    border-width       : 1px;
-    border-style       : solid;
+    white-space  : nowrap;
+    z-index      : 1;
+    border-width : 1px;
+    border-style : solid;
+    box-sizing   : border-box;
+    padding      : .2em;
 }
 
 .ui-iggrid-button {
@@ -2334,6 +2331,10 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
     border      : none;
     text-shadow : none;
     padding     : 5px;
+}
+
+.ui-iggrid-featurechooser-list-submenu li.ui-state-default {
+    white-space: nowrap;
 }
 
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover {
