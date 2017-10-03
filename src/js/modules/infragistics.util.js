@@ -1538,7 +1538,7 @@
 			return result;
 		};
 		var joinParts = function(options) {
-			if (Intl) return new Intl.DateTimeFormat(provider.name(), options).formatToParts(value).map(function(date) { return date.value }).join("");
+			if (Intl) return new Intl.DateTimeFormat(provider.name(), options).formatToParts(value).map(function(date) { return date.value; }).join("");
 		};
 		switch (format) {
 			case "s":
@@ -1612,7 +1612,7 @@
 		var hours = value.getHours();
 		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
-		var dayPeriod = Intl ? new Intl.DateTimeFormat(provider.name(), { hour12: true, hour: "numeric" }).formatToParts(value).find(function(part) { return part.type == "dayperiod" }).value : hours < 12 ? "AM" : "PM";
+		var dayPeriod = Intl ? new Intl.DateTimeFormat(provider.name(), { hour12: true, hour: "numeric" }).formatToParts(value).find(function(part) { return part.type == "dayperiod"; }).value : hours < 12 ? "AM" : "PM";
 		result = result.replace("tt", dayPeriod);
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
