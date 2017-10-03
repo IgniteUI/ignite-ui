@@ -2336,18 +2336,12 @@
 			if (div) {
 				div.hide();
 				self._doIframe(div, 1);
+				div.show();
 			}
 
 			// adjust maximized dialog
 			if (self._max) {
 				self._doMaxSize(self.element);
-			}
-
-			// adjust modal DIV/IFRAME-shells
-			if (div) {
-				rect = self._winRect();
-				div.css({ width: rect.maxWidth - 1, height: rect.maxHeight - 1 }).show();
-				self._doIframe(div);
 			}
 		},
 		_minHeaderWidth: function () {
@@ -2601,16 +2595,13 @@
 			self._modal = on;
 			if (on) {
 				self._modalDiv = div = _notab($("<div />").css({
-					position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
+					position: "fixed", left: 0, top: 0, bottom: 0, right: 0, zIndex: _maxZ - 1
 				})
 					.addClass(self.css.overlay).mousedown(function (e) {
 						self._setFocus();
 						_stopEvt(e);
 					})
 					.insertBefore(elem));
-				pos = div.offset();
-				div.css({ marginLeft: -pos.left + "px", marginTop: -pos.top + "px" });
-				self._onResize();
 			} else {
 				div.remove();
 				_iframe.remove();
