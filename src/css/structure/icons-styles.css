@@ -548,9 +548,14 @@
 .ui-icon-book-b:before{content:'\e6ec'}
 .ui-icon-calculator:before{content:'\e6ed'}
 .ui-icon-calculator-b:before{content:'\e6ee'}
+
 .ui-icon-calendar:before{content:'\e6ef'}
 .ui-icon-calendar-b:before{content:'\e6f0'}
 .ui-icon-calendar-day:before{content:'\e6f1'}
+
+.ui-icon-week:before{content:'\e92e'}
+.ui-icon-day:before{content:'\e923'}
+
 .ui-icon-address:before{content:'\e6f2'}
 .ui-icon-contact:before,.ui-icon-insert-email:before{content:'\e6f3'}
 .ui-icon-phone:before{content:'\e6f4'}

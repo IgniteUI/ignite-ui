@@ -1,13 +1,15 @@
-.ui-igpivotdataselector-root .ui-igcombo-wrapper {
-    margin-bottom: .5rem;
-}
+/* 
+    ==========================================================================================
+    Shared
+    ==========================================================================================
+*/
 
 /* 
     =============================================
     Metadata Item Drop Down
 */
 .ui-igpivot-metadatadropdown {
-    z-index: 101;
+    z-index: 10;
 }
 
 .ui-widget.ui-widget-content.ui-igpivot-metadatadropdown {
@@ -22,38 +24,37 @@
 .ui-igpivot-metadatadropdown ul li {
     list-style: none;
     cursor: pointer;
+    margin: 0 2px;
 }
 
 .touch .ui-igpivot-metadatadropdown ul li,
 .touchevents .ui-igpivot-metadatadropdown ul li,
-.pointerevents .ui-igpivot-metadatadropdown ul li {
-    font-size: 1.3em;
+.pointerevents .ui-igpivot-metadatadropdown ul li
+{
+     font-size: 1.3em;
 }
 
 .ui-igpivot-metadatadropdown ul li.ui-state-hover {
-    border-width: 0;
+    border-width: 0px;
 }
 
 .ui-igpivot-metadatadropdown .ui-icon {
-    display: inline-block;
-    margin-right: 0.2em;
+	display: inline-block;
+    margin-right:0.2em;
     background-image: url(../images/igPivot/pivot-header-icons.png);
 }
 
 .ui-igpivot-metadatadropdown .ui-icon-pivot-filters {
-    background-position: 0 0;
+    background-position:0 0;
 }
-
 .ui-igpivot-metadatadropdown .ui-icon-pivot-columns {
-    background-position: -16px 0;
+    background-position:-16px 0;
 }
-
 .ui-igpivot-metadatadropdown .ui-icon-pivot-rows {
-    background-position: -32px 0;
+    background-position:-32px 0;
 }
-
 .ui-igpivot-metadatadropdown .ui-icon-pivot-measures {
-    background-position: -48px 0;
+    background-position:-48px 0;
 }
 
 /* 
@@ -71,11 +72,11 @@
 
 .ui-igpivot-filterdropdown .ui-igpivot-filtermembers {
     min-height: 200px;
-    padding: 5px;
+    padding-right: 5px;
 }
 
-.ui-igpivot-filterdropdown .ui-igpivot-filtermembers:not(.ui-igtree) {
-    background: url(../images/ui-anim_basic_16x16.gif) center no-repeat;
+.ui-igpivot-filterdropdown .ui-igpivot-filtermembers:not(.ui-igtree) {	
+	background: url(../images/ui-anim_basic_16x16.gif) center no-repeat;
 }
 
 .ui-igpivot-filterdropdown .ui-igbutton {
@@ -92,15 +93,19 @@
 }
 
 .ui-igpivot-filterdropdown span[data-role=checkbox] {
-    min-height: 14px;
+    min-height:14px;
     min-width: 14px;
     width: 1em;
     height: 1em;
 }
 
+.ui-igpivot-filterdropdown .ui-igtree-node a {
+    font-size: 1em;
+}
+
 .ui-igpivot-filterdropdown-buttoncontainer {
-    float: right;
-    padding: 6px;
+    float:right;
+    padding:6px;
 }
 
 /* 
@@ -109,22 +114,12 @@
 */
 
 .ui-igpivot-droparea {
+    margin: 0;
     padding: 0;
-    margin-bottom: 1em;
-}
-
-.ui-igpivotdataselector-metadata {
-    margin-bottom: 2em;
-}
-
-.ui-igpivot-metadataitem {
-    display: flex;
-    align-items: center;
-    border: 1px solid transparent;
 }
 
 .ui-igpivot-droparea .ui-igpivot-metadataitem {
-    padding: .2em;
+    padding: 2px;
     list-style: none outside none;
     white-space: nowrap;
     position: relative;
@@ -132,9 +127,8 @@
 
 .ui-igpivot-droparea .ui-igpivot-metadataitem span[data-role='caption'] {
     cursor: default;
-    margin-left: .3em;
-    margin-right: .5em;
-    font-size: .8em;
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon {
@@ -152,21 +146,24 @@
     float: left;
     overflow: visible;
     white-space: nowrap;
-    margin-left: 3.5em;
+    margin-left: 35px;
 }
 
-.ui-igpivot-draghelper .ui-icon {
-    position: relative;
-    float: left;
-    margin-top: -.8em;
-    margin-right: .3em;
-    top: .9em;
+.ui-igpivot-draghelper .ui-icon
+{
+    position:relative;
+    float:left;
+    margin-top:-8px;
+    margin-right: 0.3em;
+    top:0.9em;
 }
 
-.ui-igpivot-draghelper p {
+
+.ui-igpivot-draghelper p
+{
     line-height: 1.8em;
     margin: 0;
-    padding: 0 .7em;
+    padding: 0 0.7em;
 }
 
 /* 
@@ -175,11 +172,11 @@
 */
 
 .ui-igpivotgrid .ui-iggrid-headertext, .ui-igpivot-rowheaderlink {
-    display: inline-block;
+    display:inline-block;
 }
 
 .ui-igpivot-rowheaderlink {
-    text-decoration: underline;
+    text-decoration:underline;
 }
 
 /* 
@@ -199,9 +196,14 @@
 */
 
 .ui-igpivotdataselector {
-    font-size: .9em;
+    background: #F3F3F3;
+    font-size: 0.9em;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.ui-igpivotdataselector .ui-igpivotdataselector-root {
+    padding: 10px;
 }
 
 /* 
@@ -209,101 +211,85 @@
     Metadata Tree
 */
 .ui-igpivotdataselector-metadata {
-    height: 30em;
+    height: 300px;
+}
+.ui-igpivotdataselector-metadata .ui-igtree-root{
+    margin-top:0.5em;
 }
 
-.ui-igpivotdataselector-metadata .ui-igtree-root {
-    margin-top: .5em;
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem { 
 }
 
-.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem {
-}
-
-.cube,
-.dimension,
-.folder,
-.hierarchykey,
-.hierarchydirect,
-.hierarchymultiple,
-.hierarchysingle,
-.kpi,
-.level1,
-.level2,
-.level3,
-.level4,
-.level5,
-.measure,
-.member,
-.members {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .cube,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .dimension,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .folder,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchykey,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchydirect,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchymultiple,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchysingle,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .kpi,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level1,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level2,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level3,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level4,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level5,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .measure,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .member,
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .members {
     width: 16px;
     height: 16px;
-    display: inline-block;
-    vertical-align: baseline;
-    margin-right: .4em;
+    display: inline-block;   
+	vertical-align: baseline;
+    margin-right:0.2em;
     background-image: url(../images/igPivot/dataselector-sprite.png);
 }
 
-.cube {
-    background-position: 0 0;
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .cube {
+    background-position:0 0;
 }
-
-.dimension {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .dimension {
     background-position: -16px 0;
 }
-
-.folder {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .folder {
     background-position: -32px 0;
 }
-
-.hierarchydirect {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchydirect {
     background-position: -48px 0;
 }
-
-.hierarchykey {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchykey {
     background-position: -64px 0;
 }
-
-.hierarchymultiple {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchymultiple {
     background-position: -80px 0;
 }
-
-.hierarchysingle {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .hierarchysingle {
     background-position: -96px 0;
 }
-
-.kpi {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .kpi {
     background-position: -112px 0;
 }
-
-.level1 {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level1 {
     background-position: -128px 0;
 }
-
-.level2 {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level2 {
     background-position: -144px 0;
 }
-
-.level3 {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level3 {
     background-position: -160px 0;
 }
-
-.level4 {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level4 {
     background-position: -176px 0;
 }
-
-.level5 {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .level5 {
     background-position: -192px 0;
 }
-
-.measure {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .measure {
     background-position: -208px 0;
 }
-
-.member {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .member {
     background-position: -224px 0;
 }
-
-.members {
+.ui-igpivotdataselector-metadata .ui-igpivot-metadataitem .members {
     background-position: -240px 0;
 }
 
@@ -312,63 +298,56 @@
     Drop Areas
 */
 
-.ui-igpivotdataselector-dropareas .ui-icon {
-    cursor: default;
-}
-
 .ui-igpivotdataselector .ui-igpivotdataselector-dropareas {
-    width: 100%;
-    table-layout: fixed;
+	width: 100%;
+	table-layout: fixed;
 }
 
 .ui-igpivotdataselector .ui-igpivotdataselector-dropareas th {
-    text-align: left;
+	text-align: left; 
+	font-size: 0.8em;
     font-weight: normal;
-    padding-bottom: .5em;
 }
 
 .ui-igpivotdataselector .ui-igpivotdataselector-dropareas td {
-    width: 50%;
+	width: 50%;
 }
 
 .ui-igpivotdataselector .ui-igpivotdataselector-dropareas th .ui-icon {
-    display: inline-block;
-    vertical-align: text-bottom;
-    margin-right: .2em;
+	display: inline-block;
+    vertical-align:text-bottom;
+    margin-right:0.2em;
     background-image: url(../images/igPivot/pivot-header-icons.png);
-    width: 16px;
-    height: 16px;
-    min-height: 16px;
-    min-width: 16px;
+    width:16px;
+    height:16px;
+    min-height:16px;
+    min-width:16px;
 }
 
 .ui-igpivotdataselector-dropareas .ui-icon-pivot-filters {
-    background-position: 0 0;
+    background-position:0 0;
 }
-
 .ui-igpivotdataselector-dropareas .ui-icon-pivot-columns {
-    background-position: -16px 0;
+    background-position:-16px 0;
 }
-
 .ui-igpivotdataselector-dropareas .ui-icon-pivot-rows {
-    background-position: -32px 0;
+    background-position:-32px 0;
 }
-
 .ui-igpivotdataselector-dropareas .ui-icon-pivot-measures {
-    background-position: -48px 0;
+    background-position:-48px 0;
 }
 
 .ui-igpivotdataselector .ui-igpivot-droparea {
-    height: 7.5em;
+    height: 75px;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: .2em;
+    padding:2px;
 }
 
 .ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-metadataitem {
-    font-size: 1.2em;
+    font-size: 12px;
     overflow: hidden;
-    margin-bottom: .1em;
+    margin-bottom: 1px;
     text-overflow: ellipsis;
 }
 
@@ -378,16 +357,16 @@
 
 .ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon.ui-icon-close {
     position: absolute;
-    right: .2em;
+    right: 2px;
 }
 
 .ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
-    background-image: url(../images/igPivot/pivot-header-icons.png);
-    background-position: -64px -16px;
+     background-image: url(../images/igPivot/pivot-header-icons.png);
+     background-position: -64px -16px;
 }
 
 .ui-igpivotdataselector .ui-igpivot-droparea .ui-igpivot-insertitem {
-    height: .2em;
+    height: 2px;
 }
 
 /* 
@@ -398,15 +377,15 @@
 .ui-igbutton.ui-igpivotdataselector-updatelayout {
     height: 18px;
     width: 18px;
-    margin-left: 1em;
+    margin-left: 10px;
     vertical-align: middle;
 }
 
 .ui-igbutton.ui-igpivotdataselector-updatelayout .ui-icon {
-    margin-left: 0;
+    margin-left: 0px;
     /* Bug 217682, 19.04.2016, S.D., igPivotDataSelector Update button icon is positioned outside its container */
-    position: absolute;
-    left: .1em;
+    position:absolute;
+    left:1px;
 }
 
 /* 
@@ -420,7 +399,7 @@
     Grid
 */
 .ui-igpivotgrid-blockarea {
-    background: rgba(0, 0, 0, 0.70) url("../images/ui-anim_basic_16x16.gif") no-repeat center center;
+    background: rgba(0, 0, 0, 0.70) url("../images/ui-anim_basic_16x16.gif") no-repeat center center;    
     position: absolute;
     width: 100%;
     height: 100%;
@@ -429,7 +408,7 @@
 }
 
 .ui-igpivotgrid-tree-blockarea {
-    background: url("../images/ui-anim_basic_16x16.gif") no-repeat center center;
+    background: url("../images/ui-anim_basic_16x16.gif") no-repeat center center;    
     position: absolute;
     width: 16px;
     height: 16px;
@@ -459,14 +438,14 @@
     cursor: pointer;
 }
 
-.ui-igpivotgrid th.ui-igpivotgrid-header.ui-iggrid-multiheader-cell {
-    text-align: left;
+.ui-igpivotgrid th.ui-igpivotgrid-header.ui-iggrid-multiheader-cell{
+	text-align: left;
 }
 
-.ui-igpivotgrid-header[data-sort] > .ui-iggrid-headertext, .ui-iggrid-sortindicator,
+.ui-igpivotgrid-header[data-sort]>.ui-iggrid-headertext,.ui-iggrid-sortindicator,
 .ui-igpivotgrid-header[data-sort][data-axis='empty_axis'],
-.ui-igpivotgrid-header[data-sortheader] > .ui-iggrid-headertext, .ui-iggrid-sortindicator,
-.ui-igpivotgrid-header[data-item-sortheader] > .ui-igpivot-rowheaderlink {
+.ui-igpivotgrid-header[data-sortheader]>.ui-iggrid-headertext,.ui-iggrid-sortindicator,
+.ui-igpivotgrid-header[data-item-sortheader]>.ui-igpivot-rowheaderlink {
     cursor: pointer;
 }
 
@@ -477,7 +456,7 @@
 
 .ui-igpivot-overlaydroparea {
     position: absolute;
-    display: none;
+    display:none;
     z-index: 100;
 }
 
@@ -506,44 +485,41 @@
 }
 
 .ui-igpivot-dropareaheader .ui-iggrid-headerbutton:first-child {
-    margin-left: -.4em;
+    margin-left:-4px;
 }
-
 .ui-igpivot-dropareaheader .ui-iggrid-headerbutton .ui-icon {
-    display: block;
-    margin-top: -.8em;
+	display: block;
+    margin-top: -8px;
     position: relative;
     top: 50%;
 }
 
-.ui-igpivot-dropareaheader .ui-igpivot-droparea .ui-igpivot-metadataitem {
+.ui-igpivot-dropareaheader .ui-igpivot-droparea .ui-igpivot-metadataitem  {
     display: inline-block;
     margin: 0 2px;
-    font-size: 0.9em;
+    font-size:0.9em;
     /*accomodating for close icons*/
     padding-right: 1.8em;
-
+    
 }
 
 .ui-igpivot-dropareaheader .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon {
-    position: absolute;
-    top: 50%;
-    margin-top: -.4em;
-    font-size: 1.4em;
+    position:absolute;
+    top:50%;
+    margin-top:-8px;
 }
 
 .ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
-    background-image: url(../images/igPivot/pivot-header-icons.png);
-    background-position: -64px -16px;
-    left: .3em;
+     background-image: url(../images/igPivot/pivot-header-icons.png);
+     background-position: -64px -16px;
+     left: 0.5em;
 }
 
 .ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter + span[data-role~="caption"] {
-    margin-left: 2.4em;
+    margin-left: 1.8em;
 }
-
 .ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-close {
-    right: .5em;
+     right: 0.5em;
 }
 
 .ui-igpivot-dropareaheader .ui-igpivot-droparea .ui-igpivot-metadataitem *:not(.ui-icon) {
@@ -553,7 +529,7 @@
 .ui-igpivot-dropareaheader .ui-igpivot-droparea .ui-igpivot-insertitem {
     width: 2px;
     height: 26px;
-    margin: 0;
+    margin: 0px;
     display: inline-block;
     vertical-align: top;
 }
@@ -564,9 +540,8 @@
 */
 
 .ui-igpivotgrid-kpis {
-    display: block;
-    margin: auto;
-    width: 16px;
-    height: 16px;
+    display:block;
+    margin:auto;
+    width:16px; height:16px;
     background-image: url('../images/igPivot/kpi-icons.png');
 }
