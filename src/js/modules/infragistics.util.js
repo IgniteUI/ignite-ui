@@ -1537,12 +1537,6 @@
 
 			return result;
 		};
-		var joinParts = function(options) {
-			if (Intl) {
-				var formatter = new Intl.DateTimeFormat(provider.name(), options);
-				return formatter.formatToParts(value).map(function(date) { return date.value; }).join("");
-			}
-		};
 		switch (format) {
 			case "s":
 				{
@@ -1565,53 +1559,51 @@
 					.replace(/\u200E/g, "");
 
 			case "dddd":
-				{
-					result = value.toLocaleString(provider.name(), { weekday: "long" })
-						.replace(/\u200E/g, "");
+				result = value.toLocaleString(provider.name(), { weekday: "long" })
+					.replace(/\u200E/g, "");
 
-					if (result.contains(" ")) {
+				if (result.contains(" ")) {
 
-						// Date.toLocaleString is not supported fully
-						// TODO: Handle other cultures?
-						return [ "Sunday", "Monday", "Tuesday", "Wednesday",
-							"Thursday", "Friday", "Saturday" ][ value.getDay() ];
-					}
-
-					return result;
+					// Date.toLocaleString is not supported fully
+					// TODO: Handle other cultures?
+					return [ "Sunday", "Monday", "Tuesday", "Wednesday",
+						"Thursday", "Friday", "Saturday" ][ value.getDay() ];
 				}
+
+				return result;
 
 			case "%t":
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
 			case "d":  // short date
 				return value.toLocaleDateString();
 			case "D": // long date
-				return joinParts({ weekday: "long", month: "long", day: "numeric", year: "numeric" });
+				return value.toLocaleString(provider.name(), { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 			case "f": // full datetime (short time)
-				return joinParts({ 
-					weekday: "long", month: "long", day: "numeric", year: "numeric", 
+				return value.toLocaleString(provider.name(), {
+					weekday: "long", month: "long", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric" });
 			case "F": // full datetime (long time)
-				return joinParts({ 
-					weekday: "long", month: "long", day: "numeric", year: "numeric", 
+				return value.toLocaleString(provider.name(), {
+					weekday: "long", month: "long", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric", second: "numeric" });
 			case "g": // general (short time)
-				return joinParts({ 
-					month: "numeric", day: "numeric", year: "numeric", 
+				return value.toLocaleString(provider.name(), {
+					month: "numeric", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric" });
 			case "G": // general (long time)
-				return joinParts({ 
-					month: "numeric", day: "numeric", year: "numeric", 
+				return value.toLocaleString(provider.name(), {
+					month: "numeric", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric", second: "numeric" });
 			case "M": // month/day
 			case "m":
-				return joinParts({ month: "long", day: "numeric" });
+				return value.toLocaleString(provider.name(), { month: "long", day: "numeric" });
 			case "t": // short time
-				return joinParts({ hour: "numeric", minute: "numeric" });
+				return value.toLocaleString(provider.name(), { hour: "numeric", minute: "numeric" });
 			case "T": // long time
 				return value.toLocaleTimeString();
 			case "Y": // year/month
 			case "y":
-				return joinParts({ year: "numeric", month: "long" });
+				return value.toLocaleString(provider.name(), { year: "numeric", month: "long" });
 		}
 		result = format;
 		var year = value.getFullYear().toString();
@@ -1623,17 +1615,7 @@
 		var hours = value.getHours();
 		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
-		var dayPeriod;
-		if (Intl) {
-			var dayPeriodOptions = { hour12: true, hour: "numeric" };
-			var dayPeriodFormatter = new Intl.DateTimeFormat(provider.name(), dayPeriodOptions);
-			var parts = dayPeriodFormatter.formatToParts(value);
-			dayPeriod = parts.find(function(part) { return part.type == "dayperiod"; }).value;
-		}
-		else {
-			dayPeriod = hours < 12 ? "AM" : "PM";
-		}
-		result = result.replace("tt", dayPeriod);
+		result = result.replace("tt", hours < 12 ? "AM" : "PM");
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
 		return result;
