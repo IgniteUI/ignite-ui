@@ -1537,6 +1537,13 @@
 
 			return result;
 		};
+		var applyFormat = function(options) {
+			if (Intl) {
+				var formatter = new Intl.DateTimeFormat(provider.name(), options);
+				return formatter.format(value);
+			}
+			return value.toLocaleString(provider.name(), options);
+		};
 		switch (format) {
 			case "s":
 				{
@@ -1577,34 +1584,33 @@
 			case "d":  // short date
 				return value.toLocaleDateString();
 			case "D": // long date
-				return value.toLocaleString(provider.name(),
-							    { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+				return applyFormat({ weekday: "long", month: "long", day: "numeric", year: "numeric" });
 			case "f": // full datetime (short time)
-				return value.toLocaleString(provider.name(), {
+				return applyFormat({
 					weekday: "long", month: "long", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric" });
 			case "F": // full datetime (long time)
-				return value.toLocaleString(provider.name(), {
+				return applyFormat({
 					weekday: "long", month: "long", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric", second: "numeric" });
 			case "g": // general (short time)
-				return value.toLocaleString(provider.name(), {
+				return applyFormat({
 					month: "numeric", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric" });
 			case "G": // general (long time)
-				return value.toLocaleString(provider.name(), {
+				return applyFormat({
 					month: "numeric", day: "numeric", year: "numeric",
 					hour: "numeric", minute: "numeric", second: "numeric" });
 			case "M": // month/day
 			case "m":
-				return value.toLocaleString(provider.name(), { month: "long", day: "numeric" });
+				return applyFormat({ month: "long", day: "numeric" });
 			case "t": // short time
-				return value.toLocaleString(provider.name(), { hour: "numeric", minute: "numeric" });
+				return applyFormat({ hour: "numeric", minute: "numeric" });
 			case "T": // long time
 				return value.toLocaleTimeString();
 			case "Y": // year/month
 			case "y":
-				return value.toLocaleString(provider.name(), { year: "numeric", month: "long" });
+				return applyFormat({ year: "numeric", month: "long" });
 		}
 		result = format;
 		var year = value.getFullYear().toString();
