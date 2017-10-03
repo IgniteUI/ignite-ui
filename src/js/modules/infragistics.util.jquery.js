@@ -32,7 +32,7 @@
 	}
 }
 (function ($) {
-	$.ig = (window.$ && window.$.ig) || $.ig || { _isNamespace: true };
+	$.ig = (window.jQuery && window.jQuery.ig) || $.ig || { _isNamespace: true };
 	window.$ig = window.$ig || $.ig;
 
 	$.fn.startsWith = function (str) {
