@@ -2642,6 +2642,9 @@ background-color: @igGray3;*/
 .ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
   font-size: .75em;
 }
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #c0c0c0;
+}
 /**************/
 /* igSplitter */
 /**************/

@@ -2675,6 +2675,9 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 .ui-igscheduler-appointment-popover-from-to {
   color: #00aade;
 }
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #c0c0c0;
+}
 /**************/
 /* igSplitter */
 /**************/
