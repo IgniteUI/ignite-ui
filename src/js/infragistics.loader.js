@@ -1904,6 +1904,7 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_web" },
 			{ name: "_ig_dv_core" },
 			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_dv_interactivity" },
 			{ name: "_ig_documents_core_openxml" },
 			{ name: "igExcel" },
 			{ name: "Functions", parentWidget: "igExcel" },
