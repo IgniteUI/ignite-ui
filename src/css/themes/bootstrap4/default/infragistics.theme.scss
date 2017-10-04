@@ -24,7 +24,7 @@ body {
 @import "mixins";
 
 // Icons fonts
-@import "../../../structure/fonts/style.css";
+@import "icons-styles.css";
 
 //JQuery UI styles
 @import "../../../structure/jquery-ui.css";
@@ -36,7 +36,7 @@ body {
 @import "modules/modules";
 
 // Font styles
-@import "../../../structure/icons-styles.css";
+@import "../../bootstrap3/default/icons-styles.css";
 
 // Use this file to override all infragistics & jQuery styles
 @import "overrides";
