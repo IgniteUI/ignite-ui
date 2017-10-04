@@ -2,9 +2,8 @@
 /* Ignite UI Infragistics theme */
 /********************************/
 /* Palettes */
-@import "../../structure/fonts/style.css";
+@import "icons-styles.css";
 @import "../../structure/jquery-ui.css";
-@import "../../structure/icons-styles.css";
 body {
   background: #FFFFFF;
 }
