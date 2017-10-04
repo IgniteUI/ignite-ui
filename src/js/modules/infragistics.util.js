@@ -1538,7 +1538,7 @@
 			return result;
 		};
 		var applyFormat = function(options) {
-			if (Intl) {
+			if (window.Intl) {
 				var formatter = new Intl.DateTimeFormat(provider.name(), options);
 				return formatter.format(value);
 			}
