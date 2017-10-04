@@ -1,3 +1,28 @@
+@font-face {
+    font-family: 'jquery-ui';
+    src:
+            url('../../structure/fonts/jquery-ui.ttf?uyccen') format('truetype'),
+            url('../../structure/fonts/jquery-ui.woff?uyccen') format('woff'),
+            url('../../structure/fonts/jquery-ui.svg?uyccen#jquery-ui') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="ui-icon-"], [class*=" ui-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'jquery-ui' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 /* basic settings */
 .ui-icon,
 .ui-busy-icon,
