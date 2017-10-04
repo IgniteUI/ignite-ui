@@ -2320,7 +2320,7 @@
 			}
 		},
 		_onResize: function () {
-			var rect, self = this, div = self.isTopModal() ? self._modalDiv : null;
+			var self = this, div = self.isTopModal() ? self._modalDiv : null;
 			if (!self._winResize) {
 				$(window).bind("resize", self._winResize = function () {
 					setTimeout(function () {
@@ -2336,12 +2336,17 @@
 			if (div) {
 				div.hide();
 				self._doIframe(div, 1);
-				div.show();
 			}
 
 			// adjust maximized dialog
 			if (self._max) {
 				self._doMaxSize(self.element);
+			}
+
+			// adjust modal DIV/IFRAME-shells
+			if (div) {
+				div.show();
+				self._doIframe(div);
 			}
 		},
 		_minHeaderWidth: function () {
@@ -2553,7 +2558,7 @@
 		// zi: zIndex used when modal shell is visible
 		// implement all actions related to modal functionality: start/end modal depending on visibility/pin/minimized
 		_doModal: function (zi) {
-			var i, pos, on, obj,
+			var i, on, obj,
 				len = _modals.length,
 				self = this, o = self.options,
 				elem = self.element,
