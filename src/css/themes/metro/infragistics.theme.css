@@ -499,10 +499,13 @@ a:visited.ui-button,
   color: #000000;
 }
 .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
 .ui-widget-content .ui-state-hover,
-.ui-widget-content .ui-state-focus,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+  background-color: #00aade;
+  color: #fff;
+}
+.ui-widget-header .ui-state-hover,
 .ui-widget-header .ui-state-focus,
 .ui-button:hover,
 .ui-button:focus {
@@ -2053,11 +2056,6 @@ a.ui-button:active,
 .ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-focus.ui-iggrid-activecell {
   border: 1px solid #b3e6f5;
   background-color: inherit;
-}
-.ui-iggrid tr.ui-state-focus th,
-.ui-iggrid tr.ui-ig-altrecord.ui-state-focus th {
-  border-top: 1px solid #b3e6f5 !important;
-  border-bottom: 1px solid #b3e6f5 !important;
 }
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {

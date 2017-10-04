@@ -375,10 +375,14 @@ a:visited.ui-button,
 
 // Hover state
 .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
 .ui-widget-content .ui-state-hover,
-.ui-widget-content .ui-state-focus,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+  background-color: @accent1;
+  color: @text-color-light;
+}
+
+.ui-widget-header .ui-state-hover,
 .ui-widget-header .ui-state-focus,
 .ui-button:hover,
 .ui-button:focus {
