@@ -17,7 +17,7 @@
 
 .ui-dialog .ui-dialog-buttonpane {
     margin-top:0;
-    width: 100%;
+    box-sizing: border-box;
 }
 
 .ui-dialog button {
@@ -47,10 +47,6 @@
 
 .ui-iggrid-modaldialog-caption-buttoncontainer .ui-button-text {
     white-space: nowrap;
-}
-
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button-text-only {
-    padding-right: 0;
 }
 
 
@@ -173,17 +169,16 @@
     line-height: 1.6em;
 }
 
-.touch .ui-dialog .ui-dialog-titlebar,
+/*.touch .ui-dialog .ui-dialog-titlebar,
 .touchevents .ui-dialog .ui-dialog-titlebar,
 .pointerevents .ui-dialog .ui-dialog-titlebar {
     padding: 1em !important;
-}
+}*/
 
 .touch .ui-igdialog .ui-igdialog-headerbutton,
 .touchevents .ui-igdialog .ui-igdialog-headerbutton,
 .pointerevents .ui-igdialog .ui-igdialog-headerbutton {
-    height: 30px;
-    width: 44px;
+    width: 25px;
     position: relative;
     top: 0.8em;
     margin: -15px 0 0 0.3em;
