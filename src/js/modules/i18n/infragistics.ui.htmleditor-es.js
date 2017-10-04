@@ -65,10 +65,10 @@
 		applyButtonTitle: 'Aplicar',
 		cancelButtonTitle: 'Cancelar',
 		defaultToolbars: {
-			textToolbar: "text manipulation toolbar",
-			formattingToolbar: "text formatting toolbar",
-			insertObjectToolbar: "objects insertion toolbar",
-			copyPasteToolbar: "copy/paste toolbar"
+			textToolbar: "barra de herramientas de manipulación de texto",
+			formattingToolbar: "barra de herramientas de formato de texto",
+			insertObjectToolbar: "barra de herramientas de inserción de objetos",
+			copyPasteToolbar: "barra de herramientas de copia/pega"
 		},
 		fontNames: {
 			win: [
