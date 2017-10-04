@@ -1,9 +1,9 @@
 /******************************************/
 /* Infragistics Ignite UI Bootstrap theme */
 /******************************************/
-@import url(../../../structure/fonts/style.css);
+@import url(icons-styles.css);
 @import url(../../../structure/jquery-ui.css);
-@import url(../../../structure/icons-styles.css);
+@import url(../../bootstrap3/default/icons-styles.css);
 body {
   background: #fff; }
 

@@ -1,9 +1,8 @@
 /********************************/
 /* Ignite UI Infragistics theme */
 /********************************/
-@import "../../structure/fonts/style.css";
+@import "icons-styles.css";
 @import "../../structure/jquery-ui.css";
-@import "../../structure/icons-styles.css";
 body {
   background: #FFFFFF;
 }
@@ -496,10 +495,13 @@ a:visited.ui-button,
   color: #444444;
 }
 .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
 .ui-widget-content .ui-state-hover,
-.ui-widget-content .ui-state-focus,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+  background-color: #4897AA;
+  color: #fff;
+}
+.ui-widget-header .ui-state-hover,
 .ui-widget-header .ui-state-focus,
 .ui-button:hover,
 .ui-button:focus {
@@ -2028,7 +2030,7 @@ a.ui-button:active,
 .ui-iggrid-responsive-vertical tr > td.ui-state-hover:first-child,
 .ui-iggrid-responsive-vertical tr.ui-ig-altrecord > td.ui-state-hover:first-child {
   color: #444444;
-  background: #f8f8f8;
+  background: #cccccc;
 }
 .ui-iggrid td.ui-state-hover a,
 .ui-iggrid .ui-ig-altrecord td.ui-state-hover a {
@@ -2056,11 +2058,6 @@ a.ui-button:active,
 .ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-focus.ui-iggrid-activecell {
   border: 1px solid #4897AA;
   background-color: inherit;
-}
-.ui-iggrid tr.ui-state-focus th,
-.ui-iggrid tr.ui-ig-altrecord.ui-state-focus th {
-  border-top: 1px solid #4897AA !important;
-  border-bottom: 1px solid #4897AA !important;
 }
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
