@@ -692,7 +692,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 /*dropdowns in grids*/
 .ui-iggrid .ui-iggrid-pagesizedropdown.ui-state-default,
 .ui-iggrid .ui-iggrid-pagedropdowncontainer.ui-state-default {
-    background              : #fff none;
+    background              : #fff;
     /* Prevent background color leak outs */
     -webkit-background-clip : padding-box;
     -moz-background-clip    : padding;
@@ -1989,7 +1989,10 @@ td.ui-iggrid-addrow {
 .ui-iggrid-groupby-dialog-groupedcolumns .ui-iggrid-dialog-groupedbuttons,
 .ui-iggrid-sorting-dialog-sortedcolumns .ui-iggrid-sorting-dialog-sortbybuttons {
     line-height : 1.3em;
-    width       : 1.8em;
+    width       : 1.6em;
+    height      : 1.6em;
+    top         : 50%;
+    margin-top  : -1em;
     float       : right;
     position    : absolute;
 }
@@ -2040,10 +2043,9 @@ td.ui-iggrid-addrow {
     float      : left;
     position   : relative;
     top        : 50%;
-
     margin-top : -1em;
-    height     : 2em;
-    width      : 3.8em;
+    height     : 1.6em;
+    width      : 1.6em;
 }
 
 .ui-iggrid-dialog-groupby-button,

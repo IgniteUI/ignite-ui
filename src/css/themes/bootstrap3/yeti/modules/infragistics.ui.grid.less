@@ -478,6 +478,11 @@
 .ui-iggrid-selectedcell.ui-state-active {
   border-left: none;
   border-right: none;
+
+}
+
+.ui-iggrid td.ui-state-hover.ui-state-highlight {
+  border-top: none;
 }
 
 .ui-iggrid td.ui-state-hover a,
@@ -969,10 +974,6 @@
   background: @body-bg;
 }
 
-.ui-iggrid-filterrow .ui-state-default {
-  border-color: transparent;
-}
-
 .ui-iggrid-filterrow.ui-widget {
   .ui-iggrid-indicatorcontainer a {
     text-decoration: none;
@@ -1051,10 +1052,6 @@
 
 .ui-igedit-placeholder:-ms-input-placeholder {
   color: lighten(@text-color, 15%);
-}
-
-.ui-iggrid .ui-iggrid-filterrow td > div {
-  border: none;
 }
 
 /**************************

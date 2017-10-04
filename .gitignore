@@ -53,33 +53,24 @@ dist
 _variables.css
 _jquery-ui-overrides.css
 _mixins.css
-_infragistics-ignite-ui-controls.css
 _ignite-ui-variables.css
 
 # CSS from .LESS
 variables.css
 jquery-ui-overrides.css
 mixins.css
-infragistics-ignite-ui-controls.css
 ignite-ui-variables.css
 
 src/css/themes/prepros.cfg
 src/css/themes/metro/overrides.css
 src/css/themes/ios/overrides.css
-src/css/themes/ios/framework.css
 src/css/themes/infragistics2012/overrides.css
-src/css/themes/infragistics/theme-specific.css
 src/css/themes/infragistics/overrides.css
-src/css/themes/infragistics/framework.css
-src/css/themes/bootstrap3/yeti/theme-specific.css
 src/css/themes/bootstrap3/yeti/overrides.css
-src/css/themes/bootstrap3/superhero/theme-specific.css
 src/css/themes/bootstrap3/superhero/overrides.css
 src/css/themes/bootstrap3/flatly/overrides.css
-src/css/themes/bootstrap3/default/theme-specific.css
 src/css/themes/bootstrap3/default/overrides.css
-src/css/themes/bootstrap3/_shared-styles/less/variables-igniteui.css
-src/css/themes/bootstrap3/_shared-styles/less/framework.css
+
 bootstrap3 theme samples/hierarchical-grid/overview.html
 bootstrap3 theme samples/hierarchical-grid/edit-dialog.html
 bootstrap3 theme samples/hierarchical-grid/cell-merging.html

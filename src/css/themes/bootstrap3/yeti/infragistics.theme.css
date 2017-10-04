@@ -571,7 +571,6 @@ html .ui-button.ui-state-disabled:active {
 .ui-iggrid-modaldialog-caption-buttoncontainer a.ui-button,
 .ui-iggrid-modaldialog-caption-buttoncontainer a:link.ui-button,
 .ui-iggrid-modaldialog-caption-buttoncontainer a:visited.ui-button {
-  font-size: 1.2rem;
   background: transparent;
   border-color: transparent;
   color: #fff;
@@ -2100,6 +2099,9 @@ a.ui-button:active,
   border-left: none;
   border-right: none;
 }
+.ui-iggrid td.ui-state-hover.ui-state-highlight {
+  border-top: none;
+}
 .ui-iggrid td.ui-state-hover a,
 .ui-iggrid .ui-ig-altrecord td.ui-state-hover a {
   color: #008cba;
@@ -2509,9 +2511,6 @@ a.ui-button:active,
 .ui-igedit.ui-igedit-container.ui-widget.ui-state-default {
   background: #fff;
 }
-.ui-iggrid-filterrow .ui-state-default {
-  border-color: transparent;
-}
 .ui-iggrid-filterrow.ui-widget .ui-iggrid-indicatorcontainer a {
   text-decoration: none;
 }
@@ -2574,9 +2573,6 @@ a.ui-button:active,
 }
 .ui-igedit-placeholder:-ms-input-placeholder {
   color: #494949;
-}
-.ui-iggrid .ui-iggrid-filterrow td > div {
-  border: none;
 }
 /**************************
 * ui-iggrid-headercaption *
