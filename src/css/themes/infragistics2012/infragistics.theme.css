@@ -542,10 +542,13 @@ a:visited.ui-button,
   color: #000000;
 }
 .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
 .ui-widget-content .ui-state-hover,
-.ui-widget-content .ui-state-focus,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+  background-color: #2686ae;
+  color: #fff;
+}
+.ui-widget-header .ui-state-hover,
 .ui-widget-header .ui-state-focus,
 .ui-button:hover,
 .ui-button:focus {
@@ -1780,8 +1783,8 @@ a.ui-button:active,
 }
 .ui-iggrid-deletebutton.ui-state-active,
 .ui-iggrid-deletebutton.ui-state-hover {
-  background: #a5d2dd;
-  border-color: #a5d2dd;
+  background: #2686ae;
+  border-color: #2686ae;
 }
 .ui-iggrid-deletebutton.ui-state-active .ui-icon,
 .ui-iggrid-deletebutton.ui-state-hover .ui-icon {
@@ -2194,14 +2197,9 @@ a.ui-button:active,
   border: 1px solid #a5d2dd;
   background-color: inherit;
 }
-.ui-iggrid tr.ui-state-focus th,
-.ui-iggrid tr.ui-ig-altrecord.ui-state-focus th {
-  border-top: 1px solid #a5d2dd !important;
-  border-bottom: 1px solid #a5d2dd !important;
-}
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
-  border: 1px solid #a5d2dd !important;
+  border: 1px solid #2686ae !important;
 }
 /*fix padding to prevent jump when adding borders on focus*/
 .ui-iggrid tr.ui-state-focus td,
@@ -2231,7 +2229,8 @@ a.ui-button:active,
   color: #fff;
   border-color: #2686ae;
 }
-tr:hover .ui-iggrid-selectedcell.ui-state-active {
+.ui-iggrid .ui-iggrid-selectedcell.ui-state-active.ui-state-focus,
+.ui-iggrid .ui-iggrid-selectedcell.ui-state-active.ui-state-hover {
   background: #237ca1;
   border-color: #237ca1;
 }
