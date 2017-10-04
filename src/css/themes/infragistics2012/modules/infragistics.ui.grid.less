@@ -31,8 +31,8 @@
 
 .ui-iggrid-deletebutton.ui-state-active,
 .ui-iggrid-deletebutton.ui-state-hover {
-  background: @accent2;
-  border-color: @accent2;
+  background: @accent1;
+  border-color: @accent1;
   .ui-icon {
     color: @text-color-light;
   }
@@ -479,15 +479,9 @@
   background-color: inherit;
 }
 
-.ui-iggrid tr.ui-state-focus th,
-.ui-iggrid tr.ui-ig-altrecord.ui-state-focus th {
-  border-top: 1px solid @accent2 !important;
-  border-bottom: 1px solid @accent2 !important;
-}
-
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
-  border: 1px solid @accent2 !important;
+  border: 1px solid @accent1 !important;
 }
 
 /*fix padding to prevent jump when adding borders on focus*/
@@ -524,7 +518,8 @@
 
 }
 
-tr:hover .ui-iggrid-selectedcell.ui-state-active {
+.ui-iggrid .ui-iggrid-selectedcell.ui-state-active.ui-state-focus,
+.ui-iggrid .ui-iggrid-selectedcell.ui-state-active.ui-state-hover {
   background: darken(@table-bg-active, 3%);
   border-color: darken(@table-bg-active, 3%);
 }
