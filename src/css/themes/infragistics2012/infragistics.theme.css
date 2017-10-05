@@ -4,9 +4,6 @@
 /* Palettes */
 @import "icons-styles.css";
 @import "../../structure/jquery-ui.css";
-body {
-  background: #FFFFFF;
-}
 .stateNormal {
   border-color: #ebebeb;
   background-color: #f5f5f5;

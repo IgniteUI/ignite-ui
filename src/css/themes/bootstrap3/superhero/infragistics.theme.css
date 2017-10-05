@@ -1,12 +1,9 @@
 /******************************************/
 /* Infragistics Ignite UI Bootstrap theme */
 /******************************************/
+/* states */
 @import "icons-styles.css";
 @import "../../../structure/jquery-ui.css";
-body {
-  background: #2B3E50;
-}
-/* states */
 .stateHover,
 .stateFocused,
 .stateActive {

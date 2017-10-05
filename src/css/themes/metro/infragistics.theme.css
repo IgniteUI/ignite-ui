@@ -3,9 +3,6 @@
 /********************************/
 @import "icons-styles.css";
 @import "../../structure/jquery-ui.css";
-body {
-  background: #FFFFFF;
-}
 .stateNormal {
   border: 1px solid #D9D9D9;
   background-color: #ececec;
