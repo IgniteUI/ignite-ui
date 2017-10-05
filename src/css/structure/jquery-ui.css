@@ -1126,7 +1126,8 @@ a.ui-button:focus {
     height : 16px;
 }
 
-.ui-icon,
+
+/*.ui-icon,
 .ui-widget-content .ui-icon {
     background-image : url("images/ui-icons_444444_256x240.png");
 }
@@ -1159,9 +1160,10 @@ a.ui-button:focus {
 
 .ui-button .ui-icon {
     background-image : url("images/ui-icons_777777_256x240.png");
-}
+}*/
 
-/* positioning */
+
+/*!* positioning *!
 .ui-icon-blank {
     background-position : 16px 16px;
 }
@@ -1710,7 +1712,7 @@ a.ui-button:focus {
     background-position : -80px -160px;
 }
 
-/* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
+!* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead *!
 .ui-icon-seek-first {
     background-position : -80px -160px;
 }
@@ -1861,7 +1863,7 @@ a.ui-button:focus {
 
 .ui-icon-grip-diagonal-se {
     background-position : -80px -224px;
-}
+}*/
 
 /* Misc visuals
 ----------------------------------*/
