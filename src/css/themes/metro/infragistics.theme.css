@@ -3553,10 +3553,10 @@ ui-iggrid-groupbyarea a,
   color: #4B4B4B;
 }
 .ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderfocus.ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_858585_256x240.png);
+  color: #444;
 }
 .ui-iggrid th.ui-state-active .ui-iggrid-indicatorcontainer .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-iggrid th.ui-state-focus {
   border-color: #00AADE;
@@ -3690,11 +3690,11 @@ ui-iggrid-groupbyarea a,
   background-color: #EAEAEA;
 }
 .ui-iggrid .ui-igedit-button.ui-state-hover .ui-icon-triangle-1-s {
-  background-image: url(images/ui-icons_565656_256x240.png);
+  color: #444;
 }
 .ui-iggrid .ui-iggrid-filterbutton,
 .ui-iggrid-filterddlist .ui-iggrid-filtericon {
-  background-image: url(images/igGrid/filter-icons-858585.png) !important;
+  color: #444;
 }
 .ui-iggrid td.ui-iggrid-filtercell {
   border: 0 none !important;
@@ -3748,7 +3748,7 @@ ui-iggrid-groupbyarea a,
   color: #000000;
 }
 .ui-igpivot-metadataitem .ui-icon.ui-icon-close {
-  color: #333;
+  color: #444;
 }
 .ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter,
 .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
