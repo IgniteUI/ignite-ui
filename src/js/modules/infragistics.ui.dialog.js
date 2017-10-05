@@ -2320,7 +2320,7 @@
 			}
 		},
 		_onResize: function () {
-			var rect, self = this, div = self.isTopModal() ? self._modalDiv : null;
+			var self = this, div = self.isTopModal() ? self._modalDiv : null;
 			if (!self._winResize) {
 				$(window).bind("resize", self._winResize = function () {
 					setTimeout(function () {
@@ -2345,8 +2345,7 @@
 
 			// adjust modal DIV/IFRAME-shells
 			if (div) {
-				rect = self._winRect();
-				div.css({ width: rect.maxWidth - 1, height: rect.maxHeight - 1 }).show();
+				div.show();
 				self._doIframe(div);
 			}
 		},
@@ -2559,7 +2558,7 @@
 		// zi: zIndex used when modal shell is visible
 		// implement all actions related to modal functionality: start/end modal depending on visibility/pin/minimized
 		_doModal: function (zi) {
-			var i, pos, on, obj,
+			var i, on, obj,
 				len = _modals.length,
 				self = this, o = self.options,
 				elem = self.element,
@@ -2601,16 +2600,13 @@
 			self._modal = on;
 			if (on) {
 				self._modalDiv = div = _notab($("<div />").css({
-					position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
+					position: "fixed", left: 0, top: 0, bottom: 0, right: 0, zIndex: _maxZ - 1
 				})
 					.addClass(self.css.overlay).mousedown(function (e) {
 						self._setFocus();
 						_stopEvt(e);
 					})
 					.insertBefore(elem));
-				pos = div.offset();
-				div.css({ marginLeft: -pos.left + "px", marginTop: -pos.top + "px" });
-				self._onResize();
 			} else {
 				div.remove();
 				_iframe.remove();

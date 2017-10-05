@@ -65,10 +65,10 @@
 		applyButtonTitle: 'Übernehmen',
 		cancelButtonTitle: 'Abbrechen',
 		defaultToolbars: {
-			textToolbar: "text manipulation toolbar",
-			formattingToolbar: "text formatting toolbar",
-			insertObjectToolbar: "objects insertion toolbar",
-			copyPasteToolbar: "copy/paste toolbar"
+			textToolbar: "Symbolleiste für Textbearbeitung",
+			formattingToolbar: "Symbolleiste für Textformatierung",
+			insertObjectToolbar: "Symbolleiste für das Einfügen von Objekten",
+			copyPasteToolbar: "Symbolleiste für Kopieren/Einfügen"
 		},
 		fontNames: {
 			win: [
