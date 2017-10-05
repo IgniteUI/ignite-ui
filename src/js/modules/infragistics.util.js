@@ -1537,6 +1537,13 @@
 
 			return result;
 		};
+		var applyFormat = function(options) {
+			if (window.Intl) {
+				var formatter = new Intl.DateTimeFormat(provider.name(), options);
+				return formatter.format(value);
+			}
+			return value.toLocaleString(provider.name(), options);
+		};
 		switch (format) {
 			case "s":
 				{
@@ -1550,9 +1557,6 @@
 					return s.slice(0, d);
 				}
 
-			case "MMM":
-				return mmm(value, provider);
-
 			case "MMMM":
 				return value.toLocaleString(provider.name(), { month: "long" })
 					.replace(/\u200E/g, "");
@@ -1562,26 +1566,51 @@
 					.replace(/\u200E/g, "");
 
 			case "dddd":
-				{
-					result = value.toLocaleString(provider.name(), { weekday: "long" })
-						.replace(/\u200E/g, "");
+				result = value.toLocaleString(provider.name(), { weekday: "long" })
+					.replace(/\u200E/g, "");
 
-					if (result.contains(" ")) {
+				if (result.contains(" ")) {
 
-						// Date.toLocaleString is not supported fully
-						// TODO: Handle other cultures?
-						return [ "Sunday", "Monday", "Tuesday", "Wednesday",
-							"Thursday", "Friday", "Saturday" ][ value.getDay() ];
-					}
-
-					return result;
+					// Date.toLocaleString is not supported fully
+					// TODO: Handle other cultures?
+					return [ "Sunday", "Monday", "Tuesday", "Wednesday",
+						"Thursday", "Friday", "Saturday" ][ value.getDay() ];
 				}
 
-			case "tt":
-				return value.getHours() <= 11 ? "AM" : "PM"; // TODO: Figure out how to get this based on culture
+				return result;
 
 			case "%t":
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
+			case "d":  // short date
+				return value.toLocaleDateString();
+			case "D": // long date
+				return applyFormat({ weekday: "long", month: "long", day: "numeric", year: "numeric" });
+			case "f": // full datetime (short time)
+				return applyFormat({
+					weekday: "long", month: "long", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric" });
+			case "F": // full datetime (long time)
+				return applyFormat({
+					weekday: "long", month: "long", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric", second: "numeric" });
+			case "g": // general (short time)
+				return applyFormat({
+					month: "numeric", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric" });
+			case "G": // general (long time)
+				return applyFormat({
+					month: "numeric", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric", second: "numeric" });
+			case "M": // month/day
+			case "m":
+				return applyFormat({ month: "long", day: "numeric" });
+			case "t": // short time
+				return applyFormat({ hour: "numeric", minute: "numeric" });
+			case "T": // long time
+				return value.toLocaleTimeString();
+			case "Y": // year/month
+			case "y":
+				return applyFormat({ year: "numeric", month: "long" });
 		}
 		result = format;
 		var year = value.getFullYear().toString();
