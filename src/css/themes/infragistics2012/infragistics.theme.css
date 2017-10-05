@@ -2612,7 +2612,8 @@ a.ui-button:active,
 * ui-iggrid-headercaption *
 ***************************/
 .ui-iggrid-headercaption {
-  background: #fff;
+  background: #FFFFFF;
+  color: #000000;
   border-color: #ebebeb;
   border-width: 1px;
   text-align: center;
