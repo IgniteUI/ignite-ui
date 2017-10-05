@@ -359,7 +359,7 @@ body {
   font-weight: bold;
 }
 .ui-datepicker .ui-datepicker-today a.ui-state-active {
-  color: #000000;
+  color: #fff;
 }
 /*******************
 * jQuery UI Dialog *
