@@ -97,26 +97,27 @@
 .ui-chart-maker-palette-12 {
   .chartMarkerPalette12;
 }
-
-.ui-chart-legend, .ui-chart-piechart-container {
-  border: none;
+.ui-chart-legend,.ui-chart-piechart-container {
+  border:none;
 }
-
 .ui-chart-piechart-container,
 .ui-chart-legend-item-text {
   font-size: 12px;
   font-family: @font-family-base;
 }
 
+
 .ui-chart-toolbar .ui-slider-handle {
   height: 18px;
-  margin-left: -6px !important;
+  margin-left: -6px!important;
   /* needed for map scenario */
+
   width: 12px;
-  top: -6px !important;
+  top: -6px!important;
 }
 
-.igTouch .ui-chart-toolbar .ui-slider-handle {
+.igTouch .ui-chart-toolbar .ui-slider-handle
+{
   border: 1px solid @igGray10;
   background: @igGray9;
   margin-left: -15px;
@@ -135,20 +136,19 @@
 
 .ui-widget-content.ui-chart-tooltip {
   background-color: @chartToolTipBgColor;
-  border: 1px solid #888;
+  border:1px solid #888;
 
 }
-
 .ui-chart-innerlabels {
   color: #fff !important;
 }
-
 .ui-chart-outerlabels {
   color: #666 !important;
 }
 
-//// Doughnut Chart ////
-
+/******************/
+/* Doughnut Chart */
+/******************/
 .ui-doughnut-palette-1 {
   .doughnutPalette1;
 }
@@ -205,58 +205,58 @@
   font-family: @font-family-base;
   font-size: 13px;
   padding: 10px 5px 10px 5px;
-  border: 0;
+  border: 0px;
 }
 
 .ui-sparkline-tooltip {
   background-color: @chartToolTipBgColor;
-  .boxShadow-3;
-  border: 1px solid @igGray8;
+  .boxShadow2;
+  border:1px solid #888;
   padding: 5px 8px;
 }
 
 .ui-sparkline-sparkpath {
-  background: @chartGradualPalette8;
+  background: #439C47;
   border: 1px solid;
 }
 
 .ui-sparkline-negativesparkpath {
-  background: @chartGradualPalette11;
+  background: #C62828;
   border: 1px solid;
 }
 
 .ui-sparkline-trendline {
-  background: @igGray9;
+  background: #7f7f7f;
   border: 2px solid;
 }
 
 .ui-sparkline-markers {
-  background: @chartGradualPalette4;
+  background: #2E9CA6;
   border: 3px solid;
 }
 
 .ui-sparkline-firstmarker {
-  background: @chartGradualPalette4;
+  background: #2E9CA6;
   border: 5px solid;
 }
 
 .ui-sparkline-lastmarker {
-  background: @chartGradualPalette6;
+  background: #FF9800;
   border: 5px solid;
 }
 
 .ui-sparkline-highmarker {
-  background: @chartGradualPalette2;
+  background: #9FB328;
   border: 4px solid;
 }
 
 .ui-sparkline-lowmarker {
-  background: @chartGradualPalette1;
+  background: #7446B9;
   border: 3px solid;
 }
 
 .ui-sparkline-negativemarkers {
-  background: @chartGradualPalette11;
+  background: #C62828;
   border: 3px solid;
 }
 
@@ -279,7 +279,6 @@
   text-align: right;
   text-transform: uppercase;
 }
-
 /****************/
 /* Funnel chart */
 /****************/
@@ -287,19 +286,19 @@
 .ui-funnel {
   font-family: @font-family-base;
   font-size: 12px;
-  color: @igGray6;
-  border: 0;
+  color: #666;
+  border: 0px;
 }
 
 .ui-funnel-tooltip {
   background-color: @chartToolTipBgColor;
-  .boxShadow-3;
-  border: 1px solid @igGray8;
-  padding: .5rem .8rem;
+  .boxShadow2;
+  border:1px solid #888;
+  padding: 5px 8px;
 }
 
 .ui-funnel-slice {
-  color: #fff;
+  color: #FFFFFF;
   border: 0;
 }
 
@@ -311,22 +310,21 @@
   opacity: 0.49;
   border-color: transparent;
 }
-
 /********************/
 /* igDoughnut Chart */
 /********************/
 
 .ui-doughnut {
-  border: 0;
+  border: 0px;
   font-size: 12px;
   font-family: @font-family-base;
 }
 
 .ui-doughnut-tooltip {
   background-color: @chartToolTipBgColor;
-  .boxShadow-3;
-  border: 1px solid @igGray8;
-  padding: .5rem .8rem;
+  .boxShadow2;
+  border:1px solid #888;
+  padding: 5px 8px;
 }
 
 
@@ -335,18 +333,18 @@
 /***********************/
 
 .ui-radialgauge-needle {
-  background-color: @igGray7;
+  background-color: #999999;
   border-color: #FFFFFF;
 }
 
 .ui-radialgauge-needlePivot {
-  background-color: @igGray7;
+  background-color: #999999;
   border-color: #FFFFFF;
 }
 
 .ui-radialgauge-backing {
   background-color: #FFFFFF;
-  border: @igGray6;
+  border: #cccccc;
 }
 
 .ui-radialgauge-scale {
@@ -356,7 +354,7 @@
 
 .ui-radialgauge-tick {
   background-color: rgba(0, 0, 0, 0.35);
-  border-top-color: transparent;
+  border-top-color: none;
 }
 
 .ui-radialgauge-minorTick {
@@ -369,88 +367,35 @@
   border: none;
 }
 
-.ui-lineargauge-tick {
-  background-color: rgba(0, 0, 0, 0.35);
-  border: transparent;
+.ui-radialgauge-range-palette-1 {
+  background-color: #005E9C;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-minortick {
-  background-color: rgba(0, 0, 0, 0.2);
-  border: transparent;
+.ui-radialgauge-range-palette-2 {
+  background-color: #0078C8;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-label {
-  background-color: #666;
-  border: transparent;
+.ui-radialgauge-range-palette-3 {
+  background-color: #0092F4;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-backing {
-  background-color: #ffffff;
-  border-color: #ffffff;
+.ui-radialgauge-range-palette-4 {
+  background-color: #21A7FF;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-needle {
-  background-color: #999999;
-  border-color: #FFFFFF;
+.ui-radialgauge-range-palette-5 {
+  background-color: #4FB9FF;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-scale {
-  background-color: transparent;
-  border-color: transparent;
-}
-
-.ui-lineargauge-range-palette-1 {
-  background-color: @range-1;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-2 {
-  background-color: @range-2;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-3 {
-  background-color: @range-3;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-4 {
-  background-color: @range-4;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-5 {
-  background-color: @range-5;
-  border: transparent;
-}
-
-.ui-lineargauge-tooltip {
-  border-style: none;
-  white-space: nowrap;
-  background-color: transparent;
-}
-
-.ui-lineargauge-range-tooltip {
-  border-style: solid;
-  border-width: 2px;
-  background-color: rgba(230, 230, 230, 0.74);
-  padding: 4px;
-  font-weight: bold;
-}
-
-.ui-lineargauge-needle-tooltip {
-  border-style: solid;
-  border-width: 2px;
-  background-color: rgba(230, 230, 230, 0.74);
-  padding: 4px;
-  font-weight: bold;
-}
-
-.ui-lineargauge-container {
+.ui-radialgauge-container {
   font-family: Verdana;
   font-size: 11px;
 }
-
 /***********************/
 /* igBulletGraph Chart */
 /***********************/
@@ -466,7 +411,6 @@
 }
 
 /* TICKS AND LABELS */
-
 .ui-bulletgraph-tick {
   background-color: rgba(0, 0, 0, 0.35);
   border: transparent;
@@ -478,46 +422,43 @@
 }
 
 .ui-bulletgraph-label {
-  background-color: @igGray9;
+  background-color: #666;
   border: transparent;
 }
 
 /* RANGE VALUES */
-
 .ui-bulletgraph-range-palette-1 {
-  background-color: @range-1;
+  background-color: #005E9C;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-2 {
-  background-color: @range-2;
+  background-color: #0078C8;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-3 {
-  background-color: @range-3;
+  background-color: #0092F4;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-4 {
-  background-color: @range-4;
+  background-color: #21A7FF;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-5 {
-  background-color: @range-5;
+  background-color: #4FB9FF;
   border: transparent;
 }
 
 /* ACTUAL VALUES */
-
 .ui-bulletgraph-value {
   background-color: #333333;
   border: transparent;
 }
 
 /* TOOLTIPS */
-
 .ui-bulletgraph-tooltip {
   border-style: none;
   white-space: nowrap;
@@ -548,12 +489,8 @@
   font-weight: bold;
 }
 
-.ui-bulletgraph {
-  font-family: @font-family-base;
-  color: @text-color;
-}
-
 .ui-bulletgraph-container {
+  font-family: Verdana;
   font-size: 11px;
 }
 
@@ -561,32 +498,87 @@
 /* igLinearGauge Chart */
 /***********************/
 
-.ui-radialgauge-range-palette-1 {
-  background-color: @range-1;
-  border-top-color: transparent;
+.ui-lineargauge-backing {
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
-.ui-radialgauge-range-palette-2 {
-  background-color: @range-2;
-  border-top-color: transparent;
+.ui-lineargauge-needle {
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
 
-.ui-radialgauge-range-palette-3 {
-  background-color: @range-3;
-  border-top-color: transparent;
+.ui-lineargauge-scale {
+  background-color: transparent;
+  border-color: transparent;
 }
 
-.ui-radialgauge-range-palette-4 {
-  background-color: @range-4;
-  border-top-color: transparent;
+/* TICKS AND LABELS */
+.ui-lineargauge-tick {
+  background-color: rgba(0, 0, 0, 0.35);
+  border: transparent;
 }
 
-.ui-radialgauge-range-palette-5 {
-  background-color: @range-5;
-  border-top-color: transparent;
+.ui-lineargauge-minortick {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: transparent;
 }
 
-.ui-radialgauge-container {
+.ui-lineargauge-label {
+  background-color: #666;
+  border: transparent;
+}
+
+/* RANGE VALUES */
+.ui-lineargauge-range-palette-1 {
+  background-color: #005E9C;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-2 {
+  background-color: #0078C8;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-3 {
+  background-color: #0092F4;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-4 {
+  background-color: #21A7FF;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-5 {
+  background-color: #4FB9FF;
+  border: transparent;
+}
+
+/* TOOLTIPS */
+.ui-lineargauge-tooltip {
+  border-style: none;
+  white-space: nowrap;
+  background-color: transparent;
+}
+
+.ui-lineargauge-range-tooltip {
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
+}
+
+.ui-lineargauge-needle-tooltip {
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
+}
+
+.ui-lineargauge-container {
   font-family: Verdana;
   font-size: 11px;
 }

@@ -1,25 +1,4 @@
-.stateNormal {
-  border: 1px solid @igGray5;
-  background-color: @igGray3;
-  color: @text-color;
-}
-.stateHover {
-  border: 1px solid @igGray7;
-  background-color: @igGray6;
-  color: @text-color;
-}
-
-.stateActive {
-  border: 1px solid @accent2;
-  background-color: @accent1;
-  color: @text-color;
-}
-
-.stateFocused {
-  border: 1px solid @accent2;
-  background-color: @igGray3;
-  color: @text-color;
-}
+/* states */
 
 .stateNormal-A {
   border: 1px solid @border-color-A;
@@ -28,7 +7,7 @@
 }
 
 .stateHover-A {
-  border: 1px solid transparent;
+  border: 1px solid @border-color-A;
   background-color: @header-bg-A;
   color: @header-active-text-A;
 }
@@ -369,6 +348,10 @@
 
 
 // Shadows
+
+.boxShadow {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25)!important;
+}
 
 .boxShadow-1 {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);

@@ -1,11 +1,11 @@
-/************/
-/* TreeGrid */
-/************/
+/***********************/
+/* TreeGrid            */
+/***********************/
 /*TreeGrid Paging Context Row*/
 
 .ui-igtreegrid-contextrow {
   background-color: $table-bg;
-  color: fade($body-color, 70%);
+  color: rgba($body-color, .7);
 }
 
 .ui-igtreegrid-contextrow td {

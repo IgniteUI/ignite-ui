@@ -52,7 +52,7 @@
 .ui-splitbutton-arrow.ui-state-hover .ui-icon,
 .ui-splitbutton-arrow.ui-state-active .ui-icon,
 .ui-splitbutton-arrow.ui-state-focus .ui-icon {
-  color: @ui-icons-light;
+  background-image: @ui-icons-light;
 }
 
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
@@ -73,7 +73,6 @@
 .ui-ightmleditor .ui-igcombo-fieldholder {
   border-color: @input-border;
 }
-
 /* html editor icons*/
 
 .ui-igbutton-viewsource.ui-state-default .ui-igbutton-viewsource-icon {
@@ -285,11 +284,10 @@
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
   border: 1px solid @input-border;
-  -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
-  -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+  -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
   box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
-
 /*breadcrumb styling*/
 
 .ui-igPathFinder .ui-button::after {
