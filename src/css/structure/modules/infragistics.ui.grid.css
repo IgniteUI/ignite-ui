@@ -930,7 +930,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer {
-    background-image : url(../images/igGrid/touch-icons.svg) !important;
+    background-image : url(../images/igGrid/touch-icons.svg);
 }
 
 .ui-iggrid-featurechooser-submenu {
@@ -2282,11 +2282,11 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 }
 
 /*Samples/demos.dev/grid/editing.html*/
-.touch .ui-iggrid-button,
+/*.touch .ui-iggrid-button,
 .touchevents .ui-iggrid-button,
 .pointerevents .ui-iggrid-button {
     font-size : 1.3em;
-}
+}*/
 
 .touch .ui-iggrid-expandbuttoncontainer,
 .touchevents .ui-iggrid-expandbuttoncontainer,
