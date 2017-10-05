@@ -2454,7 +2454,8 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 * ui-iggrid-headercaption *
 ***************************/
 .ui-iggrid-headercaption {
-  background: #fff;
+  background: #FFFFFF;
+  color: #444444;
   border-color: #dadada;
   border-width: 1px;
   text-align: center;

@@ -1676,7 +1676,8 @@ a.ui-button:active,
 /* igGrid */
 /**********/
 .ui-iggrid-headercaption {
-  background: #fff;
+  background: #FFFFFF;
+  color: #000000;
   border-color: #ebebeb;
 }
 .ui-iggrid .ui-iggrid-content {

@@ -1723,6 +1723,7 @@ a.ui-button:active,
   background: #fff;
   border-color: #ddd;
   border-left: 1px solid #ddd;
+  color: #333333;
 }
 .ui-iggrid .ui-iggrid-content {
   border-color: #ddd;

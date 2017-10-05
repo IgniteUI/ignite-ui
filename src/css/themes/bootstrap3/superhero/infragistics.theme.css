@@ -1728,7 +1728,8 @@ a.ui-button:active,
   color: #DF691A;
 }
 .ui-iggrid .ui-widget-header.ui-iggrid-headercaption {
-  background: #fff;
+  background: #2B3E50;
+  color: #EBEBEB;
   border-color: #4E5D6C;
   border-left: 1px solid #4E5D6C;
 }
