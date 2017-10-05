@@ -69,10 +69,10 @@ if (!$.ig.HtmlEditor) {
 			applyButtonTitle: 'Appliquer',
 			cancelButtonTitle: 'Annuler',
 			defaultToolbars: {
-			    textToolbar: "text manipulation toolbar",
-			    formattingToolbar: "text formatting toolbar",
-			    insertObjectToolbar: "objects insertion toolbar",
-			    copyPasteToolbar: "copy/paste toolbar"
+			    textToolbar: "barre d’outils de la manipulation de texte",
+			    formattingToolbar: "barre d’outils de la mise en forme de texte",
+			    insertObjectToolbar: "barre d’outils d’insertion d’objets",
+			    copyPasteToolbar: "barre d’outils copier/coller"
 			},
 			fontNames: {
 				win: [
