@@ -315,7 +315,7 @@
   font-weight: bold;
 }
 .ui-datepicker .ui-datepicker-today a.ui-state-active {
-  color: #444444;
+  color: #fff;
 }
 /*******************
 * jQuery UI Dialog *
@@ -2458,7 +2458,7 @@ tr:hover .ui-iggrid-selectedcell.ui-state-active {
 }
 .ui-igedit.ui-state-hover .ui-igedit-dropdown-button,
 .ui-igedit.ui-state-focus .ui-igedit-dropdown-button {
-  background: #a8d6e1;
+  background: #4897AA;
 }
 /************/
 /* Notifier */
