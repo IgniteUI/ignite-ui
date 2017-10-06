@@ -27,7 +27,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -95,6 +95,9 @@
 			this._superApply(arguments);
 		},
 		_setOption: function (option, value) {
+			if (option === "language" && this.options.language === value) {
+				return;
+			}
 			this._super(option, value);
 
 			switch (option) {
@@ -103,7 +106,7 @@
 				this.changeLocale();
 				break;
 			case "regional":
-				this._changeRegional();
+				this.changeRegional();
 				break;
 			default:
 				break;
@@ -135,8 +138,10 @@
 		},
 		_getLocaleDictionary: function () {
 			var language = this.options.language,
-				widgetName = this.localeWidgetName || this.widgetName.replace("ig", "");
-			return $.ig.locale[ language ][ widgetName ];
+				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
+				localeObj = ($.ig.locale[ language ] && $.ig.locale[ language ][ widgetName ]) ||
+					($.ig[ widgetName ] && $.ig[ widgetName ].locale);
+			return localeObj;
 		},
 		_getLocaleValue: function (key) {
 			var locale = $.extend({}, this._getLocaleDictionary());
@@ -157,7 +162,7 @@
 				$element.text(this._getLocaleValue(key));
 			}
 		},
-		_changeRegional: $.noop,
+		changeRegional: $.noop,
 		changeLocale: function ($container) {
 			var self = this;
 			$container = $container || this.localeContainer || this.element;
@@ -170,6 +175,11 @@
 				this._setOption("language", $.ig.util.language);
 			}
 		},
+		changeGlobalRegional: function () {
+			if (!this._userPreset || !this._userPreset.regional) {
+				this._setOption("regional", $.ig.util.regional);
+			}
+		},
 		destroy: function () {
 			this._unregisterWidget();
 			this._super();
@@ -177,5 +187,5 @@
 	});
 
 	$.extend($.ui.igWidget, { version: "<build_number>" });
-	return $.ui.igWidget;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

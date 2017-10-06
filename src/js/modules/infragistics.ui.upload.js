@@ -26,7 +26,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -645,6 +645,678 @@
 			```
 			*/
 			autostartupload: false,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for the first shown browse button. When file is selected for the first time this button is hidden.
+			Use option [locale.labelUploadButton](ui.igupload#options:locale.labelUploadButton).*/
+			labelUploadButton: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for browse button in main container.
+			Use option [locale.labelAddButton](ui.igupload#options:locale.labelAddButton).*/
+			labelAddButton: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for summary Clear all button. It will be shown only in multiple upload mode.
+			Use option [locale.labelClearAllButton](ui.igupload#options:locale.labelClearAllButton).*/
+			labelClearAllButton: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set template for showing summary template. {0} is count of uploaded files. {1} is total count of file to be uploaded.
+			Use option [locale.labelSummaryTemplate](ui.igupload#options:locale.labelSummaryTemplate).*/
+			labelSummaryTemplate: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set template for showing uploading information in summary progress bar. It will be shown only in multiple upload mode. {0} uploaded filesize. {1} - total file size.
+			Use option [locale.labelSummaryProgressBarTemplate](ui.igupload#options:locale.labelSummaryProgressBarTemplate).*/
+			labelSummaryProgressBarTemplate: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for show/hide details button when main container is hidden.
+			Use option [locale.labelShowDetails](ui.igupload#options:locale.labelShowDetails).*/
+			labelShowDetails: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for show/hide details button when main container is shown.
+			Use option [locale.labelHideDetails](ui.igupload#options:locale.labelHideDetails).*/
+			labelHideDetails: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for button cancelling all files. Shown only in multiple upload mode.
+			Use option [locale.labelSummaryProgressButtonCancel](ui.igupload#options:locale.labelSummaryProgressButtonCancel).*/
+			labelSummaryProgressButtonCancel: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label for start upload batch files. Shown only in multiple upload mode and autostartupload is false.
+			Use option [locale.labelSummaryProgressButtonContinue](ui.igupload#options:locale.labelSummaryProgressButtonContinue).*/
+			labelSummaryProgressButtonContinue: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set label when upload is finished. Shown only in multiple upload mode.
+			Use option [locale.labelSummaryProgressButtonDone](ui.igupload#options:locale.labelSummaryProgressButtonDone).*/
+			labelSummaryProgressButtonDone: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set filename when it could not be shown the whole file name and should be shorten.
+			Use option [locale.labelProgressBarFileNameContinue](ui.igupload#options:locale.labelProgressBarFileNameContinue).*/
+			labelProgressBarFileNameContinue: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set message shown when max file size of the uploaded file exceeds the limit.
+			Use option [locale.errorMessageMaxFileSizeExceeded](ui.igupload#options:locale.errorMessageMaxFileSizeExceeded).*/
+			errorMessageMaxFileSizeExceeded: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when ajax call to get file status throws error.
+			Use option [locale.errorMessageGetFileStatus](ui.igupload#options:locale.errorMessageGetFileStatus).*/
+			errorMessageGetFileStatus: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when ajax call to send cancel upload command.
+			Use option [locale.errorMessageCancelUpload](ui.igupload#options:locale.errorMessageCancelUpload).*/
+			errorMessageCancelUpload: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when file is not found.
+			Use option [locale.errorMessageNoSuchFile](ui.igupload#options:locale.errorMessageNoSuchFile).*/
+			errorMessageNoSuchFile: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			 Get or set error message different from the other messages.
+			Use option [locale.errorMessageOther](ui.igupload#options:locale.errorMessageOther).*/
+			errorMessageOther: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when file extension validation failed.
+			Use option [locale.errorMessageValidatingFileExtension](ui.igupload#options:locale.errorMessageValidatingFileExtension).*/
+			errorMessageValidatingFileExtension: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when AJAX Request to get file size throws error.
+			Use option [locale.errorMessageAJAXRequestFileSize](ui.igupload#options:locale.errorMessageAJAXRequestFileSize).*/
+			errorMessageAJAXRequestFileSize: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when trying to remove non existing file.
+			Use option [locale.errorMessageTryToRemoveNonExistingFile](ui.igupload#options:locale.errorMessageTryToRemoveNonExistingFile).*/
+			errorMessageTryToRemoveNonExistingFile: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when trying to start non existing file.
+			Use option [locale.errorMessageTryToStartNonExistingFile](ui.igupload#options:locale.errorMessageTryToStartNonExistingFile).*/
+			errorMessageTryToStartNonExistingFile: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when maximum allowed files exceeded.
+			Use option [locale.errorMessageMaxUploadedFiles](ui.igupload#options:locale.errorMessageMaxUploadedFiles).*/
+			errorMessageMaxUploadedFiles: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when maximum simultaneous files is less or equal to 0.
+			Use option [locale.errorMessageMaxSimultaneousFiles](ui.igupload#options:locale.errorMessageMaxSimultaneousFiles).*/
+			errorMessageMaxSimultaneousFiles: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Get or set error message when trying to drop more than 1 file and mode is single.
+			Use option [locale.errorMessageDropMultipleFilesWhenSingleModel](ui.igupload#options:locale.errorMessageDropMultipleFilesWhenSingleModel).*/
+			errorMessageDropMultipleFilesWhenSingleModel: undefined,
+			locale: {
+				/* type="string" Get or set label for the first shown browse button. When file is selected for the first time this button is hidden.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelUploadButton: "Upload File"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelUploadButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelUploadButton: "Upload File" });
+				```
+				*/
+				labelUploadButton:undefined,
+				/* type="string" Get or set label for browse button in main container.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelAddButton: "Choose File"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelAddButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelAddButton: "Choose File" });
+				```
+				*/
+				labelAddButton: undefined,
+				/* type="string" Get or set label for summary Clear all button. It will be shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelClearAllButton: "Clear all"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelClearAllButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelClearAllButton: "Clear all" });
+				```
+				*/
+				labelClearAllButton: undefined,
+				/* type="string" Get or set template for showing summary template. {0} is count of uploaded files. {1} is total count of file to be uploaded.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelSummaryTemplate: "{0} uploaded from {1}"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelSummaryTemplate;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelSummaryTemplate: "{0} uploaded from {1}" });
+				```
+				*/
+				labelSummaryTemplate: undefined,
+				/* type="string" Get or set template for showing uploading information in summary progress bar. It will be shown only in multiple upload mode. {0} uploaded filesize. {1} - total file size.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelSummaryProgressBarTemplate: "{0} uploaded from {1}, which is {2}%"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelSummaryProgressBarTemplate;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelSummaryProgressBarTemplate: "{0} uploaded from {1}, which is {2}%" });
+				```
+				*/
+				labelSummaryProgressBarTemplate: undefined,
+				/* type="string" Get or set label for show/hide details button when main container is hidden.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelShowDetails: "More Details"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelShowDetails;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelShowDetails: "More Details" });
+				```
+				*/
+				labelShowDetails: undefined,
+				/* type="string"  Get or set label for show/hide details button when main container is shown.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelHideDetails: "Hide Upload Details"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelHideDetails;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelHideDetails: "Hide Upload Details" });
+				```
+				*/
+				labelHideDetails: undefined,
+				/* type="string" Get or set label for button cancelling all files. Shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelSummaryProgressButtonCancel: "Cancel All Uploads"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelSummaryProgressButtonCancel;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelSummaryProgressButtonCancel: "Cancel All Uploads" });
+				```
+				*/
+				labelSummaryProgressButtonCancel: undefined,
+				/* type="string" Get or set label for start upload batch files. Shown only in multiple upload mode and autostartupload is false.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelSummaryProgressButtonContinue: "Continue Uploading"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelSummaryProgressButtonContinue;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelSummaryProgressButtonContinue: "Continue Uploading" });
+				```
+				*/
+				labelSummaryProgressButtonContinue: undefined,
+				/* type="string" Get or set label when upload is finished. Shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelSummaryProgressButtonDone: "File Upload Complete!"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelSummaryProgressButtonDone;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelSummaryProgressButtonDone: "File Upload Complete!" });
+				```
+				*/
+				labelSummaryProgressButtonDone: undefined,
+				/* type="string" Get or set filename when it could not be shown the whole file name and should be shorten.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							labelProgressBarFileNameContinue: "Continue with upload"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").labelProgressBarFileNameContinue;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { labelProgressBarFileNameContinue: "Continue with upload" });
+				```
+				*/
+				labelProgressBarFileNameContinue: undefined,
+				/* type="string" Get or set message shown when max file size of the uploaded file exceeds the limit.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageFileSizeExceeded: "Unable to determine upload progress"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageFileSizeExceeded;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageFileSizeExceeded: "Unable to determine upload progress" });
+				```
+				*/
+				errorMessageFileSizeExceeded: undefined,
+				/* type="string" Get or set error message when ajax call to get file status throws error.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageGetFileStatus: "Unable to determine upload progress"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageGetFileStatus;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageGetFileStatus: "Unable to determine upload progress" });
+				```
+				*/
+				errorMessageGetFileStatus: undefined,
+				/* type="string" Get or set error message when ajax call to send cancel upload command.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageCancelUpload: "Upload Cancelled"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageCancelUpload;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageCancelUpload: "Upload Cancelled" });
+				```
+				*/
+				errorMessageCancelUpload: undefined,
+				/* type="string" Get or set error message when file is not found.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageNoSuchFile: "File not found"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageNoSuchFile;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageNoSuchFile: "File not found" });
+				```
+				*/
+				errorMessageNoSuchFile: undefined,
+				/* type="string" Get or set error message different from the other messages.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageOther: "An error has occurred"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageOther;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageOther: "An error has occurred" });
+				```
+				*/
+				errorMessageOther: undefined,
+				/* type="string" Get or set error message when file extension validation failed.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageValidatingFileExtension: "File extension not supported"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageValidatingFileExtension;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageValidatingFileExtension: "File extension not supported" });
+				```
+				*/
+				errorMessageValidatingFileExtension: undefined,
+				/* type="string" Get or set error message when AJAX Request to get file size throws error.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageAJAXRequestFileSize: "File must be smaller than 50 mb."
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageAJAXRequestFileSize;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageAJAXRequestFileSize: "File must be smaller than 50 mb." });
+				```
+				*/
+				errorMessageAJAXRequestFileSize: undefined,
+				/* type="string" Get or set error message when maximum allowed files exceeded.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageMaxUploadedFiles: "File must be smaller than 50 mb."
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageMaxUploadedFiles;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageMaxUploadedFiles: "File must be smaller than 50 mb." });
+				```
+				*/
+				errorMessageMaxUploadedFiles: undefined,
+				/* type="string" Get or set error message when maximum simultaneous files is less or equal to 0.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageMaxSimultaneousFiles: "Can only upload 2 files at a time"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageMaxSimultaneousFiles;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageMaxSimultaneousFiles: "Can only upload 2 files at a time" });
+				```
+				*/
+				errorMessageMaxSimultaneousFiles: undefined,
+				/* type="string" Get or set error message when trying to remove non existing file.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageTryToRemoveNonExistingFile: "Can only upload 2 files at a time"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageTryToRemoveNonExistingFile;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageTryToRemoveNonExistingFile: "Can only upload 2 files at a time" });
+				```
+				*/
+				errorMessageTryToRemoveNonExistingFile: undefined,
+				/* type="string" Get or set error message when trying to start non existing file.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageTryToStartNonExistingFile: "File does not exist"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageTryToStartNonExistingFile;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageTryToStartNonExistingFile: "File does not exist" });
+				```
+				*/
+				errorMessageTryToStartNonExistingFile: undefined,
+				/* type="string" Get or set error message when trying to drop more than 1 file and mode is single.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							errorMessageDropMultipleFilesWhenSingleModel: "Can only drop one file."
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").errorMessageDropMultipleFilesWhenSingleModel;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { errorMessageDropMultipleFilesWhenSingleModel: "Can only drop one file." });
+				```
+				*/
+				errorMessageDropMultipleFilesWhenSingleModel: undefined,
+				/* type="string" Get or set title for the first shown browse button. When file is selected for the first time this button is hidden.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleUploadFileButtonInit: "Upload"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleUploadFileButtonInit;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleUploadFileButtonInit: "Upload" });
+				```
+				*/
+				titleUploadFileButtonInit: undefined,
+				/* type="string" Get or set title for browse button in main container.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleAddFileButton: "Add File"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleAddFileButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleAddFileButton: "Add File" });
+				```
+				*/
+				titleAddFileButton: undefined,
+				/* type="string" Get or set title for the cancel upload button.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleCancelUploadButton: "Cancel"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleCancelUploadButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleCancelUploadButton: "Cancel" });
+				```
+				*/
+				titleCancelUploadButton: undefined,
+				/* type="string" Get or set title for start upload batch files. Shown only in multiple upload mode and autostartupload is false.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleSummaryProgressButtonContinue: "Continue Uploading"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleSummaryProgressButtonContinue;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleSummaryProgressButtonContinue: "Continue Uploading" });
+				```
+				*/
+				titleSummaryProgressButtonContinue: undefined,
+				/* type="string" Get or set title for summary Clear all button. It will be shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleClearUploaded: "Clear"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleClearUploaded;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleClearUploaded: "Clear" });
+				```
+				*/
+				titleClearUploaded: undefined,
+				/* type="string" Get or set title for show details button.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleShowDetailsButton: "Show details"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleShowDetailsButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleShowDetailsButton: "Show details" });
+				```
+				*/
+				titleShowDetailsButton: undefined,
+				/* type="string" Get or set title for hide details button.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleHideDetailsButton: "Hide details"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleHideDetailsButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleHideDetailsButton: "Hide details" });
+				```
+				*/
+				titleHideDetailsButton: undefined,
+				/* type="string"  Get or set title for button cancelling all files. Shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleSummaryProgressButtonCancel: "Cancel All Uploads"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleSummaryProgressButtonCancel;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleSummaryProgressButtonCancel: "Cancel All Uploads" });
+				```
+				*/
+				titleSummaryProgressButtonCancel: undefined,
+				/* type="string" Get or set title when upload is finished. Shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleSummaryProgressButtonDone: "File Upload Complete!"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleSummaryProgressButtonDone;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleSummaryProgressButtonDone: "File Upload Complete!"});
+				```
+				*/
+				titleSummaryProgressButtonDone: undefined,
+				/* type="string" Get or set title for Continue button.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleSingleUploadButtonContinue: "Upload"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleSingleUploadButtonContinue;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleSingleUploadButtonContinue: "Upload"});
+				```
+				*/
+				titleSingleUploadButtonContinue: undefined,
+				/* type="string" Get or set title for summary Clear all button. It will be shown only in multiple upload mode.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						locale: {
+							titleClearAllButton: "Clear"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igUpload("option", "locale").titleClearAllButton;
+
+					//Set
+					$(".selector").igUpload("option", "locale", { titleClearAllButton: "Clear"});
+				```
+				*/
+				titleClearAllButton: undefined
+			},
 			/* type="string" Get or set URL for uploading.
 			```
 				//Initialize
@@ -2414,7 +3086,7 @@
 					}
 				},
 				error: function () {
-					self._setError(this._getLocaleValue("errorMessageGetFileStatus"),
+					self._setError(self._getLocaleValue("errorMessageGetFileStatus"),
 						formNumber,
 						self._const.clientSideErrorCode.ajaxErrorGetFileStatus, "clientside");
 					/* self._removeUploadSetError(formNumber, o.errorMessageGetFileStatus); */
@@ -2484,7 +3156,7 @@
 								self._onCancelUpload(formNumber);
 							},
 							error: function () {
-								self._setError(this._getLocaleValue("errorMessageCancelUpload"), formNumber,
+								self._setError(self._getLocaleValue("errorMessageCancelUpload"), formNumber,
 									self._const.clientSideErrorCode.ajaxErrorCancelUpload, "clientside");
 								self._removeFileUpload(formNumber);
 							}
@@ -2881,7 +3553,7 @@
 			*/
 			/* M.H. 28 Jul 2011 - fix bug 77183 - set logic for removing html markup into separate function */
 			this._destroyMarkup();
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		/* Get file Size Before Start Upload */
 		_getFileSize: function (formNumber, key) {
@@ -2943,7 +3615,7 @@
 					self._removeGetFileSizeHTML(formNumber);
 				},
 				error: function () {
-					self._setError(this._getLocaleValue("errorMessageAJAXRequestFileSize"),
+					self._setError(self._getLocaleValue("errorMessageAJAXRequestFileSize"),
 						formNumber,
 						self._const.clientSideErrorCode.ajaxErrorRequestFileSize, "clientside");
 					self._removeGetFileSizeHTML(formNumber);
@@ -3623,5 +4295,5 @@
 		/*************** HELPER FUNCTION ********************/
 	});
 	$.extend($.ui.igUpload, { version: "<build_number>" });
-	return $.ui.igUpload;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

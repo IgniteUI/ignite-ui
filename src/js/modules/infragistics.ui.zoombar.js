@@ -27,7 +27,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -568,7 +568,7 @@
 				this._responsive.removeCallback(this._callBackId);
 			}
 			this.container().remove();
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		},
 		_setOption: function (key, value) {
@@ -1706,5 +1706,5 @@
 		}
 	});
 
-	return $.ui.igZoombar;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

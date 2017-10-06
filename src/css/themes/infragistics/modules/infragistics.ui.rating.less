@@ -1,0 +1,56 @@
+/************/
+/* igRating */
+/************/
+
+.ui-igrating,
+.ui-igrating.ui-state-default {
+  background: transparent none;
+  border: none;
+}
+
+.ui-igrating .ui-icon:before {
+  /* D.P. 17/03/2016 Bug 216214: Can't set custom icons/sizes, temp */
+  display:none;
+}
+
+.ui-icon.ui-igrating-vote,
+.ui-iggrid .ui-icon.ui-igrating-vote {
+  background-image: url(images/igRating/ig-rating.png) !important;
+  background-position: -75px 0;
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon.ui-igrating-voteselected,
+.ui-iggrid .ui-icon.ui-igrating-voteselected {
+  background-image: url(images/igRating/ig-rating.png) !important;;
+  background-position: 0 0;
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon.ui-igrating-votehover,
+.ui-iggrid .ui-icon.ui-igrating-votehover {
+  background-image: url(images/igRating/ig-rating.png) !important;;
+  background-position: -25px 0;
+  width: 20px;
+  height: 20px;
+  /*Bug 215832,S.D., Hover color cannot be white*/
+  color:darken(@ui-icons-accent, 10%);
+}
+
+.ui-icon.ui-igrating-votedisabled,
+.ui-iggrid .ui-icon.ui-igrating-votedisabled {
+  background-image: url(images/igRating/ig-rating.png) !important;;
+  background-position: -100px 0;
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon.ui-igrating-votedisabledselected,
+.ui-iggrid .ui-icon.ui-igrating-votedisabledselected {
+  background-image: url(images/igRating/ig-rating.png) !important;;
+  background-position: -50px 0;
+  width: 20px;
+  height: 20px;
+}

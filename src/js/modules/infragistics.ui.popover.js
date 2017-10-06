@@ -25,7 +25,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -492,7 +492,7 @@
 			this._detachEventsFromTarget();
 			$(window).off("resize.popover", this._resizeHandler);
 			this.popover.remove();
-			this._super();
+			this._superApply(arguments);
 			return this;
 		},
 		id: function () {
@@ -1335,5 +1335,5 @@
 	$.extend($.ui.igPopover, {
 		version: "<build_number>"
 	});
-	return $.ui.igPopover;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

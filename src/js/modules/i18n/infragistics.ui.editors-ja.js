@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( ["jquery"], factory );
 	} else {
-		return factory();
+		return factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-    $.ig = $.ig || {};
+(function ($) {
+	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ja = $.ig.locale.ja || {};
@@ -60,6 +59,9 @@
 		btnValueNotSupported: '異なるボタン値が必要です。値 "dropdown"、"clear"、または "spin" を選択してください。',
 		scientificFormatErrMsg: '異なる scientificFormat が必要です。"E"、"e"、"E+"、または "e+" のいずれかを選択してください。',
 		spinDeltaIsOfTypeNumber: "異なる spinDelta タイプが必要です。正の数を入力してください。",
+		spinDeltaIsOfTypeNumberForPeriod: "{0} に異なる spinDelta タイプが必要です。{1} ～ {2} の正の数を入力してください。",
+		spinDeltaIsOfTypeNumberOrObject: "異なる spinDelta タイプが必要です。他の時間間隔のデルタを定義する正の数またはオブジェクトを入力してください。",
+		spinDeltaShouldBeInRange: "{0} の spinDelta オプションは {1} から {2} の間にする必要があります。",
 		spinDeltaCouldntBeNegative: "指定した spinDelta オプションは負数にできません。正の数を入力してください。",
 		spinDeltaContainsExceedsMaxDecimals: "spinDelta に使用可能な最大フラクションは {0} に設定されています。MaxDecimals を変更するか値を小さくしてください。",
 		spinDeltaIncorrectFloatingPoint: '浮動小数点 spinDelta に異なる構成を使用してください。エディターの dataMode を "double" または "float" に設定するか、spinDelta を integer に設定してください。',

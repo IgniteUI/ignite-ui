@@ -9,13 +9,12 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( ["jquery"], factory );
 	} else {
-		factory();
+		return factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
 	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
@@ -60,6 +59,9 @@
 			btnValueNotSupported: "Une valeur de bouton différente est requise. Choisissez une valeur entre « dropdown », « clear » et « spin ».",
 			scientificFormatErrMsg: "Un scientificFormat différent est requis. Choisissez une valeur entre « E », « e », « E+ » et « e+ ».",
 			spinDeltaIsOfTypeNumber: "Un type de spinDelta différent est requis. Un nombre positif doit être saisi.",
+			spinDeltaIsOfTypeNumberForPeriod: "Un type de spinDelta différent est requis pour {0}. Un nombre positif entre {1} et {2} doit être saisi.",
+			spinDeltaIsOfTypeNumberOrObject: "Un type de spinDelta différent est requis. Un nombre positif ou un objet, qui définit différents deltas temporels, doit être saisi.",
+			spinDeltaShouldBeInRange: "L’option spinDelta pour {0} doit être entre {1} et {2}",
 			spinDeltaCouldntBeNegative: "L’option spinDelta ne peut pas être négative. Un nombre positif doit être saisi.",
 			spinDeltaContainsExceedsMaxDecimals: "Le nombre maximum de fractions autorisées pour spinDelta est de {0}. Modifiez MaxDecimals ou diminuez la valeur.",
 			spinDeltaIncorrectFloatingPoint: "La virgule flottante spinDelta requiert une configuration différente. Réglez le dataMode de l’éditeur sur 'double' ou 'float', ou réglez spinDelta sur 'integer'.",

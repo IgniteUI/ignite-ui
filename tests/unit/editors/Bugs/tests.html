@@ -41,7 +41,7 @@
 					var testbedIDs = testbedID || ["1090", "208808", "209067", "209174", "209912", "209641", "209696",
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
-					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
+					"208274", "207546", "207321", "212596", "212374", "212642", "217214", "216789",
 					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];
 
 					for (var i = 0; i < testbedIDs.length; i++) {
@@ -277,10 +277,6 @@
 					$('#212642Editor1').igDateEditor({
 						dateInputFormat: "yyyy/MM/dd"
 					});
-				}
-
-				window.Bug215549Testbed = function () {
-					$('#215549Editor1').igDatePicker();
 				}
 
 				window.Bug217214Testbed = function () {
@@ -990,14 +986,6 @@
 				$('#212642Editor1').data("igDateEditor")._enterEditMode();
 				equal($('#212642Editor1').igDateEditor("field").val(), "0111/10/10", "The value should be \"111/10/10\"");
 			});
-			
-			testId = 'Bug 215549';
-			test(testId, 1, function () {
-
-				ok($('#215549Editor1').data("igDatePicker")._dropDownList.hasClass("ui-igedit-dropdown-orientation-bottom"), "The dropDownContainer should be with ui-igedit-dropdown-orientation-bottom class applied");
-				
-				
-			});
 
 			testId = 'Bug 217214';
 			test(testId, 1, function () {
@@ -1488,6 +1476,105 @@
 					$("#1090Editor").remove();
 				}, 100);
 			});
+			testId = 'Bug 1043 - maxLength not respected on Android';
+			test(testId, 6, function () {
+				var $editor =  $("<input/>").appendTo("#testBedContainer")
+					.igTextEditor({
+						maxLength: 5
+					});
+				$field = $editor.igTextEditor("field");
+
+				$field.focus();
+				var composition = jQuery.Event("compositionstart");
+				$field.trigger(composition);
+				$field.val("12345678");
+				var compositionend = jQuery.Event("compositionend");
+				$field.trigger(compositionend);
+				stop();
+				setTimeout(function () {
+					start();
+					equal($field.val(), "12345", "Text was not trimmed");
+					ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+					equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+						$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+					$field.blur();
+					// test case without start (Chrome Android)
+					$field.focus();
+					$field.select();
+					var compositionupdate = jQuery.Event("compositionupdate");
+					compositionupdate.originalEvent = {data: "2"};
+					$field.val("12");
+					$field[0].setSelectionRange(1,1);
+					$field.trigger(compositionupdate);
+					$field.val("12345678");
+					var compositionend = jQuery.Event("compositionend");
+					$field.trigger(compositionend);
+					stop();
+					setTimeout(function () {
+						start();
+						equal($field.val(), "12345", "Text was not trimmed with update only");
+						ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+						equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+							$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+						$editor.remove();
+					}, 0);
+				}, 0);
+			});
+			testId = 'Bug 1205 Decimal numbers are rounded when the editor is blurred';
+			test(testId, 1, function () {
+				var $editor;
+
+				// value not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+				.igNumericEditor({
+					minDecimals: 10,
+					maxDecimals: 10
+				});
+				$editor.trigger("focus").val("0.0000005880").blur();
+				
+					
+				
+				equal($editor.val(), "0.0000005880", "(wrong value) Numeric editor display value is not: 0.0000005880.");
+				$editor.remove();
+				/* 
+				// nullValue not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						 inputMask : "AA??",
+						 allowNullValue: true,
+						 nullValue: "#5a" //wrong first char
+					 });
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(97, $editor);
+					$.ig.TestUtil.keyInteraction(98, $editor);
+					$.ig.TestUtil.keyInteraction(99, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(wrong nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "abc_", "(wrong nullValue) Typing did not update Edit text.");
+				$editor.remove();
+
+				// nullValue not a string
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({
+						 allowNullValue: true,
+						 nullValue: 0
+					 });
+				equal($editor.val(), "0", "Null value not applied on Display text.")
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(49, $editor);
+					$.ig.TestUtil.keyInteraction(50, $editor);
+					$.ig.TestUtil.keyInteraction(51, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(numeric nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text."); */
+				$editor.remove();
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1693,7 +1780,6 @@
 
 		
 		<input id="212642Editor1" type="text" value="2015/05/01" />
-		<input id="215549Editor1" type="text" />
 		<input id="217214Editor1" type="text" />
 		
 		

@@ -1,0 +1,156 @@
+/***********************
+  IG video player
+  Fixed colours since it works with fixed images
+************************/
+
+.ui-igplayer .ui-igplayer-controls,
+.ui-igplayer-tooltip .ui-widget-content {
+  background: #e5e5e5;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.ui-igplayer .ui-igplayer-controls {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.ui-igplayer-tooltip .ui-widget-content,
+.ui-igtooltip > .ui-widget-content {
+  background-color: #e5e5e5!important; //left this because of the arrow bg colour
+  background-image: none!important;
+  border: 1px solid #c6c6c6!important;
+  color: @text-color!important;
+}
+
+.ui-igtooltip > .ui-widget-content {
+  padding: 5px;
+}
+
+.ui-igtooltip-arrow-bottom,
+.ui-igtooltip-arrow-top,
+.ui-igtooltip-arrow-left,
+.ui-igtooltip-arrow-right {
+  background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
+}
+
+.ui-igtooltip .ui-icon.ui-icon-close {
+  background-image: @ui-icons-darker !important;
+}
+
+.ui-igplayer .ui-state-active,
+.ui-igplayer .ui-state-focus {
+  border-width: 1px!important;
+  outline: none;
+}
+
+.ui-igplayer .ui-state-hover .ui-icon {
+  background-image: @ui-icons-dark;
+}
+
+.ui-igplayer .ui-state-focus .ui-icon,
+.ui-igplayer .ui-state-active .ui-icon {
+  background-image: @ui-icons-dark;
+}
+
+.ui-igplayer .ui-igplayer-bookmark-item-title:hover {
+  text-decoration: none;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-default,
+.ui-igplayer .ui-button.ui-state-default {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-hover,
+.ui-igplayer .ui-button.ui-state-hover {
+  .stateHover;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-active,
+.ui-igplayer .ui-button.ui-state-active {
+  .stateActive;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-active .ui-icon,
+.ui-igplayer .ui-button.ui-state-active .ui-icon {
+  background-image: @ui-icons-light;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-focus,
+.ui-igplayer .ui-button.ui-state-focus {
+  border-color: darken(@component-active-bg, 6.5%);
+}
+
+.ui-igplayer .ui-igprogressbar.ui-widget-content {
+  background-color: @progress-bg;
+}
+
+.ui-widget-header.ui-igplayer-controls {
+  color: @text-color;
+  border-bottom: 0;
+}
+
+.ui-igplayer-related-list .ui-igplayer-related-video-hover img {
+  .stateNormal;
+  border-width: 3px;
+}
+
+.ui-igplayer-bookmark-item-time {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0)!important;
+}
+
+.ui-igslider .ui-igslider-bookmark.ui-state-default {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0)!important;
+}
+
+.ui-igplayer-bookmark-item-time:hover,
+.ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time,
+.ui-igplayer-bookmark-list li:hover .ui-igplayer-bookmark-item-time {
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px!important;
+}
+
+.ui-igslider .ui-igslider-bookmark.ui-state-hover {
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px!important;
+}
+/* igProgressBar */
+
+.ui-igprogressbar {}
+
+.ui-igprogressbar.ui-widget-content {
+  border: 0;
+}
+
+.ui-igplayer .ui-widget-header a {
+  color: @text-color;
+}
+
+.ui-igprogressbar-range {
+  background-color: @progress-bar-bg!important;
+}
+
+.ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
+  background-color: @component-active-bg;
+}
+
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton,
+.ui-igplayer-related-video-bar .ui-button.ui-igbutton {
+  .stateNormal;
+}
+
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton.ui-state-hover,
+.ui-igplayer-related-video-bar .ui-button.ui-igbutton.ui-state-hover {
+  .stateActive;
+}
+
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton.ui-state-hover .ui-icon,
+.ui-igplayer-related-video-bar .ui-button.ui-igbutton.ui-state-hover .ui-icon {
+  background-image: @ui-icons-light;
+}
+
+.ui-igplayer-bookmark-list li:hover {
+  background-color: @gray-lighter;
+}
+
+.ui-progressbar.ui-widget-content {
+  border: 0;
+}

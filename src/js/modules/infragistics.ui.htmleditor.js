@@ -43,7 +43,7 @@
     } else {
 
         // Browser globals
-        factory(jQuery);
+        return factory(jQuery);
     }
 }
 (function ($) {
@@ -538,6 +538,7 @@
                 name: "textToolbar",
                 displayName: this._getLocaleValue("textToolbar"),
                 isExpanded: true,
+				language: this.options.language,
 
                 // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
                 allowCollapsing: true,
@@ -571,6 +572,7 @@
                 }, {
                     name: "Italic",
                     type: "button",
+					language: this.options.language,
                     localeProperties: {
                         "data-localeid": "italicButtonTitle",
                         "data-localeattr": "title"
@@ -592,6 +594,7 @@
                 }, {
                     name: "Underline",
                     type: "button",
+					language: this.options.language,
                     "localeProperties": {
                         "data-localeid": "underlineButtonTitle",
                         "data-localeattr": "title"
@@ -613,6 +616,7 @@
                 }, {
                     name: "Strikethrough",
                     type: "button",
+					language: this.options.language,
                     "localeProperties": {
                         "data-localeid": "strikethroughButtonTitle",
                         "data-localeattr": "title"
@@ -634,6 +638,7 @@
                 }, {
                     name: "fontFamily",
                     type: "combo",
+					language: this.options.language,
                     scope: null,
                     handler: "_fontNamePlg",
                     props: {
@@ -657,6 +662,7 @@
                 }, {
                     type: "combo",
                     name: "fontSize",
+					language: this.options.language,
                     scope: null,
                     handler: "_fontSizePlg",
                     props: {
@@ -684,6 +690,7 @@
                 }, {
                     type: "combo",
                     name: "formatsList",
+					language: this.options.language,
                     scope: null,
                     handler: "_formatsListPlg",
                     props: {
@@ -709,6 +716,7 @@
                 name: "formattingToolbar",
                 displayName: this._getLocaleValue("formattingToolbar"),
                 isExpanded: true,
+				language: this.options.language,
 
                 // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
                 allowCollapsing: true,
@@ -932,6 +940,7 @@
                 name: "insertObjectToolbar",
                 displayName: this._getLocaleValue("insertObjectToolbar"),
                 isExpanded: true,
+				language: this.options.language,
 
                 // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
                 allowCollapsing: true,
@@ -1108,6 +1117,7 @@
                 name: "copyPasteToolbar",
                 displayName: this._getLocaleValue("copyPasteToolbar"),
                 isExpanded: true,
+				language: this.options.language,
 
                 // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
                 allowCollapsing: true,
@@ -1234,9 +1244,7 @@
         },
         _createWidget: function () {
             /* !Strip dummy objects from options, because they are defined for documentation purposes only! */
-            this._allToolbars = [ ];
-            this._initDefaultToolbars();
-            $.Widget.prototype._createWidget.apply(this, arguments);
+            this._superApply(arguments);
         },
         _id: function (id) {
             return this.element[ 0 ].id + id;
@@ -1349,6 +1357,8 @@
             }
         },
         _create: function () {
+			this._allToolbars = [ ];
+			this._initDefaultToolbars();
             var noCancel = this._trigger(this.events.rendering, null, {
                 owner: this
             }),
@@ -1410,6 +1420,7 @@
             fontFamiliesCombo.igCombo("option", {
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
+				language: this.options.language,
                 itemTemplate:
                     '<span style="font-family: ${value}" unselectable="on">${text}</span>',
                 height: this._comboHeight,
@@ -1423,6 +1434,7 @@
             // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
             // Combo bug #113720
             formatsListCombo.igCombo("option", {
+				language: this.options.language,
                 itemTemplate: '<${text} unselectable="on">${value}</${text}>',
                 height: this._comboHeight,
                 dropDownOrientation: "bottom"
@@ -1432,6 +1444,7 @@
             var fontSizesCombo = this._getToolbar("textToolbar").igToolbar("getItem", "fontSize");
 
             fontSizesCombo.igCombo("option", {
+				language: this.options.language,
 
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
@@ -1515,6 +1528,7 @@
             if (comboInstance) {
                 selectedValue = comboInstance.value();
                 comboInstance._setOption("dataSource", this._getFontFamilies());
+				comboInstance._setOption("language", this.options.language);
                 comboInstance.value(selectedValue);
             }
         },
@@ -1526,6 +1540,7 @@
             if (comboInstance) {
                 selectedValue = comboInstance.value();
                 comboInstance._setOption("dataSource", this._getLocaleValue("fontSizes"));
+				comboInstance._setOption("language", this.options.language);
                 comboInstance.value(selectedValue);
             }
         },
@@ -1537,6 +1552,7 @@
             if (comboInstance) {
                 selectedValue = comboInstance.value();
                 comboInstance._setOption("dataSource", this._getLocaleValue("formatsList"));
+				comboInstance._setOption("language", this.options.language);
                 comboInstance.value(selectedValue);
             }
         },
@@ -1761,7 +1777,11 @@
             this._selectionWrapperSaved.focus();
 
             // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
-            this._selectionWrapperSaved._updateSelection(this._selectionWrapperSaved._getRange());
+            // R.K. 14th September 2017 #1188: Text in html editor is not styled in corresponding font-color
+            if ($.ig.util.isIE) {
+                this._selectionWrapperSaved._updateSelection(
+                    this._selectionWrapperSaved._getRange());
+            }
             this._selectionWrapperSaved.execCommand(name.toLowerCase(), args);
             this._onSelectionChange();
         },
@@ -3776,8 +3796,8 @@
 
             // K.D. November 1st, 2012 Bug #125724 The combo values do not contain ' or " so they need to be removed before sending the value
             fontName = fontName.replace(/'|"/g, "");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale
-                .fontNames[ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontNames")
+                [ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
         },
         _onFontSize: function () {
 
@@ -3796,13 +3816,14 @@
                 pxTbl[ Math.round(parseFloat(this._computedStyles.fontSize)) ],
                 fontSizeUnitsStr = fontSizeUnits ? fontSizeUnits.toString() : "",
                 combo = this._toolbars.textToolbar.igToolbar("getItem", "fontSize");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.fontSizes, fontSizeUnitsStr);
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontSizes"),
+                fontSizeUnitsStr);
         },
         _onHeader: function (element) {
 
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name.
             var combo = this._toolbars.textToolbar.igToolbar("getItem", "formatsList");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.formatsList,
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "formatsList"),
                 element[ 0 ].nodeName.toLowerCase());
         },
         _onTable: function () {
@@ -3837,5 +3858,5 @@
     ************************************/
 
     $.extend($.ui.igHtmlEditor, { version: "<build_number>" });
-    return $.ui.igHtmlEditor;// REMOVE_FROM_COMBINED_FILES
+    return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

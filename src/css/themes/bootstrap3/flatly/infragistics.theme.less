@@ -2,200 +2,31 @@
 /* Infragistics Ignite UI Bootstrap theme */
 /******************************************/
 
-//**************/
-// LESS STUFF */
-//**************/
-// VARIABLES */ 
-//*************/
 // Icon sprites
 @ui-icons-darker: url(images/ui-icons_222222_256x240.png);
 @ui-icons-dark: url(images/ui-icons_888888_256x240.png);
 @ui-icons-light: url(images/ui-icons_ffffff_256x240.png);
 @iggrid-icons-dark: url(images/igGrid/filter-icons-333333.png);
 @iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
-//**************/
-//import bootstrap variables to override the defaults
+
+
+// Bootstrap Theme variables
 @import "variables.less";
-@igGray1: #f0f0f0;
-@igGray2: #eee;
-@igGray3: #e8e8e8;
-@igGray4: #dadada;
-@igGray5: #bcbcbc;
-@igGray6: #ccc;
-@igGray7: #999;
-@igGray8: #888;
-@igGray9: #777;
-@igGray10: #444;
-@igGray11: rgba(0,0,0, 0.12);
 
-//***********/
-/*  MIXINS  */ 
-/************/
-/* states */
+// Ignite UI Theme variables
+@import "ignite-ui-variables";
 
-.stateNormal {
-    border: 1px solid @btn-default-border;
-    background-color: @btn-default-bg;
-    color: @btn-default-color;
-}
+// Ignite UI Mixins
+@import "mixins.less";
 
-.stateHover {
-    border-color: darken(@btn-default-border, 12%);
-    background-color: darken(@btn-default-bg, 8%);
-    color: @btn-default-color;
-}
+// Font styles
+@import (css)"icons-styles.css";
 
-.stateActive {
-    border: 1px solid darken(@component-active-bg, 6.5%);
-    background-color: @component-active-bg;
-    color: @component-active-color;
-}
+//JQuery UI Theme Overrides
+@import "framework.less";
 
-.stateFocused {
-    border: 1px solid darken(@component-active-bg, 6.5%);
-    background-color: @component-active-bg;
-    color: @component-active-color;
-}
-
-// Gradual palette, used mainly for bulletGraph and linearGauge 
-@chartGradualPalette1: @brand-primary;
-@chartGradualPalette2: lighten(@brand-primary,
-5%);
-@chartGradualPalette3: lighten(@brand-primary,
-10%);
-@chartGradualPalette4: lighten(@brand-primary,
-15%);
-@chartGradualPalette5: lighten(@brand-primary,
-20%);
-@chartGradualPalette6: lighten(@brand-primary,
-24%);
-@chartGradualPalette7: lighten(@brand-primary,
-28%);
-@chartGradualPalette8: lighten(@brand-primary,
-32%);
-@chartGradualPalette9: lighten(@brand-primary,
-36%);
-@chartGradualPalette10: lighten(@brand-primary,
-40%);
-.chartPalette1 {
-    background-color: @brand-primary!important;
-    border: 1px solid darken(@brand-primary, 6.5%)!important;
-}
-
-.chartPalette2 {
-    background-color: @brand-success!important;
-    border: 1px solid darken(@brand-success, 6.5%)!important;
-}
-
-.chartPalette3 {
-    background-color: @brand-info!important;
-    border: 1px solid darken(@brand-info, 6.5%)!important;
-}
-
-.chartPalette4 {
-    background-color: @brand-warning!important;
-    border: 1px solid darken(@brand-warning, 6.5%)!important;
-}
-
-.chartPalette5 {
-    background-color: @brand-danger!important;
-    border: 1px solid darken(@brand-danger, 6.5%)!important;
-}
-
-.chartPalette6 {
-    background-color: darken(@brand-primary, 20%)!important;
-    border: 1px solid darken(@brand-primary, 26.5%)!important;
-}
-
-.chartPalette7 {
-    background-color: darken(@brand-success, 20%)!important;
-    border: 1px solid darken(@brand-success, 26.5%)!important;
-}
-
-.chartPalette8 {
-    background-color: darken(@brand-info, 20%)!important;
-    border: 1px solid darken(@brand-info, 26.5%)!important;
-}
-
-.chartPalette9 {
-    background-color: darken(@brand-warning, 20%)!important;
-    border: 1px solid darken(@brand-warning, 26.5%)!important;
-}
-
-.chartPalette10 {
-    background-color: darken(@brand-danger, 20%)!important;
-    border: 1px solid darken(@brand-danger, 26.5%)!important;
-}
-
-.chartPalette11 {
-    background-color: darken(@brand-primary, 30%)!important;
-    border: 1px solid darken(@brand-primary, 36.5%)!important;
-}
-
-.chartPalette12 {
-    background-color: darken(@brand-success, 30%)!important;
-    border: 1px solid darken(@brand-success, 36.5%)!important;
-}
-
-.chartPaletteNegative {
-    background-color: darken(@brand-danger, 30%)!important;
-    border: 1px solid darken(@brand-danger, 36.5%)!important;
-}
-
-/*
-Spreadsheet
-=================
-*/
-@accent1: @brand-primary;
-
-@bar-background: #e4e4e4;
-@row-col-bar-border: #cccccc;
-
-@tab-bar-border: #999;
-
-@spreadsheet-accent: @brand-primary;
-@spreadsheet-icon:@brand-primary;
-
-@spreadsheet-cell-selection: @brand-primary;
-@spreadsheet-cell-selection-rgba: rgba(44,62,80, .22); /* needs to be improved with mixin*/
-
-@spreadsheet-text-color:#111;
-@spreadsheet-wight-text: #fff;
-
-@spreadsheet-empty-bg: #fff;
-
-@spreadsheet-disabled: #c4c4c4;
-
-@spreadsheet-danger: @brand-danger;
-
-@spreadsheet-menu-item-bg-hover: @spreadsheet-cell-selection-rgba;
-
-@spreadsheet-formula-btn-bg: @gray;
-
-@spreadsheet-header-selected-cell-bg:lighten(@brand-primary,30%);
-
-@spreadsheet-tab-text-color: #666;
-
-@spreadsheet-formula-btn-color: #fff;
-
-/*  Misc    */
-/************/
-
-.boxShadow {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25)!important;
-}
-
-/********************/
-/* JQuery UI styles */
-/********************/
-
-@import "../_shared-styles/less/infragistics.jqueryui.theme.less";
-/********************/
-/* Ignite UI styles */
-/********************/
-
-@import "../_shared-styles/less/infragistics.igniteui.theme.less";
-
+//Ignite UI styles
+@import "modules/modules.less";
 
 
 

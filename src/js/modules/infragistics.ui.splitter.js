@@ -25,7 +25,7 @@
     } else {
 
         // Browser globals
-        factory(jQuery);
+        return factory(jQuery);
     }
 }
     (function ($) {
@@ -2279,11 +2279,11 @@
                 $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
                 $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
                 $(window).unbind("resize", evtHandlers.windowResize);
-                this._super();
+                this._superApply(arguments);
                 this._opt = null;
                 return this;
             }
         });
         $.extend($.ui.igSplitter, { version: "<build_number>" });
-        return $.ui.igSplitter;// REMOVE_FROM_COMBINED_FILES
+        return $;// REMOVE_FROM_COMBINED_FILES
     }));// REMOVE_FROM_COMBINED_FILES

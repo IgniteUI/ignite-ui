@@ -38,7 +38,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -416,6 +416,96 @@
 			AND type="string"
 			*/
 			filteringLogic: "OR",
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets text of list item for condition when [filteringType](ui.igcombo#options:filteringType) option is enabled and no match was found.
+				Use option [locale.noMatchFoundText](ui.igcombo#options:locale.noMatchFoundText).
+			*/
+			noMatchFoundText: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets title for html element which represent the drop-down button.
+				Use option [locale.dropDownButtonTitle](ui.igcombo#options:locale.dropDownButtonTitle).
+			*/
+			dropDownButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets title for html element which represent clear button.
+				Use option [locale.clearButtonTitle](ui.igcombo#options:locale.clearButtonTitle).
+			*/
+			clearButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+				Gets/Sets value that is displayed when input field is empty.
+				Use option [locale.placeHolder](ui.igcombo#options:locale.placeHolder).
+			*/
+			placeHolder: undefined,
+			locale: {
+				/* type="object" Gets/Sets text of list item for condition when [filteringType](ui.igcombo#options:filteringType) option is enabled and no match was found.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							noMatchFoundText: "No match found"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").noMatchFoundText;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { noMatchFoundText: "No match found" });
+				```
+				*/
+				noMatchFoundText: undefined,
+				/* type="object" Gets/Sets title for html element which represent the drop-down button.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							dropDownButtonTitle: "Open Dropdown"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").dropDownButtonTitle;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { dropDownButtonTitle: "Open Dropdown" });
+				```
+				*/
+				dropDownButtonTitle: undefined,
+				/* type="object" Gets/Sets title for html element which represent the clear button.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							clearButtonTitle: "Clear value"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").clearButtonTitle;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { clearButtonTitle: "Clear value" });
+				```
+				*/
+				clearButtonTitle: undefined,
+				/* type="object" Gets/Sets value that is displayed when input field is empty.
+				```
+					//Initialize
+					$(".selector").igCombo({
+						locale: {
+							placeHolder: "Empty input field"
+						}
+					});
+
+					//Get
+					var text = $(".selector").igCombo("option", "locale").placeHolder;
+
+					//Set
+					$(".selector").igCombo("option", "locale", { placeHolder: "Empty input field" });
+				```
+				*/
+				placeHolder: undefined
+			},
 			/* type="object" Gets/Sets container of variables which define load on demand functionality.
 				Notes:
 				That option has effect only when data is loaded remotely using [dataSourceUrl](ui.igcombo#options:dataSourceUrl).
@@ -1965,9 +2055,16 @@
 			if ($.ig && $.ig.formatter) {
 				if (this.options.format === "auto" &&
 					($.type(item) === "date" || $.type(item) === "number")) {
-					item = $.ig.formatter(item, null, null);
+					item = $.ig.formatter({
+						"val": item,
+						"reg": $.ig.regional[ this.options.regional ]
+					});
 				} else if (this._formatEnabled()) {
-					item = $.ig.formatter(item, null, this.options.format);
+					item = $.ig.formatter({
+						"val": item,
+						"format": this.options.format,
+						"reg": $.ig.regional[ this.options.regional ]
+					});
 				}
 			}
 
@@ -2818,7 +2915,8 @@
 
 			// D.A. 20th March 2015, Bug #190591 In Chrome when mode is dropdown and selecting an item, the carret is not moved and the selected element is not visible
 			// Remove readonly during the focus
-			if (readonly) {
+			// R.K. 29th August 2017, #1155 Combo in dropdown mode accepts keypress values in its input in IE/Edge
+			if (readonly && !($.ig.util.isEdge || $.ig.util.isIE)) {
 				this._options.$input.removeAttr("readonly");
 			}
 
@@ -4862,6 +4960,9 @@
 				this._changeLocaleForElement($noMatchFound);
 			}
 		},
+		changeRegional: function () {
+			this.dataBind();
+		},
 		_setOption: function (option, value) {
 			var options = this.options,
 				_options = this._options;
@@ -6160,60 +6261,98 @@
 				this._itemsFromData(this._options.selectedData) : null;
 		},
 		filter: function (texts, event) {
-			/* Triggers filtering.
-			```
-				//filter by string
-				$(".selector").igCombo("filter", "Bob");
+            /* Triggers filtering.
+            ```
+                //filter by string
+                $(".selector").igCombo("filter", "Bob");
 
-				//filter by array of strings
-				$(".selector").igCombo("filter", ["Smith", "Mary"], true);
+                //filter by array of strings
+                $(".selector").igCombo("filter", ["Smith", "Mary"], true);
 
-				//filter by string and trigger events
-				$(".selector").igCombo("filter", "Bob", true);
-			```
-				paramType="string|array" optional="true" Filter by string, or array of strings.
-				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-				returnType="object" Returns reference to this igCombo.
-			*/
-			var noCancel,
-				ds = this.options.dataSource,
+                //filter by string and trigger events
+                $(".selector").igCombo("filter", "Bob", true);
+            ```
+                paramType="string|array" optional="true" Filter by string, or array of strings.
+                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+                returnType="object" Returns reference to this igCombo.
+            */
+			var expressions = [],
 				type = this.options.filteringType,
-				logic = this.options.filteringLogic,
-				filterExprUrlKey = this.options.filterExprUrlKey,
-				paging = ds.settings.paging,
-				filtering = ds.settings.filtering,
-				clearFiltering = texts === "";
+				clearFiltering = texts === "",
+				ds = this.options.dataSource;
 
-			if (!this._isFilteringEnabled()) {
-				return this;
+            if (!this._isFilteringEnabled()) {
+                return this;
 			}
 
-			// R.K 18th October 2016: #434 Filtering event returns wrong expression
-			filtering.type = type;
-			filtering.expressions = this._options.expression =
+			expressions = this._options.expression =
 				this._generateExpressions(texts);
+
+			if (type === "local") {
+				if (clearFiltering) {
+					this._options.expression = null;
+					ds.clearLocalFilter();
+				}
+			}
+
+			this.filterByExpressions(expressions, event);
+        },
+        filterByExpressions: function (expressions, event) {
+            /* Creates expressions for filtering.
+            ```
+                //filter by expression
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
+
+                //filter by array of expressions
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
+
+                //filter by array of expressions and trigger events
+                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
+            ```
+                paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
+                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+                returnType="object" Returns reference to this igCombo.
+            */
+            var noCancel,
+				logic = this.options.filteringLogic,
+                filterExprUrlKey = this.options.filterExprUrlKey,
+                type = this.options.filteringType,
+                ds = this.options.dataSource,
+                paging = ds.settings.paging,
+                filtering = ds.settings.filtering,
+                textKeyValueOption = this.options.textKey;
+
+            if (!this._isFilteringEnabled()) {
+                return this;
+			}
+
+            // R.K 18th October 2016: #434 Filtering event returns wrong expression
+            filtering.type = type;
 			filtering.caseSensitive = this.options.caseSensitive;
 
-			noCancel = event ? this._triggerFiltering(event) : true;
-			if (noCancel) {
+			// A.K. September 13th, 2017 #1184 igCombo filters its items when loading next chunk of data
+            filtering.expressions = expressions;
+            filtering.expressions.forEach(function(element) {
+                if (element.fieldName === undefined) {
+                    element.fieldName = textKeyValueOption;
+                }
+            });
 
-				// Handle local filtering
-				if (type === "local") {
-					if (clearFiltering) {
-						this._options.expression = null;
-						ds.clearLocalFilter();
-					} else {
-						ds.filter(filtering.expressions, logic, true);
-					}
+			// A.K. September 13th, 2017 #1183 igCombo filtered event is fired, even if filtering event is cancelled
+            noCancel = event ? this._triggerFiltering(event) : true;
+            if (noCancel) {
 
-					if (this.options.virtualization) {
-						this._handleLocalFilteringWithVirt(ds);
-					} else {
-						this._handleLocalFiltering(ds);
-					}
-				}
+                // Handle local filtering
+                if (type === "local") {
+					ds.filter(filtering.expressions, logic, true);
 
-				// Handle remote filtering
+                    if (this.options.virtualization) {
+                        this._handleLocalFilteringWithVirt(ds);
+                    } else {
+                        this._handleLocalFiltering(ds);
+                    }
+                }
+
 				if (type === "remote") {
 					if (paging) {
 						paging.pageIndex = 0;
@@ -6238,8 +6377,8 @@
 				}
 			}
 
-			return this;
-		},
+            return this;
+        },
 		clearFiltering: function (event) {
 			/* Clears filtering.
 			```
@@ -7534,11 +7673,11 @@
 			}
 
 			_options = null;
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
 
 	$.extend($.ui.igCombo, { version: "<build_number>" });
-	return $.ui.igCombo;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

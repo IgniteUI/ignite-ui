@@ -1,0 +1,713 @@
+/**********/
+/* igGrid */
+/**********/
+
+.ui-iggrid table tbody td,
+.ui-iggrid .ui-iggrid-header,
+.ui-iggrid table th {
+  /*padding: 10px;*/
+}
+
+.ui-iggrid .ui-iggrid-groupbyarea {
+  background-color: @body-bg;
+  border-color: @table-border-color;
+  color: @text-color;
+}
+
+.ui-iggrid-groupedcolumnlabel {
+  box-shadow: 0 0 2em 0 fade(@table-border-color, 15%) inset;
+  //in case the body-bg is the same as the default button bg
+}
+
+.ui-iggrid-groupbylabelrightedgeend {
+  border-color: @body-bg @body-bg @body-bg transparent!important;
+}
+/*grid paging*/
+
+.ui-iggrid-pagelist li {
+  padding: 0.2em 0.5em !important;
+}
+
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-prevpage,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-lastpage,
+.ui-iggrid-pagedropdownlabels  {
+  padding-top: 0.2em!important;
+  padding-bottom: 0.2em!important;
+}
+
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item.ui-state-default,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging-item .ui-iggrid-page.ui-state-default {
+  .stateNormal;
+}
+
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging .ui-iggrid-page.ui-state-hover,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-paging .ui-iggrid-paging-item.ui-state-hover  {
+  .stateHover;
+}
+
+.ui-iggrid-paging .ui-iggrid-pagelist {
+  background: none!important;
+  border: none!important;
+}
+/*row selectors*/
+
+.ui-iggrid tbody>tr>th.ui-iggrid-rowselector-class {
+  border-right: 1px solid transparent;
+}
+
+.ui-iggrid th.ui-iggrid-rowselector-class > .ui-icon {
+  margin-right: 0!important;
+  margin-top: 0.2em;
+  cursor: default;
+}
+
+.ui-iggrid-rowselector-header,
+.ui-iggrid .ui-iggrid-addrow th {
+  border: 0;
+}
+
+.ui-iggrid table th.ui-iggrid-rowselector-header {
+  padding: 0px;
+}
+
+.ui-iggrid table th.ui-iggrid-rowselector-header > .ui-state-default {
+  margin: 4px;
+}
+
+.ui-widget-content.ui-iggrid-buttoncontainer {
+  .boxShadow;
+}
+
+.ui-iggrid .ui-iggrid-content {
+  border-color: @table-border-color;
+}
+
+.ui-iggrid tr.ui-ig-altrecord {
+  background-color: @table-bg-accent;
+}
+/* adding lateral borders to the table (by design) */
+
+.ui-iggrid .ui-iggrid-tablebody>tr>td:first-child,
+.ui-iggrid .ui-iggrid-table>tbody>tr>td:first-child,
+.ui-iggrid thead .ui-iggrid-editingcell:first-child,
+.ui-iggrid .ui-iggrid-addrow + .ui-iggrid-activerow td:first-child,
+.ui-iggrid th.ui-iggrid-rowselector-class:first-child {
+  border-left: 1px solid @table-border-color;
+}
+
+.ui-iggrid .ui-iggrid-tablebody>tr>td:last-child,
+.ui-iggrid .ui-iggrid-table>tbody>tr>td:last-child,
+.ui-iggrid thead .ui-iggrid-editingcell:last-child {
+  border-right: 1px solid @table-border-color;
+}
+
+.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-coldesc,
+.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-colasc {
+  border-bottom: 1px solid @accent2;
+}
+
+.ui-iggrid .ui-iggrid-addrow {
+  border-bottom: 0;
+}
+
+/* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
+
+.ui-iggrid-table-mrl td,.ui-iggrid-table-mrl td.ui-state-hover {
+  border:1px solid @table-border-color;
+}
+.ui-iggrid .ui-iggrid-headertable-mrl th, .ui-iggrid .ui-iggrid-table-mrl th{
+  border: 1px solid @igGray9;
+}
+
+/* footer summary tables*/
+
+.ui-iggrid tfoot td {
+  border-color: @table-border-color;
+}
+
+.ui-iggrid tfoot tr:first-child td,
+.ui-iggrid > table tfoot tr:first-child td {
+  border-top-width: 0!important;
+}
+
+.ui-iggrid .ui-iggrid-footertable tfoot tr:last-child td {
+  border-bottom-width: 0!important;
+}
+
+.ui-iggrid .ui-iggrid-summaries-footer-icon-container.ui-state-hover .ui-icon {
+  background-color: @igGray6!important;
+}
+
+.ui-iggrid tfoot,
+.ui-iggrid-footer {
+  border-bottom: 1px solid @table-border-color !important;
+}
+
+.ui-iggrid-scrolldiv {
+  /* Bug #228441 // 18.02.2016 // M.Popov // Fix misalignment between fixed and unfixed container */
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-top: none;
+  background-color: @igGray1;
+  border-bottom: 1px solid @table-border-color !important;
+  /* !important needed because layout css removes borders */
+}
+
+.ui-iggrid .ui-iggrid-scrolldiv:first-child,
+.ui-iggrid > table tr:first-child td,
+  /*.ui-iggrid > table > tbody tr:first-child th, removed for hierarchical grid issues */
+
+.ui-iggrid-responsive-vertical {
+  border-top: 1px solid @table-border-color!important;
+  /* border-top for tables without headers */
+}
+
+.ui-iggrid.ui-igpivotgrid > table tr:first-child td {
+  border-bottom: 1px solid @table-border-color!important;
+}
+
+.ui-iggrid.ui-igpivotgrid > table > tbody tr:first-child th {
+  border-top: none!important;
+}
+
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid @table-border-color;
+}
+
+.ui-iggrid-layout-helper > tbody > tr:first-child > td,
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
+.ui-iggrid > table > thead + tbody > tr:first-child td,
+.ui-iggrid > table > thead + tbody > tr:first-child th,
+.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td,
+.ui-iggrid > table > thead + tfoot + tbody > tr:first-child th {
+  border-top: 0 none!important;
+  /* border-top removed for tables with virtualization, or headers */
+}
+
+.ui-iggrid th,
+.ui-iggrid th.ui-state-default {
+  border-right: 1px solid @igGray9;
+}
+
+.ui-iggrid > table > tbody tr:first-child th.ui-igpivotgrid-header {
+  border-top-color: @igGray9!important;
+}
+
+.ui-iggrid th a,
+.ui-iggrid th.ui-state-default a,
+.ui-iggrid th.ui-state-hover a,
+.ui-iggrid th.ui-state-active a {
+  color: #ffffff;
+}
+
+.ui-iggrid th.ui-state-hover {
+  background: @igGray10;
+}
+
+.ui-iggrid th.ui-state-active {
+  background: @accent2;
+}
+
+.ui-iggrid thead th.ui-state-active {
+  /* overides ui-states */
+
+  border-top: 0!important;
+  border-left: 0!important;
+  border-bottom: 0!important;
+}
+
+.ui-iggrid th.ui-state-focus {
+  background: @accent2;
+}
+
+.ui-iggrid .ui-iggrid-footer,
+.ui-iggrid .ui-iggrid-toolbar {
+  background-color: @igGray6;
+  font-weight: normal;
+  text-align: left;
+  color: @text-color;
+  border-top: none;
+  display: block;
+}
+
+.ui-iggrid .ui-iggrid-footer .ui-state-default,
+.ui-iggrid .ui-iggrid-toolbar .ui-state-default,
+.ui-iggrid .ui-iggrid-addrow td,
+.ui-iggrid .ui-iggrid-addrow th,
+.ui-iggrid .ui-iggrid-footer .ui-state-hover {
+  background-color: @igGray6;
+  color: @text-color;
+  text-decoration: none;
+}
+
+.ui-iggrid .ui-iggrid-footer .ui-state-default a,
+.ui-iggrid .ui-iggrid-toolbar .ui-state-default a,
+.ui-iggrid .ui-iggrid-addrow td a,
+.ui-iggrid .ui-iggrid-footer .ui-state-active a {
+  color: @text-color;
+  text-decoration: none;
+}
+
+.ui-iggrid tbody .ui-icon,
+.ui-iggrid .ui-iggrid-addrow td .ui-icon {
+  color: @ui-icons-dark;
+}
+
+.ui-iggrid .ui-igedit-button .ui-icon,
+.ui-igpivot-metadataitem .ui-icon-close {
+  color: @ui-icons-dark;
+}
+
+.ui-igpivot-metadataitem {
+  outline: red!important
+}
+
+.ui-iggrid th .ui-icon,
+.ui-iggrid th.ui-widget-header .ui-icon {
+  color: @ui-icons-light;
+}
+
+.ui-iggrid tbody td,
+.ui-iggrid tbody th.ui-iggrid-rowselector-class,
+.ui-iggrid thead .ui-iggrid-editingcell,
+.ui-iggrid tfoot td {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid @table-border-color;
+}
+/*sorting*/
+
+.ui-iggrid td.ui-state-highlight {
+  background: none;
+  background-color: @accent1;
+  color: @text-color;
+  font-weight: normal;
+  border: 0 none;
+}
+/* hover */
+
+.ui-iggrid td.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord td.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord td.ui-state-default.ui-state-hover,
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-default.ui-state-hover,
+.ui-iggrid-responsive-vertical tr > td.ui-state-hover:first-child,
+.ui-iggrid-responsive-vertical tr.ui-ig-altrecord > td.ui-state-hover:first-child {
+  color: @text-color;
+  background: @table-bg-hover;
+}
+
+.ui-iggrid td.ui-state-hover a,
+.ui-iggrid .ui-ig-altrecord td.ui-state-hover a {
+  color: @text-color;
+  text-shadow: none;
+}
+
+.ui-iggrid td.ui-state-hover a:hover,
+.ui-iggrid .ui-ig-altrecord td.ui-state-hover a:hover {
+  color: @accent2;
+}
+
+.ui-iggrid tbody td:first-child,
+.ui-iggrid tbody .ui-ig-altrecord td:first-child,
+.ui-iggrid tbody th.ui-iggrid-rowselector-class:first-child,
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-hover,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-default.ui-state-hover {}
+/* active cells */
+
+.ui-iggrid td.ui-state-focus,
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-focus {
+  background-image: none;
+}
+
+.ui-ig-altrecord td.ui-state-focus,
+.ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-focus {
+  background: @igGray2 none;
+}
+/* active rows */
+
+.ui-iggrid tr.ui-state-focus {
+  background: @table-bg none;
+}
+
+.ui-iggrid .ui-ig-altrecord.ui-state-focus {
+  background: @table-bg-accent none;
+}
+
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-focus.ui-iggrid-activecell,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-focus.ui-iggrid-activecell {
+  border: 1px solid @accent2;
+  background-color: inherit;
+}
+
+.ui-iggrid tr.ui-state-focus td,
+.ui-iggrid tr.ui-state-focus th,
+.ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
+.ui-iggrid tr.ui-ig-altrecord.ui-state-focus th {
+  border-top: 1px solid @accent2!important;
+  border-bottom: 1px solid @accent2!important;
+}
+
+.ui-iggrid td.ui-state-active.ui-state-focus,
+.ui-iggrid td.ui-state-focus {
+  border: 1px solid @accent2!important;
+}
+/*fix padding to prevent jump when adding borders on focus*/
+
+.ui-iggrid tr.ui-state-focus td,
+.ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
+.ui-iggrid td.ui-state-active.ui-state-focus,
+.ui-iggrid td.ui-state-focus {
+  padding-left: 4px;
+  padding-right: 3px;
+}
+/*Bug 215539 11.03.2012, S.D., fix padding in chrome to prevent jump when adding borders on focus*/
+.ui-iggrid td.ui-state-active,
+.ui-iggrid .ui-ig-altrecord td.ui-state-active {
+  padding-left: 3px;
+}
+
+.ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
+  border-color: transparent!important;
+}
+/* selected rows */
+
+.ui-iggrid td.ui-state-active,
+.ui-iggrid .ui-ig-altrecord td.ui-state-active,
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-active,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-active,
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-state-active,
+.ui-iggrid tbody .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-active,
+.ui-iggrid tbody .ui-iggrid-mergedcellstop.ui-state-active,
+.ui-iggrid tbody .ui-ig-altrecord .ui-iggrid-mergedcellstop.ui-state-active {
+  background: @table-bg-active;
+  color: @text-color;
+  border-color: @table-bg-active;
+}
+/* Focus state on paging buttons */
+
+.ui-iggrid .ui-iggrid-paging-item.ui-state-focus,
+.ui-iggrid .ui-iggrid-paging-item.ui-state-default.ui-state-focus,
+.ui-iggrid .ui-iggrid-paging-item .ui-iggrid-page.ui-state-focus,
+.ui-iggrid .ui-iggrid-paging-item .ui-iggrid-page.ui-state-default.ui-state-focus {
+  .stateFocused;
+}
+
+.ui-iggrid-page .ui-state-default {
+  .stateNormal;
+}
+
+/* Dropdowns */
+
+.ui-menu .ui-icon {
+  color: @ui-icons-darker;
+}
+
+.ui-igedit-list .ui-igedit-listitem {
+  font-size: 1em;
+  line-height: 1.4em;
+}
+
+.ui-iggrid-filterbutton {
+  border: 1px solid transparent;
+}
+
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton.ui-state-hover,
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton,
+.ui-iggrid-filterbutton.ui-state-active,
+.ui-iggrid-filterbutton.ui-state-focus {
+  color: @accent2;
+}
+
+.ui-igedit-dropdown,
+.ui-iggrid-filterdd,
+.ui-iggrid-featurechooser-dropdown-dialog,
+.ui-widget.ui-widget-content.ui-igpivot-filterdropdown,
+.ui-widget.ui-widget-content.ui-igpivot-metadatadropdown {
+  background: #ffffff;
+  border: 1px solid @igGray5;
+}
+/*fix for WinJS' ui-dark theme*/
+
+.ui-iggrid-summaries-dialog label {
+  color: @text-color;
+}
+
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default,
+.ui-igedit-list .ui-igedit-listitem.ui-state-default,
+.ui-iggrid-filterddlist li.ui-state-default,
+.ui-iggrid-featurechooser-list li.ui-state-default,
+.ui-iggrid-hiding-dropdown-list li.ui-state-default,
+.ui-iggrid-columnmoving-dropdown-list li.ui-state-default,
+.ui-igcombo-listitemholder li.ui-state-default {
+  color: @text-color;
+  background-color: #fff;
+  border: 1px solid transparent;
+}
+
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover,
+.ui-igedit-list .ui-igedit-listitem.ui-state-hover,
+.ui-iggrid-filterddlist li.ui-state-hover,
+.ui-iggrid-filterddlistitem.ui-state-hover a,
+.ui-iggrid-featurechooser-list.ui-state-hover a,
+.ui-iggrid-hiding-dropdown-list li.ui-state-hover,
+.ui-iggrid-hiding-dropdown-list.ui-state-hover a,
+.ui-iggrid-columnmoving-dropdown-list li.ui-state-hover,
+.ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
+.ui-igcombo-listitemholder li.ui-state-hover,
+.ui-igcombo-listitemholder li.ui-state-hover a {
+  .stateHover;
+}
+
+.ui-iggrid-filterddlist li.ui-state-active,
+.ui-iggrid-filterddlistitem.ui-state-active a,
+.ui-iggrid-featurechooser-list li.ui-state-active,
+.ui-iggrid-featurechooser-list.ui-state-active a,
+.ui-iggrid-hiding-dropdown-list li.ui-state-active,
+.ui-iggrid-hiding-dropdown-list.ui-state-active a,
+.ui-iggrid-columnmoving-dropdown-list li.ui-state-active,
+.ui-iggrid-columnmoving-dropdown-list.ui-state-active a,
+.ui-igcombo-listitemholder li.ui-state-active,
+.ui-igcombo-listitemholder li.ui-state-active a {
+  .stateActive;
+}
+
+
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-highlight,
+.ui-igedit-list .ui-igedit-listitem.ui-state-highlight,
+.ui-igcombo-listitemholder li.ui-state-highlight,
+.ui-igcombo-listitemholder li.ui-state-highlight a {
+  .stateActive;
+}
+
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover a,
+.ui-igedit-list .ui-igedit-listitem.ui-state-hover a,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active a {
+  color: #FFFFFF;
+}
+/* Group by */
+
+.ui-iggrid tbody td.ui-iggrid-nongrouprowemptycell,
+.ui-iggrid tbody .ui-ig-altrecord td.ui-iggrid-nongrouprowemptycell {
+  background-color: white;
+  box-shadow: none;
+}
+
+.ui-iggrid tbody td.ui-iggrid-nongrouprowemptycell.ui-state-hover {
+  background-image: none;
+}
+
+.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-nongrouprowemptycell.ui-iggrid-last-emptycell {
+  border-bottom: 1px solid @table-border-color;
+}
+
+.ui-draggable-dragging .ui-iggrid-headertext {
+  font-family: @font-family-base;
+}
+
+.ui-iggrid-groupbyarea a,
+.ui-iggrid-groupbyareatext a {
+  color: @accent2;
+}
+
+.ui-iggrid-dragMarkup {
+  z-index: 10000;
+}
+/* Hierarchical grid */
+
+.ui-iggrid-expandcolumn-expanded {
+  border-bottom-width: 0!important;
+  box-shadow: none!important;
+  /*tabbed look*/
+}
+
+.ui-iggrid-expandcolumn-expanded.ui-state-focus {
+  border-bottom-width: 1px!important;
+  /*tabbed look*/
+}
+
+.ui-ig-altrecord + tr > td.ui-iggrid-childarea {
+  background-color: @igGray1;
+  /* expanded from altrecord should have the same bg colour */
+
+  border-color: transparent @igGray4 @igGray4;
+}
+/* Feature Chooser */
+
+.ui-iggrid-featurechooser-list .item-selected .ui-iggrid-featurechooserddlistitemtext {
+  text-shadow: none;
+}
+
+.ui-iggrid-featurechooser-list li.ui-state-default,
+.ui-iggrid-featurechooser-list li.ui-state-hover {
+  border-width: 0;
+}
+/* modal dialog */
+
+.ui-iggrid .ui-widget-content.ui-dialog {
+  border: 1px solid @igGray6;
+}
+
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button.ui-state-hover {
+  background: @accent2;
+  box-shadow: none;
+}
+
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button-text {
+  line-height: 1.2;
+  padding: 5px 12px;
+}
+
+.ui-iggrid-dialog.ui-dialog .ui-dialog-title {
+  margin: .2em 0;
+}
+
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.ui-iggrid-dialog-groupby-button a,
+.ui-iggrid-columnchooser-item a,
+.ui-iggrid-sorting-dialog-unsortedcolumns-sortbybutton a {
+  color: @accent2;
+  text-decoration: none;
+}
+/* Summaries */
+
+.ui-widget-footer {
+  border-bottom: 1px solid @table-border-color;
+  border-right: 1px solid @table-border-color;
+}
+
+.ui-iggrid tfoot td.ui-widget-content,
+.ui-iggrid tfoot td.ui-state-default {
+  background-color: transparent;
+  color: @text-color;
+  border-color: @table-border-color;
+  border-style: solid;
+}
+
+.ui-iggrid tfoot td.ui-state-hover {
+  background-color: @igGray2;
+}
+
+.ui-iggrid tfoot td.ui-state-default .ui-icon {
+  color: @ui-icons-darker;
+}
+/* Column Moving custom icons */
+
+.ui-iggrid-columnmoving-dragtop {
+  //background: transparent @ui-icons-darker no-repeat scroll -65px -12px!important;
+  color: @ui-icons-darker;
+}
+
+.ui-iggrid-columnmoving-dragbottom {
+  //background: transparent @ui-icons-darker no-repeat scroll 0 -20px!important;
+  color: @ui-icons-darker;
+}
+/* Grid Updating */
+
+@-webkit-keyframes addingHighlight {
+  0% {
+    background-color: @accent1;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@-moz-keyframes addingHighlight {
+  0% {
+    background-color: @accent1;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.ui-iggrid-modifiedrecord > td {
+  -webkit-animation-name: addingHighlight;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-duration: 1s;
+  -moz-animation-name: addingHighlight;
+  -moz-animation-timing-function: ease-in-out;
+  -moz-animation-duration: 1s;
+  -o-animation-name: addingHighlight;
+  -o-animation-timing-function: ease-in-out;
+  -o-animation-duration: 1s;
+  animation-name: addingHighlight;
+  animation-timing-function: ease-in-out;
+  animation-duration: 1s;
+}
+
+.ui-iggrid-modifiedrecord > td {
+  background-color: transparent;
+  color: @igGray7;
+}
+/* Merged cells */
+
+.ui-iggrid .ui-iggrid-mergedcell,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell,
+.ui-iggrid .ui-iggrid-mergedcell.ui-state-highlight {
+  background-color: #FFF;
+}
+
+.ui-iggrid .ui-iggrid-mergedcell,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell,
+.ui-iggrid .ui-iggrid-mergedcell.ui-state-highlight,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-highlight {
+  color: @igGray4;
+  border-bottom-color: transparent;
+}
+
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell,
+.ui-iggrid .ui-iggrid-mergedcellstop {
+  border-left-color: #FFF;
+}
+
+.ui-iggrid .ui-iggrid-mergedcellstop.ui-state-highlight,
+.ui-iggrid .ui-iggrid-mergedcell.ui-state-highlight,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-highlight {
+  border-left-color: @accent1;
+}
+
+.ui-iggrid .ui-iggrid-mergedcellstop,
+.ui-iggrid .ui-iggrid-mergedcellstop.ui-state-highlight,
+.ui-iggrid .ui-iggrid-mergedcell.ui-state-highlight,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcellstop,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcellstop.ui-state-highlight,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-highlight,
+.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-mergedcell.ui-iggrid-coldesc,
+.ui-iggrid .ui-iggrid-table > tbody > tr > td.ui-iggrid-mergedcell.ui-iggrid-colasc {
+  background-color: #FFF;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+.ui-iggrid .ui-iggrid-mergedcell.ui-state-active,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-active,
+.ui-iggrid .ui-iggrid-mergedcell.ui-state-focus,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-focus {
+  color: #FFF;
+}
+
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-state-hover,
+.ui-iggrid tbody .ui-ig-altrecord .ui-iggrid-mergedcell.ui-state-hover {
+  color: @text-color;
+}
+
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcellsbottom.ui-state-highlight,
+.ui-iggrid .ui-iggrid-mergedcellsbottom.ui-state-highlight {
+  border-bottom-color: @accent1;
+}
+
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
+  border-bottom: 1px solid @table-border-color;
+}

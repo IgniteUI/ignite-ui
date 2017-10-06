@@ -14,6 +14,9 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -22,9 +25,14 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<!-- <script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script> -->
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-en.js"></script>
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -175,7 +183,7 @@
 				},
 				$.ig.Editor.locale.setOptionError + "listItems");
 
-				$editor.igDatePicker("option", "dropDownOrientation", "up");
+				$editor.igDatePicker("option", "dropDownOrientation", "top");
 				$editor.igDatePicker("dropDownButton").click();
 				equal($editor.igDatePicker("field").datepicker("option", "showOptions").direction, "up", "Picker direction not set on open");
 				$editor.igDatePicker("hideDropDown");
@@ -467,7 +475,6 @@
 				editor.blur();
 
 				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, today.getSeconds()));
-				debugger;
 				equal(editor.igDatePicker("value").getDate(), expectedDate.getDate(), "The date is not set");
 				equal(editor.igDatePicker("value").getHours(), expectedDate.getHours(), "The hours is not set");
 				equal(editor.igDatePicker("value").getMinutes(), expectedDate.getMinutes(), "The minutes is not set");
@@ -690,7 +697,7 @@
 			testId = "Apply different displayTimeOffset on picker display/values";
 			test(testId, 16, function(){
 				var today = new Date(),
-					todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+					todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())),
 					pickerTestOpts = [{
 						picker: {
 							displayTimeOffset: 240,
@@ -716,7 +723,7 @@
 						date: "",
 						day: "",
 						nextDate: (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
-						nextValue: today.toISOString().split("T")[0] + "T03:00:00.000Z"
+						nextValue: todayUTC.toISOString().split("T")[0] + "T03:00:00.000Z"
 					}, {
 						//#1002: igDatePicker drop down cannot be opened 
 						picker: {
@@ -775,6 +782,441 @@
 				testWithOptions(pickerTestOpts.pop());
 			});
 
+			var testId = 'Test suppressKeyboard option';
+			test(testId, 17, function () {
+				var $editor, ddButton;
+				
+				// Test that the input DOESN'T have focus after the drop down is opened and day is selected
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+
+				// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-next").click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				$editor.remove();
+
+				// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed and defined onChangeMonthYear is fired
+				var definedOnChangeMonthYearFired = false;
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true, datepickerOptions: { onChangeMonthYear: function () { definedOnChangeMonthYearFired = true; }} });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-next").click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				ok(definedOnChangeMonthYearFired, "The defined onChangeMonthYear event should be fired.");
+				$ddButton.click();
+				delete definedOnChangeMonthYearFired;
+				$editor.remove();
+
+				// Test that the input DOESN'T have focus after the drop down is opened (before that the input is focused)
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				$editor.igDatePicker("setFocus");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$input.blur();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+
+				// Test that the input DOES have focus after the drop down is opened
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: false });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok($input.is(":focus"), "The input should be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+				ok($input.is(":focus"), "The input should be focused");
+				$ddButton.click();
+				ok($input.is(":focus"), "The input should be focused");
+				$input.blur();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+			});
+
+			var testId = 'Spin delta as an object';
+			test(testId, 22, function () {
+				// Test when spinDelta is an object and has invalid values.
+				var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
+					errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
+				spinData = [ [ { year: -5 }, errorRange, "year", 10 ], [ { month: "two" }, errorType, "month", 12 ],
+							[ { day: 31 }, errorRange, "day", 28 ], [ { hours: "five o'clock" }, errorType, "hours", 12 ],
+							[ { minutes: 61 }, errorRange, "minutes", 60 ], [ { seconds: null }, errorType, "seconds", 60 ],
+							[ { milliseconds: -100 }, errorRange, "milliseconds", 1000 ]];
+				for (index = 0; index < spinData.length; index++) {
+					$dtPicker = $('<input/>').appendTo("#testBedContainer");
+					try {
+						$dtPicker.igDatePicker({
+							spinDelta: spinData[index][0],
+							buttonType : "spin"
+						});
+					} catch(e) {
+						equal(e.message, $.ig.util.stringFormat(spinData[index][1], spinData[index][2], 0, spinData[index][3]));
+					}
+					$dtPicker.remove();
+				}
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					value: new Date("2017-01-11T01:01:01.001Z"),
+					displayTimeOffset: 120,
+					buttonType : "spin",
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff"
+				});
+
+				spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+				spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+
+				// Spin display mode
+				var oldDate = $dtPicker.igDatePicker("value").getDate();
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate + 10, newDate, "Day is updated with 10");
+				clickElement(spinDownButton, false, false);
+				newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 10");
+				clickElement(spinDownButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate - 10, newDate, "Day is updated with 10");
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 10");
+
+				// Spin up edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(0);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(3);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(6);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(15);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(18);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(21);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.trigger("blur");
+
+				expDate = new Date("2021-04-21T13:16:11.101Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
+				actDate = $dtPicker.igDatePicker("value"); //Actual date after spin
+				ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+
+				// Spin down edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(0);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(3);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(6);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(18);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(21);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.trigger("blur");
+
+				expDate = new Date("2017-01-11T01:01:01.001Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
+				actDate = $dtPicker.igDatePicker("value"); //Actual date after spin
+				ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+
+				// Setting runtime spinDelta as object
+				throws( function () {
+					$dtPicker.igDatePicker("option", "spinDelta", { day: -3 });
+				}, 'Wrong spinDelta value is not thrown');
+				equal($dtPicker.igDatePicker("option", "spinDelta").day, 10, "Spin delta should be reverted.");
+				equal($dtPicker.igDatePicker("option", "spinDelta").month, 3, "Spin delta should be reverted.");
+				
+				$dtPicker.igDatePicker("option", "spinDelta", { day: 3 });
+				// Spin display mode
+				var oldDate = $dtPicker.igDatePicker("value").getDate();
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate + 3, newDate, "Day is updated with 3");
+				clickElement(spinDownButton, false, false);
+				newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 3");
+				clickElement(spinDownButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate - 3, newDate, "Day is updated with 3");
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 3");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date(2017, 11, 8),
+					dataMode: "date",
+					dateInputFormat: "dateTime",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					buttonType: "spin"
+				});
+				spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+				spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+				
+				// Spin up edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				equal($dtPicker.igDatePicker("field").val(), "12/08/2017 12:00 PM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtPicker.igDatePicker("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+				$dtPicker.trigger("blur").remove();
+			});
+
+			var testId = 'Spin delta as an object in edit mode with different masks';
+			test(testId, 28, function () {
+				var $dtPicker, testDate, ind, today;
+
+				today = new Date();
+				testData = [{
+					config: {
+						dateInputFormat: "fff",
+						spinDelta: { milliseconds: 100 }
+					},
+					expRes: [{
+						display: "101", value: 101
+					}, {
+						display: "001", value: 1
+					}],
+					method: "getMilliseconds"
+				}, {
+					config: {
+						dateInputFormat: "ss",
+						spinDelta: { seconds: 30 }
+					},
+					expRes: [{
+						display: "31", value: 31
+					}, {
+						display: "01", value: 1
+					}],
+					method: "getSeconds"
+				}, {
+					config: {
+						dateInputFormat: "mm",
+						spinDelta: { minutes: 15 }
+					},
+					expRes: [{
+						display: "16", value: 16
+					}, {
+						display: "01", value: 1
+					}],
+					method: "getMinutes"
+				}, {
+					config: {
+						dateInputFormat: "dd",
+						spinDelta: { day: 7 }
+					},
+					expRes: [{
+						display: "18", value: 18
+					}, {
+						display: "11", value: 11
+					}],
+					method: "getDate"
+				}, {
+					config: {
+						dateInputFormat: "MM",
+						spinDelta: { month: 3 }
+					},
+					expRes: [{
+						display: "04", value: 3
+					}, {
+						display: "01", value: 0
+					}],
+					method: "getMonth"
+				}, {
+					config: {
+						dateInputFormat: "yy",
+						spinDelta: { year: 4 }
+					},
+					expRes: [{
+						display: "21", value: 2021
+					}, {
+						display: "17", value: 2017
+					}],
+					method: "getFullYear"
+				}, {
+					config: {
+						dateInputFormat: "yyyy",
+						spinDelta: { year: 4 }
+					},
+					expRes: [{
+						display: "2021", value: 2021
+					}, {
+						display: "2017", value: 2017
+					}],
+					method: "getFullYear"
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin", value: new Date("2017-01-11T01:01:01.001Z") };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker(currConfig);
+					var spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+					var spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+
+					// Edit Mode
+					$dtPicker.igDatePicker("setFocus");
+					$dtPicker.data("igDatePicker")._setCursorPosition(0);
+					clickElement(spinUpButton, false, false);
+					equal($dtPicker.igDatePicker("field").val(), currData.expRes[0].display, 'The display is not as expected');
+					$dtPicker.data("igDatePicker")._setCursorPosition(0);
+					clickElement(spinDownButton, false, false);
+					equal($dtPicker.igDatePicker("field").val(), currData.expRes[1].display, 'The display is not as expected');
+					$dtPicker.trigger("blur")
+
+					// Display Mode
+					clickElement(spinUpButton, false, false);
+					equal($dtPicker.igDatePicker("value")[currData.method](), parseInt(currData.expRes[0].value), 'The value is not as expected');
+					clickElement(spinDownButton, false, false);
+					equal($dtPicker.igDatePicker("value")[currData.method](), parseInt(currData.expRes[1].value), 'The value is not as expected');
+					$dtPicker.remove();
+				}
+			});
+
+			testId = 'Runtime changes for local and regional options';
+			test(testId, 18, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) }),
+				$calendar = $editor.igDatePicker("getCalendar"),
+					checkCalendarTitle = function(title, regional) {
+						$editor.igDatePicker("showDropDown");
+
+						calendarTitle = $calendar.find(".ui-datepicker-title").text().replace(String.fromCharCode(160) /* no breaking space*/, " ");
+						equal(calendarTitle, title, "Title of the datepicker should be in " + regional);
+						$editor.igDatePicker("hideDropDown");
+					},
+					calendarTitle;
+
+				equal($editor.igDatePicker("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.en.Editor.datePickerButtonTitle, "Title of the button should be in English");
+				checkCalendarTitle("August 2017", "English");
+
+				$editor.igDatePicker("option", "language", "ja");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.ja.Editor.datePickerButtonTitle, "Title of the button should be in Japanese");
+				$editor.igDatePicker("option", "regional", "ja");
+				equal($editor.igDatePicker("displayValue"), "2017/08/18 18:06", "Display Format should be in Japanese");
+				$editor.igDatePicker("setFocus");
+				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Input Format should be in Japanese");
+				checkCalendarTitle("2017年 8月", "Japanese");
+
+				$editor.igDatePicker("value", new Date(2017, 9, 18, 18, 6));
+				$editor.igDatePicker("option", "regional", "de");
+				equal($editor.igDatePicker("displayValue"), "18.10.2017 18:06", "Format should be in German");
+				$editor.igDatePicker("setFocus");
+				equal($editor.igDatePicker("field").val(), "18.10.2017 18:06", "Input Format should be in German");
+				checkCalendarTitle("Oktober 2017", "German");
+
+				//custom datepickerOptions with prio:
+				$editor.igDatePicker("option", "datepickerOptions", { 
+					monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'S', 'Oct(custom)', 'Nov', 'Dec'],
+				 });
+				$editor.igDatePicker("option", "regional", "en-US");
+				equal($editor.igDatePicker("field").val(), "10/18/2017 06:06 PM", "Format should be in English");
+				checkCalendarTitle("Oct(custom) 2017", "English(custom)");
+				$editor.remove();
+
+				// Init datepicker without dateInputFormat or dateDisplayFormat defined
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ value: new Date(2017, 7, 18, 18, 6) });
+				equal($editor.igDatePicker("displayValue"), "8/18/2017", "Format should be in English");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.en.Editor.datePickerButtonTitle, "Title of the button should be in English");
+				$editor.igDatePicker("option", "language", "ja");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.ja.Editor.datePickerButtonTitle, "Title of the button should be in Japanese");
+				$editor.igDatePicker("option", "regional", "ja");
+				equal($editor.igDatePicker("displayValue"), "2017/08/18", "Display Format should be in Japanese");
+				$editor.igDatePicker("setFocus");
+				equal($editor.igDatePicker("field").val(), "2017/08/18", "Input Format should be in Japanese");
+				$editor.igDatePicker("option", "regional", "en-US");
+				equal($editor.igDatePicker("field").val(), "08/18/2017", "Format should be in English");
+				$editor.remove();
+			});
+			var testId = 'displayTimeOffset enabled and setting date from drop down calendar';
+			test(testId, 6, function () {
+				var $editor, $ddButton, $input;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2017-12-08T00:00:00.000Z"),
+					dataMode: "date",
+					dateDisplayFormat: "dateTime",
+					enableUTCDates: true,
+					displayTimeOffset: 0,
+					dropDownAnimationDuration: 1
+				});
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$ddButton.click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$(".ui-datepicker-current-day").next().click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/9/2017 12:00 AM", "Display value is not correct");
+				$editor.remove();
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2017-12-08T00:00:00.000Z"),
+					dataMode: "date",
+					dateDisplayFormat: "dateTime",
+					enableUTCDates: true,
+					displayTimeOffset: 240,
+					dropDownAnimationDuration: 1
+				});
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$ddButton.click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$(".ui-datepicker-current-day").next().click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/9/2017 4:00 AM", "Display value is not correct");
+				$editor.remove();
+			});
 	    });
 		function mouseInteraction(type, element) {
 		    // create a mouse click event
@@ -819,6 +1261,27 @@
 		        evt[special] = true;
 		    }
 		    target.trigger(evt);
+		}
+		function clickElement(element, ctrl, shift) {
+			var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+			ctrl = (typeof ctrl === 'undefined') ? false : ctrl;
+			shift = (typeof shift === 'undefined') ? false : shift;
+			mousedown(element[0], ctrl, shift);
+			mouseup(element[0], ctrl, shift);
+		}
+		function mouseup(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function mousedown(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
 		}
 	</script>
 

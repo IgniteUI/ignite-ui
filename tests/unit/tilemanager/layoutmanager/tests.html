@@ -85,19 +85,20 @@
 					teardown: function() {
 					}
 				});
-				
+
 				/* ***************** igTileManager Rendering ***************** */
-				
+
 				var testId_1 = 'igLayoutManager script loading.';
 				var testId_2 = 'igLayoutManager border layout.';
 				var testId_3 = 'igLayoutManager flow layout.';
 				var testId_4 = 'igLayoutManager vertical layout.';
-				var testId_5 = 'igLayoutManager grid layout.';
-				
+                var testId_5 = 'igLayoutManager grid layout.';
+                var testId_6 = 'igLayoutManager grid layout with columsnWidth, columnsHeight and asterisks';
+
 				test(testId_1, function () {
 					ok(typeof $('#layoutmanager').igLayoutManager === 'function', 'igLayoutManager is not defined.');
 				});
-				
+
 				test(testId_2, function () {
 				    // Check classes and element existance
 				    var totalHeight;
@@ -146,7 +147,7 @@
 						leftWidth: '30%',
 						rightWidth: '20%'
 					});
-					
+
 					equal($('#layoutmanager').outerWidth() * 0.3, $('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 'The center holder is with a different width than the containing element');
 					equal($('#layoutmanager').outerWidth() * 0.5, $('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 'The center holder is with a different width than the containing element');
 					equal($('#layoutmanager').outerWidth() * 0.2, $('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 'The center holder is with a different width than the containing element');
@@ -154,7 +155,7 @@
 					equal($('#layoutmanager').outerWidth(), 1000, 'The height of the element does not match');
 					totalHeight = 0;
 					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
-					
+
 					$('#layoutmanager').igLayoutManager('destroy')
 						.append('<div class="header"></div><div class="footer"></div>')
 						.igLayoutManager({
@@ -227,7 +228,7 @@
 					equal(totalHeight, 100, 'The height of the children does not match');
 					$('#layoutmanager').igLayoutManager('destroy');
 					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
-					
+
 					$('#layoutmanager').igLayoutManager({
 					    layoutMode: 'border',
                         height: 100,
@@ -245,7 +246,7 @@
 					equal(totalHeight, 100, 'The height of the children does not match');
 					$('#layoutmanager').igLayoutManager('destroy');
 					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
-					
+
 					$('#layoutmanager').igLayoutManager({
 					    layoutMode: 'border',
                         height: 100,
@@ -264,7 +265,7 @@
 					$('#layoutmanager').igLayoutManager('destroy');
 					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
 				});
-				
+
 				test(testId_3, function () {
 					equal($('#flow').children().length, 5, 'The five items were not rendered in the flow container.');
 					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout');
@@ -290,7 +291,7 @@
 						var element = $(this);
 						$.ig.TestUtil.checkClass(element, 'ig-layout-flow-item');
 					});
-					
+
 					$('#flow').igLayoutManager("option", "itemCount", 8);
 					equal($('#flow').children().length, 8, 'The eight items were not rendered in the flow container.');
 					$('#flow').igLayoutManager('destroy');
@@ -322,7 +323,7 @@
 						]
 					});
 					equal($('#flow').children().length, 5, 'The flow layout container did not clear its children before rendering items.');
-					
+
 					$('#flow').igLayoutManager("option", "items", [
 						{width: "20%", height: "150px"},
 						{width: "20%", height: "100px"},
@@ -333,11 +334,11 @@
 					equal($('#flow').children(":eq(0)").height(), 150, "The height of the first item didn't match.");
 					equal($('#flow').children(":eq(1)").height(), 100, "The height of the second item didn't match.");
 					equal($('#flow').children(":eq(2)").height(), 80, "The height of the third item didn't match.");
-					
+
 					$('#flow').igLayoutManager('destroy');
 					equal($('#flow').children().length, 0, 'The flow layout container did not clear its children before rendering items.');
 				});
-				
+
 				test(testId_4, function () {
 					equal($('#vertical').children().length, 5, 'The five items were not rendered in the vertical container.');
 					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout');
@@ -394,7 +395,7 @@
 						]
 					});
 					equal($('#vertical').children().length, 5, 'The flow layout container did not clear its children before rendering items.');
-					
+
 					$('#vertical').igLayoutManager("option", "items", [
 						{width: "20%", height: "150px"},
 						{width: "20%", height: "100px"},
@@ -409,7 +410,7 @@
 					$('#vertical').igLayoutManager('destroy');
 					equal($('#vertical').children().length, 0, 'The flow layout container did not clear its children before rendering items.');
 				});
-				
+
 				test(testId_5, function () {
 					$('#grid').igLayoutManager({
 					    layoutMode: 'grid',
@@ -439,10 +440,10 @@
 					$('#grid').igLayoutManager("option", "gridLayout", {
 						columnHeight: 250
 					});
-					
+
 					options = $('#grid').data("igLayoutManager")._opt;
 					equal(options.gridLayout.cols, 2, "The columns weren't correctly set");
-					equal(options.gridLayout.rows, 3, "The columns weren't correctly set");
+					equal(options.gridLayout.rows, 3, "The rows weren't correctly set");
 					equal($('#grid').children().length, 5, "The items weren't correctly rendered");
 					equal($('#grid').children().first().width(), 390, "The items width wasn't correctly rendered");
 					equal($('#grid').children().first().height(), 240, "The items width wasn't correctly rendered");
@@ -450,10 +451,10 @@
 					equal($('#grid').children().eq(2).css("top"), "250px", "The items weren't reflowed");
 					$('#grid').igLayoutManager("option", "height", 800);
 					equal($('#grid').children().eq(2).css("top"), "250px", "The items were incorrectly reflowed");
-					
+
 					$('#grid').igLayoutManager("destroy");
 					equal($('#grid').children().length, 0, 'The grid layout container did not clear its children before rendering items.');
-					
+
 					$('#grid').igLayoutManager({
 					    layoutMode: 'grid',
                         height: 600,
@@ -463,14 +464,118 @@
 							cols: 3
 						}
 					});
-					
-					equal($('#grid').children().length, 9, "The items weren't correctly rendered");
-					equal($('#grid').children().first().width(), 300, "The items width wasn't correctly rendered");
-					equal($('#grid').children().first().height(), 200, "The items width wasn't correctly rendered");
-					
+
+                    equal($('#grid').children().length, 9, "The items weren't correctly rendered");
+                    equal($('#grid').children().first().outerWidth(), 300, "The items width wasn't correctly rendered");
+                    equal($('#grid').children().first().outerHeight(), 200, "The items width wasn't correctly rendered");
+
 					$('#grid').igLayoutManager("destroy");
 					equal($('#grid').children().length, 0, 'The grid layout container did not clear its children before rendering items.');
-				});
+                });
+
+                test(testId_6, function () {
+                    var container, lm, gridLayout,
+                        firstElement, secondElement,
+                        thirdElement, fourthElement,
+                        offset;
+
+                    container = $('#grid-layout');
+                    lm = container.igLayoutManager({
+                        layoutMode: "grid",
+                        width: "800px",
+                        height: "500px",
+                        gridLayout: {
+                            columnHeight: ["20%", "200px", "*"],
+                            columnWidth: ["20%", "*", "*"]
+                        },
+                        items: [
+                            {
+                                rowSpan: 2,
+                                colSpan: 2,
+                                colIndex: 0,
+                                rowIndex: 0
+                            },
+                            {
+                                rowSpan: 1,
+                                colSpan: 1,
+                                rowIndex: 0,
+                                colIndex: 2
+                            },
+                            {
+                                rowSpan: 1,
+                                colSpan: 1,
+                                rowIndex: 1,
+                                colIndex: 2
+                            },
+                            {
+                                rowSpan: 1,
+                                colSpan: 3,
+                                colIndex: 0,
+                                rowIndex: 2
+                            }
+                        ]
+                    });
+
+                    offset = container.offset();
+                    gridLayout = lm.data("igLayoutManager")._opt.gridLayout;
+                    firstElement = $(gridLayout.elements[0]);
+                    secondElement = $(gridLayout.elements[1]);
+                    thirdElement = $(gridLayout.elements[2]);
+                    fourthElement = $(gridLayout.elements[3]);
+
+                    equal(gridLayout.cols, 3, "The columns weren't correctly set");
+                    equal(gridLayout.rows, 3, "The rows weren't correctly set.");
+                    equal(gridLayout.elements.length, 4, "The elements weren't correctly set");
+
+                    checkGridLayoutItemSize(firstElement, "1st element", 480, 300, offset.top + "px", offset.left + "px");
+                    checkGridLayoutItemSize(secondElement, "2nd element", 320, 100, offset.top + "px", 480 + offset.left + "px");
+                    checkGridLayoutItemSize(thirdElement, "3rd element", 320, 200, 100 + offset.top + "px", 480 + offset.left + "px");
+                    checkGridLayoutItemSize(fourthElement, "4th element", 800, 200, 300 + offset.top + "px", offset.left + "px");
+
+                    container.igLayoutManager("option", "gridLayout", {
+                        columnHeight: ["20%", "200px", "*"],
+                        columnWidth: "*",
+                        cols: 3
+                    });
+
+                    checkGridLayoutItemSize(firstElement, "1st element", 532, 300, offset.top + "px", offset.left + "px");
+                    checkGridLayoutItemSize(secondElement, "2nd element", 266, 100, offset.top + "px", 532 + offset.left + "px");
+                    checkGridLayoutItemSize(thirdElement, "3rd element", 266, 200, 100 + offset.top + "px", 532 + offset.left + "px");
+                    checkGridLayoutItemSize(fourthElement, "4th element", 798, 200, 300 + offset.top + "px", offset.left + "px");
+                    
+                    container.igLayoutManager("option", "gridLayout", {
+                        columnHeight: "*",
+                        columnWidth: ["20%", "*", "*"],
+                        rows: 3
+                    });
+
+                    checkGridLayoutItemSize(firstElement, "1st element", 480, 332, offset.top + "px", offset.left + "px");
+                    checkGridLayoutItemSize(secondElement, "2nd element", 320, 166, offset.top + "px", 480 + offset.left + "px");
+                    checkGridLayoutItemSize(thirdElement, "3rd element", 320, 166, 166 + offset.top + "px", 480 + offset.left + "px");
+                    checkGridLayoutItemSize(fourthElement, "4th element", 800, 166, 332 + offset.top + "px", offset.left + "px");
+
+                    container.igLayoutManager("option", "gridLayout", {
+                        columnHeight: "*",
+                        columnWidth: "*",
+                        rows: 3,
+                        cols: 3
+                    });
+
+                    checkGridLayoutItemSize(firstElement, "1st element", 532, 332, offset.top + "px", offset.left + "px");
+                    checkGridLayoutItemSize(secondElement, "2nd element", 266, 166, offset.top + "px", 532 + offset.left + "px");
+                    checkGridLayoutItemSize(thirdElement, "3rd element", 266, 166, 166 + offset.top + "px", 532 + offset.left + "px");
+                    checkGridLayoutItemSize(fourthElement, "4th element", 798, 166, 332 + offset.top + "px", offset.left + "px");
+
+                    container.igLayoutManager("destroy");
+                    container.remove();
+                });
+
+                function checkGridLayoutItemSize(element, elementName, width, height, top, left) {
+                    equal(element.outerWidth(), width, "The width of the " + elementName + " is not correctly set.");
+                    equal(element.outerHeight(), height, "The height of the " + elementName + " is not correctly set.");
+                    equal(element.css("top"), top, "The top of the " + elementName + " not correctly set.");
+                    equal(element.css("left"), left, "The left of the " + elementName + " is not correctly set.");
+                }
 			});
 		</script>
 		<style>
@@ -492,6 +597,27 @@
 				position: absolute;
 				width: 600px;
 			}
+
+            .red-bk {
+                background-color: red;
+            }
+
+            .blue-bk {
+                background-color: blue;
+            }
+
+            .orange-bk {
+                background-color: orange;
+            }
+
+            .yellow-bk {
+                background-color: yellow;
+            }
+
+            #grid-layout .layout-manager-item {
+                font-size: 30px;
+            }
+
 		</style>
 	</head>
 	<body>
@@ -501,9 +627,23 @@
 			<h2 id="qunit-userAgent"></h2>
 			<ol id="qunit-tests"></ol>
 		</div>
-		<div id="layoutmanager"></div>
-		<div id="flow"></div>
-		<div id="vertical"></div>
+        <div id="layoutmanager"></div>
+        <div id="flow"></div>
+        <div id="vertical"></div>
 		<div id="grid"></div>
+        <div id="grid-layout">
+            <div class="layout-manager-item red-bk">
+                1
+            </div>
+            <div class="layout-manager-item blue-bk">
+                2
+            </div>
+            <div class="layout-manager-item orange-bk">
+                3
+            </div>
+            <div class="layout-manager-item yellow-bk">
+                4
+            </div>
+        </div>
 	</body>
 </html>

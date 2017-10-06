@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( ["jquery"], factory );
 	} else {
-		factory();
+		return factory(jQuery);
 	}
 }
-(function () {
-	$ = $ || {};
-    $.ig = $.ig || {};
+(function ($) {
+	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ru = $.ig.locale.ru || {};
@@ -60,6 +59,9 @@
 			btnValueNotSupported: 'Требуется задать другое значение кнопки. Выберите значение из "dropdown", "clear" и "spin".',
 			scientificFormatErrMsg: 'Требуется другой scientificFormat. Выберите значение из "E", "e", "E+" и "e+".',
 			spinDeltaIsOfTypeNumber: "Требуется другой тип spinDelta. Следует ввести положительное число.",
+			spinDeltaIsOfTypeNumberForPeriod: "Для {0} требуется другой тип spinDelta. Следует ввести положительное число от {1} до {2}.",
+			spinDeltaIsOfTypeNumberOrObject: "Требуется другой тип spinDelta. Следует ввести положительное число или объект для определения других дельт временных периодов.",
+			spinDeltaShouldBeInRange: "Опция spinDelta для {0} должна находиться в диапазоне от {1} до {2}",
 			spinDeltaCouldntBeNegative: "Параметр spinDelta не может принимать отрицательное значение. Следует ввести положительное число.",
 			spinDeltaContainsExceedsMaxDecimals: "Максимально допустимая дробная часть для spinDelta установлена в {0}. Измените значение параметра MaxDecimals или попробуйте сократить число.",
 			spinDeltaIncorrectFloatingPoint: 'Требуется другая конфигурация для работы с плавающей запятой spinDelta. Установите для свойства dataMode редактора значение "double" или "float" либо установите целое значение для свойства spinDelta.',
