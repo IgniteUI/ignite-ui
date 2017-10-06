@@ -623,7 +623,7 @@
 .ui-icon-pivot-columns:before{content:"\e900"}
 
 /* Filter icons */
-.ui-icon-pivot-filters:before,
+.ui-icon-pivot-filters:before{content:"\e901"}
 .ui-iggrid-filterbutton:before{content:"\e901"}
 
 .ui-iggrid-filtericonclear:before{content:"\e935"}
@@ -656,7 +656,6 @@
 /* Col Order */
 .ui-iggrid-icon-sort-a-z:before{content:"\e932"}
 .ui-iggrid-icon-sort-z-a:before{content:"\e933"}
-
 
 .ui-iggrid-icon-column-chooser:before{content:'\e900'}
 .ui-iggrid-icon-move:before{content:'\e92d'}
@@ -1382,8 +1381,7 @@
     font-size: 12px !important;
 }
 
-.ui-iggrid .ui-igedit-button .ui-icon,
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a .ui-icon {
+.ui-iggrid .ui-igedit-button .ui-icon {
     top: 50% !important;
     left: 50% !important;
 }

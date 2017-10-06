@@ -4,11 +4,7 @@
 
 .ui-igedit.ui-state-hover,
 .ui-igcombo.ui-state-hover {
-  border-color: @igGray9;
-}
-
-.ui-iggrid-filterrow .ui-igcombo.ui-state-hover {
-  border-color: transparent;
+  border-color: @igGray10;
 }
 
 .ui-igedit-button-common.ui-state-highlight,
@@ -39,7 +35,6 @@
 .ui-igcombo.ui-state-default {
   background-color: transparent;
 }
-
 .ui-igedit-input,
 .ui-igcombo-fieldholder,
 .ui-igcombo.ui-widget .ui-igcombo-clear.ui-unselectable,
@@ -47,16 +42,16 @@
 .ui-igedit-cleararea,
 .ui-igedit-cleararea.ui-state-hover,
 .ui-igedit.ui-state-hover .ui-igedit-cleararea,
-.ui-igedit.ui-state-focus .ui-igedit-cleararea {
-  background: @content-bg-A;
-  border: none;
+.ui-igedit.ui-state-focus .ui-igedit-cleararea
+{
+  background: none @content-bg-A;
+  border: 0 none;
 }
-
 .ui-igcombo-clear .ui-icon,
 .ui-igedit-buttonclear .ui-icon,
 .ui-igedit-cleararea .ui-icon,
 .ui-igedit.ui-state-focus .ui-igedit-cleararea .ui-icon,
-.ui-igedit.ui-state-active .ui-igedit-cleararea .ui-icon {
+.ui-igedit.ui-state-active .ui-igedit-cleararea .ui-icon{
   background-image: @jq-icons-base;
 }
 
@@ -66,12 +61,16 @@
 .ui-igedit.ui-state-focus .ui-igedit-cleararea.ui-state-hover .ui-icon,
 .ui-igedit.ui-state-active .ui-igedit-cleararea.ui-state-hover .ui-icon,
 .ui-igedit-buttonclear.ui-state-default.ui-state-hover .ui-icon,
-.ui-igcombo-clear.ui-igcombo-clear-hover.ui-state-hover .ui-icon {
+.ui-igcombo-clear.ui-igcombo-clear-hover.ui-state-hover .ui-icon{
   background-image: @jq-icons-accent;
 }
 
 .ui-igcombo-listitem-match {
   font-weight: bold
+}
+
+.ui-igcombo-list {
+  line-height: 2.4em;
 }
 
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,

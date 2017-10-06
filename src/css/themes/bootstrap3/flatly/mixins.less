@@ -1,30 +1,27 @@
 /* states */
-.stateHover,
-.stateFocused,
-.stateActive{
-  border-color: @component-active-bg;
-  background: @component-active-bg;
-  color: @component-active-color;
-}
 
 .stateNormal {
   border: 1px solid @btn-default-border;
-  background: @btn-default-bg;
+  background-color: @btn-default-bg;
   color: @btn-default-color;
 }
 
-.btn-state-hover,
-.btn-state-focus,
-.btn-state-active{
-  border-color: @btn-primary-border;
-  background: @btn-primary-bg;
-  color: @btn-primary-color;
-  .ui-icon {
-    color: @btn-primary-color;
-  }
-  a {
-    color: @btn-primary-color;
-  }
+.stateHover {
+  border-color: darken(@btn-default-border, 12%);
+  background-color: darken(@btn-default-bg, 8%);
+  color: @btn-default-color;
+}
+
+.stateActive {
+  border: 1px solid darken(@component-active-bg, 6.5%);
+  background-color: @component-active-bg;
+  color: @component-active-color;
+}
+
+.stateFocused {
+  border: 1px solid darken(@component-active-bg, 6.5%);
+  background-color: @component-active-bg;
+  color: @component-active-color;
 }
 
 // Chart palette
@@ -145,6 +142,10 @@
 
 
 // Shadows
+
+.boxShadow {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25)!important;
+}
 
 .boxShadow-1 {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);

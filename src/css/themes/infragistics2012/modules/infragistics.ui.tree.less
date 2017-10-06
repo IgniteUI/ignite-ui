@@ -8,20 +8,27 @@
 }
 
 .ui-igtree a {
-  color: @text-color;
-  padding: 5px !important;
+  color: #333333;
 }
 
-.ui-igtree a.ui-state-hover {
-  .stateHover;
+.ui-igtree a.ui-state-hover,
+.ui-igtree a.ui-state-active {
+  color: #ffffff;
 }
 
 .ui-igtree a.ui-state-focus {
-  .stateActive
+  color: #333333;
+  background: #94D7F3 none;
+  border: 1px solid #3AB5E9;
+  outline: none;
+}
+
+.ui-igtree-dropindicator.ui-state-error {
+  border-radius: 4px 4px 4px 4px!important;
 }
 
 .ui-igtree-dropindicator.ui-state-highlight .ui-icon {
-  color: @ui-icons-darker;
+  background-image: url(images/ui-icons_222222_256x240.png);
 }
 
 .ui-igtree-insertline.ui-state-default {

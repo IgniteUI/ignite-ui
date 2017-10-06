@@ -1,6 +1,5 @@
 /***********************
   IG video player
-  Fixed colours since it works with fixed images
 ************************/
 
 .ui-igplayer .ui-igplayer-controls,
@@ -15,13 +14,21 @@
 
 .ui-igplayer-tooltip .ui-widget-content,
 .ui-igtooltip > .ui-widget-content {
-  background-color: @igGray3 !important;
-  border: 1px solid @igGray4 !important;
-  color: @text-color !important;
+  background-color: @igGray3!important;
+  background-image: none!important;
+  border: 1px solid @igGray4!important;
+  color: @text-color!important;
 }
 
 .ui-igtooltip > .ui-widget-content {
   padding: 5px;
+}
+
+.ui-igtooltip-arrow-bottom,
+.ui-igtooltip-arrow-top,
+.ui-igtooltip-arrow-left,
+.ui-igtooltip-arrow-right {
+  background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 
 .ui-igtooltip .ui-icon.ui-icon-close {
@@ -30,7 +37,7 @@
 
 .ui-igplayer .ui-state-active,
 .ui-igplayer .ui-state-focus {
-  border-width: 1px !important;
+  border-width: 1px!important;
   outline: none;
 }
 
@@ -90,24 +97,26 @@
 }
 
 .ui-igplayer-bookmark-item-time {
-  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0) !important;
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0)!important;
 }
 
 .ui-igslider .ui-igslider-bookmark.ui-state-default {
-  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0) !important;
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0)!important;
 }
 
 .ui-igplayer-bookmark-item-time:hover,
 .ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time,
 .ui-igplayer-bookmark-list li:hover .ui-igplayer-bookmark-item-time {
-  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px !important;
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px!important;
 }
 
 .ui-igslider .ui-igslider-bookmark.ui-state-hover {
-  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px !important;
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px!important;
 }
-
 /* igProgressBar */
+
+.ui-igprogressbar {}
+
 .ui-igprogressbar.ui-widget-content {
   border: 0;
 }
@@ -117,7 +126,7 @@
 }
 
 .ui-igprogressbar-range {
-  background-color: @accent2 !important;
+  background-color: @accent2!important;
 }
 
 .ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {

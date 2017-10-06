@@ -1,403 +1,70 @@
-﻿.ui-ightmleditor,
-.ui-widget .ui-ightmleditor {
-    font-size: 13px; /* to prevent the toolbars from breaking if there's no font-size set in the page */
+﻿.ui-html5-non-html5 {
+    background-color: #FFFFFF;
+    border: 1px solid #808080;
+}
+.ui-html5-non-html5-supported-message {
+    color: #808080;
+    text-align: center;
+    display: block;
+    font-size: 1em;
+    width:99%;
+    height:99%;
 }
 
-.ui-ightmleditor-content {
-    padding: 0 7px 0 5px;
+.ui-html5-non-html5-supported-message .ui-html5-current-browser-label  {
+    color: #808080;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-non-html5-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list {
+    display: block;
+    left: -200px;
+    margin: auto 50%;
+    padding: 0;
     position: relative;
+    width: 400px;
 }
-
-.ui-ightmleditor .ig-toolbar-buttons-holder .ui-button-text {
-    font-size: 0;
-}
-
-.ui-ightmleditor .ig-toolbar-buttons-holder,
-.ui-ightmleditor .ig-toolbar-buttons-holder .ui-splitbutton {
-    vertical-align: top;
-}
-
-.ui-ightmleditor .ig-toolbar-buttons-holder {
-    min-height: 26px;
-    display: flex !important;
-    flex-wrap: nowrap;
-    align-items: center;
-}
-
-.ui-ightmleditor-content iframe {
-    background-color: white;
-    background-image: none;
-    border-width: 1px;
-    display: block;
-    width: 100%;
-    position: relative;
-    margin: 0;
-}
-
-/*D.A. Bug #144045 September 17th, 2013
-Overrides the default browser textarea display:inline-block. Needed for jQuery's
- show/hide methods to toggle between display:block and display:none */
-.ui-ightmleditor-content textarea {
-    resize: none;
-    border-width: 1px;
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
-}
-
-.ui-ightmleditor-content > div {
-    background-color: white;
-    margin: 5px;
-    padding: 5px;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
-    border-top-color: #333333;
-    border-right-color: #333333;
-    border-bottom-color: #333333;
-    border-left-color: #333333;
-    border-top-style: inset;
-    border-left-style: inset;
-    overflow: auto;
-}
-
-.ui-ightmleditor .ui-igtoolbars-holder {
-    padding: .4em .4em 0 .4em;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.ui-ightmleditor .ui-igtoolbar {
-    display: flex;
-    align-items: center;
-    padding: .4em;
-    margin: 0 .4em .4em 0;
-}
-
-.ui-ightmleditor .ui-igtoolbar .ui-button {
-    width: 18px;
-    height: 18px;
-    padding: 1rem;
-    margin-right: 0.2rem;
-}
-
-.ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-button {
-    margin-left: 0;
-}
-
-/* Buttons START*/
-
-.ui-ightmleditor .ui-igtoolbar .ui-button-text,
-.ui-ightmleditor .ui-igPathFinder .ui-button-text {
-    padding-bottom: 2px;
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-top: 2px;
-}
-
-.ui-ightmleditor .ui-button-icon-only .ui-button-text {
-    padding: 0;
-}
-
-/* END */
-
-/* igTablePropertiesDialog START */
-.ui-igTablePropertiesDialog-fields {
-    list-style: none outside none;
-    margin: 3px 15px;
-    padding: 0;
-}
-
-.ui-igTablePropertiesDialog-fields li {
-    width: 50%;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list li {
     float: left;
-    padding-bottom: 4px;
-}
-
-.ui-igTablePropertiesDialog-fields label {
-    display: block;
-    font-weight: bold;
-    padding-bottom: 2px;
-}
-
-/* END */
-
-/* igPathFinder CSS*/
-
-.ui-ightmleditor .ui-igbutton-viewsource {
-    margin: .4rem;
-    height: 2rem;
-    float: left;
-}
-
-.ui-igPathFinder {
-    float: left;
-    height: 20px;
-    margin: .4em;
-    font-size: 0.75em;
-    overflow: hidden;
-}
-
-.ui-igPathFinder .ui-button {
-    height: 18px;
-    padding: 0;
-    margin: 0;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    position: relative;
-    padding-left: .5em;
-    display: inline-flex;
-}
-
-.ui-igPathFinder .ui-first-button {
-    padding-left: 0;
-}
-
-.ui-igPathFinder .ui-button:last-child::after {
-    display: none;
-}
-
-.ui-igPathFinder .ui-button::after {
-    content: '';
-    height: 14px;
-    width: 14px;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-    display: block;
-    position: absolute;
-    top: .2em;
-    right: -.4em;
-    z-index: -1;
-
-}
-
-.ui-igPathFinder ul {
-    padding: 0;
-    margin: 0;
     list-style: none;
-    width: 100%;
-}
-
-.ui-igPathFinder li {
-    padding: 0 3px;
-    float: left;
-    margin: 0 2px;
-    cursor: pointer;
-}
-
-.ui-igpathfinder-overflowMarker {
-    float: left;
-    width: 20px;
-    height: 18px;
+    display: block;
+    width: 80px;
     font-size: 12px;
-    text-align: center;
-    letter-spacing: 1px;
 }
-
-/* END */
-
-/* DIALOGS */
-.ui-ightmleditor .ui-igtooltip .ui-igtooltip-arrow-top {
-    background-image: none;
-}
-
-.ui-ightmleditor-dialog {
-}
-
-.ui-ightmleditor-dialog .ui-igdialog-content {
-    padding: 1em;
-}
-
-.ui-ightmleditor-dialog .layoutList label {
-    display: inline-block;
-    line-height: 0.8em;
-    vertical-align: top;
-}
-
-.ui-ightmleditor-dialog .layoutList {
-    margin: 0;
-    padding: 0;
-}
-
-.ui-ightmleditor-dialog .layoutList li {
-    list-style: none;
-    padding: 5px;
-    margin: 0;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a {
+    text-decoration: none;
+    color: #000000;
     display: block;
-    padding-right: 3%;
+    padding-top: 80px;
+    padding-bottom: 10px;
+    background: transparent url(../images/igBrowserLogos.png) no-repeat -5px 10px;
+    width: 64px;
+    margin-left: 7px;
 }
 
-/* Z.K. September 2nd, 2015 Bug #202031 - Dropdown menus on the custom icons are not fully visible on touch device */
-.ui-ightmleditor-dialog .layoutList > li > input {
-    display: inline-block;
-    width: 97%;
-    margin-bottom: 0.5em;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list li:hover {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
-.ui-ightmleditor-dialog .layoutList select {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5em;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-chrome-icon {
+    background-position: -5px 10px;
 }
 
-/* igImageProperties Dialog*/
-.ui-igimagepropertiesdialog label {
-    line-height: 1.91em;
-    padding-right: 3px;
-    vertical-align: middle;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-firefox-icon {
+    background-position: -79px 10px;
 }
 
-.ui-igimagepropertiesdialog-size-lbls {
-    float: left;
-    width: 20%;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-Opera-icon {
+    background-position: -147px 10px;
 }
 
-.image-dialog div {
-    padding-bottom: 7px;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-safari-icon {
+    background-position: -213px 10px;
 }
 
-.ui-igimagepropertiesdialog-aspect-ratio {
-    left: 142px;
-    position: absolute;
-    top: 123px;
-}
-
-.ui-igimagepropertiesdialog-form {
-    position: relative;
-    padding: 5px;
-}
-
-.ui-igimagepropertiesdialog-form label {
-    display: block;
-}
-
-.ui-igimagepropertiesdialog-form-input {
-    width: 228px;
-}
-
-#imagePreview {
-    text-align: center;
-}
-
-#imageSrc {
-    width: 239px;
-}
-
-/* END */
-
-/* igTableProprties Dialog */
-.ui-igtablepropertiesdialog-cols-rows-num {
-    float: left;
-}
-
-.ui-igtablepropertiesdialog-cols-rows-num input {
-    width: 44px;
-}
-
-.ui-igtablepropertiesdialog-sample-table {
-    /* R.K. 13th December 2016 #652 Force sample table width so it can fill the parent <li> */
-    width: 100%;
-}
-
-.ui-igtablepropertiesdialog-sample-table td {
-    height: 10px;
-    width: 10px;
-    cursor: pointer;
-    background-color: white;
-}
-
-/* END */
-
-.ui-ightmleditor .ui-igcombo-list {
-    height: auto !important;
-}
-
-.ui-ightmleditor .ui-igcombo-list li {
-    height: auto !important;
-    width: 100% !important;
-}
-
-.ui-ightmleditor .ui-combo-fontfamily .ui-igcombo-list {
-    font-size: 1em;
-    line-height: 1.8em;
-}
-
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton {
-    vertical-align: top;
-}
-
-/* END */
-
-/* Touch support */
-
-.touch .ui-ightmleditor .ui-igtoolbar .ui-button,
-.touchevents .ui-ightmleditor .ui-igtoolbar .ui-button,
-.pointerevents .ui-ightmleditor .ui-igtoolbar .ui-button {
-    height: 44px;
-    width: 44px;
-}
-
-.touch .ui-igPathFinder,
-.touchevents .ui-igPathFinder,
-.pointerevents .ui-igPathFinder {
-    font-size: 1em;
-}
-
-.touch .ui-ightmleditor .ui-igtoolbar .ui-igcombo,
-.touchevents .ui-ightmleditor .ui-igtoolbar .ui-igcombo,
-.pointerevents .ui-ightmleditor .ui-igtoolbar .ui-igcombo,
-.touch .ui-ightmleditor-dialog .ui-igcombo,
-.touchevents .ui-ightmleditor-dialog .ui-igcombo,
-.pointerevents .ui-ightmleditor-dialog .ui-igcombo {
-    height: 46px; /* 44px + 2px for borders */
-}
-
-.touch .ui-ightmleditor .ui-igcombo-list li,
-.touchevents .ui-ightmleditor .ui-igcombo-list li,
-.pointerevents .ui-ightmleditor .ui-igcombo-list li {
-    height: 44px !important;
-    width: 100% !important;
-}
-
-.touch .ui-combo-fontfamily li,
-.touchevents .ui-combo-fontfamily li,
-.pointerevents .ui-combo-fontfamily li {
-    line-height: 44px !important;
-}
-
-.touch .ui-ightmleditor .ui-igbutton-viewsource,
-.touchevents .ui-ightmleditor .ui-igbutton-viewsource,
-.pointerevents .ui-ightmleditor .ui-igbutton-viewsource,
-.touch .ui-igPathFinder .ui-button,
-.touchevents .ui-igPathFinder .ui-button,
-.pointerevents .ui-igPathFinder .ui-button {
-    height: 44px;
-}
-
-/* SplitButton */
-
-.ui-ightmleditor .ui-igtoolbar-wrap .ui-splitbutton .ui-igbutton.ui-state-active,
-.ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-igbutton.ui-state-active,
-.ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-igbutton.ui-state-hover.ui-state-active,
-.ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-igbutton.ui-state-hover {
-    border: none;
-}
-
-.ui-ightmleditor .ui-igtoolbar .ui-splitbutton .ui-igbutton.ui-state-focus {
-    border: none;
-    background: transparent;
-}
-
-.ui-ightmleditor .ui-igtoolbar .ui-splitbutton {
-    margin-left: 5px;
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-ie-icon {
+    background-position: -284px 10px;
 }

@@ -9,26 +9,26 @@
 }
 
 .ui-ightmleditor .ui-igtoolbar>.ui-button:first-child {
-	margin-left:0;
+    margin-left:0;
 }
-
+ 
 .ui-igtoolbar ul li.ui-igcombo-listitem {
-	margin-left: 0;
+    margin-left: 0;
 }
 
 .ui-igtoolbar .ui-igcombo-wrapper {
-	height: 24px;
+    height: 24px;
 }
 
-.ui-ightmleditor .ui-igtoolbar .ui-igcombo
+.ui-ightmleditor .ui-igtoolbar .ui-igcombo 
 {
-	vertical-align:top;
-	margin:0 0 0 4px;
-}
-
-.ui-ightmleditor .ui-igtoolbar
+    vertical-align:top;
+    margin:0 0 0 4px;
+}  
+ 
+.ui-ightmleditor .ui-igtoolbar 
 {
-	white-space:nowrap;
+    white-space:nowrap;
 }
 
 .ui-igtoolbar
@@ -38,7 +38,7 @@
 	padding: 4px;
 	margin-right: 4px;
 }
-.ui-igtoolbar-wrap
+.ui-igtoolbar-wrap 
 {
 	margin-bottom: 5px;
 }
@@ -56,24 +56,24 @@
 
 .ui-igtoolbar .ig-toolbar-separator
 {
-	overflow-x: hidden;
-	overflow-y: hidden;
-	width: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 0;
 	border-width: 0 1px 0 0;
 	background:transparent;
 	margin:0 4px 0 3px;
-	display: inline-block;
-	height: 14px;
+    display: inline-block;
+    height: 14px;
 	position: relative;
-	text-indent: -1000px;
-	top: 1px;
+    text-indent: -1000px;
+    top: 1px;
 }
 
 .ui-igtoolbar-collapse-btn
 {
-	width:12px;
-	height:24px;
-	float:left;
+	width:12px; 
+	height:24px; 
+	float:left; 
 	cursor:pointer;
 }
 
@@ -90,8 +90,8 @@
 .ui-ightmleditor .ui-splitbutton .ui-button.ui-splitbutton-arrow,
 .ui-igtoolbar .ui-igcombo
 {
-	zoom: 1; /* IE7 hasLayout fix */
-	*display: inline!important;/* IE7 hasLayout fix */
+    zoom: 1; /* IE7 hasLayout fix */
+    *display: inline!important;/* IE7 hasLayout fix */
 }
 
 /* Hide in IE7*/
@@ -103,7 +103,7 @@
 .ui-ightmleditor .hidden .ui-splitbutton .ui-button.ui-splitbutton-arrow,
 .ui-igtoolbar.hidden .ui-igcombo
 {
-	*display: none!important;/* IE7 hasLayout fix */
+    *display: none!important;/* IE7 hasLayout fix */
 }
 
 .ig-toolbar-buttons-holder{
