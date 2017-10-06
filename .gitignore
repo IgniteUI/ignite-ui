@@ -57,7 +57,7 @@ _ignite-ui-variables.css
 
 # CSS from .LESS
 variables.css
-jquery-ui-overrides.css
+src/css/themes/bootstrap3/default/framework.css
 mixins.css
 ignite-ui-variables.css
 

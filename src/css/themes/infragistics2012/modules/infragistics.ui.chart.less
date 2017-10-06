@@ -3,122 +3,81 @@
 /***********/
 
 .ui-chart-palette-1 {
-  .chartPalette1;
+  border-color: #2380A8!important;
+  background-color: #44ACD6!important;
 }
 
 .ui-chart-palette-2 {
-  .chartPalette2;
+  border-color: #333333!important;
+  background-color: #494949!important;
 }
 
 .ui-chart-palette-3 {
-  .chartPalette3;
+  border-color: #808080!important;
+  background-color: #A8A8A8!important;
 }
 
 .ui-chart-palette-4 {
-  .chartPalette4;
+  border-color: #185170!important;
+  background-color: #216E99!important;
 }
 
 .ui-chart-palette-5 {
-  .chartPalette5;
+  border-color: #879922!important;
+  background-color: #A4bA29!important;
 }
 
 .ui-chart-palette-6 {
-  .chartPalette6;
+  border-color: #FBA609!important;
+  background-color: #FDBD48!important;
 }
 
 .ui-chart-palette-7 {
-  .chartPalette7;
+  border-color: #FF5559!important;
+  background-color: #FF6A6F!important;
 }
 
 .ui-chart-palette-8 {
-  .chartPalette8;
+  border-color: #8856b1!important;
+  background-color: #9E73C1!important;
 }
 
 .ui-chart-palette-9 {
-  .chartPalette9;
+  border-color: #e3720c!important;
+  background-color: #F79036!important;
 }
 
 .ui-chart-palette-10 {
-  .chartPalette10;
+  border-color: #582c7d!important;
+  background-color: #793BAC!important;
 }
 
 .ui-chart-palette-11 {
-  .chartPalette11;
+  border-color: #386a23!important;
+  background-color: #48892D!important;
 }
 
 .ui-chart-palette-12 {
-  .chartPalette12;
-}
-
-.ui-chart-maker-palette-1 {
-  .chartMarkerPalette1;
-}
-
-.ui-chart-maker-palette-2 {
-  .chartMarkerPalette2;
-}
-
-.ui-chart-maker-palette-3 {
-  .chartMarkerPalette3;
-}
-
-.ui-chart-maker-palette-4 {
-  .chartMarkerPalette4;
-}
-
-.ui-chart-maker-palette-5 {
-  .chartMarkerPalette5;
-}
-
-.ui-chart-maker-palette-6 {
-  .chartMarkerPalette6;
-}
-
-.ui-chart-maker-palette-7 {
-  .chartMarkerPalette7;
-}
-
-.ui-chart-maker-palette-8 {
-  .chartMarkerPalette8;
-}
-
-.ui-chart-maker-palette-9 {
-  .chartMarkerPalette9;
-}
-
-.ui-chart-maker-palette-10 {
-  .chartMarkerPalette10;
-}
-
-.ui-chart-maker-palette-11 {
-  .chartMarkerPalette11;
-}
-
-.ui-chart-maker-palette-12 {
-  .chartMarkerPalette12;
-}
-
-.ui-chart-legend, .ui-chart-piechart-container {
-  border: none;
+  border-color: #C62D36!important;
+  background-color: #D3404B!important;
 }
 
 .ui-chart-piechart-container,
 .ui-chart-legend-item-text {
   font-size: 12px;
-  font-family: @font-family-base;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .ui-chart-toolbar .ui-slider-handle {
   height: 18px;
-  margin-left: -6px !important;
-  /* needed for map scenario */
-  width: 12px;
-  top: -6px !important;
+  margin-left: -12px;
+  top: -9px;
 }
 
-.igTouch .ui-chart-toolbar .ui-slider-handle {
-  border: 1px solid @igGray10;
-  background: @igGray9;
+.igTouch .ui-chart-toolbar .ui-slider-handle
+{
+  border: 1px solid #535353;
+  background: #4f4f4f url(images/gradient_1.png) repeat-x;
   margin-left: -15px;
   top: -15px;
 }
@@ -134,129 +93,68 @@
 }
 
 .ui-widget-content.ui-chart-tooltip {
-  background-color: @chartToolTipBgColor;
-  border: 1px solid #888;
-
+  background-color: rgba(255, 255, 255, 0.85);
 }
-
-.ui-chart-innerlabels {
-  color: #fff !important;
-}
-
-.ui-chart-outerlabels {
-  color: #666 !important;
-}
-
-//// Doughnut Chart ////
-
-.ui-doughnut-palette-1 {
-  .doughnutPalette1;
-}
-
-.ui-doughnut-palette-2 {
-  .doughnutPalette2;
-}
-
-.ui-doughnut-palette-3 {
-  .doughnutPalette3;
-}
-
-.ui-doughnut-palette-4 {
-  .doughnutPalette4;
-}
-
-.ui-doughnut-palette-5 {
-  .doughnutPalette5;
-}
-
-.ui-doughnut-palette-6 {
-  .doughnutPalette6;
-}
-
-.ui-doughnut-palette-7 {
-  .doughnutPalette7;
-}
-
-.ui-doughnut-palette-8 {
-  .doughnutPalette8;
-}
-
-.ui-doughnut-palette-9 {
-  .doughnutPalette9;
-}
-
-.ui-doughnut-palette-10 {
-  .doughnutPalette10;
-}
-
-.ui-doughnut-palette-11 {
-  .doughnutPalette11;
-}
-
-.ui-doughnut-palette-12 {
-  .doughnutPalette12;
-}
-
 /*******************/
 /* Sparkline chart */
 /*******************/
 
 .ui-sparkline {
-  font-family: @font-family-base;
+  font-family: "Segoe UI", Arial, sans-serif;
   font-size: 13px;
   padding: 10px 5px 10px 5px;
-  border: 0;
+  border: 0px;
 }
 
 .ui-sparkline-tooltip {
-  background-color: @chartToolTipBgColor;
-  .boxShadow-3;
-  border: 1px solid @igGray8;
-  padding: 5px 8px;
+  -moz-box-shadow: 0 0 2px #555555;
+  -webkit-box-shadow: 0 0 2px #555555;
+  box-shadow: 0 0 2px #555555;
+  padding: 3px;
 }
 
 .ui-sparkline-sparkpath {
-  background: @chartGradualPalette8;
+  background: #43ABD5;
   border: 1px solid;
 }
 
 .ui-sparkline-negativesparkpath {
-  background: @chartGradualPalette11;
+  background: #B9242E;
   border: 1px solid;
 }
 
 .ui-sparkline-trendline {
-  background: @igGray9;
+  background: #7F7F7F;
   border: 2px solid;
 }
 
 .ui-sparkline-markers {
-  background: @chartGradualPalette4;
+  background: #43ABD5;
   border: 3px solid;
 }
 
 .ui-sparkline-firstmarker {
-  background: @chartGradualPalette4;
+  background: #237FA7;
   border: 5px solid;
 }
 
 .ui-sparkline-lastmarker {
-  background: @chartGradualPalette6;
+  background: #FBC139;
   border: 5px solid;
 }
 
 .ui-sparkline-highmarker {
-  background: @chartGradualPalette2;
+  background: #A3B929;
   border: 4px solid;
 }
 
 .ui-sparkline-lowmarker {
-  background: @chartGradualPalette1;
+  background: #AF39FF;
   border: 3px solid;
 }
 
 .ui-sparkline-negativemarkers {
-  background: @chartGradualPalette11;
+  background: #E5516F;
   border: 3px solid;
 }
 
@@ -266,40 +164,37 @@
 }
 
 .ui-sparkline-axis-x {
-  font-family: @font-family-base;
-  border: 2px solid #666;
-  color: #777;
-  text-transform: uppercase;
+  font-family: "Segoe UI", Arial, sans-serif;
+  border: 2px solid #989EA3;
+  color: #406090;
 }
 
 .ui-sparkline-axis-y {
-  font-family: @font-family-base;
-  border: 2px solid #666;
-  color: #777;
+  font-family: "Segoe UI", Arial, sans-serif;
+  border: 2px solid #989EA3;
+  color: #406090;
   text-align: right;
-  text-transform: uppercase;
 }
-
 /****************/
 /* Funnel chart */
 /****************/
 
 .ui-funnel {
-  font-family: @font-family-base;
-  font-size: 12px;
-  color: @igGray6;
-  border: 0;
+  font-family: Segoe UI, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #555555;
+  border: 0px;
 }
 
 .ui-funnel-tooltip {
-  background-color: @chartToolTipBgColor;
-  .boxShadow-3;
-  border: 1px solid @igGray8;
-  padding: .5rem .8rem;
+  -moz-box-shadow: 0 0 2px #555555;
+  -webkit-box-shadow: 0 0 2px #555555;
+  box-shadow: 0 0 2px #555555;
+  padding: 3px;
 }
 
 .ui-funnel-slice {
-  color: #fff;
+  color: #FFFFFF;
   border: 0;
 }
 
@@ -311,146 +206,94 @@
   opacity: 0.49;
   border-color: transparent;
 }
-
 /********************/
 /* igDoughnut Chart */
 /********************/
 
 .ui-doughnut {
-  border: 0;
+  /*add styles*/
+
+  border: 0px;
   font-size: 12px;
-  font-family: @font-family-base;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .ui-doughnut-tooltip {
-  background-color: @chartToolTipBgColor;
-  .boxShadow-3;
-  border: 1px solid @igGray8;
-  padding: .5rem .8rem;
+  /*add styles*/
 }
-
 
 /***********************/
 /* igRadialGauge Chart */
 /***********************/
 
 .ui-radialgauge-needle {
-  background-color: @igGray7;
-  border-color: #FFFFFF;
+  background-color: #333;
 }
 
-.ui-radialgauge-needlePivot {
-  background-color: @igGray7;
-  border-color: #FFFFFF;
+.ui-radialgauge-needleCap {
+  background-color: #494949;
+  border-color: #494949;
 }
 
 .ui-radialgauge-backing {
-  background-color: #FFFFFF;
-  border: @igGray6;
+  background-color: #ecedef;
+  border: #a8a8a8;
 }
 
 .ui-radialgauge-scale {
-  background-color: transparent;
+  background-color: #44ACD6;
   border: none;
 }
 
 .ui-radialgauge-tick {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: #333;
   border-top-color: transparent;
 }
 
 .ui-radialgauge-minorTick {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #494949;
   border: none;
 }
 
 .ui-radialgauge-label {
-  background-color: #666;
+  background-color: #333;
   border: none;
 }
 
-.ui-lineargauge-tick {
-  background-color: rgba(0, 0, 0, 0.35);
-  border: transparent;
+.ui-radialgauge-range-palette-1 {
+  background-color: #A4bA29;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-minortick {
-  background-color: rgba(0, 0, 0, 0.2);
-  border: transparent;
+.ui-radialgauge-range-palette-2 {
+  background-color: #FDBD48;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-label {
-  background-color: #666;
-  border: transparent;
+.ui-radialgauge-range-palette-3 {
+  background-color: #F79036;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-backing {
-  background-color: #ffffff;
-  border-color: #ffffff;
+.ui-radialgauge-range-palette-4 {
+  background-color: #D3404B;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-needle {
-  background-color: #999999;
-  border-color: #FFFFFF;
+.ui-radialgauge-range-palette-5 {
+  background-color: #9E73C1;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-scale {
-  background-color: transparent;
-  border-color: transparent;
+.ui-radialgauge-range-palette-6 {
+  background-color: #793BAC;
+  border-top-color: transparent;
 }
 
-.ui-lineargauge-range-palette-1 {
-  background-color: @range-1;
-  border: transparent;
+.ui-radialgauge {
+  font-family: 'Arial', 'Segoe UI', 'Myriad Pro', sans-serif;
+  font-size: 16px;
 }
-
-.ui-lineargauge-range-palette-2 {
-  background-color: @range-2;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-3 {
-  background-color: @range-3;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-4 {
-  background-color: @range-4;
-  border: transparent;
-}
-
-.ui-lineargauge-range-palette-5 {
-  background-color: @range-5;
-  border: transparent;
-}
-
-.ui-lineargauge-tooltip {
-  border-style: none;
-  white-space: nowrap;
-  background-color: transparent;
-}
-
-.ui-lineargauge-range-tooltip {
-  border-style: solid;
-  border-width: 2px;
-  background-color: rgba(230, 230, 230, 0.74);
-  padding: 4px;
-  font-weight: bold;
-}
-
-.ui-lineargauge-needle-tooltip {
-  border-style: solid;
-  border-width: 2px;
-  background-color: rgba(230, 230, 230, 0.74);
-  padding: 4px;
-  font-weight: bold;
-}
-
-.ui-lineargauge-container {
-  font-family: Verdana;
-  font-size: 11px;
-}
-
 /***********************/
 /* igBulletGraph Chart */
 /***********************/
@@ -461,61 +304,57 @@
 }
 
 .ui-bulletgraph-targetvalue {
-  background-color: #333333;
-  border-color: transparent;
+  background-color: #fff;
+  border-color: #fff;
 }
-
 /* TICKS AND LABELS */
 
 .ui-bulletgraph-tick {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: #494949;
   border: transparent;
 }
 
 .ui-bulletgraph-minortick {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #EBEBEB;
   border: transparent;
 }
 
 .ui-bulletgraph-label {
-  background-color: @igGray9;
+  background-color: #333;
   border: transparent;
 }
-
 /* RANGE VALUES */
 
 .ui-bulletgraph-range-palette-1 {
-  background-color: @range-1;
+  background-color: #106b93;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-2 {
-  background-color: @range-2;
+  background-color: #0092be;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-3 {
-  background-color: @range-3;
+  background-color: #00aade;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-4 {
-  background-color: @range-4;
+  background-color: #2bb9e5;
   border: transparent;
 }
 
 .ui-bulletgraph-range-palette-5 {
-  background-color: @range-5;
+  background-color: #55c8eb;
   border: transparent;
 }
-
 /* ACTUAL VALUES */
 
 .ui-bulletgraph-value {
-  background-color: #333333;
+  background-color: #FFFFFF;
   border: transparent;
 }
-
 /* TOOLTIPS */
 
 .ui-bulletgraph-tooltip {
@@ -527,6 +366,7 @@
 .ui-bulletgraph-range-tooltip {
   border-style: solid;
   border-width: 2px;
+  border-radius: 4px;
   background-color: rgba(230, 230, 230, 0.74);
   padding: 4px;
   font-weight: bold;
@@ -535,6 +375,7 @@
 .ui-bulletgraph-value-tooltip {
   border-style: solid;
   border-width: 2px;
+  border-radius: 4px;
   background-color: rgba(230, 230, 230, 0.74);
   padding: 4px;
   font-weight: bold;
@@ -543,50 +384,131 @@
 .ui-bulletgraph-targetvalue-tooltip {
   border-style: solid;
   border-width: 2px;
+  border-radius: 4px;
   background-color: rgba(230, 230, 230, 0.74);
   padding: 4px;
   font-weight: bold;
 }
 
 .ui-bulletgraph {
-  font-family: @font-family-base;
-  color: @text-color;
+  font-family: 'Segoe UI', 'Arial', 'Myriad Pro', sans-serif;
+  font-size: 12px;
+  color: #494949;
 }
-
-.ui-bulletgraph-container {
-  font-size: 11px;
-}
-
 /***********************/
 /* igLinearGauge Chart */
 /***********************/
 
-.ui-radialgauge-range-palette-1 {
-  background-color: @range-1;
-  border-top-color: transparent;
+.ui-lineargauge-backing {
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
-.ui-radialgauge-range-palette-2 {
-  background-color: @range-2;
-  border-top-color: transparent;
+.ui-lineargauge-needle {
+  background-color: #494949;
+  border-color: #494949;
 }
 
-.ui-radialgauge-range-palette-3 {
-  background-color: @range-3;
-  border-top-color: transparent;
+.ui-lineargauge-scale {
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+/* TICKS AND LABELS */
+
+.ui-lineargauge-tick {
+  background-color: #494949;
+  border: transparent;
 }
 
-.ui-radialgauge-range-palette-4 {
-  background-color: @range-4;
-  border-top-color: transparent;
+.ui-lineargauge-minortick {
+  background-color: #494949;
+  border: transparent;
 }
 
-.ui-radialgauge-range-palette-5 {
-  background-color: @range-5;
-  border-top-color: transparent;
+.ui-lineargauge-label {
+  background-color: #333;
+  border: transparent;
+}
+/* RANGE VALUES */
+
+.ui-lineargauge-range-palette-1 {
+  background-color: #106b93;
+  border: transparent;
 }
 
-.ui-radialgauge-container {
-  font-family: Verdana;
-  font-size: 11px;
+.ui-lineargauge-range-palette-2 {
+  background-color: #0092be;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-3 {
+  background-color: #00aade;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-4 {
+  background-color: #2bb9e5;
+  border: transparent;
+}
+
+.ui-lineargauge-range-palette-5 {
+  background-color: #55c8eb;
+  border: transparent;
+}
+/* NEEDLES */
+
+.ui-lineargauge-needle-palette-1 {
+  background-color: #e0e0e0;
+  border: transparent;
+}
+
+.ui-lineargauge-needle-palette-2 {
+  background-color: #c0c0c0;
+  border: transparent;
+}
+
+.ui-lineargauge-needle-palette-3 {
+  background-color: #999999;
+  border: transparent;
+}
+
+.ui-lineargauge-needle-palette-4 {
+  background-color: #494949;
+  border: transparent;
+}
+
+.ui-lineargauge-needle-palette-5 {
+  background-color: #353535;
+  border: transparent;
+}
+/* TOOLTIPS */
+
+.ui-lineargauge-tooltip {
+  border-style: none;
+  white-space: nowrap;
+  background-color: transparent;
+}
+
+.ui-lineargauge-range-tooltip {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
+}
+
+.ui-lineargauge-needle-tooltip {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
+}
+
+.ui-lineargauge {
+  font-family: 'Segoe UI', 'Arial', 'Myriad Pro', sans-serif;
+  font-size: 12px;
+  color: #494949;
 }

@@ -16,7 +16,7 @@
     width: 100%;
 }
 
-.ui-igplayer a {
+.ui-igplayer a { 
     text-decoration: none;
 }
 
@@ -38,7 +38,7 @@
     -webkit-box-shadow    : 0px 0px 5px 2px #000;
     -moz-box-shadow        : 0px 0px 5px 2px #000;
     box-shadow            : 0px 0px 5px 2px #000;
-
+        
     /*rounded corners
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -124,7 +124,7 @@
     -ms-filter: "alpha(opacity=0)";
     -khtml-opacity: 0;
     -moz-opacity: 0;
-
+ 
     -webkit-transform: translate(0, 10px);
     -moz-transform: translate(0, 10px);
     -o-transform: translate(0, 10px);
@@ -199,7 +199,7 @@
     margin-top: 0;
     border: none;
     height: 15px;
-
+    
     /*rounded corners
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -222,7 +222,7 @@
     border-radius: 4px;*/
 }
 
-.ui-igplayer .ui-igprogressbar-range {
+.ui-igplayer .ui-igprogressbar-range { 
     height: 2px;
 }
 
@@ -319,7 +319,7 @@
 }
 
 .ui-igplayer  .ui-igplayer-centerplaybutton-play span,
-.ui-igplayer .ui-igplayer-centerplaybutton-pause span {
+.ui-igplayer .ui-igplayer-centerplaybutton-pause span { 
     display: none;
 }
 
@@ -377,7 +377,7 @@
     color: white;
 }
 
-.ui-igplayer-title-controls {
+.ui-igplayer-title-controls { 
     position: relative;
 }
 
@@ -390,7 +390,7 @@
     cursor: default;
 }
 
-.ui-igplayer-playback-alone {
+.ui-igplayer-playback-alone { 
     padding-right: 5px;
 }
 
@@ -401,10 +401,10 @@
 
 /* Videoplayer state:active */
 .ui-igplayer-active {
-
+    
 }
 
-.ui-igplayer-active-video {
+.ui-igplayer-active-video { 
     outline: #000 dotted 1px;
 }
 
@@ -446,14 +446,14 @@
 }
 
 .ui-igplayer-bookmark-list > li:hover {
-
+    
 }
 
 .ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
 
 }
 
-.ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time {
+.ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time { 
     background: transparent url("../images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -18px;
 }
 
@@ -464,20 +464,20 @@
     background: url("../images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px transparent;
 }
 
-.ui-igplayer-bookmark-list > li:hover .ui-igplayer-bookmark-item-time {
+.ui-igplayer-bookmark-list > li:hover .ui-igplayer-bookmark-item-time { 
     background: transparent url("../images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -18px;
 }
 
 .ui-igplayer-bookmark-item-disabled {
-
+	
 }
 
-.ui-igplayer-bookmark-item-title {
+.ui-igplayer-bookmark-item-title { 
     padding-right: 20px;
 }
 
 /* Partially added to show some visual feedback among all Jquery themes when hovered */
-.ui-igplayer-bookmark-item-title:hover {
+.ui-igplayer-bookmark-item-title:hover { 
     text-decoration: underline;
 }
 
@@ -504,11 +504,11 @@
     line-height: 20px;
 }
 
-.ui-igplayer-related-video-bar {
+.ui-igplayer-related-video-bar { 
     position: relative;
 }
 
-.ui-igplayer-related-video-full-screen {
+.ui-igplayer-related-video-full-screen { 
     height: 99%;
 }
 
@@ -533,7 +533,7 @@
 }
 
 .ui-igplayer-related-video-hover {
-
+    
 }
 
 .ui-igplayer-related-video-hover img {
@@ -543,7 +543,7 @@
 
 .ui-igplayer-banner-container {
     position: absolute;
-    margin: 5px 0 0 10px;
+	margin: 5px 0 0 10px;
 }
 
 .ui-igplayer-banner {
@@ -558,7 +558,7 @@
 }
 
 .ui-igplayer-banner-close {
-
+    
 }
 
 .ui-igplayer-banner-close .ui-igbutton {
@@ -567,7 +567,7 @@
 }
 
 .ui-igplayer-banner-close-icon {
-
+    
 }
 
 .ui-igplayer-related-list {
@@ -695,18 +695,18 @@
 
 .ui-igplayer-related-video-hover-x24 {
     cursor: pointer;
-    z-index: 20000;
+	z-index: 20000;
     background: transparent url("../images/igVideoPlayer/igPlayButton24.png") no-repeat 50% 50%;
 }
 
 .ui-igplayer-related-video-hover-x32 {
     cursor: pointer;
-    z-index: 20000;
+	z-index: 20000;
     background: transparent url("../images/igVideoPlayer/igPlayButton32.png") no-repeat 50% 50%;
 }
 
 .ui-igplayer-related-video-hover-x48 {
     cursor: pointer;
-    z-index: 20000;
+	z-index: 20000;
     background: transparent url("../images/igVideoPlayer/igPlayButton48.png") no-repeat 50% 50%;
 }

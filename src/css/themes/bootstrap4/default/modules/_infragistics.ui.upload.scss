@@ -1,4 +1,3 @@
-
 /************/
 /* igUpload */
 /************/
@@ -43,16 +42,16 @@
 
 .ui-igupload .ui-igprogressbar {
   background-color: $progress-bg;
-  height: 11px !important;
-  border: 0 !important;
+  height: 11px!important;
+  border: 0!important;
 }
 
 .ui-igupload-progressbar-filesize {
-  color: $body-color;
+  color: gray;
 }
 
 .ui-igupload-summaryprogress-label {
-  color: $body-color;
+  color: gray;
   top: 10px;
 }
 
