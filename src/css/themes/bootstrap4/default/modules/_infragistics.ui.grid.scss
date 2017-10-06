@@ -429,13 +429,11 @@
   border: 1px solid transparent;
 }
 
-.ui-iggrid-filterbutton.ui-state-hover {
-  //background-color: $btn-default-bg;
-}
-
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton.ui-state-hover,
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton,
 .ui-iggrid-filterbutton.ui-state-active,
 .ui-iggrid-filterbutton.ui-state-focus {
-  //background-color: $btn-primary-bg;
+  color: $brand-primary;
 }
 
 .ui-igedit-dropdown,

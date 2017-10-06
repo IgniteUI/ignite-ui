@@ -2,9 +2,6 @@
 /* Ignite UI Infragistics theme */
 /********************************/
 @import "icons-styles.css";
-body {
-  background: #FFFFFF;
-}
 .stateNormal {
   border: 1px solid #D9D9D9;
   background-color: #ececec;

@@ -1228,27 +1228,27 @@ body .ui-tooltip {
 }
 .ui-icon,
 .ui-widget-content .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #888888;
 }
 .ui-widget-header .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #888888;
 }
 .ui-state-default .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-state-hover .ui-icon,
 .ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-state-active .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  color: #ffffff;
 }
 .ui-state-highlight .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #888888;
 }
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png);
+  color: #888888;
 }
 /* positioning */
 .ui-icon-carat-1-n {
@@ -3241,10 +3241,14 @@ body .ui-tooltip {
 .ui-iggrid-filterbutton {
   border: 1px solid transparent;
 }
-.ui-iggrid-filterbutton.ui-state-hover,
+.ui-igedit.ui-state-default .ui-icon {
+  color: #888888;
+}
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton.ui-state-hover,
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton,
 .ui-iggrid-filterbutton.ui-state-active,
 .ui-iggrid-filterbutton.ui-state-focus {
-  border: 1px solid #2788B1;
+  color: #2686ae;
 }
 .ui-igedit-dropdown,
 .ui-iggrid-filterdd,

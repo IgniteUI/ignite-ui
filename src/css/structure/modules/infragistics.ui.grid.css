@@ -912,6 +912,8 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     height            : 60px;
     width             : 60px;
     margin            : 0 auto;
+    font-size: 3em;
+    left: 0;
 }
 
 .svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer {

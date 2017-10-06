@@ -415,17 +415,12 @@
 .ui-iggrid-filterbutton {
   border: 1px solid transparent;
 }
-.ui-icon.ui-iggrid-filterbutton::before {
-  content:none;
-}
 
-.ui-iggrid-filterbutton.ui-state-hover {
-  background-color: @igGray7;
-}
-
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton.ui-state-hover,
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton,
 .ui-iggrid-filterbutton.ui-state-active,
 .ui-iggrid-filterbutton.ui-state-focus {
-  background-color: @accent1;
+  color: @accent2;
 }
 
 .ui-igedit-dropdown,

@@ -3395,6 +3395,12 @@ body .ui-tooltip {
 .ui-iggrid-filterbutton {
   border: 1px solid transparent;
 }
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton.ui-state-hover,
+.ui-state-hover .ui-icon.ui-iggrid-filterbutton,
+.ui-iggrid-filterbutton.ui-state-active,
+.ui-iggrid-filterbutton.ui-state-focus {
+  color: #008cba;
+}
 .ui-igedit-dropdown,
 .ui-iggrid-filterdd,
 .ui-iggrid-featurechooser-dropdown-dialog,
