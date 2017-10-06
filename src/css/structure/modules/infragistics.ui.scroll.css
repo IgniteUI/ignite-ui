@@ -132,7 +132,7 @@
 }
 
 .igscroll-downarrow-single {
-	bottom: 0;
+	bottom: 0px;
 }
 
 .igscroll-downarrow:before {
@@ -141,7 +141,7 @@
 	-ms-transform: rotate(-180deg);
 	-o-transform: rotate(-180deg);
 	transform: rotate(-180deg);
-}
+}		
 
 .igscroll-downarrow:active:before {
 	background-image: url('../images/igScroll/up_active.png');
@@ -154,8 +154,8 @@
 
 /* Thumb Drag */
 .igscroll-vdrag {
-	display: block;
-	position: relative;
+	display: block; 
+	position: relative; 
 	z-index: 1;
 	overflow: hidden;
 	background: #999999;
@@ -190,11 +190,11 @@
 }
 
 
-.igscroll-vdrag:hover {
+.igscroll-vdrag:hover { 
 	background: #737373;
 }
 
-.igscroll-vdrag:active {
+.igscroll-vdrag:active { 
 	background: #575757;
 	cursor: default;
 }
@@ -205,7 +205,7 @@
 .igscroll-hcontainer {
 	height: 15px;
 	position: absolute;
-	bottom: 0;
+	bottom: 0px;
 	width: 100%;
 }
 
@@ -234,7 +234,7 @@
 	background: #999999;
 }
 
-.igscroll-harrow:active {
+.igscroll-harrow:active { 
 	background: #757575;
 }
 
@@ -298,7 +298,7 @@
 }
 
 .igscroll-rightarrow-single {
-	right: 0;
+	right: 0px;
 }
 
 .igscroll-rightarrow:before {
@@ -355,11 +355,11 @@
 	transition-timing-function: ease-in;
 }
 
-.igscroll-hdrag:hover {
+.igscroll-hdrag:hover { 
 	background: #737373;
 }
 
-.igscroll-hdrag:active {
+.igscroll-hdrag:active { 
 	background: #575757;
 	cursor: default;
 }
@@ -374,11 +374,11 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 	top: 0;
-	right: 0;
+	right: 0px;
 }
 
 .igscroll-vnative-outer-single {
-	bottom: 0;
+	bottom: 0px;
 }
 
 .igscroll-vnative-inner {
@@ -390,12 +390,12 @@
 	height: 18px;
 	overflow-x: auto;
 	overflow-y: hidden;
-	left: 0;
-	bottom: 0;
+	left: 0px;
+	bottom: 0px;
 }
 
 .igscroll-hnative-outer-single {
-	right: 0;
+	right: 0px;
 }
 
 .igscroll-hnative-inner {
@@ -404,7 +404,7 @@
 
 .igscroll-filler {
 	position: absolute;
-	right: 0;
-	bottom: 0;
+	right: 0px;
+	bottom: 0px;
 	background-color: white;
 }

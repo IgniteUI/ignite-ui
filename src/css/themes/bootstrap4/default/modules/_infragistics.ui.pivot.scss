@@ -2,24 +2,10 @@
 /* igPivot Grid */
 /****************/
 
-.ui-igpivotdataselector {
-  background: $body-bg;
-}
-
-.ui-igpivotgrid-header {
-  .ui-icon:hover,
-  .ui-icon:focus {
-    color: $brand-primary;
-  }
-}
-
-.ui-igpivot-metadataitem {
-  span {
-    color: $btn-secondary-color;
-  }
-  .ui-icon:hover {
-    color: $brand-primary;
-  }
+.ui-igpivot-metadataitem.ui-state-default {
+  background: $btn-secondary-bg;
+  border: 1px solid $btn-secondary-border;
+  color: $btn-secondary-color;
 }
 
 .ui-igpivot-metadataitem .ui-widget .ui-corner-all .ui-state-default .ui-draggable {
@@ -32,21 +18,17 @@
 
 .ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter,
 .ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
-  background-position: -64px 0 !important;
+  background-position: -64px 0!important;
 }
 
-.ui-igpivotdataselector-dropareas th {
-  color: $body-color;
+.ui-igpivot-filterdropdown .ui-igtree-node {
+  line-height: 2em!important;
 }
 
-.ui-igtree-node a:hover {
-  color: $btn-primary-color;
+.ui-igpivot-filterdropdown .ui-igtree-expander {
+  top: 1em!important;
 }
 
-.ui-igtree-expander:hover {
-  color: $brand-primary;
-}
-
-.ui-igtree-expander.ui-icon-triangle-1-s {
-  color: $brand-primary;
+.ui-igpivot-filterdropdown span[data-role=checkbox] {
+  margin-top: 0.65em;
 }

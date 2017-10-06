@@ -279,7 +279,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
 .ui-iggrid-scrolldiv {
     border-top       : none !important;
     position         : relative;
-    min-height       : 0;
+    min-height       : 0%;
     background-color : #f3f3f3;
     border-bottom    : 1px solid #dcdcdc;
 }
@@ -540,17 +540,14 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
     margin-top : 0;
 }
 
-/*
-BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the cell
-.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
-{
-    float:left;
-	width:calc(100% - 10px);
+.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container {
+    float : left;
+    width : calc(100% - 10px);
 }
-*/
+
 .ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
     float : left;
-    width : calc(100% - 27px); /* This depend on how big is the button for the dropdown menu*/
+    width : calc(100% - 35px);
 }
 
 .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igeditor-input-container {
@@ -668,10 +665,11 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-iggrid td.ui-iggrid-filtercell {
-    padding : 0;
-    margin  : 0;
-    border  : none;
-    height  : 1.6em;
+    padding    : 0;
+    margin     : 0;
+    border     : 0 none;
+    border-top : none;
+    height     : 1.6em;
 }
 
 .ui-iggrid-filtercell input {
@@ -692,7 +690,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 /*dropdowns in grids*/
 .ui-iggrid .ui-iggrid-pagesizedropdown.ui-state-default,
 .ui-iggrid .ui-iggrid-pagedropdowncontainer.ui-state-default {
-    background              : #fff;
+    background              : #fff none;
     /* Prevent background color leak outs */
     -webkit-background-clip : padding-box;
     -moz-background-clip    : padding;
@@ -764,15 +762,15 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 /* Filtering icons */
-.ui-iggrid-filterbutton {
-    /*background : url(../images/igGrid/filter-icons-333333.png) no-repeat -32px 0 !important;*/
-    border : 1px solid transparent;
+/*.ui-iggrid-filterbutton
+{
+    background: url(../images/igGrid/filter-icons-333333.png) no-repeat -32px 0!important;  
+    border: 1px solid transparent;
 }
-
-.ui-iggrid th .ui-iggrid-filterbutton, .ui-iggrid-filterbuttonright {
-    /*background : url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -32px 0 !important;*/
-}
-
+.ui-iggrid th .ui-iggrid-filterbutton, .ui-iggrid-filterbuttonright 
+{
+    background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -32px 0!important;
+}*/
 /* to remove this important we need to remove ui-icon and ui-icon-triangle-1-s from the filter button*/
 
 .ui-iggrid-filtericon {
@@ -863,19 +861,8 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 /* calendar icons */
-.ui-iggrid-filtericonafter,
-.ui-iggrid-filtericonbefore,
-.ui-iggrid-filtericontoday,
-.ui-iggrid-filtericonyesterday,
-.ui-iggrid-filtericonthismonth,
-.ui-iggrid-filtericonlastmonth,
-.ui-iggrid-filtericonnextmonth,
-.ui-iggrid-filtericonthisyear,
-.ui-iggrid-filtericonlastyear,
-.ui-iggrid-filtericonnextyear,
-.ui-iggrid-filtericonon,
-.ui-iggrid-filtericonnoton {
-    /*background : url(../images/igGrid/filter-icons-333333.png) no-repeat -400px 0;*/
+.ui-iggrid-filtericonafter, .ui-iggrid-filtericonbefore, .ui-iggrid-filtericontoday, .ui-iggrid-filtericonyesterday, .ui-iggrid-filtericonthismonth, .ui-iggrid-filtericonlastmonth, .ui-iggrid-filtericonnextmonth, .ui-iggrid-filtericonthisyear, .ui-iggrid-filtericonlastyear, .ui-iggrid-filtericonnextyear, .ui-iggrid-filtericonon, .ui-iggrid-filtericonnoton {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -400px 0;
 }
 
 /*feature chooser icons*/
@@ -920,23 +907,25 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 /* TOUCH UI icons */
 .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer,
 .no-svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer {
-    /*background-image  : url(../images/igGrid/touch-icons.png) !important;*/
-    /*background-repeat : no-repeat;*/
-    height    : 60px;
-    width     : 60px;
-    margin    : 0 auto;
-    font-size : 30px;
-    left      : 0;
+    /*background-image:url(../images/igGrid/touch-icons.png)!important;*/
+    background-repeat : no-repeat;
+    height            : 60px;
+    width             : 60px;
+    margin            : 0 auto;
+    font-size: 3em;
+    left: 0;
 }
 
 .svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer {
-    background-image : url(../images/igGrid/touch-icons.svg) !important;
+    /*background-image:url(../images/igGrid/touch-icons.svg)!important;*/
 }
 
 .ui-iggrid-featurechooser-submenu {
     z-index            : 20000;
+    background-color   : #e5e5e5;
     border             : 1px solid #b1b1b1;
     padding            : 4px;
+
     -moz-box-shadow    : 0 0 10px grey;
     -webkit-box-shadow : 0 0 10px grey;
     box-shadow         : 0 0 10px grey;
@@ -1273,15 +1262,15 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     line-height : 20px;
     text-align  : center;
     width       : 16px;
-    background  : url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -576px 0;
+    /* background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -576px 0;*/
 }
 
 /* summaries */
 
 .ui-iggrid th .ui-iggrid-summaries-header-icon.ui-icon {
-    display    : inline-block;
-    float      : right;
-    background : transparent url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -416px 0;
+    display : inline-block;
+    float   : right;
+    /*background: transparent url(../images/igGrid/filter-icons-FFFFFF.png)  no-repeat -416px 0;*/
 }
 
 .ui-iggrid-summaries-headerbuttoncontainer {
@@ -1292,7 +1281,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-iggrid tfoot td.ui-state-default .ui-icon.ui-iggrid-icon-summaries {
-    background : transparent url(../images/igGrid/filter-icons-333333.png) no-repeat -416px 0;
+    /*background: transparent url(../images/igGrid/filter-icons-333333.png)  no-repeat -416px 0;*/
 }
 
 .ui-iggrid-summaries-footer-icon-container {
@@ -1627,12 +1616,13 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-widget-content.ui-iggrid-buttoncontainer {
-    white-space  : nowrap;
-    z-index      : 1;
-    border-width : 1px;
-    border-style : solid;
-    box-sizing   : border-box;
-    padding      : .2em;
+    white-space        : nowrap;
+    z-index            : 1;
+    -moz-box-shadow    : 0 0 5px #555;
+    -webkit-box-shadow : 0 0 5px #555;
+    box-shadow         : 0 0 5px #555;
+    border-width       : 1px;
+    border-style       : solid;
 }
 
 .ui-iggrid-button {
@@ -1989,10 +1979,7 @@ td.ui-iggrid-addrow {
 .ui-iggrid-groupby-dialog-groupedcolumns .ui-iggrid-dialog-groupedbuttons,
 .ui-iggrid-sorting-dialog-sortedcolumns .ui-iggrid-sorting-dialog-sortbybuttons {
     line-height : 1.3em;
-    width       : 1.6em;
-    height      : 1.6em;
-    top         : 50%;
-    margin-top  : -1em;
+    width       : 1.8em;
     float       : right;
     position    : absolute;
 }
@@ -2043,9 +2030,10 @@ td.ui-iggrid-addrow {
     float      : left;
     position   : relative;
     top        : 50%;
+
     margin-top : -1em;
-    height     : 1.6em;
-    width      : 1.6em;
+    height     : 2em;
+    width      : 3.8em;
 }
 
 .ui-iggrid-dialog-groupby-button,
@@ -2334,11 +2322,6 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
     padding     : 5px;
 }
 
-.ui-iggrid-featurechooser-list-submenu li.ui-state-default {
-    white-space : nowrap;
-}
-
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover {
     background : #eee;
 }
-

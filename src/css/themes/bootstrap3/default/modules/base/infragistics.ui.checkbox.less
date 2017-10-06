@@ -13,7 +13,8 @@
 .ui-igcheckbox-small.ui-state-hover,
 .ui-igcheckbox-normal.ui-state-hover,
 .ui-igcombo-checkbox.ui-state-hover {
-  border-color: darken(@input-border, 12%);
+  border: 1px solid darken(@input-border, 12%);
+;
 }
 
 .ui-igcheckbox-small.ui-state-focus,
@@ -35,7 +36,7 @@
 .ui-iggrid th .ui-igcheckbox-normal.ui-state-default .ui-icon,
 .ui-igcombo-checkbox .ui-icon,
 .ui-state-hover .ui-igcombo-checkbox .ui-icon {
-  color: @ui-icons-darker;
+  background-image: @ui-icons-darker;
 }
 
 .ui-icon-check-f {
@@ -43,6 +44,8 @@
 }
 
 .ui-icon-check-p {
+  /*background-position: -96px -160px;*/
+
   background-color: @gray-dark;
   background-image: none !important;
   border: 2px solid @body-bg;

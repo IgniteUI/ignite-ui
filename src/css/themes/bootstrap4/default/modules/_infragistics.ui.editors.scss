@@ -8,12 +8,19 @@
 
 .ui-ightmleditor {
   background-color: $body-bg;
-  border: 1px solid $table-border-color;
+  /* Bootstrap 4 alpha has a new navbar, we hope with the final release they'll have matching variables
+  border: 1px solid $navbar-default-border;
+  */
+  border: 1px solid darken(#f8f8f8, 6.5%);
 }
 
 .ui-ightmleditor .ui-igtoolbar {
-  background-color: $gray-lightest;
-  border: 1px solid $table-border-color;
+  /* Bootstrap 4 alpha has a new navbar, we hope with the final release they'll have matching variables
+  background-color: $navbar-default-bg;
+  border: 1px solid $navbar-default-border;
+  */
+  background-color: #f8f8f8;
+  border: 1px solid darken(#f8f8f8, 6.5%);
 }
 
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-igbutton,
@@ -52,7 +59,7 @@
 .ui-splitbutton-arrow.ui-state-hover .ui-icon,
 .ui-splitbutton-arrow.ui-state-active .ui-icon,
 .ui-splitbutton-arrow.ui-state-focus .ui-icon {
-  color: $ui-icons-light;
+  background-image: $ui-icons-light;
 }
 
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
@@ -73,7 +80,6 @@
 .ui-ightmleditor .ui-igcombo-fieldholder {
   border-color: $input-border;
 }
-
 /* html editor icons*/
 
 .ui-igbutton-viewsource.ui-state-default .ui-igbutton-viewsource-icon {
@@ -289,7 +295,6 @@
   -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
   box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
-
 /*breadcrumb styling*/
 
 .ui-igPathFinder .ui-button::after {

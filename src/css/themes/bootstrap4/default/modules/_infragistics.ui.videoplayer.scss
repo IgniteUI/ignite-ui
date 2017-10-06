@@ -15,10 +15,10 @@
 
 .ui-igplayer-tooltip .ui-widget-content,
 .ui-igtooltip > .ui-widget-content {
-  background-color: #e5e5e5 !important; //left this because of the arrow bg colour
-  background-image: none !important;
-  border: 1px solid #c6c6c6 !important;
-  color: $body-color !important;
+  background-color: #e5e5e5!important; //left this because of the arrow bg colour
+  background-image: none!important;
+  border: 1px solid #c6c6c6!important;
+  color: $body-color!important;
 }
 
 .ui-igtooltip > .ui-widget-content {
@@ -29,7 +29,7 @@
 .ui-igtooltip-arrow-top,
 .ui-igtooltip-arrow-left,
 .ui-igtooltip-arrow-right {
-  background-image: url(../../../structure/images/igPopover/igPopoverArrows.png) !important;
+  background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 
 .ui-igtooltip .ui-icon.ui-icon-close {
@@ -38,17 +38,17 @@
 
 .ui-igplayer .ui-state-active,
 .ui-igplayer .ui-state-focus {
-  border-width: 1px !important;
+  border-width: 1px!important;
   outline: none;
 }
 
 .ui-igplayer .ui-state-hover .ui-icon {
-  color: $ui-icons-dark;
+  background-image: $ui-icons-dark;
 }
 
 .ui-igplayer .ui-state-focus .ui-icon,
 .ui-igplayer .ui-state-active .ui-icon {
-  color: $ui-icons-dark;
+  background-image: $ui-icons-dark;
 }
 
 .ui-igplayer .ui-igplayer-bookmark-item-title:hover {
@@ -73,7 +73,7 @@
 
 .ui-igplayer .ui-igbutton.ui-state-active .ui-icon,
 .ui-igplayer .ui-button.ui-state-active .ui-icon {
-  color: $ui-icons-light;
+  background-image: $ui-icons-light;
 }
 
 .ui-igplayer .ui-igbutton.ui-state-focus,
@@ -96,24 +96,26 @@
 }
 
 .ui-igplayer-bookmark-item-time {
-  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0) !important;
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0)!important;
 }
 
 .ui-igslider .ui-igslider-bookmark.ui-state-default {
-  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0) !important;
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0)!important;
 }
 
 .ui-igplayer-bookmark-item-time:hover,
 .ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time,
 .ui-igplayer-bookmark-list li:hover .ui-igplayer-bookmark-item-time {
-  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px !important;
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px!important;
 }
 
 .ui-igslider .ui-igslider-bookmark.ui-state-hover {
-  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px !important;
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px!important;
 }
-
 /* igProgressBar */
+
+.ui-igprogressbar {}
+
 .ui-igprogressbar.ui-widget-content {
   border: 0;
 }
@@ -123,7 +125,7 @@
 }
 
 .ui-igprogressbar-range {
-  background-color: $progress-bar-bg !important;
+  background-color: $progress-bar-bg!important;
 }
 
 .ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
