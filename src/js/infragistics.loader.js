@@ -124,6 +124,7 @@ $.ig.loaderClass.locale.descriptions = {
 	radialDescription: "Contains the radial series to display category data evenly across a full circle.",
 	rangeCategoryDescription: "Contains the range category series, used to depict the spread between two values.",
 	scatterDescription: "Contains the scatter series used to depict individual points in orthogonal (Cartesian) coordinate system.",
+	shapeDescription: "Contains the shape series used to depict areas in orthogonal (Cartesian) coordinate system.",
 	categoryDescription: "Contains the category series that allow data for separate distinct category axis values to be plotted.",
 	stackedDescription: "Containes the stacked series used to visualize categorized data in stacked segments.",
 	verticalDescription: "Contains the column series that vsualizes categorized data with vertical columns.",
@@ -518,10 +519,18 @@ $.ig.dependencies = [
 	{
 		widget: "Scatter",
 		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [ "$path$/modules/infragistics.datachart_scatter.js" ],
 		description: $.ig.loaderClass.locale.descriptions.scatterDescription
+	},
+	{
+		widget: "Shape",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_shape.js" ],
+		description: $.ig.loaderClass.locale.descriptions.shapeDescription
 	},
 	{
 		widget: "Stacked",
@@ -698,7 +707,6 @@ $.ig.dependencies = [
 		scripts: [
 			"$path$/modules/infragistics.datachart_category.js",
 			"$path$/modules/infragistics.categorychart.js",
-			"$path$/modules/infragistics.ui.basechart.js",
 			"$path$/modules/infragistics.ui.categorychart.js"
 			],
 		css: [
@@ -706,6 +714,40 @@ $.ig.dependencies = [
 			"$path$/structure/modules/infragistics.ui.categorychart.css"
 			],
 		description: $.ig.loaderClass.locale.descriptions.categoryChartDescription
+	},
+	{
+        widget: "Interactivity",
+        parentWidget: "igCategoryChart",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+    },
+	{
+        widget: "VisualData",
+        parentWidget: "igCategoryChart",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+    },
+	{
+        widget: "igCategoryChart.*",
+		dependency: [ { name: "Interactivity", parentWidget: "igCategoryChart" },
+					{ name: "VisualData", parentWidget: "igCategoryChart" }
+		]
+	},
+
+	{
+		widget: "igShapeChart",
+		dependency: [ { name: "_ig_dv_dataseriesadapter" }, { name: "igWidget" },
+					{ name: "Scatter" }, { name: "Shape" },
+					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [
+			"$path$/modules/infragistics.shapechart.js",
+			"$path$/modules/infragistics.ui.shapechart.js"
+			],
+		css: [ ],
+		description: $.ig.loaderClass.locale.descriptions.shapeChartDescription
 	},
 	{
         widget: "Interactivity",
