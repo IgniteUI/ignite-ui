@@ -33,7 +33,7 @@
 }
 
 .ui-igtooltip .ui-icon.ui-icon-close {
-  background-image: $ui-icons-darker !important;
+  color: $ui-icons-darker !important;
 }
 
 .ui-igplayer .ui-state-active,
@@ -43,12 +43,12 @@
 }
 
 .ui-igplayer .ui-state-hover .ui-icon {
-  background-image: $ui-icons-dark;
+  color: $ui-icons-dark;
 }
 
 .ui-igplayer .ui-state-focus .ui-icon,
 .ui-igplayer .ui-state-active .ui-icon {
-  background-image: $ui-icons-dark;
+  color: $ui-icons-dark;
 }
 
 .ui-igplayer .ui-igplayer-bookmark-item-title:hover {
@@ -73,7 +73,7 @@
 
 .ui-igplayer .ui-igbutton.ui-state-active .ui-icon,
 .ui-igplayer .ui-button.ui-state-active .ui-icon {
-  background-image: $ui-icons-light;
+  color: $ui-icons-light;
 }
 
 .ui-igplayer .ui-igbutton.ui-state-focus,
@@ -144,7 +144,7 @@
 
 .ui-igplayer-related-video-container a.ui-button.ui-igbutton.ui-state-hover .ui-icon,
 .ui-igplayer-related-video-bar .ui-button.ui-igbutton.ui-state-hover .ui-icon {
-  background-image: $ui-icons-light;
+  color: $ui-icons-light;
 }
 
 .ui-igplayer-bookmark-list li:hover {
