@@ -419,7 +419,7 @@ $.ig.dependencies = [
 	{
 		widget: "igChartLegend",
 		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_legend" }, { name: "igWidget" }, { name: "_ig_dv_commonwidget" },  ],
+		dependency: [ { name: "_ig_legend" }, { name: "igWidget" }, { name: "_ig_dv_commonwidget" }  ],
 		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js" ],
 		description: $.ig.loaderClass.locale.descriptions.chartLegendDescription
 	},
@@ -447,7 +447,8 @@ $.ig.dependencies = [
 
 	{
 		widget: "igDataChart",
-		dependency: [ { name: "_ig_datachart_core" }, { name: "igWidget" }, { name: "_ig_dv_commonwidget" },
+		dependency: [ { name: "_ig_datachart_core" }, { name: "igWidget" },
+					{ name: "_ig_dv_commonwidget" },
 					{ name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.chart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
