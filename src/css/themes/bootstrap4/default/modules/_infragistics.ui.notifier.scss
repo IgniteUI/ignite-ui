@@ -2,9 +2,9 @@
 /* Notifier      */
 /****************/
 .ui-igpopover.ui-ignotify-error .ui-icon {
-  background-image: $ui-icons-light;
+  color: $ui-icons-light;
 }
 
 .ui-igpopover.ui-ignotify-error.ui-ignotify-inline .ui-icon {
-  background-image: $ui-icons-dark;
+  color: $ui-icons-dark;
 }
