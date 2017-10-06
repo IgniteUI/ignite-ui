@@ -746,7 +746,9 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.shapechart.js",
 			"$path$/modules/infragistics.ui.shapechart.js"
 			],
-		css: [ ],
+		css: [
+			"$path$/structure/modules/infragistics.ui.shapechart.css"
+			],
 		description: $.ig.loaderClass.locale.descriptions.shapeChartDescription
 	},
 	{
