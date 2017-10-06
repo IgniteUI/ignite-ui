@@ -59,13 +59,11 @@
 .ui-chart-toolbar .ui-slider-handle {
   width: 18px;
   height: 18px;
-  margin-left: -9px !important;
-  top: -5px !important;
+  margin-left: -9px!important;
+  top: -5px!important;
 }
 
-.touch .ui-chart-toolbar .ui-slider-handle,
-.touchevents .ui-chart-toolbar .ui-slider-handle,
-.pointerevents .ui-chart-toolbar .ui-slider-handle {
+.touch .ui-chart-toolbar .ui-slider-handle {
   border: 1px solid $gray-dark;
   background: $gray;
   margin-left: -15px;
@@ -85,7 +83,6 @@
 .ui-widget-content.ui-chart-tooltip {
   background-color: rgba(255, 255, 255, 0.85);
 }
-
 /*******************/
 /* Sparkline chart */
 /*******************/
@@ -98,52 +95,52 @@
 }
 
 .ui-sparkline-tooltip {
-  @include boxShadow-3;
+  @include boxShadow;
   padding: 3px;
 }
 
 .ui-sparkline-sparkpath {
-  background: $sparkpath;
+  background: #43ABD5;
   border: 1px solid;
 }
 
 .ui-sparkline-negativesparkpath {
-  background: $negativesparkpath;
+  background: #B9242E;
   border: 1px solid;
 }
 
 .ui-sparkline-trendline {
-  background: $trendline;
+  background: #7F7F7F;
   border: 2px solid;
 }
 
 .ui-sparkline-markers {
-  background: $markers;
+  background: #43ABD5;
   border: 3px solid;
 }
 
 .ui-sparkline-firstmarker {
-  background: $firstmarker;
+  background: #237FA7;
   border: 5px solid;
 }
 
 .ui-sparkline-lastmarker {
-  background: $lastmarker;
+  background: #FBC139;
   border: 5px solid;
 }
 
 .ui-sparkline-highmarker {
-  background: $highmarker;
+  background: #A3B929;
   border: 4px solid;
 }
 
 .ui-sparkline-lowmarker {
-  background: $lowmarker;
+  background: #AF39FF;
   border: 3px solid;
 }
 
 .ui-sparkline-negativemarkers {
-  background: $negativemarkers;
+  background: #E5516F;
   border: 3px solid;
 }
 
@@ -164,7 +161,6 @@
   color: #406090;
   text-align: right;
 }
-
 /****************/
 /* Funnel chart */
 /****************/
@@ -172,18 +168,17 @@
 .ui-funnel {
   font-family: $font-family-base;
   font-size: 14px;
-  color: $igGray6;
+  color: #555555;
   border: 0;
 }
 
 .ui-funnel-tooltip {
-  @include boxShadow-3;
-  border: 1px solid #888;
-  padding: .5rem .8rem;
+  @include boxShadow;
+  padding: 3px;
 }
 
 .ui-funnel-slice {
-  color: #fff;
+  color: #FFFFFF;
   border: 0;
 }
 
@@ -195,7 +190,6 @@
   opacity: 0.49;
   border-color: transparent;
 }
-
 /********************/
 /* igDoughnut Chart */
 /********************/
@@ -207,37 +201,7 @@
 }
 
 .ui-doughnut-tooltip {
-  @include boxShadow-3;
-  border: 1px solid $igGray8;
-  padding: .5rem .8rem;
-}
-
-.ui-doughnut-palette-1 {
-  @include doughnutPalette1;
-}
-
-.ui-doughnut-palette-2 {
-  @include doughnutPalette2;
-}
-
-.ui-doughnut-palette-3 {
-  @include doughnutPalette3;
-}
-
-.ui-doughnut-palette-4 {
-  @include doughnutPalette4;
-}
-
-.ui-doughnut-palette-5 {
-  @include doughnutPalette5;
-}
-
-.ui-doughnut-palette-6 {
-  @include doughnutPalette6;
-}
-
-.ui-doughnut-palette-7 {
-  @include doughnutPalette7;
+  /*add styles*/
 }
 
 
@@ -266,7 +230,7 @@
 
 .ui-radialgauge-tick {
   background-color: $gray-dark;
-  border-top-color: transparent;
+  border-top-color: none;
 }
 
 .ui-radialgauge-minorTick {
@@ -313,7 +277,6 @@
   font-family: $font-family-base;
   font-size: 16px;
 }
-
 /***********************/
 /* igBulletGraph Chart */
 /***********************/
@@ -327,7 +290,6 @@
   background-color: $body-bg;
   border-color: $body-bg;
 }
-
 /* TICKS AND LABELS */
 
 .ui-bulletgraph-tick {
@@ -344,7 +306,6 @@
   background-color: $gray-dark;
   border: transparent;
 }
-
 /* RANGE VALUES */
 
 .ui-bulletgraph-range-palette-1 {
@@ -371,14 +332,12 @@
   background-color: $chartGradualPalette9;
   border: transparent;
 }
-
 /* ACTUAL VALUES */
 
 .ui-bulletgraph-value {
   background-color: $body-bg;
   border: transparent;
 }
-
 /* TOOLTIPS */
 
 .ui-bulletgraph-tooltip {
@@ -416,7 +375,6 @@
   font-size: 12px;
   color: $body-color;
 }
-
 /***********************/
 /* igLinearGauge Chart */
 /***********************/
@@ -435,7 +393,6 @@
   background-color: $gray-light;
   border-color: $gray-light;
 }
-
 /* TICKS AND LABELS */
 
 .ui-lineargauge-tick {
@@ -452,7 +409,6 @@
   background-color: $gray-dark;
   border: transparent;
 }
-
 /* RANGE VALUES */
 
 .ui-lineargauge-range-palette-1 {
@@ -479,7 +435,6 @@
   background-color: $chartGradualPalette9;
   border: transparent;
 }
-
 /* TOOLTIPS */
 
 .ui-lineargauge-tooltip {
@@ -508,24 +463,4 @@
   font-family: $font-family-base;
   font-size: 12px;
   color: $body-color;
-}
-
-.ui-doughnut-palette-8 {
-  @include doughnutPalette8;
-}
-
-.ui-doughnut-palette-9 {
-  @include doughnutPalette9;
-}
-
-.ui-doughnut-palette-10 {
-  @include doughnutPalette10;
-}
-
-.ui-doughnut-palette-11 {
-  @include doughnutPalette11;
-}
-
-.ui-doughnut-palette-12 {
-  @include doughnutPalette12;
 }

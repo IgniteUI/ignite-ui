@@ -107,6 +107,9 @@
 	filter:alpha(opacity=0);
 }
 
+.ui-igbrowsebutton-label 
+{    
+    }
 /*//////////////////////////END igBrowseButton CSS /////////////////////////////////////////*/
 
 /*//////////////////////////  igButton CSS /////////////////////////////////////////////////*/
@@ -123,16 +126,21 @@
     text-decoration: none !important;
 }
 
+.ui-igbutton .ui-state-hover { }
+
+.ui-igbutton .ui-state-focus { }
+
+.ui-igbutton .ui-state-active { }
+
 .ui-igbutton-icon 
 {
     height: 16px;
     width: 16px;
 }
 
-.ui-button-text-only {
-	padding: .2em .5em;
+.ui-igbutton-label  
+{
 }
-
 
 /*/////////////////////////  END igButton CSS //////////////////////////////////////////////////*/
 

@@ -9,15 +9,26 @@
 
 .ui-igtree a {
   color: @text-color;
-
+  padding: 5px!important;
 }
 
-.ui-igtree a {
-  border: 1px solid transparent;
+.ui-igtree a.ui-state-hover {
+  .stateHover;
+  border: 1px solid @btn-default-border;
+}
+
+.ui-igtree a.ui-state-hover,
+.ui-igtree a.ui-state-active,
+.ui-igtree a.ui-state-focus {
+  padding: 4px!important;
 }
 
 .ui-igtree a.ui-state-focus {
   .stateFocused
+}
+
+.ui-igtree-dropindicator.ui-state-highlight .ui-icon {
+  color: @ui-icons-darker;
 }
 
 .ui-igtree-insertline.ui-state-default {
