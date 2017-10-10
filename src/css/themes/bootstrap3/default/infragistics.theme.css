@@ -2036,7 +2036,7 @@ body .ui-tooltip {
 .ui-iggrid th .ui-igcheckbox-normal.ui-state-default .ui-icon,
 .ui-igcombo-checkbox .ui-icon,
 .ui-state-hover .ui-igcombo-checkbox .ui-icon {
-  background-image: #222222;
+  color: #222222;
 }
 .ui-icon-check-f {
   background-position: -64px -144px;
