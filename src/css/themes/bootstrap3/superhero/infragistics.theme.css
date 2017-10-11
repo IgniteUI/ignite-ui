@@ -3549,7 +3549,7 @@ body .ui-tooltip {
 /* Summaries */
 .ui-iggrid .ui-widget-footer,
 .ui-iggrid .ui-iggrid-footertable {
-  background: transparent;
+  background: #2B3E50;
   border-bottom: 1px solid #4E5D6C;
   border-right: 1px solid #4E5D6C;
 }
@@ -3564,7 +3564,7 @@ body .ui-tooltip {
   background-color: #485563;
 }
 .ui-iggrid tfoot td.ui-state-default .ui-icon {
-  color: #222222;
+  color: #888888;
 }
 /* Column Moving custom icons */
 .ui-iggrid-columnmoving-dragtop {
