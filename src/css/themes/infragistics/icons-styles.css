@@ -679,6 +679,9 @@
 
 .ui-iggrid-moving-indicator:before{content: '\e653'}
 
+.ui-iggrid-filtericontrue:before{content: '\e66f'}
+.ui-iggrid-filtericonfalse:before{content: '\e675'}
+
 .ui-iggrid-filtericonstartswith:before {content: '\e949'}
 .ui-iggrid-filtericonendswith:before {content: '\e947'}
 
