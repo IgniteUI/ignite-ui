@@ -677,6 +677,8 @@
     content: '\e6ef';
 }
 
+.ui-iggrid-moving-indicator:before{content: '\e653'}
+
 .ui-iggrid-filtericonstartswith:before {content: '\e949'}
 .ui-iggrid-filtericonendswith:before {content: '\e947'}
 

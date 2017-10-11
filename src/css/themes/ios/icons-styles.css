@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'jquery-ui';
     src:
-            url('../../structure/fonts/jquery-ui.ttf?uyccen') format('truetype'),
-            url('../../structure/fonts/jquery-ui.woff?uyccen') format('woff'),
-            url('../../structure/fonts/jquery-ui.svg?uyccen#jquery-ui') format('svg');
+            url('../../../structure/fonts/jquery-ui.ttf?uyccen') format('truetype'),
+            url('../../../structure/fonts/jquery-ui.woff?uyccen') format('woff'),
+            url('../../../structure/fonts/jquery-ui.svg?uyccen#jquery-ui') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -28,7 +28,9 @@
 .ui-busy-icon,
 .ui-iggrid-filtericon,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded,
-.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed{
+.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed,
+.ui-iggrid-moving-indicator
+{
     cursor: pointer;
     background-image: none !important;
     background-color: transparent !important;
@@ -52,7 +54,8 @@
 .ui-iggrid-filtericon:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed:before,
-.ui-icon:before {
+.ui-icon:before,
+.ui-iggrid-moving-indicator:before{
     display: block;
     height: 1em;
     left: 50%;
@@ -673,6 +676,8 @@
 .ui-iggrid-filtericonnoton:before {
     content: '\e6ef';
 }
+
+.ui-iggrid-moving-indicator:before {content: '\e653'}
 
 .ui-iggrid-filtericonstartswith:before {content: '\e949'}
 .ui-iggrid-filtericonendswith:before {content: '\e947'}
