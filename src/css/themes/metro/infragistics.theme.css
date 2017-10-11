@@ -1091,11 +1091,11 @@ body .ui-tooltip {
   color: #4b4b4b;
   font-weight: normal;
 }
-.ui-state-default a,
+/*.ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
   color: white;
-}
+}*/
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover {
