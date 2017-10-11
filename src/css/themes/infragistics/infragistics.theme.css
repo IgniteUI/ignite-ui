@@ -3784,12 +3784,12 @@ input.ui-igbutton {
 /**************/
 .ui-igsplitter-splitbar-horizontal.ui-state-default,
 .ui-igsplitter-splitbar-vertical.ui-state-default {
-  background: none #dadada;
+  background: #dadada;
   border-color: transparent;
 }
 .ui-igsplitter-splitbar-horizontal.ui-state-hover,
 .ui-igsplitter-splitbar-vertical.ui-state-hover {
-  background: none #4897AA;
+  background: #4897AA;
   border-color: transparent;
 }
 .ui-igsplitter.ui-widget-content {
@@ -4187,8 +4187,7 @@ Spreadsheet colors
   border-right: 1px solid #dadada;
 }
 .ui-igtreegrid-contextrow-icon.ui-icon.ui-icon-bookmark {
-  background-image: #888888;
-  background-position: -464px 0;
+  color: #888888;
 }
 /************/
 /* igUpload */
