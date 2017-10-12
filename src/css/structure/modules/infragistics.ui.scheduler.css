@@ -341,7 +341,8 @@
 }
 
 .ui-igscheduler-delete-appointment-dialog-confirmation,
-.ui-igscheduler-delete-occurrence-dialog-text {
+.ui-igscheduler-delete-occurrence-dialog-text,
+.ui-igscheduler-edit-appointment-dialog-confirmation {
   margin: 15px 0;
   text-align: center;
 }
@@ -362,7 +363,10 @@ input.ui-igscheduler-appointment-popover-open-button {
 }
 
 .ui-igscheduler-delete-appotinemtn-dialog-confirmation,
-.ui-igscheduler-delete-appointment-dialog-actions {
+.ui-igscheduler-delete-appointment-dialog-actions,
+.ui-igscheduler-delete-occurrence-dialog-actions,
+.ui-igscheduler-edit-appointment-dialog-confirmation,
+.ui-igscheduler-edit-appointment-dialog-actions {
   text-align: center;
 }
 
@@ -372,7 +376,8 @@ input.ui-igscheduler-appointment-popover-open-button {
 }
 
 .ui-igscheduler-delete-appointment-dialog-actions input,
-.ui-igscheduler-delete-occurrence-dialog-actions input {
+.ui-igscheduler-delete-occurrence-dialog-actions input,
+.ui-igscheduler-edit-appointment-dialog-actions input {
   margin-right: 10px;
 }
 
