@@ -6,6 +6,11 @@
 /* Structure Overrides */
 .ui-igspreadsheet  .ui-menu-item {
 	padding-left: 30px;
+	white-space: nowrap;
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+	list-style-image:none;
 }
 
 .ui-igspreadsheet .ui-menu-item-wrapper {
