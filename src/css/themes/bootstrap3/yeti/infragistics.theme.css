@@ -3541,7 +3541,7 @@ body .ui-tooltip {
   background: transparent #222222 no-repeat scroll 0 -20px !important;
 }
 .ui-iggrid-indicatorcontainer .ui-iggrid-moving-indicator {
-  color: url(images/igGrid/filter-icons-333333.png);
+  color: #222222;
 }
 /* Grid Updating */
 @-webkit-keyframes addingHighlight {
