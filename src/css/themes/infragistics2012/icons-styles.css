@@ -28,7 +28,8 @@
 .ui-busy-icon,
 .ui-iggrid-filtericon,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded,
-.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed{
+.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed,
+.ui-iggrid-moving-indicator{
     cursor: pointer;
     background-image: none !important;
     background-color: transparent !important;
@@ -52,7 +53,8 @@
 .ui-iggrid-filtericon:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed:before,
-.ui-icon:before {
+.ui-icon:before,
+.ui-iggrid-moving-indicator:before{
     display: block;
     height: 1em;
     left: 50%;
@@ -623,7 +625,7 @@
 .ui-icon-pivot-columns:before{content:"\e900"}
 
 /* Filter icons */
-.ui-icon-pivot-filters:before,
+.ui-icon-pivot-filters:before{content:"\e901"}
 .ui-iggrid-filterbutton:before{content:"\e901"}
 
 .ui-iggrid-filtericonclear:before{content:"\e935"}
@@ -653,6 +655,9 @@
 .ui-iggrid-icon-show:before{content:'\e6da'}
 .ui-iggrid-icon-hide:before{content:'\e93b'}
 
+/* Col Order */
+.ui-iggrid-icon-sort-a-z:before{content:"\e932"}
+.ui-iggrid-icon-sort-z-a:before{content:"\e933"}
 
 .ui-iggrid-icon-column-chooser:before{content:'\e900'}
 .ui-iggrid-icon-move:before{content:'\e92d'}
@@ -673,6 +678,13 @@
 .ui-iggrid-filtericonnoton:before {
     content: '\e6ef';
 }
+
+.ui-iggrid-moving-indicator:before{content: '\e653'}
+.ui-iggrid-filtericontrue:before{content: '\e66f'}
+.ui-iggrid-filtericonfalse:before{content: '\e675'}
+
+.ui-iggrid-filtericontrue:before{content: '\e66f'}
+.ui-iggrid-filtericonfalse:before{content: '\e675'}
 
 .ui-iggrid-filtericonstartswith:before {content: '\e949'}
 .ui-iggrid-filtericonendswith:before {content: '\e947'}
@@ -715,6 +727,8 @@
 .ui-igbutton-backcolor:before{content:"\e91e"}
 .ui-igbutton-underline:before{content:"\e91f"}
 .ui-igbutton-viewsource-icon:before{content:"\e920"}
+
+
 
 
 .ui-igspreadsheet-copy-icon:before {content:"\e688"}
@@ -1376,8 +1390,7 @@
     font-size: 12px !important;
 }
 
-.ui-iggrid .ui-igedit-button .ui-icon,
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a .ui-icon {
+.ui-iggrid .ui-igedit-button .ui-icon {
     top: 50% !important;
     left: 50% !important;
 }
