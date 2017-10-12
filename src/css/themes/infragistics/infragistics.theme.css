@@ -4165,7 +4165,7 @@ Spreadsheet colors
 .ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
 .ui-icon.ui-igspreadsheet-deleterows-icon,
 .ui-icon.ui-igspreadsheet-deletecolumns-icon {
-  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png) !important;
+  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png);
   left: 0.5em;
   width: 16px;
   height: 16px;
@@ -4207,10 +4207,6 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 0 0 0;
-}
-.ui-igspreadsheet .ui-menu-item:hover {
-  background: #4897AA;
-  border-radius: 0;
 }
 /***********************/
 /* Tile manager        */
