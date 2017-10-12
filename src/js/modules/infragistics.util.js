@@ -267,7 +267,10 @@
 
 	$.ig.util.getLocaleValue = function (collection, key) {
 		var language = $.ig.util.language,
-			locale = $.ig.locale[ language ][ collection ];
+			locale = ($.ig.locale[ language ] && $.ig.locale[ language ][ collection ]) ||
+				($.ig[ collection ] && $.ig[ collection ].locale) ||
+				/* excel exporter locale seems to be generated with lower cases for its defaults */
+				($.ig[ collection.toLowerCase() ] && $.ig[ collection.toLowerCase() ].locale);
 		return locale[ key ] || "";
 	};
 
