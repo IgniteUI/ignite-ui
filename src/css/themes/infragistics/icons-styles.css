@@ -28,7 +28,8 @@
 .ui-busy-icon,
 .ui-iggrid-filtericon,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded,
-.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed{
+.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed,
+.ui-iggrid-moving-indicator{
     cursor: pointer;
     background-image: none !important;
     background-color: transparent !important;
@@ -52,7 +53,8 @@
 .ui-iggrid-filtericon:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed:before,
-.ui-icon:before {
+.ui-icon:before,
+.ui-iggrid-moving-indicator:before{
     display: block;
     height: 1em;
     left: 50%;
@@ -678,6 +680,8 @@
 }
 
 .ui-iggrid-moving-indicator:before{content: '\e653'}
+.ui-iggrid-filtericontrue:before{content: '\e66f'}
+.ui-iggrid-filtericonfalse:before{content: '\e675'}
 
 .ui-iggrid-filtericontrue:before{content: '\e66f'}
 .ui-iggrid-filtericonfalse:before{content: '\e675'}
