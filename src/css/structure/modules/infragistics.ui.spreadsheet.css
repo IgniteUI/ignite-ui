@@ -22,6 +22,14 @@
 .ui-igspreadsheet .ui-menu-item > a {
 	text-decoration: none;
 	white-space: nowrap;
+	display: block;
+	padding: 5px 10px 5px 30px;
+}
+
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active
+{
+	color: #fff;
 }
 
 .ui-igspreadsheet .ui-menu-divider {
