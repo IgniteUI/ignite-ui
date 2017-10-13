@@ -140,7 +140,9 @@
 			var language = this.options.language,
 				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
 				localeObj = ($.ig.locale[ language ] && $.ig.locale[ language ][ widgetName ]) ||
-					($.ig[ widgetName ] && $.ig[ widgetName ].locale);
+					($.ig[ widgetName ] && $.ig[ widgetName ].locale) ||
+					/* excel, spreadsheet locale generated with lower cases for its defaults */
+					($.ig[ widgetName.toLowerCase() ] && $.ig[ widgetName.toLowerCase() ].locale);
 			return localeObj;
 		},
 		_getLocaleValue: function (key) {

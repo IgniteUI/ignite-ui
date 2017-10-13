@@ -351,7 +351,7 @@ Spreadsheet colors
 .ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
 .ui-icon.ui-igspreadsheet-deleterows-icon,
 .ui-icon.ui-igspreadsheet-deletecolumns-icon {
-  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png) !important;
+  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png);
   left: 0.5em;
   width: 16px;
   height: 16px;
@@ -409,7 +409,34 @@ Spreadsheet colors
   border-radius: 0 $border-radius $border-radius $border-radius;
 }
 
-.ui-igspreadsheet .ui-menu-item:hover {
-  background: $spreadsheet-menu-item-bg-hover;
-  border-radius: 0;
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: $brand-primary;
+  color: #fff;
+  .ui-icon {
+    color: #fff;
+  }
 }
+/* Styles for jQuery 1.12.1 END */
+
+
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active
+{
+  color: #fff;
+  background: $brand-primary;
+  .ui-icon {
+    color: #fff;
+  }
+}
+
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color:$body-color;
+  .ui-icon {
+    color: $body-color;
+  }
+}
+/* Styles for jQuery 1.10.3 END */

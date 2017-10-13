@@ -28,7 +28,8 @@
 .ui-busy-icon,
 .ui-iggrid-filtericon,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded,
-.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed{
+.ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed,
+.ui-iggrid-moving-indicator{
     cursor: pointer;
     background-image: none !important;
     background-color: transparent !important;
@@ -52,7 +53,8 @@
 .ui-iggrid-filtericon:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-expanded:before,
 .ui-iggrid-collapsibleindicatorcontainer a .ui-iggrid-multiheader-collapsed:before,
-.ui-icon:before {
+.ui-icon:before,
+.ui-iggrid-moving-indicator:before{
     display: block;
     height: 1em;
     left: 50%;
@@ -343,7 +345,11 @@
 .ui-icon-carat-1-n:before{content:'\e636'}
 .ui-icon-caret-u:before{content:'\e636'}
 .ui-icon-carat-1-ne:before{content:'\e637'}
+
+/* This two classes are actually different in different version of jQueryUi, do not delete them*/
 .ui-icon-carat-1-e:before{content:'\e638'}
+.ui-icon-caret-1-e:before{content:'\e638'}
+
 .ui-icon-caret-r:before{content:'\e638'}
 .ui-icon-carat-1-se:before{content:'\e639'}
 .ui-icon-carat-1-s:before{content:'\e63a'}
@@ -676,6 +682,13 @@
 .ui-iggrid-filtericonnoton:before {
     content: '\e6ef';
 }
+
+.ui-iggrid-moving-indicator:before{content: '\e653'}
+.ui-iggrid-filtericontrue:before{content: '\e66f'}
+.ui-iggrid-filtericonfalse:before{content: '\e675'}
+
+.ui-iggrid-filtericontrue:before{content: '\e66f'}
+.ui-iggrid-filtericonfalse:before{content: '\e675'}
 
 .ui-iggrid-filtericonstartswith:before {content: '\e949'}
 .ui-iggrid-filtericonendswith:before {content: '\e947'}
