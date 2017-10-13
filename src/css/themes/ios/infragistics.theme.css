@@ -1949,9 +1949,22 @@ body .ui-tooltip {
  * jQuery UI Menu Overrides
  */
 .ui-menu .ui-menu-item {
-  border: 1px solid transparent;
-  border-width: 1px 0;
+  border: none;
   border-top: 1px solid #cccccc;
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type .ui-menu-item-wrapper {
+  border-radius: 6px 6px 0 0;
+}
+.ui-menu .ui-menu-item:nth-child(7) .ui-menu-item-wrapper,
+.ui-menu .ui-menu-item:last-of-type .ui-menu-item-wrapper {
+  border-radius: 0 0 6px 6px;
 }
 .ui-menu .ui-menu-item:first-child {
   border-top-color: transparent;
@@ -4233,6 +4246,13 @@ Spreadsheet
 }
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 6px 6px 6px;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #007aff;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
 }
 /***********************/
 /* Tile manager        */

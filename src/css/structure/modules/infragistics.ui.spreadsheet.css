@@ -5,7 +5,7 @@
 
 /* Structure Overrides */
 .ui-igspreadsheet  .ui-menu-item {
-	padding-left: 30px;
+	padding-left: 0;
 	white-space: nowrap;
 }
 
@@ -14,8 +14,8 @@
 }
 
 .ui-igspreadsheet .ui-menu-item-wrapper {
-	padding-left: 5px;
-	padding-right: 0;
+	position: relative;
+	padding: 5px 10px 5px 30px;
 	white-space: nowrap;
 }
 
@@ -31,7 +31,6 @@
 
 .ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
 	border:none;
-	background: transparent;
 	color:inherit;
 }
 
@@ -642,7 +641,7 @@
 {
 	height: 10px;
 	cursor: row-resize;
-	background-color: transparent;
+	background: transparent;
 	border: none;
 }
 

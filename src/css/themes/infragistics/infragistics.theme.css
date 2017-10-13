@@ -662,7 +662,6 @@ button.ui-button::-moz-focus-inner {
 .ui-menu .ui-menu-item {
   position: relative;
   margin: 0;
-  padding: 3px 1em 3px .4em;
   cursor: pointer;
   min-height: 0;
   /* support: IE7 */
@@ -4207,6 +4206,13 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 0 0 0;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #4897AA;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
 }
 /***********************/
 /* Tile manager        */

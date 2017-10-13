@@ -1872,19 +1872,20 @@ body .ui-tooltip {
 /*
  * jQuery UI Menu Overrides
  */
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid #ebebeb;
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 .ui-menu {
   background: #FFFFFF;
   color: #4b4b4b;
-}
-.ui-menu .ui-menu-item.ui-state-focus {
-  color: #4b4b4b;
-  background-color: #EAEAEA;
-  border: 1px solid #b7b7b7;
-}
-.ui-menu .ui-menu-item.ui-state-active {
-  color: #FFFFFF;
-  background: #00aade;
-  border: 1px solid #00aade;
 }
 .ui-menu .ui-menu-item .ui-icon {
   background-image: url("images/ui-icons_222222_256x240.png");
@@ -4371,6 +4372,13 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 6px 6px 6px;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #00aade;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
 }
 /***********************/
 /* Tile manager        */
