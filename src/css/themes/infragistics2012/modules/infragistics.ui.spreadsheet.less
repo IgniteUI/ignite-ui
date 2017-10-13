@@ -26,7 +26,7 @@ Spreadsheet
 
 /* SelectAll */
 .ui-igspreadsheet-selectall {
-  background-color: @igGray4;
+  background: @igGray9;
   color: @igGray6;
 }
 
@@ -38,7 +38,8 @@ Spreadsheet
 /* SpreadSheet Header & Footer background */
 .ui-igspreadsheet-tabareabackground,
 .ui-igspreadsheet-formulabar {
-  background-color: @bar-background;
+  background: #4f4f4f url(images/gradient_1.png) repeat-x;
+  color: #fff;
 }
 
 /* SpreadSheet Footer top border */
@@ -403,3 +404,35 @@ Spreadsheet
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 @border-radius-base @border-radius-base @border-radius-base;
 }
+
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: @accent1;
+  color: @text-color-light;
+  .ui-icon {
+    color: @text-color-light;
+  }
+}
+/* Styles for jQuery 1.12.1 END */
+
+
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active
+{
+  color: #fff;
+  background: @accent1;
+  .ui-icon {
+    color: #fff;
+  }
+}
+
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color:@text-color;
+  .ui-icon {
+    color: @text-color;
+  }
+}
+/* Styles for jQuery 1.10.3 END */
