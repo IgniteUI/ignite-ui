@@ -3940,6 +3940,34 @@ body .ui-tooltip {
 .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
   background-color: #999999;
 }
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #428bca;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
+}
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #428bca;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color: #333333;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #333333;
+}
+/* Styles for jQuery 1.10.3 END */
 /**************/
 /* igSplitter */
 /**************/

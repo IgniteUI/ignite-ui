@@ -4239,6 +4239,7 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
+/* Styles for jQuery 1.12.1*/
 .ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
   background: #008cba;
   color: #fff;
@@ -4246,6 +4247,26 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
   color: #fff;
 }
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #008cba;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color: #222222;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #222222;
+}
+/* Styles for jQuery 1.10.3 END */
 /***********************/
 /* Tile manager        */
 /***********************/

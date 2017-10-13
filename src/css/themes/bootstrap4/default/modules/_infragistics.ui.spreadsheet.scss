@@ -409,6 +409,7 @@ Spreadsheet colors
   border-radius: 0 $border-radius $border-radius $border-radius;
 }
 
+/* Styles for jQuery 1.12.1*/
 .ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
   background: $brand-primary;
   color: #fff;
@@ -416,3 +417,26 @@ Spreadsheet colors
     color: #fff;
   }
 }
+/* Styles for jQuery 1.12.1 END */
+
+
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active
+{
+  color: #fff;
+  background: $brand-primary;
+  .ui-icon {
+    color: #fff;
+  }
+}
+
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color:$body-color;
+  .ui-icon {
+    color: $body-color;
+  }
+}
+/* Styles for jQuery 1.10.3 END */

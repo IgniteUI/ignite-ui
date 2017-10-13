@@ -4247,6 +4247,7 @@ Spreadsheet
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 6px 6px 6px;
 }
+/* Styles for jQuery 1.12.1*/
 .ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
   background: #007aff;
   color: #fff;
@@ -4254,6 +4255,28 @@ Spreadsheet
 .ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
   color: #fff;
 }
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #007aff;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  margin: -1px;
+  /* IOS THEME */
+  border-color: transparent;
+  background: transparent;
+  color: #000000;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #000000;
+}
+/* Styles for jQuery 1.10.3 END */
 /***********************/
 /* Tile manager        */
 /***********************/
