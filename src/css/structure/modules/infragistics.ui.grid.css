@@ -1256,7 +1256,6 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     cursor      : pointer;
     display     : block;
     float       : right;
-    font-family : "Segoe UI", Arial, sans-serif;
     font-size   : 10px;
     height      : 16px;
     line-height : 20px;

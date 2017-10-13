@@ -53,13 +53,13 @@
 }
 
 .ui-splitbutton-arrow .ui-icon {
-  background-image: $ui-icons-darker;
+  color: $ui-icons-darker;
 }
 
 .ui-splitbutton-arrow.ui-state-hover .ui-icon,
 .ui-splitbutton-arrow.ui-state-active .ui-icon,
 .ui-splitbutton-arrow.ui-state-focus .ui-icon {
-  background-image: $ui-icons-light;
+  color: $ui-icons-light;
 }
 
 .ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
