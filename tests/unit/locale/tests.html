@@ -268,6 +268,30 @@
 				equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
 			});
 
+			test("Locale lowercase fallback", 3, function () {
+				/* Mock a widget with lowercased locale */
+				$.ig.locale.bg = $.ig.locale.bg || {};
+				$.ig.locale.bg.Mock = {
+					test: "Тест"
+				};
+				$.ig.mock = $.ig.mock || {};
+				$.ig.mock.locale = $.ig.mock.locale || $.ig.locale.bg.Mock;
+				$.widget('ui.igMock', $.ui.igWidget, {
+					checkLocale: function (key) {
+						return this._getLocaleValue(key);
+					}
+				});
+
+				var $elem = $("<div></div>").igMock({
+					language: "en" //force fallback
+				});
+				equal($elem.igMock("checkLocale", "test"), $.ig.locale.bg.Mock.test, "The locale value should fallback to default");
+				$elem.igMock("option", "language", "bg");
+				equal($elem.igMock("checkLocale", "test"), $.ig.locale.bg.Mock.test, "The locale value should be corrct");
+				$elem.igMock("option", "language", "ja");
+				equal($elem.igMock("checkLocale", "test"), $.ig.locale.bg.Mock.test, "The locale value should fallback to default");
+			});
+
 			test("Changing language globally", 10, function () {
 				var locale = $.ig.locale;
 				$.ig.util.changeGlobalLanguage("de");

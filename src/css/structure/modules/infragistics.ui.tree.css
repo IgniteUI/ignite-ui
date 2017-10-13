@@ -113,17 +113,20 @@
     background-repeat: no-repeat;
     cursor:pointer;
 }
-.ui-igtree .ui-igcheckbox-normal-on {
-	position:relative;
-	top:50%;
-	left:50%;
-	margin-top:-8px;
-	margin-left:-8px;
-}
+
+
+.ui-igtree .ui-igcheckbox-normal-on,
 .ui-igtree .ui-igcheckbox-normal-off {
-	width:1.6em;
-	height:1.6em;
+	width: 100%!important;
+	height: 100%!important;
 }
+
+.ui-igtree .ui-igcheckbox-normal-on {
+	position: relative;
+	margin-top: 0;
+	margin-left: 0;
+}
+
 
 /*////////////////////////////////// Drag and Drop CSS ////////////////////////////////////////////////*/
 

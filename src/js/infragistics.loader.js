@@ -188,7 +188,11 @@ $.ig.dependencies = [
 	},
 	{
         widget: "_igOlap",
-        dependency: [ { name: "igUtil" } ],
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_collections_extended" },
+			{ name: "_ig_ext_threading" }
+		],
         scripts: [ "$path$/modules/infragistics.olap.js" ],
         group: $.ig.loaderClass.locale.frameworkGroup,
         internal: true,

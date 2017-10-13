@@ -6,7 +6,6 @@
 .ui-igscheduler-header {
   position: relative;
   height: 70px;
-  background-color: #fff;
 }
 
 .ui-igscheduler-body {
@@ -23,7 +22,6 @@
 
 .ui-igscheduler-today-button {
   border-radius: 0;
-  color: #444;
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
@@ -45,7 +43,6 @@
 .ui-igscheduler-navigator-disabled-date-range-button:hover {
   position: relative;
   display: inline-block;
-  color: #333;
 }
 
 .ui-igscheduler-tabs {
@@ -92,15 +89,14 @@
   cursor: pointer;
   white-space: nowrap;
   background: transparent;
-  color: #444;
   font-size: 14px;
   font-weight: bold;
   height: 27px;
   min-width: 54px;
   line-height: 27px;
   outline: none;
-  padding: 0 8px 0 20px;
-  text-align: center;
+  padding: 0 8px 0 22px;
+  text-align: left;
   transition: all .218s;
   -moz-transition: all .218s;
   -o-transition: all .218s;
@@ -151,11 +147,6 @@
   position: absolute;
   border-top: 2px solid #999;
   border-left: 2px solid #999;
-}
-
-.ui-igscheduler-navigator-next-button:hover span:after,
-.ui-igscheduler-navigator-previous-button:hover span:after {
-  border-color: #333;
 }
 
 .ui-igscheduler-navigator-next-button span:after {
@@ -349,12 +340,14 @@
   outline: none;
 }
 
-.ui-igscheduler-delete-appointment-dialog-confirmation {
+.ui-igscheduler-delete-appointment-dialog-confirmation,
+.ui-igscheduler-delete-occurrence-dialog-text,
+.ui-igscheduler-edit-appointment-dialog-confirmation {
   margin: 15px 0;
   text-align: center;
 }
 
-input.ui-igscheduler-appointment-popover-delete-button {
+input.ui-igscheduler-appointment-popover-open-button {
   margin: 10px 0;
 }
 
@@ -370,7 +363,10 @@ input.ui-igscheduler-appointment-popover-open-button {
 }
 
 .ui-igscheduler-delete-appotinemtn-dialog-confirmation,
-.ui-igscheduler-delete-appointment-dialog-actions {
+.ui-igscheduler-delete-appointment-dialog-actions,
+.ui-igscheduler-delete-occurrence-dialog-actions,
+.ui-igscheduler-edit-appointment-dialog-confirmation,
+.ui-igscheduler-edit-appointment-dialog-actions {
   text-align: center;
 }
 
@@ -379,7 +375,9 @@ input.ui-igscheduler-appointment-popover-open-button {
   color: #ea4d4d;
 }
 
-.ui-igscheduler-delete-appointment-dialog-actions input {
+.ui-igscheduler-delete-appointment-dialog-actions input,
+.ui-igscheduler-delete-occurrence-dialog-actions input,
+.ui-igscheduler-edit-appointment-dialog-actions input {
   margin-right: 10px;
 }
 
@@ -420,15 +418,19 @@ input.ui-igscheduler-appointment-popover-open-button {
 
 /* Popup styles END */
 
-/*
-.ui-igscheduler-monthview-day-appointment {
-   height: 24px!important;
-   padding:2px 8px!important;
- }
-.ui-igscheduler-monthview-day-appointment  span {
-  font-size: 12px!important;
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+  cursor: pointer;
 }
-*/
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
+  padding: 2px 3px!important;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-subjec {
+  font-size: .8em;
+}
+
 
 @media (max-width: 575px) {
   .touch .ui-igscheduler-popover.ui-igpopover {
