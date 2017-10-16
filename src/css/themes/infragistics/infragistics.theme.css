@@ -662,7 +662,6 @@ button.ui-button::-moz-focus-inner {
 .ui-menu .ui-menu-item {
   position: relative;
   margin: 0;
-  padding: 3px 1em 3px .4em;
   cursor: pointer;
   min-height: 0;
   /* support: IE7 */
@@ -4208,6 +4207,34 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 0 0 0;
 }
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #4897AA;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
+}
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #4897AA;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color: #444444;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #444444;
+}
+/* Styles for jQuery 1.10.3 END */
 /***********************/
 /* Tile manager        */
 /***********************/

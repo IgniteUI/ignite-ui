@@ -188,7 +188,7 @@ $.ig.dependencies = [
 	},
 	{
         widget: "_igOlap",
-		dependency: [
+        dependency: [
 			{ name: "igUtil" },
 			{ name: "_ig_ext_collections_extended" },
 			{ name: "_ig_ext_threading" }
@@ -200,7 +200,12 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igOlapXmlaDataSource",
-		dependency: [ { name: "_igOlap" } ],
+		dependency: [
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_web" },
+			{ name: "_ig_ext_xml" },
+			{ name: "_igOlap" }
+		],
 		scripts: [ "$path$/modules/infragistics.olapxmladatasource.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
 		css: [  ],
@@ -294,9 +299,20 @@ $.ig.dependencies = [
 	{
 		widget: "_ig_ext_web",
 		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_threading" } ],
+		dependency: [
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_threading" }
+		],
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_web.js" ]
+	},
+	{
+		widget: "_ig_ext_xml",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_core" }, { name: "_ig_ext_collections" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_xml.js" ]
 	},
 	{
 		widget: "_ig_dv_core",
