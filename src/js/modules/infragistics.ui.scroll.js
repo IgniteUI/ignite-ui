@@ -3882,7 +3882,7 @@
 		}
 	});
 	$.extend($.ui.igScroll, { version: "<build_number>" });
-	$(document).on("iggridrendered", function (event, args) {
+	$(document).on("iggridrendered igtreegridrendered", function (event, args) {
 		/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
 		var container = args.owner.scrollContainer();
 		if (container.length === 0 && args.owner.container) {
