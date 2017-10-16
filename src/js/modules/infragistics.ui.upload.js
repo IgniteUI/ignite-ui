@@ -2498,7 +2498,8 @@
 				progressBarFileSize = $("#" + self._id("_pbrflsz", formNumber)),
 				singleProgressBarWidth = $("#" + self._id("_snglpbar", formNumber)).width(),
 				singleProgressBar = $("#" + self._id("_snglpbar", formNumber)),
-				progressBarFileSizeWidth = progressBarFileSize.width();
+				progressBarFileSizeWidth = progressBarFileSize.width(),
+				offsetLeft;
 
 			/* M.H. 22 Aug 2012 Fix for bug #119469 */
 			if (progressBarFileName.length === 0) {
@@ -2519,7 +2520,8 @@
 												.width();
 					progressBarFileSize.text(originalFileSize);
 				}
-				while (progressBarFileName.position().left +
+				offsetLeft = progressBarFileName.position().left - this.container().offset().left;
+				while (offsetLeft +
 						progressBarFileName.width() +
 						progressBarFileSizeWidth >= singleProgressBarWidth &&
 						(previousFileName !== fileName)) {
@@ -2530,7 +2532,7 @@
 					}
 					progressBarFileName.text(fileName + o.labelProgressBarFileNameContinue);
 				}
-				if (progressBarFileName.position().left +
+				if (offsetLeft +
 					progressBarFileName.width() +
 					progressBarFileSize.width() >= singleProgressBarWidth) {
 					fileName = o.labelProgressBarFileNameContinue;
