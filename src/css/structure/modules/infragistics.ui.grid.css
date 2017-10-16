@@ -550,10 +550,6 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
     width : calc(100% - 35px);
 }
 
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igeditor-input-container {
-    width : auto;
-}
-
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
 .ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer a {
     margin : 0 0 0 -1.4em !important;
