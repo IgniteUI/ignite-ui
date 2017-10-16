@@ -104,6 +104,7 @@ $.ig.loaderClass.locale.descriptions = {
 	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
 	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
 	financialDescription: "Contains the financial series for the igDataChart.",
+	shapeChartDescription: "Component that renders areas in orthogonal (Cartesian) coordinate system into a canvas on the page.",
 	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
 	funnelChartDescription: "Component to create a funnel chart that displays values associated with different categories in a conic shape.",
 	linearGaugeDescription: "Component that visualizes data in the form of a linear gauge enriched with scales, tick marks and needles.",
