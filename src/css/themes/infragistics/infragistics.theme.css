@@ -4352,6 +4352,9 @@ input.ui-igbutton {
 .ui-icon-carat-1-e:before {
   content: '\e638';
 }
+.ui-icon-caret-1-e:before {
+  content: '\e638';
+}
 .ui-icon-caret-r:before {
   content: '\e638';
 }
