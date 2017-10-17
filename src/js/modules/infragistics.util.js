@@ -3252,6 +3252,12 @@
 			return this.compare5(string1, string2, $.ig.CompareOptions.prototype.none);
 		},
 		compare5: function (string1, string2, options) {
+			if (string1 === null) {
+				return string2 === null ? 0 : -1;
+			} else if (string2 === null) {
+				return 1;
+			}
+
 			return this.compare1(string1, 0, string1.length, string2, 0, string2.length, options);
 		},
 		indexOf1: function (source, value) {
