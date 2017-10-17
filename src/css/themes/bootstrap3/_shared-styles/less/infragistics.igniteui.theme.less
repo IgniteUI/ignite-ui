@@ -2675,6 +2675,38 @@ Spreadsheet colors
     border-radius: 0;
 }
 
+
+.ui-igspreadsheet .ui-menu-item> a {
+    background: transparent;
+    color: @text-color;
+    border-color: transparent;
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+
+    border-top: 1px solid transparent;
+    padding: 0;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    min-height: 0;
+
+    &:first-of-type {
+        border-top: none;
+    }
+    .ui-state-focus {
+        background: @spreadsheet-menu-item-bg-hover;
+        border-radius: 0;
+        border-color: transparent;
+
+    }
+}
+
+.ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
+    background: @spreadsheet-menu-item-bg-hover;
+}
+
+
 /*
 =========================
 Spreadsheet colors END

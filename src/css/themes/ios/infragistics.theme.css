@@ -1169,7 +1169,8 @@ body .ui-tooltip {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
@@ -1788,6 +1789,13 @@ body .ui-tooltip {
   padding-top: 0.4em;
   padding-bottom: 0.4em;
   border-width: 1px 0;
+  margin: 0;
+}
+.ui-menu .ui-menu-item .ui-state-focus,
+.ui-menu .ui-menu-item .ui-state-active {
+  margin: 0;
+  background: transparent;
+  border-color: transparent;
 }
 .ui-menu .ui-menu-item.ui-state-focus {
   border: 1px solid #007aff;

@@ -632,6 +632,27 @@ button.ui-button::-moz-focus-inner {
   -ms-touch-action: none;
   touch-action: none;
 }
+/*
+	jQuery UI Menu Overrides
+*/
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid transparent;
+  padding: 0;
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  min-height: 0;
+  /* support: IE7 */
+  /* support: IE10, see #8844 */
+  list-style-image: none;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 .ui-menu {
   list-style: none;
   padding: 0;
@@ -641,16 +662,6 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-menu .ui-menu {
   position: absolute;
-}
-.ui-menu .ui-menu-item {
-  position: relative;
-  margin: 0;
-  padding: 3px 1em 3px .4em;
-  cursor: pointer;
-  min-height: 0;
-  /* support: IE7 */
-  /* support: IE10, see #8844 */
-  list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
 }
 .ui-menu .ui-menu-divider {
   margin: 5px 0;
@@ -1244,7 +1255,8 @@ input.ui-igbutton {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
