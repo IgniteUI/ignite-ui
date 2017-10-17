@@ -542,16 +542,12 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
 
 .ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container {
     float : left;
-    width : calc(100% - 10px);
+    width : 100%;
 }
 
 .ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
     float : left;
     width : calc(100% - 35px);
-}
-
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igeditor-input-container {
-    width : auto;
 }
 
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
