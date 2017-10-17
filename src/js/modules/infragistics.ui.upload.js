@@ -2520,7 +2520,7 @@
 												.width();
 					progressBarFileSize.text(originalFileSize);
 				}
-				offsetLeft = progressBarFileName.position().left - this.container().offset().left;
+				offsetLeft = progressBarFileName.position().left - this.container().position().left;
 				while (offsetLeft +
 						progressBarFileName.width() +
 						progressBarFileSizeWidth >= singleProgressBarWidth &&
