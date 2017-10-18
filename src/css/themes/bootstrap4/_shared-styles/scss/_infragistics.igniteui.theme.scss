@@ -2671,9 +2671,36 @@ Spreadsheet colors
     border-radius: 0 $border-radius $border-radius $border-radius;
 }
 
-.ui-igspreadsheet .ui-menu-item:hover {
+.ui-igspreadsheet .ui-igspreadsheet .ui-menu-item:hover {
     background: $spreadsheet-menu-item-bg-hover;
     border-radius: 0;
+}
+
+.ui-igspreadsheet .ui-menu-item> a {
+    background: transparent;
+    color: $brand-primary;
+    border-color: transparent;
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+    border-top: 1px solid transparent;
+    position: relative;
+    cursor: pointer;
+    min-height: 0;
+    padding: 0;
+    &:first-of-type {
+        border-top: none;
+    }
+    .ui-state-focus {
+        background: $spreadsheet-menu-item-bg-hover;
+        border-radius: 0;
+        border-color: transparent;
+
+    }
+}
+
+.ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
+    background: $spreadsheet-menu-item-bg-hover;
 }
 
 /*

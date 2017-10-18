@@ -520,7 +520,8 @@ input.ui-igbutton {
     background-position: -16px 0;
 }
 
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e{
     background-position: -32px 0;
 }
 
@@ -4039,6 +4040,7 @@ input.ui-igbutton {
 .ui-icon-caret-u:before{content:'\e636'}
 .ui-icon-carat-1-ne:before{content:'\e637'}
 .ui-icon-carat-1-e:before{content:'\e638'}
+.ui-icon-caret-1-e:before{content:'\e638'}
 .ui-icon-caret-r:before{content:'\e638'}
 .ui-icon-carat-1-se:before{content:'\e639'}
 .ui-icon-carat-1-s:before{content:'\e63a'}
@@ -5309,6 +5311,33 @@ Spreadsheet colors
     background: @spreadsheet-menu-item-bg-hover;
     border-radius: 0;
 }
+
+
+
+.ui-igspreadsheet .ui-menu-item {
+    a {
+        border-radius: 0;
+        border-color: transparent;
+        border-left-color: #b1b1b1;
+        background: #fff;
+        &.ui-state-focus {
+            background: @accent1;
+            color: @spreadsheet-text-color;
+        }
+    }
+    position: relative;
+    cursor: pointer;
+    min-height: 0;
+    padding: 0;
+    div.ui-state-active {
+        color:#fff;
+        background: @accent1;
+        .ui-icons {
+
+        }
+    }
+}
+
 
 /*
 =========================
