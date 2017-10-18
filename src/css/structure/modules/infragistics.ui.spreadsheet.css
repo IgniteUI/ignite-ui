@@ -11,16 +11,34 @@
 
 .ui-igspreadsheet .ui-menu .ui-menu-item {
 	list-style-image:none;
+	margin: 0;
 }
+
+/* Styles for jQuery 1.11.1*/
+
+.ui-igspreadsheet .ui-menu-item {
+	border:1px solid transparent!important;
+}
+
+.ui-igspreadsheet .ui-menu-item div{
+	padding: 5px 10px 5px 28px;
+	font-size: 14px;
+}
+
+/* Styles for jQuery 1.11.1 END*/
+
 
 /* Styles for jQuery 1.12.1*/
 .ui-igspreadsheet .ui-menu-item-wrapper {
 	position: relative;
 	padding: 5px 10px 5px 28px;
 	white-space: nowrap;
+	font-size: 14px;
 
 }
-.ui-menu div.ui-state-focus, .ui-menu div.ui-state-active {
+.ui-menu div.ui-state-focus,
+.ui-menu div.ui-state-active,
+.ui-menu-item div {
 	margin: 0;
 }
 /* Styles for jQuery 1.12.1 END */
@@ -32,6 +50,7 @@
 	white-space: nowrap;
 	display: block;
 	padding: 5px 10px 5px 28px;
+	font-size: 14px;
 }
 /* Styles for jQuery 1.10.3 END */
 
