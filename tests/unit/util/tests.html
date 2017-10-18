@@ -190,6 +190,7 @@
 			equal($.ig.Date.prototype.toStringFormat(dt, "T"), "12:00:00 PM", "Date.toStringFormat formats T correctly");
 			// equal($.ig.Date.prototype.toStringFormat(dt, "y"), "October 1980", "Date.toStringFormat formats y correctly");
 			// equal($.ig.Date.prototype.toStringFormat(dt, "Y"), "October 1980", "Date.toStringFormat formats Y correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "hh:mm:ss:ff"), "12:00:00:00 PM", "Date.toStringFormat formats hh:mm:ss:ff correctly");
 		});
 
 		test("Test IsAssignableFrom", function () {
