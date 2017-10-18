@@ -4267,6 +4267,36 @@ Spreadsheet colors
   color: #EBEBEB;
 }
 /* Styles for jQuery 1.10.3 END */
+/* Styles for jQuery 1.11.1*/
+.ui-menu-item.ui-state-focus {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-menu-item.ui-state-active > div,
+.ui-menu-item.ui-state-active {
+  background: #DF691A;
+}
+.ui-menu .ui-menu-item {
+  margin: -1px;
+}
+.ui-menu .ui-menu-item .ui-icon {
+  color: #EBEBEB;
+}
+/* Styles for jQuery 1.11.1 END */
+.ui-menu .ui-menu-item.ui-state-focus > span {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div .ui-icon {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-active .ui-icon,
+.ui-menu .ui-menu-item.ui-state-focus .ui-icon {
+  color: #fff;
+}
 /***********************/
 /* Tile manager        */
 /***********************/
