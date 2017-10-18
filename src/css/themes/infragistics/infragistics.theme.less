@@ -5312,6 +5312,33 @@ Spreadsheet colors
     border-radius: 0;
 }
 
+
+
+.ui-igspreadsheet .ui-menu-item {
+    a {
+        border-radius: 0;
+        border-color: transparent;
+        border-left-color: #b1b1b1;
+        background: #fff;
+        &.ui-state-focus {
+            background: @accent1;
+            color: @spreadsheet-text-color;
+        }
+    }
+    position: relative;
+    cursor: pointer;
+    min-height: 0;
+    padding: 0;
+    div.ui-state-active {
+        color:#fff;
+        background: @accent1;
+        .ui-icons {
+
+        }
+    }
+}
+
+
 /*
 =========================
 Spreadsheet colors END

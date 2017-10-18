@@ -483,9 +483,6 @@ button.ui-button::-moz-focus-inner {
   border-color: transparent;
   color: #fff;
 }
-.ui-igspreadsheet .ui-menu .ui-menu-item {
-  padding: 0;
-}
 .ui-menu .ui-menu-divider {
   margin: 5px 0;
   height: 0;
@@ -4158,11 +4155,25 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu {
   box-shadow: 0 0 10px #D9D9D9;
 }
+.ui-igspreadsheet .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu-item a {
+  border-radius: 0;
+  border-color: transparent;
+  border-left-color: #b1b1b1;
+  background: #fff;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-focus {
+  background: #9ECBD6;
+  color: #111;
+}
 .ui-igspreadsheet .ui-menu-item div.ui-state-active {
   color: #fff;
-}
-.ui-igspreadsheet .ui-menu-item div.ui-state-active .ui-icons {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
+  background: #9ECBD6;
 }
 .ui-igspreadsheet .ui-menu-item .ui-menu {
   border-radius: 0 6px 6px 6px;

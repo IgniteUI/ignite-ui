@@ -5679,10 +5679,32 @@ Spreadsheet colors
   border-radius: 0;
 }
 
-.ui-igspreadsheet .ui-menu-item > a {
-  border: none;
-  margin: 0;
-  background: transparent;
+.ui-igspreadsheet .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+  a {
+    margin: 0;
+    border-radius: 0;
+    border-color: transparent;
+    border-left-color: #b1b1b1;
+    background: #fff;
+    &.ui-state-focus {
+      background: #e5f2ff;
+      color: @spreadsheet-text-color;
+    }
+    &.ui-state-active {
+      border: none;
+    }
+
+  }
+  div.ui-state-active {
+    background: #e5f2ff;
+    .ui-icons {
+
+    }
+  }
 }
 
 /*

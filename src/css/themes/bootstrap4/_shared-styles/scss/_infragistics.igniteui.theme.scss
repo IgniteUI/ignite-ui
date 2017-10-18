@@ -2683,14 +2683,11 @@ Spreadsheet colors
 }
 
 .ui-igspreadsheet .ui-menu .ui-menu-item {
-
     border-top: 1px solid transparent;
-    padding: 0;
     position: relative;
-    margin: 0;
     cursor: pointer;
     min-height: 0;
-
+    padding: 0;
     &:first-of-type {
         border-top: none;
     }

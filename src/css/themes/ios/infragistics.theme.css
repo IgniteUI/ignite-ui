@@ -4263,6 +4263,28 @@ Spreadsheet colors
   background: rgba(0, 122, 255, 0.22);
   border-radius: 0;
 }
+.ui-igspreadsheet .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu-item a {
+  border-radius: 0;
+  border-color: transparent;
+  border-left-color: #b1b1b1;
+  background: #fff;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-focus {
+  background: #e5f2ff;
+  color: #111;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-active {
+  border: none;
+}
+.ui-igspreadsheet .ui-menu-item div.ui-state-active {
+  background: #e5f2ff;
+}
 /*
 =========================
 Spreadsheet colors END

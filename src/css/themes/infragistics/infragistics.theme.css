@@ -650,9 +650,6 @@ button.ui-button::-moz-focus-inner {
 .ui-menu .ui-menu-item:first-of-type {
   border-top: none;
 }
-.ui-igspreadsheet .ui-menu .ui-menu-item {
-  padding: 0;
-}
 .ui-menu {
   list-style: none;
   padding: 0;
@@ -6348,6 +6345,26 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu-item:hover {
   background: rgba(72, 151, 170, 0.22);
   border-radius: 0;
+}
+.ui-igspreadsheet .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu-item a {
+  border-radius: 0;
+  border-color: transparent;
+  border-left-color: #b1b1b1;
+  background: #fff;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-focus {
+  background: #9ECBD6;
+  color: #111;
+}
+.ui-igspreadsheet .ui-menu-item div.ui-state-active {
+  color: #fff;
+  background: #9ECBD6;
 }
 /*
 =========================
