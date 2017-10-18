@@ -1233,9 +1233,6 @@ body .ui-tooltip {
 .ui-widget-header .ui-icon {
   color: #888888;
 }
-.ui-state-default .ui-icon {
-  color: #ffffff;
-}
 .ui-state-hover .ui-icon,
 .ui-state-focus .ui-icon {
   color: #ffffff;
