@@ -552,15 +552,23 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-menu .ui-menu-item {
+
+  border-top: 1px solid transparent;
+  padding: 0;
   position: relative;
   margin: 0;
-  padding: 3px 1em 3px .4em;
   cursor: pointer;
   min-height: 0;
   /* support: IE7 */
   /* support: IE10, see #8844 */
-
   list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  &:first-of-type {
+    border-top: none;
+  }
+  .ui-state-focus {
+    border-color: transparent;
+    color: #fff;
+  }
 }
 
 .ui-menu .ui-menu-divider {
@@ -1034,7 +1042,6 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
   border: 1px solid #535353;
-  background: #4f4f4f url(images/gradient_1.png) repeat-x;
   color: #ffffff;
   font-weight: normal;
   text-shadow: 0 1px 0 rgba(83, 83, 83, 0.8);
@@ -1042,6 +1049,11 @@ body .ui-tooltip {
   -webkit-background-clip: padding-box;
   -moz-background-clip:    padding;
   background-clip:         padding-box;
+}
+
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+  background: #4f4f4f url(images/gradient_1.png) repeat-x;
 }
 
 .ui-state-default a,
@@ -1236,7 +1248,9 @@ body .ui-tooltip {
   background-position: -16px 0;
 }
 
-.ui-icon-carat-1-e {
+
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e{
   background-position: -32px 0;
 }
 
@@ -2615,6 +2629,10 @@ body .ui-tooltip {
 .ui-menu .ui-icon {
   background-image: url("images/ui-icons_222222_256x240.png");
 }
+.ui-menu .ui-state-focus .ui-icon {
+  background-image: url(images/ui-icons_ffffff_256x240.png);
+}
+
 
 .ui-igedit-list .ui-igedit-listitem {
   font-size: 1em;
@@ -4654,7 +4672,7 @@ Spreadsheet colors
 .ui-igspreadsheet-tabareabackground,
 .ui-igspreadsheet-formulabar
 {
-  background-color: @bar-background;
+  background: @bar-background;
 }
 
 /* SpreadSheet Footer top border */
@@ -4667,7 +4685,7 @@ Spreadsheet colors
 .ui-igspreadsheet-tabareasplitter,
 .ui-igspreadsheet-nameboxsplitter
 {
-  color: @spreadsheet-icon;
+  color: #ddd;
 }
 
 /* TabItem
@@ -4681,14 +4699,13 @@ Spreadsheet colors
   border-left: 1px solid @tab-bar-border;
   background-color: transparent;
   border-bottom: 2px solid transparent; /* reserved space so we don't see jumping when the tab is selected */
-  color: @spreadsheet-tab-text-color;
 }
 
 
 /* Tab hover */
 .ui-igspreadsheet-tabitem.ui-state-hover
 {
-  color: @spreadsheet-accent;
+  color: #fff;
 }
 
 /* Active tab */
@@ -4701,6 +4718,10 @@ Spreadsheet colors
 .ui-igspreadsheet-tabitem-active.ui-state-hover
 {
   color:@spreadsheet-accent;
+}
+
+.ui-igspreadsheet-tabitem .ui-igspreadsheet-tabitemcontent {
+  text-shadow: none;
 }
 
 /* [LIGHT|DARK TAB START]  */
@@ -4802,13 +4823,13 @@ Spreadsheet colors
 .ui-igspreadsheet-scrollbar-track-up,
 .ui-igspreadsheet-scrollbar-track-down
 {
-  background-color:  @igGray4;
+  background:  @igGray4;
 }
 
 .ui-igspreadsheet-scrollbar-thumb-vertical,
 .ui-igspreadsheet-scrollbar-thumb-horizontal
 {
-  background-color: @igGray6;
+  background: @igGray6;
   border: 1px solid @igGray7;
 }
 
@@ -4817,7 +4838,7 @@ Spreadsheet colors
 .ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-active,
 .ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-active
 {
-  background-color:@igGray7;
+  background:@igGray7;
   border-color: @igGray4;
 }
 
@@ -5037,6 +5058,30 @@ Spreadsheet colors
 
 .ui-igspreadsheet .ui-menu {
   box-shadow: 0 0 10px @igGray5;
+}
+
+.ui-igspreadsheet .ui-menu-item {
+  a {
+    border-radius: 0;
+    border-color: transparent;
+    border-left-color: #b1b1b1;
+    background: #fff;
+    &.ui-state-focus {
+      background: @accent2;
+      color: @spreadsheet-text-color;
+    }
+  }
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+  div.ui-state-active {
+    color:#fff;
+    background: @accent2;
+    .ui-icons {
+
+    }
+  }
 }
 
 .ui-igspreadsheet .ui-menu-item .ui-menu {

@@ -422,7 +422,8 @@
     background-position: -16px 0;
 }
 
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e{
     background-position: -32px 0;
 }
 
@@ -1237,12 +1238,20 @@
     padding-top: 0.4em;
     padding-bottom: 0.4em;
     border-width: 1px 0;
+    margin: 0; //overrides default beaviour
+    .ui-state-focus,
+    .ui-state-active{
+        margin: 0; //overrides default beaviour
+        background: transparent;
+        border-color: transparent;
+    }
 }
 
 .ui-menu .ui-menu-item.ui-state-focus {
     .stateActive-B;
     border-width: 1px 0;
     margin: 0; //overrides default beaviour
+
 }
 
 .ui-menu .ui-menu-item.ui-state-active {
@@ -4207,6 +4216,34 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu-item:hover {
     background: @spreadsheet-menu-item-bg-hover;
     border-radius: 0;
+}
+
+
+.ui-igspreadsheet .ui-menu-item {
+    position: relative;
+    cursor: pointer;
+    min-height: 0;
+    padding: 0;
+    a {
+        border-radius: 0;
+        border-color: transparent;
+        border-left-color: #b1b1b1;
+        background: #fff;
+        &.ui-state-focus {
+            background: #e5f2ff;
+            color: @spreadsheet-text-color;
+        }
+        &.ui-state-active {
+            border: none;
+        }
+
+    }
+    div.ui-state-active {
+        background: #e5f2ff;
+        .ui-icons {
+
+        }
+    }
 }
 
 /*
