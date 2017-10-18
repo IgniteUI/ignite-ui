@@ -345,7 +345,11 @@
 .ui-icon-carat-1-n:before{content:'\e636'}
 .ui-icon-caret-u:before{content:'\e636'}
 .ui-icon-carat-1-ne:before{content:'\e637'}
+
+/* This two classes are actually different in different version of jQueryUi, do not delete them*/
 .ui-icon-carat-1-e:before{content:'\e638'}
+.ui-icon-caret-1-e:before{content:'\e638'}
+
 .ui-icon-caret-r:before{content:'\e638'}
 .ui-icon-carat-1-se:before{content:'\e639'}
 .ui-icon-carat-1-s:before{content:'\e63a'}
