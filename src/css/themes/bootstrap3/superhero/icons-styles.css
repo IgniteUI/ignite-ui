@@ -660,6 +660,10 @@
 .ui-iggrid-icon-show:before{content:'\e6da'}
 .ui-iggrid-icon-hide:before{content:'\e93b'}
 
+/* Col Order */
+.ui-iggrid-icon-sort-a-z:before{content:"\e932"}
+.ui-iggrid-icon-sort-z-a:before{content:"\e933"}
+
 
 .ui-iggrid-icon-column-chooser:before{content:'\e900'}
 .ui-iggrid-icon-move:before{content:'\e92d'}
