@@ -434,7 +434,6 @@ $.ig.dependencies = [
 		widget: "VisualData",
 		group: $.ig.loaderClass.locale.miscGroup,
 		dependency: [ { name: "_ig_dv_visualdata" }],
-		internal: true,
 		description: $.ig.loaderClass.locale.descriptions.visualDataDescription
 	},
 
