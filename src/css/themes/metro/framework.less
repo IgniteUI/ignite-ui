@@ -2069,21 +2069,24 @@ body .ui-tooltip {
  * jQuery UI Menu Overrides
  */
 
+.ui-menu .ui-menu-item {
+  border:none;
+  border-top: 1px solid @table-border-color;
+  padding: 0;
+  &:first-of-type{
+    border-top:none;
+  }
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
+
+
+
 .ui-menu {
   background: #FFFFFF;
   color: #4b4b4b;
-}
-
-.ui-menu .ui-menu-item.ui-state-focus {
-  color: #4b4b4b;
-  background-color: #EAEAEA;
-  border: 1px solid #b7b7b7;
-}
-
-.ui-menu .ui-menu-item.ui-state-active {
-  color: #FFFFFF;
-  background: #00aade;
-  border: 1px solid #00aade;
 }
 
 .ui-menu .ui-menu-item .ui-icon {
