@@ -1628,6 +1628,7 @@
 		result = result.replace("tt", hours < 12 ? "AM" : "PM");
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
 		return result;
 	};
 
@@ -3364,6 +3365,12 @@
 			return this.compare5(string1, string2, $.ig.CompareOptions.prototype.none);
 		},
 		compare5: function (string1, string2, options) {
+			if (string1 === null) {
+				return string2 === null ? 0 : -1;
+			} else if (string2 === null) {
+				return 1;
+			}
+
 			return this.compare1(string1, 0, string1.length, string2, 0, string2.length, options);
 		},
 		indexOf1: function (source, value) {

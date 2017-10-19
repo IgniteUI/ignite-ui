@@ -1792,6 +1792,17 @@ body .ui-tooltip {
 /*
  * jQuery UI Menu Overrides
  */
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid transparent;
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 .ui-menu {
   background: #fff;
   color: #7b8a8b;
@@ -4228,6 +4239,60 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #2C3E50;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
+}
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #2C3E50;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color: #2C3E50;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #2C3E50;
+}
+/* Styles for jQuery 1.10.3 END */
+/* Styles for jQuery 1.11.1*/
+.ui-menu-item.ui-state-focus {
+  background: #2C3E50;
+  color: #fff;
+}
+.ui-menu-item.ui-state-active > div,
+.ui-menu-item.ui-state-active {
+  background: #2C3E50;
+}
+.ui-menu .ui-menu-item {
+  margin: -1px;
+}
+.ui-menu .ui-menu-item .ui-icon {
+  color: #2C3E50;
+}
+/* Styles for jQuery 1.11.1 END */
+.ui-menu .ui-menu-item.ui-state-focus > span {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div {
+  background: #2C3E50;
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div .ui-icon {
+  color: #fff;
 }
 /***********************/
 /* Tile manager        */

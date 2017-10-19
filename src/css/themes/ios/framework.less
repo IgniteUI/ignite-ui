@@ -1905,9 +1905,30 @@ body .ui-tooltip {
  */
 
 .ui-menu .ui-menu-item {
-  border: 1px solid transparent;
-  border-width: 1px 0;
+  border:none;
   border-top: 1px solid @border-color-A;
+  padding: 0;
+  &:first-of-type{
+    border-top:none;
+  }
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
+
+.ui-menu .ui-menu-item  {
+  &:first-of-type {
+    .ui-menu-item-wrapper {
+      border-radius: @border-radius-base @border-radius-base 0 0;
+    }
+  }
+  &:nth-child(7),
+  &:last-of-type{
+    .ui-menu-item-wrapper {
+      border-radius: 0 0 @border-radius-base @border-radius-base;
+    }
+  }
 }
 
 .ui-menu .ui-menu-item:first-child {
