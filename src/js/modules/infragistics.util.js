@@ -1628,6 +1628,7 @@
 		result = result.replace("tt", hours < 12 ? "AM" : "PM");
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
 		return result;
 	};
 
@@ -3761,9 +3762,12 @@
 	String.prototype.trimStart = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		if (this.length === 0) {
@@ -3777,9 +3781,12 @@
 	String.prototype.trimEnd = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		var i = this.length - 1;
