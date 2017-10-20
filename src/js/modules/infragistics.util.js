@@ -1628,6 +1628,7 @@
 		result = result.replace("tt", hours < 12 ? "AM" : "PM");
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
 		return result;
 	};
 
