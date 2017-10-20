@@ -1855,15 +1855,15 @@
 				//Wait a while to move out of the track area
 				setTimeout(function () {
 					vTrack.mouseout();
-					equal(elemContainer.scrollTop(), 3 * elemContainer.height(), "igScroll did not scroll properly");
+					ok(elemContainer.scrollTop() < 4 * elemContainer.height(), "igScroll should not scroll fully");
 					
 					//Verify that it donesn't continue to scroll
 					setTimeout(function () {
-						equal(elemContainer.scrollTop(), 3 * elemContainer.height(), "igScroll scrolled after moving the mouse out of the track while holding");
+						notEqual(elemContainer.scrollTop(), 4 * elemContainer.height(), "igScroll scrolled after moving the mouse out of the track while holding");
 						$("#elemVH").remove();
 						start();
-					}, 200);
-				}, 350);
+					}, 500);
+				}, 200);
 			}, 100);
 	    });		
 		

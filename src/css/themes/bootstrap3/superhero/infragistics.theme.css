@@ -1781,6 +1781,20 @@ body .ui-tooltip {
 /*
  * jQuery UI Menu Overrides
  */
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid transparent;
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 .ui-menu {
   background: #4E5D6C;
   color: #EBEBEB;
@@ -4111,7 +4125,7 @@ Spreadsheet colors
 .ui-igspreadsheet-columnheader,
 .ui-igspreadsheet-rowheader {
   background-color: #2B3E50;
-  color: #111;
+  color: #e8e8e8;
 }
 /* Cols & Rows Headers borders  */
 .ui-igspreadsheet-columnheader {
@@ -4224,6 +4238,64 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
+}
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #DF691A;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color: #EBEBEB;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #EBEBEB;
+}
+/* Styles for jQuery 1.10.3 END */
+/* Styles for jQuery 1.11.1*/
+.ui-menu-item.ui-state-focus {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-menu-item.ui-state-active > div,
+.ui-menu-item.ui-state-active {
+  background: #DF691A;
+}
+.ui-menu .ui-menu-item {
+  margin: -1px;
+}
+.ui-menu .ui-menu-item .ui-icon {
+  color: #EBEBEB;
+}
+/* Styles for jQuery 1.11.1 END */
+.ui-menu .ui-menu-item.ui-state-focus > span {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div .ui-icon {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-active .ui-icon,
+.ui-menu .ui-menu-item.ui-state-focus .ui-icon {
+  color: #fff;
 }
 /***********************/
 /* Tile manager        */
