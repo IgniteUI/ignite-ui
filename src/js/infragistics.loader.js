@@ -104,6 +104,7 @@ $.ig.loaderClass.locale.descriptions = {
 	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
 	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
 	financialDescription: "Contains the financial series for the igDataChart.",
+	shapeDataSourceDescription: "This module supports loading shape data from various data sources.",
 	shapeChartDescription: "Component that renders areas in orthogonal (Cartesian) coordinate system into a canvas on the page.",
 	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
 	funnelChartDescription: "Component to create a funnel chart that displays values associated with different categories in a conic shape.",
@@ -436,7 +437,17 @@ $.ig.dependencies = [
 		dependency: [ { name: "_ig_dv_visualdata" }],
 		description: $.ig.loaderClass.locale.descriptions.visualDataDescription
 	},
-
+	{
+		widget: "igShapeDataSource",
+		dependency: [
+			{ name: "_ig_ext_web" },
+			{ name: "_ig_dv_geo" }
+		],
+		scripts: [  ],
+		group: $.ig.loaderClass.locale.frameworkGroup,
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.shapeDataSourceDescription
+	},
 	{
 		widget: "igChartLegend",
 		group: $.ig.loaderClass.locale.dvGroup,
