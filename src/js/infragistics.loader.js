@@ -456,20 +456,6 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.chartLegendDescription
 	},
 	{
-		widget: "igDateTimeAxis",
-		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_dv_extendedaxes" } ],
-		scripts: [],
-		description: $.ig.loaderClass.locale.descriptions.dateTimeAxisDescription
-	},
-	{
-		widget: "igTimeXAxis",
-		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_dv_extendedaxes" } ],
-		scripts: [],
-		description: $.ig.loaderClass.locale.descriptions.timeXAxisDescription
-	},
-	{
 		widget: "igOverviewPlusDetailPane",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_core" } ],
@@ -578,6 +564,22 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [ "$path$/modules/infragistics.datachart_annotation.js" ],
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
+	},
+	{
+		widget: "DateTimeAxis",
+        parentWidget: "igDataChart",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		scripts: [],
+		description: $.ig.loaderClass.locale.descriptions.dateTimeAxisDescription
+	},
+	{
+		widget: "TimeXAxis",
+        parentWidget: "igDataChart",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		scripts: [],
+		description: $.ig.loaderClass.locale.descriptions.timeXAxisDescription
 	},
 	{
         widget: "Interactivity",
