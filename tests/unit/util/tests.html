@@ -218,6 +218,24 @@
 		    equal($.ig.util.stringCompare2("", null, c, o), 1, "empty after null");
 		});
 
+		test("Test trimStart", function () {
+		    equal("  ABC  ".trimStart(), "ABC  ", "No arguments");
+		    equal("  ABC  ".trimStart([]), "ABC  ", "Empty array argument");
+		    equal("  ABC  ".trimStart([' ']), "ABC  ", "Explicit space argument");
+		    equal("aa  ABC  aa".trimStart(['a']), "  ABC  aa", "Nonstandard trim character");
+		    equal("aa  ABC  aa".trimStart('a'), "  ABC  aa", "character only");
+		    equal("aa  ABC  aa".trimStart('a', ' '), "ABC  aa", "Multiple characters only");
+		});
+
+		test("Test trimEnd", function () {
+		    equal("  ABC  ".trimEnd(), "  ABC", "No arguments");
+		    equal("  ABC  ".trimEnd([]), "  ABC", "Empty array argument");
+		    equal("  ABC  ".trimEnd([' ']), "  ABC", "Explicit space argument");
+		    equal("aa  ABC  aa".trimEnd(['a']), "aa  ABC  ", "Nonstandard trim character");
+		    equal("aa  ABC  aa".trimEnd('a'), "aa  ABC  ", "character only");
+		    equal("aa  ABC  aa".trimEnd('a', ' '), "aa  ABC", "Multiple characters only");
+		});
+
 		test("Test $.ig.encode", function () {
 			equal($.ig.encode("<div></div>"), "&lt;div&gt;&lt;/div&gt;", "Should encode div element");
 			equal($.ig.encode("&lt;div&gt;&lt;/div&gt;"), "&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;", "Should encode encoded div element");
