@@ -3649,9 +3649,12 @@
 	String.prototype.trimStart = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		if (this.length === 0) {
@@ -3665,9 +3668,12 @@
 	String.prototype.trimEnd = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		var i = this.length - 1;
