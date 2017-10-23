@@ -145,6 +145,7 @@ $.ig.dependencies = [
 		widget: "theme",
 		scripts: [  ],
 		internal: true,
+		oss: true,
 		css: [ "$path$/themes/$theme$/infragistics.theme.css" ],
 		description: $.ig.loaderClass.locale.descriptions.themeDescription
 	},
@@ -153,12 +154,14 @@ $.ig.dependencies = [
 		scripts: [  ],
 		css: [  ],
 		internal: true,
+		oss: true,
 		regional: [ "$localePath$/regional/infragistics.ui.regional-$regional$.js" ],
 		description: $.ig.loaderClass.locale.descriptions.regionalDescription
 	},
 	{
 		widget: "igUtil",
 		priority: true,
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.util.js",
 		"$path$/modules/infragistics.util.jquery.js",
 		"$path$/modules/infragistics.util.jquerydeferred.js" ],
@@ -170,6 +173,7 @@ $.ig.dependencies = [
 	{
 		widget: "igWidget",
 		priority: true,
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.widget.js" ],
 		dependency: [ { name: "igUtil" } ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -179,6 +183,7 @@ $.ig.dependencies = [
 		widget: "igDataSource",
 		dependency: [ { name: "igUtil" } ],
 		priority: true,
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.datasource.js" ],
 		locale: [ "$localePath$/infragistics.datasource-$locale$.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
@@ -216,6 +221,7 @@ $.ig.dependencies = [
 	{
 		widget: "igTemplating",
 		dependency: [ { name: "igUtil" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.templating.js" ],
 		locale: [ "$localePath$/infragistics.templating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -225,6 +231,7 @@ $.ig.dependencies = [
 	{
 		widget: "igScroll",
 		dependency: [ { name: "igWidget" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
 		locale: [ "$localePath$/infragistics.ui.scroll-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -234,6 +241,7 @@ $.ig.dependencies = [
 	{
 		widget: "igShared",
 		dependency: [ { name: "igUtil" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.shared.js" ],
 		locale: [ "$localePath$/infragistics.shared-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -553,19 +561,19 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
 	},
 	{
-        widget: "Interactivity",
-        parentWidget: "igDataChart",
-        dependency: [ { name: "_ig_datachart_interactivity" } ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
-    },
+		widget: "Interactivity",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_interactivity" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+	},
 	{
-        widget: "VisualData",
-        parentWidget: "igDataChart",
-        dependency: [ { name: "_ig_datachart_visualdata" } ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
-    },
+		widget: "VisualData",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_visualdata" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+	},
 	{
 		widget: "igDataChart.*",
 		dependency: [ { name: "Category" },
@@ -1064,6 +1072,7 @@ $.ig.dependencies = [
 			{ name: "igScroll" },
 			{ name: "igValidator" }
 		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.combo.js" ],
 		locale: [ "$localePath$/infragistics.ui.combo-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -1076,6 +1085,7 @@ $.ig.dependencies = [
 	{
 		widget: "igDialog",
 		dependency: [ { name: "igWidget" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.dialog.js" ],
 		locale: [ "$localePath$/infragistics.ui.dialog-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -1089,7 +1099,8 @@ $.ig.dependencies = [
 			{ name: "regional" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.editors.js" ],
 		locale: [ "$localePath$/infragistics.ui.editors-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -1102,6 +1113,7 @@ $.ig.dependencies = [
 	{
 		widget: "igZoombar",
 		dependency: [ { name: "igWidget" }, { name: "igShared" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.zoombar.js" ],
 		locale: [ "$localePath$/infragistics.ui.zoombar-$locale$.js" ],
 		css: [
@@ -1389,7 +1401,8 @@ $.ig.dependencies = [
 			{ name: "igEditors" },
 			{ name: "igToolbarButton" },
 			{ name: "igToolbar" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.htmleditor.js" ],
 		locale: [ "$localePath$/infragistics.ui.htmleditor-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -1493,6 +1506,7 @@ $.ig.dependencies = [
 		/* I.K. March 6th, 2013 Bug #135150 The rating now depends on util */
 		/* as of jQuery 1.9 because browser specific checks are now in util */
 		dependency: [ { name: "igWidget" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.rating.js" ],
 		locale: [ "$localePath$/infragistics.ui.rating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -1523,7 +1537,8 @@ $.ig.dependencies = [
 			{ name: "igShared" },
 			{ name: "igTemplating" },
 			{ name: "igDataSource" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.tree.js" ],
 		locale: [ "$localePath$/infragistics.ui.tree-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
@@ -1533,6 +1548,7 @@ $.ig.dependencies = [
 	{
 		widget: "igPopover",
 		dependency: [ { name: "igWidget" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.popover.js" ],
 		locale: [ "$localePath$/infragistics.ui.popover-$locale$.js" ],
 		css: [ "$path$/structure/modules/infragistics.ui.popover.css" ],
@@ -1541,6 +1557,7 @@ $.ig.dependencies = [
 	{
 		widget: "igNotifier",
 		dependency: [ { name: "igPopover" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.notifier.js" ],
 		locale: [ "$localePath$/infragistics.ui.notifier-$locale$.js" ],
 		css: [ "$path$/structure/modules/infragistics.ui.notifier.css" ],
@@ -1549,6 +1566,7 @@ $.ig.dependencies = [
 	{
 		widget: "igSplitButton",
 		dependency: [ { name: "igToolbarButton" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.splitbutton.js" ],
 		locale: [  ],
 		css: [ "$path$/structure/modules/infragistics.ui.splitbutton.css" ],
@@ -1557,6 +1575,7 @@ $.ig.dependencies = [
 	{
 		widget: "igColorPicker",
 		dependency: [  ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.colorpicker.js" ],
 		locale: [  ],
 		css: [ "$path$/structure/modules/infragistics.ui.colorpicker.css" ],
@@ -1568,7 +1587,8 @@ $.ig.dependencies = [
 			{ name: "igPopover" },
 			{ name: "igColorPicker" },
 			{ name: "igSplitButton" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.colorpickersplitbutton.js" ],
 		locale: [  ],
 		css: [  ],
@@ -1577,6 +1597,7 @@ $.ig.dependencies = [
 	{
 		widget: "igLayoutManager",
 		dependency: [ { name: "igWidget" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.layoutmanager.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ],
@@ -1589,7 +1610,8 @@ $.ig.dependencies = [
 			{ name: "igTemplating" },
 			{ name: "igLayoutManager" },
 			{ name: "igSplitter" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.tilemanager.js" ],
 		locale: [ "$localePath$/infragistics.ui.tilemanager-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -1601,7 +1623,8 @@ $.ig.dependencies = [
 		dependency: [
 			{ name: "igWidget" },
 			{ name: "igShared" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.upload.js" ],
 		locale: [ "$localePath$/infragistics.ui.upload-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
@@ -1611,6 +1634,7 @@ $.ig.dependencies = [
 	{
 		widget: "igValidator",
 		dependency: [ { name: "igWidget" }, { name: "igNotifier" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.validator.js" ],
 		locale: [ "$localePath$/infragistics.ui.validator-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -1625,7 +1649,8 @@ $.ig.dependencies = [
 		dependency: [
 			{ name: "igWidget" },
 			{ name: "igShared" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.videoplayer.js" ],
 		locale: [ "$localePath$/infragistics.ui.videoplayer-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
@@ -1638,6 +1663,7 @@ $.ig.dependencies = [
 	{
 		widget: "igSplitter",
 		dependency: [ { name: "igWidget" } ],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.splitter.js" ],
 		locale: [ "$localePath$/infragistics.ui.splitter-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -1649,7 +1675,8 @@ $.ig.dependencies = [
 		dependency: [
 			{ name: "igUtil" },
 			{ name: "igShared" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.toolbarbutton.js" ],
 		locale: [  ],
 		css: [ "$path$/structure/modules/infragistics.ui.toolbarbutton.css" ],
@@ -1660,7 +1687,8 @@ $.ig.dependencies = [
 		dependency: [
 			{ name: "igWidget" },
 			{ name: "igToolbarButton" }
-			],
+		],
+		oss: true,
 		scripts: [ "$path$/modules/infragistics.ui.toolbar.js" ],
 		locale: [ "$localePath$/infragistics.ui.toolbar-$locale$.js" ],
 		css: [ "$path$/structure/modules/infragistics.ui.toolbar.css" ],
@@ -1987,43 +2015,42 @@ $.ig.dependencies = [
 	},
 /*/ end igSpreadsheet /// */
 /*/ start igScheduler/// */
-    {
-        widget: "igScheduler",
-        dependency: [
-            { name: "igWidget" },
-            { name: "_ig_ext_core" },
-            { name: "_ig_ext_collections" },
-            { name: "_ig_ext_collections_extended" },
-            { name: "_ig_ext_ui" },
-            { name: "_ig_ext_text" },
-            { name: "_ig_ext_io" },
-            { name: "_ig_ext_threading" },
-            { name: "_ig_ext_web" },
-            { name: "igScroll" },
-            { name: "_ig_dv_core" },
-            { name: "_ig_dv_jquerydom" },
-			{ name: "_ig_dv_interactivity" },
-            { name: "igDataSource" },
-            { name: "igShared" },
-            { name: "igCombo" },
-            { name: "igEditors" }
-        ],
-        scripts: [
-            "$path$/modules/infragistics.scheduler.core.js",
-            "$path$/modules/infragistics.ui.scheduler.core.js",
-            "$path$/modules/infragistics.ui.scheduler.js"
-        ],
-        locale: [
-            "$localePath$/infragistics.scheduler.core-$locale$.js",
-            "$localePath$/infragistics.ui.scheduler-$locale$.js"
-        ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        css: [
-            "$path$/structure/modules/infragistics.ui.shared.css",
-            "$path$/structure/modules/infragistics.ui.scheduler.css"
-            ],
-        description: $.ig.loaderClass.locale.descriptions.schedulerDescription
-    },
+	{
+		widget: "igScheduler",
+		dependency: [
+			{ name: "igWidget" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_collections_extended" },
+			{ name: "_ig_ext_ui" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_threading" },
+			{ name: "_ig_ext_web" },
+			{ name: "igScroll" },
+			{ name: "_ig_dv_core" },
+			{ name: "_ig_dv_jquerydom" },
+			{ name: "igDataSource" },
+			{ name: "igShared" },
+			{ name: "igCombo" },
+			{ name: "igEditors" }
+		],
+		scripts: [
+			"$path$/modules/infragistics.scheduler.core.js",
+			"$path$/modules/infragistics.ui.scheduler.core.js",
+			"$path$/modules/infragistics.ui.scheduler.js"
+		],
+		locale: [
+			"$localePath$/infragistics.scheduler.core-$locale$.js",
+			"$localePath$/infragistics.ui.scheduler-$locale$.js"
+		],
+		group: $.ig.loaderClass.locale.dvGroup,
+		css: [
+			"$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.scheduler.css"
+		],
+		description: $.ig.loaderClass.locale.descriptions.schedulerDescription
+	},
 /*/ end igScheduler /// */
 /*/ start igGridExcelExporter/// */
 	{
@@ -2258,6 +2285,7 @@ $.extend($.ig.loaderClass, {
 
 		if (options) {
 			var basePath = options.scriptPath,
+				ossPath = options.ossScriptPath || options.scriptPath,
 				localePath = options.localePath,
 				cssPath = options.cssPath,
 				regional = options.regional,
@@ -2275,6 +2303,12 @@ $.extend($.ig.loaderClass, {
 					cssPath = cssPath.slice(0, cssPath.length - 1);
 				}
 				this.settings.cssPath = cssPath;
+			}
+			if (ossPath && ossPath.length > 0) {
+				if (ossPath.lastIndexOf("/") === ossPath.length - 1) {
+					ossPath = ossPath.slice(0, ossPath.length - 1);
+				}
+				this.settings.ossPath = ossPath;
 			}
 			if (localePath && localePath.length > 0) {
 				if (localePath.lastIndexOf("/") === localePath.length - 1) {
@@ -2352,7 +2386,7 @@ $.extend($.ig.loaderClass, {
 		var i,
 			j,
 			len = this._resources.length,
-			path = (type === "script" ? this.settings.scriptPath : this.settings.cssPath),
+			path,
 			localePath = this.settings.localePath,
 			theme = this.settings.theme,
 			scriptData,
@@ -2363,6 +2397,9 @@ $.extend($.ig.loaderClass, {
 			locales, regionals, k, regionalScr, localeScr;
 
 		for (i = 0; i < len; i++) {
+			path = (type === "script" ?
+				(this._resources[ i ].oss ? this.settings.ossPath : this.settings.scriptPath) :
+				this.settings.cssPath);
 			scriptData = (type === "script" ? this._resources[ i ].scripts : this._resources[ i ].css);
 			scriptData = scriptData || [  ];
 			if (useLocale) {
