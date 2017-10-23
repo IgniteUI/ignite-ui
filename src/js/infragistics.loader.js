@@ -561,19 +561,19 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
 	},
 	{
-        widget: "Interactivity",
-        parentWidget: "igDataChart",
-        dependency: [ { name: "_ig_datachart_interactivity" } ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
-    },
+		widget: "Interactivity",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_interactivity" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+	},
 	{
-        widget: "VisualData",
-        parentWidget: "igDataChart",
-        dependency: [ { name: "_ig_datachart_visualdata" } ],
-        group: $.ig.loaderClass.locale.dvGroup,
-        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
-    },
+		widget: "VisualData",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_visualdata" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+	},
 	{
 		widget: "igDataChart.*",
 		dependency: [ { name: "Category" },
