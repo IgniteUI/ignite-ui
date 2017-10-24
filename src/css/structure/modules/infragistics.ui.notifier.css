@@ -181,5 +181,5 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.ui-icon.ui-icon-closethick.ui-igpopover-close-button:before{content: "\e600";}
+
 .ui-icon.ui-icon-closethick.ui-igpopover-close-button:hover{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";opacity:1;}
