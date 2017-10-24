@@ -3368,6 +3368,12 @@
 			}
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igupload#options:language)
+			Note that this method is for rare scenarios, use [language](ui.igupload#options:language) or [locale](ui.igupload#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			var $button = $("#" + this._id("_ibb")),
 				$sumarryProgressTmp = $("#upload_summplbl"),
 				self = this;

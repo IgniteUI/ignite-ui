@@ -300,6 +300,12 @@
 			return this._getLocaleValue(state + "Msg");
 		},
 		changeLocale: function() {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.ignotifier#options:language)
+			Note that this method is for rare scenarios, use [language](ui.ignotifier#options:language) or [locale](ui.ignotifier#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			if (this.contentInner.attr("data-default-locale")) {
 				this._currentText = this._getDefaultMessageByState(this.options.state);
 				this._setNewContent(this._getTemplate());
