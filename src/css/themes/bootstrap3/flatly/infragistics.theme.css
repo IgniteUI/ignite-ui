@@ -1149,7 +1149,8 @@ body .ui-tooltip {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
@@ -4148,8 +4149,27 @@ Spreadsheet colors
   border-radius: 0 4px 4px 4px;
 }
 .ui-igspreadsheet .ui-menu-item:hover {
+  border-radius: 0;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  background: transparent;
+  color: #2C3E50;
+  border-color: transparent;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item .ui-state-focus {
   background: rgba(44, 62, 80, 0.22);
   border-radius: 0;
+  border-color: transparent;
+}
+.ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
+  background: rgba(44, 62, 80, 0.22);
+  border-color: transparent;
 }
 /*
 =========================

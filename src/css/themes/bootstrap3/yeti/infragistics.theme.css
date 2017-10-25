@@ -1149,7 +1149,8 @@ body .ui-tooltip {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
@@ -4148,11 +4149,46 @@ Spreadsheet colors
   border-radius: 0 0 0 0;
 }
 .ui-igspreadsheet .ui-menu-item:hover {
+  border-radius: 0;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  background: transparent;
+  color: #222222;
+  border-color: transparent;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item .ui-state-focus {
   background: rgba(0, 140, 186, 0.22);
   border-radius: 0;
+  border-color: transparent;
+}
+.ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
+  background: rgba(0, 140, 186, 0.22);
+  border-color: transparent;
 }
 /*
 =========================
 Spreadsheet colors END
 =========================
 */
+/* Icons image */
+.ui-icon.ui-igspreadsheet-copy-icon,
+.ui-icon.ui-igspreadsheet-cut-icon,
+.ui-icon.ui-igspreadsheet-paste-icon,
+.ui-icon.ui-igspreadsheet-paste-icon,
+.ui-icon.ui-igspreadsheet-clearcontents-icon,
+.ui-icon.ui-igspreadsheet-insertcellsshiftright-icon,
+.ui-icon.ui-igspreadsheet-insertcellsshiftdown-icon,
+.ui-icon.ui-igspreadsheet-insertrows-icon,
+.ui-icon.ui-igspreadsheet-insertcolumns-icon,
+.ui-icon.ui-igspreadsheet-deletecellsshiftleft-icon,
+.ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
+.ui-icon.ui-igspreadsheet-deleterows-icon,
+.ui-icon.ui-igspreadsheet-deletecolumns-icon {
+  background-image: url(images/igSpreadsheet/spreadsheet-sprite.png) !important;
+}
