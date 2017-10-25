@@ -108,8 +108,8 @@
 				var width = $(".selector").igZoombar("option", "width");
 			```
 				auto type="string" The width of the Zoombar will be the same as the widget it is attached to.
-				number The widget width in pixels (px).
-				string The widget width can be set in pixels (px) and percentage (%).
+				number type="number" The widget width in pixels (px).
+				string type="string" The widget width can be set in pixels (px) and percentage (%).
 				null type="object" The Zoombar will stretch horizontally to fit its container if it has width set, otherwise assumes auto.
 			*/
 			width: "auto",

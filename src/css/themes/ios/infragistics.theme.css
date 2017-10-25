@@ -3322,6 +3322,9 @@ body .ui-tooltip {
   background-color: #e5f2ff;
   color: #007aff;
 }
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-paging-item span.ui-icon {
+  color: #007aff;
+}
 .ui-iggrid-page.ui-state-default a {
   border: 1px solid transparent;
   background-color: transparent;

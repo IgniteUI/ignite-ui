@@ -1503,6 +1503,12 @@
             }, this);
         },
         changeLocale: function () {
+            /* changes the all locales into the widget element to the language specified in [options.language](ui.ightmleditor#options:language)
+            Note that this method is for rare scenarios, use [language](ui.ightmleditor#options:language) or [locale](ui.ightmleditor#options:locale) option setter
+            ```
+                $(".selector").%%WidgetName%%("changeLocale");
+            ```
+            */
             this._superApply(arguments);
             this._changeLocaleForToolbars();
             /* remove Link Properties dialog */

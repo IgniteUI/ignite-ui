@@ -281,12 +281,12 @@
   margin-top: 0;
 }
 
-.ui-widget.ui-ignotify.ui-ignotify-inline {
+.ui-igscheduler .ui-widget.ui-ignotify.ui-ignotify-inline {
   margin-bottom: -20px;
   min-height: 20px;
 }
 
-.ui-widget.ui-ignotify.ui-ignotify-inline .ui-ignotify-icon-container {
+.ui-igscheduler .ui-widget.ui-ignotify.ui-ignotify-inline .ui-ignotify-icon-container {
   display: none;
 }
 
