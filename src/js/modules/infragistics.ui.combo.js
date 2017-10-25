@@ -4954,6 +4954,12 @@
 			}
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igcombo#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igcombo#options:language) or [locale](ui.igcombo#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			this._super();
 			var $noMatchFound = this._options.$noMatchFound;
 			if ($noMatchFound && $noMatchFound.length) {
@@ -4961,6 +4967,12 @@
 			}
 		},
 		changeRegional: function () {
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igcombo#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igcombo#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			this.dataBind();
 		},
 		_setOption: function (option, value) {
