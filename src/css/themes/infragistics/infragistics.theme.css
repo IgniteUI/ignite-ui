@@ -3133,7 +3133,8 @@ input.ui-igbutton {
   border-left: 0!important;
   border-bottom: 0!important;
 }
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #4897AA;
 }
 .ui-iggrid .ui-iggrid-footer,
