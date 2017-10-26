@@ -2199,7 +2199,8 @@ body .ui-tooltip {
 .ui-iggrid th.ui-state-active .ui-icon {
   background-image: url(images/ui-icons_ffffff_256x240.png);
 }
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #007aff;
 }
 .ui-iggrid th.ui-state-focus .ui-iggrid-headertext,
