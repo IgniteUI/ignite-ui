@@ -48,6 +48,7 @@
 		Editing of field supports auto-complete, editing multiple items, synchronization with selection in drop-down list, clear button, etc.
 	*/
 	$.widget("ui.igCombo", $.ui.igWidget, {
+		widgetEventPrefix: "igCombo",
 		options: {
 			/* type="number|string" Gets/Sets the width of combo. The numeric and string values (valid html units for size) are supported. It includes %, px, em and other units.
 			```

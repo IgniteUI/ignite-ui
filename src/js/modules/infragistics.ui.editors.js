@@ -33,6 +33,7 @@
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", $.ui.igWidget, {
+		widgetEventPrefix: "igBaseEditor",
 		localeWidgetName: "Editor",
 		options: {
 			/* type="string|number|null" Gets/Sets the width of the control.

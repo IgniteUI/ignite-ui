@@ -35,6 +35,7 @@
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
 	*/
 	$.widget("ui.igZoombar", $.ui.igWidget, {
+        widgetEventPrefix: "igZoombar",
 		options: {
 			/* type="object" Specifies a provider class which interfaces the widget that is being zoomed.
 				object Provider class to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.

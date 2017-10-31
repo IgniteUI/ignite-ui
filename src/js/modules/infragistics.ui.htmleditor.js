@@ -52,6 +52,7 @@
         The igHtmlEditor is a jQuery based widget which allow you to convert a simple html element into a rich text area.
     */
     $.widget("ui.igHtmlEditor", $.ui.igWidget, {
+		widgetEventPrefix: "igHtmlEditor",
         options: {
             /* type="boolean" Shows/hides the "Formatting" toolbar.
             ```
@@ -2638,6 +2639,7 @@
        igHtmlEditorPopover
    ************************************/
     $.widget("ui.igHtmlEditorPopover", $.ui.igWidget, {
+		widgetEventPrefix: "igHtmlEditorPopover",
         localeWidgetName: "HtmlEditor",
         options: {
             item: null,

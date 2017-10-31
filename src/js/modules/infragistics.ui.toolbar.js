@@ -154,6 +154,7 @@
         split buttons, color picker split buttons, and combos.
 	*/
     $.widget("ui.igToolbar", $.ui.igWidget, {
+        widgetEventPrefix: "igToolbar",
         options: {
             /* type="numeric" Set/Get the widget height.
             ```

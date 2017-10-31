@@ -47,6 +47,7 @@
 		providers, etc.
 	*/
 	$.widget("ui.igTree", $.ui.igWidget, {
+        widgetEventPrefix: "igTree",
 		_const: {
 			dragCursorAt: {
 				top: -10,

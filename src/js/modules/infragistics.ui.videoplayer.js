@@ -32,6 +32,7 @@
 (function ($) {
 
 	$.widget("ui.igVideoPlayer", $.ui.igWidget, {
+        widgetEventPrefix: "igVideoPlayer",
 		_const: {
 			VOLUME_MAX: 1.0,
 			VOLUME_MIN: 0.0,
