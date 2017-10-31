@@ -123,6 +123,7 @@
 		elements located inside and outside of dialog.
 	*/
 	$.widget("ui.igDialog", $.ui.igWidget, {
+		widgetEventPrefix: "igDialog",
 		options: {
 			/* type="dom" Gets the jquery DIV object which is used as the main container for the dialog.
 				Notes:

@@ -44,6 +44,7 @@
 		igRating is a widget based on jQuery UI that provides functionality to edit numeric value by mouse, which appears as a row or a column of vote/star images.
 	*/
 	$.widget("ui.igRating", $.ui.igWidget, {
+		widgetEventPrefix: "igRating",
 		options: {
 			/* type="bool" Gets a vertical or horizontal orientation for the votes.
 				Change of that option is not supported after igRating was created.

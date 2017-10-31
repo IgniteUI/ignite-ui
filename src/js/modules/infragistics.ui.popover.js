@@ -30,6 +30,7 @@
 }
 (function ($) {
 	$.widget("ui.igPopover", $.ui.igWidget, {
+		widgetEventPrefix: "igPopover",
 		css: {
 			/* classes applied to the main popover container */
 			baseClasses: "ui-widget ui-igpopover",

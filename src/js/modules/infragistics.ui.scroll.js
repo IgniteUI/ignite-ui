@@ -38,6 +38,7 @@
 									"releasePointerCapture";
 
 	$.widget("ui.igScroll", $.ui.igWidget, {
+		widgetEventPrefix: "igScroll",
 		options: {
 			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option.
 			```

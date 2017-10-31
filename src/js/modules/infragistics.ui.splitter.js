@@ -33,6 +33,7 @@
             igSplitter is a widget based on jQuery UI that manages layout into two panels with split bar and providers the end user with a rich interaction functionality including the ability to expand/collapse panel, and resize panels via split bar.
         */
         $.widget("ui.igSplitter", $.ui.igWidget, {
+            widgetEventPrefix: "igSplitter",
             _const: {
                 orientations: {
                     horizontal: {

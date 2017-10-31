@@ -43,6 +43,7 @@
 		grid layout.
 	*/
     $.widget("ui.igTileManager", $.ui.igWidget, {
+        widgetEventPrefix: "igTileManager",
         css: {
             /* classes applied to the top container element */
             container: "ui-widget ui-igtilemanager ui-widget-content",

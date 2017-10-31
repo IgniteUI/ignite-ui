@@ -339,6 +339,7 @@
 	$.extend($.ui.igBrowseButton, { version: "<build_number>" });
 
 	$.widget("ui.igUpload", $.ui.igWidget, {
+        widgetEventPrefix: "igUpload",
 		_const: {
 			fileNameLimit: 100,
 			AjaxQueueName: "uploadrequestsqueue",
