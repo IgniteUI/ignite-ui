@@ -1549,12 +1549,6 @@ input.ui-igbutton {
 /* igGrid */
 /**********/
 
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-    /*padding: 10px;*/
-}
-
 .ui-iggrid .ui-iggrid-groupbyarea {
     background-color: @body-bg;
     border-color: @table-border-color;
@@ -1817,6 +1811,11 @@ input.ui-igbutton {
     color: @ui-icons-light;
 }
 
+.ui-iggrid tbody td {
+    border-left: 1px solid transparent!important;
+    border-right: 1px solid transparent!important;
+}
+
 .ui-iggrid tbody td,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
 .ui-iggrid thead .ui-iggrid-editingcell,
@@ -1910,12 +1909,12 @@ input.ui-igbutton {
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
     padding-left: 4px;
-    padding-right: 3px;
+    padding-right: 4px;
 }
 /*Bug 215539 11.03.2012, S.D., fix padding in chrome to prevent jump when adding borders on focus*/
 .ui-iggrid td.ui-state-active,
 .ui-iggrid .ui-ig-altrecord td.ui-state-active {
-  padding-left: 3px;
+  padding-left: 4px;
 }
 
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
