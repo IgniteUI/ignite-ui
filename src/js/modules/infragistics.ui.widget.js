@@ -192,7 +192,7 @@
 		changeGlobalRegional: function () {
 			/* changes the widget regional settins to global regional settings. Global regional settings are container in $.ig.util.regional
 			```
-				$(".selector").%%WidgetName%%("changeGlobalLanguage");
+				$(".selector").%%WidgetName%%("changeGlobalRegional");
 			```
 			*/
 			if (!this._userPreset || !this._userPreset.regional) {
