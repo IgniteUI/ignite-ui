@@ -2629,6 +2629,12 @@
 			});
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igdialog#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igdialog#options:language) or [locale](ui.igdialog#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			var self = this;
 			this._header.find("[data-dialog-button]").each(function () {
 				var $button = $(this), value = self._getLocaleValue($button.attr("data-localeid"));

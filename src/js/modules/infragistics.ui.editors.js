@@ -1793,6 +1793,12 @@
 			}
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igtexteditor#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igtexteditor#options:language) or [locale](ui.igtexteditor#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			this._superApply(arguments);
 			this._changeLocaleForNotifier();
 		},
@@ -5905,6 +5911,12 @@
 			return this._getRegionalValue();
 		},
 		changeRegional: function() { //igNumericEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.ignumericeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.ignumericeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			if (this._focused) {
 				this._enterEditMode();
 			} else {
@@ -8010,6 +8022,12 @@
 			}
 		},
 		changeRegional: function() { //igDateEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdateeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdateeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			var timeouts = this._timeouts;
 			this._initialize();
 			this._timeouts = timeouts;
@@ -11245,6 +11263,12 @@
 
 		// igDatePicker public methods
 		changeRegional: function() { //igDatePicker
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdatepicker#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdatepicker#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			var regional, opts = this.options.datepickerOptions;
 			regional = $.extend({}, this._dpRegion());
 			if (opts && typeof opts === "object") {

@@ -899,7 +899,14 @@
 			}
 		},
 
-		changeLocale: function () {},
+		changeLocale: function () {
+			/* This method overrides the base method and does nothing, because the scoll container shouldn't change the container locales
+			Note that this method is for rare scenarios, use [language](ui.igupload#options:language) or [locale](ui.igupload#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
+		},
 
 		_setOption: function (key, value) {
 			this._super(key, value);
