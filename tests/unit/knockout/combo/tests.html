@@ -233,7 +233,8 @@
 				testId_14 = '[ID14] Test event attributes and igCombo API',
 				testId_15 = '[ID15] Test enableSelectionChangedUpdate property',
 				testId_16 = '[ID16] Bug #186778 Test setting values with null',
-				testId_17 = '[ID17] Custom values should be persisted in the combo input';
+				testId_17 = '[ID17] Custom values should be persisted in the combo input',
+				testId_18 = '[ID18] Selected Items should be unselect after passing an empty array';
 
 			test(testId_1, function () {
 				ok(typeof (ko.bindingHandlers.igCombo) !== 'undefined', 'igCombo extension for KnockoutJS is not loaded.');
@@ -329,6 +330,19 @@
 				$comboInput.blur();
 				ok($comboInput.val() !== "", "The igCombo custom value is not removed from the input");
 				ok($combo.igCombo("text") === "Block", "The custom value is persisted");
+			});
+
+			test(testId_18, function() {
+				var $combo = $('#comboClearSelectedVal'),
+					$comboInput = $combo.data('igCombo')._options.$input;
+			
+				ok($combo.igCombo("selectedItems").length > 0, "There are some selected items.");
+				ok($comboInput.val() !== "", "There is some values that persists into the input")
+			
+ 				globalViewModel.data.removeAll();
+				
+ 				ok($combo.igCombo("selectedItems") === null, "Selected items were successfuly removed.");
+					ok($comboInput.val() === "", "There aren't any values into the input.")
 			});
 
 			var testId = 'Test disabled binding';
@@ -527,6 +541,19 @@
 				allowCustomValue: true
 			}
 		" />
+	</div>
+	<div class="test-container">
+	   <input id="comboClearSelectedVal" data-bind="
+	       igCombo: {
+	           dataSource: data,
+	           textKey: 'name',
+	           valueKey: 'value',
+	           selectedItems: selectedItems,
+	           multiSelection: {
+	               enabled: true
+	           }
+	       }
+	   " />
 	</div>
 	<div class="clear-floating"></div>
 	<div class="view-container">
