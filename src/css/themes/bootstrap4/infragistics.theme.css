@@ -1899,11 +1899,6 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 /**********/
 /* igGrid */
 /**********/
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-  /*padding: 10px;*/ }
-
 .ui-iggrid th,
 .ui-iggrid th.ui-widget-header.ui-state-default {
   border-top: 1px solid #eceeef; }
@@ -2131,6 +2126,10 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid th.ui-state-active.ui-state-hover .ui-icon {
   background-image: url(images/ui-icons_222222_256x240.png); }
 
+.ui-iggrid tbody td {
+  border-left: 1px solid transparent !important;
+  border-right: 1px solid transparent !important; }
+
 .ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
@@ -2201,8 +2200,8 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
-  padding-left: 3px;
-  padding-right: 3px; }
+  padding-left: 4px;
+  padding-right: 4px; }
 
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
   border-color: transparent !important; }
