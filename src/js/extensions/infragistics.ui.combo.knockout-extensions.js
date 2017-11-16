@@ -37,7 +37,7 @@
 			// If we have allCustomValue set to true and we've typed smth that doesn't match any record of the dataSource, we have
 			// to prevent this value to be added into selectedValues collection.
 			if (allowCustomValue && !selectedItems.length) {
-			    return;
+				return;
 			}
             for (index = 0; index < selectedItems.length; index++) {
                 item = selectedItems[ index ];
