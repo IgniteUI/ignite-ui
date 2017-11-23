@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tree-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.tree.js"></script>
 	
@@ -145,6 +146,23 @@
 					"Children": []
 				}]
 			},
+			notWorkingResponse3 = {
+				"Items": [{
+					"Id": "1",
+					"Name": "PARENT",
+					"Description": "",
+					"Links": {
+						"Self": "https://test",
+						"Databases": "https://test",
+						"UnitClasses": "https://test"
+					},
+					"Children": {
+						"__deferred": {
+							"uri": "/api/jsonpitems"
+						}
+					}
+				}]
+			},
 			notWorkingResponse2 = {
 				"Items": [{
 					"Id": "1",
@@ -166,12 +184,16 @@
 					}
 				}]
 			};
+		var jsonpcallback = $.noop;
 		$(document).ready(function () {
 			$.mockjaxSettings.logging = 0;  // only critical error messages
+			$.ajaxSettings.jsonpCallback = function() {
+				return "jsonpcallback";
+			};    
 			$.mockjax({
 				url: '/api/items',
 				contentType: 'text/json',
-
+				responseTime: 0,
 				response: function () {
 					this.responseText = notWorkingResponse1;
 				}
@@ -180,8 +202,27 @@
 			$.mockjax({
 				url: '/api/items?*',
 				contentType: 'text/json',
+				responseTime: 0,
 				response: function () {
 					this.responseText = notWorkingResponse2;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems',
+				contentType: 'text/json',
+				responseTime: 0,
+				response: function () {
+					this.responseText = notWorkingResponse3;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems?*',
+				contentType: "application/json",
+				responseTime: 0,
+				response: function (settings) {
+					jsonpcallback(notWorkingResponse3);
 				}
 			});
 
@@ -224,6 +265,7 @@
 						dataSource: results2,
 						loadOnDemand: true,
 						checkboxMode: 'triState',
+						dragAndDrop: true,
 						bindings: {
 							textKey: 'Text',
 							valueKey: 'Value',
@@ -1642,9 +1684,34 @@
 							valueKey: 'Id',
 							childDataProperty: 'Children'
 						}
-					}), node;
+					}), node,
+					tree = $("<div id='mock' />").appendTo(document.body).igTree({
+						dataSourceUrl: '/api/jsonpitems',
+						dataSourceType: 'remoteUrl',
+						loadOnDemand: true,
+						dragAndDrop: true,
+						checkboxMode: "triState",
+						responseDataKey: "Items",
+						//nodePopulating: function (event, ui) {
+						//	$remoteLOD.igTree('option', 'dataSourceUrl', '/api/items?id=' + ui.data.id);
+						//	return true;
+						//},
+						bindings: {
+							textKey: 'Name',
+							valueKey: 'Id',
+							childDataProperty: 'Children'
+						}
+					});
 				stop();
-				
+
+				tree.one("igtreenodepopulated", function (evt, ui) {
+					ok(ui.data.Children.length > 0);
+				});
+				tree.one("igtreerendered", function () {
+					tree.igTree("toggleCheckstate", tree.find("li[data-role=node]:first"));
+					tree.igTree("expand", tree.find("li[data-role=node]:first"));
+				});
+
 				$remoteLOD.one("igtreerendered", function (evt, ui) {
 					start();
 					node = $remoteLOD.find('li[data-role=node]:first');
