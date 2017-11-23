@@ -255,9 +255,9 @@
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tfoot td {
-  border-width: 1px 0!important;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid @igGray3;
+  border-width: 1px;
+  border-style: solid;
+  border-color: @igGray3 white white @igGray3;
 }
 
 .ui-iggrid tr.ui-ig-altrecord {
@@ -373,6 +373,10 @@
 .ui-iggrid .ui-iggrid-page.ui-state-default.ui-state-focus a {
   background-color: @accent1-light;
   color: @accent1;
+}
+
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-paging-item span.ui-icon {
+  color:@accent1;
 }
 
 .ui-iggrid-page.ui-state-default a {

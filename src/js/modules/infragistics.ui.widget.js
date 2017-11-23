@@ -140,7 +140,9 @@
 			var language = this.options.language,
 				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
 				localeObj = ($.ig.locale[ language ] && $.ig.locale[ language ][ widgetName ]) ||
-					($.ig[ widgetName ] && $.ig[ widgetName ].locale);
+					($.ig[ widgetName ] && $.ig[ widgetName ].locale) ||
+					/* excel, spreadsheet locale generated with lower cases for its defaults */
+					($.ig[ widgetName.toLowerCase() ] && $.ig[ widgetName.toLowerCase() ].locale);
 			return localeObj;
 		},
 		_getLocaleValue: function (key) {
@@ -164,6 +166,13 @@
 		},
 		changeRegional: $.noop,
 		changeLocale: function ($container) {
+			/* changes the all locales contained into a specified container to the language specified in [options.language](ui.igwidget#options:language)
+			Note that this method is for rare scenarios, use [language](ui.igwidget#options:language) or [locale](ui.igwidget#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+				paramType="object" Optional parameter - if not set it would use the element of the widget as $container
+			*/
 			var self = this;
 			$container = $container || this.localeContainer || this.element;
 			$container.find("[data-localeid]").addBack("[data-localeid]").each(function () {
@@ -171,16 +180,34 @@
 			});
 		},
 		changeGlobalLanguage: function () {
+			/* changes the widget language to global language. Global language is the value in $.ig.util.language
+			```
+				$(".selector").%%WidgetName%%("changeGlobalLanguage");
+			```
+			*/
 			if (!this._userPreset || !this._userPreset.language) {
 				this._setOption("language", $.ig.util.language);
 			}
 		},
 		changeGlobalRegional: function () {
+			/* changes the widget regional settins to global regional settings. Global regional settings are container in $.ig.util.regional
+			```
+				$(".selector").%%WidgetName%%("changeGlobalRegional");
+			```
+			*/
 			if (!this._userPreset || !this._userPreset.regional) {
 				this._setOption("regional", $.ig.util.regional);
 			}
 		},
 		destroy: function () {
+			/* destroy is part of the jQuery UI widget API and does the following:
+				1. Remove custom CSS classes that were added.
+				2. Unwrap any wrapping elements such as scrolling divs and other containers.
+				3. Unbind all events that were bound.
+				```
+					$(".selector").%%WidgetName%%("destroy");
+				```
+			*/
 			this._unregisterWidget();
 			this._super();
 		}

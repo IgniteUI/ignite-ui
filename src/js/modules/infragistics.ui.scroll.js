@@ -899,7 +899,14 @@
 			}
 		},
 
-		changeLocale: function () {},
+		changeLocale: function () {
+			/* This method overrides the base method and does nothing, because the scoll container shouldn't change the container locales
+			Note that this method is for rare scenarios, use [language](ui.igupload#options:language) or [locale](ui.igupload#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
+		},
 
 		_setOption: function (key, value) {
 			this._super(key, value);
@@ -3882,7 +3889,7 @@
 		}
 	});
 	$.extend($.ui.igScroll, { version: "<build_number>" });
-	$(document).on("iggridrendered", function (event, args) {
+	$(document).on("iggridrendered igtreegridrendered", function (event, args) {
 		/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
 		var container = args.owner.scrollContainer();
 		if (container.length === 0 && args.owner.container) {

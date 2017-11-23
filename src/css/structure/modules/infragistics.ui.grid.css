@@ -254,9 +254,6 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
     margin : 0 0.1em;
 }
 
-.ui-iggrid-colindicator { /* padding-right: 4px;*/
-}
-
 .ui-iggrid .ui-iggrid-filterbutton {
     float : left;
 }
@@ -542,16 +539,12 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
 
 .ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container {
     float : left;
-    width : calc(100% - 10px);
+    width : 100%;
 }
 
 .ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
     float : left;
     width : calc(100% - 35px);
-}
-
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igeditor-input-container {
-    width : auto;
 }
 
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
@@ -1256,7 +1249,6 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     cursor      : pointer;
     display     : block;
     float       : right;
-    font-family : "Segoe UI", Arial, sans-serif;
     font-size   : 10px;
     height      : 16px;
     line-height : 20px;
@@ -1800,7 +1792,7 @@ td.ui-iggrid-addrow {
     filter  : alpha(opacity=60);
 }
 
-.ui-iggrid-featurechooser-list .item-selected .ui-icon, .ui-iggrid-hiding-dropdown-list .item-selected .ui-icon, .ui-iggrid-columnmoving-dropdown-list .item-selected .ui-icon {
+.ui-iggrid-hiding-dropdown-list .item-selected .ui-icon, .ui-iggrid-columnmoving-dropdown-list .item-selected .ui-icon {
     opacity : 1;
     filter  : alpha(opacity=100);
 }
@@ -1810,7 +1802,8 @@ td.ui-iggrid-addrow {
     white-space : normal;
 }
 
-.ui-iggrid-featurechooser-list .item-selected .ui-iggrid-featurechooserddlistitemtext, .ui-iggrid-hiding-dropdown-list .item-selected .ui-iggrid-hiding-dropdown-ddlistitemtext, .ui-iggrid-columnmoving-dropdown-list .item-selected .ui-iggrid-columnmoving-dropdown-ddlistitemtext {
+.ui-iggrid-hiding-dropdown-list .item-selected .ui-iggrid-hiding-dropdown-ddlistitemtext,
+.ui-iggrid-columnmoving-dropdown-list .item-selected .ui-iggrid-columnmoving-dropdown-ddlistitemtext {
     font-weight : bold;
 }
 
