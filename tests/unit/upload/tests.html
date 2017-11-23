@@ -438,6 +438,27 @@
 				2000);
 			});
 
+			//bug 243975
+			test("Test if text is correct when container has offset left.", function () {
+				var container  = "<div style='width:300px; float: left'></div><div style='width:500px; float: right'><input id=\"upload_243975\"></input></div></div>";
+				$(container).appendTo("#mainContainer");
+				var upload = $("#upload_243975");
+				upload.igUpload({
+					mode: 'multiple',
+					controlId: "serverID1"
+				});
+
+				//simulate file selection
+				var filePicker = $('#upload_243975_ibb_fp'),
+                eventFileChange = jQuery.Event("change");
+
+	            filePicker.trigger(eventFileChange);
+				$("#upload_243975").data("igUpload")._onBrowseButtonFileSelected(eventFileChange, false, { filePath: "FileWithLoooongText.xml", files: [{ name: "FileWithLoooongText.xml", size: 1 }], multiple: true });
+				//verify text
+				var uploadFileNameContainer = $("#upload_243975_1__fus").find("span.ui-igupload-progressbar-filename");
+				equal(uploadFileNameContainer.text(), "FileWithLoooongText.xml", "File text should be correct.");
+			});
+
 	        function checkClearAllButton(uploaderId) {
 	            var clearAllButton = $('#' + uploaderId + '_clrabtn'),
                 click = jQuery.Event("click"),
@@ -599,17 +620,17 @@
      <h2 id="qunit-userAgent"></h2>
      <ol id="qunit-tests"></ol>
 </div>
-<div style="width:750px;">
-    <h1>igUpload 1 - Single Upload</h1>
-    <div id="igUpload1"></div>
-    <br/>
-    <br/>
-    <h1>igUpload 2 - Multiple Upload - Autostartupload Enabled</h1>
-    <div id="igUpload2"></div>
-    <br/>
-    <br/>
-    <h1>igUpload 3 - Multiple Upload - Autostartupload DISABLED</h1>
-    <div id="igUpload3"></div>    
-</div>
+	<div style="width:750px;" id="mainContainer">
+		<h1>igUpload 1 - Single Upload</h1>
+		<div id="igUpload1"></div>
+		<br />
+		<br />
+		<h1>igUpload 2 - Multiple Upload - Autostartupload Enabled</h1>
+		<div id="igUpload2"></div>
+		<br />
+		<br />
+		<h1>igUpload 3 - Multiple Upload - Autostartupload DISABLED</h1>
+		<div id="igUpload3"></div>
+	</div>
 </body>
 </html>
