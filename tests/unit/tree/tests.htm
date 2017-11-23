@@ -1266,6 +1266,9 @@
 						textXPath: '@Text',
 						valueKey: 'Value',
 						valueXPath: '@Value',
+						navigateUrlKey: "NavigateUrl",
+						navigateUrlXPath: "@NavigateUrl",
+						targetKey: "Target",
 						imageUrlKey: 'ImageUrl',
 						imageUrlXPath: '@ImageUrl',
 						childDataProperty: 'Folder',
@@ -1669,7 +1672,7 @@
 			testId_5 = "igTree checkstateChanging/Changed events";
 			testId_6 = "igTree node populating/populated events";
 			
-			test(testId_1, function () {
+			test(testId_1, 6, function () {
 				var dataBoundFired = false;
 				$('#tree8').igTree({
 					dataBinding: function (event, args) {
@@ -1685,7 +1688,7 @@
 					}
 				});
 			});
-			test(testId_2, function () {
+			test(testId_2, 6, function () {
 				var dataRendered = false, dataRendering = false;
 				$('#tree9').igTree({
 					rendering: function (event, args) {
@@ -2230,9 +2233,15 @@
 						},
 						bindings: bindings,
 						dragStart: function (event, ui) {
+							if (ui.element.attr("data-path") === "2") {
+								return;
+							}
 							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag start was incorrect.");
 						},
 						drag: function (event, ui) {
+							if (ui.element.attr("data-path") === "2") {
+								return false;
+							}
 							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag was incorrect.");
 						},
 						nodeDropping: function (event, ui) {
@@ -2263,6 +2272,15 @@
 				equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
 				equal(treeobj._validationObject.target[0], tree.find("ul:first > li[data-role=node]:eq(1)")[0], "The validation object target was incorrect.");
 				$.ig.TestUtil.simulateDragStop(node);
+				equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
+				equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
+				equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
+				equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
+				equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
+				equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+				node = tree.find("li[data-path='2']");
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree.find("ul:first > li[data-role=node]:eq(1) > a"));
 				equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
 				equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
 				equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
