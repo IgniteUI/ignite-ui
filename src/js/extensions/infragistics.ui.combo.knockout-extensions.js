@@ -25,13 +25,20 @@
 (function ($, ko) {
     function selectItems(combo, selectedItems) {
         var valueKey = combo.igCombo("option", "valueKey"),
+			allowCustomValue = combo.igCombo("option", "allowCustomValue"),
 			selectedValues = [],
 			index, item, value;
 
+        selectedItems = ko.utils.unwrapObservable(selectedItems);
+
         // R.K. 18th January, 2017: #746 Custom values are not persisted in the combo input
-        if (ko.utils.unwrapObservable(selectedItems) &&
-                ko.utils.unwrapObservable(selectedItems).length) {
-            selectedItems = ko.utils.unwrapObservable(selectedItems);
+        if (selectedItems) {
+			// A.K 15th October, 2017: #1381 Text of selected item remains after selectedItems option is cleared
+			// If we have allCustomValue set to true and we've typed smth that doesn't match any record of the dataSource, we have
+			// to prevent this value to be added into selectedValues collection.
+			if (allowCustomValue && !selectedItems.length) {
+				return;
+			}
             for (index = 0; index < selectedItems.length; index++) {
                 item = selectedItems[ index ];
                 if (typeof item === "function") {

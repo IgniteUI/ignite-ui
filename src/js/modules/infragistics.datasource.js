@@ -2552,7 +2552,7 @@
 					ds.dataBind();
 				});
 			```
-			paramType="string" Primary key of the record
+			paramType="object" Primary key of the record
 			paramType="string" optional="true" the data source in which to search for the record. When not set it will use the current data source.
 			paramType="string" optional="true" Not used in $.ig.DataSource
 			returnType="object" a JavaScript object specifying the found record, or null if no record is found
