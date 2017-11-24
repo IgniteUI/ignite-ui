@@ -294,10 +294,16 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
     background-image: $ui-icons-darker;
 }
 
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
 .ui-iggrid tbody td {
-    border-left: 1px solid transparent!important;
-    border-right: 1px solid transparent!important;
+    border-left: 1px solid $table-border-color!important;
+    border-right: 1px solid $table-border-color!important;
 }
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+    border-right: 1px solid $table-border-color;
+}
+/* BUG 246065 END */
+
 .ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
