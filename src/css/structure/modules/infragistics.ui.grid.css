@@ -22,6 +22,7 @@
     border-spacing: 0;
     border-collapse: separate;
     border-right: 1px solid #dadada;
+    box-sizing: border-box;
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable tr th {
     border-right: 0;
