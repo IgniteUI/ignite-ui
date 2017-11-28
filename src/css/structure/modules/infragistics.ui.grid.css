@@ -52,12 +52,10 @@
 .ui-iggrid-headertable-mrl-scrollable {
     border-spacing: 0;
     border-collapse: separate;
+    border-right: 1px solid #dadada;
+    box-sizing: border-box;
 }
-.ui-iggrid-headertable-mrl-scrollable th:not(:last-of-type) {
-    border-right: 0;
-}
-
-.ui-iggrid-headertable-mrl-scrollable th[colspan="1"][rowspan="1"]:last-of-type {
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable tr th {
     border-right: 0;
 }
 /* BUG 246065 END */
