@@ -1980,10 +1980,11 @@ body .ui-tooltip {
   background-repeat: repeat-x;
   border: 1px solid #2788b1;
 }
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus,
+.ui-iggrid-sortableheader:focus {
   background-color: white !important;
   background-image: none;
-  background-repeat: repeat-x;
   border: 1px solid #2788b1;
 }
 .ui-iggrid .ui-iggrid-footer,
