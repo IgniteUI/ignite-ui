@@ -3176,10 +3176,15 @@ input.ui-igbutton {
 .ui-iggrid th.ui-widget-header .ui-icon {
   color: #ffffff;
 }
-/*.ui-iggrid tbody td {
-  border-left: 1px solid transparent!important;
-  border-right: 1px solid transparent!important;
-}*/
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
+.ui-iggrid tbody td {
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+  border-right: 1px solid #dadada;
+}
+/* END 246065 */
 .ui-iggrid tbody td,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
 .ui-iggrid thead .ui-iggrid-editingcell,
