@@ -6747,9 +6747,16 @@
 						// Move to next char on the mask
 						// We need to detect Escaped chars
 
+						// A.M. November 28th, 2017 #1246
 						if (mask.charAt(i) === "\\") {
-							i++;
-							j--;
+							var flags = ["C", "&", "a", "A", "?", "L", "0", "9", "#"];
+							if (flags.indexOf(ch) > -1) {
+								i++;
+							}
+							else {
+								i++;
+								j--;
+							}
 						} else if (mask.charAt(i) === "<" || mask.charAt(i) === ">") {
 							j--;
 						}
