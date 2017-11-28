@@ -430,6 +430,25 @@
             }, 1000);
 
         });
+
+        test("#1391 Destroy dialog while animation is in progress", 1, function(){
+            var imgSrc = "https://www.igniteui.com/images/samples/dialog-window/content.jpg";
+            $('<div id="dialogAnim"><img id="contentImg" style="width: 200px" src=' + imgSrc + ' /></div>').appendTo("#rootBody");
+            
+            var $dialog = $("#dialogAnim").igDialog({
+                height: 250,
+                openAnimation: "slide",
+                closeAnimation: "explode",
+                modal: true
+            });
+            try {
+                $dialog.igDialog("destroy");
+            } catch (e) {
+
+            }
+            equal($dialog.children().attr("id"), "contentImg", "The only child should be the image");
+			$dialog.remove();
+        });
     });
     </script>
 </head>
