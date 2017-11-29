@@ -175,6 +175,8 @@
 				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+                dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
+                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
 				$comboList, i;
 
             if (listLength !== dataSource.length) {
@@ -200,6 +202,14 @@
                 // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
                 // This necessay in cases, when data source was empty array initially.
                 combo.igCombo("option", "dataSource", dataSource);
+
+                // R.K. 29th November, 2017 #246482: When an item is selected from the bottom of the list,
+                // the combo list "scrolls" back to top and the vertical scroll bar is positioned incorrectly.
+                // This happens with virtualization enabled. We're keeping the last scrollTop position and
+                // after data-bind, we reset the scrollbar to it minus 1px triggering the re-rendering of the correct list items.
+                if (options.virtualization) {
+                    dropDownScroller.scrollTop(lastScrollTop - 1);
+                }
             }
         }
     };
