@@ -6749,11 +6749,10 @@
 
 						// A.M. November 28th, 2017 #1246
 						if (mask.charAt(i) === "\\") {
-							var flags = ["C", "&", "a", "A", "?", "L", "0", "9", "#"];
+							var flags = [ "C", "&", "a", "A", "?", "L", "0", "9", "#" ];
 							if (flags.indexOf(ch) > -1) {
 								i++;
-							}
-							else {
+							} else {
 								i++;
 								j--;
 							}
