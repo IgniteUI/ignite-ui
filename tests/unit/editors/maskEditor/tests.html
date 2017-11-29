@@ -304,8 +304,7 @@
 					$("#clearButton_439").igMaskEditor({
 						inputMask: "CCCCCCC",
 						buttonType: "clear"
-					})
-
+					});
 				});
 			}
 			initialized = false;
@@ -1091,6 +1090,29 @@
 				ok(!$editor.igMaskEditor("clearButton").is(":visible"), "Clear button is not hidden");
 				$editor.igMaskEditor("value", "someVal");
 				ok($editor.igMaskEditor("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
+
+			var testId = 'Paste value in editor with escaped flags';
+			test(testId, 3, function () {
+				var $editor;
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ inputMask: "\\00-0000-0000" });
+				var field = $editor.igMaskEditor("field");
+				$editor.data("igMaskEditor")._enterEditMode();
+				$editor.data("igMaskEditor")._insert("11111111111");
+				equal(field.val(), "01-1111-1111", "Text is not 01-1111-1111");
+				$editor.remove();
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ inputMask: "00-\\0000-0000" });
+				var field = $editor.igMaskEditor("field");
+				$editor.data("igMaskEditor")._enterEditMode();
+				$editor.data("igMaskEditor")._insert("11111111111");
+				equal(field.val(), "11-0111-1111", "Text is not 11-0111-1111");
+				$editor.remove();
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ inputMask: "LL-LLLL-LL\\LL" });
+				var field = $editor.igMaskEditor("field");
+				$editor.data("igMaskEditor")._enterEditMode();
+				$editor.data("igMaskEditor")._insert("MMMMMMMMMMMM");
+				equal(field.val(), "MM-MMMM-MMLM", "Text is not MM-MMMM-MMLM");
 				$editor.remove();
 			});
 		});
