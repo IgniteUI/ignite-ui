@@ -4286,7 +4286,7 @@
 			```
 				var nodes = $(".selector").igTree("nodeFromElement", element);
 			```
-				paramType="object" optional="false" Specifies the node element.
+				paramType="$" optional="false" Specifies the node jQuery element.
 				returnType="object" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			if (element.length > 0) {

@@ -2091,7 +2091,7 @@
 				ok($('#tree1').igTree('isChecked', node), 'The checkbox of the new node did not render as checked');
 			});
 			
-			test(testId_3, function () {
+			test(testId_3, 12, function () {
 				var path = '0_0',
 					node = $('#tree1').igTree('nodeByPath', path),
 					nodeCount = $('#tree1').find('li[data-role=node]').length,
@@ -2188,6 +2188,17 @@
 				equal(nodeCount, 3, 'Node count did not match after remove.');
 				equal(data.length, 3, 'There are less than 3 data members at root level.');
 			});
+
+			test("removeAt until all children are gone", 1, function () {
+				var path = '0_0',
+					node = $('#tree4').igTree('nodeByPath', "0"),
+					children = $('#tree4').igTree('children', node);
+
+				$('#tree4').igTree('removeAt', path);
+				$('#tree4').igTree('removeAt', path);
+				children = $('#tree4').igTree('children', node);
+				equal(children.length, 0, 'The first root node does not have 0 children.');
+			})
 			
 			test(testId_6, function () {
 				var node = $('#tree3').igTree('nodeByPath', '0'), nodeCount = $('#tree3').find('li[data-role=node]').length, childCount = node.find('li[data-role=node]').length, binding = $('#tree3').igTree('option', 'bindings').bindings;
@@ -2492,7 +2503,7 @@
 				$.ig.TestUtil.simulateDrag(node, tree5);
 				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 				$.ig.TestUtil.simulateDrop(tree5, tree5);
-				equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, 19, "Target node in tree5 didn't update correctly.");
+				equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, 9, "Target node in tree5 didn't update correctly.");
 				
 				tree.igTree("destroy").remove();
 				tree2.igTree("destroy").remove();
@@ -2647,6 +2658,7 @@
 				node = tree.igTree('nodeByPath', '0_0');
 				ok(!tree.igTree("isChecked", node), "The node is still checked");
 				tree.igTree('addNode', { Text: 'b' }, node);
+				tree.igTree('addNode', null, node);
 				node = tree.igTree('nodeByPath', '0_0_0');
 				tree.igTree("toggleCheckstate", node);
 				tree.igTree("removeAt", '0_0_1');
