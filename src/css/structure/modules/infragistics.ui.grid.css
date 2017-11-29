@@ -1505,6 +1505,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 .ui-iggrid-rowselector-class .ui-iggrid-rowselector-row-number {
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .ui-iggrid-rowselector-header {
