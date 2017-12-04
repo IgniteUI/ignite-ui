@@ -7,12 +7,20 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
+	$.ig.Validator = $.ig.Validator || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
 
-    if (!$.ig.Validator) {
-	    $.ig.Validator = {
-		    locale: {
+	$.ig.locale.bg.Validator = {
 		        defaultMessage: 'Обърнете внимание на това поле',
 		        selectMessage: 'Трябва да бъде избрана стойност.',
 		        rangeSelectMessage: 'Поне {0}, но не повече от {1} е елемента трябва да бъдат избрани.',
@@ -35,7 +43,8 @@
 		        creditCardMessage: 'Трябва да бъде въведен валиден номер на банкова карта.',
 			    equalToMessage: 'Двете стойности не съвпадат.',
 			    optionalString: '(незадължително)'
-		    }
-	    };
-    }
-})(jQuery);
+	}
+    
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.bg.Validator;
+	return $.ig.locale.bg.Validator;;
+}));// REMOVE_FROM_COMBINED_FILES

@@ -23,7 +23,7 @@
 		function runFormatterTests() {
 			test("testnumbertype", function() {
 				// change the regional default
-				$.ig.setRegionalDefault("en-US");
+				$.ig.util.changeGlobalRegional("en-US");
 				var stringValue = $.ig.formatter(55, "number");
 				equal("55", stringValue);
 				stringValue = $.ig.formatter(55, "number", "number");
@@ -61,7 +61,7 @@
 				equal("55.79%", stringValue);
 
 				// change the regional default
-				$.ig.setRegionalDefault("bg");
+				$.ig.util.changeGlobalRegional("bg");
 
 				stringValue = $.ig.formatter(55, "number", "currency");
 				equal("55,00 лв", stringValue);
@@ -86,7 +86,7 @@
 				// HH - hour 2 digits 24 hour format
 				// tt - AM/PM
 				// change the regional default
-				$.ig.setRegionalDefault("en-US");
+				$.ig.util.changeGlobalRegional("en-US");
 				var stringValue = $.ig.formatter(new Date(2013, 0, 1), "date");
 				equal("1/1/2013", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "date");
@@ -142,7 +142,7 @@
 				equal("Tue", stringValue);
 
 				// change the regional default
-				$.ig.setRegionalDefault("bg");
+				$.ig.util.changeGlobalRegional("bg");
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date");
 				equal("01.01.2013 г.", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "date");
@@ -163,7 +163,7 @@
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "ddd, d MMM, yyyy");
 				equal("Вто, 1 Яну, 2013", stringValue);
 
-				$.ig.setRegionalDefault("es");
+				$.ig.util.changeGlobalRegional("es");
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dddd, dd \\de MMMM \\de yyyy");
 				equal("Martes, 01 de Enero de 2013", stringValue);
 
@@ -177,12 +177,12 @@
 		}
 
 		test("test checkbox format", function () {
-			var stringValue = $.ig.formatter(true, "checkbox", "checkbox", true, false, "block", "labelText", 1);
+			var stringValue = $.ig.formatter(true, "checkbox", "checkbox", true, false, 0, "block", "labelText", 1);
 			equal(stringValue,
 				"<span class='ui-igcheckbox-container' style='display:block;' role='checkbox' aria-disabled='true' aria-checked='true' aria-label='labelText' tabindex='1'><span class='' style='display:inline-block'><span style='display:block' class='ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>",
 				"Verify the checkbox format is properly applied.");
 
-			stringValue = $.ig.formatter(false, "checkbox", "checkbox", true, false, "block", "labelText", 1);
+			stringValue = $.ig.formatter(false, "checkbox", "checkbox", true, false, 0, "block", "labelText", 1);
 
 			equal(stringValue,
 				"<span class='ui-igcheckbox-container' style='display:block;' role='checkbox' aria-disabled='true' aria-checked='false' aria-label='labelText' tabindex='1'><span class='' style='display:inline-block'><span style='display:block' class='ui-igcheckbox-small-off ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>",
@@ -192,7 +192,7 @@
 		function runEscapeTests() {
 			test("testescape", function() {
 				// change the regional default
-				$.ig.setRegionalDefault("en-US");
+				$.ig.util.changeGlobalRegional("en-US");
 				var stringValue = $.ig.encode("<script>alert()<\/script>");
 
 				equal("&lt;script&gt;alert()&lt;/script&gt;", stringValue);

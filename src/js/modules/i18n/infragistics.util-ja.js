@@ -7,15 +7,33 @@
 *
 */
 
-(function ($) {
-    $.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	window.igRoot = window.igRoot || {};
+	/* jshint ignore:start */
+	if (window.$ !== undefined || typeof $ === "function") {
+		window.igRoot = window.$ || $;
+	}
+	/* jshint ignore:end */
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
+	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
+	window.$ig = window.$ig || window.igRoot.ig;
 
-	    $.extend($.ig.util, {
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
 
-		    locale: {
+	$ = $ || {};
+	$.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+
+	$.ig.locale.ja.util = {
 			    unsupportedBrowser: "現在のブラウザーは HTML5 ビデオをサポートしません。<br/>以下のバージョンにアップグレードしてください。",
 			    currentBrowser: "現在のブラウザー: {0}",
 			    ie9: "Microsoft Internet Explorer 9+",
@@ -27,9 +45,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.co.jp/chrome/intl/ja/landing_ff.html?hl=ja",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/jp/safari/download/"
-		    }
-	    });
+			    safariDownload: "http://www.apple.com/jp/safari/download/",
+			    defaultSummaryMethodLabelMin: "最小値 = ",
+			    defaultSummaryMethodLabelMax: "最大値 = ",
+			    defaultSummaryMethodLabelSum: "合計 = ",
+			    defaultSummaryMethodLabelAvg: "平均 = ",
+			    defaultSummaryMethodLabelCount: "数値の個数 = "
+	}
 
-    }
-})(jQuery);
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.ja.util;
+	return igRoot;
+}));// REMOVE_FROM_COMBINED_FILES

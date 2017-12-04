@@ -7,15 +7,20 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
+	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-    if (!$.ig.VideoPlayer) {
-	    $.ig.VideoPlayer = {};
-
-	    $.extend($.ig.VideoPlayer, {
-
-		    locale: {
+	$.ig.locale.ru.VideoPlayer = {
 			    liveStream: "Прямой эфир",
 			    live: "Вживую",
 			    paused: "Пауза",
@@ -50,9 +55,9 @@
 			    relatedVideos: 'ПОХОЖИЕ КЛИПЫ',
 			    replayButton: 'Еще раз',
 			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.',
-				noCommercials: 'Browser controls does not support commercials'
-		    }
-	    });
+				noCommercials: 'Элементы управления браузером не поддерживают рекламу'
+	}
 
-    }
-})(jQuery);
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.ru.VideoPlayer;
+	return $.ig.locale.ru.VideoPlayer;
+}));// REMOVE_FROM_COMBINED_FILES

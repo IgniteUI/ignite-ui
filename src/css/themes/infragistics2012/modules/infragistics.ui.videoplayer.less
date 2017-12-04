@@ -1,0 +1,229 @@
+/******************
+*  igVideoPlayer  *
+******************/
+/*	Globals */
+
+.ui-igplayer .ui-igplayer-controls {
+  background: url("images/igVideoPlayer/igVPBackground.png") repeat-x;
+  border: none;
+}
+/* Screen Modes classes */
+/* FUll screen mode*/
+/* Creates some "shim" when we are on fullscren mode to overlay elements on page  */
+
+.ui-igplayer-full-screen-mode {
+  .ui-igplayer {
+    &:before {
+      background: #4c4c4c;
+      background: rgba(0, 0, 0, 0.5);
+      background: -moz-linear-gradient(top, #000000 0%, #4c4c4c 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(100%, #4c4c4c));
+      filter: progid:dximagetransform.microsoft.gradient(startColorstr='#000000', endColorstr='#4c4c4c', GradientType=0);
+    }
+  }
+}
+/* Autohide behavior */
+/* Layout elements */
+
+.ui-igplayer .ui-igplayer-playbutton {
+  font-weight: normal;
+  text-shadow: none;
+  /*rounded corners*/
+
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.ui-igplayer .ui-igplayer-playbutton .ui-icon-pause {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -23px -1px;
+}
+/* K.D. May 31st, 2011 Bug #77271 The play icon is overriden by jQuery themeswitcher */
+
+.ui-igplayer .ui-igplayer-playbutton .ui-icon-play {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -1px -1px;
+}
+
+.ui-igplayer .ui-igplayer-playbutton-icon {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -1px -1px;
+}
+
+.ui-igplayer .ui-igplayer-playbutton-text {
+  background: none!important;
+  border: none;
+  font-size: 11px;
+  text-shadow: 0 1px 0 rgba(83, 83, 83, 0.8);
+}
+
+.ui-igplayer .ui-igslider-handle {
+  /*rounded corners*/
+
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.ui-igplayer .ui-igprogressbar {
+  border: none;
+}
+
+.ui-igplayer {
+  .ui-igprogressbar-range {
+    height: 2px;
+    background-image: -moz-linear-gradient(top, #3bb7eb, #2686ae);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3bb7eb), color-stop(1, #2686ae));
+    filter: progid:dximagetransform.microsoft.gradient(startColorStr='#3BB7EB', EndColorStr='#2686AE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#3BB7EB', EndColorStr='#2686AE')";
+    border: 1px solid #288BB4;
+  }
+}
+
+
+.ui-igplayer .ui-igplayer-volumecontrol .ui-icon-volume-on {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -62px -2px;
+}
+
+.ui-igplayer .ui-igplayer-volumecontrol .ui-icon-volume-off {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -82px -2px;
+}
+
+.ui-igplayer-fullscreen-button {
+  margin: 5px;
+}
+
+.ui-igplayer .ui-igplayer-fullscreen-button .ui-icon-arrow-4-diag {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -102px -2px;
+}
+
+.ui-igplayer .ui-igplayer-fullscreen-button .ui-icon-closethick {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -122px -2px;
+}
+
+.ui-igplayer .ui-igplayer-volumeslider {
+  width: 10px;
+  height: 40px;
+  position: absolute;
+}
+
+.ui-igplayer-related-video-replay {
+  margin: 5px;
+  height: 25px;
+}
+
+.ui-igplayer .ui-igplayer-related-video-replay .ui-icon-arrowrefresh-1-s {
+  background-image: url("images/igVideoPlayer/igVideoPlayerIcons.png");
+  background-repeat: no-repeat;
+  background-position: -43px -2px;
+}
+
+.ui-igplayer .ui-igplayer-related-video-replay .ui-button-text {
+  font-size: 13px;
+  line-height: 17px;
+}
+
+.ui-igplayer .ui-igplayer-progresslabel {
+  color: #ffffff;
+}
+
+.ui-igplayer .ui-igplayer-centerplaybutton-icon {
+  color: #ffffff;
+}
+/* Single play button and video title */
+
+.ui-igplayer-video-title {
+  color: #ffffff;
+}
+
+.ui-igplayer-playback-alone {
+  padding-right: 5px;
+}
+/* Videoplayer state:active */
+/****************************************/
+/***** These should be removed once *****/
+/***** the igButton is fixed        *****/
+/****************************************/
+
+.ui-igplayer-bookmark-container {
+  color: #4D4D4D;
+  background: #DADADA;
+  background-image: -moz-linear-gradient(top, #ffffff, #dadada);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #dadada));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dadada));
+  filter: progid:dximagetransform.microsoft.gradient(startColorStr='#FFFFFF', EndColorStr='#DADADA');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FFFFFF', EndColorStr='#DADADA')";
+}
+.ui-igplayer-bookmark-header {
+  border: 1px solid #4F4F4F;
+  color: White;
+  background: #4F4F4F;
+  background-image: -moz-linear-gradient(top, #757575, #4f4f4f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #757575), color-stop(1, #4f4f4f));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #757575), color-stop(100%, #4f4f4f));
+  filter: progid:dximagetransform.microsoft.gradient(startColorStr='#757575', EndColorStr='#4F4F4F');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#757575', EndColorStr='#4F4F4F')";
+}
+
+.ui-igplayer-bookmark-list {
+  border: 1px solid #b1b1b1;
+}
+
+.ui-igplayer-bookmark-list > li:hover {
+  border-color: #3ab5e9;
+}
+
+.ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
+  color: #333333;
+  background-color: #F3F3F3;
+  border: 1px solid #B1B1B1;
+}
+/* Custom tooltip for bookmarks used on igVideoPlayer */
+
+.ui-igslider .ui-igslider-bookmark-tooltip .ui-widget-content {
+  border: 1px solid #288BB4;
+  padding: 4px 10px;
+  background-color: #2686AE;
+  background-image: none;
+  color: White;
+  background-image: -moz-linear-gradient(top, #3bb7eb, #2686ae);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3bb7eb), color-stop(1, #2686ae));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3bb7eb), color-stop(100%, #2686ae));
+}
+
+.ui-igslider .ui-igslider-bookmark-tooltip .ui-igtooltip-arrow-bottom {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") repeat-x 0px -40px transparent;
+  height: 8px;
+}
+
+.ui-igplayer-bookmark-item-title:hover {
+  text-decoration: none;
+}
+/* igProgressBar */
+
+.ui-igprogressbar {
+  background-image: -moz-linear-gradient(top, #8d8d8d, #efefef);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8d8d8d), color-stop(1, #efefef));
+  filter: progid:dximagetransform.microsoft.gradient(startColorStr='#8D8D8D', EndColorStr='#EFEFEF');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8D8D8D', EndColorStr='#EFEFEF')";
+}
+
+.ui-igprogressbar-range {
+  background-image: -moz-linear-gradient(top, #3bb7eb, #2686ae);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3bb7eb), color-stop(1, #2686ae));
+  filter: progid:dximagetransform.microsoft.gradient(startColorStr='#3BB7EB', EndColorStr='#2686AE');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#3BB7EB', EndColorStr='#2686AE')";
+  border: 1px solid #288BB4;
+}

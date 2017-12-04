@@ -1,5 +1,14 @@
 ﻿﻿/* Bosnia +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -34,6 +43,8 @@
 	    dateTimePattern: 'd.M.yyyy. HH:mm:ss',
 	    timePattern: 'HH:mm:ss',
 	    timeLongPattern: 'HH:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericNegativePattern: '- n$',
 	    numericDecimalSeparator: ',',
@@ -47,7 +58,7 @@
 	    percentDecimalSeparator: ',',
 	    percentGroupSeparator: '.'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('bs');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('bs');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

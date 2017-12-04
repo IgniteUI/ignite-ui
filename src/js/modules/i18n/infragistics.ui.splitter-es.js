@@ -7,18 +7,24 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
 (function ($) {
-$.ig = $.ig || {};
+	$.ig = $.ig || {};
+	$.ig.Splitter = $.ig.Splitter || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
 
-if (!$.ig.Splitter) {
-	$.ig.Splitter = {};
-
-	$.extend($.ig.Splitter, {
-		locale: {
+	 $.ig.locale.es.Splitter = {
 		    errorPanels: 'El número de paneles no puede ser superior a dos.',
 		    errorSettingOption: 'Error al ajustar la opción.'
-		}
-	});
-
-}
-})(jQuery);
+	}
+	
+	$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.es.Splitter;
+	return $.ig.locale.es.Splitter;
+}));// REMOVE_FROM_COMBINED_FILES

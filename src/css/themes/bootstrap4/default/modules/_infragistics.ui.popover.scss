@@ -1,0 +1,11 @@
+/*****************/
+/* Popover       */
+/****************/
+
+.ui-igpopover-title {
+  background-color: $popover-title-bg;
+}
+
+.ui-igpopover > .ui-widget-content {
+  @include boxShadow;
+}

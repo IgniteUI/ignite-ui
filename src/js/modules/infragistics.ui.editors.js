@@ -10,6 +10,7 @@
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
@@ -19,22 +20,20 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.ui.scroll",
 			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
-	$.widget("ui.igBaseEditor", {
+	$.widget("ui.igBaseEditor", $.ui.igWidget, {
+		localeWidgetName: "Editor",
 		options: {
 			/* type="string|number|null" Gets/Sets the width of the control.
 				```
@@ -186,10 +185,10 @@
 					//Initialize
 					$(".selector").%%WidgetName%%({
 						validatorOptions : {
-						   successMessage: "Success",
+							successMessage: "Success",
 									 required: true,
 									 onchange: true,
-						   notificationOptions: { mode: "popover" }
+							notificationOptions: { mode: "popover" }
 						}
 					});
 
@@ -471,8 +470,8 @@
 			/* Event which is raised after the editor value is changed. It can be raised after loosing focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.originalValue to obtain the original value.
+				Use ui.newValue to obtain the value entered from the user after internal formatting.
+				Use ui.originalValue to obtain the value entered from the user before internal formatting.
 				Use ui.editorInput to obtain reference to the editor input.
 				```
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
@@ -493,7 +492,7 @@
 
 			// Those are only the options that are defined by the user, before merged with the default ones.
 			this._definedOptions = options;
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		_create: function () { //BaseEditor
 			/* igWidget constructor goes here */
@@ -501,6 +500,7 @@
 			this._readAttributes();
 			this._saveDOMConent();
 			this._render();
+			this.localeContainer = this._editorContainer;
 		},
 		_initialize: function () {
 			this._timeouts = [];
@@ -572,7 +572,7 @@
 			}
 		},
 		_render: function () {
-			throw new Error($.ig.Editor.locale.renderErrMsg);
+			throw new Error(this._getLocaleValue("renderErrMsg"));
 		},
 		_applyOptions: function () {
 			if (this.options.tabIndex !== null) {
@@ -719,7 +719,7 @@
 			this._trigger(this.events.blur, event, args);
 		},
 		_setOption: function (option, value) { //Base editor
-			/* igWidget custom setOption goes here */
+			/* igBaseEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
 			if (prevValue === value) {
 				return;
@@ -729,29 +729,31 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "readOnly":
-					this._setReadOnly(value);
-					break;
-				case "disabled":
-					this._setDisabled(value);
-					break;
-				case "width":
-					this._setWidth(value);
-					break;
-				case "height":
-					this._setHeight(value);
-					break;
-				case "validatorOptions":
-					this._setupValidator();
-					break;
-				case "tabIndex":
-					this._setTabIndex(value);
-					break;
-				case "inputName":
-					this._valueInput.attr("name", value);
-					break;
-				default:
-					break;
+			case "readOnly":
+				this._setReadOnly(value);
+				break;
+			case "disabled":
+				this._setDisabled(value);
+				break;
+			case "width":
+				this._setWidth(value);
+				break;
+			case "height":
+				this._setHeight(value);
+				break;
+			case "validatorOptions":
+				this._setupValidator();
+				break;
+			case "tabIndex":
+				this._setTabIndex(value);
+				break;
+			case "inputName":
+				this._valueInput.attr("name", value);
+				break;
+			default:
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_validateValue: function (val) {//Base editor
@@ -776,6 +778,10 @@
 			// TODO use null, or 0 depending on the nullable option
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
+			}
+
+			if (!this._validateValue(newValue)) {
+				newValue = "";
 			}
 
 			if (textOnly) {
@@ -1005,6 +1011,7 @@
 			}
 		},
 		_setFocus: function (event) {
+
 			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
 			if (this._focused) {
 				return;
@@ -1065,6 +1072,18 @@
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
 				this._clearEditorNotifier();
+
+				// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLength one.
+				if (this.options.maxLength) {
+					if (newValue && newValue.toString().length > this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+					}
+				}
 				if (this._validateValue(newValue)) {
 					if (this.options.toUpper) {
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
@@ -1183,7 +1202,7 @@
 			this._restoreDOMStructure();
 			this._deleteInternalProperties();
 			delete this.options;
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		}
 	});
@@ -1551,23 +1570,6 @@
 				```
 			*/
 			toLower: false,
-			/* type="object" Gets/Sets the strings used for the localization of the component. This includes button titles, error messages etc. Value of the object should contain pairs or key:value members. Note: any sub-option of locale can appear within the main option of igEditor. In this case those values within main options will have highest priority and override corresponding value in locale.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					locale: {
-							spinUpperTitle: 'SpinUp'
-					}
-				});
-
-				//Get
-				var locale = $(".selector").%%WidgetName%%("option", "locale");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "locale", {spinUpperTitle: 'SpinUp'});
-			```
-			*/
-			locale: null,
 			/* type="bool" Disables/Enables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
 			```
 				//Initialize
@@ -1582,7 +1584,24 @@
 				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
 			```
 			*/
-			suppressNotifications: false
+			suppressNotifications: false,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				Note: When drop down is opened the only way to close it will be using the drop down button.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		css: {
 			/* igWidget element classes go here */
@@ -1766,6 +1785,23 @@
 		_create: function () { //igTextEditor
 			$.ui.igBaseEditor.prototype._create.call(this);
 		},
+		_changeLocaleForNotifier: function () {
+			var notifier = this._editorContainer.data("igNotifier"), message;
+			if (notifier && notifier.isVisible()) {
+				message = this._getMessageForNotifier(this._notifierMessage);
+				notifier.notify(notifier.options.state, message);
+			}
+		},
+		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igtexteditor#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igtexteditor#options:language) or [locale](ui.igtexteditor#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
+			this._superApply(arguments);
+			this._changeLocaleForNotifier();
+		},
 		_setOption: function (option, value) { // igTextEditor
 			/* igTextEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -1777,74 +1813,66 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "value":
-					this.value(value);
+			case "value":
+				this.value(value);
+				break;
+			case "placeHolder":
+				this._applyPlaceHolder();
+				break;
+			case "suppressNotifications":
+				if (value) {
+					this._clearEditorNotifier();
+				}
+				break;
+			case "listItems":
 
-					//if (this._validateValue(value)) {
-					//	this._updateValue(value);
-					//	this._exitEditMode();
-					//} else {
-					//	this._clearValue();
-					//	this._exitEditMode();
-					//}
-					break;
-				case "placeHolder":
-					this._applyPlaceHolder();
-					break;
-				case "suppressNotifications":
-					if (value) {
-						this._clearEditorNotifier();
-					}
-					break;
-				case "listItems":
+				//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
+				if (prevValue !== null) {
+					this._deleteList();
+				}
+				this._createList();
+				this._clearValue();
+				break;
+			case "listWidth":
+				this._setDropDownListWidth();
+				break;
+			case "spinWrapAround":
+				if (value) {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._setSpinButtonsState(this.value());
+				}
+				break;
+			case "excludeKeys":
+				if (value === "") {
+					this._excludeKeysArray = [];
+				} else {
+					this._excludeKeysArray = value.toString().split("");
+				}
+				break;
+			case "includeKeys":
+				if (value === "") {
+					this._includeKeysArray = [];
+				} else {
+					this._includeKeysArray = value.toString().split("");
+				}
+				break;
+			case "textAlign":
+				this._editorInput.css("text-align", value);
+				break;
+			case "dropDownOnReadOnly":
+			case "visibleItemsCount":
+			case "buttonType":
+			case "dropDownAttachedToBody":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
-					if (prevValue !== null) {
-						this._deleteList();
-					}
-					this._createList();
-					this._clearValue();
-					break;
-				case "listWidth":
-					this._setDropDownListWidth();
-					break;
-				case "spinWrapAround":
-					if (value) {
-						this._enableSpinButton(this._spinDownButton, "spinDown");
-						this._enableSpinButton(this._spinUpButton, "spinUp");
-					} else {
-						this._setSpinButtonsState(this.value());
-					}
-					break;
-				case "excludeKeys":
-					if (value === "") {
-						this._excludeKeysArray = [];
-					} else {
-						this._excludeKeysArray = value.toString().split("");
-					}
-					break;
-				case "includeKeys":
-					if (value === "") {
-						this._includeKeysArray = [];
-					} else {
-						this._includeKeysArray = value.toString().split("");
-					}
-					break;
-				case "textAlign":
-					this._editorInput.css("text-align", value);
-					break;
-				case "dropDownOnReadOnly":
-				case "visibleItemsCount":
-				case "buttonType":
-				case "dropDownAttachedToBody":
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				default:
-
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-					break;
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 
@@ -1869,45 +1897,36 @@
 			if (this.options.excludeKeys) {
 				this._excludeKeysArray = this.options.excludeKeys.toString().split("");
 			}
-			if (this.options.value !== undefined) {
-				initialValue = this.options.value;
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
-				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
-					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue) {
-					this._setInitialValue("");
-				}
-			} else if (this.element.val() && this._validateValue(this.element.val())) {
-				initialValue = this.element.val();
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue
-							.toString()
-							.substring(0, this.options.maxLength);
+			initialValue = this.options.value;
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
+			// D.P. Set nullValue if needed. NB! Both value and nullValue *can* be 0 or ""
+			if (this.options.allowNullValue && initialValue === null) {
+				//doesn't really matter what nullValue is, at worst it will be null as well
+				initialValue = this.options.nullValue;
+			}
+
+			if (this.options.maxLength) {
+				if (initialValue && initialValue.toString().length > this.options.maxLength) {
+					initialValue = initialValue.toString().substring(0, this.options.maxLength);
+
+					//Raise warning
+					this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
 				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
+			}
+			if (this._validateValue(initialValue)) {
+				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-				} else {
-					this._editorInput.val("");
+			} else {
+				//D.P. 2017-07-27 #1027 Fallback if initial value is not valid
+				this._setInitialValue("");
+				this._editorInput.val(this._getDisplayValue());
 			}
-			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -1952,7 +1971,7 @@
 				this._editorInputWrapper = editorElementWrapper;
 			} else if (this.element.is("textarea")) {
 				if (this.options.textMode !== "multiline") {
-					throw new Error($.ig.Editor.locale.multilineErrMsg);
+					throw new Error(this._getLocaleValue("multilineErrMsg"));
 				} else {
 					this._editorContainer = this.element.wrap($("<div></div>")).parent();
 					this._editorInput = this.element;
@@ -1964,7 +1983,7 @@
 			} else {
 
 				//TODO Throw target element not supported.
-				throw new Error($.ig.Editor.locale.targetNotSupported);
+				throw new Error(this._getLocaleValue("targetNotSupported"));
 			}
 			this._editorContainer.addClass(this.css.container);
 			this._editorInput.addClass(this.css.editor);
@@ -2023,43 +2042,50 @@
 			this._applyInputAriaLabel();
 		},
 		_applyInputAriaLabel: function () {
-			var ariaLabelText;
+			var ariaLabelText,
+				localeid;
 			switch (this.widgetName) {
-				case "igTextEditor": {
-					ariaLabelText = this._getLocaleOption("ariaTextEditorFieldLabel");
-				}
+				case "igTextEditor":
+					localeid = "ariaTextEditorFieldLabel";
 					break;
-				case "igNumericEditor": {
-					ariaLabelText = this._getLocaleOption("ariaNumericEditorFieldLabel");
-				}
+				case "igNumericEditor":
+					localeid = "ariaNumericEditorFieldLabel";
 					break;
-				case "igCurrencyEditor": {
-					ariaLabelText = this._getLocaleOption("ariaCurrencyEditorFieldLabel");
-				}
+				case "igCurrencyEditor":
+					localeid = "ariaCurrencyEditorFieldLabel";
 					break;
-				case "igPercentEditor": {
-					ariaLabelText = this._getLocaleOption("ariaPercentEditorFieldLabel");
-				}
+				case "igPercentEditor":
+					localeid = "ariaPercentEditorFieldLabel";
 					break;
-				case "igMaskEditor": {
-					ariaLabelText = this._getLocaleOption("ariaMaskEditorFieldLabel");
-				}
+				case "igMaskEditor":
+					localeid = "ariaMaskEditorFieldLabel";
 					break;
-				case "igDateEditor": {
-					ariaLabelText = this._getLocaleOption("ariaDateEditorFieldLabel");
-				}
+				case "igDateEditor":
+					localeid = "ariaDateEditorFieldLabel";
 					break;
-				case "igDatePicker": {
-					ariaLabelText = this._getLocaleOption("ariaDatePickerFieldLabel");
-				}
+				case "igDatePicker":
+					localeid = "ariaDatePickerFieldLabel";
 					break;
 				default: {
-					ariaLabelText = this._getLocaleOption("ariaTextEditorFieldLabel");
+					localeid = "ariaTextEditorFieldLabel";
+					break;
 				}
 			}
-			this._editorInput.attr("aria-label", ariaLabelText);
+			ariaLabelText = this._getLocaleValue(localeid);
+			this._editorInput.attr({
+				"aria-label": ariaLabelText,
+				"data-localeid": localeid,
+				"data-localeattr": "aria-label"
+			});
 		},
-		_sendNotification: function (state, message) {
+		_getMessageForNotifier: function (messageObj) {
+			var optName = messageObj.optName,
+				message = this._getLocaleValue(optName),
+				arg = messageObj.arg;
+			return (arg !== undefined) ? $.ig.util.stringFormat(message, arg) : message;
+		},
+		_sendNotification: function (state, messageObj) {
+			var message = this._getMessageForNotifier(messageObj);
 			if (this.options.suppressNotifications || this._skipMessages /* flag on isValid() call */) {
 				this._currentMessage = message;
 				return;
@@ -2067,6 +2093,7 @@
 			if (!this._editorContainer.data("igNotifier")) {
 				this._editorContainer.igNotifier();
 			}
+			this._notifierMessage = messageObj;
 			this._editorContainer.igNotifier("notify", state, message);
 		},
 		_applyPlaceHolder: function() {
@@ -2076,7 +2103,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					throw new Error($.ig.Editor.locale.placeHolderNotSupported);
+					throw new Error(this._getLocaleValue("placeHolderNotSupported"));
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2231,16 +2258,13 @@
 				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
-					this._sendNotification("warning", $.ig.Editor.locale.allowedValuesMsg);
+					this._sendNotification("warning", { optName: "allowedValuesMsg" });
 					result = false;
 				}
 			} else if (this.options.maxLength) {
 				 if (val.toString().length <= this.options.maxLength) {
 					result = true;
 				} else {
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
 					result = false;
 				}
 			} else {
@@ -2463,15 +2487,19 @@
 			}
 		},
 		_renderDropDownButton: function () {
-			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
-				this.id + "_dropDownButton' aria-label='" +
-				this._getLocaleOption("ariaDropDownButton") + "'></div>"),
-					dropDownIcon = $("<div></div>");
+			var dropDownButton = $("<div></div>"),
+				dropDownIcon = $("<div></div>");
 			if (this._dropDownButton) {
 				return;
 			}
-			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleOption("buttonTitle"));
+			dropDownButton.addClass(this.css.buttonCommon).attr({
+				"role": "button",
+				"tabindex": -1,
+				"id": this.id + "_dropDownButton",
+				"title": this._getLocaleValue("buttonTitle"),
+				"data-localeid": "buttonTitle",
+				"data-localeattr": "title"
+			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
@@ -2479,29 +2507,31 @@
 			this._attachButtonsEvents("dropdown", dropDownButton);
 		},
 		_renderSpinButtons: function () {
-			var spinButtonUp = $("<div role='button' tabindex='-1' id='" +
-				this.id +
-				"_spinUpButton' aria-label='" +
-				this._getLocaleOption("ariaSpinUpButton") +
-				"'></div>"), spinButtonUpImage = $("<div></div>"),
-
-				spinButtonDown = $("<div role='button' tabindex='-1' id='" +
-					this.id + "_spinDownButton' aria-label='" +
-					this._getLocaleOption("ariaSpinDownButton") +
-					"'></div>"),
-
+			var spinButtonUp = $("<div></div>"),
+				spinButtonUpImage = $("<div></div>"),
+				spinButtonDown = $("<div></div>"),
 				spinButtonDownImage = $("<div></div>");
 			if (this._spinUpButton) {
 				return;
 			}
-			spinButtonUp
-				.addClass(this.css.buttonCommon)
-				.append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
-			spinButtonDown
-				.addClass(this.css.buttonCommon)
-				.append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
-			spinButtonUp.attr("title", this._getLocaleOption("spinUpperTitle"));
-			spinButtonDown.attr("title", this._getLocaleOption("spinLowerTitle"));
+			spinButtonUp.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("spinUpperTitle"),
+					"role": "button",
+					"tabindex": -1,
+					"id": this.id + "_spinUpButton",
+					"data-localeid": "spinUpperTitle",
+					"data-localeattr": "title"
+				}).append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
+			spinButtonDown.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("spinLowerTitle"),
+					"role": "button",
+					"tabindex": -1,
+					"id": this.id + "_spinDownButton",
+					"data-localeid": "spinLowerTitle",
+					"data-localeattr": "title"
+				}).append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
 			this._editorContainer.prepend(spinButtonDown).prepend(spinButtonUp);
 			this._attachButtonsEvents("spinDown", spinButtonDown);
 			this._attachButtonsEvents("spinUp", spinButtonUp);
@@ -2509,18 +2539,21 @@
 			this._spinDownButton = spinButtonDown;
 		},
 		_renderClearButton: function () {
-			var clearButton = $("<div role='button' id='" +
-				this.id +
-				"_clearButton' tabindex='-1' aria-label='" +
-				this._getLocaleOption("ariaClearButton") + "'></div>"),
-
+			var clearButton = $("<div></div>"),
 				buttonClearIcon = $("<div></div>");
+
 			if (this._clearButton) {
 				return;
 			}
-			clearButton.addClass(this.css.buttonCommon);
-			clearButton.append(buttonClearIcon.addClass(this.css.clearButtonImage));
-			clearButton.attr("title", this._getLocaleOption("clearTitle"));
+			clearButton.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("clearTitle"),
+					"role": "button",
+					"id": this.id + "_clearButton",
+					"tabindex": -1,
+					"data-localeid": "clearTitle",
+					"data-localeattr": "title"
+				}).append(buttonClearIcon.addClass(this.css.clearButtonImage));
 			this._editorContainer.prepend(clearButton.addClass(this.css.clearButton));
 			this._clearButton = clearButton;
 			this._attachButtonsEvents("clear", clearButton);
@@ -2541,7 +2574,7 @@
 					this._renderSpinButtons();
 					buttonsCountRendered += 2;
 				} else if (this.options.listItems === null || this.options.listItems.length === 0) { //#208356 S.D. Error for no listitems
-					throw new Error($.ig.Editor.locale.noListItemsNoButton);
+					throw new Error(this._getLocaleValue("noListItemsNoButton"));
 				}
 			}
 
@@ -2552,12 +2585,12 @@
 					this._renderDropDownButton();
 					buttonsCountRendered++;
 				} else if (this.options.listItems === null || this.options.listItems.length === 0) {
-					throw new Error($.ig.Editor.locale.noListItemsNoButton);
+					throw new Error(this._getLocaleValue("noListItemsNoButton"));
 				}
 			}
 
 			if (buttonsCountRendered === 0) {
-				throw new Error($.ig.Editor.locale.btnValueNotSupported);
+				throw new Error(this._getLocaleValue("btnValueNotSupported"));
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -2699,10 +2732,11 @@
 				"compositionend.editor": function () {
 					setTimeout(function () {
 						var value, pastedValue, widgetName = self.widgetName,
-							cursorPosition = self._getCursorPosition();
+							cursorPosition = self._getCursorPosition(),
+							selection = { start: cursorPosition, end: cursorPosition };
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
-						if (self._inComposition !== true) {
+						if (self._focused !== true) {
 							return;
 						}
 						switch (widgetName) {
@@ -2721,6 +2755,11 @@
 									pastedValue = value = self._parseValueByMask(value);
 									if (value !== self._maskWithPrompts) {
 										value = self._parseDateFromMaskedValue(value);
+									} else if (self.options.revertIfNotValid) {
+										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+										pastedValue = value = self._maskedValue;
+										selection.start = 0;
+										selection.end = value.length;
 									}
 								}
 								break;
@@ -2735,20 +2774,9 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						if (self._validateValue(value)) {
-							self._insert(pastedValue, self._compositionStartValue);
-							self._setCursorPosition(cursorPosition);
-						} else {
-							if (self.options.revertIfNotValid) {
-								value = self._valueInput.val();
-								self._updateValue(value);
-							} else {
-								self._clearValue();
-							}
-							if (self._focused) {
-								self._enterEditMode();
-							}
-						}
+
+						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
+						self._insert(pastedValue, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -2758,6 +2786,14 @@
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
+					if (typeof self._copositionStartIndex === "undefined") {
+						//D.P. Chrome on Adroid will not fire compositionstart if replacing the entire selection
+						//In this case patch start index and value:
+						var startIndex = self._getCursorPosition();
+						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
+						self._copositionStartIndex = startIndex;
+						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
+					}
 					setTimeout(function () {
 						self._currentCompositionValue =
 							$(evt.target)
@@ -2795,6 +2831,20 @@
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
 			var listIndex;
+
+			//D.P. 3rd Aug 2017 #1043 Make sure maxLength is respected when typing handlers can't prevent entry
+			if (this.options.maxLength) {
+				if (value && value.toString().length > this.options.maxLength) {
+					value = value.toString().substring(0, this.options.maxLength);
+
+					//Raise warning
+					this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+				}
+			}
 			if (this._validateValue(value)) {
 				if (this._dropDownList && this.options.isLimitedToListValues &&
 					(listIndex = this._valueIndexInList(value)) !== -1 ) {
@@ -2846,12 +2896,17 @@
 								this._processValueChanging(currentInputVal);
 								this._enterEditMode();
 							}
-						} else {
+							} else {
+
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
 
-							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-							this._enterEditMode();
+							//I.G. 27/07/2017 #1090 'igTextEditor in multiline mode removes the existing text on Enter key'
+							if (this.options.textMode !== "multiline") {
+
+							//A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+								this._enterEditMode();
+							}
 						}
 					}
 				} else {
@@ -2872,9 +2927,9 @@
 									//Close DropDonw
 									this._toggleDropDown();
 								}
-								if (this.options.readOnly) {
-									e.preventDefault();
-								}
+
+								// prevent default arrow action (cursor move or page scroll on readonly):
+								e.preventDefault();
 							}
 						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
 							if (!this._dropDownList.is(":visible")) {
@@ -2884,9 +2939,7 @@
 								//hover next element
 								this._hoverNextDropDownListItem();
 							}
-							if (this.options.readOnly) {
-								e.preventDefault();
-							}
+							e.preventDefault();
 						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 							//Close dropdown
 							this._toggleDropDown();
@@ -2895,14 +2948,16 @@
 					if (this.options.maxLength) {
 						currentInputVal = this._editorInput.val();
 						if (currentInputVal.length === this.options.maxLength &&
-								e.keyCode > 46 && !e.altKey && !e.ctrlKey) {
+								(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 							selection = this._getSelection(this._editorInput[ 0 ]);
 							if (selection.start === selection.end) {
 								e.preventDefault();
 								e.stopPropagation();
 								this._sendNotification("warning",
-									$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
-										this.options.maxLength));
+									{
+										optName: "maxLengthWarningMsg",
+										arg: this.options.maxLength
+									});
 							}
 						}
 					}
@@ -2916,6 +2971,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -3296,8 +3352,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
 					}
 				}
 			if (this._validateValue(newValue)) {
@@ -3374,7 +3432,6 @@
 			var direction;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
-
 				// We need this parameter as part of blind animation we're using
 				direction = "down";
 			} else {
@@ -3430,8 +3487,11 @@
 
 					// Proceed with hiding
 					// D.P. 21 Jun 2016 Bug 220712: igTextEditor - typed text is reverted to previous value in case the drop down is opened
-					if (!this._editMode) {
+					if (!this._editMode && !this.options.suppressKeyboard) {
 						this._editorInput.focus();
+					}
+					if (this._editMode && this.options.suppressKeyboard) {
+						this._editorInput.blur();
 					}
 					this._showDropDownList();
 				}
@@ -3500,7 +3560,7 @@
 			if (input.setSelectionRange) {
 				// IE specific issue when the editor is detached
 				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
 					return;
 				}
 				input.setSelectionRange(selectionStart, selectionEnd);
@@ -3734,16 +3794,6 @@
 			}
 			return { start: startPostion, end: endPosition };
 		},
-		_getLocaleOption: function (key) {
-			var locale = this.options.locale;
-			if (locale && locale[ key ]) {
-				return locale[ key ];
-			} else if ($.ig && $.ig.Editor && $.ig.Editor.locale) {
-				return $.ig.Editor.locale[ key ];
-			} else {
-				return "";
-			}
-		},
 		_listItems: function () {
 			return this._dropDownList.children(".ui-igedit-listitem");
 		},
@@ -3918,7 +3968,8 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text in the editor.
+			/* Gets the selected text from the editor in edit mode. This can be done inside key event handlers, like keydown or keyup. This method can be used only when the editor is focused. If you invoke this method in display mode, when the editor input is blurred, the returned value will be an empty string.
+
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -4028,24 +4079,10 @@
 				```
 			 */
 			listItems: null,
-			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					regional: "en-US"
-				});
-
-				//Get
-				var region = $(".selector").%%WidgetName%%("option", "regional");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "regional", "en-US");
-			```
-			*/
-			regional: null,
 			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4080,6 +4117,7 @@
 			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4096,8 +4134,9 @@
 			decimalSeparator: null,
 			/* type="string" Gets/Sets the character, which is used as separator for groups (like thousands).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4117,7 +4156,8 @@
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: The numbers in the array must be positive integers.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
 					//Initialize
@@ -4220,8 +4260,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
 				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
 				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
@@ -4297,7 +4335,7 @@
 			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for scientific format in edit mode.
+				Gets/Sets support for scientific format.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
 				```
@@ -4400,18 +4438,21 @@
 		},
 		_initialize: function () {
 			this._super();
-			this._applyRegionalSettings();
-			this._applyDataModeSettings();
 			this._setNumericType();
+
+			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
+			this._validateDecimalSettings();
+			this._validateRegionalSettings();
+			this._applyDataModeSettings();
 			var numericChars = "0123456789", dataMode = this.options.dataMode;
 
 			// Allow decimal separator as a char.
 			// When the dataMode is set to int, decimal separator should not be allowed
 			if (dataMode === "double" || dataMode === "float") {
-				numericChars += this.options.decimalSeparator;
+				numericChars += this._getOptionOrRegionalValue("decimalSeparator");
 
 				// K.D. September 25th, 2015 The decimal separator key on the keyboard is always the 110 and 190 keycodes, which is '.'
-				if (this.options.decimalSeparator !== ".") {
+				if (this._getOptionOrRegionalValue("decimalSeparator") !== ".") {
 					numericChars += ".";
 				}
 			}
@@ -4422,7 +4463,7 @@
 			// Allow negativeSign as a char only where negative values are supported
 			if (dataMode === "double" || dataMode === "float" || dataMode === "long" ||
 				dataMode === "int" || dataMode === "short" || dataMode === "sbyte") {
-				numericChars += this.options.negativeSign;
+				numericChars += this._getRegionalValue("negativeSign");
 			}
 
 			// Setting Exclude keys is not allowed into numeric/percent/currency editor
@@ -4430,8 +4471,19 @@
 				this.options.excludeKeys = null;
 			}
 
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			if (this._getOptionOrRegionalValue("decimalSeparator").toString().length > 1) {
+				throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
+			}
+
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
+
+			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+			if (this._getOptionOrRegionalValue("decimalSeparator") ===
+				this._getOptionOrRegionalValue("groupSeparator")) {
+				throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4452,7 +4504,7 @@
 						break;
 					default: {
 						result = "e";
-						throw new Error($.ig.Editor.locale.scientificFormatErrMsg);
+						throw new Error(this._getLocaleValue("scientificFormatErrMsg"));
 					}
 				}
 			} else {
@@ -4460,30 +4512,29 @@
 			}
 			return result;
 		},
-		_applyRegionalSettings: function () { //Numeric
-			this.options.negativeSign = this._getRegionalOption("negativeSign");
-			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("numericNegativePattern");
-			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("numericDecimalSeparator");
-
-			// TODO: make a validate function to ignore numbers as separators, undefined vs allowed chars here?
-			this.options.groupSeparator = this.options.groupSeparator !== null ?
-				this.options.groupSeparator :
-				this._getRegionalOption("numericGroupSeparator");
-			this.options.groups = this.options.groups || this._getRegionalOption("numericGroups");
-			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("numericMaxDecimals") :
-				this.options.maxDecimals;
-			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("numericMinDecimals") :
-				this.options.minDecimals;
+		_validateRegionalSettings: $.noop,
+		_getOptionOrRegionalValue: function (name) { //Numeric
+			var regName;
+			if (name === "negativeSign" || name === "percentSymbol" ||
+				name === "currencySymbol" || name === "displayFactor") {
+				regName = name;
+			} else {
+				regName = this._numericType + name.substr(0, 1).toUpperCase() + name.substr(1);
+			}
+			return this.options[ name ] !== null ? this.options[ name ] : this._getRegionalValue(regName);
+		},
+		_setInitialValue: function (value) { // NumericEditor
+			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+			if (!isNaN(this.options.minValue) && this.options.minValue > value) {
+				value = this.options.minValue;
+			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
+				value = this.options.maxValue;
+			}
+			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
-
 			this._super();
 			this._validateSpinSettings();
-			this._validateDecimalSettings();
 
 			if (this.options.maxLength !== null) {
 				this.options.maxLength = null;
@@ -4503,27 +4554,27 @@
 				delta = this.options.spinDelta;
 				if (typeof delta !== "number") {
 					this.options.spinDelta = 1;
-					throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+					throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
 				}
 				if (delta < 0) {
 					this.options.spinDelta = 1;
-					throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
 				}
 				if (this.options.dataMode === "float" || this.options.dataMode === "double") {
 
 					// Validate if the fractional part is longer than maxDecimals
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
-						if (fractional.toString().length > this.options.maxDecimals) {
-							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
-								spinDeltaContainsExceedsMaxDecimals,
-							this.options.maxDecimals));
+						if (fractional.toString().length > this._getOptionOrRegionalValue("maxDecimals")) {
+							throw new Error($.ig.util.stringFormat(
+								this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
+								this._getOptionOrRegionalValue("maxDecimals")));
 						}
 					}
 				} else {
 					// This means the value is integer, without floating point
 					if (delta % 1 !== 0) {
-						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
+						throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
 					}
 				}
 			}
@@ -4532,16 +4583,26 @@
 			}
 		},
 		_validateDecimalSettings: function() {
+			var minDecimalsName = this._numericType + "MinDecimals",
+				maxDecimalsName = this._numericType + "MaxDecimals";
+
+			if (this.options.minDecimals === null) {
+				this.options.minDecimals = this._getRegionalValue(minDecimalsName);
+			}
 			try {
 				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				this.options.minDecimals = this._getRegionalValue(minDecimalsName);
 				throw e;
+			}
+
+			if (this.options.maxDecimals === null) {
+				this.options.maxDecimals = this._getRegionalValue(maxDecimalsName);
 			}
 			try {
 				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				this.options.maxDecimals = this._getRegionalValue(maxDecimalsName);
 				throw e;
 			}
 			this._validateDecimalMinMax();
@@ -4557,13 +4618,14 @@
 
 			if (value === "" || isNaN(value) ||
 				(!isNaN(value) && (value < 0 || value > boundary))) {
-				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+				throw new Error($.ig.util.stringFormat(this._getLocaleValue("decimalNumber"),
 					mode, name, boundary));
 			}
 		},
 		_validateDecimalMinMax: function() {
-			if (this.options.minDecimals > this.options.maxDecimals) {
-				this.options.maxDecimals = this.options.minDecimals;
+			if (this._getOptionOrRegionalValue("minDecimals") >
+				this._getOptionOrRegionalValue("maxDecimals")) {
+				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4577,75 +4639,116 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "spinDelta": {
-					if (typeof value !== "number") {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
-					} else if (value < 0) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
-					} else if ((this.options.dataMode !== "float" &&
-						this.options.dataMode !== "double") && value % 1 !== 0) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
-					} else if (this.options.scientificFormat) {
-						this.options[ option ] = Number(value.toExponential());
-					}
-					break;
-				}
-				case "minValue":
-				case "maxValue":
-					if (isNaN(value)) {
-						this.options[ option ] = prevValue;
-						return;
+			case "scientificFormat":
+
+				// M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+				if (this._getScientificFormat() || value === null) {
+					if (prevValue) {
+						if (prevValue === "e+" || prevValue === "E+") {
+							prevValue = prevValue.replace("+", "");
+						}
+						this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
 					}
 					if (value === null) {
-						// ensure dataMode defaults
-						this._applyDataModeSettings();
-					} else {
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-						}
+						this._includeKeysArray = this.options.includeKeys.split( "" );
+						break;
 					}
-
-					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
-					this._setSpinButtonsState(this.value());
-					break;
-				case "minDecimals":
-				case "maxDecimals":
-					try {
-						this._validateDecimalSetting(option, value);
-					} catch (e) {
-						this.options[ option ] = prevValue;
-						throw e;
-					}
-					if (this.options[ option ] !== prevValue) {
-						this._validateDecimalMinMax();
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-						}
-					}
-					break;
-				case "regional":
+					var numericChars = this._getScientificFormat();
+					this.options.includeKeys += numericChars;
+					this._includeKeysArray = this.options.includeKeys.split( "" );
+				}
+				break;
+			case "spinDelta":
+				if (typeof value !== "number") {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-
-				case "excludeKeys":
-				case "includeKeys":
+					throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
+				} else if (value < 0) {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
-				default: {
-
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-						this.options[ option ] = prevValue;
-						this._super(option, value);
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
+				} else if ((this.options.dataMode !== "float" &&
+					this.options.dataMode !== "double") && value % 1 !== 0) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
+				} else if (this.options.scientificFormat) {
+					this.options[ option ] = Number(value.toExponential());
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				if (isNaN(value)) {
+					this.options[ option ] = prevValue;
+					return;
+				}
+				if (value === null) {
+					// ensure dataMode defaults
+					this._applyDataModeSettings();
+				} else {
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
+						this._editorInput.val(this._getDisplayValue());
 					}
-					break;
+				}
+
+				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+				this._setSpinButtonsState(this.value());
+				break;
+			case "minDecimals":
+			case "maxDecimals":
+				try {
+					this._validateDecimalSetting(option, value);
+				} catch (e) {
+					this.options[ option ] = prevValue;
+					throw e;
+				}
+				if (this.options[ option ] !== prevValue) {
+					this._validateDecimalMinMax();
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
+						this._editorInput.val(this._getDisplayValue());
+					}
+				}
+				break;
+
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			case "decimalSeparator":
+				if (value.toString().length > 1) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
+				}
+
+				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+				if (this.options[ option ] === this._getOptionOrRegionalValue("groupSeparator")) {
+					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				}
+				break;
+
+			// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+			case "groupSeparator":
+				if (this.options[ option ] === null) {
+					this.options[ option ] = this._getRegionalValue("numericGroupSeparator");
+				}
+
+				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+				if (this.options[ option ] === this._getOptionOrRegionalValue("decimalSeparator")) {
+					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				}
+				break;
+
+			case "excludeKeys":
+			case "includeKeys":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("numericEditorNoSuchOption"));
+
+			default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_processValueChanging: function (value) { //NumericEditor
+			var displayFactor = this._getOptionOrRegionalValue("displayFactor");
 			if (typeof value === "string" || value instanceof String) {
 				value = value.trim();
 				value = this._parseNumericValueByMode(value,
@@ -4656,11 +4759,11 @@
 				if (value === "" && !this.options.allowNullValue) {
 					value = 0;
 				}
-				if (this._numericType === "percent" && this.options.displayFactor) {
+				if (this._numericType === "percent" && displayFactor) {
 					if (value !== "" && !isNaN(value)) {
 
 						// TODO - any logic related to "percent" should not be in numeric editor.
-						value = this._divideWithPrecision(value, this.options.displayFactor);
+						value = this._divideWithPrecision(value, displayFactor);
 					}
 				}
 			}
@@ -4678,8 +4781,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this.options.maxValue
+						});
 
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
@@ -4687,23 +4792,21 @@
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-								this.options.minValue));
+							{
+								optName: "minValExceedSetErrMsg",
+								arg: this.options.minValue
+							});
 				}
 			}
 			if (!this._validateValue(value)) {
 				if (value !== "" && !isNaN(value)) {
 
-					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
-					} else {
-						if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
 						}
-					}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
 						value = this.options.nullValue;
@@ -4769,9 +4872,9 @@
 						// Spin numeric value
 						this._handleSpinUpEvent();
 					}
-					if (this.options.readOnly) {
-						e.preventDefault();
-					}
+
+					// prevent default arrow action (cursor move or page scroll on readonly):
+					e.preventDefault();
 				} else if (e.keyCode === 40) {//Arrow Down
 					if (e.altKey && this._dropDownList && !this._dropDownList.is(":visible")) {
 
@@ -4787,9 +4890,7 @@
 						// Spin numeric value
 						this._handleSpinDownEvent();
 					}
-					if (this.options.readOnly) {
-						e.preventDefault();
-					}
+					e.preventDefault();
 				} else if (e.keyCode === 27 && this._dropDownList &&
 					this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 
@@ -4868,11 +4969,10 @@
 			}
 		},
 		_parseNumericValueByMode: function (value, numericEditorType, dataMode) { //NumericEditor
-			var val, stringValue, decimalSeparator, groupSeparator, minDecimals, maxDecimals;
-			decimalSeparator = this.options.decimalSeparator;
-			groupSeparator = this.options.groupSeparator;
-			minDecimals = this.options.minDecimals;
-			maxDecimals = this.options.maxDecimals;
+			var val, stringValue, exponent, exponentIndex,
+				decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator"),
+				groupSeparator = this._getOptionOrRegionalValue("groupSeparator"),
+				maxDecimals = this._getOptionOrRegionalValue("maxDecimals");
 
 			if (value === null || value === "") { // TODO VERIFY _validateValue and _updateValue both have cases calling parse with null!
 				return value;
@@ -4886,67 +4986,87 @@
 
 				// D.P. 27th Oct 2015 Bug 208296: Don't replace group separator on actual numbers as it can be '.'
 				value = value.toString().replace(new RegExp($.ig.util.escapeRegExp(groupSeparator), "g"), ""); // TODO VERIFY Remove group separator cause parseInt("1,000") returns 1?
-				if (this.options.negativeSign !== "-") {
-					value = value.replace(this.options.negativeSign, "-");
+				if (this._getOptionOrRegionalValue("negativeSign") !== "-") {
+					value = value.replace(this._getOptionOrRegionalValue("negativeSign"), "-");
 				}
 				if (numericEditorType === "percent") {
-					value = value.replace(this.options.percentSymbol, "").trim();
+					value = value.replace(this._getOptionOrRegionalValue("percentSymbol"), "").trim();
 				} else if (numericEditorType === "currency") {
-					value = value.replace(this.options.currencySymbol, "").trim();
+					value = value.replace(this._getOptionOrRegionalValue("currencySymbol"), "").trim();
+				}
+
+				// D.P. decimalSeparator replace before any parsing, regardless of mode (ensure scientific decimals are parsed correctly)
+				if (value.indexOf(decimalSeparator) !== -1) {
+					value = value.replace(decimalSeparator, ".");
 				}
 			}
 			if (dataMode === "double" || dataMode === "float") {
 				stringValue = value.toString().toLowerCase();
 				if (stringValue.indexOf("e") !== -1) {
+					val = value = Number(value);
 
-					// In that case leave the value as it is
-					// TODO work on validation method
-					val = value;
-				} else {
-
-					// In that case we need to validate the value against the constraints.
-					if (stringValue.indexOf(decimalSeparator) !== -1 || stringValue.indexOf(".") !== -1) {
-						var integerDigits, fractionalDigits;
-						if (stringValue.indexOf(".") !== -1) {
-							decimalSeparator = ".";
-						}
-						fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
-
-						//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
-						if (fractionalDigits.indexOf(decimalSeparator) > 0) {
-							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
-						}
-						if (fractionalDigits.length > maxDecimals) {
-
-							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
-							if (this.options.roundDecimals) {
-								stringValue = Math.round10(value, -maxDecimals).toString();
-								if (stringValue.indexOf(decimalSeparator) > -1) {
-									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
-								} else {
-									fractionalDigits = "";
-								}
-							} else {
-								fractionalDigits = fractionalDigits.substring(0, maxDecimals);
-							}
-						}
-						if (stringValue.indexOf(decimalSeparator) > -1) {
-							integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+					// values with negative exponent (less than 1) go through maxDecimal handling:
+					if (value < 1) {
+						if (!this.options.scientificFormat) {
+							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
+							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
+							stringValue = value.toFixed(this._getOptionOrRegionalValue("maxDecimals") + 1);
 						} else {
-							integerDigits = stringValue;
+							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
+							stringValue = value.toString().toLowerCase();
+							exponentIndex = stringValue.indexOf("e");
+							exponent = stringValue.substring(exponentIndex + 1);
+							stringValue = stringValue.substring(0, exponentIndex);
 						}
-
-						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
-						val = (integerDigits + "." + fractionalDigits) / 1;
 					} else {
-
-						//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
-						val = parseFloat(parseInt(value).toFixed(minDecimals));
+						return value;
 					}
+				}
+
+				// In that case we need to validate the value against the constraints.
+				if (stringValue.indexOf(".") !== -1) {
+					var integerDigits, fractionalDigits;
+					decimalSeparator = ".";
+					fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+
+					//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
+					if (fractionalDigits.indexOf(decimalSeparator) > 0) {
+						fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
+					}
+					if (fractionalDigits.length > maxDecimals) {
+
+						// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+						if (this.options.roundDecimals) {
+							stringValue = Math.round10(stringValue, -maxDecimals).toFixed(maxDecimals);
+							if (stringValue.indexOf(decimalSeparator) > -1) {
+								fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+							} else {
+								fractionalDigits = "";
+							}
+						} else {
+							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+						}
+					}
+					if (stringValue.indexOf(decimalSeparator) > -1) {
+						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+					} else {
+						integerDigits = stringValue;
+					}
+
+					val = integerDigits + "." + fractionalDigits;
+					if (exponent) {
+						val += "e" + exponent;
+					}
+
+					//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
+					val = val / 1;
+				} else if (!exponent) {
+					//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
+					val = parseInt(value);
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
-					value = this._toFixed(value.toString().toLocaleLowerCase());
+					value = Number(value).toFixed();
 				}
 				if (this._numericType === "percent" &&
 					this.options.displayFactor === 100 &&
@@ -4959,29 +5079,7 @@
 					val = parseInt(value);
 				}
 			}
-			if (this.options.scientificFormat &&
-				val.toString().toLowerCase().indexOf("e") === -1) {
-				val = val.toExponential();
-			}
 			return val;
-		},
-		_toFixed: function (x) {
-			var e;
-			if (Math.abs(x) < 1.0) {
-				e = parseInt(x.toString().split("e-")[ 1 ]);
-				if (e) {
-					x *= Math.pow(10, e - 1);
-					x = "0." + (new Array(e)).join("0") + x.toString().substring(2);
-				}
-			} else {
-				e = parseInt(x.toString().split("+")[ 1 ]);
-				if (e > 20) {
-					e -= 20;
-					x /= Math.pow(10, e);
-					x += (new Array(e + 1)).join("0");
-				}
-			}
-			return x;
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 
@@ -5026,21 +5124,17 @@
 			return (value1 / value2);
 		},
 
-		//This method validates and updates the value input the hidden input
+		//This method updates the value and the hidden input
+		// D.P. This should not alter the value beyond parsing
 		_updateValue: function (value) { //Numeric Editor
-			// WE should detect dataMode, so we can use the options.
-			var val, dataMode = this.options.dataMode;
-			if (value === "" && this.options.allowNullValue) {
-				val = this.options.nullValue;
-				this._valueInput.val("");
-			} else if (value === this.options.nullValue && value === null) {
-				val = value;
-				this._valueInput.val("");
+			var val = value, dataMode = this.options.dataMode;
+			if (value === null) {
+				value = "";
 			} else {
-				val = this._parseNumericValueByMode(value, this._numericType, dataMode);
-				this._valueInput.val(val);
+				value = val = this._parseNumericValueByMode(value, this._numericType, dataMode);
 			}
 			this.options.value = val;
+			this._valueInput.val(value);
 
 			if (this._dropDownList) {
 				this._updateDropdownSelection(val);
@@ -5048,21 +5142,42 @@
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
-				var dataMode = this.options.dataMode,
-					negativeSign = this.options.negativeSign, ch, val,
+				var dataMode = this.options.dataMode, ch, val,
+					negativeSign = this._getOptionOrRegionalValue("negativeSign"), nextCh, prevCh,
+					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
-				ch = String.fromCharCode(event.charCode || event.which);
-				if (ch === negativeSign && cursorPos > 0) {
+				ch = String.fromCharCode(event.charCode || event.which).toLowerCase();
+
+				//don't block replacing entire value if everything is selected (-1)
+				if (cursorPos === -1) {
+					//all includeKeys, except E-s
+					return ch !== "e";
+				}
+
+				val = this._editorInput.val().toLowerCase();
+				nextCh = val.substring(cursorPos, cursorPos + nextDirection);
+
+				//nothing before the number negative sign
+				if (cursorPos === leadPos && nextCh === negativeSign) {
+					return false;
+				}
+
+				// Allow negative at start and after exponent
+				prevCh = val.substring(cursorPos - nextDirection, cursorPos);
+				if (ch === negativeSign) {
+					return (cursorPos === leadPos || prevCh === "e") && nextCh !== negativeSign;
+				}
+
+				if (ch === "e" && val.indexOf("e") !== -1) {
 					return false;
 				}
 
 				//We need this extra validation in case the user tries to enter decimal separator multiple times
 				if (dataMode === "double" || dataMode === "float") {
-					var decimalSeparator = this.options.decimalSeparator;
+					var decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator");
 
 					// val = $(event.target).val();
-					val = this._editorInput.val();
 					if (decimalSeparator !== "." && isDecimal &&
 						(val.indexOf(".") !== -1 || val.indexOf(decimalSeparator) !== -1) &&
 						cursorPos !== -1) {
@@ -5070,9 +5185,6 @@
 					}
 					if (((ch === decimalSeparator || isDecimal) &&
 							(val.indexOf(decimalSeparator) !== -1 || val.indexOf(".") !== -1) &&
-							cursorPos !== -1) ||
-						(ch === negativeSign &&
-							val.indexOf(negativeSign) !== -1 &&
 							cursorPos !== -1)) {
 
 						// We already have decimal separator so prevent default
@@ -5080,23 +5192,11 @@
 					} else {
 						return true;
 					}
-				} else if (dataMode === "long" || dataMode === "int" ||
-					dataMode === "short" || dataMode === "sbyte") {
-					val = $(event.target).val();
-					if (ch === negativeSign && val.indexOf(negativeSign) > 0 && cursorPos !== -1) {
-
-						// We already have decimal separator so prevent default
-						return false;
-					} else {
-						return true;
-					}
 				} else {
-
 					// If the dataMode differs from double, or float and the super method returns true the cher is valid
 					return true;
 				}
 			} else {
-
 				// If the super method fails, the char is not allowed
 				return false;
 			}
@@ -5125,15 +5225,19 @@
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this.options.maxValue
+						});
 				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this.options.minValue));
+						{
+							optName: "minValExceedSetErrMsg",
+							arg: this.options.minValue
+						});
 				}
 
 				if (!this._validateValue(newValue) && this.options.revertIfNotValid) {
@@ -5145,7 +5249,7 @@
 				newValue = "";
 			}
 			if (this._editMode) {
-				this._editorInput.val(newValue);
+				this._editorInput.val(this._getEditModeValue(newValue));
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
 					diff = newLenght - newValue.toString().length;
@@ -5161,65 +5265,52 @@
 			this._processTextChanged();
 		},
 		_clearValue: function (textOnly) { //Numeric Editor
-			var newValue;
+			var newValue = 0;
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
-				if (this.options.nullValue === null) {
-					this._editorInput.val("");
-				} else {
-					this._editorInput.val(this.options.nullValue);
-				}
-			} else {
-
-				// If the min value is different from zero, we clear the value with the minimum value.
-				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
-					newValue = this.options.minValue;
-					this._editorInput.val(this.options.minValue);
-				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
-					newValue = this.options.maxValue;
-					this._editorInput.val(this.options.maxValue);
-				} else {
-					if (this.value()) {
-						newValue = 0;
-						this._editorInput.val(0);
-					}
-				}
 			}
-			if (!textOnly && newValue !== undefined) {
+
+			// D.P. nullValue does not override min/max
+			// If the min value is different from zero, we clear the value with the minimum value.
+			if (!isNaN(this.options.minValue) && this.options.minValue > newValue) {
+				newValue = this.options.minValue;
+			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < newValue) {
+				newValue = this.options.maxValue;
+			}
+
+			//D.P. This handles both invalid nullValue and 0 not being in the list of items for #942
+			if (!this._validateValue(newValue)) {
+				newValue = "";
+				this._editorInput.val("");
+			} else {
+				this._editorInput.val(newValue);
+			}
+
+			if (!textOnly) {
 				this._updateValue(newValue);
 			}
 		},
-		_getRegionalOption: function (key) {
-			var regional = this.options.regional;
-			if (this.options[ key ]) {
-				return this.options[ key ];
-			}
-			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
-			}
-			if (regional && regional[ key ]) {
-				return regional[ key ];
-			} else {
-
-				// return defaults
-				return $.ig.regional.defaults[ key ];
-			}
-		},
 		_convertScientificToNumeric: function (num) {
-			var parts = num.toString().split("e+"), first, zeroes, i;
-			first = parts[ 0 ].replace(".", "");
-			zeroes = parseInt(parts[ 1 ], 10) - (first.length - 1);
-			for (i = 0; i < zeroes; i++) {
-				first += "0";
+			var stringValue = num.toString(),
+				scientificPrecision = stringValue
+				.substring(stringValue.toLowerCase().indexOf("e") + 1);
+			num = num / 1;
+			scientificPrecision = Math.abs(scientificPrecision);
+			if (scientificPrecision <= 20) {
+				if (scientificPrecision < this.options.minDecimals) {
+					scientificPrecision = this.options.minDecimals;
+				}
+				stringValue = num.toFixed(scientificPrecision);
 			}
-			return first;
+			return stringValue;
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
-				decimalSeparator = this.options.decimalSeparator, decimalPoint = ".",
-				minDecimals = this.options.minDecimals, dataMode = this.options.dataMode,
-				stringValue, displayValue, integerDigits, fractionalDigits, scientificPrecision,
-				scientificValue, negativeSign,
+				decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator"), decimalPoint = ".",
+				minDecimals = this._getOptionOrRegionalValue("minDecimals"), dataMode = this.options.dataMode,
+				displayFactor = this._getOptionOrRegionalValue("displayFactor"),
+				stringValue, displayValue, integerDigits, fractionalDigits,
+				scientificValue, scientificExponent, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
 			if (value === this.options.nullValue || value === "" || isNaN(value)) {
 				if (isNaN(value)) {
@@ -5230,83 +5321,87 @@
 				}
 			}
 			if (this._numericType !== "numeric") {
-				positivePattern = this.options.positivePattern;
-				symbol = this.options[ this._numericType + "Symbol" ];
+				positivePattern = this._getOptionOrRegionalValue("positivePattern");
+				symbol = this._getOptionOrRegionalValue(this._numericType + "Symbol");
 			}
-			negativePattern = this.options.negativePattern;
-			groups = this.options.groups;
-			groupSeparator = this.options.groupSeparator;
-			if (this._numericType === "percent" && this.options.displayFactor) {
-				value = this._multiplyWithPrecision(value, this.options.displayFactor);
+			negativePattern = this._getOptionOrRegionalValue("negativePattern");
+
+			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
+			var originalArray = this._getOptionOrRegionalValue("groups");
+			groups = originalArray.filter(function(item) {return item !== 0;} );
+			groupSeparator = this._getOptionOrRegionalValue("groupSeparator");
+			if (this._numericType === "percent" && displayFactor) {
+				value = this._multiplyWithPrecision(value, displayFactor);
 				value = this._parseNumericValueByMode(value, this._numericType, this.options.dataMode);
 			}
 
+			stringValue = value.toString().toLowerCase();
+			if (this.options.scientificFormat) {
+				if (stringValue.indexOf("e") === -1) {
+					stringValue = (stringValue / 1).toExponential();
+					scientificValue = stringValue.split("e")[ 0 ];
+					scientificExponent = stringValue.split(/e\+?/).pop();
+				}
+			} else if (stringValue.indexOf("e") !== -1) {
+				// If the value is in scientific, try to convert:
+				stringValue = this._convertScientificToNumeric(stringValue);
+			}
+			displayValue = stringValue;
+
 			// Min decimals check.
 			if (dataMode === "double" || dataMode === "float") {
-				stringValue = value.toString().toLowerCase();
-				if (this.options.scientificFormat) {
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue.replace("e", this._getScientificFormat());
-					} else {
-						scientificValue = (stringValue / 1).toExponential();
-						displayValue = scientificValue.toString().replace("e", this._getScientificFormat());
-					}
+
+				// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
+				if (stringValue.indexOf("e") !== -1) {
+					displayValue = stringValue;
 				} else {
-					if (stringValue.indexOf("e") !== -1) {
 
-						// In that case leave the value as it is
-						scientificPrecision = stringValue
-							.substring(stringValue.toLowerCase().indexOf("e") + 1);
-						stringValue = stringValue / 1;
-						if (scientificPrecision > 0) {
-							stringValue = this._convertScientificToNumeric(stringValue);
-						} else {
-							stringValue = stringValue.toFixed(Math.abs(scientificPrecision));
+					// In that case we need to validate the value against the constraints.
+					// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
+					if (stringValue.indexOf(decimalPoint) !== -1) {
+						fractionalDigits = stringValue
+							.substring(stringValue.indexOf(decimalPoint) + 1);
+						if (fractionalDigits.length < minDecimals) {
+							var missingDecimals = minDecimals - fractionalDigits.length;
+							while (missingDecimals > 0) {
+								fractionalDigits += "0";
+								missingDecimals--;
+							}
 						}
-
-					}
-
-					// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue;
+						integerDigits = stringValue
+							.substring(0, stringValue.indexOf(decimalPoint));
 					} else {
-
-						// In that case we need to validate the value against the constraints.
-						// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
-						if (stringValue.indexOf(decimalPoint) !== -1) {
+						integerDigits = stringValue;
+						if (minDecimals > 0) {
+							stringValue = parseInt(stringValue).toFixed(minDecimals);
 							fractionalDigits = stringValue
 								.substring(stringValue.indexOf(decimalPoint) + 1);
-							if (fractionalDigits.length < minDecimals) {
-								var missingDecimals = minDecimals - fractionalDigits.length;
-								while (missingDecimals > 0) {
-									fractionalDigits += "0";
-									missingDecimals--;
-								}
-							}
-							integerDigits = stringValue
-								.substring(0, stringValue.indexOf(decimalPoint));
-						} else {
-							integerDigits = stringValue;
-							if (minDecimals > 0) {
-								stringValue = parseInt(stringValue).toFixed(minDecimals);
-								fractionalDigits = stringValue
-									.substring(stringValue.indexOf(decimalPoint) + 1);
-							}
-						}
-						integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
-						if (fractionalDigits && fractionalDigits.length > 0) {
-							displayValue = integerDigits + decimalSeparator + fractionalDigits;
-						} else {
-							displayValue = integerDigits;
 						}
 					}
+					integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
+					if (fractionalDigits && fractionalDigits.length > 0) {
+						displayValue = integerDigits + decimalSeparator + fractionalDigits;
+					} else {
+						displayValue = integerDigits;
+					}
 				}
-			} else {
+			} else if (stringValue.indexOf("e") === -1) {
+				// Only apply groups to non-scientific format:
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
-
 			}
+
+			if (this.options.scientificFormat) {
+				// Scientific format:
+				if (scientificExponent > 0) {
+					displayValue = scientificValue + this.options.scientificFormat + scientificExponent;
+				} else {
+					displayValue = stringValue.replace("e", this._getScientificFormat());
+				}
+				displayValue = displayValue.replace(decimalPoint, decimalSeparator);
+			}
+
 			if (value < 0 ) {
-				negativeSign = this.options.negativeSign;
+				negativeSign = this._getOptionOrRegionalValue("negativeSign");
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
@@ -5366,13 +5461,16 @@
 			// value must be numeric
 			if (this.options.scientificFormat) {
 				val = Number(val).toExponential()
-					.replace("e", this._getScientificFormat());
+					.replace("e", this._getScientificFormat())
+					.replace("+", "");
+			} else if (val.toString().indexOf("e") !== -1) {
+				val = this._convertScientificToNumeric(val).replace("+", "");
 			}
-			if (this.options.decimalSeparator !== ".") {
-				val = val.toString().replace(".", this.options.decimalSeparator);
+			if (this._getOptionOrRegionalValue("decimalSeparator") !== ".") {
+				val = val.toString().replace(".", this._getOptionOrRegionalValue("decimalSeparator"));
 			}
-			if (this.options.negativeSign !== "-") {
-				val = val.toString().replace("-", this.options.negativeSign);
+			if (this._getOptionOrRegionalValue("negativeSign") !== "-") {
+				val = val.toString().replace("-", this._getOptionOrRegionalValue("negativeSign"));
 			}
 			return val;
 		},
@@ -5522,26 +5620,34 @@
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinUp", currVal, delta);
+
+			// A. M. April 5th, 2017 #896 spinWrapAround doesn't spin to minValue if there is no maxValue set
 			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
+				this.options.spinWrapAround) || currVal < this.options.minValue ||
+				(this._currentInputTextValue === this.options.maxValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
-						this.options.maxValue));
+					{
+						optName: "maxValExceededWrappedAroundErrMsg",
+						arg: this.options.maxValue
+					});
 			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValErrMsg,
-						this.options.maxValue));
+					{
+						optName: "maxValErrMsg",
+						arg: [ this.options.maxValue ]
+					});
 			}
 			if (this._focused) {
 				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
+				noCancel = this._triggerValueChanging(currVal);
 
 				// Trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
 				if (noCancel) {
 					this._updateValue(currVal);
 					this._exitEditMode();
@@ -5579,17 +5685,23 @@
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinDown", currVal, delta);
 			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
+				this.options.spinWrapAround) || currVal > this.options.maxValue ||
+				(this._currentInputTextValue === this.options.minValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
-						this.options.minValue));
+					{
+						optName: "minValExceededWrappedAroundErrMsg",
+						arg: this.options.minValue
+					});
 
 			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValErrMsg,
-						this.options.minValue));
+					{
+						optName: "minValErrMsg",
+						arg: this.options.minValue
+					});
 			}
 			if (this._focused) {
 				currVal = this._getEditModeValue(currVal);
@@ -5643,6 +5755,10 @@
 				}
 			}
 		},
+		_setSpinButtonsState: function (val) {
+			val = this._valueFromText(val);
+			this._super(val);
+		},
 
 		// igNumericEditor public methods
 		value: function (newValue) { // Numeric Editor
@@ -5666,8 +5782,10 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-									this.options.maxValue));
+								{
+									optName: "maxValExceedSetErrMsg",
+									arg: this.options.maxValue
+								});
 
 							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
@@ -5675,8 +5793,10 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-									this.options.value));
+								{
+									optName: "minValExceedSetErrMsg",
+									arg: this.options.value
+								});
 						}
 					}
 					if (this._validateValue(newValue)) {
@@ -5740,15 +5860,15 @@
 		},
 		getSelectedText: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		getSelectionStart: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		getSelectionEnd: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
@@ -5788,7 +5908,20 @@
 				$(".selector").%%WidgetName%%("getRegionalOption");
 			```
 				returnType="string" Current regional */
-			return this._getRegionalOption();
+			return this._getRegionalValue();
+		},
+		changeRegional: function() { //igNumericEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.ignumericeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.ignumericeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
+			if (this._focused) {
+				this._enterEditMode();
+			} else {
+				this._editorInput.val(this._getDisplayValue());
+			}
 		}
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
@@ -5836,28 +5969,6 @@
 		_setNumericType: function () {
 			this._numericType = "currency";
 		},
-		_applyRegionalSettings: function () { //igCurrencyEditor
-
-			this.options.negativeSign = this._getRegionalOption("negativeSign");
-			this.options.currencySymbol = this._getRegionalOption("currencySymbol");
-			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalOption("currencyPositivePattern");
-			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("currencyNegativePattern");
-			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("currencyDecimalSeparator");
-			this.options.groupSeparator = this.options.groupSeparator !== null ?
-				this.options.groupSeparator :
-				this._getRegionalOption("currencyGroupSeparator");
-			this.options.groups = this.options.groups ||
-				this._getRegionalOption("currencyGroups");
-			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("currencyMaxDecimals") :
-				this.options.maxDecimals;
-			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("currencyMinDecimals") :
-				this.options.minDecimals;
-		},
 
 		// igCurrencyEditor public methods
 		currencySymbol: function (symbol) {
@@ -5870,7 +5981,7 @@
 			if (symbol) {
 				this.options.currencySymbol = symbol;
 			} else {
-				return this.options.currencySymbol;
+				return this._getOptionOrRegionalValue("currencySymbol");
 			}
 		}
 	});
@@ -5941,8 +6052,6 @@
 				//Get
 				var dataMode = $(".selector").igPercentEditor("option", "dataMode");
 
-				//Set
-				$(".selector").igPercentEditor("option", "dataMode", "double");
 				```
 				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue). Note: that is used as default.
 				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
@@ -5981,28 +6090,32 @@
 			this._numericType = "percent";
 		},
 		_insert: function (newValue, previousValue, selection) { // Percent Editor
-			var newLenght = newValue.length, diff;
+			var newLenght = newValue.length,
+				displayFactor = this._getOptionOrRegionalValue("displayFactor"), diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (!isNaN(this.options.maxValue) &&
-					newValue / this.options.displayFactor > this.options.maxValue) {
-					newValue = this.options.maxValue * this.options.displayFactor;
+					newValue / displayFactor > this.options.maxValue) {
+					newValue = this.options.maxValue * displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this.options.maxValue
+						});
 				} else if (!isNaN(this.options.minValue) &&
-					newValue / this.options.displayFactor < this.options.minValue) {
-					newValue = this.options.minValue * this.options.displayFactor;
+					newValue / displayFactor < this.options.minValue) {
+					newValue = this.options.minValue * displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minValue));
+						{
+							optName: "minValExceedSetErrMsg",
+							arg: this.options.minValue
+						});
 				}
-
-				if (!this._validateValue(newValue / this.options.displayFactor) &&
+				if (!this._validateValue(newValue / displayFactor) &&
 					this.options.revertIfNotValid) {
 					newValue = previousValue;
 				}
@@ -6021,47 +6134,32 @@
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 				}
 			} else {
-				newValue = this._divideWithPrecision(newValue, this.options.displayFactor);
+				newValue = this._divideWithPrecision(newValue, displayFactor);
 				this._processInternalValueChanging(newValue);
 				this._exitEditMode();
 			}
-			this._setSpinButtonsState(newValue / this.options.displayFactor);
+			this._setSpinButtonsState(newValue / displayFactor);
 			this._processTextChanged();
 		},
-		_applyRegionalSettings: function () { //Percent
+		_validateRegionalSettings: function () { //Percent
 
-			this.options.negativeSign = this.options.negativeSign ||
-				this._getRegionalOption("negativeSign");
-			this.options.percentSymbol = this.options.percentSymbol ||
-				this._getRegionalOption("percentSymbol");
-			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalOption("percentPositivePattern");
-			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("percentNegativePattern");
-			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("percentDecimalSeparator");
-			this.options.groupSeparator = this.options.groupSeparator !== null ?
-				this.options.groupSeparator :
-				this._getRegionalOption("percentGroupSeparator");
-			this.options.groups = this.options.groups ||
-				this._getRegionalOption("percentGroups");
-			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("percentMaxDecimals") :
-				this.options.maxDecimals;
-			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("percentMinDecimals") :
-				this.options.minDecimals;
-			if (this.options.displayFactor === 100) {
-				// TODO - this is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
-				this.options.maxDecimals += 2;
+			if (this.options.displayFactor !== null) {
+				if (typeof this._getOptionOrRegionalValue("displayFactor") !== "number") {
+					throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
+				} else if (this._getOptionOrRegionalValue("displayFactor") !== 1 &&
+					this._getOptionOrRegionalValue("displayFactor") !== 100) {
+					throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
+				}
 			}
-			this.options.displayFactor = this.options.displayFactor ||
-				this._getRegionalOption("displayFactor");
-			if (typeof this.options.displayFactor !== "number") {
-				throw new Error($.ig.Editor.locale.displayFactorIsOfTypeNumber);
-			} else if (this.options.displayFactor !== 1 && this.options.displayFactor !== 100) {
-				throw new Error($.ig.Editor.locale.displayFactorAllowedValue);
+		},
+		_getOptionOrRegionalValue: function(name) {
+			var regionalValue = this._super(name);
+
+			// This is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
+			if (name === "maxDecimals" && this.options.displayFactor === 100) {
+				regionalValue += 2;
 			}
+			return regionalValue;
 		},
 		_setOption: function (option, value) { // igPercentEditor
 			/* igPercentEditor custom setOption goes here */
@@ -6074,29 +6172,29 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "displayFactor": {
-					if (typeof value !== "number") {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.displayFactorIsOfTypeNumber);
-					} else if (value !== 1 && value !== 100) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.displayFactorAllowedValue);
-					}
-				}
-					break;
-				default: {
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
+			case "displayFactor":
+				if (typeof value !== "number") {
 					this.options[ option ] = prevValue;
-					this._super(option, value);
+					throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
+				} else if (value !== 1 && value !== 100) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 				}
-					break;
+				break;
+			default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_getEditModeValue: function (val) { //igPercentEditor
 			// value must be numeric
 			if (val !== "" && !isNaN(val)) {
 				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
-				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
+				val = this._multiplyWithPrecision(parseFloat(val),
+					this._getOptionOrRegionalValue("displayFactor"));
 			}
 			return this._super(val);
 		},
@@ -6131,26 +6229,14 @@
 			if (symbol) {
 				this.options.percentSymbol = symbol;
 			} else {
-				return this.options.percentSymbol;
+				return this._getOptionOrRegionalValue("percentSymbol");
 			}
 
 		}
 	});
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
-			/* type="object" Gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					regional: "en-US"
-				});
-
-				//Get
-				var region = $(".selector").%%WidgetName%%("option", "regional");
-				```
-			*/
-			regional: null,
-			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
+			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6191,7 +6277,7 @@
 				```
 			*/
 			inputMask: "CCCCCCCCCC",
-			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets/Sets type of value returned by the get of [value](ui.igmaskeditor#methods:value) method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" It affects the value of the control (value method/option and submitted in forms). It defines what the value should contain from text, unfilled prompts and literals. The default is allText and when used value method/option returns the text entered, all prompts (positions) and literals.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6201,8 +6287,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "rawTextWithLiterals");
 				```
 				rawText type="string" only entered text. All unfilled prompts (positions) and literals are ignored (removed).
 				rawTextWithRequiredPrompts type="string" only entered text and required prompts (positions). All optional unfilled prompts and literals are ignored (removed)
@@ -6224,7 +6308,7 @@
 				```
 			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused).
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6331,7 +6415,9 @@
 
 			```
 			*/
-			value: null
+			value: null,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* igWidget events go here */
@@ -6590,7 +6676,8 @@
 				ch, maskFlagsArray = this._maskFlagsArray,
 			length = mask.length, i, j, tempChar;
 
-			value = value ? value.toString() : "";
+			// D.P. Since other numbers are converted, so should be 0
+			value = value === 0 || value ? value.toString() : "";
 			if (length && length > 0) {
 				if (value.indexOf(this.options.unfilledCharsPrompt !== -1)) {
 					i = 225;
@@ -6835,7 +6922,6 @@
 			return dataModeValue;
 		},
 		_updateValue: function (value) { //igMaskEditor
-			var nullValue;
 			if (value === "") {
 
 				// Convert empty value by dataMode
@@ -6850,10 +6936,10 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
-						this._maskedValue = nullValue;
-						this._valueInput.val(nullValue);
-						this.options.value = nullValue;
+						this._maskedValue = this._parseValueByMask(this.options.nullValue);
+						this.options.value = this._getValueByDataMode();
+						this._valueInput.val(this.options.value);
+
 					}
 				} else {
 
@@ -6872,10 +6958,15 @@
 			var newValue = "";
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
+			}
+
+			if (this._validateValue(newValue)) {
 				this._editorInput.val(this._parseValueByMask(newValue));
 			} else {
+				newValue = "";
 				this._editorInput.val(this._maskWithPrompts);
 			}
+
 			if (!textOnly) {
 				this._updateValue(newValue);
 			}
@@ -6884,7 +6975,14 @@
 			}
 		},
 		_getDisplayValue: function () { //igMaskEditor
-			var result, maskedVal = this._maskedValue,
+			return this._replaceValueInMask(this.options.unfilledCharsPrompt, this.options.padChar);
+		},
+		_getMaskedValue: function (maskedValue) {
+			return this._replaceValueInMask(this.options.emptyChar, this.options.unfilledCharsPrompt,
+				maskedValue);
+		},
+		_replaceValueInMask: function (oldChar, newChar, maskedValue) {
+			var result, maskedVal = maskedValue || this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
 				inputMask = this.options.inputMask, maskFlagsArray = this._maskFlagsArray;
 
@@ -6911,13 +7009,13 @@
 					continue;
 				}
 
-				if (maskedVal.charAt(i) === this.options.unfilledCharsPrompt) {
+				if (maskedVal.charAt(i) === oldChar) {
 					maskChar = inputMask.charAt(j);
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
 
 						// All the required fields, which are unfilled are replaced with the padChar
-						result = this._replaceCharAt(result, p, this.options.padChar);
+						result = this._replaceCharAt(result, p, newChar);
 					} else {
 						result = this._replaceCharAt(result, p, "");
 						p--;
@@ -6926,7 +7024,7 @@
 			}
 			if (this._promptCharsIndices.length > 0) {
 				regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
-				result = result.replace(regExpr, this.options.unfilledCharsPrompt);
+				result = result.replace(regExpr, oldChar);
 			}
 			return result;
 		},
@@ -6972,9 +7070,6 @@
 			if (value === null || value === "") {
 				this._updateValue(value);
 				this._maskedValue = "";
-			} else if (typeof value === "undefined") {
-				this._updateValue("");
-				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
 				this._updateValue(this._maskedValue);
@@ -7000,11 +7095,11 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					if (this.options.revertIfNotValid) {
-						message = $.ig.Editor.locale.maskRevertMessage;
+						message = "maskRevertMessage";
 					} else {
-						message = $.ig.Editor.locale.maskMessage;
+						message = "maskMessage";
 					}
-					this._sendNotification("warning", message);
+					this._sendNotification("warning", { optName: message });
 				}
 			}
 		},
@@ -7036,7 +7131,9 @@
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val().trim();
+
+					// N.A. May 12th, 2017 #903: Properly revert display value.
+					value = this._getMaskedValue(this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
@@ -7279,23 +7376,20 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "inputMask": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				}
-				case "excludeKeys":
-				case "includeKeys":
-				case "regional":
-				case "unfilledCharsPrompt":
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				default: {
+			case "inputMask":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "excludeKeys":
+			case "includeKeys":
+			case "unfilledCharsPrompt":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-				}
-					break;
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_handleBackSpaceKey: function () {
@@ -7367,12 +7461,12 @@
 				if (newValue === this._maskWithPrompts) {
 					newValue = "";
 				}
+
 				this._updateValue(newValue);
 
-				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
-					this._editorInput.val(this._editMode ?
+				this._editorInput.val(this._editMode ?
 						this._maskedValue :
 						this._getDisplayValue());
 			} else {
@@ -7384,51 +7478,51 @@
 		},
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		showDropDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		hideDropDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinUpButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinUp: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		isValid: function () { //igMaskEditor
 			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
@@ -7450,7 +7544,7 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					valid = false;
-					this._sendNotification("warning", $.ig.Editor.locale.maskMessage);
+					this._sendNotification("warning", { optName: "maskMessage" });
 				}
 			}
 			this._skipMessages = false;
@@ -7460,7 +7554,7 @@
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7476,7 +7570,7 @@
 				*/
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7492,7 +7586,7 @@
 				*/
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7597,7 +7691,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method and option. Also affects how the value is stored for form submit.
+			/* type="date|editModeText|displayModeText|" Gets the value type returned by the get of value() method and option. Also affects how the value is stored for form submit.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7607,8 +7701,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The value method returns a Date object. When this mode is set the value sent to the server on submit is serialized as ISO 8061 string with local time and zone values by default.
 					The [enableUTCDates](ui.%%WidgetNameLowered%%#options:enableUTCDates) option can be used to output an UTC ISO string instead.
@@ -7646,22 +7738,48 @@
 				spin type="string" Spin buttons are located on the right side of the editor
 			*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+			/* type="number|object" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
 				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
 				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
-				The value can be only a positive integer number, otherwise it will be set as 1, or in the cases with double or float the the whole part will be taken.
+				Accepted values for deltas are positive integer numbers, and the fractional portion of floating point numbers is ignored.
 			```
-				//Initialize
+				//Initialize with number
 				$(".selector").%%WidgetName%%({
 					spinDelta: 10
+				});
+				//Initialize with object
+				$(".selector").%%WidgetName%%({
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					}
 				});
 
 				//Get
 				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
 
-				//Set
+				//Set with number
 				$(".selector").%%WidgetName%%("option", "spinDelta", 10);
+				//Set with object
+				$(".selector").%%WidgetName%%("option", "spinDelta", { minutes: 15 });
 			```
+			number type="number" Value this value it is applied to all time periods - years, days, minutes, etc.
+			object type="object" A configuration object, which defines specific values for each time period. The option can accept the following format:
+				spinDelta: {
+					year: 4,
+					month: 3,
+					day: 10,
+					hours: 12,
+					minutes: 15,
+					seconds: 10,
+					milliseconds: 100
+				}
+			Time periods that don't have values use 1 as default.
 			*/
 			spinDelta: 1,
 			/* type="bool" Gets/Sets ability to modify only 1 date field on spin events.
@@ -7769,7 +7887,9 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
-			toLower: false
+			toLower: false,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
@@ -7794,13 +7914,13 @@
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
-				this._convertDateMaskToDigitMask(this.options.dateInputFormat);
+				this._convertDateMaskToDigitMask(this._inputFormat);
 			this._setNumericType();
 
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (offset !== null && (offset > 840 || offset < -720)) {
-				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+				throw new Error(this._getLocaleValue("dateEditorOffsetRange"));
 			}
 		},
 		_setNumericType: function () {
@@ -7822,73 +7942,104 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "displayTimeOffset": {
-					if (this._editMode) {
-						this._updateMaskedValue();
-						this._enterEditMode();
-					} else {
+			case "displayTimeOffset":
+				if (this._editMode) {
+					this._updateMaskedValue();
+					this._enterEditMode();
+				} else {
+					this._editorInput.val(this._getDisplayValue());
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				if (!this._isValidDate(value)) {
+					this.options[ option ] = prevValue;
+					return;
+				}
+				if (value !== null) {
+					this.options[ option ] = this._getDateObjectFromValue(value);
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
 						this._editorInput.val(this._getDisplayValue());
+						this._currentInputTextValue = this._editorInput.val();
 					}
-					break;
 				}
-				case "minValue":
-				case "maxValue":
-					if (!this._isValidDate(value)) {
-						this.options[ option ] = prevValue;
-						return;
-					}
-					if (value !== null) {
-						this.options[ option ] = this._getDateObjectFromValue(value);
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-							this._currentInputTextValue = this._editorInput.val();
-						}
-					}
-					this._setSpinButtonsState(this.value());
-					break;
-				case "listItems":
-				case "dateInputFormat": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				}
-				default: {
+				this._setSpinButtonsState(this.value());
+				break;
+			case "listItems":
+			case "dateInputFormat":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "dateDisplayFormat":
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
+				// D.P. 30th Aug 2017 #1162 Runtime set of predefined dateDisplayFormat doesn't produce the expected pattern
+				this._applyRegionalSettings();
+				if (!this._editMode) {
+					this._editorInput.val(this._getDisplayValue());
 				}
-					break;
+				break;
+			case "spinDelta":
+				try {
+					this._validateSpinSettings();
+				} catch (e) {
+					this.options[ option ] = prevValue;
+					throw e;
+				}
+				break;
+			default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
-		_applyRegionalSettings: function () { //DateEditor
-			var format;
-			if (this.options.dateInputFormat !== null) {
-				format = this.options.dateInputFormat;
-				if (format === "date" || format === "dateLong" || format === "dateTime" ||
-					format === "time" || format === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalOption(format + "Pattern");
+		_applyRegionalSettings: function () { // DateEditor
+			var iFormat = this.options.dateInputFormat,
+				dFormat = this.options.dateDisplayFormat;
+
+			// N.A. September 12th, 2017 #1180 Preserve dateInputFormat and dateDisplayFormat options.
+			if (iFormat !== null) {
+				if (iFormat === "date" || iFormat === "dateLong" || iFormat === "dateTime" ||
+					iFormat === "time" || iFormat === "timeLong") {
+					this._inputFormat = this._getRegionalValue(iFormat + "Pattern");
+				} else {
+					this._inputFormat = iFormat;
 				}
 			} else {
-				this.options.dateInputFormat = this._getRegionalOption("datePattern");
+				this._inputFormat = this._getRegionalValue("datePattern");
 			}
-			if (this.options.dateDisplayFormat !== null) {
-				format = this.options.dateDisplayFormat;
-				if (format === "date" || format === "dateLong" || format === "dateTime" ||
-					format === "time" || format === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalOption(format + "Pattern");
+
+			if (dFormat !== null) {
+				if (dFormat === "date" || dFormat === "dateLong" || dFormat === "dateTime" ||
+					dFormat === "time" || dFormat === "timeLong") {
+					this._displayFormat = this._getRegionalValue(dFormat + "Pattern");
+				} else {
+					this._displayFormat = dFormat;
 				}
 			} else {
-				this.options.dateDisplayFormat = this.options.dateInputFormat;
+				this._displayFormat = this._inputFormat;
+			}
+		},
+		changeRegional: function() { //igDateEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdateeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdateeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
+			var timeouts = this._timeouts;
+			this._initialize();
+			this._timeouts = timeouts;
+			this._setInitialValue(this._dateObjectValue);
+			if (this._focused) {
+				this._enterEditMode();
 			}
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			if (value === null || value === "") {
 				this._updateValue(value);
-				this._maskedValue = "";
-			} else if (typeof value === "undefined") {
-				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value
@@ -7906,33 +8057,23 @@
 			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
-			var delta = this.options.spinDelta;
-
-			if (typeof delta !== "number") {
-				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
-			} else if (delta < 0) {
-				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
-			} else {
-				this.options.spinDelta = parseInt(delta, 10);
-			}
+			this._validateSpinSettings();
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
-				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
+				throw new Error(this._getLocaleValue("centuryThresholdValidValues"));
 			}
 
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
-					throw new Error($.ig.Editor.locale.invalidDate);
+					throw new Error(this._getLocaleValue("invalidDate"));
 				} else {
 					this.options.minValue = this._getDateObjectFromValue(this.options.minValue);
 				}
 			}
 			if (this.options.maxValue) {
 				if (!this._isValidDate(new Date(this.options.maxValue))) {
-					throw new Error($.ig.Editor.locale.invalidDate);
+					throw new Error(this._getLocaleValue("invalidDate"));
 				} else {
 					this.options.maxValue = this._getDateObjectFromValue(this.options.maxValue);
 				}
@@ -7942,9 +8083,46 @@
 			this.options.value = this._getValueBetweenMinMax(this.options.value);
 
 			this._super();
+		},
+		_validateSpinSettings: function() {
+			var delta = this.options.spinDelta, deltaRanges, key;
 
-			if (this._maskWithPrompts === undefined) {
-				this._setInitialValue();
+			if (typeof delta === "number") {
+				if (delta < 0) {
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
+				} else {
+					this.options.spinDelta = parseInt(delta, 10);
+				}
+			} else if (typeof delta === "object") {
+				deltaRanges = { year: 10, month: 12, day: 28,
+					hours: this._dateIndices.hh24 ? 24 : 12, minutes: 60,
+					seconds: 60, milliseconds: 1000 };
+
+				for (key in deltaRanges) {
+					if (deltaRanges.hasOwnProperty(key)) {
+						this._validateSpinSettingsForTimePeriod(key, deltaRanges[ key ]);
+					}
+				}
+			} else {
+				throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumberOrObject"));
+			}
+		},
+		_validateSpinSettingsForTimePeriod: function(name, maxRange) {
+			var delta = this.options.spinDelta[ name ];
+
+			if (delta === undefined) {
+				this.options.spinDelta[ name ] = 1;
+				return;
+			}
+
+			if (typeof delta !== "number") {
+				throw new Error($.ig.util.stringFormat(
+					this._getLocaleValue("spinDeltaIsOfTypeNumberForPeriod"), name,  0, maxRange));
+			} else if (delta < 0 || delta > maxRange) {
+				throw new Error($.ig.util.stringFormat(
+					this._getLocaleValue("spinDeltaShouldBeInRange"), name, 0, maxRange));
+			} else {
+				this.options.spinDelta[ name ] = parseInt(delta, 10);
 			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
@@ -7958,9 +8136,11 @@
 				// TODO: Optimize this method together with _triggerKeyDown in the igDatePicker.
 				if (key === 38 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 				if (key === 40 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 				if (key === 13) {
 					this._enterEditMode();
@@ -7996,35 +8176,35 @@
 			this._spin(this.options.spinDelta, true);
 		},
 		_handleSpinDownEvent: function () { // DateEditor
-			this._spin(-this.options.spinDelta, true);
+			this._spin(this._setNegativeDelta(this.options.spinDelta), true);
+		},
+		_setNegativeDelta: function (delta) {
+			var revDelta = { }, key;
+			if (typeof delta === "object") {
+				for (key in delta) {
+					if (delta.hasOwnProperty(key)) {
+						revDelta[ key ] = delta[ key ] * -1;
+					}
+				}
+			} else {
+				revDelta = delta * -1;
+			}
+			return revDelta;
+		},
+		_getDelta: function(delta, name) {
+			return (typeof delta === "object") ? delta[ name ] : delta;
 		},
 		_serializeDate: function (sDate) {
 			if (this.options.dataMode === "date") {
 				if (this.options.enableUTCDates) {
 					sDate = sDate.toISOString();
 				} else {
-					sDate = this._toLocalISOString(sDate);
+					sDate = $.ig.toLocalISOString(sDate);
 				}
 			} else {
 				sDate = this.options.value;
 			}
 			return sDate;
-		},
-		_toLocalISOString: function(date) {
-			var tzo = -date.getTimezoneOffset(),
-				dif = tzo >= 0 ? "+" : "-",
-				pad = function(num) {
-					var norm = Math.abs(Math.floor(num));
-					return (norm < 10 ? "0" : "") + norm;
-				};
-			return date.getFullYear() +
-				"-" + pad(date.getMonth() + 1) +
-				"-" + pad(date.getDate()) +
-				"T" + pad(date.getHours()) +
-				":" + pad(date.getMinutes()) +
-				":" + pad(date.getSeconds()) +
-				dif + pad(tzo / 60) +
-				":" + pad(tzo % 60);
 		},
 
 		// Returns numeric value from getFullYear (with shift), getMonth, etc or null.
@@ -8136,6 +8316,7 @@
 			var currentMaskValue = this._maskWithPrompts ?
 					this._maskWithPrompts :
 					this._parseValueByMask(""),
+				regional = this.options.regional,
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
@@ -8255,14 +8436,14 @@
 					if (this._dateIndices.ffLength === 1) {
 						currentMaskValue = this._replaceCharAt(currentMaskValue,
 							this._dateIndices.ff,
-							this._getMilliseconds(milliseconds, 100).toString());
+							$.ig.millisecondsToString(milliseconds, "fff", regional).toString());
 					} else if (this._dateIndices.ffLength === 2) {
 						currentMaskValue = this._replaceStringRange(currentMaskValue,
-							this._getMilliseconds(milliseconds, 10).toString(),
+							$.ig.millisecondsToString(milliseconds, "ff", regional).toString(),
 								this._dateIndices.ff, this._dateIndices.ff + 1);
 					} else {
 						currentMaskValue = this._replaceStringRange(currentMaskValue,
-							this._getMilliseconds(milliseconds, 1).toString(),
+							$.ig.millisecondsToString(milliseconds, "f", regional).toString(),
 								this._dateIndices.ff, this._dateIndices.ff + 2);
 					}
 				}
@@ -8279,14 +8460,16 @@
 		// This method is used to get indices of the date groups within the mask and to convert the date mask into a mask with digit flags valid for igMaskEditor
 		_convertDateMaskToDigitMask: function (mask) {
 			var x, i, j, flag = -1, txt = "", maskVal = mask;
-			if (!maskVal) {
-				maskVal = "";
-			}
-			maskVal = maskVal.replace("dddd", "ddd").replace("ddd,", "").replace("ddd ", "")
-						.replace(" ddd", "").replace("ddd", "");
 
 			this._dateIndices = {};
 			this._dateIndices.fourDigitYear = false;
+
+			if (!maskVal) {
+				maskVal = "";
+			}
+
+			maskVal = maskVal.replace("dddd", "ddd").replace("ddd,", "").replace("ddd ", "")
+				.replace(" ddd", "").replace("ddd", "");
 
 			// temporary replace \\f,d,s,m,etc. by \x01-\x09
 			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");
@@ -8524,22 +8707,6 @@
 			// Restore temporary removed 0 and 9 flags.
 			txt = txt.replace(/\x11/g, 9).replace(/\x12/g, 0);
 			return txt;
-		},
-		_getRegionalOption: function (key) { // igDateEditor
-			var regional = this.options.regional;
-			if (this.options[ key ]) {
-				return this.options[ key ];
-			}
-			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
-			}
-			if (regional && regional[ key ]) {
-				return regional[ key ];
-			} else {
-
-				// return defaults
-				return $.ig.regional.defaults[ key ];
-			}
 		},
 		_validateKey: function (event) {
 			var result = true, ch, key, cursorPosition;
@@ -9008,13 +9175,17 @@
 				if (this.options.maxValue && date > this.options.maxValue) {
 					validDate = this._getDateObjectFromValue(this.options.maxValue);
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.maxValue))));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this._getDisplayValue(new Date(this.options.maxValue))
+						});
 				} else if (this.options.minValue && date < this.options.minValue) {
 					validDate = this._getDateObjectFromValue(this.options.minValue);
 					this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.minValue))));
+						{
+							optName: "minValExceedSetErrMsg",
+							arg: this._getDisplayValue(new Date(this.options.minValue))
+						});
 				}
 			}
 			return validDate;
@@ -9047,9 +9218,12 @@
 		_clearValue: function (textOnly) { //DateEditor
 			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				newValue = this.options.nullValue;
-				if (newValue instanceof Date) {
-					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
+				if (this._validateValue(this.options.nullValue)) {
+					newValue = this.options.nullValue;
+					if (newValue !== null && newValue !== "") {
+						newValue = this._getDateObjectFromValue(this.options.nullValue);
+						maskedValue = this._updateMaskedValue(this.options.nullValue, true);
+					}
 				}
 			}
 			this._editorInput.val(maskedValue);
@@ -9110,6 +9284,13 @@
 				newDate.setUTCMinutes(newDate.getUTCMinutes() +
 					newDate.getTimezoneOffset() - zoneOffset);
 			}
+			return newDate;
+		},
+		_getYearShift: function(date) {
+			var newDate;
+
+			newDate = new Date(date.getTime());
+			newDate.setFullYear(date.getFullYear() + this.options.yearShift);
 			return newDate;
 		},
 		_clearDateOffset: function(date) {
@@ -9323,9 +9504,13 @@
 				}
 			} else {
 
-				// extractedDate = this._dateObjectValue;
 				// N.A. 11/10/2015 Bug #207560: Set new date using timestamp.
-				extractedDate = new Date(this._dateObjectValue.getTime());
+				// N.A. September 4th, 2017 #1109: When displayTimeOffset is defined and mask of that editor doesn't contain hours, then date needs offset.
+				if (this.options.displayTimeOffset !== null) {
+					extractedDate = this._getDateOffset(this._dateObjectValue);
+				} else {
+					extractedDate = new Date(this._dateObjectValue.getTime());
+				}
 			}
 			if (yearField !== null && yearField !== undefined) {
 				this._setDateField("FullYear", extractedDate, yearField);
@@ -9366,103 +9551,22 @@
 			return extractedDate;
 
 		},
-		_getDisplayValue: function (newDate) { //igDateEditor
-			var maskVal, dateObject = newDate ? newDate : this._dateObjectValue;
+		_getDisplayValue: function (date) { //igDateEditor
+			var dateObject = date ? date : this._dateObjectValue;
 
 			if (!dateObject) {
 				return "";
+			}
+
+			if (this.options.yearShift !== null) {
+				dateObject = this._getYearShift(dateObject);
 			}
 
 			if (this.options.displayTimeOffset !== null) {
 				dateObject = this._getDateOffset(dateObject);
 			}
 
-			maskVal = this.options.dateDisplayFormat;
-			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");
-			maskVal = maskVal.replace(/\\f/g, "\x01").replace(/\\d/g, "\x02")
-				.replace(/\\s/g, "\x03").replace(/\\m/g, "\x04").replace(/\\t/g, "\x05")
-				.replace(/\\H/g, "\x06").replace(/\\h/g, "\x07").replace(/\\M/g, "\x08")
-				.replace(/\\y/g, "\x09");
-
-			// 01-y,02-yy,03-yyyy,04-M,05-MM,06-MMM,07-MMMM,08-d,09-dd
-			// 10-h,11-hh,12-H,13-HH,14-t,15-tt,16-m,17-mm,18-s,19-ss
-			// 20-ddd,21-dddd,22-f,23-ff,24-fff
-			// Temporary remove 0 and 9, as they are valid mask flags
-			// maskVal = maskVal.replace(/9/g, "\x11").replace(/0/g, "\x12");
-
-			// Mark all flags as hexadecimal
-			maskVal = maskVal.replace(/fff/g, "\x10030")
-				.replace(/ff/g, "\x10031")
-				.replace(/f/g, "\x10032");
-
-			maskVal = maskVal.replace(/dddd/g, "\x10033")
-				.replace(/ddd/g, "\x10034")
-				.replace(/dd/g, "\x10035")
-				.replace(/d/g, "\x10036")
-				.replace(/ss/g, "\x10037")
-				.replace(/s/g, "\x10038")
-				.replace(/mm/g, "\x10039")
-				.replace(/m/g, "\x10040");
-			maskVal = maskVal.replace(/tt/g, "\x10041")
-				.replace(/t/g, "\x10042")
-				.replace(/HH/g, "\x10043")
-				.replace(/H/g, "\x10044")
-				.replace(/hh/g, "\x10045")
-				.replace(/h/g, "\x10046");
-			maskVal = maskVal.replace(/MMMM/g, "\x10047")
-				.replace(/MMM/g, "\x10048")
-				.replace(/MM/g, "\x10049")
-				.replace(/M/g, "\x10050");
-			maskVal = maskVal.replace(/yyyy/g, "\x10051")
-				.replace(/yy/g, "\x10052")
-				.replace(/y/g, "\x10053");
-
-			maskVal = maskVal.replace(/\x10030/g,
-				this._getMilliseconds(this._getDateField("Milliseconds", dateObject), 1))
-				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("Milliseconds",
-					dateObject), 10))
-				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("Milliseconds",
-					dateObject), 100));
-
-			maskVal = maskVal.replace(/\x10033/g,
-				this._getDay(this._getDateField("Day", dateObject), "dddd"))
-				.replace(/\x10034/g, this._getDay(this._getDateField("Day", dateObject), "ddd"))
-				.replace(/\x10035/g, this._getDate(this._getDateField("Date", dateObject), "dd"))
-				.replace(/\x10036/g, this._getDate(this._getDateField("Date", dateObject), "d"))
-				.replace(/\x10037/g,
-					this._getSeconds(this._getDateField("Seconds", dateObject), "ss"))
-				.replace(/\x10038/g,
-					this._getSeconds(this._getDateField("Seconds", dateObject), "s"))
-				.replace(/\x10039/g,
-					this._getMinutes(this._getDateField("Minutes", dateObject), "mm"))
-				.replace(/\x10040/g,
-					this._getMinutes(this._getDateField("Minutes", dateObject), "m"))
-
-				.replace(/\x10041/g,
-					this._getAMorPM(this._getDateField("Hours", dateObject), "tt"))
-				.replace(/\x10042/g, this._getAMorPM(this._getDateField("Hours", dateObject), "t"))
-				.replace(/\x10043/g, this._getHours(this._getDateField("Hours", dateObject), "HH"))
-				.replace(/\x10044/g, this._getHours(this._getDateField("Hours", dateObject), "H"))
-				.replace(/\x10045/g, this._getHours(this._getDateField("Hours", dateObject), "hh"))
-				.replace(/\x10046/g, this._getHours(this._getDateField("Hours", dateObject), "h"));
-
-			maskVal = maskVal.replace(/\x10047/g,
-				this._getMonth(this._getDateField("Month", dateObject), "MMMM"))
-				.replace(/\x10048/g, this._getMonth(this._getDateField("Month", dateObject), "MMM"))
-				.replace(/\x10049/g, this._getMonth(this._getDateField("Month", dateObject), "MM"))
-				.replace(/\x10050/g, this._getMonth(this._getDateField("Month", dateObject), "M"));
-
-			maskVal = maskVal.replace(/\x10051/g,
-				this._getYear(this._getDateField("FullYear", dateObject), "yyyy"))
-				.replace(/\x10052/g, this._getYear(this._getDateField("FullYear", dateObject), "yy"))
-				.replace(/\x10053/g, this._getYear(this._getDateField("FullYear", dateObject), "y"));
-
-			// Restore original \\f,d,s,m,etc.
-			maskVal = maskVal.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
-				.replace(/\x04/g, "m").replace(/\x05/g, "t").replace(/\x06/g, "H")
-				.replace(/\x07/g, "h").replace(/\x08/g, "M").replace(/\x09/g, "y");
-
-			return maskVal;
+			return $.ig.formatDate(this._displayFormat, dateObject, this.options.regional);
 		},
 		_valueFromText: function (text) { //igDateEditor
 			// TODO Verify
@@ -9487,182 +9591,6 @@
 				}
 			}
 			return dataModeValue;
-		},
-
-		// We use flag for different mask flags f milliseconds field in thousands, ff milliseconds field in tenths, fff milliseconds field in hundreds
-		_getMilliseconds: function (milliseconds, flag) {
-			var result = parseInt(milliseconds / flag).toString();
-			if (flag === 10) {
-				if (result.length !== 2) {
-					while (result.length < 2) {
-						result = "0" + result;
-					}
-				}
-			} else if (flag === 1) {
-
-				// Flag 1
-				if (result.length !== 3) {
-					while (result.length < 3) {
-						result = "0" + result;
-					}
-				}
-			}
-			return result;
-		},
-
-		// Flag values are dddd, ddd, dd, d - according to the
-		_getSeconds: function (seconds, flag) {
-			var result;
-			if (flag === "ss" && seconds < 10) {
-				result = "0" + seconds.toString();
-			} else {
-				result = seconds.toString();
-			}
-			return result;
-		},
-		_getMinutes: function (minutes, flag) {
-			var result;
-			if (flag === "mm" && minutes < 10) {
-				result = "0" + minutes.toString();
-			} else {
-				result = minutes.toString();
-			}
-			return result;
-		},
-
-		// Get before midday, or after middday
-		_getAMorPM: function (hours, flag) {
-			var result;
-			if (hours >= 12) {
-
-				// pm
-				result = this._getRegionalOption("pm");
-			} else {
-				result = this._getRegionalOption("am");
-			}
-			if (flag === "t") {
-				result = result.charAt(0);
-			}
-			return result;
-		},
-		_getHours: function (hours, flag) {
-			var result;
-			switch (flag) {
-				case "h": {
-					if (hours > 12) {
-						hours -= 12;
-					}
-
-					// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
-					if (hours === 0) {
-						hours = 12;
-					}
-					result = hours.toString();
-				}
-					break;
-				case "hh": {
-					if (hours > 12) {
-						hours -= 12;
-					}
-
-					// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
-					if (hours === 0) {
-						hours = 12;
-					}
-					if (hours < 10) {
-						result = "0" + hours.toString();
-					} else {
-						result = hours.toString();
-					}
-				}
-					break;
-				case "H": {
-					result = hours.toString();
-				}
-					break;
-				case "HH": {
-					if (hours < 10) {
-						result = "0" + hours.toString();
-					} else {
-						result = hours.toString();
-					}
-				}
-					break;
-
-			}
-			return result;
-		},
-		_getDate: function (date, flag) {
-			var result;
-			switch (flag) {
-				case "dd": {
-					if (date < 10) {
-						result = "0" + date.toString();
-					} else {
-						result = date;
-					}
-				}
-					break;
-				case "d": {
-					result = date.toString();
-				}
-					break;
-			}
-			return result;
-		},
-		_getDay: function (day, flag) {
-			var result;
-			switch (flag) {
-				case "dddd": {
-					result = this._getRegionalOption("dayNames")[ day ];
-				}
-					break;
-				case "ddd": {
-					result = this._getRegionalOption("dayNamesShort")[ day ];
-				}
-					break;
-			}
-			return result;
-		},
-		_getMonth: function (month, flag) {
-			var result;
-			switch (flag) {
-				case "MMMM": {
-					result = this._getRegionalOption("monthNames")[ month ];
-				}
-					break;
-				case "MMM": {
-					result = this._getRegionalOption("monthNamesShort")[ month ];
-				}
-					break;
-				case "MM": {
-					month++;
-					if (month < 10) {
-						result = "0" + month.toString();
-					} else {
-						result = month;
-					}
-				}
-					break;
-				case "M": {
-					month++;
-					result = month.toString();
-				}
-					break;
-			}
-			return result;
-		},
-		_getYear: function (year, flag) {
-			var result;
-			if (flag === "yy") {
-				result = year.toString().substring(2);
-			} else if (flag === "y") {
-				result = parseInt(year.toString().substring(2)).toString();
-			} else {
-				result = year.toString();
-			}
-			return result;
-
 		},
 		_handleBackSpaceKey: function () { //igDateEditor
 			var cursorPosition;
@@ -9710,6 +9638,7 @@
 			var isLimited = this.options.limitSpinToCurrentField, newMilliseconds,
 				secondsUpdateDelta = 0, currentSecond, timeSecond, boundary;
 
+			delta = this._getDelta(delta, "milliseconds");
 			switch (this._dateIndices.ffLength) {
 				case 1: boundary = 10; break;
 				case 2: boundary = 100; break;
@@ -9761,6 +9690,9 @@
 		_setSecondsEditMode: function (mask, time, currentSecond, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newSecond,
 				minuteUpdateDelta = 0, currentMinute, timeMinute;
+
+			delta = this._getDelta(delta, "seconds");
+			delta = delta % 60;
 			if (currentSecond + delta >= 60) {
 				if (isLimited) {
 					newSecond = currentSecond;
@@ -9807,6 +9739,9 @@
 		_setMinutesEditMode: function (mask, time, currentMinute, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMinute,
 				hourUpdateDelta = 0, currentHour, timeHour;
+
+			delta = this._getDelta(delta, "minutes");
+			delta = delta % 60;
 			if (currentMinute + delta >= 60) {
 				if (isLimited) {
 					newMinute = currentMinute;
@@ -9854,15 +9789,22 @@
 				is24format = this._dateIndices.hh24,
 				dayUpdateDelta = false,
 				amPmUpdateDelta = false,
-				newHour = currentHour + delta,
-				hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm, timeDay, timeAmPm;
+				newHour, hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
+				timeDay, timeAmPm, dayDelta;
 
+			delta = this._getDelta(delta, "hours");
 			if (is24format) {
 				hours = 24;
+
+				// N.A. August 29th, 2017 #1141: When delta for hours = 24, then it should stay as 24, not delta % 24, which is 0
+				newHour = currentHour + (Math.abs(delta) === 24 ? delta : (delta % 24));
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
 				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
+
+				// N.A. August 29th, 2017 #1141: When delta for hours = 12, then it should stay as 12, not delta % 12, which is 0
+				newHour = currentHour + (Math.abs(delta) === 12 ? delta : (delta % 12));
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
 				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
@@ -9872,6 +9814,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? 1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 23 to 00, this is the time that the day is increased also.
@@ -9881,8 +9824,14 @@
 
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
-						if (newHour === 13) {
-							newHour = 1;
+						if (newHour >= 13) {
+							newHour = newHour - hours;
+							if (newHour > 13 || delta > 1) {
+								amPmUpdateDelta = true;
+							}
+							if (currentAmPm === "pm") {
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9890,6 +9839,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? -1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 00 to 23, this is the time that the day is decreased also.
@@ -9900,22 +9850,31 @@
 						// In 12H format date, when the hour changes (wraps down) from 01 to 12, this is NOT the time that the day is decreased.
 						// It is decreased an hour later. (implemented in the top else block).
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
-						if (newHour <= 0) {
-							newHour = 12 + newHour;
+						// N.A. August 29th, 2017 #1141: Fix spinning with delta for hours = 12
+						if (newHour < 0 || Math.abs(delta) === 12) {
+							if (newHour < hours || delta < -1) {
+								amPmUpdateDelta = true;
+							}
+							if (currentAmPm === "am") {
+								dayUpdateDelta = true;
+							}
 						}
+						newHour = 12 + newHour;
 					}
 				}
 			} else {
 				if (!is24format) {
 
 					// Update AM/PM and date in 12H format.
-					if (delta > 0 && newHour === 12) {
+					if (delta > 0 && newHour >= 12 && newHour - delta < 12 ) {
+						dayDelta = (delta !== 0) ? 1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "pm") {
 							dayUpdateDelta = true;
 						}
 					}
-					if (delta < 0 && newHour === 11) {
+					if (delta < 0 && newHour <= 12 && newHour - delta >= 12) {
+						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {
 							dayUpdateDelta = true;
@@ -9936,14 +9895,14 @@
 				if (timeDay !== null) {
 					currentDay = parseInt(this._getStringRange(mask, timeDay.startPosition,
 						timeDay.endPosition), 10);
-					mask = this._setDayEditMode(mask, timeDay, currentDay, delta);
+					mask = this._setDayEditMode(mask, timeDay, currentDay, dayDelta);
 				} else {
 
 					// This is the case, when we don't have day in the mask, but we increase/decrease the hour to the next/previous day.
 					// In such a situation, we update the internal date with the new day, so that when we loose focus the day is the correct one.
 					if (!isLimited) {
 						this._setDateField("Date", this._dateObjectValue,
-							this._getDateField("Date", this._dateObjectValue) + delta);
+							this._getDateField("Date", this._dateObjectValue) + dayDelta);
 					}
 				}
 			}
@@ -9983,6 +9942,7 @@
 				currentMonth, lastDayOfMonth, lastDayOfPreviousMonth, newDay,
 				monthUpdateDelta, timeYear, timeMonth, today;
 
+			delta = this._getDelta(delta, "day");
 			today = new Date();
 			timeYear = this._createYearPosition();
 			if (timeYear === null) {
@@ -9993,7 +9953,7 @@
 			}
 			timeMonth = this._createMonthPosition();
 			if (timeMonth === null) {
-				currentMonth = today.getMonth();
+				currentMonth = today.getMonth() + 1;
 			} else {
 				currentMonth = parseInt(this._getStringRange(mask,
 					timeMonth.startPosition, timeMonth.endPosition), 10);
@@ -10041,6 +10001,8 @@
 		_setMonthEditMode: function (mask, time, currentMonth, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMonth, yearUpdateDelta = 0,
 				currentYear, timeYear;
+
+			delta = this._getDelta(delta, "month");
 			if (currentMonth + delta > 12) {
 				if (isLimited) {
 					newMonth = currentMonth;
@@ -10080,6 +10042,8 @@
 		},
 		_setYearEditMode: function (mask, time, currentYear, delta) {
 			var newYear;
+
+			delta = this._getDelta(delta, "year");
 			if (currentYear + delta < 0) {
 				newYear = currentYear;
 			} else {
@@ -10378,15 +10342,7 @@
 			if (userInteraction) {
 				this._processTextChanged();
 			}
-			if ($.ig.util.isChrome || $.ig.util.isSafari || $.ig.util.isFF) {
-
-				// In Chrome, Safari and FF there is a bug and the cursor needs to be set with timeout in order to work.
-				this._timeouts.push(setTimeout(function () {
-					self._setCursorPosition(cursorPosition);
-				}, 0));
-			} else {
-				self._setCursorPosition(cursorPosition);
-			}
+			self._setCursorPosition(cursorPosition);
 		},
 		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
@@ -10440,10 +10396,12 @@
 
 				// Default behavior is that we always spin up/down day if it is available in the mask.
 				periodName = "Date";
+				delta = this._getDelta(delta, "day");
 			} else if (indices.ff !== undefined) {
 
 				// If day is not available then we spin the smallest time period, that's why we start from milliseconds.
 				periodName = "Milliseconds";
+				delta = this._getDelta(delta, "milliseconds");
 				if (indices.ffLength === 2) {
 					delta = delta * 10;
 				} else if (indices.ffLength === 1) {
@@ -10451,14 +10409,19 @@
 				}
 			} else if (indices.ss !== undefined) {
 				periodName = "Seconds";
+				delta = this._getDelta(delta, "seconds");
 			} else if (indices.mm !== undefined) {
 				periodName = "Minutes";
+				delta = this._getDelta(delta, "minutes");
 			} else if (indices.hh !== undefined) {
 				periodName = "Hours";
+				delta = this._getDelta(delta, "hours");
 			} else if (indices.MM !== undefined) {
 				periodName = "Month";
+				delta = this._getDelta(delta, "month");
 			} else {
 				periodName = "FullYear";
+				delta = this._getDelta(delta, "year");
 			}
 			this._setTimePeriod(periodName, delta, userInteraction);
 		},
@@ -10478,7 +10441,8 @@
 			this._spinEditMode(delta ? delta : this.options.spinDelta);
 		},
 		_spinDownEditMode: function (delta) {
-			this._spinEditMode(delta ? -delta : -this.options.spinDelta);
+			this._spinEditMode(delta !== undefined ?
+				this._setNegativeDelta(delta) : this._setNegativeDelta(this.options.spinDelta));
 		},
 
 		// igDateEditor public methods
@@ -10488,7 +10452,7 @@
 				$(".selector").%%WidgetName%%("value", new Date (2016, 2, 3);
 			```
 				paramType="date" optional="true" New editor value. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
-				Note! This option doesn't use the displayInputFormat to extract the date
+				Note! This option doesn't use the dateInputFormat to extract the date
 				returnType="date" Current editor value. */
 			var parsedVal;
 			if (newValue !== undefined) {
@@ -10498,24 +10462,37 @@
 
 				//If the value is valid proceed with min/max value
 				parsedVal = this._getDateObjectFromValue(newValue);
-				if (this._isValidDate(parsedVal)) {
+				if (newValue !== null && this._isValidDate(parsedVal)) {
 					if (this.options.maxValue && parsedVal > this.options.maxValue) {
 						newValue = this._getDateObjectFromValue(this.options.maxValue);
 						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-								this._getDisplayValue(new Date(this.options.maxValue))));
+							{
+								optName: "maxValExceedSetErrMsg",
+								arg: this._getDisplayValue(new Date(this.options.maxValue))
+							});
 					} else if (this.options.minValue && parsedVal < this.options.minValue) {
 						newValue = this._getDateObjectFromValue(this.options.minValue);
 						this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-								this._getDisplayValue(new Date(this.options.minValue))));
+							{
+								optName: "minValExceedSetErrMsg",
+								arg: this._getDisplayValue(new Date(this.options.minValue))
+							});
 					}
 				}
+
 				if (this._validateValue(newValue)) {
 					this._updateValue(newValue);
 
 					//TODO Update maskedValue according to the new value.
 					this._updateMaskedValue();
+				} else {
+					if (this.options.revertIfNotValid &&
+					!(newValue === null && this.options.allowNullValue)) {
+						newValue = this._valueInput.val();
+						this._updateValue(newValue);
+					} else {
+						this._clearValue();
+					}
 				}
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
@@ -10547,7 +10524,7 @@
 			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
 			In such cases the value() cannot accept a date object as a new value and getSelectedDate() can be used to replace that functionality.
 			```
-				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+				$(".selector").%%WidgetName%%("selectDate", new Date (2016, 2, 3));
 			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
@@ -10556,7 +10533,7 @@
 		spinUp: function (delta) {
 			/* Increases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinUp", 2);
+				$(".selector").%%WidgetName%%("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
 			delta = parseInt(delta, 10);
@@ -10565,16 +10542,17 @@
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinDown", 3);
+				$(".selector").%%WidgetName%%("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
 			delta = parseInt(delta, 10);
-			this._spin(!isNaN(delta) && delta >= 0 ? -delta : -this.options.spinDelta);
+			this._spin(!isNaN(delta) && delta >= 0 ?
+				this._setNegativeDelta(delta) : this._setNegativeDelta(this.options.spinDelta));
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
 			```
-			$(".selector").igDateEditor("spinUpButton");
+			$(".selector").%%WidgetName%%("spinUpButton");
 			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
@@ -10582,7 +10560,7 @@
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
 			```
-				$(".selector").igDateEditor("spinDownButton");
+				$(".selector").%%WidgetName%%("spinDownButton");
 			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
@@ -10609,7 +10587,7 @@
 					//Raise warning not all required fields are entered
 					//State - message
 					valid = false;
-					this._sendNotification("warning", $.ig.Editor.locale.dateMessage);
+					this._sendNotification("warning", { optName: "dateMessage" });
 				}
 			}
 			this._skipMessages = false;
@@ -10618,51 +10596,36 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		}
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
-			/* type="object" Gets/Sets the custom regional settings for the editor. If it is a string, then $.ig.regional[stringValue] is assumed.
-			```
-			//Initialize
-				$(".selector").igDatePicker({
-					regional: "en-US"
-				});
-
-				//Get
-				var regional = $(".selector").igDatePicker("option", "regional");
-
-				//Set
-				$(".selector").igDatePicker("option", "regional", "en-US");
-			```
-			*/
-			regional: null,
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
 ```
 					//Initialize
@@ -10721,7 +10684,23 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
-			listWidth: 0
+			listWidth: 0,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		events: {
 			/* cancel="true" Event which is raised when the drop down is opening.
@@ -10847,6 +10826,14 @@
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+		_setFocus: function (event) {
+			if (this._shouldNotFocusInput) {
+				event.target.blur();
+				delete this._shouldNotFocusInput;
+				return;
+			}
+			this._super(event);
+		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
 				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
@@ -10899,7 +10886,9 @@
 						self._exitEditMode();
 					} else {
 						self._focused = false;
-						self._editorInput.focus();
+						if (!self.options.suppressKeyboard) {
+							self._editorInput.focus();
+						}
 					}
 				},
 				beforeShow: function(/*input*/) {
@@ -10955,17 +10944,36 @@
 					}
 				};
 			}
+			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
+				var isOnChangeMonthYear = regional.onChangeMonthYear;
+				options.onChangeMonthYear  = function () {
+					isOnChangeMonthYear.call(this);
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			} else {
+				options.onChangeMonthYear  = function () {
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			}
 			this._editorInput.datepicker(options);
 			this._dropDownList = this._editorInput.datepicker("widget");
 		},
 		_renderDropDownButton: function () {
-			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
-					this.id + "_calendarButton' aria-label='" +
-					this._getLocaleOption("ariaCalendarButton") + "'></div>"),
+			var dropDownButton = $("<div></div>"),
 				dropDownIcon = $("<div></div>");
 
-			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleOption("datePickerButtonTitle"));
+			dropDownButton.addClass(this.css.buttonCommon).attr({
+				"title": this._getLocaleValue("datePickerButtonTitle"),
+				"role": "button",
+				"tabindex": -1,
+				"id": this.id + "_calendarButton",
+				"data-localeid": "datePickerButtonTitle",
+				"data-localeattr": "title"
+			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
@@ -11026,6 +11034,10 @@
 				}
 			}
 		},
+
+		// I.G. 09/08/2017 #1037 [igDatePicker] initialization optimization - call overided _positionDropDownList.
+		_positionDropDownList: function () { // igDatePicker
+		},
 		_setOption: function (option, value) { // igDatePicker
 			/* igPercentEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -11037,70 +11049,68 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "datepickerOptions": {
-					var pickerOptions = this._editorInput.data("datepicker").settings,
-						settings, self = this, options;
-					settings = $.extend(value, this._pickerDefaults());
+			case "datepickerOptions":
+				var pickerOptions = this._editorInput.data("datepicker").settings,
+					settings, self = this, options;
+				settings = $.extend(value, this._pickerDefaults());
 
-				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
-					options = $.extend(pickerOptions, settings);
+				//A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
+				options = $.extend(pickerOptions, settings);
 
-					if (settings.onSelect) {
-						var igOnSelect = settings.onSelect;
-						options.onSelect = function (dateText, inst) {
-							igOnSelect.call(this, dateText, inst);
-							if (self.options.datepickerOptions &&
-								self.options.datepickerOptions.onSelect) {
-								self.options.datepickerOptions
-									.onSelect.call(this, dateText, inst);
-							}
-						};
-					}
-					if (settings.onClose) {
-						var igOnClose = settings.onClose;
-						pickerOptions.onClose = function (dateText, inst) {
-							igOnClose.call(this);
-							if (self.options.datepickerOptions &&
-								self.options.datepickerOptions.onClose) {
-								self.options.datepickerOptions
-									.onClose.call(this, dateText, inst);
-							}
-						};
-					}
-					this._editorInput.data("datepicker").settings = pickerOptions;
-
-					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
-					if (value.minDate &&
-						(this._editorInput.data("datepicker").settings.minDate !==
-							this.options.minValue))
-					{
-						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
-					}
-					if (value.maxDate &&
-						(this._editorInput.data("datepicker").settings.maxDate !==
-							this.options.maxValue))
-					{
-						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
-					}
+				if (settings.onSelect) {
+					var igOnSelect = settings.onSelect;
+					options.onSelect = function (dateText, inst) {
+						igOnSelect.call(this, dateText, inst);
+						if (self.options.datepickerOptions &&
+							self.options.datepickerOptions.onSelect) {
+							self.options.datepickerOptions
+								.onSelect.call(this, dateText, inst);
+						}
+					};
 				}
-					break;
-				case "minValue":
-				case "maxValue":
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-					this._editorInput.datepicker("option", "minDate", this.options.minValue);
-					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
-
-					// prevent datepicker from updating the input text (if min/max change selection)
-					this._editorInput.val(this._currentInputTextValue);
-					break;
-				default: {
-
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
+				if (settings.onClose) {
+					var igOnClose = settings.onClose;
+					pickerOptions.onClose = function (dateText, inst) {
+						igOnClose.call(this);
+						if (self.options.datepickerOptions &&
+							self.options.datepickerOptions.onClose) {
+							self.options.datepickerOptions
+								.onClose.call(this, dateText, inst);
+						}
+					};
 				}
-					break;
+				this._editorInput.data("datepicker").settings = pickerOptions;
+
+				// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
+				if (value.minDate &&
+					(this._editorInput.data("datepicker").settings.minDate !==
+						this.options.minValue))
+				{
+					this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
+				}
+				if (value.maxDate &&
+					(this._editorInput.data("datepicker").settings.maxDate !==
+						this.options.maxValue))
+				{
+					this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				this._editorInput.datepicker("option", "minDate", this.options.minValue);
+				this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+				// prevent datepicker from updating the input text (if min/max change selection)
+				this._editorInput.val(this._currentInputTextValue);
+				break;
+			default:
+
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_triggerKeyDown: function (event) { //igDatePicker
@@ -11109,10 +11119,12 @@
 			if (event.keyCode === 38 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 			} else if (event.keyCode === 40 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 			} else {
 				this._super(event);
@@ -11177,22 +11189,21 @@
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
-
 			this._dropDownOpened = true;
 
 			// Open Dropdown
 			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
 			this._cancelBlurDatePickerOpen = true;
 			this._positionDropDownList();
-			if (this._dropDownListOrientation === "up") {
-
+			if (this.options.dropDownOrientation  === "top") {
 				//We need this parameter as part of blind animation we're using
 				direction = "up";
 			} else {
 				direction = "down";
 			}
 			if (this._editMode && this._editorInput.val() !== this._maskWithPrompts) {
-				currentDate = this._valueFromText(this._editorInput.val());
+				// D.P. 15th May 2017 #1002 Drop down cannot be opened w/ displayTimeOffset when dataMode is "editModeText"
+				currentDate = this._parseDateFromMaskedValue(this._editorInput.val());
 			}
 
 			if (currentDate) {
@@ -11209,7 +11220,19 @@
 			if (currentInputValue === undefined) {
 				currentInputValue = this._editorInput.val();
 			}
+
 			try {
+				if (this.options.suppressKeyboard) {
+					if (this._focused) {
+
+						// If we are in edit mode and virtual keyboard is visible, we want to hide it before the drop down is opened.
+						this._editorInput.blur();
+					}
+
+					// When suppressKeyboard option for igDatePicker is true, we don't want to focus input.
+					this._shouldNotFocusInput = true;
+				}
+
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
 				// $(this._dropDownList).show("blind", { direction: direction }, this.options.dropDownAnimationDuration);
@@ -11239,6 +11262,26 @@
 		},
 
 		// igDatePicker public methods
+		changeRegional: function() { //igDatePicker
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdatepicker#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdatepicker#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
+			var regional, opts = this.options.datepickerOptions;
+			regional = $.extend({}, this._dpRegion());
+			if (opts && typeof opts === "object") {
+				//Update from options for regionals only(!):
+				for (var key in regional) {
+					if (regional.hasOwnProperty(key)) {
+						regional[ key ] = opts[ key ] || regional[ key ];
+					}
+				}
+			}
+			this._editorInput.datepicker("option", regional);
+			this._super();
+		},
 		getCalendar: function () {
 			/* Returns a reference to the jQuery calendar used as a picker selector
 			```
@@ -11250,22 +11293,22 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		showDropDown: function () {
 			/* Shows the drop down list.
@@ -11306,7 +11349,7 @@
 			```
 			*/
 			this._editorInput.datepicker("destroy");
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
@@ -11465,6 +11508,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11474,6 +11518,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11483,6 +11528,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11513,7 +11559,7 @@
 				this._editorContainer = this.element.wrap($("<div></div>")).parent();
 				this._editorInput.after(this._valueInput);
 			} else {
-				throw new Error($.ig.Editor.locale.instantiateCheckBoxErrMsg);
+				throw new Error(this._getLocaleValue("instantiateCheckBoxErrMsg"));
 			}
 
 			this._editorContainer
@@ -11568,21 +11614,21 @@
 
 			this._super(option, value);
 			switch (option) {
-				case "checked":
-					this._updateState(value && value !== "false" ? true : false);
-					break;
-				case "value":
-					this._inputValue = value;
-					this._updateState(this.options.checked);
-					break;
-				case "size":
-					this._size(value);
-					break;
-				case "iconClass":
-					this._setIconClass(iconClass, value);
-					break;
-				default:
-					break;
+			case "checked":
+				this._updateState(value && value !== "false" ? true : false);
+				break;
+			case "value":
+				this._inputValue = value;
+				this._updateState(this.options.checked);
+				break;
+			case "size":
+				this._size(value);
+				break;
+			case "iconClass":
+				this._setIconClass(iconClass, value);
+				break;
+			default:
+				break;
 			}
 
 		},
@@ -11697,7 +11743,7 @@
 				if (value.ret) {
 					state = value.p1;
 				} else {
-					throw new Error($.ig.Editor.locale.cannotParseNonBoolValue);
+					throw new Error(this._getLocaleValue("cannotParseNonBoolValue"));
 				}
 			}
 
@@ -11879,7 +11925,7 @@
 					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
-						throw new Error($.ig.Editor.locale.cannotSetNonBoolValue);
+						throw new Error(this._getLocaleValue("cannotSetNonBoolValue"));
 					}
 				} else {
 					/* update value only */
@@ -11907,5 +11953,5 @@
 			}
 		}
 	});
-
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

@@ -1,5 +1,14 @@
 ﻿/* South Africa +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -35,13 +44,16 @@
 	    dateTimePattern: 'yyyy/MM/dd hh:mm tt',
 	    timePattern: 'hh:mm tt',
 	    timeLongPattern: 'hh:mm:ss tt',
+		dateTitleFullPattern: 'yy MM dd',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericMaxDecimals: 2,
 	    currencyPositivePattern: '$ n',
 	    currencyNegativePattern: '$-n',
 	    currencySymbol: 'R'
-    };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('af');
+	};
+	
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('af');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

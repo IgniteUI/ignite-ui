@@ -9,6 +9,7 @@
  *
  * Depends on:
  *	jquery-1.9.1.js
+ *  infragistics.util.jquery.js
  */
 
  /*
@@ -108,19 +109,6 @@
 		clearTmplCache: function () {
 			delete this._internalTmplCache;
 			this._internalTmplCache = {};
-		},
-		encode: function (value) {
-			/* Encoding < > ' and "
-				paramType="string" The string to be encoded.
-				returnType="string" Returns the encoded string.
-			 */
-		    return value !== null && value !== undefined ?
-            value.toString()
-				.replace(this.regExp.amp, "&amp;")
-				.replace(this.regExp.lt, "&lt;")
-				.replace(this.regExp.gt, "&gt;")
-				.replace(this.regExp.ap, "&#39;")
-				.replace(this.regExp.ic, "&#34;") : "";
 		},
 		/* type="RegExp" Used to tokenize the template string. */
 		regExp: {
@@ -382,6 +370,11 @@
 			}
 			return result;
 		},
+		_getUndefinedArgLocale: function() {
+			return $.ig.util ?
+				$.ig.util.getLocaleValue("Templating", "undefinedArgument") :
+				$.ig.Templating.locale.undefinedArgument;
+		},
 		_compileTemplate: function (template, data) {
 			var i, j, k, result = "", temp, tempArgs = [ ], arg = "", f;
 			if ($.type(data) !== "array") {
@@ -396,7 +389,7 @@
 						}
 					}
 					if (arg === undefined) {
-						throw new Error($.ig.Templating.locale.undefinedArgument + this.tokens[ i ][ 0 ]);
+						throw new Error(this._getUndefinedArgLocale() + this.tokens[ i ][ 0 ]);
 					}
 					if (typeof arg === "string") {
 						arg = arg.replace(this.regExp.index, 0);
@@ -423,7 +416,7 @@
 							}
 						}
 						if (arg === undefined) {
-							throw new Error($.ig.Templating.locale.undefinedArgument + this.tokens[ i ][ 0 ]);
+							throw new Error(this._getUndefinedArgLocale() + this.tokens[ i ][ 0 ]);
 						}
 						if (typeof arg === "string") {
 							arg = arg.replace(this.regExp.index, j);

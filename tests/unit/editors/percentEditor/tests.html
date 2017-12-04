@@ -14,13 +14,18 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                  
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -97,7 +102,7 @@
 				});
 			}
 			initialized = false;
-			module("Percentage Editor", {
+			module("igPercentEditor", {
 				setup: function () {
 					//pause testing until tree is initialized
 					if (!initialized) {
@@ -247,8 +252,8 @@
 				var containerInput = $('#pEditor6').igPercentEditor("field");
 
 				// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
-				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
 				$("#pEditor6").igPercentEditor("option", "groupSeparator", "");
+				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
 				$("#pEditor6").igPercentEditor("option", "value", 1264.89);
 				equal($("#pEditor6").igPercentEditor("displayValue"), "1264,89%", "The decimal value is not correct");
 			});
@@ -453,13 +458,17 @@
 			});
 			
 			var testId = 'Percent Editor Scientific format.';
-			test(testId, 1, function () {
+			test(testId, 2, function () {
 				var field = $('#pEditor8').igPercentEditor("field");
 
 				field.focus();
 				field.val("10");
 				field.blur();
-				equal($("#pEditor8").igPercentEditor("displayValue"), "1e+1%", "Displayed value is not correct!");
+				equal($("#pEditor8").igPercentEditor("displayValue"), "1e1%", "Displayed value is not correct!");
+
+				$("#pEditor8").igPercentEditor("option", "scientificFormat", "e+")
+				$('#pEditor8').igPercentEditor("value", 0.57);
+				equal($("#pEditor8").igPercentEditor("displayValue"), "5.7e+1%", "Displayed value is not correct for e+!");
 			});
 
 			var testId = 'Percent Editor Set options.';
@@ -686,7 +695,7 @@
 			});
 
 			var testId = "Spin events with set scientificFormat.";
-			test(testId, 2, function(){
+			test(testId, 3, function(){
 				var $focusedSpinUp = $("<input id='focusedSpinUp' />").appendTo("#testBedContainer")
 					.igPercentEditor({
 						buttonType: "spin",
@@ -695,8 +704,9 @@
 					});
 
 				$focusedSpinUp.focus();
+				equal($focusedSpinUp.igPercentEditor("field").val(), "0E0", "The wrong value is set in the editor in edit mode.");
 				$focusedSpinUp.igPercentEditor("spinUp");
-				equal($focusedSpinUp.igPercentEditor("field").val(), "1E+0", "The wrong value is set in the editor in edit mode.");
+				equal($focusedSpinUp.igPercentEditor("field").val(), "1E0", "The wrong value is set in the editor in edit mode.");
 				$focusedSpinUp.blur();
 				equal($focusedSpinUp.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
 				$focusedSpinUp.remove();
@@ -732,7 +742,48 @@
 				ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
 				$editor.remove();
 			});
+			
+			var testId = 'MaxValue SpinUpButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igPercentEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+			$editor.igPercentEditor("value", 8);
+			$editor.blur();
+			ok($editor.igPercentEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
+			$editor.remove();
 		});
+		
+		var testId = 'MinValue SpinDownButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igPercentEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			$editor.igPercentEditor("value", 2);
+			$editor.blur();
+			ok($editor.igPercentEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
+			$editor.remove();
+		});
+
+		testId = 'Runtime changes for local and regional options';
+		test(testId, 6, function () {
+			var $editor = $("<input/>").appendTo("#testBedContainer").igPercentEditor({ buttonType: "spin", value: 1234567.123, displayFactor: 1 });
+
+			equal($editor.igPercentEditor("displayValue"), "1,234,567.12%", "Format should be in English");
+			equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+			$editor.igPercentEditor("option", "language", "de");
+			equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+			$editor.igPercentEditor("option", "regional", "de");
+			equal($editor.igPercentEditor("displayValue"), "1.234.567,12%", "Format should be in German");
+			$editor.igPercentEditor("setFocus");
+			equal($editor.igPercentEditor("field").val(), "1234567,12", "Input Format should be in German");
+			$editor.igPercentEditor("option", "regional", "en");
+			equal($editor.igPercentEditor("field").val(), "1234567.12", "Input Format should be in German");
+			$editor.trigger("blur").remove();
+		});
+	});
 	</script>
 </head>
 <body>

@@ -1,0 +1,44 @@
+/**********/
+/* igTree */
+/**********/
+
+.ui-widget-content.ui-igtree-root {
+  background: none;
+  border: none;
+}
+
+.ui-igtree a {
+  color: @igGray10;
+  border: 1px solid transparent;
+}
+
+.ui-igtree a,
+.ui-igtree a.ui-state-hover,
+.ui-igtree a.ui-state-active,
+.ui-igtree a.ui-state-focus {
+  padding: 4px!important;
+}
+
+.ui-igtree a.ui-state-hover {
+  .stateHover-B;
+  border: 1px solid transparent;
+}
+
+.ui-igtree a.ui-state-active,
+.ui-igtree a.ui-state-active.ui-state-focus {
+  .buttonActive-A;
+}
+
+.ui-igtree a.ui-state-focus {
+  .stateFocused;
+  border: 1px solid transparent;
+}
+
+.ui-igtree .ui-icon,
+.ui-igtree-dropindicator.ui-state-highlight .ui-icon {
+  background-image: @jq-icons-accent;
+}
+
+.ui-igtree-insertline.ui-state-default {
+  -webkit-border-image: -webkit-gradient(linear, left top, right top, color-stop(0.8, #535353), color-stop(1, transparent)) 100 0 stretch stretch;
+}

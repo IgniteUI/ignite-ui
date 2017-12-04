@@ -1,5 +1,14 @@
 ﻿﻿/* Japan +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
@@ -36,6 +45,8 @@ $.ig.regional.ja = {
 	dateTimePattern: 'yyyy/MM/dd HH:mm',
 	timePattern: 'HH:mm',
 	timeLongPattern: 'HH:mm:ss',
+	dateTitleFullPattern: 'yy年m月d日',
+	dateTitleMonthPattern: 'yy年m月',
 	//
 	numericMaxDecimals: 2,
 	currencyNegativePattern: '-$n',
@@ -43,7 +54,7 @@ $.ig.regional.ja = {
 	currencyMaxDecimals: 0,
 	currencyMinDecimals: 0
 };
-if ($.ig.setRegionalDefault) {
-	$.ig.setRegionalDefault('ja');
+if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	$.ig.util.changeGlobalRegional('ja');
 }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

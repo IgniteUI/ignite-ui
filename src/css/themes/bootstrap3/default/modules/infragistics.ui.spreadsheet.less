@@ -1,0 +1,414 @@
+/*
+=========================
+Spreadsheet colors
+=========================
+*/
+
+.ui-igspreadsheet {
+  background: #fff;
+}
+
+.ui-igspreadsheet-inputmessage {
+  background-color: @igGray4;
+  border-color: @igGray9;
+  color: @igGray10;
+}
+
+/* ToolTip ??? */
+.ui-igspreadsheet-tooltip {
+  background-color: @igGray4;
+  border-color: @igGray6;
+  color: @igGray9;
+}
+
+/* Splitters ??? */
+.ui-igspreadsheet-rowsplitter,
+.ui-igspreadsheet-columnsplitter,
+.ui-igspreadsheet-splitterintersection {
+  background-color: @igGray5;
+}
+
+/* SelectAll */
+.ui-igspreadsheet-selectall {
+  color: @spreadsheet-accent;
+}
+
+.ui-igspreadsheet-selectall.ui-state-active {
+  color: @spreadsheet-accent;
+  background-color: @spreadsheet-accent;
+}
+
+/* SpreadSheet Header & Footer background */
+.ui-igspreadsheet-tabareabackground,
+.ui-igspreadsheet-formulabar {
+  background-color: @bar-background;
+}
+
+/* SpreadSheet Footer top border */
+.ui-igspreadsheet-tabareaborder {
+  background-color: @tab-bar-border;
+}
+
+/* Splitter icon */
+.ui-igspreadsheet-tabareasplitter,
+.ui-igspreadsheet-nameboxsplitter {
+  color: @spreadsheet-icon;
+}
+
+/* TabItem
+ =========
+ */
+
+/* Unselected tab */
+.ui-igspreadsheet-tabitem {
+  border-right: 1px solid @tab-bar-border;
+  border-left: 1px solid @tab-bar-border;
+  background-color: transparent;
+  border-bottom: 2px solid transparent; /* reserved space so we don't see jumping when the tab is selected */
+  color: @brand-primary;
+}
+
+/* Tab hover */
+.ui-igspreadsheet-tabitem.ui-state-hover {
+  color: @spreadsheet-accent;
+}
+
+/* Active tab */
+.ui-igspreadsheet-tabitem-active {
+  background: @spreadsheet-empty-bg;
+  border-bottom-color: @spreadsheet-accent;
+}
+
+.ui-igspreadsheet-tabitem-active,
+.ui-igspreadsheet-tabitem-active.ui-state-hover {
+  color: @spreadsheet-accent;
+}
+
+/* [LIGHT|DARK TAB START]  */
+.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
+  color: @spreadsheet-accent;
+}
+
+.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span {
+  color: @igGray3;
+}
+
+.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
+.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
+  color: @spreadsheet-accent;
+}
+
+.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
+.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
+  color: @spreadsheet-accent;
+}
+
+/* [LIGHT|DARK TAB END] */
+
+/* Tab Area Buttons */
+.ui-igspreadsheet-activateprevioushiddentab,
+.ui-igspreadsheet-activatenexthiddentab,
+.ui-igspreadsheet-scrollfirsttab,
+.ui-igspreadsheet-scrolllasttab,
+.ui-igspreadsheet-scrollprevioustab,
+.ui-igspreadsheet-scrollnexttab {
+  color: @spreadsheet-icon;
+}
+
+.ui-igspreadsheet-addnewworksheet.ui-state-hover,
+.ui-igspreadsheet-activateprevioushiddentab.ui-state-hover,
+.ui-igspreadsheet-activatenexthiddentab.ui-state-hover,
+.ui-igspreadsheet-scrollfirsttab.ui-state-hover,
+.ui-igspreadsheet-scrolllasttab.ui-state-hover,
+.ui-igspreadsheet-scrollprevioustab.ui-state-hover,
+.ui-igspreadsheet-scrollnexttab.ui-state-hover {
+  color: darken(@spreadsheet-accent, 15%);
+}
+
+.ui-igspreadsheet-addnewworksheet.ui-state-disabled,
+.ui-igspreadsheet-scrollfirsttab.ui-state-disabled,
+.ui-igspreadsheet-scrolllasttab.ui-state-disabled,
+.ui-igspreadsheet-scrollprevioustab.ui-state-disabled,
+.ui-igspreadsheet-scrollnexttab.ui-state-disabled {
+  color: @spreadsheet-disabled;
+}
+
+/* Add New Worksheet */
+.ui-igspreadsheet-addnewworksheet {
+  color: @spreadsheet-accent;
+  cursor: pointer;
+}
+
+/* ScrollBar related
+====================
+*/
+
+.ui-igspreadsheet-scrollbar-button-left,
+.ui-igspreadsheet-scrollbar-button-right,
+.ui-igspreadsheet-scrollbar-button-up,
+.ui-igspreadsheet-scrollbar-button-down {
+  background-color: @igGray4;
+  border: 1px solid @igGray7;
+  color: @igGray9;
+}
+
+.ui-igspreadsheet-scrollbar-button-left.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-right.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-up.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-down.ui-state-hover {
+  background-color: @igGray4;
+  border-color: @igGray7;
+  color: @igGray9;
+}
+
+.ui-igspreadsheet-scrollbar-button-left.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-right.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-up.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-down.ui-state-active {
+  background-color: @igGray1;
+  border-color: @igGray7;
+  color: @igGray8;
+}
+
+.ui-igspreadsheet-scrollbar-track-left,
+.ui-igspreadsheet-scrollbar-track-right,
+.ui-igspreadsheet-scrollbar-track-up,
+.ui-igspreadsheet-scrollbar-track-down {
+  background-color: @igGray4;
+}
+
+.ui-igspreadsheet-scrollbar-thumb-vertical,
+.ui-igspreadsheet-scrollbar-thumb-horizontal {
+  background-color: @igGray6;
+  border: 1px solid @igGray7;
+}
+
+.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-hover,
+.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-hover,
+.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-active,
+.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-active {
+  background-color: @igGray7;
+  border-color: @igGray4;
+}
+
+/* Headers
+   =======
+*/
+
+/* Cols & Rows Headers */
+.ui-igspreadsheet-columnheader,
+.ui-igspreadsheet-rowheader {
+  background-color: @bar-background;
+  color: @spreadsheet-text-color;
+}
+
+/* Cols & Rows Headers borders  */
+.ui-igspreadsheet-columnheader {
+  border-right-color: darken(@row-col-bar-border, 10%);
+}
+
+.ui-igspreadsheet-rowheader {
+  border-bottom-color: darken(@row-col-bar-border, 10%);
+}
+
+/* Cols & Rows Header, Selected  */
+.ui-igspreadsheet-columnheader-selected {
+  border-right-color: darken(@spreadsheet-accent, 10%);
+}
+
+.ui-igspreadsheet-rowheader-selected {
+  border-bottom-color: darken(@spreadsheet-accent, 10%);
+}
+
+/* Cols & Rows Header, Selected but not focused */
+.ui-igspreadsheet-columnheader-selected,
+.ui-igspreadsheet-rowheader-selected {
+  background-color: @spreadsheet-accent;
+  color: @btn-primary-color;
+}
+
+.ui-igspreadsheet-columnheader-selected.ui-state-highlight,
+.ui-igspreadsheet-rowheader-selected.ui-state-highlight {
+  color: #fff;
+}
+
+/* Selected cel, header col & row background and color */
+.ui-igspreadsheet-columnheader-selectedcells,
+.ui-igspreadsheet-rowheader-selectedcells {
+  background-color: @spreadsheet-accent;
+  color: @btn-primary-color;
+}
+
+/* Selected cel, header col & row border color */
+.ui-igspreadsheet-columnheader-selectedcells {
+  border-right-color: darken(@row-col-bar-border, 10%);
+}
+
+.ui-igspreadsheet-rowheader-selectedcells {
+  border-bottom-color: darken(@row-col-bar-border, 10%);
+}
+
+/* Selected cel, header hover col & row  background & colors */
+.ui-igspreadsheet-columnheader-hover,
+.ui-igspreadsheet-rowheader-hover {
+  background-color: lighten(@spreadsheet-accent, 3%);
+  color: @btn-primary-color;
+}
+
+.ui-igspreadsheet-columnheader-hover {
+  border-right-color: darken(@spreadsheet-accent, 10%);
+}
+
+.ui-igspreadsheet-rowheader-hover {
+  border-bottom-color: darken(@spreadsheet-accent, 10%);
+}
+
+.ui-igspreadsheet-header-resizeline {
+  background-color: @spreadsheet-accent;
+}
+
+/* Formula Bar
+   =======
+*/
+
+.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton {
+  background-color: @spreadsheet-formula-btn-bg;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:before {
+    border-color: @spreadsheet-formula-btn-color;
+  }
+}
+
+/* Buttons background */
+.ui-igspreadsheet-nameboxcontainer,
+.ui-igspreadsheet-formulabartextareacontainer,
+.ui-igspreadsheet-formulabarbuttoncontainer {
+  border: 1px solid @row-col-bar-border;
+  box-sizing: border-box;
+  background-color: @bar-background;
+  border-radius: @border-radius-base;
+}
+
+/* Enabled buttons */
+.ui-igspreadsheet-formulabarenterbutton,
+.ui-igspreadsheet-formulabarcancelbutton {
+  color: @igGray10;
+}
+
+/* Disabled Buttons */
+.ui-igspreadsheet-formulabarenterbutton.ui-state-disabled,
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-disabled {
+  color: @spreadsheet-disabled;
+}
+
+// Enter Button
+.ui-igspreadsheet-formulabarenterbutton.ui-state-hover {
+  color: @spreadsheet-accent;
+}
+
+// Cancel Button
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-hover {
+  color: @spreadsheet-danger;
+}
+
+.ui-igspreadsheet-invaliddata {
+  border-color: @spreadsheet-danger;
+}
+
+/*
+    Formula Bar END
+   ==================
+*/
+
+// Multi cell selection
+.ui-igspreadsheet-cellselection {
+  background-color: @spreadsheet-cell-selection-rgba;
+  border-color: white;
+  outline-color: @spreadsheet-cell-selection-rgba;
+}
+
+.ui-igspreadsheet-cellselection.ui-state-highlight {
+  outline-color: @spreadsheet-cell-selection;
+}
+
+.ui-igspreadsheet-cellselectionhandle {
+  background-color: @spreadsheet-cell-selection;
+  border-color: @igGray4;
+}
+
+.ui-igspreadsheet .ui-menu {
+  .boxShadow-1;
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: @brand-primary;
+  color: #fff;
+  .ui-icon {
+    color: #fff;
+  }
+}
+
+
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: @brand-primary;
+  color: #fff;
+  .ui-icon {
+    color: #fff;
+  }
+}
+/* Styles for jQuery 1.12.1 END */
+
+
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active
+{
+  color: #fff;
+  background: @brand-primary;
+  .ui-icon {
+    color: #fff;
+  }
+}
+
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color:@text-color;
+  .ui-icon {
+    color: @text-color;
+  }
+}
+/* Styles for jQuery 1.10.3 END */
+
+/* Styles for jQuery 1.11.1*/
+.ui-menu-item.ui-state-focus {
+  background: @brand-primary;
+  color: #fff;
+}
+
+.ui-menu-item.ui-state-active > div,
+.ui-menu-item.ui-state-active {
+  background: @brand-primary;
+}
+
+.ui-menu .ui-menu-item {
+  margin: -1px;
+  .ui-icon {
+    color: @text-color;
+  }
+}
+/* Styles for jQuery 1.11.1 END */
+.ui-menu .ui-menu-item.ui-state-focus > span {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div {
+  background: @brand-primary;
+  color: #fff;
+  .ui-icon {
+    color: #fff;
+  }
+}

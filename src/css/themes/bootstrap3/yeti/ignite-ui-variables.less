@@ -1,0 +1,150 @@
+// Icons
+@ui-icons-darker: #222222;
+@ui-icons-dark: #888888;
+@ui-icons-light: #ffffff;
+@ui-icons-accent: @brand-primary;
+
+//dialog
+@dialog-header: @brand-primary;
+
+@igGray1: #f0f0f0;
+@igGray2: #eee;
+@igGray3: #e8e8e8;
+@igGray4: #dadada;
+@igGray5: #bcbcbc;
+@igGray6: #ccc;
+@igGray7: #999;
+@igGray8: #888;
+@igGray9: #777;
+@igGray10: #444;
+@igGray11: rgba(0, 0, 0, 0.12);
+
+// Gradual palette, used mainly for bulletGraph and linearGauge
+@chartGradualPalette1: @brand-primary;
+@chartGradualPalette2: lighten(@brand-primary, 5%);
+@chartGradualPalette3: lighten(@brand-primary, 10%);
+@chartGradualPalette4: lighten(@brand-primary, 15%);
+@chartGradualPalette5: lighten(@brand-primary, 20%);
+@chartGradualPalette6: lighten(@brand-primary, 24%);
+@chartGradualPalette7: lighten(@brand-primary, 28%);
+@chartGradualPalette8: lighten(@brand-primary, 32%);
+@chartGradualPalette9: lighten(@brand-primary, 36%);
+@chartGradualPalette10: lighten(@brand-primary, 40%);
+@chartGradualPalette11: lighten(@brand-primary, 44%);
+@chartGradualPalette12: lighten(@brand-primary, 48%);
+
+// Sparkline palette
+@sparkpath: #43ABD5;
+@negativesparkpath: #43ABD5;
+@trendline: #7F7F7F;
+@markers: #43ABD5;
+@firstmarker: #237FA7;
+@lastmarker: #FBC139;
+@highmarker: #A3B929;
+@lowmarker: #AF39FF;
+@negativemarkers: #E5516F;
+
+// Spreadsheet
+@accent1: @brand-primary;
+@bar-background: #e4e4e4;
+@row-col-bar-border: #cccccc;
+@tab-bar-border: #999;
+@spreadsheet-accent: @brand-primary;
+@spreadsheet-icon: @brand-primary;
+@spreadsheet-cell-selection: @brand-primary;
+@spreadsheet-cell-selection-rgba: rgba(0, 140, 186, .22); /* needs to be improved with mixin*/
+@spreadsheet-text-color: #111;
+@spreadsheet-wight-text: #fff;
+@spreadsheet-empty-bg: #fff;
+@spreadsheet-disabled: #c4c4c4;
+@spreadsheet-danger: @brand-danger;
+@spreadsheet-menu-item-bg-hover: @spreadsheet-cell-selection-rgba;
+@spreadsheet-formula-btn-bg: @body-bg;
+@spreadsheet-header-selected-cell-bg: lighten(@brand-primary, 20%);
+@spreadsheet-tab-text-color: #666;
+@spreadsheet-formula-btn-color: #666;
+
+// Scheduler
+@scheduler-bg:@body-bg;
+@scheduler-text-color:@text-color;
+@scheduler-border-color: @table-border-color;
+@scheduler-shadow-color: @body-bg;
+@scheduler-header-bg:@body-bg;
+@scheduler-month-view-day-selected:@igGray4;
+
+
+@scheduler-start-time-color: @brand-primary;
+@scheduler-end-time-color: @brand-warning;
+
+@scheduler-selected-subject-color: @brand-primary;
+@scheduler-selected-location-color: @brand-primary;
+
+@scheduler-month-view-bg: transparent;
+
+@scheduler-activity-indicator-bg: @igGray6;
+
+@scheduler-day-week-view-bg: transparent;
+@scheduler-day-week-timeslot-selected: @gray-light;
+
+@scheduler-day-week-appt-bg:@igGray5;
+@scheduler-day-week-appt-location-bg:transparent;
+@scheduler-day-week-appt-location-color:@igGray9;
+@scheduler-day-week-appt-subject-bg:transparent;
+@scheduler-day-week-appt-subject-color:@igGray10;
+
+@scheduler-agenda-appt-selected:@igGray1;
+
+@scheduler-day-week-day-header-bg:transparent;
+@scheduler-day-week-day-header-color:rgb(153, 153, 153);
+
+@scheduler-all-day-event-area-bg:@igGray5;
+@scheduler-all-day-event-subject-color:@igGray10;
+@scheduler-all-day-event-subject-bg:@igGray5;
+
+@scheduler-agenda-view-bg:transparent;
+
+@scheduler-header-border-color:@gray-light;
+
+
+@scheduler-tabs-color:@text-color;
+@scheduler-tabs-selected-text-color:@brand-primary;
+@scheduler-tabs-selected-icons-color:@brand-primary;
+@scheduler-tabs-selected-hover:darken(@brand-primary, 3%);
+
+
+@scheduler-month-view-dayday-selected-bg: @igGray11;
+@scheduler-month-view-dayday-selected-color: @igGray8;
+
+@scheduler-month-view-day-today-indicator-bg: transparent;
+@scheduler-month-view-day-today-color: @brand-primary;
+
+@scheduler-month-view-month-header-bg:@brand-primary;
+
+@scheduler-month-view-day-leading-bg:transparent;
+@scheduler-month-view-day-leading-color:@gray-light;
+
+@scheduler-month-view-day-trailing-bg:transparent;
+@scheduler-month-view-day-trailing-color:@gray-light;
+
+@scheduler-selectall-bg:@brand-primary;
+
+@scheduler-appointment-dialog-save-button-bg:@igGray4;
+@scheduler-appointment-dialog-save-button-hover-bg:@igGray3;
+
+@scheduler-appointment-dialog-cancel-button-bg:@igGray4;
+@scheduler-appointment-dialog-cancel-button-hover-bg:@igGray3;
+
+@scheduler-navigator-back-button-hover-bg:transparent;
+@scheduler-navigator-date-range-button-hover-bg:transparent;
+@scheduler-navigator-forward-button-hover-bg:transparent;
+
+@scheduler-today-button-hover-bg:transparent;
+@scheduler-today-button-hover-color:@brand-primary;
+
+@scheduler-tabs-hover-bg:transparent;
+@scheduler-tabs-hover-color:@brand-primary;
+
+@scheduler-day-week-timeslot-bg:rgba(255, 255, 255, .005);
+@scheduler-day-week-timeslot-descripto-bg:transparent;
+@scheduler-day-week-timeslot-working-hour-bg:rgb(238, 238, 238);
+@scheduler-day-week-timeslot-selected-bg:@gray-light;

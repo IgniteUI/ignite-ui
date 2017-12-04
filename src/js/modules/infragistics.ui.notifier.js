@@ -9,8 +9,9 @@
 *  jquery-1.9.1.js
 *  jquery.ui.core.js
 *  jquery.ui.widget.js
-*	infragistics.util.js
+*  infragistics.util.js
 *  infragistics.util.jquery.js
+*  infragistics.ui.widget.js
 *  infragistics.ui.popover.js
 */
 
@@ -19,16 +20,12 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
 			"./infragistics.ui.popover"
 		], factory );
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -146,87 +143,6 @@
 				```
 			*/
 			allowCSSOnTarget: true,
-			/* type="object" A set of default messages for each state
-				```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						success:"Well done!",
-						info: "Info about the input status.",
-						warning: "Warning",
-						error: "Error"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {success: "Well done!"});
-				```
-			*/
-			messages: {
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						success:"Well done!"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {success: "Well done!"});
-				```*/
-				success: "Success",
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						info: "Info"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {info: "Info"});
-				```*/
-				info: "",
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						warning: "Warning"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {warning: "Warning"});
-				```*/
-				warning: "Warning",
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						error: "Error"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {error: "Something went wrong!"});
-				```*/
-				error:  "Error"
-			},
 			/* type="bool" Allows rendering a span with the respective state CSS to display jQuery UI framework icons
 				```
 				//Initialize
@@ -371,32 +287,34 @@
 		/* States that appear as inline in auto mode */
 		inlineStates: [ "success", "error" ],
 		_create: function () {
-			$.ui.igPopover.prototype._create.apply(this, arguments);
+			this._super();
 
 			// D.P. Override position prio to top > bottom
 			this._setOption("directionPriority", [ "top", "left", "right", "bottom" ]);
 
 			this._states = [ "success", "info", "warning", "error" ];
 			this._modes = [ "auto", "popover", "inline" ];
-			this._currentText = this.options.messages[ this.options.state ];
+			this._currentText = this._getDefaultMessageByState(this.options.state);
 		},
-		_createWidget: function (options/*, element*/) {
-			// ensure localized defaults
-			var messageDefaults = {
-				success: $.ig.Notifier && $.ig.Notifier.locale ? $.ig.Notifier.locale.successMsg : "Success",
-				info: "",
-				warning: $.ig.Notifier && $.ig.Notifier.locale ? $.ig.Notifier.locale.warningMsg : "Warning",
-				error: $.ig.Notifier && $.ig.Notifier.locale ? $.ig.Notifier.locale.errorMsg : "Error"
-			};
-			this.options.messages = $.extend(messageDefaults, (options && options.messages) || {});
-			$.ui.igPopover.prototype._createWidget.apply(this, arguments);
+		_getDefaultMessageByState: function (state) {
+			return this._getLocaleValue(state + "Msg");
 		},
-		_setState: function (value, message/*, fireEvents*/) {
-			if ($.inArray(value, this._states) === -1) {
-				throw new Error($.ig.Notifier.locale.notSupportedState);
+		changeLocale: function() {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.ignotifier#options:language)
+			Note that this method is for rare scenarios, use [language](ui.ignotifier#options:language) or [locale](ui.ignotifier#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
+			if (this.contentInner.attr("data-default-locale")) {
+				this._currentText = this._getDefaultMessageByState(this.options.state);
+				this._setNewContent(this._getTemplate());
 			}
-
-			//TODO:
+		},
+		_setState: function (value, message) {
+			if ($.inArray(value, this._states) === -1) {
+				throw new Error(this._getLocaleValue("notSupportedState"));
+			}
 			/*var args, noCancel, val = this.getContent(), self = this, contentFunc;
 			args = {
 				newState: value,
@@ -407,13 +325,19 @@
 				owner: this
 			};
 			noCancel = this._trigger(this.events.stateChanging, this, args);
-			if (noCancel === true) {*/
+			if (noCancel === true) {
+			*/
 			if (message !== undefined) {
 				// must be able to handle text change without state
 				this._currentText = message;
+				this.contentInner.removeAttr("data-default-locale");
+			} else {
+				this.contentInner.attr("data-default-locale", true);
 			}
 			if (this.options.state !== value) {
-				this._currentText = message !== undefined ? this._currentText : this.options.messages[ value ];
+				this._currentText = message !== undefined ?
+									this._currentText :
+									this._getDefaultMessageByState(value);
 				this._previousState = this.options.state;
 				this.options.state = value;
 				if (this._visible) {
@@ -463,17 +387,6 @@
 						this._setNewContent(this._getTemplate());
 					}
 					break;
-				case "messages":
-					if (typeof value === "object") {
-						this.options.messages = $.extend(this.options.messages, value);
-						this._currentText = this.options.messages[ this.options.state ];
-						this._setNewContent(this._getTemplate());
-						if (this._visible && !this._isInline()) {
-							this._positionPopover(this._target);
-							this._slide();
-						}
-					}
-					break;
 				case "allowCSSOnTarget":
 					if (typeof value === "boolean") {
 						this.options.allowCSSOnTarget = value;
@@ -489,12 +402,12 @@
 					}
 					break;
 				default:
-					$.ui.igPopover.prototype._setOption.apply(this, arguments);
+					this._superApply(arguments);
 			}
 		},
 		_setMode: function (value, force) {
 			if ($.inArray(value, this._modes) === -1) {
-				throw new Error($.ig.Notifier.locale.notSupportedMode);
+				throw new Error(this._getLocaleValue("notSupportedMode"));
 			}
 			if (this.options.mode !== value || force) {
 				// cleanup current popover
@@ -556,9 +469,9 @@
 			} else {
 				$.ui.igPopover.prototype._renderPopover.apply(this, arguments);
 			}
-
 			this._setState(this.options.state);
-			this.contentInner.addClass(this.css.contentInner);
+			this.contentInner
+				.addClass(this.css.contentInner);
 		},
 		_openPopover: function (/*trg, skipEvents*/) {
 			var initialState = this._visible;
@@ -652,14 +565,19 @@
 			return template;
 		},
 		_setNewContent: function (nc) {
-			var newContent = nc;
-			if (nc instanceof jQuery) {
+			var newContent = nc, iconContainer = this.css.iconContainer, icon = "";
+			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;
 			}
-			newContent = newContent.replace(/\{0\}/g, this.css.iconContainer)
-				.replace(/\{1\}/g, this.options.showIcon ? this.css[ this.options.state + "Icon" ] : "")
+			if (this.options.showIcon) {
+				icon = this.css[ this.options.state + "Icon" ];
+			} else {
+				iconContainer += " hidden";
+			}
+			newContent = newContent.replace(/\{0\}/g, iconContainer)
+				.replace(/\{1\}/g, icon)
 				.replace(/\{2\}/g, this._currentText);
 			this.contentInner.html(newContent);
 		},
@@ -670,10 +588,10 @@
 				```
 			*/
 			this._setTargetState(true);
-			$.ui.igPopover.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		}
 	});
 	$.extend($.ui.igNotifier, { version: "<build_number>" });
-	return $.ui.igNotifier;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

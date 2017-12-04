@@ -12,6 +12,7 @@
  *   jquery.ui.widget.js
  *	 infragistics.util.js
  *   infragistics.util.jquery.js
+ *   infragistics.ui.widget.js
  *   infragistics.ui.toolbarbutton.js
  *   infragistics.ui.toolbar.js
  *   infragistics.ui.popover.js
@@ -29,10 +30,7 @@
 
         // AMD. Register as an anonymous module.
         define( [
-            "jquery",
-            "jquery-ui",
-            "./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
             "./infragistics.ui.popover",
             "./infragistics.ui.splitbutton",
             "./infragistics.ui.colorpicker",
@@ -45,7 +43,7 @@
     } else {
 
         // Browser globals
-        factory(jQuery);
+        return factory(jQuery);
     }
 }
 (function ($) {
@@ -53,7 +51,7 @@
     /*
         The igHtmlEditor is a jQuery based widget which allow you to convert a simple html element into a rich text area.
     */
-    $.widget("ui.igHtmlEditor", {
+    $.widget("ui.igHtmlEditor", $.ui.igWidget, {
         options: {
             /* type="boolean" Shows/hides the "Formatting" toolbar.
             ```
@@ -526,599 +524,6 @@
             /* The workspace css. */
             workspaceIframe: "ui-widget-content"
         },
-        defaultToolbars: [ {
-            name: "textToolbar",
-            displayName: $.ig.HtmlEditor.locale.defaultToolbars.textToolbar,
-            isExpanded: true,
-
-            // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
-            allowCollapsing: true,
-            collapseButtonIcon: "ui-igbutton-collapse",
-            expandButtonIcon: "ui-igbutton-expand",
-            items: [ {
-                name: "Bold",
-                type: "button",
-                scope: null,
-                props: {
-                    allowToggling: {
-                        value: true
-                    },
-                    isBold: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    boldButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.boldButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    boldButtonIcon: {
-                        value: "ui-igbutton-bold",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "Italic",
-                type: "button",
-                props: {
-                    isItalic: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    italicButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.italicButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    italicButtonIcon: {
-                        value: "ui-igbutton-italic",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "Underline",
-                type: "button",
-                props: {
-                    isUnderline: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    underlineButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.underlineButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    underlineButtonIcon: {
-                        value: "ui-igbutton-underline",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "Strikethrough",
-                type: "button",
-                props: {
-                    isStrikethrough: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    strikethroughButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.strikethroughButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    strikethroughButtonIcon: {
-                        value: "ui-igbutton-strikethrough",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "fontFamily",
-                type: "combo",
-                scope: null,
-                handler: "_fontNamePlg",
-                props: {
-                    fontFamilyComboWidth: {
-                        value: 180,
-                        action: "_comboWidthAction"
-                    },
-                    fontFamilyComboHeight: {
-                        value: "",
-                        action: "_comboHeightAction"
-                    },
-                    fontFamilies: {
-                        value: $.ig.HtmlEditor.locale.fontNames[ /^win/gi.test(navigator.platform) ? "win" : "mac" ],
-                        action: "_comboDataSourceAction"
-                    },
-                    selectedFontFamily: {
-                        value: "Times New Roman",
-                        action: "_comboSelectedItem"
-                    }
-                }
-            }, {
-                type: "combo",
-                name: "fontSize",
-                scope: null,
-                handler: "_fontSizePlg",
-                props: {
-                    fontSizeComboWidth: {
-                        value: 75,
-                        action: "_comboWidthAction"
-                    },
-                    fontSizeComboHeight: {
-                        value: "",
-                        action: "_comboHeightAction"
-                    },
-                    fontSizes: {
-                        value: $.ig.HtmlEditor.locale.fontSizes,
-                        action: "_comboDataSourceAction"
-                    },
-                    selectedFontSize: {
-                        value: "3",
-                        action: "_comboSelectedItem"
-                    },
-                    fontSizeItemsListWidth: {
-                        value: 100,
-                        action: "_comboDropDownListWidth"
-                    }
-                }
-            }, {
-                type: "combo",
-                name: "formatsList",
-                scope: null,
-                handler: "_formatsListPlg",
-                props: {
-                    formatsListComboWidth: {
-                        value: 170,
-                        action: "_comboWidthAction"
-                    },
-                    formatsListComboHeight: {
-                        value: "",
-                        action: "_comboHeightAction"
-                    },
-                    formatsList: {
-                        value: $.ig.HtmlEditor.locale.formatsList,
-                        action: "_comboDataSourceAction"
-                    },
-                    selectedFormat: {
-                        value: "p",
-                        action: "_comboSelectedItem"
-                    }
-                }
-            } ]
-        }, {
-            name: "formattingToolbar",
-            displayName: $.ig.HtmlEditor.locale.defaultToolbars.formattingToolbar,
-            isExpanded: true,
-
-            // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
-            allowCollapsing: true,
-            collapseButtonIcon: "ui-igbutton-collapse",
-            expandButtonIcon: "ui-igbutton-expand",
-            items: [ {
-                name: "justifyleft",
-                type: "button",
-                props: {
-                    isJustifyLeft: {
-                        value: true,
-                        action: "_isSelectedAction"
-                    },
-                    justifyLeftButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.alignTextLeftButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    justifyLeftButtonIcon: {
-                        value: "ui-igbutton-justifyleft",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "justifycenter",
-                type: "button",
-                props: {
-                    isJustifyCenter: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    justifyCenterButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.alignTextCenterButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    justifyCenterButtonIcon: {
-                        value: "ui-igbutton-justifycenter",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "justifyright",
-                type: "button",
-                props: {
-                    isJustifyRight: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    justifyRightButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.alignTextRightButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    justifyRightButtonIcon: {
-                        value: "ui-igbutton-justifyright",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "justifyfull",
-                type: "button",
-                props: {
-                    isJustifyFull: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    justifyFullButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.justifyButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    justifyFullButtonIcon: {
-                        value: "ui-igbutton-justifyfull",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "InsertUnorderedList",
-                type: "button",
-                props: {
-                    isUnorderedList: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    insertUnorderedListTooltip: {
-                        value: $.ig.HtmlEditor.locale.bulletsButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    insertUnorderedListButtonIcon: {
-                        value: "ui-igbutton-unorderedlist",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "InsertOrderedList",
-                type: "button",
-                props: {
-                    isOrderedList: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    insertOrderedListTooltip: {
-                        // JD May 19, 2015 Bug #194260 Fixing the locale property name for the order list tooltip
-                        value: $.ig.HtmlEditor.locale.numberingButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    insertOrderedListButtonIcon: {
-                        value: "ui-igbutton-orderedlist",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "outdent",
-                type: "button",
-                props: {
-                    outdentButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.decreaseIndentButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    outdentButtonIcon: {
-                        value: "ui-igbutton-removeindent",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "indent",
-                type: "button",
-                props: {
-                    indentTooltip: {
-                        value: $.ig.HtmlEditor.locale.increaseIndentButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    indentButtonIcon: {
-                        value: "ui-igbutton-indent",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "textColor",
-                type: "splitButtonColor",
-                handler: "_fontColorPlg",
-                props: {
-                    items: {
-                        value: [
-                            {
-                                name: "textColor",
-                                label: $.ig.HtmlEditor.locale.fontColorButtonTitle,
-                                iconClass: "ui-igbutton-forecolor"
-                            }
-                         ]
-                    },
-                    defaultItemName: {
-                        value: "textColor"
-                    },
-                    selectedTextColor: {
-                        value: "red",
-                        action: "_spltButtonColorAction"
-                    }
-                }
-            }, {
-                name: "backgroundTextColor",
-                type: "splitButtonColor",
-                handler: "_fontBackgroundColorPlg",
-                props: {
-                    items: {
-                        value: [
-                            {
-                                name: "backgroundTextColor",
-                                label: $.ig.HtmlEditor.locale.textHighlightButtonTitle,
-                                iconClass: "ui-igbutton-backcolor"
-                            }
-                         ]
-                    },
-                    defaultItemName: {
-                        value: "backgroundTextColor"
-                    },
-                    selectedTextBackgroundColor: {
-                        value: "",
-                        action: "_spltButtonColorAction"
-                    }
-                }
-            } ]
-        }, {
-            name: "insertObjectToolbar",
-            displayName: $.ig.HtmlEditor.locale.defaultToolbars.insertObjectToolbar,
-            isExpanded: true,
-
-            // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
-            allowCollapsing: true,
-            collapseButtonIcon: "ui-igbutton-collapse",
-            expandButtonIcon: "ui-igbutton-expand",
-            items: [ {
-                name: "image",
-                type: "button",
-                handler: "_insertImageDialogPlg",
-                props: {
-                    isImage: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    imageButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.insertPictureButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    imageButtonIcon: {
-                        value: "ui-igbutton-addimage",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "link",
-                type: "button",
-                handler: "_insertLinkPlg",
-                props: {
-                    isLink: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    linkButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.insertLinkButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    linkButtonIcon: {
-                        value: "ui-igbutton-addlink",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "table",
-                type: "button",
-                handler: "_insertTablePlg",
-                props: {
-                    isTable: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    tableButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.insertTableButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    tableButtonIcon: {
-                        value: "ui-igbutton-table",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "addRow",
-                type: "button",
-                handler: "_addTableRowPlg",
-                props: {
-                    allowToggling: {
-                        value: false
-                    },
-                    isAddRow: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    addRowButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.addRowButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    addRowButtonIcon: {
-                        value: "ui-igbutton-addrow",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "addColumn",
-                type: "button",
-                handler: "_addTableColumnPlg",
-                props: {
-                    allowToggling: {
-                        value: false
-                    },
-                    isAddColumn: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    addColumnButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.addColumnButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    addColumnButtonIcon: {
-                        value: "ui-igbutton-addcolumn",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "removeRow",
-                type: "button",
-                handler: "_removeTableRowPlg",
-                props: {
-                    allowToggling: {
-                        value: false
-                    },
-                    isRemoveRow: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    removeRowButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.removeRowButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    removeRowButtonIcon: {
-                        value: "ui-igbutton-removerow",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "removeColumn",
-                type: "button",
-                handler: "_removeTableColumnPlg",
-                props: {
-                    allowToggling: {
-                        value: false
-                    },
-                    isRemoveColumn: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    removeColumnButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.removeColumnButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    removeColumnButtonIcon: {
-                        value: "ui-igbutton-removecolumn",
-                        action: "_buttonIconAction"
-                    }
-                }
-            } ]
-        }, {
-            name: "copyPasteToolbar",
-            displayName: $.ig.HtmlEditor.locale.defaultToolbars.copyPasteToolbar,
-            isExpanded: true,
-
-            // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
-            allowCollapsing: true,
-            collapseButtonIcon: "ui-igbutton-collapse",
-            expandButtonIcon: "ui-igbutton-expand",
-            items: [ {
-                name: "copy",
-                type: "button",
-                scope: null,
-                props: {
-                    isCopy: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    copyButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.copyButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    copyButtonIcon: {
-                        value: "ui-igbutton-copy",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "cut",
-                type: "button",
-                scope: null,
-                props: {
-                    isCut: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    cutButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.cutButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    cutButtonIcon: {
-                        value: "ui-igbutton-cut",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "paste",
-                type: "button",
-                scope: null,
-                props: {
-                    isPaste: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    pasteButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.pasteButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    pasteButtonIcon: {
-                        value: "ui-igbutton-paste",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "undo",
-                type: "button",
-                scope: null,
-                props: {
-                    allowToggling: {
-                        value: false
-                    },
-                    isUndo: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    undoButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.undoButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    undoButtonIcon: {
-                        value: "ui-igbutton-undo",
-                        action: "_buttonIconAction"
-                    }
-                }
-            }, {
-                name: "redo",
-                type: "button",
-                scope: null,
-                props: {
-                    allowToggling: {
-                        value: false
-                    },
-                    isRedo: {
-                        value: false,
-                        action: "_isSelectedAction"
-                    },
-                    redoButtonTooltip: {
-                        value: $.ig.HtmlEditor.locale.redoButtonTitle,
-                        action: "_tooltipAction"
-                    },
-                    redoButtonIcon: {
-                        value: "ui-igbutton-redo",
-                        action: "_buttonIconAction"
-                    }
-                }
-            } ]
-        } ],
         NODE: new $.ig.XmlNodeType(),
 
         // This is property is populated by initToolabrs method in the following format.
@@ -1128,10 +533,718 @@
             // show[ ToolbarName ]: {name: '[ ToolbarName ]', value: true},
         },
         _isDirty: false,
+        _initDefaultToolbars: function () {
+            this.defaultToolbars = [ {
+                name: "textToolbar",
+                displayName: this._getLocaleValue("textToolbar"),
+                isExpanded: true,
+				language: this.options.language,
+
+                // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
+                allowCollapsing: true,
+                collapseButtonIcon: "ui-igbutton-collapse",
+                expandButtonIcon: "ui-igbutton-expand",
+                items: [ {
+                    name: "Bold",
+                    type: "button",
+                    scope: null,
+                    "localeProperties": {
+                        "data-localeid": "boldButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: true
+                        },
+                        isBold: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        boldButtonTooltip: {
+                            value: this._getLocaleValue("boldButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        boldButtonIcon: {
+                            value: "ui-igbutton-bold",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "Italic",
+                    type: "button",
+					language: this.options.language,
+                    localeProperties: {
+                        "data-localeid": "italicButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isItalic: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        italicButtonTooltip: {
+                            value: this._getLocaleValue("italicButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        italicButtonIcon: {
+                            value: "ui-igbutton-italic",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "Underline",
+                    type: "button",
+					language: this.options.language,
+                    "localeProperties": {
+                        "data-localeid": "underlineButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isUnderline: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        underlineButtonTooltip: {
+                            value: this._getLocaleValue("underlineButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        underlineButtonIcon: {
+                            value: "ui-igbutton-underline",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "Strikethrough",
+                    type: "button",
+					language: this.options.language,
+                    "localeProperties": {
+                        "data-localeid": "strikethroughButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isStrikethrough: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        strikethroughButtonTooltip: {
+                            value: this._getLocaleValue("strikethroughButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        strikethroughButtonIcon: {
+                            value: "ui-igbutton-strikethrough",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "fontFamily",
+                    type: "combo",
+					language: this.options.language,
+                    scope: null,
+                    handler: "_fontNamePlg",
+                    props: {
+                        fontFamilyComboWidth: {
+                            value: 180,
+                            action: "_comboWidthAction"
+                        },
+                        fontFamilyComboHeight: {
+                            value: "",
+                            action: "_comboHeightAction"
+                        },
+                        fontFamilies: {
+                            value: this._getFontFamilies(),
+                            action: "_comboDataSourceAction"
+                        },
+                        selectedFontFamily: {
+                            value: "Times New Roman",
+                            action: "_comboSelectedItem"
+                        }
+                    }
+                }, {
+                    type: "combo",
+                    name: "fontSize",
+					language: this.options.language,
+                    scope: null,
+                    handler: "_fontSizePlg",
+                    props: {
+                        fontSizeComboWidth: {
+                            value: 75,
+                            action: "_comboWidthAction"
+                        },
+                        fontSizeComboHeight: {
+                            value: "",
+                            action: "_comboHeightAction"
+                        },
+                        fontSizes: {
+                            value: this._getLocaleValue("fontSizes"),
+                            action: "_comboDataSourceAction"
+                        },
+                        selectedFontSize: {
+                            value: "3",
+                            action: "_comboSelectedItem"
+                        },
+                        fontSizeItemsListWidth: {
+                            value: 100,
+                            action: "_comboDropDownListWidth"
+                        }
+                    }
+                }, {
+                    type: "combo",
+                    name: "formatsList",
+					language: this.options.language,
+                    scope: null,
+                    handler: "_formatsListPlg",
+                    props: {
+                        formatsListComboWidth: {
+                            value: 170,
+                            action: "_comboWidthAction"
+                        },
+                        formatsListComboHeight: {
+                            value: "",
+                            action: "_comboHeightAction"
+                        },
+                        formatsList: {
+                            value: this._getLocaleValue("formatsList"),
+                            action: "_comboDataSourceAction"
+                        },
+                        selectedFormat: {
+                            value: "p",
+                            action: "_comboSelectedItem"
+                        }
+                    }
+                } ]
+            }, {
+                name: "formattingToolbar",
+                displayName: this._getLocaleValue("formattingToolbar"),
+                isExpanded: true,
+				language: this.options.language,
+
+                // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
+                allowCollapsing: true,
+                collapseButtonIcon: "ui-igbutton-collapse",
+                expandButtonIcon: "ui-igbutton-expand",
+                items: [ {
+                    name: "justifyleft",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "alignTextLeftButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isJustifyLeft: {
+                            value: true,
+                            action: "_isSelectedAction"
+                        },
+                        justifyLeftButtonTooltip: {
+                            value: this._getLocaleValue("alignTextLeftButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        justifyLeftButtonIcon: {
+                            value: "ui-igbutton-justifyleft",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "justifycenter",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "alignTextCenterButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isJustifyCenter: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        justifyCenterButtonTooltip: {
+                            value: this._getLocaleValue("alignTextCenterButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        justifyCenterButtonIcon: {
+                            value: "ui-igbutton-justifycenter",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "justifyright",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "alignTextRightButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isJustifyRight: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        justifyRightButtonTooltip: {
+                            value: this._getLocaleValue("alignTextRightButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        justifyRightButtonIcon: {
+                            value: "ui-igbutton-justifyright",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "justifyfull",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "justifyButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isJustifyFull: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        justifyFullButtonTooltip: {
+                            value: this._getLocaleValue("justifyButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        justifyFullButtonIcon: {
+                            value: "ui-igbutton-justifyfull",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "InsertUnorderedList",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "bulletsButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isUnorderedList: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        insertUnorderedListTooltip: {
+                            value: this._getLocaleValue("bulletsButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        insertUnorderedListButtonIcon: {
+                            value: "ui-igbutton-unorderedlist",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "InsertOrderedList",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "numberingButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isOrderedList: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        insertOrderedListTooltip: {
+                            // JD May 19, 2015 Bug #194260 Fixing the locale property name for the order list tooltip
+                            value: this._getLocaleValue("numberingButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        insertOrderedListButtonIcon: {
+                            value: "ui-igbutton-orderedlist",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "outdent",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "decreaseIndentButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        outdentButtonTooltip: {
+                            value: this._getLocaleValue("decreaseIndentButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        outdentButtonIcon: {
+                            value: "ui-igbutton-removeindent",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "indent",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "increaseIndentButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        indentTooltip: {
+                            value: this._getLocaleValue("increaseIndentButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        indentButtonIcon: {
+                            value: "ui-igbutton-indent",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "textColor",
+                    type: "splitButtonColor",
+                    handler: "_fontColorPlg",
+                    localeProperties: {
+                        "data-localeid": "fontColorButtonTitle",
+                        "data-localeattr": "title",
+                        "title": this._getLocaleValue("fontColorButtonTitle")
+                    },
+                    props: {
+                        items: {
+                            value: [
+                                {
+                                    name: "textColor",
+                                    iconClass: "ui-igbutton-forecolor"
+                                }
+                            ]
+                        },
+                        defaultItemName: {
+                            value: "textColor"
+                        },
+                        selectedTextColor: {
+                            value: "red",
+                            action: "_spltButtonColorAction"
+                        }
+                    }
+                }, {
+                    name: "backgroundTextColor",
+                    type: "splitButtonColor",
+                    handler: "_fontBackgroundColorPlg",
+                    localeProperties: {
+                        "data-localeid": "textHighlightButtonTitle",
+                        "data-localeattr": "title",
+                        "title": this._getLocaleValue("textHighlightButtonTitle")
+                    },
+                    props: {
+                        items: {
+                            value: [
+                                {
+                                    name: "backgroundTextColor",
+                                    iconClass: "ui-igbutton-backcolor"
+                                }
+                            ]
+                        },
+                        defaultItemName: {
+                            value: "backgroundTextColor"
+                        },
+                        selectedTextBackgroundColor: {
+                            value: "",
+                            action: "_spltButtonColorAction"
+                        }
+                    }
+                } ]
+            }, {
+                name: "insertObjectToolbar",
+                displayName: this._getLocaleValue("insertObjectToolbar"),
+                isExpanded: true,
+				language: this.options.language,
+
+                // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
+                allowCollapsing: true,
+                collapseButtonIcon: "ui-igbutton-collapse",
+                expandButtonIcon: "ui-igbutton-expand",
+                items: [ {
+                    name: "image",
+                    type: "button",
+                    "localeProperties": {
+                        "data-localeid": "insertPictureButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    handler: "_insertImageDialogPlg",
+                    props: {
+                        isImage: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        imageButtonTooltip: {
+                            value: this._getLocaleValue("insertPictureButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        imageButtonIcon: {
+                            value: "ui-igbutton-addimage",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "link",
+                    type: "button",
+                    handler: "_insertLinkPlg",
+                    "localeProperties": {
+                        "data-localeid": "insertLinkButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isLink: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        linkButtonTooltip: {
+                            value: this._getLocaleValue("insertLinkButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        linkButtonIcon: {
+                            value: "ui-igbutton-addlink",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "table",
+                    type: "button",
+                    handler: "_insertTablePlg",
+                    "localeProperties": {
+                        "data-localeid": "insertTableButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isTable: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        tableButtonTooltip: {
+                            value: this._getLocaleValue("insertTableButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        tableButtonIcon: {
+                            value: "ui-igbutton-table",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "addRow",
+                    type: "button",
+                    handler: "_addTableRowPlg",
+                    "localeProperties": {
+                        "data-localeid": "addRowButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: false
+                        },
+                        isAddRow: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        addRowButtonTooltip: {
+                            value: this._getLocaleValue("addRowButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        addRowButtonIcon: {
+                            value: "ui-igbutton-addrow",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "addColumn",
+                    type: "button",
+                    handler: "_addTableColumnPlg",
+                    "localeProperties": {
+                        "data-localeid": "addColumnButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: false
+                        },
+                        isAddColumn: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        addColumnButtonTooltip: {
+                            value: this._getLocaleValue("addColumnButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        addColumnButtonIcon: {
+                            value: "ui-igbutton-addcolumn",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "removeRow",
+                    type: "button",
+                    handler: "_removeTableRowPlg",
+                    "localeProperties": {
+                        "data-localeid": "removeRowButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: false
+                        },
+                        isRemoveRow: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        removeRowButtonTooltip: {
+                            value: this._getLocaleValue("removeRowButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        removeRowButtonIcon: {
+                            value: "ui-igbutton-removerow",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "removeColumn",
+                    type: "button",
+                    handler: "_removeTableColumnPlg",
+                    "localeProperties": {
+                        "data-localeid": "removeColumnButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: false
+                        },
+                        isRemoveColumn: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        removeColumnButtonTooltip: {
+                            value: this._getLocaleValue("removeColumnButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        removeColumnButtonIcon: {
+                            value: "ui-igbutton-removecolumn",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                } ]
+            }, {
+                name: "copyPasteToolbar",
+                displayName: this._getLocaleValue("copyPasteToolbar"),
+                isExpanded: true,
+				language: this.options.language,
+
+                // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
+                allowCollapsing: true,
+                collapseButtonIcon: "ui-igbutton-collapse",
+                expandButtonIcon: "ui-igbutton-expand",
+                items: [ {
+                    name: "copy",
+                    type: "button",
+                    scope: null,
+                    "localeProperties": {
+                        "data-localeid": "copyButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isCopy: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        copyButtonTooltip: {
+                            value: this._getLocaleValue("copyButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        copyButtonIcon: {
+                            value: "ui-igbutton-copy",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "cut",
+                    type: "button",
+                    scope: null,
+                    "localeProperties": {
+                        "data-localeid": "cutButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isCut: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        cutButtonTooltip: {
+                            value: this._getLocaleValue("cutButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        cutButtonIcon: {
+                            value: "ui-igbutton-cut",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "paste",
+                    type: "button",
+                    scope: null,
+                    "localeProperties": {
+                        "data-localeid": "pasteButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        isPaste: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        pasteButtonTooltip: {
+                            value: this._getLocaleValue("pasteButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        pasteButtonIcon: {
+                            value: "ui-igbutton-paste",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "undo",
+                    type: "button",
+                    scope: null,
+                    "localeProperties": {
+                        "data-localeid": "undoButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: false
+                        },
+                        isUndo: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        undoButtonTooltip: {
+                            value: this._getLocaleValue("undoButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        undoButtonIcon: {
+                            value: "ui-igbutton-undo",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                }, {
+                    name: "redo",
+                    type: "button",
+                    scope: null,
+                    "localeProperties": {
+                        "data-localeid": "redoButtonTitle",
+                        "data-localeattr": "title"
+                    },
+                    props: {
+                        allowToggling: {
+                            value: false
+                        },
+                        isRedo: {
+                            value: false,
+                            action: "_isSelectedAction"
+                        },
+                        redoButtonTooltip: {
+                            value: this._getLocaleValue("redoButtonTitle"),
+                            action: "_tooltipAction"
+                        },
+                        redoButtonIcon: {
+                            value: "ui-igbutton-redo",
+                            action: "_buttonIconAction"
+                        }
+                    }
+                } ]
+            } ];
+        },
         _createWidget: function () {
             /* !Strip dummy objects from options, because they are defined for documentation purposes only! */
-            this._allToolbars = [ ];
-            $.Widget.prototype._createWidget.apply(this, arguments);
+            this._superApply(arguments);
         },
         _id: function (id) {
             return this.element[ 0 ].id + id;
@@ -1244,6 +1357,8 @@
             }
         },
         _create: function () {
+			this._allToolbars = [ ];
+			this._initDefaultToolbars();
             var noCancel = this._trigger(this.events.rendering, null, {
                 owner: this
             }),
@@ -1299,14 +1414,13 @@
             });
         },
         _initFontsCombos: function () {
-            var fontFamiliesCombo = this._getToolbar("textToolbar")
-                .igToolbar("getItem", "fontFamily")
-                .addClass("ui-combo-fontfamily");
-
+            var textToolbar = this._getToolbar("textToolbar"),
+                fontFamiliesCombo = textToolbar.igToolbar("getItem", "fontFamily")
+                                    .addClass("ui-combo-fontfamily");
             fontFamiliesCombo.igCombo("option", {
-
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
+				language: this.options.language,
                 itemTemplate:
                     '<span style="font-family: ${value}" unselectable="on">${text}</span>',
                 height: this._comboHeight,
@@ -1320,6 +1434,7 @@
             // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
             // Combo bug #113720
             formatsListCombo.igCombo("option", {
+				language: this.options.language,
                 itemTemplate: '<${text} unselectable="on">${value}</${text}>',
                 height: this._comboHeight,
                 dropDownOrientation: "bottom"
@@ -1329,6 +1444,7 @@
             var fontSizesCombo = this._getToolbar("textToolbar").igToolbar("getItem", "fontSize");
 
             fontSizesCombo.igCombo("option", {
+				language: this.options.language,
 
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
@@ -1336,6 +1452,9 @@
                 height: this._comboHeight,
                 dropDownOrientation: "bottom"
             });
+        },
+        _getFontFamilies: function () {
+            return this._getLocaleValue("fontNames")[ /^win/gi.test(navigator.platform) ? "win" : "mac" ];
         },
         _setOption: function (name, value) {
             var self = this;
@@ -1370,8 +1489,78 @@
                 this.setContent(value, "text");
             }
 
-            $.Widget.prototype._setOption.apply(this, arguments);
-
+            this._super(name, value);
+        },
+        _changeLocaleForToolbars: function () {
+            // change locale for toolbar buttons
+            // set option language and displayName of toolbar
+            this._allToolbars.forEach(function (toolbar) {
+                this._getToolbar(toolbar.name)
+                    .igToolbar("option", {
+                        "displayName": this._getLocaleValue(toolbar.name),
+                        "language": this.options.language
+                    });
+            }, this);
+        },
+        changeLocale: function () {
+            /* changes the all locales into the widget element to the language specified in [options.language](ui.ightmleditor#options:language)
+            Note that this method is for rare scenarios, use [language](ui.ightmleditor#options:language) or [locale](ui.ightmleditor#options:locale) option setter
+            ```
+                $(".selector").%%WidgetName%%("changeLocale");
+            ```
+            */
+            this._superApply(arguments);
+            this._changeLocaleForToolbars();
+            /* remove Link Properties dialog */
+            if (this._insertLinkDialog) {
+                this._insertLinkDialog.remove();
+                this._insertLinkDialog = null;
+            }
+            /* remove Image Properties dialog */
+            if (this._imageDialog) {
+                this._imageDialog.remove();
+                this._imageDialog = null;
+            }
+            /* change locale for font family combo */
+            this._changeLocaleForFontFamilies();
+            this._changeLocaleForFontSizes();
+            this._changeLocaleForFormatsList();
+        },
+        _changeLocaleForFontFamilies: function () {
+            var selectedValue,
+                $combo = this._getToolbar("textToolbar")
+                                .igToolbar("getItem", "fontFamily"),
+                comboInstance = $combo.data("igCombo");
+            if (comboInstance) {
+                selectedValue = comboInstance.value();
+                comboInstance._setOption("dataSource", this._getFontFamilies());
+				comboInstance._setOption("language", this.options.language);
+                comboInstance.value(selectedValue);
+            }
+        },
+        _changeLocaleForFontSizes: function () {
+            var selectedValue,
+                $combo = this._getToolbar("textToolbar")
+                                .igToolbar("getItem", "fontSize"),
+                comboInstance = $combo.data("igCombo");
+            if (comboInstance) {
+                selectedValue = comboInstance.value();
+                comboInstance._setOption("dataSource", this._getLocaleValue("fontSizes"));
+				comboInstance._setOption("language", this.options.language);
+                comboInstance.value(selectedValue);
+            }
+        },
+        _changeLocaleForFormatsList: function () {
+            var selectedValue,
+                $combo = this._getToolbar("textToolbar")
+                                .igToolbar("getItem", "formatsList"),
+                comboInstance = $combo.data("igCombo");
+            if (comboInstance) {
+                selectedValue = comboInstance.value();
+                comboInstance._setOption("dataSource", this._getLocaleValue("formatsList"));
+				comboInstance._setOption("language", this.options.language);
+                comboInstance.value(selectedValue);
+            }
         },
         _showToolbar: function (name, show) {
             if (show) {
@@ -1594,7 +1783,11 @@
             this._selectionWrapperSaved.focus();
 
             // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
-            this._selectionWrapperSaved._updateSelection(this._selectionWrapperSaved._getRange());
+            // R.K. 14th September 2017 #1188: Text in html editor is not styled in corresponding font-color
+            if ($.ig.util.isIE) {
+                this._selectionWrapperSaved._updateSelection(
+                    this._selectionWrapperSaved._getRange());
+            }
             this._selectionWrapperSaved.execCommand(name.toLowerCase(), args);
             this._onSelectionChange();
         },
@@ -1792,6 +1985,8 @@
                     .igImagePropertiesDialog({
                         item: image,
                         target: plgUI.toolbarItem,
+                        language: this.options.language,
+                        locale: this.options.locale,
                         applyform: function (e, ui) {
                             self._selectionWrapperSaved.focus();
                             self._selectionWrapperSaved.replaceNode(ui.image);
@@ -1826,6 +2021,8 @@
                     .igLinkPropertiesDialog({
                         item: anchor,
                         target: ui.toolbarItem,
+                        language: this.options.language,
+                        locale: this.options.locale,
                         applyform: function (e, ui) {
                             self._selectionWrapperSaved.focus();
                             self._selectionWrapperSaved.replaceNode(ui.anchor);
@@ -1937,7 +2134,7 @@
                 .appendTo(this.element)
                 .igButton({
                     labelText: "&nbsp;",
-                    title: $.ig.HtmlEditor.locale.viewSourceButtonTitle,
+                    title: this._getLocaleValue("viewSourceButtonTitle"),
                     icons: {
                         primary: "ui-igbutton-viewsource-icon"
                     },
@@ -1971,6 +2168,9 @@
                                 .find(":ui-igCombo").igCombo("disable");
                         }
                     }
+                }).attr({
+                    "data-localeid": "viewSourceButtonTitle",
+                    "data-localeattr": "title"
                 });
 
             this._domPathToolbar = $('<div id="' + this._id("_domPathToolbar") + '"></div>')
@@ -2128,7 +2328,7 @@
                 $(".selector").igHtmlEditor("destroy");
             ```
             */
-            $.Widget.prototype.destroy.apply(this, arguments);
+            this._superApply(arguments);
             $(this.workspace.contentWindow).undelegate();
             this._destroyPopovers();
             this._viewSourceBtn.igButton("destroy");
@@ -2437,7 +2637,8 @@
     /************************************
        igHtmlEditorPopover
    ************************************/
-    $.widget("ui.igHtmlEditorPopover", {
+    $.widget("ui.igHtmlEditorPopover", $.ui.igWidget, {
+        localeWidgetName: "HtmlEditor",
         options: {
             item: null,
             target: null,
@@ -2568,27 +2769,29 @@
             html += '<div>' +
                 '<ol class="layoutList">' +
                     '<li>' +
-                        '<label for="' + this._id('_linkHref') + '">' + $.ig.HtmlEditor.locale.linkNavigateToUrlDialogText + '</label>' +
+                        '<label for="' + this._id('_linkHref') + '" data-localeid="linkNavigateToUrlDialogText">' + this._getLocaleValue("linkNavigateToUrlDialogText") + '</label>' +
                         '<input autocomplete="off" id="' + this._id('_linkHref') + '" name="href" type="text" value="" />' +
                     '</li>' +
                     '<li>' +
-                        '<label for="' + this._id('_linkDisplayText') + '">' + $.ig.HtmlEditor.locale.linkDisplayTextDialogText + '</label>' +
+                        '<label for="' + this._id('_linkDisplayText') + '" data-localeid="linkDisplayTextDialogText">' + this._getLocaleValue("linkDisplayTextDialogText") + '</label>' +
                         '<input autocomplete="off" id="' + this._id('_linkDisplayText') + '" name="href" type="text" value="" />' +
                     '</li>' +
                     '<li>' +
-                        '<label for="' + this._id('_cmbOpenIn') + '">' + $.ig.HtmlEditor.locale.linkOpenInDialogText + '</label>' +
+                        '<label for="' + this._id('_cmbOpenIn') + '" data-localeid="linkOpenInDialogText">' + this._getLocaleValue("linkOpenInDialogText") + '</label>' +
                         '<select id="' + this._id('_cmbOpenIn') + '" name="target">' +
-                            '<option value="_blank">' + $.ig.HtmlEditor.locale.linkTargetNewWindowDialogText + '</option>' +
-                            '<option value="_self">' + $.ig.HtmlEditor.locale.linkTargetSameWindowDialogText + '</option>' +
-                            '<option value="_parent">' + $.ig.HtmlEditor.locale.linkTargetParentWindowDialogText + '</option>' +
-                            '<option value="_top">' + $.ig.HtmlEditor.locale.linkTargetTopmostWindowDialogText + '</option>' +
+                            '<option value="_blank" data-localeid="linkTargetNewWindowDialogText">' + this._getLocaleValue("linkTargetNewWindowDialogText") + '</option>' +
+                            '<option value="_self" data-localeid="linkTargetSameWindowDialogText">' + this._getLocaleValue("linkTargetSameWindowDialogText") + '</option>' +
+                            '<option value="_parent" data-localeid="linkTargetParentWindowDialogText">' + this._getLocaleValue("linkTargetParentWindowDialogText") + '</option>' +
+                            '<option value="_top" data-localeid="linkTargetTopmostWindowDialogText">' + this._getLocaleValue("linkTargetTopmostWindowDialogText") + '</option>' +
                         '</select>' +
                     '</li>' +
                     '<li style="text-align:right">' +
-                        '<button aria-disabled="false" id="' + this._id('_btnApply') + '" name="insertLink" role="button" title="' +
-                            $.ig.HtmlEditor.locale.applyButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.applyButtonTitle + '</button>' +
-                        '<button aria-disabled="false" id="' + this._id('_btnCancel') + '" role="button" title="' +
-                            $.ig.HtmlEditor.locale.cancelButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.cancelButtonTitle + '</button>' +
+                        '<button aria-disabled="false" id="' + this._id('_btnApply') + '" name="insertLink" role="button" title="' + this._getLocaleValue("applyButtonTitle") + '" type="button" ' +
+                            "data-localeid='applyButtonTitle' " + 
+                            "data-localeattr='title'>" + this._getLocaleValue("applyButtonTitle") + '</button>' +
+                        '<button aria-disabled="false" id="' + this._id('_btnCancel') + '" role="button" title="' + this._getLocaleValue("cancelButtonTitle") + '" type="button" ' +
+                            "data-localeid='cancelButtonTitle' " + 
+                            "data-localeattr='title'>" + this._getLocaleValue("cancelButtonTitle") + '</button>' +
                     '</li>' +
                 '</ol>' +
             '</div>';
@@ -2710,16 +2913,18 @@
             html += '   <div>';
             html += '       <ol class="layoutList">';
             html += '           <li>';
-            html += '               <label for="' + this._id('_imgSrc') + '">' + $.ig.HtmlEditor.locale.imageUrlDialogText + '</label>';
+            html += '               <label for="' + this._id('_imgSrc') + '" data-localeid="imageUrlDialogText">' + this._getLocaleValue("imageUrlDialogText") + '</label>';
             html += '               <input autocomplete="off" id="' + this._id('_imgSrc') + '" name="src" type="text" value="" />';
             html += '           </li>';
             html += '           <li>';
-            html += '               <label for="' + this._id('_imgAlt') + '">' + $.ig.HtmlEditor.locale.imageAlternativeTextDialogText + '</label>';
+            html += '               <label for="' + this._id('_imgAlt') + '" data-localeid="imageAlternativeTextDialogText">' + this._getLocaleValue("imageAlternativeTextDialogText") + '</label>';
             html += '               <input autocomplete="off" id="' + this._id('_imgAlt') + '" name="altText" type="text" value="" />';
             html += '           </li>';
             html += '           <li style="text-align:right">';
-            html += '               <button aria-disabled="false" id="' + this._id('_btnApply') + '" name="insertLink" role="button" title="' + $.ig.HtmlEditor.locale.applyButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.applyButtonTitle + '</button>';
-            html += '               <button aria-disabled="false" id="' + this._id('_btnCancel') + '" role="button" title="' + $.ig.HtmlEditor.locale.cancelButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.cancelButtonTitle + '</button>';
+            html += '               <button aria-disabled="false" id="' + this._id('_btnApply') + '" name="insertLink" role="button" title="' + this._getLocaleValue("applyButtonTitle") + '" type="button" ' +
+                                    "data-localeid='applyButtonTitle' data-localeattr='title'>" + this._getLocaleValue("applyButtonTitle") + '</button>';
+            html += '               <button aria-disabled="false" id="' + this._id('_btnCancel') + '" role="button" title="' + this._getLocaleValue("cancelButtonTitle") + '" type="button" ' +
+                                    "data-localeid='cancelButtonTitle' data-localeattr='title'>" + this._getLocaleValue("cancelButtonTitle") + '</button>';
             html += '           </li>';
             html += '       </ol>';
             html += '   </div>';
@@ -3368,10 +3573,22 @@
         _initAlignButtons: function (toolbars) {
             var alignButtonsToolbar = this._toolbars.formattingToolbar,
                 alignButtons = {
-                    justifyleft: alignButtonsToolbar.igToolbar("getItem", "justifyleft"),
-                    justifycenter: alignButtonsToolbar.igToolbar("getItem", "justifycenter"),
-                    justifyright: alignButtonsToolbar.igToolbar("getItem", "justifyright"),
-                    justifyfull: alignButtonsToolbar.igToolbar("getItem", "justifyfull")
+                    justifyleft: alignButtonsToolbar.igToolbar("getItem", "justifyleft").attr({
+                        "data-localeid": "alignTextLeftButtonTitle",
+                        "data-localeattr": "title"
+                    }),
+                    justifycenter: alignButtonsToolbar.igToolbar("getItem", "justifycenter").attr({
+                        "data-localeid": "alignTextCenterButtonTitle",
+                        "data-localeattr": "title"
+                    }),
+                    justifyright: alignButtonsToolbar.igToolbar("getItem", "justifyright").attr({
+                        "data-localeid": "alignTextRightButtonTitle",
+                        "data-localeattr": "title"
+                    }),
+                    justifyfull: alignButtonsToolbar.igToolbar("getItem", "justifyfull").attr({
+                        "data-localeid": "justifyButtonTitle",
+                        "data-localeattr": "title"
+                    })
                 };
 
             toolbars.bind("igtoolbartoolbarbuttonclick", function (e, ui) {
@@ -3585,8 +3802,8 @@
 
             // K.D. November 1st, 2012 Bug #125724 The combo values do not contain ' or " so they need to be removed before sending the value
             fontName = fontName.replace(/'|"/g, "");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale
-                .fontNames[ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontNames")
+                [ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
         },
         _onFontSize: function () {
 
@@ -3605,13 +3822,14 @@
                 pxTbl[ Math.round(parseFloat(this._computedStyles.fontSize)) ],
                 fontSizeUnitsStr = fontSizeUnits ? fontSizeUnits.toString() : "",
                 combo = this._toolbars.textToolbar.igToolbar("getItem", "fontSize");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.fontSizes, fontSizeUnitsStr);
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontSizes"),
+                fontSizeUnitsStr);
         },
         _onHeader: function (element) {
 
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name.
             var combo = this._toolbars.textToolbar.igToolbar("getItem", "formatsList");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.formatsList,
+            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "formatsList"),
                 element[ 0 ].nodeName.toLowerCase());
         },
         _onTable: function () {
@@ -3646,5 +3864,5 @@
     ************************************/
 
     $.extend($.ui.igHtmlEditor, { version: "<build_number>" });
-    return $.ui.igHtmlEditor;// REMOVE_FROM_COMBINED_FILES
+    return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

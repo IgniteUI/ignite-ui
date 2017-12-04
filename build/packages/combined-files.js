@@ -5,7 +5,7 @@ function buildLocaleBundles () {
     var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"],
     newFiles = {}, i;
 
-    for (var i = 0; i < locales.length; i++) {
+    for (i = 0; i < locales.length; i++) {
         newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-" + locales[i] + ".js"; 
     }
     return newFiles;
@@ -30,12 +30,12 @@ function buildLocaleMergePairs (locale) {
             pairs[modulePath + "infragistics.ui.shared.js"] = [
                 i18nPath + fileName,
                 modulePath + "infragistics.ui.shared.js"
-            ]
+            ];
         } else {
             pairs[modulePath + fileName.replace("-" + locale, "")] = [
                 i18nPath + fileName,
                 modulePath + fileName.replace("-" + locale, "")
-            ]
+            ];
         }
     }
     return pairs;
@@ -43,7 +43,7 @@ function buildLocaleMergePairs (locale) {
 
 function replaceAMDWraps(src) {
     src = src.replace(/\(function\s*\(factory\)\s*\{[\s\S]*?\(function\s*\((\$?)\)\s*\{/g, '(function ($1) {');
-    src = src.replace(/\}\)\)\;\s*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '})(jQuery);');
+    src = src.replace(/\}\)\)\;\s*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '})($);');
     src = src.replace(/.*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '');
     return src;
 }
@@ -84,26 +84,67 @@ module.exports = {
         core: { 
             options: {
                 // Replace all AMD define statements with a single one at the top
-                banner: '(function(factory){if(typeof define==="function"&&define.amd){define(["jquery","jquery-ui"],factory)}else{factory(jQuery)}})(function($){',
+                banner: '(function(factory){' + '\n' +
+						'	if(typeof define==="function"&&define.amd){\n' +
+						'		define([\n' +
+						'			"jquery",\n' +
+						'			"jquery-ui",\n' +
+						'			"jquery-ui/ui/core",\n' +
+						'			"jquery-ui/ui/data",\n' +
+						'			"jquery-ui/ui/focusable",\n' +
+						'			"jquery-ui/ui/keycode",\n' +
+						'			"jquery-ui/ui/tabbable",\n' +
+						'			"jquery-ui/ui/version",\n' +
+						'			"jquery-ui/ui/widget",\n' +
+						'			"jquery-ui/ui/widgets/mouse"\n' +
+						'		], factory)\n' +
+						'	}else{\n' +
+						'		factory(jQuery)\n' +
+						'	}\n' +
+						'})(function($){\n',
                 process: replaceAMDWraps,
                 footer: '});'
             },
             dest: "./dist/js/infragistics.core-lite.js",
             src: [
-                    "./dist/js/i18n/infragistics-en.js",
-                    "./dist/js/modules/infragistics.util.js",
-                    "./dist/js/modules/infragistics.util.jquery.js",
-                    "./dist/js/modules/infragistics.util.jquerydeferred.js",
-                    "./dist/js/modules/infragistics.datasource.js",
-                    "./dist/js/modules/infragistics.templating.js",
-                    "./dist/js/modules/infragistics.ui.shared.js",
-                    "./dist/js/modules/infragistics.ui.scroll.js"
-                ]
+				"./dist/js/i18n/infragistics-en.js",
+				"./dist/js/modules/infragistics.util.js",
+				"./dist/js/modules/infragistics.util.jquery.js",
+				"./dist/js/modules/infragistics.util.jquerydeferred.js",
+				"./dist/js/modules/infragistics.datasource.js",
+				"./dist/js/modules/infragistics.templating.js",
+				"./dist/js/modules/infragistics.ui.widget.js",
+				"./dist/js/modules/infragistics.ui.shared.js",
+				"./dist/js/modules/infragistics.ui.scroll.js"
+			]
         }, 
         lob: { 
             options: {
                 // Replace all AMD define statements with a single one at the top
-                banner: '(function(factory){if(typeof define==="function"&&define.amd){define(["jquery","jquery-ui","./infragistics.core-lite"],factory)}else{factory(jQuery)}})(function($){',
+                banner: '(function(factory){\n' +
+						'	if(typeof define==="function"&&define.amd){\n' +
+						'		define([\n' +
+						'			"jquery",\n' +
+						'			"jquery-ui",\n' +
+						'			"jquery-ui/ui/core",\n' +
+						'			"jquery-ui/ui/data",\n' +
+						'			"jquery-ui/ui/focusable",\n' +
+						'			"jquery-ui/ui/keycode",\n' +
+						'			"jquery-ui/ui/tabbable",\n' +
+						'			"jquery-ui/ui/version",\n' +
+						'			"jquery-ui/ui/widget",\n' +
+						'			"jquery-ui/ui/widgets/mouse",\n' +
+						'			"jquery-ui/ui/widgets/datepicker",\n' +
+						'			"jquery-ui/ui/widgets/draggable",\n' +
+						'			"jquery-ui/ui/widgets/droppable",\n' +
+						'			"jquery-ui/ui/widgets/mouse",\n' +
+						'			"jquery-ui/ui/widgets/resizable",\n' +
+						'			"./infragistics.core-lite"\n' +
+						'		],factory)\n' +
+						'	}else{\n' +
+						'		factory(jQuery)\n' +
+						'	}\n' +
+						'})(function($){\n',
                 process: replaceAMDWraps,
                 footer: '});'
             },

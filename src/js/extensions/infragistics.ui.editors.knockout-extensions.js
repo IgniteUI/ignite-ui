@@ -17,19 +17,14 @@
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( [
-            "jquery",
-            "jquery-ui",
-            "knockout",
-            "../modules/infragistics.util",
-			"../modules/infragistics.util.jquery",
-			"../modules/infragistics.util.jquerydeferred",
-            "../modules/infragistics.ui.editors"
+			"../modules/infragistics.ui.editors",
+			"knockout"
             ], factory );
 	} else {
-		factory(jQuery);
+		factory(jQuery, ko);
 	}
 }
-(function ($) {
+(function ($, ko) {
 	function updatePropertyValue(element, bindingType, viewModel, newValue) {
 		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*value\\s*:\\s*)?([^{},\\s]+)"),
 			key,
@@ -289,7 +284,8 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			if (value !== "") {
+			// N.A. August 14th, 2017 #1078: Allow setting null values.
+			if (value !== "" && value !== null) {
 				// K.D. Good!
 				if (isNaN(value)) {
 					value = undefined;
@@ -352,7 +348,8 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			if (value !== "") {
+			// N.A. August 14th, 2017 #1078: Allow setting null values.
+			if (value !== "" && value !== null) {
 				if (isNaN(value)) {
 					value = undefined;
 				}
@@ -413,7 +410,8 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			if (value !== "") {
+			// N.A. August 14th, 2017 #1078: Allow setting null values.
+			if (value !== "" && value !== null) {
 				if (isNaN(value)) {
 					value = undefined;
 				}
@@ -518,12 +516,11 @@
 					"igDateEditor", "igDatePicker", "igCheckboxEditor" ],
 				name;
 
-            if (!ko.isObservable(disabled)) {
-                return;
-            }
+			// N.A. September 5th, 2017 #1168 Unwrap observable and using it instead of checking if it is such.
+			disabled = ko.utils.unwrapObservable(disabled);
 			for (name in editor.data()) {
 				if ($.inArray(name, widgetNames) !== -1) {
-					editor[ name ]("option", "disabled", disabled());
+					editor[ name ]("option", "disabled", disabled);
 					break;
 				}
 			}

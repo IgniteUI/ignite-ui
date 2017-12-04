@@ -244,7 +244,7 @@
 
 			}
 			initialized = false;
-			module("igTreeHierarchicalDataSource API methods", {
+			module("igDataSource TreeHierarchicalDataSource API methods", {
 				setup: function () {
 					//pause testing until tree is initialized
 					if (!initialized) {
@@ -711,6 +711,14 @@
 				var dv = dsLocalFiltering.dataView();
 				equal(dv[0].firstName, "UpdatedValue", "DataView should be updated.");
 			});
+			/* M.H. 12 Apr 2017 Fix for bug 229997: When paging is enabled after editing a value in TreeGrid the tooltip shows incorrect text */
+			test("Test updating a record when paging is applied.", function () {
+				dsPaging.pageIndex(1);
+				dsPaging.setCellValue(9, "firstName", "UpdatedValue", true);
+
+				var dv = dsPaging.flatDataView();
+				equal(dv[0].firstName, "UpdatedValue", "DataView should be updated.");
+			});
 
 			test("Test applying filtering when paging is enabled", function () {
 				dsPaging.settings.filtering.type = "local";
@@ -786,6 +794,60 @@
 					products[1].Products[0].ID === 10001,
 					"Call dataBind and test whether rows with IDs 10000 and 10001 were properly added");
 			});
+			
+			test("Test expandedKey and dataLevelKey option settings.", function () {
+				var ds = new $.ig.TreeHierarchicalDataSource({
+					dataSource: [
+						{ "employeeID": 0, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") },
+						{ "employeeID": 1, "PID": 0, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") }
+					],
+					primaryKey: "employeeID",
+					foreignKey: "PID",
+					localSchemaTransform: true,
+					schema: {
+						fields: [
+							{ name: "employeeID", type: "number" },
+							{ name: "PID", type: "number" },
+							{ name: "firstName", type: "string" },
+							{ name: "lastName", type: "string" },
+							{ name: "reportsTo", type: "string" }
+						]
+					},
+					treeDS: {
+						key: "employeeID",
+						foreignKey: "PID",
+						primaryKey: "employeeID",
+						initialExpandDepth: 3,
+						foreignKeyRootValue: -1,
+						childDataKey: "childData",
+						dataLevelKey: "dataLevel",
+						expandedKey: "expanded"
+					}
+				});
+
+				ds.dataBind();
+
+				//verify schema is correctly applied
+				ok(ds.getFlatData()[0].expanded, "Expanded prop of record should be true.");
+				equal(ds.getFlatData()[0].dataLevel, 0, "Data level prop of record should be 0.");
+
+				ok(ds.getFlatData()[1].expanded, "Expanded prop of record should be true.");
+				equal(ds.getFlatData()[1].dataLevel, 1, "Data level prop of record should be 0.");
+
+				//expand/collapse
+				ds.toggleRow(0);
+
+				ok(!ds.getFlatData()[0].expanded, "Expanded prop of record should be false.");
+				equal(ds.getFlatData()[0].dataLevel, 0, "Data level prop of record should be 0.");
+
+				ok(ds.getFlatData()[1].expanded, "Expanded prop of record should be true.");
+				equal(ds.getFlatData()[1].dataLevel, 1, "Data level prop of record should be 0.");
+
+				//check if url is correctly encoded
+				var url = JSON.stringify(ds._encodeUrl())
+				equal(url, '{"pk":"employeeID","fk":"PID","fkRootValue":-1,"dataLevelKey":"dataLevel","expandedKey":"expanded","childDataKey":"childData","initialExpandDepth":3}', "Url shold contain the properties dataLevelKey and expandedKey.");
+			});
+
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
 			function loadRemoteTestbeds() {
 
@@ -979,7 +1041,7 @@
 			}
 
 			var isInit = false;
-			module("igTreeHierarchicalDataSource Remote scenarios", {
+			module("igDataSource TreeHierarchicalDataSource Remote scenarios", {
 				setup: function () {
 					//pause testing until tree is initialized
 					if (!isInit) {
@@ -1117,6 +1179,65 @@
 						equal(successTimesCalled, 2, "Success should be called 2 times for the custom url specified.");
 					}, 800);
 				}, 500);
+			});
+
+			test("Test changing schema and applying the new schema to the data source.", function () {
+				$.mockjax({
+						url: "treeDSUrl",
+						responseText: {
+							status: 'success',
+							data: {
+								results: [{ "ID": 0, "Name": "Food", "Price": "100", "Category": [{ "ID": 0, "Name": "Name", "Price": "101"}], "Products": [] }]
+							},
+							totalRecCount: 2
+						}
+				});
+				var ds =  new $.ig.TreeHierarchicalDataSource({
+					dataSource: "treeDSUrl",
+					dataSourceUrl: "treeDSUrl",
+					primaryKey: "ID",
+					localSchemaTransform: false,
+					responseTotalRecCountKey: "totalRecCount",
+					reponseDataKey: "data.results",
+					schema: {
+						searchField: "data.results",
+						fields: [
+							{ name: "ID", type: "number" },
+							{ name: "Name", type: "string" }
+						]
+					},
+					treeDS: {
+						dataSourceUrl: "treeDSUrl",
+						key: "ID",
+						primaryKey: "ID",
+						initialExpandDepth: 0,
+						childDataKey: "Category",
+						propertyDataLevel: "dataLevel",
+						propertyExpanded: "expanded"
+					}
+				});
+				stop();
+				ds.dataBind(function () {
+					start();
+					ds.settings.schema = new $.ig.DataSchema("json", {
+						searchField: "data.results",
+						fields: [
+							{ name: "ID", type: "number" },
+							{ name: "Name", type: "string" },
+							{ name: "Price", type: "number" },
+						]
+					});
+
+				ds._initSchema();
+				ds._applySchema(true);
+
+				data = ds.data();
+				equal( data[0].expanded, false, "Expanded property should be properly set.");
+				equal( data[0].dataLevel, 0, "DataLevel property should be properly set.");
+				equal($.type(data[0].Price), "number", "Value of field in the data source should be transformend to the correct data type.");
+			});
+
+
 			});
 		});
 

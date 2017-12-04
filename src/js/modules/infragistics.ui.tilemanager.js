@@ -13,6 +13,7 @@
  *	infragistics.dataSource.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *  infragistics.ui.splitter.js
  *	infragistics.ui.layoutmanager.js
  *	infragistics.ui.tilemanager-en.js
@@ -23,20 +24,16 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.layoutmanager",
-			"./infragistics.ui.splitter",
-			"./infragistics.ui.tilemanager-en"
+			"./infragistics.ui.splitter"
 		], factory );
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -45,7 +42,7 @@
 		type. The igTileManager control provides the functionality of wrapping content in a tile view and displaying them in a fully responsive
 		grid layout.
 	*/
-    $.widget("ui.igTileManager", {
+    $.widget("ui.igTileManager", $.ui.igWidget, {
         css: {
             /* classes applied to the top container element */
             container: "ui-widget ui-igtilemanager ui-widget-content",
@@ -117,7 +114,7 @@
                 null type="object" The height width can be set as a number in pixels.
             */
             height: null,
-            /* type="string|number|null" Gets/Sets the width of each column in the container.
+            /* type="string|number|array|null" Gets/Sets the width of each column in the container.
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -130,12 +127,13 @@
                 //Set
                 $igTileManager("option", "columnWidth", 150);
             ```
-                string type="string" The column width can be set in pixels (px) or percentage (%).
+                string type="string" The column width can be set in pixels (px), percentage (%) or asterisk (*) which will distribute all the width between all the columns equally.
                 number type="number" The column width can be set as a number representing value in pixels.
+                array type="array" The column width can be set as an array, specifying width for each column. If more than one column has an asterisk value, the remaining width will be equally distributed between these columns.
                 null type="object" The column width will be calculated based on the container width and the other options.
             */
             columnWidth: null,
-            /* type="string|number|null" Gets/Sets the height of each column in the container.
+            /* type="string|number|array|null" Gets/Sets the height of each column in the container.
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -148,8 +146,9 @@
                 //Set
                 $igTileManager("option", "columnHeight", 150);
             ```
-                string type="string" The column height can be set in pixels (px) or percentage (%).
+                string type="string" The column height can be set in pixels (px), percentage (%) or asterisk (*) which will distribute all the height between all the columns equally.
                 number type="number" The column height can be set as a number representing value in pixels.
+                array type="array" The column height can be set as an array, specifying height for each column. If more than one column has an asterisk value, the remaining height will be equally distributed between these columns.
                 null type="object" The column height will be calculated based on the container height and the other options.
             */
             columnHeight: null,
@@ -937,9 +936,6 @@
             splitbarSelector: ".ui-igsplitter-splitbar-vertical",
             innerContainerSelector: ".ui-igtile-inner-container"
         },
-        _createWidget: function () {
-            $.Widget.prototype._createWidget.apply(this, arguments);
-        },
         _create: function () {
             var opt = this.options;
 
@@ -998,7 +994,7 @@
                 self = this,
                 _opt = this._options;
 
-            $.Widget.prototype._setOption.apply(this, arguments);
+            this._super(option, value);
             switch (option) {
                 case "dataSource":
                     this.dataBind();
@@ -1047,7 +1043,7 @@
 
                     // TODO: Implement setting items number different than the number of tiles
                     if (value.length !== _opt.$tiles.length) {
-                        throw new Error($.ig.TileManager.locale.setOptionItemsLengthError);
+                        throw new Error(this._getLocaleValue("setOptionItemsLengthError"));
                     }
 
                     if (_opt.useMaximizedTileIndex) {
@@ -1143,7 +1139,7 @@
                     break;
                 case "splitterOptions":
                     if (value.hasOwnProperty("collapsed") || value.hasOwnProperty("collapsible")) {
-                        throw new Error($.ig.Splitter.locale.errorSettingOption);
+                        throw new Error(this._getLocaleValue("errorSettingOption"));
                     }
 
                     if (value.enabled === true) {
@@ -1225,7 +1221,7 @@
                 this.element.empty();
                 this._initLayoutManager(data._data);
             } else {
-                throw new Error($.ig.TileManager.locale.renderDataError);
+                throw new Error(this._getLocaleValue("renderDataError"));
             }
         },
         _resetInternalOptions: function () {
@@ -1868,14 +1864,29 @@
             }
         },
         _getRightPanelTilesWidth: function () {
-
             // D.A. 29th April 2014, Bug #170433 Added rigtPanelTiles width/height support for string values
-            return parseInt(this.options.rightPanelTilesWidth, 10) ||
-                this._options.gridLayout.columnWidth;
+            var gl = this._options.gridLayout,
+                rightPanelTilesWidth = parseInt(this.options.rightPanelTilesWidth, 10);
+
+            if (rightPanelTilesWidth) {
+                return rightPanelTilesWidth;
+            } else if ($.isArray(gl.columnWidth)) {
+                return gl.columnWidth[ gl.columnWidth.length - 1 ];
+            } else {
+                return gl.columnWidth;
+            }
         },
         _getRightPanelTilesHeight: function () {
-            return parseInt(this.options.rightPanelTilesHeight, 10) ||
-                this._options.gridLayout.columnHeight;
+            var gl = this._options.gridLayout,
+                rightPanelTilesHeight = parseInt(this.options.rightPanelTilesHeight, 10);
+
+            if (rightPanelTilesHeight) {
+                return rightPanelTilesHeight;
+            } else if ($.isArray(gl.columnHeight)) {
+                return gl.columnHeight[ gl.columnHeight.length - 1 ];
+            } else {
+                return gl.columnHeight;
+            }
         },
         _setRightPanelSize: function () {
             var self = this,
@@ -1884,7 +1895,7 @@
                 gl = _opt.gridLayout,
 
                 // The minimum width that the maximized tile should have
-                minMaximizedTileWidth = gl.columnWidth + 2 * gl.marginLeft,
+                minMaximizedTileWidth = this._getMinMaximizedTileWidth() + 2 * gl.marginLeft,
                 rightTilesTotalWidth = this._getRightPanelTilesWidth() + gl.marginLeft,
                 rightTilesTotalHeight = this._getRightPanelTilesHeight() + gl.marginTop,
                 rightPanelHeight = _opt.$rightPanel.height(),
@@ -1927,6 +1938,23 @@
 
             // Call the splitter set size method.
             this.element.igSplitter("setFirstPanelSize", leftPanelWidth);
+        },
+        _getMinMaximizedTileWidth: function () {
+            var gl = this._options.gridLayout,
+                minWidth, i;
+
+            if ($.isArray(gl.columnWidth)) {
+                minWidth = gl.columnWidth[ 0 ];
+                for (i = 0; i < gl.columnWidth.length; i++) {
+                    if (minWidth > gl.columnWidth[ i ]) {
+                        minWidth = gl.columnWidth[ i ];
+                    }
+                }
+
+                return minWidth;
+            } else {
+                return gl.columnWidth;
+            }
         },
 
         // tiles - the tiles to be positioned
@@ -2571,13 +2599,13 @@
             ```
                 returnType="object"
             */
-            $.Widget.prototype.destroy.apply(this, arguments);
             this.element.removeClass(this.css.container);
             this._destroyTiles();
             this._removeEventHandlers();
+            this._superApply(arguments);
             return this;
         }
     });
     $.extend($.ui.igTileManager, { version: "<build_number>" });
-    return $.ui.igTileManager;// REMOVE_FROM_COMBINED_FILES
+    return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

@@ -1,5 +1,14 @@
 ﻿/* Armenia +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -34,6 +43,8 @@
 	    dateTimePattern: 'dd.MM.yyyy HH:mm:ss',
 	    timePattern: 'HH:mm',
 	    timeLongPattern: 'HH:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericNegativePattern: '-n$',
 	    numericMaxDecimals: 2,
@@ -41,7 +52,7 @@
 	    currencyNegativePattern: '-n $',
 	    currencySymbol: 'դր.'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('hy');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('hy');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

@@ -1,5 +1,14 @@
 ﻿/* China (PRC) */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -36,12 +45,14 @@
 	    dateTimePattern: 'yyyy/M/d H:mm',
 	    timePattern: 'H:mm',
 	    timeLongPattern: 'H:mm:ss',
+		dateTitleFullPattern: 'yy MM dd',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericMaxDecimals: 2,
 	    currencyNegativePattern: '$-n',
 	    currencySymbol: '￥'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('zh-CN');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('zh-CN');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

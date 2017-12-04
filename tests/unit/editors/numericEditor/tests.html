@@ -14,19 +14,25 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
+	var util = $.ig.TestUtil;
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 	$(document).ready(function () {
 		// Create a editors
@@ -34,8 +40,8 @@
 			$(function () {
 				$("#inputEditor1").igNumericEditor({
 					value: 10,
-					numericMaxDecimals: 4,
-					numericMinDecimals: 5
+					numericMaxDecimals: 5,
+					numericMinDecimals: 4
 				});
 				$("#divEditor1").igNumericEditor({
 					value: 30,
@@ -278,7 +284,8 @@
 				});
 
 				$("#decimalSeparatorEditor").igNumericEditor({
-					decimalSeparator: ","
+					decimalSeparator: ",",
+					groupSeparator: " "
 				});
 
 				$("#spinUp").igNumericEditor({
@@ -319,7 +326,7 @@
 			});
 		}
 		initialized = false;
-		module("Numeric Editor ", {
+		module("igNumericEditor ", {
 			setup: function() {
 				//pause testing until editors are initialized
 				if (!initialized) {
@@ -345,12 +352,42 @@
 			//internal value parse
 			strictEqual($('#inputEditor1').data("igNumericEditor")._valueFromText("-3.33333"), -3.33333, "The parsed value is not correct");
 			equal($('#negativeEditor1').data("igNumericEditor")._valueFromText("-2e+1"), -2E+1, "The parsed value is not correct");
-			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-500"), "-5e+2", "The parsed value is not correct");
-			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("22"), "2.2e+1", "The parsed value is not correct");
+			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-5000000000000000000000"), -5e+21, "The parsed value is not correct");
+			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("2.2e+1"), 22, "The parsed value is not correct");
 
 			var $editor = $("<input>").appendTo("#testBedContainer")
 				.igNumericEditor({ maxLength: 10 });
 			strictEqual($editor.igNumericEditor("option", "maxLength"), null, "maxLength is not supported on the numeric editor");
+			$editor.remove();
+		});
+
+		var testId = 'Min/max initialization.';
+		test(testId, 3, function () {
+			var $editor;
+
+			// min
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 5,
+				minValue: 9
+			});
+			strictEqual($editor.igNumericEditor("value"), 9, 'The initial value is not set to min');
+			$editor.remove();
+
+			//max
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 100,
+				minValue: 3,
+				maxValue: 88
+			});
+			strictEqual($editor.igNumericEditor("value"), 88, 'The initial value is not set to max');
+			$editor.remove();
+
+			
+			//attr value
+			$editor = $("<input value='29'/>").appendTo("#testBedContainer").igNumericEditor({
+				maxValue: 15
+			});
+			strictEqual($editor.igNumericEditor("value"), 15, 'The initial value is not set to max');
 			$editor.remove();
 		});
 
@@ -717,27 +754,30 @@
 		}); 
 		
 		testId = "Scientific format";
-		test(testId, 4, function () {
+		test(testId, 6, function () {
 			var mainContainer = $('#scientificFormat'),
 				editorInput = $('#scientificFormat').igNumericEditor("field"), container = $('#clearEditor');
 			editorInput.click();
 			$("#scientificFormat").igNumericEditor("option", "value", "94");
 			container.click();
-			equal(editorInput.val(), "9.4e+1", "Value is not correct");
+			equal(editorInput.val(), "9.4e1", "Text is not correct");
 
 			//Change scientificFormat to "E"
 			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E");
+			$("#scientificFormat").igNumericEditor("option", "value", "6441");
+			equal(editorInput.val(), "6.441E3", "Text is not correct");
+
+			//Change scientificFormat to "E+"
+			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E+");
 			editorInput.click();
 			$("#scientificFormat").igNumericEditor("option", "value", "22");
 			container.click();
-			equal(editorInput.val(), "2.2E+1", "Value is not correct");
+			equal(editorInput.val(), "2.2E+1", "Text is not correct");
+			strictEqual($("#scientificFormat").igNumericEditor("option", "value"), 22, "Text is not correct");
 
 			//Change scientificFormat to invalid value
-
-			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
-			editorInput.click();
 			throws(function() {
-					$("#scientificFormat").igNumericEditor("option", "value", "3");
+					$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
 				},
 				Error($.ig.Editor.locale.scientificFormatErrMsg),
 				"Acepted value with wrong scientificFormat."
@@ -746,24 +786,179 @@
 			equal(editorInput.val(), "2.2E+1", "Value is not correct");
 		});
 
+		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
+		test(testId, 76, function () {
+			var $editor, $editorInput,
+				setup = [{
+					//1: #761: Wrong value when setting the value to a number with too many digits
+					options: { dateMode: "double", value: 1e-21 },
+					value: 0,
+					displayed: "0",
+					editText: "0"
+				}, {
+					//2: Auto-convert from parsing (parse with diff separator)
+					options: { dateMode: "double", value: "1,11e+15", decimalSeparator: ",", groupSeparator: "" },
+					value: 1.11e+15,
+					displayed: "1110000000000000",
+					editText: "1110000000000000"
+				}, {
+					//3: Auto-convert from parsing
+					options: { dateMode: "double", value: "1e-2" },
+					value: 0.01,
+					displayed: "0.01",
+					editText: "0.01"
+				}, {
+					//4: Forced fixed-point conversion:
+					options: { dateMode: "double", value: 1e-7, maxDecimals: 7 },
+					value: 1e-7,
+					displayed: "0.0000001",
+					editText: "0.0000001"
+				}, {
+					//5: Can't convert very big numbers to fixed:
+					options: { dateMode: "double", value: 1e21},
+					value: 1e+21,
+					displayed: "1e+21",
+					editText: "1e21"
+				}, {
+					//6: Force convert to int
+					options: { dateMode: "int", value: 1e-21 },
+					value: 0,
+					displayed: "0",
+					editText: "0"
+				}, {
+					//7: Round decimals
+					options: { scientificFormat: "e", value: 1.332e-7, maxDecimals: 2 },
+					value: 1.33e-7,
+					displayed: "1.33e-7",
+					editText: "1.33e-7"
+				}, {
+					//8: Round decimals, decimalSeparator
+					options: { scientificFormat: "e+", decimalSeparator: ",", groupSeparator: " ", value: 1.338e-7 },
+					value: 1.34e-7,
+					displayed: "1,34e-7",
+					editText: "1,34e-7"
+				}, {
+					//9: 
+					options: { scientificFormat: "e+", value: 1, dataMode: "int" },
+					value: 1,
+					displayed: "1e+0",
+					editText: "1e0"
+				}, {
+					//10: positive exponents ignore max decimals:
+					options: { scientificFormat: "E", value: 1234, dataMode: "int", maxDecimals: 2 },
+					value: 1234,
+					displayed:"1.234E3",
+					editText:"1.234E3"
+				}, {
+					//11: positive exponents ignore max decimals:
+					options: { scientificFormat: "e", value: 1234, dataMode: "double", maxDecimals: 2 },
+					value: 1234,
+					displayed:"1.234e3",
+					editText:"1.234e3"
+				}, {
+					//12: format + decimalSeparator
+					options: { scientificFormat: "E+", value: 123, dataMode: "int", decimalSeparator: ",", groupSeparator: " ", },
+					value: 123,
+					displayed: "1,23E+2",
+					editText: "1,23E2"
+				}, {
+					//13: positive format set on negative expo value
+					options: { dataMode: 'double', value: 1e-7, maxDecimals: 15, scientificFormat: "E+" },
+					value: 1e-7,
+					displayed: "1E-7",
+					editText: "1E-7"
+				}, {
+					//14: Very large sceintific in int mode (caps at maxValue)
+					options: { value: 1e+45, dataMode: "int" },
+					value: 2147483647, //intMaxValue
+					displayed: "2,147,483,647",
+					editText: "2147483647"
+				}, {
+					//15: Very large sceintific in double (no decimal cut)
+					options: { value: 1.56547e+55, dataMode: "double", scientificFormat: "E+" },
+					value: 1.56547e+55,
+					displayed: "1.56547E+55",
+					editText: "1.56547E55"
+				}, {
+					//16: Very small sceintific in double (decimal round)
+					options: { value: 1.56547e-55, dataMode: "double", scientificFormat: "E+" },
+					value: 1.57e-55,
+					displayed: "1.57E-55",
+					editText: "1.57E-55"
+				}, {
+					//17: Very small sceintific in float (decimal cut)
+					options: { value: "1.5699e-51", dataMode: "float", roundDecimals:false, scientificFormat: "e" },
+					value: 1.56e-51,
+					displayed: "1.56e-51",
+					editText: "1.56e-51"
+				}, {
+					//18: Value expand from sting entry
+					options: { value: "156.547e-53", dataMode: "float", roundDecimals:false, scientificFormat: "e" },
+					value: 1.56e-51,
+					displayed: "1.56e-51",
+					editText: "1.56e-51"
+				}];
+
+			for (var i = 0; i < setup.length; i++) {
+				$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor(setup[i].options);
+				$editorInput = $editor.igNumericEditor("field");
+
+				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
+				equal($editorInput.val(), setup[i].displayed, "Display text did not match expected for setup:" + (i + 1));
+				$editor.trigger("focus");
+				equal($editorInput.val(), setup[i].editText, "Edit Text did not match expected for setup:" + (i + 1));
+				$editor.trigger("blur");
+				//re-validate value after edit mode:
+				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
+				$editor.remove();
+			}
+
+			// paste formatting:
+			$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor({
+				value: 2, dataMode: "double", scientificFormat: "E+"
+			});
+
+			$editor.trigger("focus")[0].select();
+			$.ig.TestUtil.paste($editor[0], "100");
+			stop();
+			setTimeout(function() {
+				equal($editor.val(), "1E2", "Edit Text not as expected on scientific format value paste.");
+				$editor[0].select();
+				$.ig.TestUtil.paste($editor[0], "1e-22");
+				setTimeout(function() {
+					equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
+					$editor.igNumericEditor("option", "scientificFormat", "e+");
+					$editor[0].select();
+					$.ig.TestUtil.paste($editor[0], "23e+1");
+					setTimeout(function() {
+						start();
+						equal($editor.val(), "2.3e2", "Edit Text not as expected on scientific format value paste.");
+						$editor.trigger("blur");
+						equal($editor.val(), "2.3e+2", "Display Text not as expected on scientific format value paste.");
+						$editor.remove();
+					}, 20);
+				}, 20);
+			}, 20);
+		});
+
 		testId = "Group and decimal Separators";
 		test(testId, 5, function () {
 			var val = 1264.89;
 			var containerInput = $('#inputEditor1').igNumericEditor("field");
-			$("#inputEditor1").igNumericEditor("option", "decimalSeparator", ",");
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", " ");
+			$("#inputEditor1").igNumericEditor("option", "decimalSeparator", ",");
 			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
-			equal(containerInput.val(), "1 264,89000", "The decimal value is not correct");
+			equal(containerInput.val(), "1 264,8900", "The decimal value is not correct");
 
 			// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", "");
 			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
-			equal($("#inputEditor1").igNumericEditor("displayValue"), "1264,89000", "The decimal value is not correct");
+			equal($("#inputEditor1").igNumericEditor("displayValue"), "1264,8900", "The decimal value is not correct");
 
 			// For when 208296 gets fixed
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", ".");
 			$("#inputEditor1").igNumericEditor("option", "value", "1264,89");
-			equal(containerInput.val(), "1.264,89000", "The group separator was not applied is not correct");
+			equal(containerInput.val(), "1.264,8900", "The group separator was not applied is not correct");
 			equal($("#inputEditor1").igNumericEditor("value"), 1264.89, "Decimal value not parsed correctly with decimal ','");
 
 			// For 207448: exception is thrown when trying to spin the value (with modified decimalSeparator)
@@ -796,6 +991,150 @@
 			ok(!flag, "'.' char is typed");
 			container.blur();
 			equal($('#longEditor').igNumericEditor("value"), "123", "The value is not correct");
+		});
+
+		testId = "Typing negative signs (multiple prevention, leading, scientific)";
+		test(testId, 21, function () {
+			var $editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 3.33
+			});
+			// 46: ".", 45: "-", 65: "a", 94: "^"
+
+			$editor.trigger("focus");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-3.33", "Negative sign was not allowed before a number");
+			//move back in front:
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-3.33", "Second negative sign should not be allowed");
+			//try after:
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-3.33", "Second negative sign should not be allowed");
+			//try typing other stuff in front:
+			$editor.val("-3");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(46, $editor);
+			equal($editor.val(), "-3", "Decimal should not be allowed before negative sign");
+			$editor.val("-3");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(65, $editor);
+			equal($editor.val(), "-3", "Letter char should not be allowed before negative sign");
+			$editor.remove();
+
+			// unsigned
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 5,
+				dataMode: "ushort"
+			});
+			$editor.trigger("focus");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "5", "Negative sign not allowed in unsigned modes");
+			util.keyInteraction(55, $editor);
+			equal($editor.val(), "75", "Numeric key not accepted.");
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "75", "Negative sign not allowed in unsigned modes");
+			$editor.remove();
+
+			//scientific
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 0,
+				scientificFormat: "E"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-", "Negative sign was not allowed to repalce entire value");
+			util.keyInteraction(49, $editor);
+			equal($editor.val(), "-1", "1 was not allowed after negative sign");
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "-1E", "Negative sign was not allowed before a number");
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-", "Negative sign was not allowed after exponent");
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-", "Second negative sign should not be allowed after exponent");
+			$editor[0].setSelectionRange(3,3);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-", "Second exponent negative sign should not be allowed.");
+			$editor[0].setSelectionRange(4,4);
+			util.keyInteraction(55, $editor);
+			equal($editor.val(), "-1E-7", "Number should be allowed after negative sign in exponent");
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-7", "Second exponent negative sign should not be allowed.");
+			$editor.val("-1E1");
+			$editor[0].setSelectionRange(3,3);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-1", "Negative sign was not allowed after exponent");
+			$editor.remove();
+
+			//change default sign:
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 55,
+				negativeSign: "^"
+			});
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(94, $editor);
+			equal($editor.val(), "^55", "Negative sign was not allowed if first position");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(94, $editor);
+			equal($editor.val(), "^55", "Second negative should not be allowed");
+			$editor.igNumericEditor("option", "scientificFormat", "e");
+			$editor[0].setSelectionRange(3,3);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "^55e", "Exponent not accepted");
+			util.keyInteraction(94, $editor);
+			equal($editor.val(), "^55e^", "Second exponent negative sign should not be allowed.");
+			$editor.remove();
+		});
+
+		testId = "Typing multiple exponent chars (scientific E-notation)";
+		test(testId, 8, function () {
+			var $editor;
+			// 46: ".", 45: "-", 65: "a", 94: "^"
+			
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({ 
+				dataMode: 'double', 
+				value: 1e-7,
+				scientificFormat: "E+"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E-7", "E character should not be allowed to repalce entire value");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E-7", "Second E character should not be allowed");
+			$editor.val("1");
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E", "E character was not allowed");
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E", "Second E character should not be allowed");
+			$editor.remove();
+
+			//change format:
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				dataMode: 'double', 
+				value: 1e-27,
+				scientificFormat: "e"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "1e-27", "e character should not be allowed to repalce entire value");
+			$editor[0].setSelectionRange(4,4);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "1e-27", "Second e character should not be allowed");
+			$editor.val("255");
+			$editor[0].setSelectionRange(2,2);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "25e5", "e character was not be allowed");
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "25e5", "Second e character should not be allowed");
+			$editor.remove();
 		});
 		
 		testId = "Lists testing";
@@ -1335,13 +1674,13 @@
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
 
-		testId = 'Cannot set on runtime';
+		testId = 'Option cannot be set for numeric editor';
 		test(testId, 1, function () {
 			throws(function () {
-					$('#numericEditorRuntime').igNumericEditor("option", "regional", "ru-Ru")
+					$('#numericEditorRuntime').igNumericEditor("option", "excludeKeys", "asds");
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
-				}, $.ig.Editor.locale.setOptionError + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.numericEditorNoSuchOption) > -1;
+				}, Error($.ig.Editor.locale.numericEditorNoSuchOption));
 		});
 		
 		testId = 'spinDown button not disabled'
@@ -1419,7 +1758,7 @@
 				equal(editorInput.val(), "33", "The text after paste is not correct");	
 				
 				// paste "+0024" in front, ultimately only adding 24:
-				editorInput[0].setSelectionRange(0);
+				editorInput[0].setSelectionRange(0,0);
 				var parseInt = window.parseInt;
 				window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
 				$.ig.TestUtil.paste(editorInput[0], "+0024");
@@ -1451,7 +1790,7 @@
 		});
 
 		testId = '_processInternalValueChanging';
-		test(testId, 7, function () {
+		test(testId, 6, function () {
 			var $editor = $('<input id="privateFuncEditor" />')
 				.appendTo("#testBedContainer")
 				.igNumericEditor({
@@ -1492,18 +1831,12 @@
 			$editor.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
 			ok($editor.igNumericEditor("value") === null, 'not null');
 
-			//allowNullValue : false, revertIfNotValid: true minValue: -5 maxValue: -2 --> value is ""
-			$editor1.igNumericEditor("option", "allowNullValue", false);
-			$editor1.igNumericEditor("option", "revertIfNotValid", true);
-			$editor1.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($editor1.igNumericEditor("value") === "", 'not set to ""');
-
 			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: -2 --> value is maxValue
 			$editor1.igNumericEditor("option", "allowNullValue", false);
 			$editor1.igNumericEditor("option", "revertIfNotValid", false);
 			$editor1.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
 			ok($editor1.igNumericEditor("value") === -2, 'not set to maxValue');
-
+			
 			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: 2 --> value is 0
 			$editor1.igNumericEditor("option", "allowNullValue", false);
 			$editor1.igNumericEditor("option", "revertIfNotValid", false);
@@ -1561,6 +1894,7 @@
 				numericMinDecimals: 2,
 				selectionOnFocus: 0,
 				decimalSeparator: ",",
+				groupSeparator: " ",
 				spinDelta: 1
 			});
 
@@ -1572,6 +1906,7 @@
 							numericMinDecimals: 8,
 							selectionOnFocus: "atStart",
 							decimalSeparator: ".",
+							groupSeparator: ",",
 							spinDelta: 0.1,
 							dataMode: "double",
 							buttonType: "spin"
@@ -1585,6 +1920,7 @@
 				numericMinDecimals: 2,
 				selectionOnFocus: 0,
 				decimalSeparator: ",",
+				groupSeparator: " ",
 				spinDelta: 1
 			});
 
@@ -1596,6 +1932,7 @@
 				numericMinDecimals: 8,
 				selectionOnFocus: "atStart",
 				decimalSeparator: ".",
+				groupSeparator: ",",
 				spinDelta: 0.1,
 				dataMode: "double",
 				buttonType: "spin"
@@ -1712,7 +2049,7 @@
 			ok($editor.igNumericEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
-	});
+	
 	testId = "Test nullValue on initialization";
 	test(testId, 4, function(){
 		var $editor = $("<input id='editor'/>").
@@ -1819,10 +2156,10 @@
 	});
 
 	testId = "Test minDecimals/maxDecimals options";
-	test(testId, 62, function() {
+	test(testId, 78, function() {
 		var $editorRound, $editorTrunc, testData, errorMessage, mode, boundary;
 
-		testData = [ null, undefined];
+		testData = [ null, undefined ];
 		for(index = 0; index < testData.length; index++) {
 			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
 				minDecimals: testData[index],
@@ -1890,8 +2227,325 @@
 		equal($editor.igNumericEditor("option", "minDecimals"), 10, "minDecimal should be set");
 		equal($editor.igNumericEditor("option", "maxDecimals"), 10, "minDecimal should be the same as minDecimals");
 		$editor.remove();
+
+		// Test Invalid min/max decimals:
+
+		function testDecimalBoundary(mode, option, value, boundary) {
+			throws(function () {
+					var options = { dataMode: mode };
+					options[ option ] = value;
+					var $editor = $("<input id='editor'/>").
+					appendTo("#testBedContainer").igNumericEditor(options);
+				},
+				Error($.ig.Editor.locale.decimalNumber.replace("{0}", mode).replace("{1}", option).replace("{2}", boundary)),
+				$.ig.Editor.locale.decimalNumber + "not shown"
+			);
+			strictEqual($editor.data("igNumericEditor"), undefined, "Widget should not be created with wrong maxDecimals.")
+			$editor.remove();
+		}
+		var decimalOptions = [
+			["double", "maxDecimals", 16, 15],
+			["double", "minDecimals", -1, 15],
+			["double", "maxDecimals", -16, 15],
+			["double", "minDecimals", 150, 15],
+			["float", "maxDecimals", 14, 7],
+			["float", "minDecimals", 55, 7],
+			["float", "maxDecimals", -13, 7],
+			["float", "minDecimals", 77, 7]
+		];
+		for (var i = 0; i < decimalOptions.length; i++) {
+			testDecimalBoundary.apply(this, decimalOptions[i]);
+		}
+	});
+	
+	testId = "Test decimalSeparator on initialization #769";
+	test(testId, 2, function(){
+		throws(function () {
+			var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: true, value:1.01});
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+		$editor.remove();
+		
+		throws(function () {
+			var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: ".,", value:1.01});
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+		$editor.remove();
+	});
+	
+	testId = "Test decimalSeparator at runtime #769";
+	test(testId, 4, function(){
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", value:1.01});
+		throws(function () {
+			$("#editor").igNumericEditor("option", "decimalSeparator", "true")
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+			equal($editor.igNumericEditor("option", "decimalSeparator"), "/", "decimalSeparator is changed.");
+		$editor.remove();
+		
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", value:1.01});
+		throws(function () {
+			$("#editor").igNumericEditor("option", "decimalSeparator", ".,")
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+		equal($editor.igNumericEditor("option", "decimalSeparator"), "/", "decimalSeparator is changed.");
+		$editor.remove();
 	});
 
+	testId = "Test groups contain 0 #771";
+	test(testId, 3, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor({ groups : [0, 2, 10], value: 111222333444});
+			
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "1112223334,44", "The displayValue is not correct.")
+			$editor.remove();
+			
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ groups : [0, 2, 0, 1, 9], value: 111222333444});
+		
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "111222333,4,44", "The displayValue is not correct.")
+			$editor.remove();
+			
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ groups : [2, 1, 9], value: 111222333444});
+		
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "111222333,4,44", "The displayValue is not correct.")
+			$editor.remove();
+		});
+		
+	testId = "Test allowNullValue and NullValue at initialization #779";
+	test(testId, 9, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor({ allowNullValue: true, nullValue: 0});
+			
+			var currentValue = $editor.igNumericEditor("value");
+			equal(currentValue, 0, "The value is not 0, although the nullValue is set to 0.")
+			$editor.remove();
+
+			// test invalid nullValue
+			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
+				.igNumericEditor({ 
+					buttonType: "clear", 
+					nullValue: "abc",
+					allowNullValue: true
+				});
+
+			equal($editor.val(), "", "Display did not initialize correctly");
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on init");
+			//check clear also ignores the wrong nullValue:
+			$editor.igNumericEditor("value", 5);
+			$editor.igNumericEditor("clearButton").trigger("click");
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on clear");
+			$editor.igNumericEditor("value", 5);
+			$editor.igNumericEditor("value", null);
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on set");
+			//verify empty string is still accepted
+			$editor.igNumericEditor("value", "");
+			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");
+			$editor.remove();
+
+			//nullValue outside min/max:
+			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
+				.igNumericEditor({ 
+					buttonType: "clear", 
+					nullValue: 5,
+					maxValue: -3,
+					allowNullValue: true 
+				});
+			equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on init and default to max.");
+			$editor.igNumericEditor("value", -5);
+			$editor.igNumericEditor("clearButton").trigger("click");
+			equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on clear and default to max.");
+			//verify empty string is still accepted
+			$editor.igNumericEditor("value", "");
+			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");
+			$editor.remove();
+		});
+
+	testId = "Test Setting scientificFormat runtime #745";
+	test(testId, 3, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor();
+			
+			var includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-", "The included keys are not the defaut one.")
+
+			$editor.igNumericEditor("option", "scientificFormat", "e");
+			includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-e", "The included keys do not include the scientificFormat 'e'.");
+			
+			$editor.igNumericEditor("option", "scientificFormat", "E");
+			includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-E", "The included keys do not include the scientificFormat 'E'.")
+						
+			$editor.remove();
+		});
+		
+	testId = "spinWrapAround spin to minValue if there is no maxValue set";
+	test(testId, 3, function () {
+		var $editor;
+		$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ dataMode: 'double', minValue: 5, spinWrapAround : true, buttonType: 'spin' });
+		ok($editor.igNumericEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+		$editor.igNumericEditor("value", 5);
+		$editor.igNumericEditor("spinDownButton");
+		!equal($editor.val(), 5, "Spin down was not performed!")
+		$editor.igNumericEditor("spinUpButton");
+		equal($editor.val(), 5, "SpinWrap around was not performed!")
+		
+		$editor.remove();
+		});
+
+	testId = "Set groupSeparator to null at runtime";
+	test(testId, 2, function() {
+		var $editor = $("<input id='editorGS'/>").
+			appendTo("#testBedContainer").igNumericEditor({ value: 12209 });
+			
+			equal($editor.igNumericEditor("displayValue"), "12,209", "The displayed value is not correct.")
+			$("#editorGS").igNumericEditor("option", "groupSeparator", null)
+			$editor.click();
+			$editor.blur();
+			equal($editor.igNumericEditor("displayValue"), "12,209", "The displayed value is not correct.")
+			
+			$editor.remove();
+		});
+		
+	testId = "decimalSeparator and groupSeparator use the same symbol - init";
+	test(testId, 1, function() {
+		throws(function() {
+			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+				decimalSeparator: ",",
+				groupSeparator: ",",
+				value: 1.1
+			});
+			$editor.remove();
+		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), "Exception is not thrown when groupSeparator and decimalSeparator have the same value.");
+	});
+
+	testId = "nullValue dynamic setting";
+	test(testId, 11, function() {
+		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": true,
+				"nullValue": null,
+				"revertIfNotValid": false
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": true,
+				"nullValue": null,
+				"revertIfNotValid": true
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": false,
+				"revertIfNotValid": true
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "1", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "1", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": false,
+				"revertIfNotValid": false
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "0", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "0", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": true,
+				"nullValue": 10,
+				"revertIfNotValid": false
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("value"), 10, "The value is not correct.");
+			equal($editor.igNumericEditor("displayValue"), "10", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "10", "The displayed value is not correct.");
+			$editor.remove();
+	});
+	
+	testId = "decimalSeparator uses the same symbol as the groupSeparator - runtime";
+		test(testId, 1, function(){
+		var $editor = $("<input id='editorDecimalGroupSeparators'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: ",", groupSeparator: "/", value:1.01});
+		throws(function () {
+			$("#editorDecimalGroupSeparators").igNumericEditor("option", "decimalSeparator", "/");
+			$editor.remove();
+		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+		
+		
+		//var $editor = $("<input id='editor'/>").
+		//	appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", groupSeparator: ",", value:1.01});
+		//throws(function () {
+		//	$("#editor").igNumericEditor("option", "groupSeparator", "/")
+		//}, function (err) {
+		//		return err.message.indexOf($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg) > -1;
+		//	}, $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+		//$editor.remove();
+	});
+	
+	testId = "groupSeparator uses the same symbol as the decimalSeparator - runtime";
+		test(testId, 1, function(){
+		var $editor = $("<input id='editorGroupSeparators'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", groupSeparator: ",", value:1.01});
+		throws(function () {
+			$("#editorGroupSeparators").igNumericEditor("option", "groupSeparator", "/");
+			$editor.remove();
+		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+	});
+
+	testId = 'Runtime changes for local and regional options';
+	test(testId, 6, function () {
+		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({ buttonType: "spin", value: 1234567.123 });
+
+		equal($editor.igNumericEditor("displayValue"), "1,234,567.12", "Format should be in English");
+		equal($editor.igNumericEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+		$editor.igNumericEditor("option", "language", "de");
+		equal($editor.igNumericEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+		$editor.igNumericEditor("option", "regional", "de");
+		equal($editor.igNumericEditor("displayValue"), "1.234.567,12", "Format should be in German");
+		$editor.igNumericEditor("setFocus");
+		equal($editor.igNumericEditor("field").val(), "1234567,12", "Input Format should be in German");
+		$editor.igNumericEditor("option", "regional", "en");
+		equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in German");
+		$editor.trigger("blur").remove();
+	});
+});
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);

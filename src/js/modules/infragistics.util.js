@@ -19,7 +19,7 @@
 
 // Inspired by base2 and Prototype
 
-/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, $, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -27,23 +27,23 @@
 		define( [
 		], factory );
 	} else {
-
-		// Browser globals
-		factory();
+		return factory();
 	}
 }
 (function () {
 	window.igRoot = window.igRoot || {};
-	if (window.jQuery !== undefined) {
-		window.igRoot = jQuery;
+	/* jshint ignore:start */
+	if (window.jQuery !== undefined || typeof jQuery === "function") {
+		window.igRoot = window.jQuery || jQuery;
 	}
+	/* jshint ignore:end */
 
 	//window.$ = window.$ || window.igRoot;
 
 	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
 	window.$ig = window.$ig || window.igRoot.ig;
 
-	var $ = igRoot;
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;
 
@@ -196,10 +196,83 @@
 		};
 	}
 
-	//$.ig = $.ig || { _isNamespace: true };
 	$.ig.util = $.ig.util || {};
 
 	$.ig.util.browserVersion = "";
+
+	$.ig.util.language = "en";
+	$.ig.util.regional = "en-US";
+	$.ig.util.widgetStack = [];
+
+	$.ig._regional = {
+		monthNames: [ "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" ],
+		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday",
+			"Thursday", "Friday", "Saturday" ],
+		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+		am: "AM",
+		pm: "PM",
+		datePattern: "M/d/yyyy",
+		dateLongPattern: "dddd, MMMM dd, yyyy",
+		dateTimePattern: "M/d/yyyy h:mm tt",
+		timePattern: "h:mm tt",
+		timeLongPattern: "h:mm:ss tt",
+		dateTitleFullPattern: "dd MM yy",
+		dateTitleMonthPattern: "MM yy",
+		negativeSign: "-",
+		numericNegativePattern: "-$n",
+		numericDecimalSeparator: ".",
+		numericGroupSeparator: ",",
+		numericGroups: [ 3 ],
+		numericMaxDecimals: 2,
+		numericMinDecimals: 0,
+		currencyPositivePattern: "$n",
+		currencyNegativePattern: "-$n",
+		currencySymbol: "$",
+		currencyDecimalSeparator: ".",
+		currencyGroupSeparator: ",",
+		currencyGroups: [ 3 ],
+		currencyMaxDecimals: 2,
+		currencyMinDecimals: 2,
+		percentPositivePattern: "n$",
+		percentNegativePattern: "-n$",
+		percentSymbol: "%",
+		percentDecimalSeparator: ".",
+		percentGroupSeparator: ",",
+		percentGroups: [ 3 ],
+		percentDisplayFactor: 100,
+		percentMaxDecimals: 2,
+		percentMinDecimals: 2
+	};
+	$.ig.regional = $.ig.regional || {};
+	$.ig.regional.defaults = $.ig._regional;
+
+	$.ig.util.changeGlobalLanguage = function (language) {
+		$.ig.util.language = language;
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalLanguage();
+		}
+	};
+
+	$.ig.util.changeGlobalRegional = function (regional) {
+		$.ig.util.regional = regional;
+		$.ig.regional.defaults = $.extend($.ig._regional,
+			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalRegional();
+		}
+	};
+
+	$.ig.util.getLocaleValue = function (collection, key) {
+		var language = $.ig.util.language,
+			locale = ($.ig.locale[ language ] && $.ig.locale[ language ][ collection ]) ||
+				($.ig[ collection ] && $.ig[ collection ].locale) ||
+				/* excel exporter locale seems to be generated with lower cases for its defaults */
+				($.ig[ collection.toLowerCase() ] && $.ig[ collection.toLowerCase() ].locale);
+		return locale[ key ] || "";
+	};
 
 	//D.A. 11th November 2013, Updated the isIE & browserVersion to be compatible with IE11+
 	$.ig.util.isIE = window.navigator.userAgent.indexOf("MSIE") > -1 || !!window.navigator.userAgent.match(/trident/i);
@@ -239,6 +312,7 @@
 
 	$.ig.util.isTouchDevice = function () {
 		return "ontouchstart" in window ||
+			window.navigator.maxTouchPoints > 0 ||
 			window.navigator.msMaxTouchPoints > 0;
 	};
 
@@ -531,6 +605,10 @@
                     // of the parent type
 			        if (isFinite(placeholders[ i ]) && !isFinite(arguments[ placeholders[ i ] ])) {
 			            ret.typeArguments[ i ] = arguments[ placeholders[ i ] ];
+			        } else if (placeholders[ i ] &&
+						placeholders[ i ] != arguments[ i ] &&
+						placeholders[ i ].typeArguments) {
+			            ret.typeArguments[ i ] = this.specialize.apply(placeholders[ i ], arguments);
 			        } else {
 			            ret.typeArguments[ i ] = placeholders[ i ];
 			        }
@@ -568,6 +646,10 @@
 			if (specId) {
 			    this.specializationCache[ specId ] = ret;
 			    ret.stringId = ret.generateString();
+			} else {
+			    // the self referencing type needs to be able to put itself into the specialization cache
+			    // of the original type
+			    ret.specializationCache = this.specializationCache;
 			}
 
 			var _self = this;
@@ -1437,6 +1519,34 @@
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
 		var result;
 		provider = provider || $.ig.CultureInfo.prototype.currentCulture(); // TODO: Use the provider below
+		var mmm = function(value, provider) {
+			// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
+			var cultureName = provider.name();
+			if (cultureName == "ja-JP") {
+				result = value.toLocaleString("en-US", { month: "numeric" })
+					.replace(/\u200E/g, "");
+			} else {
+				result = value.toLocaleString(provider.name(), { month: "short" })
+					.replace(/\u200E/g, "");
+			}
+
+			if (result.contains(" ")) {
+
+				// Date.toLocaleString is not supported fully
+				// TODO: Handle other cultures?
+				return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ value.getMonth() ];
+			}
+
+			return result;
+		};
+		var applyFormat = function(options) {
+			if (window.Intl) {
+				var formatter = new Intl.DateTimeFormat(provider.name(), options);
+				return formatter.format(value);
+			}
+			return value.toLocaleString(provider.name(), options);
+		};
 		switch (format) {
 			case "s":
 				{
@@ -1450,30 +1560,6 @@
 					return s.slice(0, d);
 				}
 
-			case "MMM":
-				{
-
-					// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
-					var cultureName = provider.name();
-					if (cultureName == "ja-JP") {
-						result = value.toLocaleString("en-US", { month: "numeric" })
-							.replace(/\u200E/g, "");
-					} else {
-						result = value.toLocaleString(provider.name(), { month: "short" })
-							.replace(/\u200E/g, "");
-					}
-
-					if (result.contains(" ")) {
-
-						// Date.toLocaleString is not supported fully
-						// TODO: Handle other cultures?
-						return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-							"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ value.getMonth() ];
-					}
-
-					return result;
-				}
-
 			case "MMMM":
 				return value.toLocaleString(provider.name(), { month: "long" })
 					.replace(/\u200E/g, "");
@@ -1483,29 +1569,67 @@
 					.replace(/\u200E/g, "");
 
 			case "dddd":
-				{
-					result = value.toLocaleString(provider.name(), { weekday: "long" })
-						.replace(/\u200E/g, "");
+				result = value.toLocaleString(provider.name(), { weekday: "long" })
+					.replace(/\u200E/g, "");
 
-					if (result.contains(" ")) {
+				if (result.contains(" ")) {
 
-						// Date.toLocaleString is not supported fully
-						// TODO: Handle other cultures?
-						return [ "Sunday", "Monday", "Tuesday", "Wednesday",
-							"Thursday", "Friday", "Saturday" ][ value.getDay() ];
-					}
-
-					return result;
+					// Date.toLocaleString is not supported fully
+					// TODO: Handle other cultures?
+					return [ "Sunday", "Monday", "Tuesday", "Wednesday",
+						"Thursday", "Friday", "Saturday" ][ value.getDay() ];
 				}
 
-			case "tt":
-				return value.getHours() <= 11 ? "AM" : "PM"; // TODO: Figure out how to get this based on culture
+				return result;
 
 			case "%t":
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
+			case "d":  // short date
+				return value.toLocaleDateString();
+			case "D": // long date
+				return applyFormat({ weekday: "long", month: "long", day: "numeric", year: "numeric" });
+			case "f": // full datetime (short time)
+				return applyFormat({
+					weekday: "long", month: "long", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric" });
+			case "F": // full datetime (long time)
+				return applyFormat({
+					weekday: "long", month: "long", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric", second: "numeric" });
+			case "g": // general (short time)
+				return applyFormat({
+					month: "numeric", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric" });
+			case "G": // general (long time)
+				return applyFormat({
+					month: "numeric", day: "numeric", year: "numeric",
+					hour: "numeric", minute: "numeric", second: "numeric" });
+			case "M": // month/day
+			case "m":
+				return applyFormat({ month: "long", day: "numeric" });
+			case "t": // short time
+				return applyFormat({ hour: "numeric", minute: "numeric" });
+			case "T": // long time
+				return value.toLocaleTimeString();
+			case "Y": // year/month
+			case "y":
+				return applyFormat({ year: "numeric", month: "long" });
 		}
-
-		throw new $.ig.FormatException(1, "Unknown Date format: " + format);
+		result = format;
+		var year = value.getFullYear().toString();
+		result = result.replace("yyyy", year);
+		result = result.replace("yy", year.substr(-2));
+		result = result.replace("MMM", mmm(value, provider));
+		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1"));
+		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
+		var hours = value.getHours();
+		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("tt", hours < 12 ? "AM" : "PM");
+		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
+		return result;
 	};
 
 	// implement casting
@@ -3241,6 +3365,12 @@
 			return this.compare5(string1, string2, $.ig.CompareOptions.prototype.none);
 		},
 		compare5: function (string1, string2, options) {
+			if (string1 === null) {
+				return string2 === null ? 0 : -1;
+			} else if (string2 === null) {
+				return 1;
+			}
+
 			return this.compare1(string1, 0, string1.length, string2, 0, string2.length, options);
 		},
 		indexOf1: function (source, value) {
@@ -3632,9 +3762,12 @@
 	String.prototype.trimStart = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		if (this.length === 0) {
@@ -3648,9 +3781,12 @@
 	String.prototype.trimEnd = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		var i = this.length - 1;
@@ -5800,6 +5936,152 @@
 			matchMustStartAtCurrentPosition: matchMustStartAtCurrentPosition
 		};
 	};
+
+	$.ig.util.summaries = $.ig.util.summaries || {};
+	$.ig.util.summaries.min = function (data, dataType, fullData) {
+		if (data.length === 0) {
+			if (dataType === "date") {
+				return null;
+			}
+			return 0;
+		}
+		return Math.min.apply(Math, data);
+	};
+
+	$.ig.util.summaries.max = function (data, dataType, fullData) {
+		if (data.length === 0) {
+			if (dataType === "date") {
+				return null;
+			}
+			return 0;
+		}
+		return Math.max.apply(Math, data);
+	};
+
+	$.ig.util.summaries.sum = function (data, dataType, fullData) {
+		var sum = 0,
+			i;
+		for (i = 0; i < data.length; i++) {
+			sum += data[ i ];
+		}
+		return sum;
+	};
+
+	$.ig.util.summaries.avg = function (data, dataType, fullData) {
+		if (data.length === 0) {
+			return 0;
+		}
+		return $.ig.util.summaries.sum(data) / data.length;
+	};
+
+	$.ig.util.summaries.count = function (data, dataType, fullData) {
+		return data.length;
+	};
+
+	/**	Calculates the summaries based on the function or function name provided
+	*	summaryFunction - specifies the name of the summary function that will be used
+	*	data - data that will be used to calculate the summary value. Contains usually the column data the summary is for.
+	*	caller - custom summary function that will be used when summaryFunction = "custom"
+	*	dataType - the type of the column the 'colData' is applicable for
+	*	fullData - contains the full data for all summaries. In general full row records used in the current summary row. In GroupBy scenario, will contain only the group records.
+	**/
+	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType, fullData) {
+		// M.H. 16 Nov. 2011 Fix for bug 97886
+		summaryFunction = summaryFunction.toLowerCase();
+		if (summaryFunction.startsWith("custom")) {
+			summaryFunction = "custom";
+		}
+
+		switch (summaryFunction) {
+			case "min":
+				return $.ig.util.summaries.min(data, dataType, fullData);
+			case "max":
+				return $.ig.util.summaries.max(data, dataType, fullData);
+			case "sum":
+				return $.ig.util.summaries.sum(data, dataType, fullData);
+			case "avg":
+				return $.ig.util.summaries.avg(data, dataType, fullData);
+			case "count":
+				return $.ig.util.summaries.count(data, dataType, fullData);
+			case "custom":
+
+				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
+				if (caller !== undefined && caller !== null) {
+					if (typeof caller === "function") {
+						return caller(data, dataType, fullData);
+					}
+					if (typeof caller === "string") {
+						/*jshint evil:true */
+						caller = eval(caller);
+						return caller(data, dataType, fullData);
+					}
+				} else {
+					return null;
+				}
+				break;
+		}
+	};
+
+	$.ig.util.defaultSummaryMethods = [
+		{
+			/* type="string" Label that will be applied to the result of the summary function */
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelCount") : "Count = ",
+			/* type="string" Name of the summary that can be set as an option inside the igGrid for example */
+			"name": "count",
+			/* type="function" Speficies the function that will be used when calculating the summary */
+			"summaryFunction": $.ig.util.summaries.count,
+			/* type="'any'|Array" Speficies to which type of column this summary is applicable. Setting it to 'any' will apply to any type */
+			"dataType": "any",
+			/* type="bool" Enables/disables the summary to be applied by default */
+			"active": true,
+			/* type="bool" Speficies the order in which this summary will be placed when there are multiple summaries.
+				order: 0 means that it will be displayed on top of all summaries */
+			"order": 0,
+			/* type="bool" Enables/disables applying format to the summary value */
+			"applyFormat": false
+		},
+		{
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
+			"name": "min",
+			"summaryFunction": $.ig.util.summaries.min,
+			"dataType": [ "number", "date", "numeric" ],
+			"active": true,
+			"order": 1,
+			"applyFormat": true
+		},
+		{
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
+			"name": "max",
+			"summaryFunction": $.ig.util.summaries.max,
+			"dataType": [ "number", "date", "numeric" ],
+			"active": true,
+			"order": 2,
+			"applyFormat": true
+		},
+		{
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelSum") : "Sum = ",
+			"name": "sum",
+			"summaryFunction": $.ig.util.summaries.sum,
+			"dataType": [ "number", "numeric" ],
+			"active": true,
+			"order": 3,
+			"applyFormat": true
+		},
+		{
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelAvg") : "Avg = ",
+			"name": "avg",
+			"summaryFunction": $.ig.util.summaries.avg,
+			"dataType": [ "number", "numeric" ],
+			"active": true,
+			"order": 4,
+			"applyFormat": true
+		}
+	];
 
 	return igRoot;
 }));// REMOVE_FROM_COMBINED_FILES

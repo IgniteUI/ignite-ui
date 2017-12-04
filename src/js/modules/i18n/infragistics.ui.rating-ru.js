@@ -7,16 +7,23 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
+	$.ig.Rating = $.ig.Rating || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-    if (!$.ig.Rating) {
-	    $.ig.Rating = {};
+	$.ig.locale.ru.Rating = {
+			setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
+	}
 
-	    $.extend($.ig.Rating, {
-		    locale: {
-			    setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
-		    }
-	    });
-    }
-})(jQuery);
+	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.ru.Rating;
+	return $.ig.locale.ru.Rating;
+}));// REMOVE_FROM_COMBINED_FILES

@@ -35,7 +35,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -228,5 +228,5 @@
     });
 
     $.extend($.ui.igColorPickerSplitButton, { version: "<build_number>" });
-    return $.ui.igColorPickerSplitButton;// REMOVE_FROM_COMBINED_FILES
+    return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

@@ -1,5 +1,14 @@
 ﻿﻿/* Thailand +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -34,6 +43,8 @@
 	    dateTimePattern: 'd/M/yyyy H:mm',
 	    timePattern: 'H:mm',
 	    timeLongPattern: 'H:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericMaxDecimals: 2,
 	    currencyNegativePattern: '-$n',
@@ -41,7 +52,7 @@
 	    percentPositivePattern: 'n $',
 	    percentNegativePattern: '-n $'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('th');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('th');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

@@ -7,15 +7,35 @@
 *
 */
 
-(function ($) {
-    $.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	window.igRoot = window.igRoot || {};
+	/* jshint ignore:start */
+	if (window.$ !== undefined || typeof $ === "function") {
+		window.igRoot = window.$ || $;
+	}
+	/* jshint ignore:end */
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
+	//window.$ = window.$ || window.igRoot;
 
-	    $.extend($.ig.util, {
+	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
+	window.$ig = window.$ig || window.igRoot.ig;
 
-		    locale: {
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
+
+	$ = $ || {};
+	$.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+
+	$.ig.locale.ru.util = {
 			    unsupportedBrowser: "Ваш браузер не поддерживает HTML5 canvas элемент. <br/>Попробуйте воспользоваться следующими версиями браузеров:",
 			    currentBrowser: "Ваш браузер: {0}",
 			    ie9: "Microsoft Internet Explorer 9+",
@@ -27,9 +47,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/"
-		    }
-	    });
+			    safariDownload: "http://www.apple.com/safari/download/",
+			    defaultSummaryMethodLabelMin: "Мин. = ",
+			    defaultSummaryMethodLabelMax: "Макс. = ",
+			    defaultSummaryMethodLabelSum: "Сумма = ",
+			    defaultSummaryMethodLabelAvg: "Ср. = ",
+			    defaultSummaryMethodLabelCount: "Кол-во = "
+	}
 
-    }
-})(jQuery);
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.ru.util;
+	return igRoot;
+}));// REMOVE_FROM_COMBINED_FILES

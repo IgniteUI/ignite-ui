@@ -1,5 +1,14 @@
 ﻿/* Mexico, Spain +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.regional = $.ig.regional || {};
@@ -32,6 +41,8 @@
 		dateTimePattern: 'dd/MM/yyyy HH:mm',
 		timePattern: 'hh:mm tt',
 		timeLongPattern: 'hh:mm:ss tt',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 		am: 'a. m.',
 		pm: 'p. m.',
 		numericNegativePattern: '-n',
@@ -48,7 +59,7 @@
 		percentDecimalSeparator: '.',
 		percentGroupSeparator: ','
 	};
-	if ($.ig.setRegionalDefault) {
-		$.ig.setRegionalDefault('es-MX');
+	if ($.ig.util && $.ig.util.changeGlobalRegional) {
+		$.ig.util.changeGlobalRegional('es-MX');
 	}
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

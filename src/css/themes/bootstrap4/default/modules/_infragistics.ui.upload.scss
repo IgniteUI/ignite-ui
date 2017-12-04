@@ -1,0 +1,60 @@
+/************/
+/* igUpload */
+/************/
+
+.ui-igupload-progressbar-icon-default,
+.ui-igupload-progressbar-icon-default {
+  background: url(images/icon_sprite.png) 0 -128px no-repeat !important;
+}
+
+.ui-igupload-progressbar-icon-exe {
+  background: url(images/icon_sprite.png) 0 -144px no-repeat !important;
+}
+
+.ui-igupload-progressbar-icon-images {
+  background: url(images/icon_sprite.png) 0 -160px no-repeat !important;
+}
+
+.ui-igupload-progressbar-icon-music {
+  background: url(images/icon_sprite.png) 0 -176px no-repeat !important;
+}
+
+.ui-igupload-progressbar-icon-video {
+  background: url(images/icon_sprite.png) 0 -192px no-repeat !important;
+}
+
+.ui-igupload-cancel-button .ui-button-icon-primary {
+  color: $ui-icons-dark;
+}
+
+.ui-state-hover.ui-igupload-cancel-button {
+  background-color: transparent !important;
+}
+
+.ui-widget-content .ui-igupload-progress-container {
+  border: 0;
+}
+
+.ui-igupload-cancel-button.ui-state-hover .ui-icon-closethick,
+.ui-igupload-cancel-button.ui-state-focus .ui-icon-closethick {
+  color: $ui-icons-darker;
+}
+
+.ui-igupload .ui-igprogressbar {
+  background-color: $progress-bg;
+  height: 11px!important;
+  border: 0!important;
+}
+
+.ui-igupload-progressbar-filesize {
+  color: gray;
+}
+
+.ui-igupload-summaryprogress-label {
+  color: gray;
+  top: 10px;
+}
+
+.ui-igupload-summaryprogress-secondary-label {
+  color: white;
+}

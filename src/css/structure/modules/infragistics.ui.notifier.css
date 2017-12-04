@@ -1,19 +1,30 @@
 ﻿@font-face {
 	font-family: 'icomoon';
-	src: url('../fonts/icomoon.eot');
-}
-@font-face {
-	font-family: 'icomoon';
 	src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAALAIAAAwAwT1MvMg8SAioAAAC8AAAAYGNtYXAaVsyHAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZsZxW2YAAAF4AAAAdGhlYWQG8KybAAAB7AAAADZoaGVhB20DxgAAAiQAAAAkaG10eAoA//8AAAJIAAAAFGxvY2EAKABOAAACXAAAAAxtYXhwAAgADAAAAmgAAAAgbmFtZZlKCfsAAAKIAAABhnBvc3QAAwAAAAAEEAAAACAAAwMAAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADmAAPA/8AAQAPAAEAAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg5gD//f//AAAAAAAg5gD//f//AAH/4xoEAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAAC////7wOsA5cABAAJAAATAQcBNyEXAScBUwNTVfyuVAMFVPytVANTA5f8rVUDU1VV/K1VA1MAAAEAAAABAAD6ylYPXw889QALBAAAAAAA0hM0DAAAAADSEzQM////7wOsA5cAAAAIAAIAAAAAAAAAAQAAA8D/wAAABAD//wAAA6wAAQAAAAAAAAAAAAAAAAAAAAUEAAAAAAAAAAAAAAACAAAABAD//wAAAAAACgAUAB4AOgABAAAABQAKAAIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEABwAAAAEAAAAAAAIABwBgAAEAAAAAAAMABwA2AAEAAAAAAAQABwB1AAEAAAAAAAUACwAVAAEAAAAAAAYABwBLAAEAAAAAAAoAGgCKAAMAAQQJAAEADgAHAAMAAQQJAAIADgBnAAMAAQQJAAMADgA9AAMAAQQJAAQADgB8AAMAAQQJAAUAFgAgAAMAAQQJAAYADgBSAAMAAQQJAAoANACkaWNvbW9vbgBpAGMAbwBtAG8AbwBuVmVyc2lvbiAxLjAAVgBlAHIAcwBpAG8AbgAgADEALgAwaWNvbW9vbgBpAGMAbwBtAG8AbwBuaWNvbW9vbgBpAGMAbwBtAG8AbwBuUmVndWxhcgBSAGUAZwB1AGwAYQByaWNvbW9vbgBpAGMAbwBtAG8AbwBuRm9udCBnZW5lcmF0ZWQgYnkgSWNvTW9vbi4ARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==) format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
 
+.ui-widget.ui-ignotify.ui-ignotify-inline {
+    position: static;
+    margin-bottom: 5px;
+    font-size:0.8em;
+}
 .ui-ignotify-icon-container {
     display: inline-block;
     vertical-align: middle;
     padding-right: 2px;
     height: 1.3em;
+}
+.ui-ignotify-icon-container.hidden {
+    display: none;
+}
+.ui-ignotify-content > ul, .ui-ignotify-content > ol {
+    /* Adjust list positioning */
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
 }
 
 .ui-widget.ui-ignotify.ui-ignotify-inline {
@@ -82,6 +93,7 @@
     border-left-color: #ffde66;
 }
 
+.ui-ignotify-error.ui-widget,
 .ui-ignotify-error
 {
     border-color: #f33;
@@ -169,5 +181,5 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.ui-icon.ui-icon-closethick.ui-igpopover-close-button:before{content: "\e600";}
+
 .ui-icon.ui-icon-closethick.ui-igpopover-close-button:hover{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";opacity:1;}

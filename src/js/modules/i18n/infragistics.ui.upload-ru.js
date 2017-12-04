@@ -7,15 +7,20 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
+	$.ig.Upload = $.ig.Upload || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-    if (!$.ig.Upload) {
-	    $.ig.Upload = {};
-
-	    $.extend($.ig.Upload, {
-
-		    locale: {
+	$.ig.locale.ru.Upload = {
 			    labelUploadButton: "Загрузить файл",
 			    labelAddButton: "Добавить",
 			    labelClearAllButton: "Очистить загруженные",
@@ -59,8 +64,8 @@
 			    // M.H. 1 June 2011 Fix bug #77532
 			    titleSingleUploadButtonContinue: "Загрузить",
 			    titleClearAllButton: "Очистить загруженные"
-		    }
-	    });
-
-    }
-})(jQuery);
+	}
+	
+	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.ru.Upload;
+	return $.ig.locale.ru.Upload;
+}));// REMOVE_FROM_COMBINED_FILES

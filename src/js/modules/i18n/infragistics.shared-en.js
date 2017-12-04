@@ -7,18 +7,22 @@
 *
 */
 
-(function ($) {
-$.ig = $.ig || {};
-
-if (!$.ig.SharedLocale) {
-	$.ig.SharedLocale = {};
-
-	$.extend($.ig.SharedLocale, {
-
-		locale: {
-			
-		}
-	});
-
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
 }
-})(jQuery);
+(function ($) {
+	$.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.SharedLocale = $.ig.SharedLocale || {};
+	
+	$.ig.locale.en.SharedLocale = {
+
+	};
+$.ig.SharedLocale.locale = $.ig.SharedLocale.locale || $.ig.locale.en.SharedLocale;
+return $.ig.locale.en.SharedLocale;
+}));// REMOVE_FROM_COMBINED_FILES

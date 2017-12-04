@@ -26,7 +26,7 @@
  *
  */
 
-/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer, escape */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -39,7 +39,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -1487,7 +1487,85 @@
 					});
 				```
 				*/
-				defaultCollapseState: false
+				defaultCollapseState: false,
+				/* type="string" The name of the property that determines whether a record from the group data view is a group record.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							groupRecordKey: "__gbRecord"
+						}
+					});
+					```
+				*/
+				groupRecordKey: "__gbRecord",
+				/* type="string" The name of the property that determines whether a record from the group data view is a summary group record.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							groupRecordKey: "__gbRecord"
+						}
+					});
+					```
+				*/
+				groupSummaryRecordKey: "__gbSummaryRecord",
+				/* type="array" Array of objects containing the summaries for each field.
+				Each summary object has the following format { field:"fieldName", summaryFunctions: [] }, where the summaryFunctions arrays can contain either a summary name (avg, sum, count etc.) or a custom function for caclulating a custom summary.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: data,
+						groupby: {
+							summaries: [
+							{
+								field:"Age",
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field: "Name",
+								summaryFunctions: ["count", customFunc]
+							}]
+						}
+					});
+					```
+				*/
+				summaries: [],
+				/* type="top|bottom|both" Specifies the postion for the summaries for each field inside each group.
+				```
+					ds = new $.%%WidgetName%%({
+					dataSource: data,
+					groupby: {
+						summariesPosition: "top",
+						summaries: [
+						{
+							field:"Age",
+							summaryFunctions: ["avg","sum"]
+						},
+						{
+							field: "Name",
+							summaryFunctions: ["count", customFunc]
+						}]
+					}
+				});
+				```
+				top type="string" One summary row will be displayed at the top for each group
+				bottom type="string"  One summary row will be displayed at the bottom for each group
+				both type="string" Two summary rows will be be display for each group. One on the top and one on the bottom.
+				*/
+				summariesPosition: "bottom",
+				/* type="allRecords|dataRecordsOnly". Specifies how paging should be applied when there is at least one grouped column
+				```
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							pagingMode: "allRecords"
+						}
+					});
+				```
+				allRecords type="string" Paging is applied for all records - data and non-data records(like group-by records)
+				dataRecordsOnly type="string" Paging is applied ONLY for data records. Non-data records are disregarded in paging calculations.
+				*/
+				pagingMode: "allRecords"
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -1668,7 +1746,7 @@
 					/* {key: '', summaryOperands: []}*/
 				]
 			},
-			/* type="array" *** IMPORTANT DEPRECATED ***
+			/* @Deprecated@ type="array" *** IMPORTANT DEPRECATED ***
 			A list of field definitions specifying the schema of the data source.
 			Field objects description: {name, [type], [xpath]}
 			```
@@ -2474,7 +2552,7 @@
 					ds.dataBind();
 				});
 			```
-			paramType="string" Primary key of the record
+			paramType="object" Primary key of the record
 			paramType="string" optional="true" the data source in which to search for the record. When not set it will use the current data source.
 			paramType="string" optional="true" Not used in $.ig.DataSource
 			returnType="object" a JavaScript object specifying the found record, or null if no record is found
@@ -3089,6 +3167,10 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
+			/* M.H. 2 Feb 2017 Fix for bug 231214: When you update a formatted field it can't be found by the allFields search filtering. */
+			if (this._getFieldsWithFormatter().length) {
+				this._generateFormattedRecords();
+			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3389,19 +3471,6 @@
 				since it's the one that will go to the server for the local transaction log,
 				we need to keep the Date "as is", because it won't get serialized/deserialized */
 				globalt = $.extend(true, {}, t);
-				/* Date fix. We need to encode it using \/Date(ticks)\/ */
-				if (globalt.type === "cell" && $.type(globalt.value) === "date") {
-					globalt.value = "\/Date(" + globalt.value.getTime() + ")\/";
-				} else if (globalt.type === "row" ||
-					globalt.type === "insertrow" ||
-					globalt.type === "newrow" ||
-					globalt.type === "insertnode") {
-					for (prop in globalt.row) {
-						if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
-							globalt.row[ prop ] = "\/Date(" + globalt.row[ prop ].getTime() + ")\/";
-						}
-					}
-				}
 				this._accumulatedTransactionLog.push(globalt);
 			}
 		},
@@ -3413,12 +3482,8 @@
 			if (t.type === "cell") {
 				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
 					if (this._accumulatedTransactionLog[ i ].rowId === t.rowId &&
-						this._accumulatedTransactionLog[ i ].col === t.col) {
-						if ($.type(t.value) === "date") {
-							this._accumulatedTransactionLog[ i ].value = "\/Date(" + t.value.getTime() + ")\/";
-						} else {
-							this._accumulatedTransactionLog[ i ].value = t.value;
-						}
+							this._accumulatedTransactionLog[ i ].col === t.col) {
+						this._accumulatedTransactionLog[ i ].value = t.value;
 						break;
 					}
 				}
@@ -3428,17 +3493,24 @@
 						this._accumulatedTransactionLog[ i ].type !== "cell") {
 						for (prop in t.row) {
 							if (t.row.hasOwnProperty(prop)) {
-								if ($.type(t.row[ prop ]) === "date") {
-									this._accumulatedTransactionLog[ i ].row[ prop ] =
-										"\/Date(" + t.row[ prop ].getTime() + ")\/";
-								} else {
-									this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
-								}
+								this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
 							}
 						}
 					}
 				}
 			}
+		},
+		_serializeDate: function (date) {
+			if ($.type(date) !== "date") {
+				//if the value is not a date don't handle it
+				return date;
+			}
+			if (this.settings.enableUTCDates) {
+				date = date.toISOString();
+			} else {
+				date = $.ig.toLocalISOString(date);
+			}
+			return date;
 		},
 		_removeTransactionByTransactionId: function (tid, removeFromAll) {
 			// removes a transaction by a transaction ID
@@ -3537,7 +3609,7 @@
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
 					newRow = row;
-					if (data !== origDs && $.type(row) === "object") {
+					if (origDs && data !== origDs && $.type(row) === "object") {
 						newRow = $.extend(true, {}, row);
 					}
 					if (index >= 0 && index < data.length) {
@@ -3760,12 +3832,32 @@
 			*/
 			if (this.settings.updateUrl !== null) {
 				// post to the Url using $.ajax, by serializing the changes as url params
-				var me = this, opts;
+				var me = this, opts, i, prop, t,
+				serializedTransactionLog = [];
+
+				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
+					t = $.extend(true, {}, this._accumulatedTransactionLog[ i ]);
+					if (t.type === "cell") {
+						t.value = this._serializeDate(t.value);
+					} else if (t.type === "row" || t.type === "insertrow" || t.type === "newrow") {
+						for (prop in t.row) {
+							if (t.row.hasOwnProperty(prop)) {
+								if ($.type(t.row[ prop ]) === "date") {
+									t.row[ prop ] =
+										this._serializeDate(t.row[ prop ]);
+								} else {
+									t.row[ prop ] = t.row[ prop ];
+								}
+							}
+						}
+					}
+					serializedTransactionLog.push(t);
+				}
 
 				opts = {
 					type: "POST",
 					url: this.settings.updateUrl,
-					data: { "ig_transactions": JSON.stringify(this._accumulatedTransactionLog) },
+					data: { "ig_transactions": JSON.stringify(serializedTransactionLog) },
 					success: function (data, textStatus, jqXHR) {
 						if (data.Success) {
 							me._saveChangesSuccess(data, textStatus, jqXHR);
@@ -3773,9 +3865,10 @@
 								success(data, textStatus, jqXHR);
 							}
 						} else {
-							me._saveChangesError(jqXHR, textStatus, $.ig.DataSourceLocale.locale.noSaveChanges);
+							me._saveChangesError(jqXHR, textStatus,
+								$.ig.util.getLocaleValue("DataSourceLocale", "noSaveChanges"));
 							if (error) {
-								error(jqXHR, textStatus, $.ig.DataSourceLocale.locale.noSaveChanges);
+								error(jqXHR, textStatus, $.ig.util.getLocaleValue("DataSourceLocale", "noSaveChanges"));
 							}
 						}
 					},
@@ -3810,7 +3903,7 @@
 				sche = this._saveChangesErrorHandlers;
 				i = sche ? sche.length : 0;
 				while (i-- > 0) {
-					sche[ i ](jqXHR, textStatus, $.ig.DataSourceLocale.locale.noSaveChanges);
+					sche[ i ](jqXHR, textStatus, $.ig.util.getLocaleValue("DataSourceLocale", "noSaveChanges"));
 				}
 			}
 		},
@@ -3982,13 +4075,13 @@
 						this._data = this.schema().transform(this.dataSource());
 						break;
 					case "invalid":
-						throw new Error($.ig.DataSourceLocale.locale.invalidDataSource);
+						throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "invalidDataSource"));
 					case "unknown":
 					case "json":
 					case "xml":
 						if (this.settings.type !== "json" && p.type !== "xml") {
 							/* throw new Error("Cannot determine the data source type. Please specify if it is JSON or XML data. "); */
-							throw new Error($.ig.DataSourceLocale.locale.unknownDataSource);
+							throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "unknownDataSource"));
 						} else {
 							resKey = this.settings.responseDataKey;
 							/* there are two cases:
@@ -4028,7 +4121,8 @@
 								in fact when the igGrid is bound to the igDataSource, and there is no explicit schema defined, we can assume a predefined schema, something like:
 								<row> <cell></cell> ... </row> and so on. The initial schema comes from the column definitions, and 1) => if we cannot find the XPath, fallback
 								to the default schema, or 2) => if no columns are defined, assume the default xml schema again. */
-								throw new Error($.ig.DataSourceLocale.locale.errorXmlSourceWithoutSchema);
+								throw new Error(
+									$.ig.util.getLocaleValue("DataSourceLocale", "errorXmlSourceWithoutSchema"));
 							}
 							/* make sure to read the responseTotalRecCountKey no matter if localSchemaTransform = true or false */
 							this.totalRecordsCount(null, this.settings.responseTotalRecCountKey, dsObj, this);
@@ -4252,9 +4346,8 @@
 								if (offsets[ key ].hasOwnProperty(func)) {
 									offset = offsets[ key ][ func ];
 									obj = this._dataSummaries[ key ][ func ];
-									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-										this._dataSummaries[ key ][ func ] = new Date(
-											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
+									if ($.type(obj) === "string") {
+										this._dataSummaries[ key ][ func ] = new Date(obj);
 									}
 								}
 							}
@@ -4263,6 +4356,32 @@
 				}
 			}
 			return this._dataSummaries;
+		},
+		_applySchema: function (forceApply) {
+			var schema = this.schema(), ds,
+				s = this.settings.sorting,
+					p = this.settings.paging,
+					filtering = this.settings.filtering;
+			if (schema && schema.fields && schema.fields().length > 0 &&
+				(this.settings.localSchemaTransform || forceApply)) {
+				this._origDs = this._data;
+				schema._type = $.type(this._data);
+				ds = schema.transform(this._data);
+				this._data = ds;
+				this._dataView = this._data;
+				if (s.type === "local" && s.defaultFields.length > 0) {
+					this.sort(s.defaultFields, s.defaultDirection);
+				} else if (this.isGroupByApplied(s.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData : this._data,
+											s.expressions);
+				}
+				if (filtering.type === "local" && filtering.defaultFields.length > 0) {
+					this.filter(filtering.defaultFields);
+				}
+				if (p.enabled && p.type === "local") {
+					this._page();
+				}
+			}
 		},
 		_populateTransformedData: function (data) {
 			// M.H. populate summaries data
@@ -4361,8 +4480,8 @@
 				/*A.T. workaround for jQuery's 1.5 and above bug related to dataFilter and success callback.
 				We need to explicitly set the dataType to "text" when manually parsing it */
 				/* get jquery version */
-				if (jQuery.fn.jquery) {
-					ver = jQuery.fn.jquery.split(".");
+				if ($.fn.jquery) {
+					ver = $.fn.jquery.split(".");
 				}
 				if (ver && ver.length >= 2) {
 					/* if jQuery is 1.5 and greater or if the first major version is greater than 1 (when jQuery 2 comes out)
@@ -4407,7 +4526,7 @@
 					}
 					ds = this.context._processXmlResponse(data, true, this.context);
 				} else if (data !== "" && data !== null) {
-					throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedResponseType);
+					throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedResponseType"));
 				}
 			}
 			/*
@@ -4490,7 +4609,7 @@
 			} else if (error !== undefined) {
 				statusMsg = " ( " + (error.message || error) + " ) ";
 			}
-			errmsg = $.ig.DataSourceLocale.locale.errorRemoteRequest + statusMsg;
+			errmsg = $.ig.util.getLocaleValue("DataSourceLocale", "errorRemoteRequest") + statusMsg;
 			if (f && this._callee) {
 				f.apply(this._callee, [ false, errmsg, req, this ]);
 			} else if (f) {
@@ -4888,7 +5007,7 @@
 							);
 							/* d = ffields[i].expr.getTime(); */
 						} else {
-							d = ffields[ i ].expr;
+							d = escape(ffields[ i ].expr);
 						}
 						if (params.filteringParams[ key ] === undefined) {
 							params.filteringParams[ key ] = ffields[ i ].cond +
@@ -5188,37 +5307,122 @@
 				this._dataView = [];
 			}
 			data = this._filter ? this._filteredData : this._data;
-			this._generatePageData(this.isGroupByApplied() ?
-										this.visibleGroupByData() :
-										data,
-									count);
+			this._generatePageData(data, count);
 		},
-		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+		_getPageStartEndIndex: function (data) {
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
-			startIndex = this.pageIndex() * this.pageSize();
+			var startIndex = this.pageIndex() * this.pageSize(), endIndex;
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			if (this.isGroupByApplied()) {
-				this._dataView = [];
-				this._gbDataView = [];
-				for (i = startIndex; i < endIndex; i++) {
-					this._gbDataView.push(data[ i ]);
-					if (!data[ i ].__gbRecord) {
-						this._dataView.push(data[ i ]);
+			return {
+				startIndex: startIndex,
+				endIndex: endIndex
+			};
+		},
+		_generateGroupByPageDataForAllRecords: function () {
+			var i, data = this.visibleGroupByData(), sgb = this.settings.groupby || {},
+				metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._gbDataView.push(data[ i ]);
+				if (!data[ i ][ sgb.groupRecordKey ] &&
+					!data[ i ][ sgb.groupSummaryRecordKey ]) {
+					this._dataView.push(data[ i ]);
+				}
+			}
+		},
+		_generateGroupByPageDataForDataRecordsOnly: function (data) {
+			/* Populates _gbDataView and _dataView collections. This function should be called only when - group by and paging are applied and this.settings.groupby.pagingMode is set to "dataRecordsOnly"
+			First record(s) is/are group-by record(s) in visible group-by data view collection.
+			*/
+			var i, rec, startIndex = 0, parents = [], sgb = this.settings.groupby || {},
+				visible = true, level = 100, levelCollapsed,
+				gbData = this.groupByData(), len = gbData.length,
+				metadata = this._getPageStartEndIndex(data),
+				startDataRec = data[ metadata.startIndex ],
+				endDataRec = data[ metadata.endIndex - 1 ];
+			/*find start index(first data record in page)*/
+			for (i = 0; i < len; i++) {
+				if (gbData[ i ] === startDataRec ) {
+					startIndex = i;
+					break;
+				}
+			}
+			/* find groupby parent records for the first(in the page) data record*/
+			for (i = startIndex - 1; i >= 0; i--) {
+				rec = gbData[ i ];
+				if (rec[ sgb.groupRecordKey ]) {
+					if (level > rec.level) {
+						level = rec.level;
+						parents.unshift(rec);
+						/* detect whether data records are visible(according to collapse state of parent group-by record(s))
+						insert in _gbDataView visible parent group-by records
+						*/
+						this._gbDataView.unshift(rec);
+						if (rec.collapsed) {
+							this._gbDataView = [ rec ];
+							visible = false;
+							levelCollapsed = level;
+						}
+						if (!level) {
+							break;
+						}
 					}
 				}
-			} else {
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = data[ i ];
+			}
+			/* populate _gbDataView(visible group-by data view collection) and _dataView, collapsed records are not added in _gbDataView */
+			for (i = startIndex; i < len; i++) {
+				rec = gbData[ i ];
+				if (rec[ sgb.groupRecordKey ]) {
+					if (rec.level <= levelCollapsed || visible) {
+						levelCollapsed = rec.level;
+						visible = !(rec.collapsed);
+						this._gbDataView.push(rec);
+					}
+				} else {
+					this._dataView.push(rec);
+					if (visible) {
+						this._gbDataView.push(rec);
+					}
+					if (rec === endDataRec) {
+						// find non-data group-by summary rows and add them to group-by dataview
+						while (i++ < len) {
+							rec = gbData[ i ];
+							if (rec && rec[ sgb.groupSummaryRecordKey ]) {
+								if (rec.level <= levelCollapsed || visible) {
+									this._gbDataView.push(rec);
+								}
+							} else {
+								break;
+							}
+						}
+						break;
+					}
 				}
+			}
+		},
+		_generateGroupByPageData: function (data) {
+			this._dataView = [];
+			this._gbDataView = [];
+			return (this.settings.groupby.pagingMode === "allRecords") ?
+					this._generateGroupByPageDataForAllRecords(data) :
+					this._generateGroupByPageDataForDataRecordsOnly(data);
+		},
+		_generatePageData: function (data, count) {
+			if (this.isGroupByApplied()) {
+				return this._generateGroupByPageData(data, count);
+			}
+			var i, metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._dataView[ count++ ] = data[ i ];
 			}
 		},
 		_compareValues: function (x, y) {
@@ -5365,10 +5569,11 @@
 			if ($.type(fields) === "string") {
 				fields = this._parseSortExpressions(fields);
 			}
-			isGb = this.isGroupByApplied(fields);
 			if (fields === undefined || fields === null) {
-				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "noSortingFields"));
 			}
+			fields = this._findSortingExpressionsForLayout(fields, this.settings.key);
+			isGb = this.isGroupByApplied(fields);
 			if (s.applyToAllData && s.type === "local") {
 				/* M.H. 11 Mar 2013 Fix for bug #135542: When filtering is applied and then sort
 				any column and there is remote paging, all of the records for the current page
@@ -5442,6 +5647,13 @@
 			if (isGb) {
 				this._generateGroupByData(data, fields);
 			}
+			if (resetPaging) {
+				if (!this._filter) {
+					this._data = data;
+				} else {
+					this._filteredData = data;
+				}
+			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
 				/* DAY 2/15/12 101818- when filtering, need to set the filtered data, not _data */
@@ -5501,6 +5713,146 @@
 
 			return fields;
 		},
+		_splitFilterExpression: function (search) {
+			var matches = search.match(/\"[^\"]+\"/g) || [], res = [], i;
+
+			for (i = 0; i < matches.length; i++) {
+				search = search.replace(matches[ i ], "");
+				res.push(matches[ i ].replace(/\"/g, ""));
+			}
+			matches = search.split(/\s+/);
+			res = res.concat(matches);
+			return res;
+		},
+		_filterAllFields: function (val, data, fields) {
+			fields = fields || this.schema().fields();
+			if (!fields || !fields.length) {
+				return [];
+			}
+			var i, j, len = data.length,
+				filteredData = [], count = 0, curr,
+				formattedRecords = (this.schema() || {})._formattedRecords || [],
+				push,
+				searchExprs = this._splitFilterExpression(val), se = [];/*split by spaces */
+			for (i = 0; i < searchExprs.length; i++) {
+				curr = searchExprs[ i ];
+				if (curr) {// remove empty strings
+					push = true;
+					/* check whether there are duplicate tokens and remove those that are substring tokens in array "se"
+					For instance if array "searchExpr" is ["1", "2", "123"], then array "se" should be ["123"]*/
+					for (j = 0; j < se.length; j++) {
+						if (se[ j ] === curr || se[ j ].indexOf(curr) !== -1) {
+							push = false;
+							break;
+						}
+						/* remove those elements in array "se" which are substring of variable "curr" */
+						if (curr.indexOf(se[ j ]) !== -1) {
+							se.splice(j, 1);
+							j = -1;
+						}
+					}
+					if (push) {
+						se.push(this.settings.filtering.caseSensitive ? curr : curr.toLowerCase());
+					}
+				}
+			}
+			if (!se.length) {
+				return data;
+			}
+			for (i = 0; i < len; i++) {
+				if (this._findMatchByFields(se, data[ i ], fields, formattedRecords[ i ] || null)) {
+					filteredData[ count++ ] = data[ i ];
+				}
+			}
+			return filteredData;
+		},
+		_findMatchByFields: function (searchTokens, rec, fields, formattedRecord) {
+			var j, fl = fields.length, dataVal, fieldName, i,
+				ignoreCase = !this.settings.filtering.caseSensitive, s = "";
+			for (j = 0; j < fl; j++) {
+				fieldName = fields[ j ].name;
+				if (formattedRecord && formattedRecord[ fieldName ] !== undefined) {
+					dataVal = formattedRecord[ fieldName ];
+				} else {
+					dataVal = this._hasMapper ? this.getCellValue(fieldName, rec) : rec[ fieldName ];
+				}
+				dataVal = (dataVal === null || dataVal === undefined) ? "" : dataVal;
+				s += dataVal + "||";
+			}
+			s = ignoreCase ? s.toLowerCase() : s;
+			for (i = 0; i < searchTokens.length; i++) {
+				if (s.indexOf(searchTokens[ i ]) === -1) {
+					return false;
+				}
+			}
+			return true;
+		},
+		_getFieldsWithFormatter: function () {
+			/* return array of fields(from the data schema) that have property "formatter" defined
+			if schema is not defined OR there aren't such fields - ruturns empty array */
+			var i, f, res = [];
+			if (!this.schema()) {
+				return res;
+			}
+			f = this.schema().fields();
+			for (i = 0; i < f.length ; i++) {
+				if (f[ i ].formatter) {
+					res.push(f[ i ]);
+				}
+			}
+			return res;
+		},
+		_generateFormattedRecords: function (data) {
+			var i, j, f, len, fr = [], schema = this.schema(),
+				fields = this._getFieldsWithFormatter(), fieldsLen = fields.length;
+			data = data || this._data;
+			len = data.length;
+			if (!len || !schema || !fieldsLen) {
+				return;
+			}
+			for (i = 0; i < len; i++) {
+				fr[ i ] = {};
+				for (j = 0; j < fieldsLen; j++) {
+					f = fields[ j ];
+					fr[ i ][ f.name ] = f.formatter(
+						data[ i ][ f.name ],
+						data[ i ],
+						f);
+				}
+			}
+			schema._formattedRecords = fr;
+		},
+		filterByText: function (expression, fields) {
+			/* Filters the data source locally by text. If "fields" parameter is set search is performed only in the listed fields otherwise all fields are searched.
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					schema: {
+						fields: [{
+							name: "ID", type: "number"
+						}, {
+							name: "Name", type: "string"
+						}, {
+							name: "Description", type: "string"
+						}, {
+							name: "ReleaseDate", type: "date"
+						}]
+				});
+				ds.dataBind();
+
+				// Search in all fields
+				ds.filterByText("Apples");
+				// Search only in "Name" field
+				ds.filterByText("Apples", [{name: "Name", type: "string"}]);
+			```
+
+			paramType="string" a text to search for. Multiple search texts should be separated by space. When multiple search texts are provided all of them should be presented in the search fields (bool logic "and" is applied).
+			paramType="array" optional="true" an array of fields that will be searched.
+			*/
+			fields = fields || this.schema().fields();
+			return this.filter([{ filterAllFields: true, expr: expression, fields: fields }]);
+		},
 		/* this is used when sorting data
 		type can be "string", "number", "boolean", "date".
 		Other values are ignored and default conversion is used
@@ -5518,9 +5870,12 @@
 			setting the settings.filtering.expressions. The result (filtered data) can be obtained by calling dataView()
 			example: [{fieldName : "firstName", expr: "abc", cond: "StartsWith"}, {fieldName : "lastName"}]
 			example 2: [{fieldIndex : 1} , {fieldIndex : 2, expr: "a", cond : "contains"}]
+			example 3: [{filterAllFields: true, expr: "abc", fields: [name: "Description", type: "string"]}]
 			expr is the filter expression text , such as "abc", or a regular expression such as *test*
 			cond is the filtering condition such as startsWith, endsWith, contains, equals, doesNotEqual, doesNotContain
 			if expr is detected to be a regular expression, the "cond" part is skipped
+			To [filter by text](ig.datasource#methods:filterByText) "fieldExpressions" should have only one object with the following schema:
+			{filterAllFields: <type="bool" should be set to true>, expr: <type="string" the text to search for>, fields: <type="array" an array of [fields](ig.dataschema#options:schema.fields) to search in>}
 
 			```
 				ds = new $.%%WidgetName%%({
@@ -5531,6 +5886,9 @@
 				ds.dataBind();
 
 				ds.filter([{fieldName : "Color", expr: "Red", cond: "Equals"}], "AND", true);
+
+				// Filter by text
+				ds.filter([{filterAllFields: true, expr: "abc", fields: [name: "Description", type: "string"]}]);
 			```
 
 			paramType="object" a list of field expression definitions
@@ -5544,7 +5902,7 @@
 			this._clearGroupByData();
 			schema = this.schema();
 			if (schema === null || schema === undefined) {
-				throw new Error($.ig.DataSourceLocale.locale.filteringNoSchema);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "filteringNoSchema"));
 			}
 			if ($.type(fieldExpressions) === "string") {
 				expr = fieldExpressions;
@@ -5584,20 +5942,26 @@
 				/* A.T. 20 Dec. 2011 Fix for bug #96819 - igDataSource filtering feature
 				with own defined custom function does not filtering data */
 				this._dataView = [];
+			} else if (fieldExpressions && fieldExpressions.length &&
+						fieldExpressions[ 0 ] && fieldExpressions[ 0 ].filterAllFields) {
+				data = this._filterAllFields(fieldExpressions[ 0 ].expr, data,
+											fieldExpressions[ 0 ].fields || schema.fields());
+				this._filteredData = data;
+				this._dataView = [];
 			} else {
 				// re-initialize the dataView. We can do that safely, since data will either be cached, or will be stored in this.data(), meaning that will be the whole ds
 				this._dataView = [];
 				this._filteredData = [];
 				/* filter "data"
 				we will store all results in tmpData, and then assign it to the dataView. please ensure that */
+				if (expr) {
+					fieldExpressions = this._parseFilterExprString(expr);
+				}
+				if (allFieldsExpr) {
+					fieldExpressionsOnStrings = this._parseFilterExprString(allFieldsExpr);
+				}
 				for (i = 0; i < data.length; i++) {
 					skipRec = false;
-					if (expr) {
-						fieldExpressions = this._parseFilterExprString(expr);
-					}
-					if (allFieldsExpr) {
-						fieldExpressionsOnStrings = this._parseFilterExprString(allFieldsExpr);
-					}
 					for (j = 0; j < fieldExpressions.length; j++) {
 						/* if there is no match, break, we aren't going to add the record to the resulting data view.
 						the default boolean logic is to "AND" the fields */
@@ -5834,7 +6198,8 @@
 				if (isInvalid) {
 					/* A.T. 18 Jan 2011 - fix for bug 62406 - filtering
 					expression string fallback scenario should return an error */
-					throw new Error($.ig.DataSourceLocale.locale.fieldMismatch + fields[ i ].fieldName);
+					throw new Error(
+						$.ig.util.getLocaleValue("DataSourceLocale", "fieldMismatch") + fields[ i ].fieldName);
 				}
 				isInvalid = true;
 				if (tmp2[ 0 ] === ">") {
@@ -5877,7 +6242,7 @@
 				} else {
 					/* A.T. 18 Jan 2011 - fix for bug 62406 - filtering expression
 					string fallback scenario should return an error */
-					throw new Error($.ig.DataSourceLocale.locale.unrecognizedCondition + expr);
+					throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "unrecognizedCondition") + expr);
 					/* fallback
 					fields[i].cond = "Contains"; */
 				}
@@ -5917,7 +6282,8 @@
 				} else if (window[ func ] && typeof window[ func ] === "function") {
 					f = window[ func ];
 				} else {
-					throw new Error($.ig.DataSourceLocale.locale.errorUnexpectedCustomFilterFunction);
+					throw new Error(
+						$.ig.util.getLocaleValue("DataSourceLocale", "errorUnexpectedCustomFilterFunction"));
 				}
 				return f(val, expr, t, ignoreCase, preciseDateFormat, colKey);
 			}
@@ -5997,7 +6363,8 @@
 			if (cond === "notEmpty") {
 				return localVal === null || localVal === undefined || localVal.length !== 0;
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 			/* return false; */
 		},
 		_findRegExpMatch: function (val, expr, str) {
@@ -6043,7 +6410,8 @@
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined && !isNaN(val));
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
 		/* True or False */
 		_findBoolMatch: function (val, cond) {
@@ -6065,7 +6433,8 @@
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined);
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
 		_getDateParts: function (date) {
 			// returns object containing parts of the data like year, month, day, hours, etc.
@@ -6225,7 +6594,8 @@
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined);
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
 		/*
 		clearFilter: function (fields) {
@@ -6393,7 +6763,8 @@
 			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				return this._vgbData.length;
 			}
 			if (!this._filter) {
@@ -6416,10 +6787,11 @@
 
 				var count = ds.pageCount();
 			```
-			returnType="number" total number fo pages
+			returnType="number" total number of pages
 			*/
 			var c, realCount;
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				realCount = this._vgbData.length;
 			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
@@ -6629,12 +7001,14 @@
 				}
 				return data;
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingHtmlTableNoSchema + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingHtmlTableNoSchema") + e.message);
 			}
 		},
 		_validateTable: function (obj) {
 			if (obj.length === 0) {
-				throw new Error($.ig.DataSourceLocale.locale.errorTableWithIdNotFound + this.dataSource());
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorTableWithIdNotFound") + this.dataSource());
 			} else {
 				return obj[ 0 ];
 			}
@@ -6653,7 +7027,8 @@
 				//A.T. 20 Jan 2011 Fix for bug #62124 - igDataSource JSON string binding error
 				data = JSON.parse(s);
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingJsonNoSchema") + e.message);
 			}
 			return data;
 		},
@@ -6676,7 +7051,8 @@
 					doc = parser.parseFromString(s, "text/xml");
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingXmlNoSchema + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingXmlNoSchema") + e.message);
 			}
 			return doc;
 		},
@@ -6807,18 +7183,19 @@
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,
-				row, hidden, gbrow, p = this.settings.paging,
+				row, hidden, gbrow, p = this.settings.paging, gbSumRow,
 				sgb = this.settings.groupby || {};
 			this._gbCollapsed = this._gbCollapsed || {};
 			this._gbCollapsed[ id ] = !!collapsed;
 			for (i = 0; i < len; i++) {
 				row = ds[ i ];
-				gbrow = row.__gbRecord;
-				if (row.id === id) {
+				gbrow = row[ sgb.groupRecordKey ];
+				gbSumRow = row[ sgb.groupSummaryRecordKey ];
+				if (gbrow && row.id === id) {
 					row.collapsed = !!collapsed;
 				}
 				if (hidden) {
-					if (gbrow && row.level <= lvl) {
+					if ((gbrow || gbSumRow) && row.level <= lvl) {
 						hidden = false;
 					} else {
 						continue;
@@ -6873,7 +7250,9 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt,
+			groupRecordKey = this.settings.groupby.groupRecordKey,
+			summaries = this.settings.groupby.summaries;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -6883,13 +7262,13 @@
 			for (i = 0; i < len; i++) {
 				gbExpr = gbExprs[ gbInd ];
 				gbRec = {
-					__gbRecord: true,
 					gbExpr: gbExpr,
 					level: gbInd,
 					len: 1,
 					recs: [],
 					val: undefined
 				};
+				gbRec[ groupRecordKey ] = true;
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
@@ -6915,9 +7294,64 @@
 						}
 					}
 				}
+
 				gbRec.recs = res;
 				gbRec.len = resLen;
+				if (summaries && summaries.length > 0) {
+					this._calculateGroupBySummaries(gbRec, parentCollapsed);
+				}
 				i += resLen - 1;
+			}
+		},
+		_calculateGroupBySummaries: function(gbRec, parentCollapsed) {
+			var res = gbRec.recs, gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
+				groupValue: gbRec.val, id: gbRec.id }, fieldValues, i, j,
+				sumFunc, summaries = this.settings.groupby.summaries,
+				sumFuncName, summary, summaryVal, fieldType, getValuesPerField;
+			gbSummaryRec[ this.settings.groupby.groupSummaryRecordKey ] = true;
+			getValuesPerField = function (arr, fieldName) {
+				return arr.map(function (val) {return val[ fieldName ];});
+			};
+			for (i = 0; i < summaries.length; i++) {
+				summary = summaries[ i ];
+				fieldValues = getValuesPerField(res, summary.field);
+				fieldType = this._fields ? this._getFieldTypeFromSchema(summary.field) : null;
+				for (j = 0; j < summary.summaryFunctions.length; j++) {
+					sumFunc = summary.summaryFunctions[ j ];
+					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
+					summaryVal = $.ig.calcSummaries(
+						sumFuncName,
+						fieldValues,
+						sumFunc,
+						fieldType,
+						res
+					);
+					if (!gbSummaryRec.summaries[ summary.field ]) {
+						gbSummaryRec.summaries[ summary.field ] = [];
+					}
+					gbSummaryRec.summaries[ summary.field ].push(summaryVal);
+				}
+			}
+			this._addSummaryRecToArray(gbSummaryRec, gbRec, this._gbData);
+			if (!gbRec.collapsed && !parentCollapsed) {
+				this._addSummaryRecToArray(gbSummaryRec, gbRec, this._vgbData);
+			}
+		},
+		_addSummaryRecToArray: function (gbSummaryRec, gbRec, array) {
+			var index;
+			if (this.settings.groupby.summariesPosition === "bottom" ||
+				this.settings.groupby.summariesPosition === "both") {
+				gbSummaryRec.position = "bottom";
+				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
+				array.push($.extend({}, gbSummaryRec));
+			}
+			if (this.settings.groupby.summariesPosition === "top" ||
+				this.settings.groupby.summariesPosition === "both") {
+				//insert after groupby rec index
+				index = array.indexOf(gbRec);
+				gbSummaryRec.position = "top";
+				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
+				array.splice(index + 1, 0, $.extend({}, gbSummaryRec));
 			}
 		},
 		_generateGroupByData: function (data,
@@ -6926,7 +7360,7 @@
 			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
 			var i, newgb = [], gbs = this.settings.groupby || {};
 			data = data || this._data;
-			gbExprs = gbExprs || [];
+			gbExprs = this._findSortingExpressionsForLayout(gbExprs || [], this.settings.key);
 			this._gbData = [];
 			this._vgbData = [];
 			this._gbDataView = [];
@@ -6980,8 +7414,15 @@
 			```
 			paramType="array" optional="true" array of sorting expressions. If not set check expressions defined in sorting settings
 			returnType="bool" Returns true if grouping is applied */
-			exprs = exprs || this.settings.sorting.expressions;
+			exprs = this._findSortingExpressionsForLayout(exprs || this.settings.sorting.expressions,
+															this.settings.key);
 			return !!(exprs && exprs.length && exprs[ 0 ].isGroupBy);
+		},
+		/* M.H. 23 Mar 2017 Fix for bug 232173: In remote GroupBy scenario the child layouts cannot be grouped */
+		_findSortingExpressionsForLayout: function (expressions, layout) {
+			return (expressions || []).filter(function (expr) {
+				return (!expr.layout && !layout) || expr.layout === layout;
+			});
 		}
 		/* //GroupBy functionallity*/
 	});
@@ -6989,7 +7430,7 @@
 		toStr: function (obj) {
 			return this.isNullOrUndefined(obj) ? "" : obj + this.empty();
 		},
-		toDate: function (obj, pk, key) {
+		toDate: function (obj) {
 			/* L.A. 18 June 2012 Fixing bug #113265 Column 'date' shows empty values as 'NaN' */
 			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
 				return null;
@@ -6998,32 +7439,6 @@
 				return obj;
 			}
 			var d;
-			/* OData & MS */
-			if (obj.length && obj.indexOf("/Date(") !== -1) {
-				/*
-				// account for timezone offset
-				if (this._tzo === undefined) {
-					this._tzo = new Date().getTimezoneOffset() * 60000;
-				}
-				if (this._dst === undefined) {
-					this._dst = new Date().dst();
-					if (this._dst) {
-						this._tzo = new Date().stdTimezoneOffset() * 60000;
-					}
-				}
-				*/
-				/* we need to get the local daylight offset on the client */
-				if (this._serverOffsets === undefined || this._serverOffsets[ pk ] === undefined) {
-					return new Date(parseInt(obj.replace("/Date(", "")
-						.replace(")/", ""), 10) + this._serverOffset);
-				}
-				if (this._serverOffsets[ pk ][ key ] !== undefined &&
-					this._serverOffsets[ pk ][ key ] !== null) {
-					return new Date(parseInt(obj.replace("/Date(", "")
-						.replace(")/", ""), 10) + this._serverOffsets[ pk ][ key ]);
-				}
-				return new Date(parseInt(obj.replace("/Date(", "").replace(")/", ""), 10));
-			}
 			d = new Date(obj);
 			/* M.H. 14 Apr 2014 Fix for bug #169770: Column dataType "date" format appear as NaN-NaN-NaN in IE8 */
 			if (isNaN(d)) {
@@ -7087,7 +7502,9 @@
 					/* type="string" The XPath expression to map the node to the field */
 					xpath: undefined,
 					/* type="string|function" This option is applicable only for fields with fieldDataType="object". Reference to a function (string or function) that can be used for complex data extraction from the data records, whose return value will be used for all data operations associated with this field. */
-					mapper: undefined
+					mapper: undefined,
+					/*paramType="function" optional="true" formatter function which accepts three parameters: val - value of the field; record - data source record; field - field definition; and return the formatted string. Formatter function is used when filtering by all fields.*/
+					formatter: undefined
 				}
 			],
 			/* type="string" this is the property (path) in the data source where the records are located. */
@@ -7145,12 +7562,12 @@
 			}
 			return out;
 		},
-		_convertType: function (t, obj, pk, key) {
+		_convertType: function (t, obj) {
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
 			if (t === "date") {
-				return this._parser.toDate(obj, pk, key);
+				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
 				return this._parser.toNumber(obj);
@@ -7167,11 +7584,13 @@
 			var t = field.type, j = null;
 			if (!this.isEmpty(t)) {
 				if (this.isEmpty(field.name)) {
-					results[ i ][ j ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ j ] = this._convertType(t, val);
 				} else {
-					results[ i ][ field.name ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ field.name ] = this._convertType(t, val);
+					/* assign offset in the record if applicable */
+					if (t === "date") {
+						this._addOffset(results[ i ], field.name, i);
+					}
 				}
 			} else {
 				if (this.isEmpty(field.name)) {
@@ -7191,6 +7610,24 @@
 					}
 				}
 			}
+			if (field.formatter) {
+				this._formattedRecords = this._formattedRecords || [];
+				this._formattedRecords[ i ] = this._formattedRecords[ i ] || {};
+				this._formattedRecords[ i ][ field.name ] =
+					field.formatter(
+						results[ i ][ field.name ],
+						results[ i ],
+						field
+					);
+			}
+		},
+		_addOffset: function (result, fieldName, i) {
+			var id = this._pk ? result[ this._pk ] : i;
+			if (this._serverOffsets &&
+				this._serverOffsets[ id ] &&
+				!this.isEmpty(this._serverOffsets[ id ][ fieldName ])) {
+					result[ "igoffset_" + fieldName ] = this._serverOffsets[ id ][ fieldName ];
+				}
 		},
 		isEmpty: function (o) {
 			/* specifies if the object is null, undefined, or an empty string
@@ -7211,9 +7648,13 @@
 
 				if (!this.isEmpty(t)) {
 					if (this.isEmpty(fName)) {
-						nDataRow[ j ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ j ] = this._convertType(t, tmp);
 					} else {
-						nDataRow[ fName ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ fName ] = this._convertType(t, tmp);
+						/* assign offset in the record if applicable */
+						if (t === "date") {
+							this._addOffset(nDataRow, fName, index);
+						}
 					}
 				} else {
 					if (this.isEmpty(fName)) {
@@ -7224,7 +7665,7 @@
 				}
 			}
 			/* } catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingArrays + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", ".errorParsingArrays + e.message);
 			} */
 			return nDataRow;
 		},
@@ -7273,7 +7714,7 @@
 					}
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingArrays + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorParsingArrays") + e.message);
 			}
 			return out;
 		},
@@ -7356,7 +7797,8 @@
 							if (j < this.schema.fields.length) { // if defined in the schema
 								if (root[ i ][ this._pk ] === undefined) {
 									// the input data doesn't match the schema
-									throw new Error($.ig.DataSourceLocale.locale.errorSchemaMismatch + this._pk);
+									throw new Error(
+										$.ig.util.getLocaleValue("DataSourceLocale", "errorSchemaMismatch") + this._pk);
 								}
 								this._val(
 									this.schema.fields[ j ], root[ i ][ this.schema.fields[ j ].name ], results, i, root
@@ -7370,7 +7812,7 @@
 								purposes. Uncomment and re-enable for local too to reach parity if it's needed in the future.
 								if (root[i][this.schema.fields[j].name] === undefined) {
 								the input data doesn't match the schema
-									throw new Error($.ig.DataSourceLocale.locale.errorSchemaMismatch + this.schema.fields[j].name);
+									throw new Error($.ig.util.getLocaleValue("DataSourceLocale", ".errorSchemaMismatch + this.schema.fields[j].name);
 								} */
 								this._val(
 									this.schema.fields[ j ], root[ i ][ this.schema.fields[ j ].name ], results, i, root
@@ -7380,7 +7822,7 @@
 					}
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingJson + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorParsingJson") + e.message);
 			}
 			return out;
 		},
@@ -7522,7 +7964,7 @@
 					}
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingXml + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", ".errorParsingXml") + e.message);
 			}
 			return out;
 		},
@@ -7601,10 +8043,11 @@
 						}
 					}
 				} else {
-					throw new Error($.ig.DataSourceLocale.locale.errorExpectedTbodyParameter);
+					throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorExpectedTbodyParameter"));
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingHtmlTable + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingHtmlTable") + e.message);
 			}
 			return out;
 		},
@@ -7799,8 +8242,9 @@
 			return true;
 		},
 		fields: function () {
-			/* type="array" A list of field definitions specifying the schema of the data source.
-			Field objects description: {fieldName, [fieldDataType], [fieldXPath]} */
+			/* A list of field definitions specifying the schema of the data source.
+			Field objects description: {fieldName, [fieldDataType], [fieldXPath]}
+			returnType="array"*/
 			return this.schema.fields;
 		}
 	});
@@ -9079,10 +9523,16 @@
 				requestDataSuccessCallback: null,
 				/*type="function" Specifies a custom function to be called when the remote request for data has finished with an error. */
 				requestDataErrorCallback: null,
+				/* @Deprecated@ type="string" *** IMPORTANT DEPRECATED *** Use the expandedKey option instead.
+				The name of the property that keeps track of the expansion state of a data item. Defaults to __ig_options.expanded.*/
+				propertyExpanded: null,
+				/* @Deprecated@ type="string" *** IMPORTANT DEPRECATED *** Use the dataLevelKey option instead.
+				The name of the property that keeps track of the level in the hierarchy.Defaults to __ig_options.dataLevel.*/
+				propertyDataLevel: null,
 				/* type="string" The name of the property that keeps track of the expansion state of a data item. Defaults to __ig_options.expanded.*/
-				propertyExpanded: "__ig_options.expanded",
+				expandedKey: "__ig_options.expanded",
 				/* type="string" The name of the property that keeps track of the level in the hierarchy.Defaults to __ig_options.dataLevel.*/
-				propertyDataLevel: "__ig_options.dataLevel",
+				dataLevelKey: "__ig_options.dataLevel",
 				/* type="bool" if set to TRUE it is expected that the source of data is normalized and transformed(has set dataLevel and expansion state). The source of data is used as flatDataView. Usually used when the paging is remote and paging mode is allLevels, or features are remote(and the processing of the returned result should be made on the server)
 				```
 				var ds = new $.%%WidgetName%%({
@@ -9102,7 +9552,7 @@
 									customEncodeUrlFunc: function(record, expand){
 										var dsUrl = ds.settings.treeDS.dataSourceUrl;
 										var path = ds.getPathBy(record);
-										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
+										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.dataLevelKey];
 									}
 								}
 							});
@@ -9179,6 +9629,8 @@
 			this._totalRecordsCount = 0;
 			options.treeDS = $.extend(true, {}, this.settings.treeDS, options.treeDS);
 			this._flatVisibleData = [];
+			options.treeDS.expandedKey = options.treeDS.propertyExpanded || options.treeDS.expandedKey;
+			options.treeDS.dataLevelKey = options.treeDS.propertyDataLevel || options.treeDS.dataLevelKey;
 			this._super(options);
 			this._isHierarchicalDataSource = options.treeDS.foreignKey === null ? true : false;
 			return this;
@@ -9186,7 +9638,7 @@
 		_checkGeneratedSchema: function () {
 			var s = this.settings.treeDS,
 				fs = this.settings.filtering,
-				propertyExp = s.propertyExpanded,
+				propertyExp = s.expandedKey,
 				propertyMatchFiltering = s.filtering.matchFiltering;
 			this._checkGeneratedSchemaByKey(s.childDataKey);
 			if (!this._isHierarchicalDataSource) {
@@ -9198,8 +9650,8 @@
 			if (fs && fs.enabled && fs.type === "remote" && propertyMatchFiltering) {
 				this._addSchemaField(propertyMatchFiltering, "boolean");
 			}
-			if (s.initialFlatDataView && s.propertyDataLevel) {
-				this._addSchemaField(s.propertyDataLevel, "number");
+			if (s.initialFlatDataView && s.dataLevelKey) {
+				this._addSchemaField(s.dataLevelKey, "number");
 			}
 		},
 		_addSchemaField: function (propName, propType) {
@@ -9237,6 +9689,13 @@
 				fields.push({ name: key });
 			}
 		},
+		_applySchema: function (forceApply) {
+			var s = this.schema();
+			s.transform = $.proxy(this._transformSchema, this);
+			this._checkGeneratedSchema();
+			this._super(forceApply);
+			this.generateFlatDataView();
+		},
 		dataBind: function (callback, callee) {
 			/* data binds to the current data source
 			databinding works using the following workflow:
@@ -9265,7 +9724,10 @@
 			var s = this.schema();
 			this.isTransformedToHierarchicalData(false);
 			if (s) {
-				this._checkGeneratedSchema();
+				if (this.schema().schema.fields.length !== 0 ||
+					this.settings.treeDS.enableRemoteLoadOnDemand) {
+					this._checkGeneratedSchema();
+				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
 				if (!this._transformCallback) {
 					this._transformCallback = $.proxy(s.transform, s);
@@ -9300,7 +9762,7 @@
 			if (this._metadata &&
 				$.type(this._metadata.ancestors) === "array") {
 				prows = this._metadata.ancestors;
-				propL = this.settings.treeDS.propertyDataLevel;
+				propL = this.settings.treeDS.dataLevelKey;
 				res = [];
 				for (i = 0; i < prows.length; i++) {
 					res.push({
@@ -9321,7 +9783,7 @@
 				data = ds || this._data,
 				len = data ? data.length : 0,
 				dsLayoutKey = this.settings.treeDS.childDataKey,
-				rowLevel = dataRow[this.settings.treeDS.propertyDataLevel];
+				rowLevel = dataRow[this.settings.treeDS.dataLevelKey];
 			currLevel = currLevel || 0;
 			for (i = 0; i < len; i++) {
 				d = data[i];
@@ -9351,7 +9813,9 @@
 			this._super(callDatabound);
 		},
 		_completeCallback: function () {
-			this.generateFlatDataView();
+			if (this.settings.localSchemaTransform) {
+				this.generateFlatDataView();
+			}
 			this._super();
 		},
 		getDataBoundDepth: function () {
@@ -9524,8 +9988,8 @@
 			var i, layoutKey = this.settings.treeDS.childDataKey, dataLen, dataRow, isRootLevel = false,
 				expDepth = this.settings.treeDS.initialExpandDepth, exp, nData = [],
 				s = this.schema(), layout, hasChildren, lLen,
-				propertyExp = this.settings.treeDS.propertyExpanded,
-				propertyDataLevel = this.settings.treeDS.propertyDataLevel,
+				propertyExp = this.settings.treeDS.expandedKey,
+				propertyDataLevel = this.settings.treeDS.dataLevelKey,
 				applyPropertyDataLevel = (propertyDataLevel !== null && propertyDataLevel !== undefined),
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
 			if (!data) {
@@ -9549,7 +10013,7 @@
 				isRootLevel = true;
 				level = 0;
 			}
-			if (!data || !this.settings.localSchemaTransform) {
+			if (!data) {
 				return data;
 			}
 			if ($.type(data) === "array") {
@@ -9605,7 +10069,8 @@
 						}
 					}
 				} catch (e) {
-					throw new Error($.ig.DataSourceLocale.locale.errorParsingArrays + e.message);
+					throw new Error(
+						$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingArrays") + e.message);
 				}
 			} else {
 				nData = this._transformCallback(data);
@@ -9626,7 +10091,7 @@
 				return;
 			}
 			var layoutKey = this.settings.treeDS.childDataKey,
-				propertyDataLevel = this.settings.treeDS.propertyDataLevel,
+				propertyDataLevel = this.settings.treeDS.dataLevelKey,
 				data = record[ layoutKey ];
 			if (data) {
 				if (level === undefined || level === null) {
@@ -9663,8 +10128,8 @@
 		_generateFlatDataRecursive: function (data, level, obj, parentCollapsed) {
 			var i, dataRow, dataLen, exp,
 				expDepth = this.settings.treeDS.initialExpandDepth,
-				propertyExp = this.settings.treeDS.propertyExpanded,
-				propertyDataLevel = this.settings.treeDS.propertyDataLevel,
+				propertyExp = this.settings.treeDS.expandedKey,
+				propertyDataLevel = this.settings.treeDS.dataLevelKey,
 				layoutKey = this.settings.treeDS.childDataKey,
 				applyPropertyDataLevel = (propertyDataLevel !== null && propertyDataLevel !== undefined),
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
@@ -9854,7 +10319,7 @@
 			//paramType="string" optional="false" The id of the row.
 			//returnType="bool" Returns true if expanded and false if not.*/
 			var rec = this.findRecordByKey(rowId),
-				propertyExp = this.settings.treeDS.propertyExpanded,
+				propertyExp = this.settings.treeDS.expandedKey,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
 			if (!rec || !applyPropertyExp) {
 				return;
@@ -9866,7 +10331,7 @@
 			paramType="string" optional="false" The id of the row.
 			paramType="function" Specifies a custom function to be called when the state of the row is changed.*/
 			var rec = this.findRecordByKey(rowId), expanded,
-				propertyExp = this.settings.treeDS.propertyExpanded,
+				propertyExp = this.settings.treeDS.expandedKey,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
 			if (!rec || !applyPropertyExp) {
 				return;
@@ -9890,7 +10355,7 @@
 				record = requestArgs.record;
 				callbackArgs = requestArgs.callbackArgs;
 				expand = requestArgs.expand;
-				level = record[ this.settings.treeDS.propertyDataLevel ];
+				level = record[ this.settings.treeDS.dataLevelKey ];
 				/* get layout data */
 				layoutData = this.processDataPerLevel(data, level + 1);
 				record[ layoutKey ] = layoutData;
@@ -9903,7 +10368,7 @@
 		Because of the one of the main constraint of the REST architecture - Stateless Interactions - client specific data should NOT be stored on the server(like expansion states) */
 		_encodeUrl: function () {
 			var params = this._super(),
-				s = this.settings.treeDS;
+				s = this.settings.treeDS, paramName;
 			if (s.persistExpansionStates) {
 				params = this._encodeExpansionStates(params);
 			}
@@ -9915,8 +10380,10 @@
 					params.fkRootValue = s.foreignKeyRootValue;
 				}
 			}
-			params.propertyDataLevel = s.propertyDataLevel;
-			params.propertyExpanded = s.propertyExpanded;
+			paramName = s.propertyDataLevel ? "propertyDataLevel" : "dataLevelKey";
+			params[ paramName ] = s[ paramName ];
+			paramName = s.propertyExpanded ? "propertyExpanded" : "expandedKey";
+			params[ paramName ] = s[ paramName ];
 			params.childDataKey = s.childDataKey;
 			params.initialExpandDepth = s.initialExpandDepth;
 			if (s.enableRemoteLoadOnDemand) {
@@ -9985,7 +10452,7 @@
 			path = this.getPathBy(record);
 			params = this._encodeUrl();
 			params.expand = expand;
-			url = s.dataSourceUrl + "?" + this._encodeUrlPath(path, record[ s.propertyDataLevel ]);
+			url = s.dataSourceUrl + "?" + this._encodeUrlPath(path, record[ s.dataLevelKey ]);
 			func = s.customEncodeUrlFunc;
 			if (func) {
 				if ($.type(func) !== "function") {
@@ -10055,7 +10522,7 @@
 			}
 		},
 		_onRecordToggled: function (record, expand, callbackArgs) {
-			var propertyExp = this.settings.treeDS.propertyExpanded,
+			var propertyExp = this.settings.treeDS.expandedKey,
 				filteredRecord = null, res = record, resObj,
 				paging = this.settings.paging, pkVal,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
@@ -10147,7 +10614,7 @@
 			*/
 			var s = this.settings.sorting, p = this.settings.paging, data, resetPaging = false;
 			if (fields === undefined || fields === null) {
-				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "noSortingFields"));
 			}
 			this._generatedFlatData = false;
 			if (s.applyToAllData && s.type === "local") {
@@ -10415,7 +10882,7 @@
 
 				var count = ds.pageCount();
 			```
-			returnType="number" total number fo pages
+			returnType="number" total number of pages
 			*/
 			var p = this.settings.paging;
 			if (p.enabled && p.type === "local" &&
@@ -10507,13 +10974,13 @@
 			keepFilterState, fieldExpressionsOnStrings) {
 			var i, j, expr = null, count = 0, skipRec = false, f = this.settings.filtering,
 				foundChildDS, subDS, t, k, schema, fields, tmpbool, allFieldsExpr, stringVal,
-				fExprLen, fExprStrLen, propertyExp = this.settings.treeDS.propertyExpanded,
+				fExprLen, fExprStrLen, propertyExp = this.settings.treeDS.expandedKey,
 				filteredData = [], childDS, layoutKey = this.settings.treeDS.childDataKey,
 				fts = this.settings.treeDS.filtering,
 				matchFiltering = fts.matchFiltering;
 			schema = this.schema();
 			if (schema === null || schema === undefined) {
-				throw new Error($.ig.DataSourceLocale.locale.filteringNoSchema);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "filteringNoSchema"));
 			}
 			if ($.type(fieldExpressions) === "string") {
 				expr = fieldExpressions;
@@ -10876,7 +11343,7 @@
 			for (i = 0; i < len; i++) {
 				d = data[ i ];
 				if (d[ search ] === key) {
-					objPath.parentRows.push({ row: d, level: d[ this.settings.treeDS.propertyDataLevel ] });
+					objPath.parentRows.push({ row: d, level: d[ this.settings.treeDS.dataLevelKey ] });
 					return data[ i ];
 				}
 				if (d[ dsLayoutKey ]) {
@@ -10890,7 +11357,7 @@
 							path: path + d[ search ],
 							parentRows: objPath.parentRows.concat({
 								row: d,
-								level: d[ this.settings.treeDS.propertyDataLevel ]
+								level: d[ this.settings.treeDS.dataLevelKey ]
 							})
 						}
 					});
@@ -11047,7 +11514,7 @@
 						treeDS: {
 							childDataKey: "Products",
 							initialExpandDepth: 10,
-							propertyDataLevel: "dataLevel"
+							dataLevelKey: "dataLevel"
 						}
 					});
 					ds.dataBind();
@@ -11120,11 +11587,15 @@
 					}
 				}
 			}
-			/* M.H. 19 August 2015 Fix for bug 204302: Paging is lost when dataSource.updateRow is called */
-			if (this.settings.paging.enabled && this.settings.paging.type !== "remote") {
-				this._generateFlatDataAndCountProperties();
+			/* M.H. 12 Apr 2017 Fix for bug 229997: When paging is enabled after editing a value in TreeGrid the tooltip shows incorrect text */
+			if (!this.settings.paging.enabled ||
+				!(t.type === "cell" || t.type === "row")) {
+				/* M.H. 19 August 2015 Fix for bug 204302: Paging is lost when dataSource.updateRow is called */
+				if (this.settings.paging.type !== "remote") {
+					this._generateFlatDataAndCountProperties();
+				}
+				this.generateFlatDataView();
 			}
-			this.generateFlatDataView();
 		},
 		_preprocessAddRow: function (row, index, origDs, at, data) {
 			/* This function is called from _addRow - before adding row in data.
@@ -11172,7 +11643,7 @@
 				childKey = this.settings.treeDS.childDataKey;
 			if (parentRec && pdata.newData && childKey !== null) {
 				parentRec[ childKey ] = pdata.newData;
-				if (parentRec[ this.settings.treeDS.propertyDataLevel ] === this.getDataBoundDepth()) {
+				if (parentRec[ this.settings.treeDS.dataLevelKey ] === this.getDataBoundDepth()) {
 					this._dataBoundDepth++;
 				}
 			}
@@ -11183,11 +11654,12 @@
 			if at is not defined insert at root level
 			*/
 			var ret = this._super.call(this, row, index, origDs, at);
-			if (at !== undefined && at !== null && !this.settings.treeDS.propertyDataLevel) {
+			if (at !== undefined && at !== null && !this.settings.treeDS.dataLevelKey) {
 				this._dataBoundDepth = null;
 				this.getDataBoundDepth();
 			}
 			return ret;
 		}
 	});
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

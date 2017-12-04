@@ -7,15 +7,33 @@
 *
 */
 
-(function ($) {
-    $.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	window.igRoot = window.igRoot || {};
+	/* jshint ignore:start */
+	if (window.$ !== undefined || typeof $ === "function") {
+		window.igRoot = window.$ || $;
+	}
+	/* jshint ignore:end */
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
+	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
+	window.$ig = window.$ig || window.igRoot.ig;
 
-	    $.extend($.ig.util, {
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
 
-		    locale: {
+	$ = $ || {};
+	$.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+
+	$.ig.locale.en.util = {
 			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
 			    currentBrowser: "Current browser: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -27,9 +45,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/"
-		    }
-	    });
-
-    }
-})(jQuery);
+			    safariDownload: "http://www.apple.com/safari/download/",
+			    defaultSummaryMethodLabelMin: "Min = ",
+			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelSum: "Sum = ",
+			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelCount: "Count = "
+	}
+	
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.en.util;
+	return igRoot;
+}));// REMOVE_FROM_COMBINED_FILES

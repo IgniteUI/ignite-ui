@@ -1,0 +1,295 @@
+/* ============
+  Scheduler
+============= */
+#scheduler {
+  background: @scheduler-bg;
+}
+
+
+
+.ui-igscheduler-core .ui-igscheduler-agendaview {
+  background-color: @scheduler-agenda-view-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+  background-color: transparent;
+  color: @scheduler-text-color;
+  border-color: @scheduler-border-color !important;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agendaview-message {
+  font-size: 1.1em;
+}
+
+.ui-igscheduler-header {
+  background:@scheduler-header-bg;
+  border-color: @scheduler-header-border-color;
+}
+
+.ui-igscheduler-tabs {
+  color: @scheduler-tabs-color;
+}
+
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+  color: @scheduler-tabs-selected-text-color;
+  .ui-icon {
+    color: @scheduler-tabs-selected-icons-color;
+  }
+}
+
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
+  color: @scheduler-tabs-selected-hover;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject {
+  color: @gray-darker;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time {
+  color: @gray-darker;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-of-week-header,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location {
+  color: @gray-darker;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected {
+  background-color: @scheduler-agenda-appt-selected;
+}
+
+
+// Vertical Separator
+.ui-igscheduler-core .ui-igscheduler-dayweek-vertical-separator,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
+  background-color: @scheduler-border-color;
+}
+
+// Horizontal Separator
+.ui-igscheduler-core .ui-igscheduler-dayweek-horizontal-separator,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator{
+  background-color: @scheduler-border-color;
+}
+
+
+.ui-igscheduler-agendaview .null {
+  background-color: @scheduler-border-color !important;
+}
+
+.ui-igscheduler-monthview {
+  box-shadow: 1px 2px 15px darken(@scheduler-shadow-color, 20%);
+  z-index: 1;
+}
+
+
+
+
+
+.ui-igscheduler-core .ui-igscheduler-monthview-dayday-selected {
+  background-color: @scheduler-month-view-dayday-selected-bg;
+  color: @scheduler-month-view-dayday-selected-color;
+
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today-indicator {
+  background: @scheduler-month-view-day-today-indicator-bg;
+}
+
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today span,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today {
+  color: @scheduler-month-view-day-today-color;
+}
+
+
+.ui-igscheduler-core .ui-igscheduler-monthview-month-header {
+  background-color: @scheduler-month-view-month-header-bg;
+  color: white;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-week-header {
+  color: @scheduler-text-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
+  background-color: @scheduler-month-view-day-leading-bg;
+  color:@scheduler-month-view-day-leading-color;
+}
+
+.ui-igscheduler-selectall {
+  background-color: @scheduler-selectall-bg;
+}
+
+
+.ui-igscheduler-navigator-disabled-date-range-button {
+  color: @scheduler-text-color;
+}
+
+.ui-igscheduler-navigator-next-button:hover {
+  color: @scheduler-text-color;
+}
+
+.ui-igscheduler-navigator-next-button:hover span:after,
+.ui-igscheduler-navigator-previous-button:hover span:after {
+  border-color: @brand-primary;
+}
+
+.ui-igscheduler-navigator-date-range-button {
+  color:@gray-dark;
+}
+
+.ui-igscheduler-navigator-back-button:hover,
+.ui-igscheduler-navigator-date-range-button:hover,
+.ui-igscheduler-navigator-forward-button:hover {
+  background-color: @scheduler-navigator-back-button-hover-bg;
+  color:@scheduler-text-color;
+}
+
+.ui-igscheduler-today-button {
+  color:@gray-dark;
+}
+
+.ui-igscheduler-today-button:hover {
+  background-color: @scheduler-today-button-hover-bg;
+  color: @scheduler-today-button-hover-color;
+}
+
+.ui-igscheduler-tabs:hover {
+  background-color: @scheduler-tabs-hover-bg;
+  color: @scheduler-tabs-hover-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
+  color: @scheduler-start-time-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+  color:@scheduler-end-time-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
+  color: @scheduler-selected-subject-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location-selected {
+  color: lighten(@scheduler-selected-location-color, 15%);
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
+  margin: 10px 0;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview {
+  background-color: @scheduler-month-view-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
+  background-color: @scheduler-activity-indicator-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
+  font-size: .75em;
+  padding: 0 0 0 3px!important;
+}
+
+
+.ui-igscheduler-tabs,
+.ui-igscheduler-today-button {
+  .ui-icon {
+    margin-top: -9px !important;
+  }
+}
+
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color : @scheduler-day-week-timeslot-selected;
+}
+
+
+
+/* Week & day views */
+
+.ui-igscheduler-core .ui-igscheduler-dayweekview {
+  background-color: @scheduler-day-week-view-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-allday-event-area {
+  background-color: @scheduler-all-day-event-area-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt {
+  background-color: @scheduler-day-week-appt-bg;
+}
+
+
+.ui-igscheduler-core .ui-igscheduler-allday-event-subject {
+  font-size: .5em;
+  background-color: @scheduler-all-day-event-subject-bg;
+  color: @scheduler-all-day-event-subject-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-location {
+  font-size: 1em;
+  background-color: @scheduler-day-week-appt-location-bg;
+  color: @scheduler-day-week-appt-location-color;
+}
+
+/*
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-color-bar {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-header-area {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-topleft-corner {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor-area {}
+
+*/
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-subject {
+  background-color: @scheduler-day-week-appt-subject-bg;
+  color: @scheduler-day-week-appt-subject-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-day-header {
+  font-size: .8em;
+  background-color: @scheduler-day-week-day-header-bg;
+  color: @scheduler-day-week-day-header-color;
+}
+
+
+.ui-igscheduler-monthview-day-selected {
+  background: @scheduler-month-view-day-selected;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-navigation-header-date-text {
+  font-size: 1em;
+  color: @scheduler-text-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-resource-header {
+  font-size: 1.1em;
+  background-color: transparent;
+  color: @scheduler-text-color;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot {
+  background-color: @scheduler-day-week-timeslot-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor {
+  font-size: .8em;
+  background-color: @scheduler-day-week-timeslot-descripto-bg;
+  color: @scheduler-text-color;
+}
+
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-working-hour {
+  background-color: @scheduler-day-week-timeslot-working-hour-bg;
+}
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: @scheduler-day-week-timeslot-selected-bg;
+}

@@ -45,3 +45,49 @@ bower_components
 
 #Build output
 dist
+
+# Webstrom config folder
+.idea/
+
+# CSS form .SCSS
+_variables.css
+_jquery-ui-overrides.css
+_mixins.css
+_ignite-ui-variables.css
+
+# CSS from .LESS
+variables.css
+src/css/themes/bootstrap3/default/framework.css
+mixins.css
+ignite-ui-variables.css
+
+src/css/themes/prepros.cfg
+src/css/themes/metro/overrides.css
+src/css/themes/ios/overrides.css
+src/css/themes/infragistics2012/overrides.css
+src/css/themes/infragistics/overrides.css
+src/css/themes/bootstrap3/yeti/overrides.css
+src/css/themes/bootstrap3/superhero/overrides.css
+src/css/themes/bootstrap3/flatly/overrides.css
+src/css/themes/bootstrap3/default/overrides.css
+
+bootstrap3 theme samples/hierarchical-grid/overview.html
+bootstrap3 theme samples/hierarchical-grid/edit-dialog.html
+bootstrap3 theme samples/hierarchical-grid/cell-merging.html
+bootstrap3 theme samples/data-grid/theme-preview.html
+bootstrap3 theme samples/data-grid/selection.html
+bootstrap3 theme samples/data-grid/sch.html
+bootstrap3 theme samples/data-grid/performance.html
+bootstrap3 theme samples/data-grid/overview.html
+bootstrap3 theme samples/data-grid/multi-row-layout-editig.html
+bootstrap3 theme samples/data-grid/group-by.html
+bootstrap3 theme samples/data-grid/filtering.html
+bootstrap3 theme samples/data-grid/exele-exporting.html
+bootstrap3 theme samples/data-grid/editing-customization.html
+bootstrap3 theme samples/data-grid/column-managment.html
+bootstrap3 theme samples/data-grid/column-fixing.html
+bootstrap3 theme samples/data-grid/callapsible-columns.html
+bootstrap3 theme samples/Pivot-grid/visualization.html
+bootstrap3 theme samples/Editors/icons-and-styles.html
+bootstrap3 theme samples/Data-visualization/financial-series.html
+bootstrap3 theme samples/Data-visualization/chart-types.html

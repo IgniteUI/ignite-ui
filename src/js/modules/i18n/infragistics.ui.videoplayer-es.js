@@ -7,15 +7,20 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
+	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
 
-    if (!$.ig.VideoPlayer) {
-	    $.ig.VideoPlayer = {};
-
-	    $.extend($.ig.VideoPlayer, {
-
-		    locale: {
+	$.ig.locale.es.VideoPlayer = {
 			    liveStream: "Vídeo en directo",
 			    live: "Directo",
 			    paused: "Pausado",
@@ -50,9 +55,9 @@
 			    relatedVideos: 'VÍDEOS RELACIONADOS',
 			    replayButton: 'Volver a reproducir',
 			    replayTooltip: 'Haga clic para volver a reproducir el último vídeo.',
-				noCommercials: 'Browser controls does not support commercials'
-		    }
-	    });
+				noCommercials: 'Los controles del explorador no admiten publicidad'
+	}
 
-    }
-})(jQuery);
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.es.VideoPlayer;
+	return $.ig.locale.es.VideoPlayer;
+}));// REMOVE_FROM_COMBINED_FILES

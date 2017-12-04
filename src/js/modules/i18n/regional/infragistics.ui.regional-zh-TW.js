@@ -1,5 +1,14 @@
 ﻿﻿/* China (Taiwan) */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -36,12 +45,14 @@
 	    dateTimePattern: 'yyyy/M/d tt hh:mm',
 	    timePattern: 'tt hh:mm',
 	    timeLongPattern: 'tt hh:mm:ss',
+		dateTitleFullPattern: 'yy MM dd',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericMaxDecimals: 2,
 	    currencyNegativePattern: '-$n',
 	    currencySymbol: 'NT$'
     };
-    if ($.ig.setRegionalDefault) {
-	    $.ig.setRegionalDefault('zh-TW');
+    if ($.ig.util && $.ig.util.changeGlobalRegional) {
+	    $.ig.util.changeGlobalRegional('zh-TW');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES
