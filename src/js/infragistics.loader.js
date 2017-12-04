@@ -2606,26 +2606,6 @@ $.ig._loadWorkItem.prototype = {
 		}
 	},
 
-	_loadAllFeatures: function (type) {
-		var i, j,
-			len = this._loader._resources.length, jlen = 0,
-			scriptData,
-			item,
-			loadingEntity = "ALL",
-			res;
-
-		for (i = 0; i < len; i++) {
-			scriptData = this._loader._resources[ i ];
-			this._loadDependency(scriptData, loadingEntity, type);
-			res = (type === "script" ? scriptData.scripts : scriptData.css);
-			res = res || [  ];
-			jlen = res.length;
-			for (j = 0; j < jlen; j++) {
-				item = res[ j ];
-				this._queueItem(item, loadingEntity, type, scriptData.priority);
-			}
-		}
-	},
 	loadWidgetResources: function (widgetName, callback) {
 		if (this._loadingEntities[ widgetName ] !== undefined) {
 			this._loadingEntities[ widgetName ].call.push(callback);
@@ -2643,22 +2623,6 @@ $.ig._loadWorkItem.prototype = {
 
 	loadWidgetScripts: function (widgetName) {
 		this._loadFeatures("script", widgetName);
-	},
-
-	loadAllScripts: function () {
-		this._loadAllFeatures("script");
-	},
-
-	loadAllCss: function () {
-		this._loadAllFeatures("css");
-	},
-
-	loadAllResources: function (callback) {
-		var loadingEntity = "ALL";
-		this._loadingEntities[ loadingEntity ] = { name: loadingEntity, call: [ callback ], queue: [  ] };
-		this._loadAllFeatures("css");
-		this._loadAllFeatures("script");
-		this._loadMonitor();
 	},
 
 	_queueItem: function (fileName, loadingEntity, itemType, itemPriority) {
