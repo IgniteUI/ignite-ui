@@ -1673,7 +1673,6 @@
 			$ddList = $editor.igTextEditor("dropDownContainer");
 			ok(!$input.is(":focus"), "The input should not be focused");
 			$ddButton.click();
-			console.log("Client Height: " + $ddList[0].clientHeight + " Scroll height: " + $ddList[0].scrollHeight)
 			ok($ddList[0].clientHeight >= $ddList[0].scrollHeight, "Scrollbar is visible!");	
 			
 			$editor.remove();
@@ -1683,7 +1682,6 @@
 			$ddList = $editor.igTextEditor("dropDownContainer");
 			ok(!$input.is(":focus"), "The input should not be focused");
 			$ddButton.click();
-			console.log("Client Height: " + $ddList[0].clientHeight + " Scroll height: " + $ddList[0].scrollHeight)
 			ok($ddList[0].clientHeight >= $ddList[0].scrollHeight, "Scrollbar is not visible!");	
 			
 			$editor.remove();
@@ -1693,7 +1691,6 @@
 			$ddList = $editor.igTextEditor("dropDownContainer");
 			ok(!$input.is(":focus"), "The input should not be focused");
 			$ddButton.click();
-			console.log("Client Height: " + $ddList[0].clientHeight + " Scroll height: " + $ddList[0].scrollHeight)
 			ok($ddList[0].clientHeight < $ddList[0].scrollHeight, "Scrollbar is not visible!");	
 			
 			$editor.remove();
