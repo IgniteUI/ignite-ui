@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tree-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.tree.js"></script>
 	
@@ -39,8 +40,8 @@
 		}
 		
 		var results = [{
-				Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
-					{ Text: 'Sandwiches', Nodes: [
+				Text: 'Food', __expanded__: true, __checked__: "on", Target: "_blank", Nodes: [
+					{ Text: 'Sandwiches', __expanded__: true, Nodes: [
 						{ Text: 'Ham & Cheese' }
 					]},
 					{ Text: 'Fish' },
@@ -145,6 +146,23 @@
 					"Children": []
 				}]
 			},
+			notWorkingResponse3 = {
+				"Items": [{
+					"Id": "1",
+					"Name": "PARENT",
+					"Description": "",
+					"Links": {
+						"Self": "https://test",
+						"Databases": "https://test",
+						"UnitClasses": "https://test"
+					},
+					"Children": {
+						"__deferred": {
+							"uri": "/api/jsonpitems"
+						}
+					}
+				}]
+			},
 			notWorkingResponse2 = {
 				"Items": [{
 					"Id": "1",
@@ -166,12 +184,16 @@
 					}
 				}]
 			};
+		var jsonpcallback = $.noop;
 		$(document).ready(function () {
 			$.mockjaxSettings.logging = 0;  // only critical error messages
+			$.ajaxSettings.jsonpCallback = function() {
+				return "jsonpcallback";
+			};    
 			$.mockjax({
 				url: '/api/items',
 				contentType: 'text/json',
-
+				responseTime: 0,
 				response: function () {
 					this.responseText = notWorkingResponse1;
 				}
@@ -180,8 +202,27 @@
 			$.mockjax({
 				url: '/api/items?*',
 				contentType: 'text/json',
+				responseTime: 0,
 				response: function () {
 					this.responseText = notWorkingResponse2;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems',
+				contentType: 'text/json',
+				responseTime: 0,
+				response: function () {
+					this.responseText = notWorkingResponse3;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems?*',
+				contentType: "application/json",
+				responseTime: 0,
+				response: function (settings) {
+					jsonpcallback(notWorkingResponse3);
 				}
 			});
 
@@ -189,6 +230,7 @@
 				$(function () {
 					$('#tree2').igTree({
 						dataSource: results,
+						checkboxMode: "triState",
 						hotTracking: false
 					});
 					$('#tree3').igTree({
@@ -223,6 +265,7 @@
 						dataSource: results2,
 						loadOnDemand: true,
 						checkboxMode: 'triState',
+						dragAndDrop: true,
 						bindings: {
 							textKey: 'Text',
 							valueKey: 'Value',
@@ -251,6 +294,7 @@
 					});
 					$('#tree5').igTree({
 						dataSource: results2,
+						checkboxMode: "biState",
 						bindings: {
 							textKey: 'Text',
 							valueKey: 'Value',
@@ -432,64 +476,91 @@
 				notEqual(node.hasClass('ui-igtree-parentnode'), true, 'A node with no children has class applied for nodes with children');
 			});
 			test(testId_4, function () {
-				var node = $('#tree12').igTree('nodeByPath', '1'), expander = node.children('[data-role=expander]');
+				var node = $('#tree12').igTree('nodeByPath', '1'), expander = node.children('[data-role=expander]'),
+					data = $('#tree12').igTree('nodeDataFor', '1'), binding = $('#tree12').igTree('option', 'bindings');
 				ok(node.length > 0, 'Node did not retrieve correctly');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), false, 'Node is initially expanded');
+				equal(data[ binding.expandedKey ], false, 'Node data is initially expanded');
 				$('#tree12').igTree('toggle', node);
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not expand after toggle');
+				equal(data[ binding.expandedKey ], true, 'Node data did not expand after toggle');
 				$('#tree12').igTree('toggle', node);
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), false, 'Node did not collapse after toggle');
+				equal(data[ binding.expandedKey ], false, 'Node data did not collapse after toggle');
 				$('#tree12').igTree('collapse', node);
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), false, 'Node performed collapse in collapsed state');
+				equal(data[ binding.expandedKey ], false, 'Node data performed collapse in collapsed state');
 				$('#tree12').igTree('expand', node);
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not expand after calling expand');
+				equal(data[ binding.expandedKey ], true, 'Node data did not expand after calling expand');
 				$('#tree12').igTree('expand', node);
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node performed expand in expanded state');
+				equal(data[ binding.expandedKey ], true, 'Node data performed expand in expanded state');
 				$('#tree12').igTree('option', 'singleBranchExpand', true);
-				var node2 = $('#tree12').igTree('nodeByPath', '2'), expander2 = node2.children('[data-role=expander]');
+				var node2 = $('#tree12').igTree('nodeByPath', '2'), expander2 = node2.children('[data-role=expander]'),
+					data2 = $('#tree12').igTree('nodeDataFor', '2');
 				equal($.ig.TestUtil.boolParse(expander2.attr('data-exp')), false, 'Node is initially expanded');
+				equal(data2[ binding.expandedKey ], false, 'Node data is initially expanded');
 				$('#tree12').igTree('expand', node2);
 				equal($.ig.TestUtil.boolParse(expander2.attr('data-exp')), true, 'Node did not expand after calling expand');
+				equal(data2[ binding.expandedKey ], true, 'Node data did not expand after calling expand');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), false, 'Node did not collapse after expanding another node on the same level with singleBranchExpand=true');
+				equal(data[ binding.expandedKey ], false, 'Node data did not collapse after expanding another node on the same level with singleBranchExpand=true');
 				expander.click();
 				equal($.ig.TestUtil.boolParse(expander2.attr('data-exp')), false, 'Node did not expand after calling expand');
+				equal(data2[ binding.expandedKey ], false, 'Node data did not expand after calling expand');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not collapse after expanding another node on the same level with singleBranchExpand=true');
-				expander.click();
-				equal($.ig.TestUtil.boolParse(expander2.attr('data-exp')), false, 'Node did not expand after calling expand');
+				equal(data[ binding.expandedKey ], true, 'Node data did not collapse after expanding another node on the same level with singleBranchExpand=true');
+				expander2.click();
+				equal($.ig.TestUtil.boolParse(expander2.attr('data-exp')), true, 'Node did not expand after calling expand');
+				equal(data2[ binding.expandedKey ], true, 'Node data did not expand after calling expand');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), false, 'Node did not collapse after expanding another node on the same level with singleBranchExpand=true');
+				equal(data[ binding.expandedKey ], false, 'Node data did not collapse after expanding another node on the same level with singleBranchExpand=true');
 				$('#tree12').igTree('expandToNode', '0_4_0');
 				node = $('#tree12').igTree('nodeByPath', '0');
 				expander = node.children('[data-role=expander]');
+				data = $('#tree12').igTree('nodeDataFor', '0');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not expand with expandToNode');
+				equal(data[ binding.expandedKey ], true, 'Node did not expand with expandToNode');
 				node = $('#tree12').igTree('nodeByPath', '0_4');
+				data = $('#tree12').igTree('nodeDataFor', '0_4');
 				expander = node.children('[data-role=expander]');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not expand with expandToNode');
+				equal(data[ binding.expandedKey ], true, 'Node did not expand with expandToNode');
 				$('#tree12').igTree('expandToNode', '0_4_1', true);
 				node = $('#tree12').igTree('nodeByPath', '0');
+				data = $('#tree12').igTree('nodeDataFor', '0');
 				expander = node.children('[data-role=expander]');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not expand with expandToNode');
+				equal(data[ binding.expandedKey ], true, 'Node did not expand with expandToNode');
 				node = $('#tree12').igTree('nodeByPath', '0_4');
+				data = $('#tree12').igTree('nodeDataFor', '0_4');
 				expander = node.children('[data-role=expander]');
 				equal($.ig.TestUtil.boolParse(expander.attr('data-exp')), true, 'Node did not expand with expandToNode');
+				equal(data[ binding.expandedKey ], true, 'Node did not expand with expandToNode');
 				node = $('#tree12').igTree('nodeByPath', '0_4_1');
 				ok($("#tree12").igTree("isSelected", node), 'Node is not selected after expandToNode with selection.');
 				$("#tree12").igTree("collapse", $('#tree12').igTree('nodeByPath', '0_4'));
 			});
 			test(testId_5, function () {
-				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]');
+				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
+					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
 				ok(checkbox.length > 0, 'Checkbox was not retrieved correctly');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-igcheckbox-normal');
 				equal(checkbox.attr('data-chk'), 'off', 'The data-chk attribute was not initialized properly');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is not initialized properly.');
 				var icon = checkbox.children('span');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-off');
 			});
 			test(testId_6, function () {
-				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]');
+				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
+					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate of the checkbox is rendered as on');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is rendered as on');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -499,9 +570,12 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				equal(checkbox.attr('data-chk'), 'on', 'The checkstate did not toggle to on');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not toggle to on');
 				node = node.find('ul > li:first');
+				data = $('#tree14').igTree('nodeDataFor', '0_0');
 				checkbox = node.children('[data-role=checkbox]');
 				equal(checkbox.attr('data-chk'), 'off', 'Checkstate has cascaded in biState');
+				equal(data[ binding.checkedKey ], "off", 'Checkstate data has cascaded in biStaten');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -511,6 +585,7 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				equal(checkbox.attr('data-chk'), 'on', 'The checkstate of the checkbox is rendered as on');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data of the checkbox is rendered as on');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -520,15 +595,20 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-off');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate did not return to off');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not return to off');
 				node = $('#tree14').igTree('nodeByPath', '0');
+				data = $('#tree14').igTree('nodeDataFor', '0')
 				$('#tree14').igTree('toggleCheckstate', node);
 				checkbox = node.children('[data-role=checkbox]');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate did not return to off');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not return to off');
 			});
 			test(testId_7, function () {
-				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]');
+				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
+					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
 				$('#tree14').igTree('option', 'checkboxMode', 'triState');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate of the checkbox is rendered as on');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is rendered as on');
 				var selector = $('#tree14').igTree('checkedNodes');
 				equal(selector.length, 0, 'The checkboxes did not cascade or the API method returned wrong');
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
@@ -542,9 +622,12 @@
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				equal(checkbox.attr('data-chk'), 'on', 'The checkstate did not toggle to on');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not toggle to on');
 				selector = $('#tree14').igTree('checkedNodes');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
 				node = $('#tree14').igTree('nodeByPath', '0_1');
+				data = $('#tree14').igTree('nodeDataFor', '0_1');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not cascade properly.');
 				checkbox = node.children('[data-role=checkbox]');
 				icon = checkbox.children('span');
 				$('#tree14').igTree('toggleCheckstate', node);
@@ -554,19 +637,29 @@
 				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
 				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not cascade properly');
 				node = $('#tree14').igTree('nodeByPath', '0');
+				data = $('#tree14').igTree('nodeDataFor', '0');
 				checkbox = node.children('[data-role=checkbox]');
 				icon = checkbox.children('span');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon');
 				$.ig.TestUtil.checkClass(icon, 'ui-icon-check');
 				$.ig.TestUtil.checkClass(icon, 'ui-igcheckbox-normal-on');
 				$.ig.TestUtil.checkClass(icon, 'ui-state-disabled');
+				equal(data[ binding.checkedKey ], "partial", 'The checkstate data of the checkbox is node partial');
 				$('#tree14').igTree('toggleCheckstate', node);
 				selector = $('#tree14').igTree('uncheckedNodes');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not toggle to off');
+				data = $('#tree14').igTree('nodeDataFor', '0_0');
+				equal(data[ binding.checkedKey ], "off", 'The checkstate data did not cascade properly');
 				$('#tree14').igTree('toggleCheckstate', node);
 				node = $('#tree14').igTree('nodeByPath', '0_0_0');
+				data = $('#tree14').igTree('nodeDataFor', '0_0_0');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not cascade properly');
 				$('#tree14').igTree('toggleCheckstate', node);
+				data = $('#tree14').igTree('nodeDataFor', '0_0');
+				equal(data[ binding.checkedKey ], "partial", 'The checkstate data did not cascade properly');
 				selector = $('#tree14').igTree('checkedNodes');
 				equal(selector.length, 3, 'The checkboxes did not cascade ot the API method returned wrong');
 				selector = $('#tree14').igTree('uncheckedNodes');
@@ -590,7 +683,9 @@
 				node = $('#tree14').igTree('nodeByPath', '0_0_0');
 				$('#tree14').igTree('toggleCheckstate', node);
 				selector = $('#tree14').igTree('checkedNodes');
+				data = $('#tree14').igTree('nodeDataFor', '0');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(data[ binding.checkedKey ], "on", 'The checkstate data did not cascade properly');
 			});
 			test(testId_8, function () {
 				var nodePath = '0', node = $('#tree12').igTree('nodeByPath', nodePath), anchor = node.children('a');
@@ -1192,6 +1287,12 @@
 				}
 				var node = $("#tree2").igTree("nodeByPath", "0");
 				equal($("#tree2").igTree("isExpanded", node), true, "The node is not originally expanded");
+				var expandedKey = "__expanded__",
+					checkedKey = "__checked__",
+					nodeData = $("#tree2").igTree("nodeDataFor", "0");
+				equal(nodeData[expandedKey], true, "The data was not correct");
+				equal(nodeData[checkedKey], "on", "The data was not correct");
+				equal($("#tree2").igTree("checkState", node), "on", "The node is not originally expanded");
 				equal(node.children("a").attr("target"), "_blank", "The node is not with the correct target attribute.");
 			});
 			test(testId_9, function () {
@@ -1207,6 +1308,9 @@
 						textXPath: '@Text',
 						valueKey: 'Value',
 						valueXPath: '@Value',
+						navigateUrlKey: "NavigateUrl",
+						navigateUrlXPath: "@NavigateUrl",
+						targetKey: "Target",
 						imageUrlKey: 'ImageUrl',
 						imageUrlXPath: '@ImageUrl',
 						childDataProperty: 'Folder',
@@ -1417,20 +1521,22 @@
 				ok(anchor.has('span'), 'First level template did not render');
 				equal(anchor.children('span').html(), 'Unit testing: ');
 				equal(anchor.attr("target"), "_blank", 'The target attribute was not rendered.');
-				$("#tree5").igTree("applyChangesToNode", node, {Text: "Changed"});
+				$("#tree5").igTree("applyChangesToNode", node, {Text: "Changed", __expanded__: true});
 				anchor = node.children('a');
 				ok(anchor.has('span'), 'First level template did not render');
 				equal(anchor.children('span').html(), 'Changed: ');
+				equal($("#tree5").igTree("isExpanded", node), true, "The expanded key did not take effect.");
 				node = $('#tree5').igTree('nodeByPath', '0_0');
 				anchor = node.children('a');
 				equal(anchor.attr("href"), "http://somehref", "The template href was not rendered.");
 				equal(anchor.attr("target"), "haha", "The template target was not rendered.");
 				ok(anchor.has('font'), 'Second level template did not render');
 				equal(anchor.children('font').html(), 'Unit testing1: ');
-				$("#tree5").igTree("applyChangesToNode", node, {Text1: "Changed1"});
+				$("#tree5").igTree("applyChangesToNode", node, {Text1: "Changed1", __checked__: "on"});
 				anchor = node.children('a');
 				ok(anchor.has('font'), 'Second level template did not render');
 				equal(anchor.children('font').html(), 'Changed1: ');
+				equal($("#tree5").igTree("checkState", node), "on", "The checked key did not take effect.");
 				node = $('#tree5').igTree('nodeByPath', '0_0_0');
 				anchor = node.children('a');
 				equal(anchor.attr("href"), "#", "The template href was not rendered.");
@@ -1578,9 +1684,34 @@
 							valueKey: 'Id',
 							childDataProperty: 'Children'
 						}
-					}), node;
+					}), node,
+					tree = $("<div id='mock' />").appendTo(document.body).igTree({
+						dataSourceUrl: '/api/jsonpitems',
+						dataSourceType: 'remoteUrl',
+						loadOnDemand: true,
+						dragAndDrop: true,
+						checkboxMode: "triState",
+						responseDataKey: "Items",
+						//nodePopulating: function (event, ui) {
+						//	$remoteLOD.igTree('option', 'dataSourceUrl', '/api/items?id=' + ui.data.id);
+						//	return true;
+						//},
+						bindings: {
+							textKey: 'Name',
+							valueKey: 'Id',
+							childDataProperty: 'Children'
+						}
+					});
 				stop();
-				
+
+				tree.one("igtreenodepopulated", function (evt, ui) {
+					ok(ui.data.Children.length > 0);
+				});
+				tree.one("igtreerendered", function () {
+					tree.igTree("toggleCheckstate", tree.find("li[data-role=node]:first"));
+					tree.igTree("expand", tree.find("li[data-role=node]:first"));
+				});
+
 				$remoteLOD.one("igtreerendered", function (evt, ui) {
 					start();
 					node = $remoteLOD.find('li[data-role=node]:first');
@@ -1608,7 +1739,7 @@
 			testId_5 = "igTree checkstateChanging/Changed events";
 			testId_6 = "igTree node populating/populated events";
 			
-			test(testId_1, function () {
+			test(testId_1, 6, function () {
 				var dataBoundFired = false;
 				$('#tree8').igTree({
 					dataBinding: function (event, args) {
@@ -1624,7 +1755,7 @@
 					}
 				});
 			});
-			test(testId_2, function () {
+			test(testId_2, 6, function () {
 				var dataRendered = false, dataRendering = false;
 				$('#tree9').igTree({
 					rendering: function (event, args) {
@@ -1814,9 +1945,9 @@
 					}
 				});
 				var node = $('#tree6').igTree('nodeByPath', '0');
-				$('#tree6').igTree('toggleCheckstate', node);
+				$('#tree6').igTree('toggleCheckstate', node, true);
 				var node = $('#tree6').igTree('nodeByPath', '0_0');
-				$('#tree6').igTree('toggleCheckstate', node);
+				$('#tree6').igTree('toggleCheckstate', node, true);
 			});
 			test(testId_6, function () {
 				var populatingFired = false, populatedFired = false, renderingFired = false, renderedFired = false;
@@ -1960,7 +2091,7 @@
 				ok($('#tree1').igTree('isChecked', node), 'The checkbox of the new node did not render as checked');
 			});
 			
-			test(testId_3, function () {
+			test(testId_3, 12, function () {
 				var path = '0_0',
 					node = $('#tree1').igTree('nodeByPath', path),
 					nodeCount = $('#tree1').find('li[data-role=node]').length,
@@ -2057,6 +2188,17 @@
 				equal(nodeCount, 3, 'Node count did not match after remove.');
 				equal(data.length, 3, 'There are less than 3 data members at root level.');
 			});
+
+			test("removeAt until all children are gone", 1, function () {
+				var path = '0_0',
+					node = $('#tree4').igTree('nodeByPath', "0"),
+					children = $('#tree4').igTree('children', node);
+
+				$('#tree4').igTree('removeAt', path);
+				$('#tree4').igTree('removeAt', path);
+				children = $('#tree4').igTree('children', node);
+				equal(children.length, 0, 'The first root node does not have 0 children.');
+			})
 			
 			test(testId_6, function () {
 				var node = $('#tree3').igTree('nodeByPath', '0'), nodeCount = $('#tree3').find('li[data-role=node]').length, childCount = node.find('li[data-role=node]').length, binding = $('#tree3').igTree('option', 'bindings').bindings;
@@ -2169,9 +2311,15 @@
 						},
 						bindings: bindings,
 						dragStart: function (event, ui) {
+							if (ui.element.attr("data-path") === "2") {
+								return;
+							}
 							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag start was incorrect.");
 						},
 						drag: function (event, ui) {
+							if (ui.element.attr("data-path") === "2") {
+								return false;
+							}
 							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag was incorrect.");
 						},
 						nodeDropping: function (event, ui) {
@@ -2208,6 +2356,28 @@
 				equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
 				equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
 				equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+				node = tree.find("li[data-path='2']");
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree.find("ul:first > li[data-role=node]:eq(1) > a"));
+				equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
+				equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
+				equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
+				equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
+				equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
+				equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+
+				treeobj = tree.data("igTree");
+				var x = tree.igTree("children", tree.find("li[data-path=0]")).length,
+					y = tree.igTree("children", tree.find("li[data-path=1]")).length;
+				node = tree.find("li[data-path=0]");
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree.find("li[data-path=1] > a"));
+				equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
+				equal(treeobj._validationObject.target[0], tree.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree, tree.find("li[data-path=1] > a"));
+				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+				equal(tree.igTree("children", tree.find("li[data-path=1]")).length, y, "Target node in tree didn't update correctly.");
+
 				tree.igTree("destroy").remove();
 				
 				tree = $("<div></div>").appendTo(document.body).igTree({
@@ -2318,12 +2488,22 @@
 				});
 				
 				node = tree.find("li[data-path=0]");
+				settings = tree.igTree("option", "dragAndDropSettings");
+				settings.dragAndDropMode = "move";
 				y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
 				$.ig.TestUtil.simulateDragStart(node);
 				$.ig.TestUtil.simulateDrag(node, tree5);
 				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 				$.ig.TestUtil.simulateDrop(tree5, tree5);
 				equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, y, "Target node in tree5 didn't update correctly.");
+
+				node = tree.find("li[data-path=0]");
+				settings.dragAndDropMode = "";
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree5);
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree5, tree5);
+				equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, 9, "Target node in tree5 didn't update correctly.");
 				
 				tree.igTree("destroy").remove();
 				tree2.igTree("destroy").remove();
@@ -2478,6 +2658,7 @@
 				node = tree.igTree('nodeByPath', '0_0');
 				ok(!tree.igTree("isChecked", node), "The node is still checked");
 				tree.igTree('addNode', { Text: 'b' }, node);
+				tree.igTree('addNode', null, node);
 				node = tree.igTree('nodeByPath', '0_0_0');
 				tree.igTree("toggleCheckstate", node);
 				tree.igTree("removeAt", '0_0_1');

@@ -32,7 +32,7 @@
 	}
 }
 (function ($) {
-	$.ig = (window.$ && window.$.ig) || $.ig || { _isNamespace: true };
+	$.ig = (window.jQuery && window.jQuery.ig) || $.ig || { _isNamespace: true };
 	window.$ig = window.$ig || $.ig;
 
 	$.fn.startsWith = function (str) {
@@ -133,6 +133,20 @@
 		reg = $.ig.getRegionalOptions(reg);
 		var value = reg[ key ];
 		return (value === undefined) ? $.ig.regional.defaults[ key ] : value;
+	};
+
+	$.ig.encode = function (value) {
+		/* Encode string.
+			paramType="string" The string to be encoded.
+			returnType="string" Returns the encoded string.
+		*/
+		return value !== null && value !== undefined ?
+			value.toString()
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/'/g, "&#39;")
+			.replace(/"/g, "&#34;") : "";
 	};
 
 	$.ig.millisecondsToString = function(milliseconds, flag) {
@@ -306,11 +320,13 @@
 			result = year.toString();
 		}
 		return result;
-
 	};
 
 	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
-		var s = "<span class='ui-igcheckbox-container' style='display:" +
+		var s;
+		/* P.Zh. 11 August 2017 - Fixing bug #238125 When headerText contains HTML string the column cell data is broken (contains escaped html) */
+		labelText = $.ig.encode(labelText);
+		s = "<span class='ui-igcheckbox-container' style='display:" +
 			display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 			val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
 		s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
@@ -663,61 +679,6 @@
 		}
 		return (val || val === 0) ? val : "&nbsp;";
 	};
-	$.ig._regional = {
-		monthNames: [ "January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December" ],
-		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday",
-			"Thursday", "Friday", "Saturday" ],
-		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-		am: "AM",
-		pm: "PM",
-		datePattern: "M/d/yyyy",
-		dateLongPattern: "dddd, MMMM dd, yyyy",
-		dateTimePattern: "M/d/yyyy h:mm tt",
-		timePattern: "h:mm tt",
-		timeLongPattern: "h:mm:ss tt",
-		dateTitleFullPattern: "dd MM yy",
-		dateTitleMonthPattern: "MM yy",
-		negativeSign: "-",
-		numericNegativePattern: "-$n",
-		numericDecimalSeparator: ".",
-		numericGroupSeparator: ",",
-		numericGroups: [ 3 ],
-		numericMaxDecimals: 2,
-		numericMinDecimals: 0,
-		currencyPositivePattern: "$n",
-		currencyNegativePattern: "-$n",
-		currencySymbol: "$",
-		currencyDecimalSeparator: ".",
-		currencyGroupSeparator: ",",
-		currencyGroups: [ 3 ],
-		currencyMaxDecimals: 2,
-		currencyMinDecimals: 2,
-		percentPositivePattern: "n$",
-		percentNegativePattern: "-n$",
-		percentSymbol: "%",
-		percentDecimalSeparator: ".",
-		percentGroupSeparator: ",",
-		percentGroups: [ 3 ],
-		percentDisplayFactor: 100,
-		percentMaxDecimals: 2,
-		percentMinDecimals: 2
-	};
-	$.ig.regional = $.ig.regional || {};
-	$.ig.regional.defaults = $.ig._regional;
-	$.ig.setRegionalDefault = function (regional) {
-		if ($.ui && $.ui.igEditor) {
-			$.ui.igEditor.setDefaultCulture(regional);
-		} else {
-			$.ig.regional.defaults = $.extend($.ig._regional,
-				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
-		}
-		if ($.ig && $.ig.util) {
-			$.ig.util.regional = regional;
-		}
-	};
 
 	// get max zIndex of ui-dialogs - method is usually called by feautures for configuring zIndex of modal dialogs(like filtering, feature chooser, hiding, etc.)
 	$.ig.getMaxZIndex = function (id) {
@@ -731,6 +692,21 @@
 			}
 		});
 		return maxZ;
+	};
+
+	$.ig.getZIndex = function (elem) {
+		var position, value;
+		while (elem.length && elem[ 0 ] !== document) {
+			position = elem.css( "position" );
+			if (position === "absolute" || position === "relative" || position === "fixed") {
+				value = parseInt( elem.css( "zIndex" ), 10 );
+				if ( !isNaN( value ) && value !== 0 ) {
+					return value;
+				}
+			}
+			elem = elem.parent();
+		}
+		return 0;
 	};
 
 	// generate unique identifiers
@@ -1095,9 +1071,11 @@
 			}
 
 			$("<div></div>").addClass("ui-html5-current-browser-label")
+				.attr("data-localeid", "currentBrowser")
 				.html(locale.currentBrowser.replace("{0}", browserUnsupported))
 				.appendTo(container);
 			$("<div></div>").addClass("ui-html5-non-html5-text")
+				.attr("data-localeid", "unsupportedBrowser")
 				.html(locale.unsupportedBrowser).appendTo(container);
 			ul = $("<ul></ul>").addClass("ui-html5-browsers-list").appendTo(container);
 			$("<a></a>").attr("href", locale.chromeDownload).attr("target", "_blank")

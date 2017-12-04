@@ -36,7 +36,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -606,6 +606,128 @@
 				```
 			*/
 			trackFocus: true,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the close button in the dialog. Use option [locale.closeButtonTitle](ui.igdialog#options:locale.closeButtonTitle).*/
+			closeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the minimize button in the dialog. Use option [locale.minimizeButtonTitle](ui.igdialog#options:locale.minimizeButtonTitle).*/
+			minimizeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the maximize button in the dialog. Use option [locale.minimizeButtonTitle](ui.igdialog#options:locale.minimizeButtonTitle).*/
+			maximizeButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the pin button in the dialog. Use option [locale.pinButtonTitle](ui.igdialog#options:locale.pinButtonTitle).*/
+			pinButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the unpin button in the dialog. Use option [locale.unpinButtonTitle](ui.igdialog#options:locale.unpinButtonTitle).*/
+			unpinButtonTitle: undefined,
+			/* @Removed@ type="string" This option has been removed as of 2017.2 Volume release.
+			Gets/Sets the title/tooltip for the restore button in the dialog.  Use option [locale.restoreButtonTitle](ui.igdialog#options:locale.restoreButtonTitle).*/
+			restoreButtonTitle: undefined,
+			locale: {
+				/* type="string" Gets/Sets the title/tooltip for the close button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						closeButtonTitle : "Close"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").closeButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { closeButtonTitle: "Close"});
+				```
+				*/
+				closeButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the minimize button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						minimizeButtonTitle : "Minimize"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").minimizeButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { minimizeButtonTitle: "Minimize"});
+				```
+				*/
+				minimizeButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the maximize button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						maximizeButtonTitle : "Maximize"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").maximizeButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { maximizeButtonTitle: "Maximize"});
+				```
+				*/
+				maximizeButtonTitle: undefined,
+				/* type="string"  Gets/Sets the title/tooltip for the pin button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						pinButtonTitle : "Pin"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").pinButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { pinButtonTitle: "Pin"});
+				```
+				*/
+				pinButtonTitle: undefined,
+				/* type="string"  Gets/Sets the title/tooltip for the pin button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						unpinButtonTitle : "Unpin"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").unpinButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { unpinButtonTitle: "Unpin"});
+				```
+				*/
+				unpinButtonTitle: undefined,
+				/* type="string" Gets/Sets the title/tooltip for the restore button in the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					locale: {
+						restoreButtonTitle : "Restore"
+					}
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "locale").restoreButtonTitle;
+
+				//Set
+				$(".selector").igDialog("option", "locale", { restoreButtonTitle: "Restore"});
+				```
+				*/
+				restoreButtonTitle: undefined
+			},
 			/* type="string" Gets/Sets the temporary value for src, which is used while changing the parent of the base element if it is an instance of IFRAME. That allows getting around possible JavaScript exceptions under IE.
 				```
 				//Initialize
@@ -1504,11 +1626,13 @@
 					try {
 						self[ "_" + $(this).attr("data-id") ](e);
 					} catch (ex) {}
+					$(this).removeClass(css.headerButtonHover); // This is needed to remove selected class under touch devices
 					_stopEvt(e);
 				},
-				touchstart: function (e) { this._drag = null; _stopEvt(e); },
-				touchmove: function (e) { this._drag = 1; _stopEvt(e); },
-				touchend: function () { if (!this._drag) { $(this).trigger("click"); } }
+
+				// N.A. September 21th, 2017, #1112: Don't propagate to touchstart handler on the header (header is parent of the buttons) which prevents default action (in this case click, which is required).
+				touchstart: function (e) { e.stopPropagation(); },
+				touchmove: function (e) { _stopEvt(e); } // Do not drag dialog when touch starts from header buttons.
 			};
 
 			// i=order of buttons in header:pin,min,max,close
@@ -2196,7 +2320,7 @@
 			}
 		},
 		_onResize: function () {
-			var rect, self = this, div = self.isTopModal() ? self._modalDiv : null;
+			var self = this, div = self.isTopModal() ? self._modalDiv : null;
 			if (!self._winResize) {
 				$(window).bind("resize", self._winResize = function () {
 					setTimeout(function () {
@@ -2221,8 +2345,7 @@
 
 			// adjust modal DIV/IFRAME-shells
 			if (div) {
-				rect = self._winRect();
-				div.css({ width: rect.maxWidth - 1, height: rect.maxHeight - 1 }).show();
+				div.show();
 				self._doIframe(div);
 			}
 		},
@@ -2435,7 +2558,7 @@
 		// zi: zIndex used when modal shell is visible
 		// implement all actions related to modal functionality: start/end modal depending on visibility/pin/minimized
 		_doModal: function (zi) {
-			var i, pos, on, obj,
+			var i, on, obj,
 				len = _modals.length,
 				self = this, o = self.options,
 				elem = self.element,
@@ -2477,16 +2600,13 @@
 			self._modal = on;
 			if (on) {
 				self._modalDiv = div = _notab($("<div />").css({
-					position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
+					position: "fixed", left: 0, top: 0, bottom: 0, right: 0, zIndex: _maxZ - 1
 				})
 					.addClass(self.css.overlay).mousedown(function (e) {
 						self._setFocus();
 						_stopEvt(e);
 					})
 					.insertBefore(elem));
-				pos = div.offset();
-				div.css({ marginLeft: -pos.left + "px", marginTop: -pos.top + "px" });
-				self._onResize();
 			} else {
 				div.remove();
 				_iframe.remove();
@@ -2509,6 +2629,12 @@
 			});
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igdialog#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igdialog#options:language) or [locale](ui.igdialog#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			var self = this;
 			this._header.find("[data-dialog-button]").each(function () {
 				var $button = $(this), value = self._getLocaleValue($button.attr("data-localeid"));
@@ -2619,5 +2745,5 @@
 		}
 	});
 	$.extend($.ui.igDialog, { version: "<build_number>" });
-	return $.ui.igDialog;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

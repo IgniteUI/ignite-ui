@@ -1,0 +1,30 @@
+/******************************************/
+/* Infragistics Ignite UI Bootstrap theme */
+/******************************************/
+
+// Icon sprites
+$ui-icons-darker: url(images/ui-icons_222222_256x240.png);
+$ui-icons-dark: url(images/ui-icons_888888_256x240.png);
+$ui-icons-light: url(images/ui-icons_ffffff_256x240.png);
+$iggrid-icons-dark: url(images/igGrid/filter-icons-333333.png);
+$iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
+
+// Bootstrap Theme variables
+@import "variables";
+
+// Ignite UI variables
+@import "ignite-ui-variables";
+
+// Ignite UI Mixins
+@import "mixins";
+
+// Icons fonts
+@import "icons-styles.css";
+
+//JQuery UI Theme Overrides
+@import "framework";
+
+//Ignite UI styles
+@import "modules/modules";
+
+

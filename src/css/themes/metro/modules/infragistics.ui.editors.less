@@ -1,0 +1,312 @@
+/************************
+*   HTML Editor styles  *
+*************************/
+
+.ui-ightmleditor {
+  background-color: white;
+  border: 1px solid #cdcdcd;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#ffffff, #ffffff);
+  background-image: -moz-linear-gradient(#ffffff, #ffffff);
+  background-image: -o-linear-gradient(#ffffff, #ffffff);
+  background-image: -ms-linear-gradient(#ffffff, #ffffff);
+  background-image: linear-gradient(#ffffff, #ffffff);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFFFFFFF');
+}
+
+.ui-ightmleditor .ui-igtoolbar {
+  background: transparent;
+}
+
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-igbutton,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -o-border-radius: 0;
+  -ms-border-radius: 0;
+  -khtml-border-radius: 0;
+  border-radius: 0;
+}
+
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-default,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-default {
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+}
+
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-hover {
+  background-color: #e2e2e2;
+  background-image: none;
+  background-repeat: no-repeat;
+  border: 1px solid #858585;
+}
+
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-focus,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-focus {
+  background-color: #e2e2e2;
+  background-image: none;
+  background-repeat: no-repeat;
+  border: 1px solid #b9b9b9;
+}
+
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-active,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
+  border: 1px solid #00aade;
+  background-color: #00aade;
+  background-image: none;
+  background-repeat: no-repeat;
+}
+
+.ui-ightmleditor .ui-igcombo-fieldholder {
+  border-color: #cdcdcd;
+}
+
+.ui-ightmleditor-content iframe,
+.ui-ightmleditor-content textarea {
+  border: 1px solid #cdcdcd;
+  -moz-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+}
+/*breadcrumb styling*/
+
+.ui-igPathFinder .ui-button::after {
+  border-top: 1px solid #B9B9B9;
+  border-right: 1px solid #B9B9B9;
+  background: #F9F9F9;
+}
+
+.ui-igPathFinder .ui-button.ui-state-hover::after {
+  border-top: 1px solid #858585;
+  border-right: 1px solid #858585;
+  background: #E2E2E2;
+}
+
+.ui-igPathFinder .ui-button.ui-state-active::after {
+  border-top: 1px solid #00AADE;
+  border-right: 1px solid #00AADE;
+  background: #00AADE;
+}
+
+.ui-igPathFinder .ui-state-active {
+  border: 1px solid #00AADE;
+  color: #fff;
+}
+/*toolbar buttons*/
+
+.ui-igtoolbarbutton.ui-button.ui-state-active .ui-icon {
+  background-position-x: -32px;
+}
+
+.ui-igtoolbarbutton.ui-button.ui-state-active {
+  border-width: 1px;
+}
+
+.ui-igtoolbarbutton.ui-button .ui-icon.ui-icon-triangle-1-s {
+  background-position: -64px -16px;
+}
+
+.ui-splitbutton.ui-state-active div.ui-igtoolbarbutton.ui-button,
+.ui-ightmleditor .ui-splitbutton.ui-state-active div.ui-igtoolbarbutton.ui-button {
+  background-color: #00AADE;
+}
+
+.ui-splitbutton.ui-state-active .ui-igtoolbarbutton .ui-icon {
+  background-position-x: -32px;
+}
+
+
+/***********************
+	Editors
+************************/
+
+.ui-igedit-spinlowerimagepressed,
+.ui-igedit-spinupperimagepressed,
+.ui-igedit-buttonimagepressed {
+  background-image: url(images/ui-icons_ffffff_256x240.png) !important;
+}
+/*.ui-datepicker table {
+	border				: 1px solid #D2D2D2;
+	border-top-width	: 0;
+	margin				: 0;
+}*/
+/***********************
+	HTML Editor
+************************/
+
+.ui-ightmleditor {
+  background-image: none;
+  background-color: #FFF;
+}
+
+.ui-ightmleditor .ui-igPathFinder .ui-button-text {
+  padding: 0px 7px !important;
+}
+
+.ui-igtoolbar .ui-button.ui-igtoolbarbutton .ui-icon {
+  background-image: url(images/igHtmlEditor/html-editor-sprite.png) !important;
+}
+
+.ui-igtoolbar .ui-button .ui-icon.ui-icon-triangle-1-s {
+  background-image: url(images/ui-icons_858585_256x240.png) !important;
+}
+
+.ui-ightmleditor .ui-button-icon-only .ui-button-text {
+  padding: 0!important;
+}
+
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
+  background-position: -16px 0 !important;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-expand {
+  background-position: -16px -16px !important;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-redo {
+  background-position: -16px -32px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-undo {
+  background-position: -16px -48px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-increasefontsize {
+  background-position: -16px -80px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-decreasefontsize {
+  background-position: -16px -96px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-viewsource-icon {
+  background-position: -16px -160px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html {
+  background-position: -16px -112px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-add {
+  background-position: -16px -128px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-delete {
+  background-position: -16px -144px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-valid {
+  background-position: -16px -176px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addimage {
+  background-position: -16px -192px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-link {
+  background-position: -16px -208px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addlink {
+  background-position: -16px -224px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-unlink {
+  background-position: -16px -240px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-copy {
+  background-position: -16px -256px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-cut {
+  background-position: -16px -272px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-paste {
+  background-position: -16px -288px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-table {
+  background-position: -16px -304px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addrow {
+  background-position: -16px -320px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addcolumn {
+  background-position: -16px -336px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removerow {
+  background-position: -16px -352px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removecolumn {
+  background-position: -16px -368px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyleft {
+  background-position: -16px -384px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifycenter {
+  background-position: -16px -400px !important;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyright {
+  background-position: -16px -416px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyfull {
+  background-position: -16px -432px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-forecolor {
+  background-position: -16px -448px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-backcolor {
+  background-position: -16px -464px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-bold {
+  background-position: -16px -480px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-italic {
+  background-position: -16px -496px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-underline {
+  background-position: -16px -512px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-strikethrough {
+  background-position: -16px -528px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-horizontalrule {
+  background-position: -16px -544px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-indent {
+  background-position: -16px -560px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removeindent {
+  background-position: -16px -576px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-unorderedlist {
+  background-position: -16px -592px;
+}
+
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-orderedlist {
+  background-position: -16px -608px;
+}

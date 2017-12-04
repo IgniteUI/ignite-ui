@@ -27,7 +27,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -108,8 +108,8 @@
 				var width = $(".selector").igZoombar("option", "width");
 			```
 				auto type="string" The width of the Zoombar will be the same as the widget it is attached to.
-				number The widget width in pixels (px).
-				string The widget width can be set in pixels (px) and percentage (%).
+				number type="number" The widget width in pixels (px).
+				string type="string" The widget width can be set in pixels (px) and percentage (%).
 				null type="object" The Zoombar will stretch horizontally to fit its container if it has width set, otherwise assumes auto.
 			*/
 			width: "auto",
@@ -568,7 +568,7 @@
 				this._responsive.removeCallback(this._callBackId);
 			}
 			this.container().remove();
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		},
 		_setOption: function (key, value) {
@@ -1706,5 +1706,5 @@
 		}
 	});
 
-	return $.ui.igZoombar;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

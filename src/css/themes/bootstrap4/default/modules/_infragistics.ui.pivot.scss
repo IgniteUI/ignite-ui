@@ -1,0 +1,34 @@
+/****************/
+/* igPivot Grid */
+/****************/
+
+.ui-igpivot-metadataitem.ui-state-default {
+  background: $btn-secondary-bg;
+  border: 1px solid $btn-secondary-border;
+  color: $btn-secondary-color;
+}
+
+.ui-igpivot-metadataitem .ui-widget .ui-corner-all .ui-state-default .ui-draggable {
+  color: $body-color;
+}
+
+.ui-igpivot-metadataitem .ui-icon.ui-icon-close {
+  color: $ui-icons-dark;
+}
+
+.ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter,
+.ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
+  background-position: -64px 0!important;
+}
+
+.ui-igpivot-filterdropdown .ui-igtree-node {
+  line-height: 2em!important;
+}
+
+.ui-igpivot-filterdropdown .ui-igtree-expander {
+  top: 1em!important;
+}
+
+.ui-igpivot-filterdropdown span[data-role=checkbox] {
+  margin-top: 0.65em;
+}

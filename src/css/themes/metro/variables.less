@@ -1,17 +1,112 @@
-//* VARIABLES */
-//*************/
+// Font
+@font-family-base: "Segoe UI", Arial, sans-serif;
+@text-color: @igGray10;
+@text-color-light: #fff;
+@highlight-color: #0c2837;
+@text-muted: fade(@text-color, 70%);
+@edit-container-bg: #fff;
 
+// Color palette
+@body-bg: #FFFFFF;
 @accent1: #00aade;
-@accent2: #80D5EF;
-@accent3: #fd472b;
+@accent2: #b3e6f5;
+@accent2-border: #03bbde;
+@danger: #fd472b;
+@error-border-color: @danger;
+@error-color: #3a0d11;
 
-// * Radius */
-@radius: 6px;
-/* Palettes */
+@dialog-header: @accent1;
 
+// Charts
+@chartPalette-border-1: #2380a8;
+@chartPalette-border-2: #333333;
+@chartPalette-border-3: #808080;
+@chartPalette-border-4: #185170;
+@chartPalette-border-5: #879922;
+@chartPalette-border-6: #fba609;
+@chartPalette-border-7: #8856b1;
+@chartPalette-border-8: #e3720c;
+@chartPalette-border-9: #582c7d;
+@chartPalette-border-10: #582c7d;
+@chartPalette-border-11: #386a23;
+@chartPalette-border-12: #c62d36;
+@chartPalette-BG-1: #44acd6;
+@chartPalette-BG-2: #494949;
+@chartPalette-BG-3: #a8a8a8;
+@chartPalette-BG-4: #216e99;
+@chartPalette-BG-5: #a4ba29;
+@chartPalette-BG-6: #fdbd48;
+@chartPalette-BG-7: #ff6a6f;
+@chartPalette-BG-8: #9e73c1;
+@chartPalette-BG-9: #f79036;
+@chartPalette-BG-10: #793bac;
+@chartPalette-BG-11: #48892d;
+@chartPalette-BG-12: #d3404b;
 
-// * grays */
+@chartPaletteNegative: #c33d4a;
+@chartPaletteNegative-border: #872933;
 
+// Sparkline
+@ui-sparkline-BG-sparkpath: #43ABD5;
+@ui-sparkline-BG-negativesparkpath: #B9242E;
+@ui-sparkline-BG-trendline: #7F7F7F;
+@ui-sparkline-BG-markers: @ui-sparkline-BG-sparkpath;
+@ui-sparkline-BG-firstmarker: #237FA7;
+@ui-sparkline-BG-lastmarker: #FBC139;
+@ui-sparkline-BG-highmarker: #A3B929;
+@ui-sparkline-BG-lowmarker: #AF39FF;
+@ui-sparkline-BG-negativemarkers: #E5516F;
+@ui-sparkline-BG-range: #808080;
+
+@ui-sparkline-axis-border: #989EA3;
+@ui-sparkline-axis-color: #406090;
+
+// Radius
+@border-radius-base: 6px;
+
+//* igChart colors */
+@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
+
+// Gradual palette, used mainly for bulletGraph and linearGauge
+@chartGradualPalette1: #2380A8;
+@chartGradualPalette2: #333333;
+@chartGradualPalette3: #808080;
+@chartGradualPalette4: #185170;
+@chartGradualPalette5: #879922;
+@chartGradualPalette6: #FBA609;
+@chartGradualPalette7: #FF5559;
+@chartGradualPalette8: #8856b1;
+@chartGradualPalette9: #e3720c;
+@chartGradualPalette10: #582c7d;
+@chartGradualPalette11: #386a23;
+@chartGradualPalette12: #C62D36;
+
+@chartPaletteNegative: #c33d4a;
+
+//Radialgauge range palette
+@range-1: #A4bA29;
+@range-2: #FDBD48;
+@range-3: #F79036;
+@range-4: #D3404B;
+@range-5: #9E73C1;
+@range-6: #793BAC;
+
+// bulletgraph,lineargauge range palette
+@shades-range-1: #005E9C;
+@shades-range-2: #0078C8;
+@shades-range-3: #0092F4;
+@shades-range-4: #21A7FF;
+@shades-range-5: #4FB9FF;
+
+// Icons
+@ui-icons-darker: #222222;
+@ui-icons-dark: #444;
+@ui-icons-light: #ffffff;
+@ui-icons-accent: @accent1;
+
+@link-color: @accent1;
+
+// grays
 @igGray1: #FFFFFF;
 @igGray2: #f8f8f8;
 @igGray3: #ececec;
@@ -22,36 +117,172 @@
 @igGray8: #787878;
 @igGray9: #303030;
 @igGray10: #000000;
+@igGray11: #666;
 
-/*
-    Spreadsheet
-  =================
-*/
+// Grids
+@add-row-bg: @igGray2;
 
-@bar-background: #e4e4e4;
+@table-bg: @body-bg; // table bg
+@table-border-color: #ebebeb;
+@table-border-color-active: @accent1;
+@table-bg-accent: @igGray2; // alt row bg
+@table-bg-hover: #f8f8f8;
+@table-bg-active: @accent1; // select
+
+@grid-header-bg: #fff;
+@grid-header-border: @table-border-color;
+@grid-header-active-bg: @accent1;
+@grid-header-text: @text-color;
+@grid-header-text-active: @text-color-light;
+
+@grid-footer-bg: @accent1;
+@grid-footer-color: @text-color-light;
+
+@grid-toolbar-bg: #f8f8f8;
+
+@iggrid-highlight-bg: @accent2;
+@iggrid-highlight-border: darken(@accent2, 5%);
+@iggrid-highlight-color: @text-color;
+@iggrid-highlight-color-hover: @text-color-light;
+
+@iggrid-icons: @ui-icons-dark;
+@iggrid-icons-active: @ui-icons-light;
+
+// Tabs
+@tabs-header-bg: @accent1;
+
+@tabs-normal-tab-bg: @accent1;
+@tabs-normal-tab-border: @accent1;
+@tabs-normal-tab-color: @text-color-light;
+
+@tabs-active-tab-bg: #fff;
+@tabs-active-tab-border: transparent;
+@tabs-active-tab-color: @text-color;
+
+@tabs-panel-border: @table-border-color;
+
+// Dropdowns and Menus
+@dropdown-bg: @body-bg;
+@dropdown-link-color: @text-color;
+@dropdown-link-hover-color: @text-color;
+@dropdown-link-hover-bg: @igGray6;
+@dropdown-link-active-color: @text-color;
+@dropdown-link-active-bg: @accent1;
+
+// Spreadsheet
+@bar-background: #f4f4f4;
 @row-col-bar-border: #cccccc;
-
 @tab-bar-border: #999;
-
 @spreadsheet-accent: #00aade;
-@spreadsheet-icon:#666;
-
+@spreadsheet-icon: #666;
 @spreadsheet-cell-selection: #00aade;
-@spreadsheet-cell-selection-rgba: rgba(0,170,222, .22);
-
-@spreadsheet-text-color:#111;
+@spreadsheet-cell-selection-rgba: rgba(0, 170, 222, .22);
+@spreadsheet-text-color: #111;
 @spreadsheet-wight-text: #fff;
-
 @spreadsheet-empty-bg: #fff;
-
 @spreadsheet-disabled: #c4c4c4;
-
-@spreadsheet-danger: @accent3;
-
+@spreadsheet-danger: @danger;
 @spreadsheet-menu-item-bg-hover: @spreadsheet-cell-selection-rgba;
-
 @spreadsheet-formula-btn-bg: @igGray6;
-
 @spreadsheet-tab-text-color: #666;
-
 @spreadsheet-formula-btn-color: #111;
+
+// scheduler
+
+@start-time-selected-color: @accent1;
+@end-time-selected-color: lighten(@accent1, 15%);
+
+@subject-agenda-color: @accent1;
+@location-agenda-color: lighten(@accent1, 15%);
+
+@appointment-popover-from-to: @accent1;
+
+@monthview-activity-indicator: rgb(192, 192, 192);
+
+@igscheduler-tabs-hover-bg: #fff;
+@igscheduler-tabs-hover-color: @igGray9;
+
+
+// Scheduler
+@scheduler-bg:@body-bg;
+@scheduler-text-color:@text-color;
+@scheduler-border-color: @table-border-color;
+@scheduler-shadow-color: @body-bg;
+@scheduler-header-bg:@body-bg;
+@scheduler-month-view-day-selected:@accent2;
+
+@scheduler-start-time-color: @accent1;
+@scheduler-end-time-color: @danger;
+
+@scheduler-selected-subject-color: @accent1;
+@scheduler-selected-location-color: @accent1;
+
+@scheduler-month-view-bg: transparent;
+
+@scheduler-activity-indicator-bg: @igGray6;
+
+@scheduler-day-week-view-bg: transparent;
+@scheduler-day-week-timeslot-selected: @igGray6;
+
+@scheduler-day-week-appt-bg:@igGray5;
+@scheduler-day-week-appt-location-bg:transparent;
+@scheduler-day-week-appt-location-color:@igGray9;
+@scheduler-day-week-appt-subject-bg:transparent;
+@scheduler-day-week-appt-subject-color:@igGray10;
+
+@scheduler-agenda-appt-selected:@igGray1;
+
+@scheduler-day-week-day-header-bg:transparent;
+@scheduler-day-week-day-header-color:rgb(153, 153, 153);
+
+@scheduler-all-day-event-area-bg:@igGray5;
+@scheduler-all-day-event-subject-color:@igGray10;
+@scheduler-all-day-event-subject-bg:@igGray5;
+
+@scheduler-agenda-view-bg:transparent;
+
+@scheduler-header-border-color:@igGray6;
+
+
+@scheduler-tabs-color:@text-color;
+@scheduler-tabs-selected-text-color:@accent1;
+@scheduler-tabs-selected-icons-color:@accent1;
+@scheduler-tabs-selected-hover:darken(@accent1, 3%);
+
+
+@scheduler-month-view-dayday-selected-bg: @igGray11;
+@scheduler-month-view-dayday-selected-color: @igGray8;
+
+@scheduler-month-view-day-today-indicator-bg: transparent;
+@scheduler-month-view-day-today-color: @accent1;
+
+@scheduler-month-view-month-header-bg:@accent1;
+
+@scheduler-month-view-day-leading-bg:transparent;
+@scheduler-month-view-day-leading-color:@igGray6;
+
+@scheduler-month-view-day-trailing-bg:transparent;
+@scheduler-month-view-day-trailing-color:@igGray6;
+
+@scheduler-selectall-bg:@accent1;
+
+@scheduler-appointment-dialog-save-button-bg:@igGray4;
+@scheduler-appointment-dialog-save-button-hover-bg:@igGray3;
+
+@scheduler-appointment-dialog-cancel-button-bg:@igGray4;
+@scheduler-appointment-dialog-cancel-button-hover-bg:@igGray3;
+
+@scheduler-navigator-back-button-hover-bg:transparent;
+@scheduler-navigator-date-range-button-hover-bg:transparent;
+@scheduler-navigator-forward-button-hover-bg:transparent;
+
+@scheduler-today-button-hover-bg:transparent;
+@scheduler-today-button-hover-color:@accent1;
+
+@scheduler-tabs-hover-bg:transparent;
+@scheduler-tabs-hover-color:@accent1;
+
+@scheduler-day-week-timeslot-bg:rgba(255, 255, 255, .005);
+@scheduler-day-week-timeslot-descripto-bg:transparent;
+@scheduler-day-week-timeslot-working-hour-bg:rgb(238, 238, 238);
+@scheduler-day-week-timeslot-selected-bg:@accent2!important;

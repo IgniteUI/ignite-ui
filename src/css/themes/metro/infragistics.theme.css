@@ -1,6 +1,194 @@
-/****************************/
-/* Infragistics Metro theme */
-/****************************/
+/********************************/
+/* Ignite UI Infragistics theme */
+/********************************/
+@import "icons-styles.css";
+.stateNormal {
+  border: 1px solid #D9D9D9;
+  background-color: #ececec;
+  color: #000000;
+}
+.stateHover {
+  border: 1px solid #b3e6f5;
+  background-color: #00bef8;
+  color: #fff;
+}
+.stateActive {
+  border: 1px solid #b3e6f5;
+  background-color: #00aade;
+  color: #fff;
+}
+.stateFocused {
+  border: 1px solid #b3e6f5;
+  background-color: #00aade;
+  color: #fff;
+}
+.stateDisabled {
+  opacity: 0.40;
+  cursor: default !important;
+}
+.chartPalette1 {
+  background-color: #2380A8 !important;
+  border: 1px solid #2380A8 !important;
+}
+.chartPalette2 {
+  background-color: #333333 !important;
+  border: 1px solid #333333 !important;
+}
+.chartPalette3 {
+  background-color: #808080 !important;
+  border: 1px solid #808080 !important;
+}
+.chartPalette4 {
+  background-color: #185170 !important;
+  border: 1px solid #185170 !important;
+}
+.chartPalette5 {
+  background-color: #879922 !important;
+  border: 1px solid #879922 !important;
+}
+.chartPalette6 {
+  background-color: #FBA609 !important;
+  border: 1px solid #FBA609 !important;
+}
+.chartPalette7 {
+  background-color: #FF5559 !important;
+  border: 1px solid #FF5559 !important;
+}
+.chartPalette8 {
+  background-color: #8856b1 !important;
+  border: 1px solid #8856b1 !important;
+}
+.chartPalette9 {
+  background-color: #e3720c !important;
+  border: 1px solid #e3720c !important;
+}
+.chartPalette10 {
+  background-color: #582c7d !important;
+  border: 1px solid #582c7d !important;
+}
+.chartPalette11 {
+  background-color: #386a23 !important;
+  border: 1px solid #386a23 !important;
+}
+.chartPalette12 {
+  background-color: #C62D36 !important;
+  border: 1px solid #C62D36 !important;
+}
+.chartMarkerPalette1 {
+  background-color: #fff!important;
+  border: 1px solid #2380A8 !important;
+}
+.chartMarkerPalette2 {
+  background-color: #fff!important;
+  border: 1px solid #333333 !important;
+}
+.chartMarkerPalette3 {
+  background-color: #fff!important;
+  border: 1px solid #808080 !important;
+}
+.chartMarkerPalette4 {
+  background-color: #fff!important;
+  border: 1px solid #185170 !important;
+}
+.chartMarkerPalette5 {
+  background-color: #fff!important;
+  border: 1px solid #879922 !important;
+}
+.chartMarkerPalette6 {
+  background-color: #fff!important;
+  border: 1px solid #FBA609 !important;
+}
+.chartMarkerPalette7 {
+  background-color: #fff!important;
+  border: 1px solid #FF5559 !important;
+}
+.chartMarkerPalette8 {
+  background-color: #fff!important;
+  border: 1px solid #8856b1 !important;
+}
+.chartMarkerPalette9 {
+  background-color: #fff!important;
+  border: 1px solid #e3720c !important;
+}
+.chartMarkerPalette10 {
+  background-color: #fff!important;
+  border: 1px solid #582c7d !important;
+}
+.chartMarkerPalette11 {
+  background-color: #fff!important;
+  border: 1px solid #386a23 !important;
+}
+.chartMarkerPalette12 {
+  background-color: #fff!important;
+  border: 1px solid #C62D36 !important;
+}
+.chartPaletteNegative {
+  background-color: #c33d4a !important;
+  border: 1px solid #892a34 !important;
+}
+.doughnutPalette1 {
+  background-color: #2380A8 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette2 {
+  background-color: #333333 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette3 {
+  background-color: #808080 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette4 {
+  background-color: #185170 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette5 {
+  background-color: #879922 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette6 {
+  background-color: #FBA609 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette7 {
+  background-color: #FF5559 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette8 {
+  background-color: #8856b1 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette9 {
+  background-color: #e3720c !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette10 {
+  background-color: #582c7d !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette11 {
+  background-color: #386a23 !important;
+  border: 1px solid #fff!important;
+}
+.doughnutPalette12 {
+  background-color: #C62D36 !important;
+  border: 1px solid #fff!important;
+}
+.boxShadow-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.boxShadow-2 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.boxShadow-3 {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.boxShadow-4 {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.boxShadow-5 {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
 /***************************/
 /* JQuery Framework styles */
 /***************************/
@@ -16,11 +204,6 @@
  */
 /* Layout helpers
 ----------------------------------*/
-/* Palettes */
-/*
-    Spreadsheet
-  =================
-*/
 .ui-helper-hidden {
   display: none;
 }
@@ -120,6 +303,15 @@
   padding: 1em 2.2em;
   border-top: 0;
   overflow: auto;
+}
+.ui-accordion {
+  font-size: 1.1em !important;
+}
+.ui-accordion .ui-accordion-content {
+  border-color: #D2D2D2;
+}
+.ui-accordion .ui-accordion-header a {
+  font-weight: normal;
 }
 .ui-autocomplete {
   position: absolute;
@@ -833,6 +1025,18 @@ body .ui-tooltip {
 /* jQuery UI CSS theme */
 /* Component containers
 ----------------------------------*/
+/*
+  List with Overwritten components
+  1. jQuery UI Accordion
+  2. jQuery UI Auto complete
+  3. jQuery UI Menu
+  4. jQuery UI Date picker
+  5. jQuery UI Dialog
+  6. jQuery UI Progressbar
+  7. jQuery UI Slider
+  8. jQuery UI Spinner
+  9. jQuery UI Tabs
+*/
 .ui-widget {
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 1.1em;
@@ -887,11 +1091,11 @@ body .ui-tooltip {
   color: #4b4b4b;
   font-weight: normal;
 }
-.ui-state-default a,
+/*.ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
   color: white;
-}
+}*/
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover {
@@ -1411,7 +1615,6 @@ body .ui-tooltip {
   background-position: 0 -144px;
 }
 /*  S.D. July 30th, 2015 ID203053 fixing info notification icon
-
 .ui-icon-info {
     background: url(images/icon_sprite.png) 0px 0px no-repeat !important;
 }
@@ -1669,25 +1872,39 @@ body .ui-tooltip {
 /*
  * jQuery UI Menu Overrides
  */
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid #ebebeb;
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 .ui-menu {
   background: #FFFFFF;
   color: #4b4b4b;
-}
-.ui-menu .ui-menu-item.ui-state-focus {
-  color: #4b4b4b;
-  background-color: #EAEAEA;
-  border: 1px solid #b7b7b7;
-}
-.ui-menu .ui-menu-item.ui-state-active {
-  color: #FFFFFF;
-  background: #00aade;
-  border: 1px solid #00aade;
 }
 .ui-menu .ui-menu-item .ui-icon {
   background-image: url("images/ui-icons_222222_256x240.png");
 }
 .ui-menu .ui-menu-item.ui-state-active > .ui-icon {
   background-image: url("images/ui-icons_ffffff_256x240.png");
+}
+/* DATE PICKER  */
+.ui-datepicker {
+  border: 0px;
+}
+.ui-datepicker th {
+  color: #858585;
+}
+.ui-datepicker .ui-datepicker-title {
+  font-size: 1.1em;
+}
+.ui-datepicker .ui-datepicker-buttonpane {
+  border-top: 1px solid #D2D2D2;
 }
 /*
  * jQuery UI Button Overrides
@@ -1909,12 +2126,834 @@ body .ui-tooltip {
 .ui-progressbar .ui-progressbar-value {
   background: #00aade;
 }
-/***********************************/
-/* Infragistics Ignite UI Controls */
-/***********************************/
-/*******************************
-*       jQuery UI IGGrid       *
-*******************************/
+.ui-icon {
+  background-image: url(images/ui-icons_858585_256x240.png);
+}
+.ui-state-error .ui-icon {
+  background-image: url(images/ui-icons_ffffff_256x240.png);
+}
+.ui-widget-content {
+  border-color: #BEBEBE;
+}
+input.ui-button.ui-state-active {
+  color: #ffffff;
+  border-width: 2px;
+}
+input.ui-button.ui-state-focus {
+  padding: 6px 19px !important;
+}
+.ui-button-text-only.ui-state-focus .ui-button-text {
+  padding: 8px 19px !important;
+}
+.ui-button-text-only.ui-state-active .ui-button-text {
+  padding: 8px 19px !important;
+}
+.ui-button-text-only .ui-button-text {
+  padding: 9px 20px !important;
+}
+input.ui-button {
+  padding: 7px 20px !important;
+}
+button.ui-button.ui-state-hover.ui-state-focus,
+a.ui-button.ui-state-hover.ui-state-focus {
+  background-color: #EAEAEA;
+}
+button.ui-button.ui-state-hover.ui-state-active.ui-state-focus,
+a.ui-button.ui-state-hover.ui-state-active.ui-state-focus {
+  background-color: #00AADE;
+}
+.ui-button-icon-only.ui-state-focus .ui-button-text,
+.ui-button-icons-only.ui-state-focus .ui-button-text {
+  padding: 2px 4px 4px !important;
+}
+.ui-button-text-icon-primary.ui-state-active .ui-button-text {
+  padding: 2px 11px 4px 24px !important;
+}
+.ui-button-text-icon-secondary.ui-state-active .ui-button-text {
+  padding: 2px 24px 4px 11px;
+}
+.ui-button-text-icons.ui-state-active .ui-button-text {
+  padding: 2px 24px 4px;
+}
+.ui-buttonset .ui-state-active .ui-button-text {
+  border-radius: 0px !important;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-default {
+  border-width: 1px;
+}
+/**************/
+/* igCheckbox */
+/**************/
+.ui-igcheckbox-small.ui-state-default,
+.ui-igcheckbox-normal.ui-state-default,
+.ui-igcombo-checkbox.ui-state-default {
+  background-image: none;
+  background-color: white;
+  border: 1px solid #bebebe;
+}
+.ui-igcheckbox-small.ui-corner-all,
+.ui-igcheckbox-normal.ui-corner-all,
+.ui-igcombo-checkbox.ui-corner-all {
+  border-radius: 2px;
+}
+.ui-igcheckbox-small.ui-state-hover,
+.ui-igcheckbox-normal.ui-state-hover,
+.ui-igcombo-checkbox.ui-state-hover {
+  background-color: #f4f4f4;
+  border-color: #858585;
+}
+.ui-igcheckbox-small.ui-state-focus,
+.ui-igcheckbox-normal.ui-state-focus,
+.ui-igcombo-checkbox.ui-state-focus {
+  border-color: #01aade;
+}
+.ui-igcombo-checkbox.ui-state-default,
+.ui-igcombo-checkbox.ui-state-hover,
+.ui-igcombo-checkbox.ui-state-focus {
+  background-image: none;
+}
+.ui-igcheckbox-small .ui-icon,
+.ui-igcheckbox-normal .ui-icon,
+.ui-iggrid th .ui-igcheckbox-normal.ui-state-default .ui-icon,
+.ui-igcombo-checkbox .ui-icon {
+  color: #00aade;
+}
+.ui-icon-check-f {
+  background-position: -64px -144px;
+}
+.ui-icon-check-p {
+  /*background-position: -96px -160px;*/
+  background-color: #00AADE;
+  background-image: none !important;
+  border: 2px solid white;
+  box-sizing: border-box;
+}
+/*****************
+*    igChart     *
+*****************/
+.ui-chart-palette-1 {
+  border-color: #00AADE!important;
+  background-color: #00AADE!important;
+}
+.ui-chart-palette-2 {
+  border-color: #4B4B4D!important;
+  background-color: #4B4B4D!important;
+}
+.ui-chart-palette-3 {
+  border-color: #FCB025!important;
+  background-color: #FCB025!important;
+}
+.ui-chart-palette-4 {
+  border-color: #EC6C2B!important;
+  background-color: #EC6C2B!important;
+}
+.ui-chart-palette-5 {
+  border-color: #36C0F3!important;
+  background-color: #36C0F3!important;
+}
+.ui-chart-palette-6 {
+  border-color: #5B17A8!important;
+  background-color: #5B17A8!important;
+}
+.ui-chart-palette-7 {
+  border-color: #054D99!important;
+  background-color: #054D99!important;
+}
+.ui-chart-palette-8 {
+  border-color: #19994F!important;
+  background-color: #19994F!important;
+}
+.ui-chart-palette-9 {
+  border-color: #BFE107!important;
+  background-color: #BFE107!important;
+}
+.ui-chart-palette-10 {
+  border-color: #75351A!important;
+  background-color: #75351A!important;
+}
+.ui-chart-palette-11 {
+  border-color: #EC6C2B!important;
+  background-color: #EC6C2B!important;
+}
+.ui-chart-palette-12 {
+  border-color: #C62D36!important;
+  background-color: #D3404B!important;
+}
+.ui-chart-piechart-container,
+.ui-chart-legend-item-text {
+  font-size: 12px;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+.ui-chart-piechart-container,
+.ui-chart-legend-item-text {
+  font-size: 12px;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+.ui-chart-toolbar .ui-slider-handle {
+  height: 18px;
+  width: 18px;
+  margin-left: -9px !important;
+}
+/*******************/
+/* Sparkline chart */
+/*******************/
+.ui-sparkline {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 13px;
+  padding: 10px 5px 10px 5px;
+  border: 0px;
+}
+.ui-sparkline-tooltip {
+  -moz-box-shadow: 0 0 2px #555555;
+  -webkit-box-shadow: 0 0 2px #555555;
+  box-shadow: 0 0 2px #555555;
+  padding: 3px;
+}
+.ui-sparkline-sparkpath {
+  background: #2bb9e5;
+  border: 1px solid;
+}
+.ui-sparkline-negativesparkpath {
+  background: #B9242E;
+  border: 1px solid;
+}
+.ui-sparkline-trendline {
+  background: #7F7F7F;
+  border: 2px solid;
+}
+.ui-sparkline-markers {
+  background: #43ABD5;
+  border: 3px solid;
+}
+.ui-sparkline-firstmarker {
+  background: #237FA7;
+  border: 5px solid;
+}
+.ui-sparkline-lastmarker {
+  background: #FBC139;
+  border: 5px solid;
+}
+.ui-sparkline-highmarker {
+  background: #A3B929;
+  border: 4px solid;
+}
+.ui-sparkline-lowmarker {
+  background: #AF39FF;
+  border: 3px solid;
+}
+.ui-sparkline-negativemarkers {
+  background: #E5516F;
+  border: 3px solid;
+}
+.ui-sparkline-range {
+  background: gray;
+  opacity: 0.2;
+}
+.ui-sparkline-axis-x {
+  font-family: "Segoe UI", Arial, sans-serif;
+  border: 2px solid #989EA3;
+  color: #406090;
+}
+.ui-sparkline-axis-y {
+  font-family: "Segoe UI", Arial, sans-serif;
+  border: 2px solid #989EA3;
+  color: #406090;
+  text-align: right;
+}
+.ui-funnel {
+  font-family: Segoe UI, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #555555;
+  border: 0px;
+}
+.ui-funnel-tooltip {
+  -moz-box-shadow: 0 0 2px #555555;
+  -webkit-box-shadow: 0 0 2px #555555;
+  box-shadow: 0 0 2px #555555;
+  padding: 3px;
+}
+.ui-funnel-slice {
+  color: #FFFFFF;
+  border: 0;
+}
+.ui-funnel-slice-selected {
+  opacity: 1.0;
+}
+.ui-funnel-slice-unselected {
+  opacity: 0.49;
+  border-color: transparent;
+}
+/********************/
+/* igDoughnut Chart */
+/********************/
+.ui-doughnut {
+  border: 0px;
+  font-size: 12px;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+/****************/
+/* igPivot Grid */
+/****************/
+.ui-igpivot-metadataitem.ui-state-default {
+  background: #00AADE;
+  border: 1px solid #00AADE;
+  color: #FFFFFF;
+  text-shadow: none;
+}
+.ui-igpivot-metadataitem.ui-state-hover {
+  background: #0092BE;
+  border: 1px solid #00AADE;
+  color: #FFFFFF;
+  text-shadow: none;
+}
+.ui-igpivot-metadataitem.ui-state-default .ui-icon-close,
+.ui-igpivot-metadataitem.ui-state-hover .ui-icon-close {
+  background-image: url(images/ui-icons_FFFFFF_256x240.png);
+}
+/********************/
+/* igRadialGauge Chart */
+/********************/
+.ui-radialgauge-needle {
+  background-color: #333;
+}
+.ui-radialgauge-needleCap {
+  background-color: #494949;
+  border-color: #494949;
+}
+.ui-radialgauge-backing {
+  background-color: #ecedef;
+  border: #a8a8a8;
+}
+.ui-radialgauge-scale {
+  background-color: #44ACD6;
+  border: none;
+}
+.ui-radialgauge-tick {
+  background-color: #333;
+  border-top-color: transparent;
+}
+.ui-radialgauge-minorTick {
+  background-color: #494949;
+  border: none;
+}
+.ui-radialgauge-label {
+  background-color: #333;
+  border: none;
+}
+.ui-radialgauge-range-palette-1 {
+  background-color: #686868;
+  border-top-color: transparent;
+}
+.ui-radialgauge-range-palette-2 {
+  background-color: #8A9B0F;
+  border-top-color: transparent;
+}
+.ui-radialgauge-range-palette-3 {
+  background-color: #F14D0F;
+  border-top-color: transparent;
+}
+.ui-radialgauge-range-palette-4 {
+  background-color: #81106B;
+  border-top-color: transparent;
+}
+.ui-radialgauge-range-palette-5 {
+  background-color: #FCA910;
+  border-top-color: transparent;
+}
+.ui-radialgauge-range-palette-6 {
+  background-color: #037A54;
+  border-top-color: transparent;
+}
+.ui-radialgauge {
+  font-family: 'Arial', 'Segoe UI', 'Myriad Pro', sans-serif;
+  font-size: 16px;
+}
+.ui-igpivot-rowheaderlink {
+  color: #00AADE!important;
+}
+/***********************/
+/* igBulletgraph Chart */
+/***********************/
+.ui-bulletgraph-backing {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+.ui-bulletgraph-targetvalue {
+  background-color: #fff;
+  border-color: #fff;
+}
+/* === TICKS / LABELS === */
+.ui-bulletgraph-tick {
+  background-color: #494949;
+  border: transparent;
+}
+.ui-bulletgraph-minortick {
+  background-color: #a8a8a8;
+  border: transparent;
+}
+.ui-bulletgraph-label {
+  background-color: #333;
+  border: transparent;
+}
+/* === RANGE VALUES === */
+.ui-bulletgraph-range-palette-1 {
+  background-color: #0092be;
+  border: transparent;
+}
+.ui-bulletgraph-range-palette-2 {
+  background-color: #00aade;
+  border: transparent;
+}
+.ui-bulletgraph-range-palette-3 {
+  background-color: #2bb9e5;
+  border: transparent;
+}
+.ui-bulletgraph-range-palette-4 {
+  background-color: #55c8eb;
+  border: transparent;
+}
+.ui-bulletgraph-range-palette-5 {
+  background-color: #80d7f2;
+  border: transparent;
+}
+/* === ACTUAL VALUES === */
+.ui-bulletgraph-value {
+  background-color: #FFFFFF;
+  border: transparent;
+}
+.ui-bulletgraph {
+  font-family: 'Arial', 'Segoe UI', 'Myriad Pro', sans-serif;
+  font-size: 12px;
+  color: #494949;
+}
+/***********************/
+/* igLinearGauge Chart */
+/***********************/
+.ui-lineargauge-backing {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+.ui-lineargauge-needle {
+  background-color: #494949;
+  border-color: #494949;
+}
+.ui-lineargauge-scale {
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+/* TICKS AND LABELS */
+.ui-lineargauge-tick {
+  background-color: #494949;
+  border: transparent;
+}
+.ui-lineargauge-minortick {
+  background-color: #EBEBEB;
+  border: transparent;
+}
+.ui-lineargauge-label {
+  background-color: #333;
+  border: transparent;
+}
+/* RANGE VALUES */
+.ui-lineargauge-range-palette-1 {
+  background-color: #0092be;
+  border: transparent;
+}
+.ui-lineargauge-range-palette-2 {
+  background-color: #00aade;
+  border: transparent;
+}
+.ui-lineargauge-range-palette-3 {
+  background-color: #2bb9e5;
+  border: transparent;
+}
+.ui-lineargauge-range-palette-4 {
+  background-color: #55c8eb;
+  border: transparent;
+}
+.ui-lineargauge-range-palette-5 {
+  background-color: #80d7f2;
+  border: transparent;
+}
+/* NEEDLES */
+.ui-lineargauge-needle-palette-1 {
+  background-color: #e0e0e0;
+  border: transparent;
+}
+.ui-lineargauge-needle-palette-2 {
+  background-color: #c0c0c0;
+  border: transparent;
+}
+.ui-lineargauge-needle-palette-3 {
+  background-color: #999999;
+  border: transparent;
+}
+.ui-lineargauge-needle-palette-4 {
+  background-color: #494949;
+  border: transparent;
+}
+.ui-lineargauge-needle-palette-5 {
+  background-color: #353535;
+  border: transparent;
+}
+/* TOOLTIPS */
+.ui-lineargauge-tooltip {
+  border-style: none;
+  white-space: nowrap;
+  background-color: transparent;
+}
+.ui-lineargauge-range-tooltip {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
+}
+.ui-lineargauge-needle-tooltip {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
+}
+.ui-lineargauge {
+  font-family: 'Segoe UI', 'Arial', 'Myriad Pro', sans-serif;
+  font-size: 12px;
+  color: #494949;
+}
+/***********/
+/* igCombo */
+/***********/
+.ui-igcombo.ui-state-focus {
+  border: 1px solid #00AADE;
+}
+.ui-igedit.ui-state-focus .ui-igedit-button-common,
+.ui-igedit.ui-state-active .ui-igedit-button-common,
+.ui-igcombo.ui-state-focus .ui-igcombo-button,
+.ui-igcombo.ui-state-active .ui-igcombo-button {
+  background-color: #00AADE;
+  border-color: #00AADE;
+}
+.ui-igcombo.ui-state-hover,
+.ui-igcombo.ui-state-default {
+  background-color: transparent;
+}
+.ui-igedit-input,
+.ui-igcombo-fieldholder,
+.ui-igcombo.ui-widget .ui-igcombo-clear.ui-unselectable,
+.ui-igcombo-clear,
+.ui-igcombo-clear.ui-state-hover,
+.ui-igedit-buttonclear,
+.ui-igedit-cleararea,
+.ui-igedit-cleararea.ui-state-hover,
+.ui-igedit.ui-state-hover .ui-igedit-cleararea,
+.ui-igedit.ui-state-focus .ui-igedit-cleararea {
+  background: none #ffffff;
+  border: 0 none;
+}
+.ui-igcombo-clear .ui-icon,
+.ui-igedit-buttonclear .ui-icon,
+.ui-igedit-cleararea .ui-icon,
+.ui-igedit.ui-state-focus .ui-igedit-cleararea .ui-icon,
+.ui-igedit.ui-state-active .ui-igedit-cleararea .ui-icon {
+  background-image: url(images/ui-icons_858585_256x240.png);
+}
+.ui-igcombo-clear.ui-state-hover .ui-icon,
+.ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit-cleararea.ui-state-default.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-hover .ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-focus .ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-active .ui-igedit-cleararea.ui-state-hover .ui-icon,
+.ui-igcombo-button.ui-igcombo-button-pressed .ui-igcombo-buttonicon {
+  background-image: url(images/ui-icons_00AADE_256x240.png) !important;
+}
+.ui-igcombo-listitem.ui-igcombo-listitem-selected .ui-igcombo-listitem-match {
+  background-color: #00AADE;
+  color: #fff;
+}
+.ui-igcombo-field,
+ui-igcombo-fieldholder,
+.ui-igcombo-fieldholder-ltr {
+  box-shadow: 0 3px 2px rgba(100, 100, 100, 0.1), inset;
+}
+/* IE 10 input fix */
+input.ui-igcombo-field {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+.ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
+.ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
+.ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
+  background-color: #01aade;
+  color: #fff;
+}
+/************************
+*   HTML Editor styles  *
+*************************/
+.ui-ightmleditor {
+  background-color: white;
+  border: 1px solid #cdcdcd;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#ffffff, #ffffff);
+  background-image: -moz-linear-gradient(#ffffff, #ffffff);
+  background-image: -o-linear-gradient(#ffffff, #ffffff);
+  background-image: -ms-linear-gradient(#ffffff, #ffffff);
+  background-image: linear-gradient(#ffffff, #ffffff);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFFFFFFF');
+}
+.ui-ightmleditor .ui-igtoolbar {
+  background: transparent;
+}
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-igbutton,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -o-border-radius: 0;
+  -ms-border-radius: 0;
+  -khtml-border-radius: 0;
+  border-radius: 0;
+}
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-default,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-default {
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+}
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-hover {
+  background-color: #e2e2e2;
+  background-image: none;
+  background-repeat: no-repeat;
+  border: 1px solid #858585;
+}
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-focus,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-focus {
+  background-color: #e2e2e2;
+  background-image: none;
+  background-repeat: no-repeat;
+  border: 1px solid #b9b9b9;
+}
+.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-active,
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
+  border: 1px solid #00aade;
+  background-color: #00aade;
+  background-image: none;
+  background-repeat: no-repeat;
+}
+.ui-ightmleditor .ui-igcombo-fieldholder {
+  border-color: #cdcdcd;
+}
+.ui-ightmleditor-content iframe,
+.ui-ightmleditor-content textarea {
+  border: 1px solid #cdcdcd;
+  -moz-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
+}
+/*breadcrumb styling*/
+.ui-igPathFinder .ui-button::after {
+  border-top: 1px solid #B9B9B9;
+  border-right: 1px solid #B9B9B9;
+  background: #F9F9F9;
+}
+.ui-igPathFinder .ui-button.ui-state-hover::after {
+  border-top: 1px solid #858585;
+  border-right: 1px solid #858585;
+  background: #E2E2E2;
+}
+.ui-igPathFinder .ui-button.ui-state-active::after {
+  border-top: 1px solid #00AADE;
+  border-right: 1px solid #00AADE;
+  background: #00AADE;
+}
+.ui-igPathFinder .ui-state-active {
+  border: 1px solid #00AADE;
+  color: #fff;
+}
+/*toolbar buttons*/
+.ui-igtoolbarbutton.ui-button.ui-state-active .ui-icon {
+  background-position-x: -32px;
+}
+.ui-igtoolbarbutton.ui-button.ui-state-active {
+  border-width: 1px;
+}
+.ui-igtoolbarbutton.ui-button .ui-icon.ui-icon-triangle-1-s {
+  background-position: -64px -16px;
+}
+.ui-splitbutton.ui-state-active div.ui-igtoolbarbutton.ui-button,
+.ui-ightmleditor .ui-splitbutton.ui-state-active div.ui-igtoolbarbutton.ui-button {
+  background-color: #00AADE;
+}
+.ui-splitbutton.ui-state-active .ui-igtoolbarbutton .ui-icon {
+  background-position-x: -32px;
+}
+/***********************
+	Editors
+************************/
+.ui-igedit-spinlowerimagepressed,
+.ui-igedit-spinupperimagepressed,
+.ui-igedit-buttonimagepressed {
+  background-image: url(images/ui-icons_ffffff_256x240.png) !important;
+}
+/*.ui-datepicker table {
+	border				: 1px solid #D2D2D2;
+	border-top-width	: 0;
+	margin				: 0;
+}*/
+/***********************
+	HTML Editor
+************************/
+.ui-ightmleditor {
+  background-image: none;
+  background-color: #FFF;
+}
+.ui-ightmleditor .ui-igPathFinder .ui-button-text {
+  padding: 0px 7px !important;
+}
+.ui-igtoolbar .ui-button.ui-igtoolbarbutton .ui-icon {
+  background-image: url(images/igHtmlEditor/html-editor-sprite.png) !important;
+}
+.ui-igtoolbar .ui-button .ui-icon.ui-icon-triangle-1-s {
+  background-image: url(images/ui-icons_858585_256x240.png) !important;
+}
+.ui-ightmleditor .ui-button-icon-only .ui-button-text {
+  padding: 0!important;
+}
+.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
+  background-position: -16px 0 !important;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-expand {
+  background-position: -16px -16px !important;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-redo {
+  background-position: -16px -32px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-undo {
+  background-position: -16px -48px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-increasefontsize {
+  background-position: -16px -80px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-decreasefontsize {
+  background-position: -16px -96px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-viewsource-icon {
+  background-position: -16px -160px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html {
+  background-position: -16px -112px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-add {
+  background-position: -16px -128px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-delete {
+  background-position: -16px -144px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-valid {
+  background-position: -16px -176px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addimage {
+  background-position: -16px -192px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-link {
+  background-position: -16px -208px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addlink {
+  background-position: -16px -224px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-unlink {
+  background-position: -16px -240px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-copy {
+  background-position: -16px -256px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-cut {
+  background-position: -16px -272px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-paste {
+  background-position: -16px -288px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-table {
+  background-position: -16px -304px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addrow {
+  background-position: -16px -320px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addcolumn {
+  background-position: -16px -336px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removerow {
+  background-position: -16px -352px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removecolumn {
+  background-position: -16px -368px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyleft {
+  background-position: -16px -384px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifycenter {
+  background-position: -16px -400px !important;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyright {
+  background-position: -16px -416px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyfull {
+  background-position: -16px -432px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-forecolor {
+  background-position: -16px -448px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-backcolor {
+  background-position: -16px -464px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-bold {
+  background-position: -16px -480px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-italic {
+  background-position: -16px -496px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-underline {
+  background-position: -16px -512px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-strikethrough {
+  background-position: -16px -528px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-horizontalrule {
+  background-position: -16px -544px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-indent {
+  background-position: -16px -560px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removeindent {
+  background-position: -16px -576px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-unorderedlist {
+  background-position: -16px -592px;
+}
+.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-orderedlist {
+  background-position: -16px -608px;
+}
+/**********/
+/* igGrid */
+/**********/
+/* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
+.ui-iggrid-table-mrl .ui-widget-content td {
+  border: 1px solid rgba(153, 153, 153, 0.06) !important;
+}
+.ui-iggrid-table-mrl .ui-widget-content td.ui-state-hover,
+.ui-iggrid-table-mrl .ui-widget-content .ui-iggrid-altrecord td.ui-state-hover {
+  border: 1px solid #b1b1b1 !important;
+}
+.ui-iggrid .ui-iggrid-headertable-mrl th,
+.ui-iggrid .ui-iggrid-table-mrl th {
+  border: 2px solid #00aade !important;
+}
 .ui-iggrid {
   /* Put your rules here */
 }
@@ -2468,9 +3507,1071 @@ ui-iggrid-groupbyarea a,
   width: 20px;
   height: 20px;
 }
-/******************
-*  igVideoPlayer  *
-******************/
+.ui-igedit-list .ui-igedit-listitem.ui-state-default,
+.ui-iggrid-filterddlist li.ui-state-default,
+.ui-iggrid-featurechooser-list li.ui-state-default,
+.ui-iggrid-hiding-dropdown-list li.ui-state-default,
+.ui-iggrid-columnmoving-dropdown-list li.ui-state-default,
+.ui-igcombo-listitemholder li.ui-state-default {
+  color: #4B4B4B;
+  text-shadow: none;
+}
+.ui-igedit-dropdown .ui-igedit-listitem.ui-igedit-listitemselected.ui-state-highlight {
+  color: #fff;
+}
+.ui-iggrid-addrow.ui-state-active .ui-icon {
+  background-image: url(images/ui-icons_ffffff_256x240.png) !important;
+}
+/* IG GRID */
+.ui-iggrid .ui-iggrid-headercaption.ui-widget-header {
+  border-color: transparent;
+  background-color: #00AADE;
+  color: white;
+}
+.ui-iggrid thead th,
+.ui-iggrid thead th.ui-state-default {
+  border-bottom-width: 2px!important;
+}
+.ui-iggrid th.ui-state-default:first-child,
+.ui-iggrid table th:first-child {
+  border-left-color: transparent;
+}
+.ui-iggrid thead th.ui-state-hover,
+.ui-iggrid thead th.ui-state-hover:first-child {
+  border-color: #858585 #858585 #00AADE #858585;
+}
+.ui-iggrid th.ui-state-active,
+.ui-iggrid th.ui-state-active:first-child {
+  border-color: #00AADE;
+}
+.ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderactive .ui-iggrid-headertext {
+  color: #fff;
+}
+.ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderfocus.ui-state-focus .ui-iggrid-headertext {
+  color: #4B4B4B;
+}
+.ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderfocus.ui-state-focus .ui-icon {
+  color: #444;
+}
+.ui-iggrid th.ui-state-active .ui-iggrid-indicatorcontainer .ui-icon {
+  color: #ffffff;
+}
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
+  border-color: #00AADE;
+}
+.ui-iggrid th a,
+.ui-iggrid th.ui-state-default a,
+.ui-iggrid th.ui-state-hover a,
+.ui-iggrid th.ui-state-active a {
+  text-shadow: none;
+}
+.ui-iggrid .ui-iggrid-toolbar {
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
+}
+.ui-iggrid-headertext {
+  color: #4B4B4B;
+}
+.ui-iggrid-headertable {
+  border-left: none!important;
+}
+.ui-iggrid td.ui-state-highlight {
+  border-style: solid;
+}
+/* Bug 213600, S.D. 25.02.2016, Selected row's last column cell text is overlapped by vertical scrollbar when using Metro theme
+.ui-iggrid td.ui-state-hover {
+    border-width: 1px 0 !important;
+    padding: 4px 5px;
+}
+.ui-iggrid td.ui-state-active {
+    border-width: 0 !important;
+    padding: 5px !important;
+}*/
+/*padding left for paging items with icons to the left */
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-prevpage {
+  padding: 5px 12px !important;
+}
+/*padding right for paging items with icons to the right */
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-lastpage {
+  padding: 5px 12px !important;
+}
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage {
+  border-right: 0;
+}
+.ui-iggrid .ui-iggrid-paging div,
+.ui-iggrid .ui-iggrid-paging span,
+.ui-iggrid .ui-iggrid-paging li,
+.ui-iggrid .ui-iggrid-paging input,
+.ui-iggrid .ui-iggrid-results span,
+.ui-iggrid .ui-iggrid-results input {
+  line-height: 1.2em !important;
+}
+.ui-iggrid-paging > .ui-iggrid-pagedropdowncontainer {
+  margin-top: 0.3em;
+}
+.ui-igedit-listitem.ui-state-highlight {
+  padding: 0 0 0 2px !important;
+}
+.ui-iggrid .ui-iggrid-footer {
+  border-width: 0 1px 1px;
+  background-color: #00AADE;
+  color: white;
+  line-height: 2.1em;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-firstpage,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-prevpage,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-nextpage,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-lastpage {
+  border-color: #00AADE;
+  background-color: #00AADE;
+  color: white;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-firstpage .ui-icon,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-prevpage .ui-icon,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-nextpage .ui-icon,
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-lastpage .ui-icon {
+  background-image: url(images/icon_sprite.png);
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-firstpage .ui-icon {
+  background-position: 0 -63px;
+  margin-left: -4px;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-prevpage .ui-icon {
+  background-position: 0 -47px;
+  margin-left: -4px;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-nextpage .ui-icon {
+  background-position: -16px -47px;
+  margin-right: -4px;
+}
+.ui-iggrid .ui-iggrid-footer .ui-iggrid-lastpage .ui-icon {
+  background-position: -16px -63px;
+  margin-left: -4px;
+}
+.ui-iggrid-results .ui-iggrid-pagesizelabel,
+.ui-iggrid-results .ui-iggrid-pagesizelabel,
+.ui-iggrid-pagedropdowncontainer .ui-iggrid-pagedropdownlabels {
+  margin-top: 0.15em;
+}
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-page.ui-state-default {
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 5px 12px;
+}
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-pagecurrent.ui-state-active {
+  border: 1px solid #FFFFFF;
+  padding: 5px 12px;
+}
+.ui-iggrid .ui-iggrid-footer.ui-iggrid-pager .ui-iggrid-pagelink {
+  color: #ffffff;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+.ui-iggrid .ui-iggrid-footer.ui-iggrid-pager .ui-state-hover .ui-iggrid-pagelink,
+.ui-iggrid .ui-iggrid-footer.ui-iggrid-pager .ui-state-hover .ui-iggrid-pagelinkcurrent,
+.ui-iggrid-pagecurrent.ui-state-active.ui-state-hover a,
+.ui-iggrid-pagecurrent.ui-iggrid-page-hover a {
+  color: #ffffff;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.ui-iggrid-paging .ui-iggrid-page.ui-iggrid-page-hover {
+  background-color: #EAEAEA;
+  border: 1px solid #B7B7B7;
+}
+.ui-iggrid .ui-igedit-button.ui-state-hover {
+  background-color: #EAEAEA;
+}
+.ui-iggrid .ui-igedit-button.ui-state-hover .ui-icon-triangle-1-s {
+  color: #444;
+}
+.ui-iggrid .ui-iggrid-filterbutton,
+.ui-iggrid-filterddlist .ui-iggrid-filtericon {
+  color: #444;
+}
+.ui-iggrid td.ui-iggrid-filtercell {
+  border: 0 none !important;
+  background: #00AADE;
+}
+/*Reset button on hide column dialog on grids */
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton {
+  font-size: 1.3em;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-default {
+  border-color: #fff;
+  background-color: transparent;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-default .ui-button-text {
+  color: white;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-hover {
+  border-color: #858585;
+  background-color: #E5E5E5;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-hover .ui-button-text {
+  color: #000;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-focus,
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-active {
+  border-color: #80D5EF;
+  border-width: 1px;
+}
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-focus .ui-button-text,
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-active .ui-button-text {
+  color: white;
+}
+/*****************/
+/* Notifier      */
+/****************/
+.ui-igpopover.ui-ignotify-error .ui-icon {
+  background-image: url(images/ui-icons_ffffff_256x240.png);
+}
+.ui-igpopover.ui-ignotify-error.ui-ignotify-inline .ui-icon {
+  background-image: url(images/ui-icons_858585_256x240.png);
+}
+/****************/
+/* igPivot Grid */
+/****************/
+.ui-igpivot-metadataitem.ui-state-default {
+  background: #ececec;
+  border: 1px solid #999999;
+  color: #000000;
+}
+.ui-igpivot-metadataitem .ui-widget .ui-corner-all .ui-state-default .ui-draggable {
+  color: #000000;
+}
+.ui-igpivot-metadataitem .ui-icon.ui-icon-close {
+  color: #444;
+}
+.ui-igpivotgrid .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter,
+.ui-igpivot-droparea .ui-igpivot-metadataitem .ui-icon-pivot-smallfilter {
+  background-position: -64px 0 !important;
+}
+.ui-igpivot-filterdropdown .ui-igtree-node {
+  line-height: 2em !important;
+}
+.ui-igpivot-filterdropdown .ui-igtree-expander {
+  top: 1em !important;
+}
+.ui-igpivot-filterdropdown span[data-role=checkbox] {
+  margin-top: 0.65em;
+}
+.ui-igpivot-rowheaderlink {
+  color: skyblue !important;
+}
+/***********************/
+/* Popover       */
+/***********************/
+.ui-igpopover > .ui-widget-content {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+}
+/************/
+/* igRating */
+/************/
+.ui-igrating,
+.ui-igrating.ui-state-default {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+}
+.ui-icon.ui-igrating-vote,
+.ui-iggrid .ui-icon.ui-igrating-vote {
+  background-image: url(images/igRating/ig-rating.png);
+  background-position: -75px 0;
+  width: 20px;
+  height: 20px;
+}
+.ui-icon.ui-igrating-voteselected,
+.ui-iggrid .ui-icon.ui-igrating-voteselected {
+  background-image: url(images/igRating/ig-rating.png);
+  background-position: 0 0;
+  width: 20px;
+  height: 20px;
+}
+.ui-icon.ui-igrating-votehover,
+.ui-iggrid .ui-icon.ui-igrating-votehover {
+  background-image: url(images/igRating/ig-rating.png);
+  background-position: -25px 0;
+  width: 20px;
+  height: 20px;
+}
+.ui-icon.ui-igrating-votedisabled,
+.ui-iggrid .ui-icon.ui-igrating-votedisabled {
+  background-image: url(images/igRating/ig-rating.png);
+  background-position: -100px 0;
+  width: 20px;
+  height: 20px;
+}
+.ui-icon.ui-igrating-votedisabledselected,
+.ui-iggrid .ui-icon.ui-igrating-votedisabledselected {
+  background-image: url(images/igRating/ig-rating.png);
+  background-position: -50px 0;
+  width: 20px;
+  height: 20px;
+}
+.ui-igrating .ui-igrating-selected.ui-state-highlight {
+  padding: 0!important;
+}
+/* Touch friendly */
+.touch .ui-igrating .ui-icon.ui-igrating-vote,
+.touchevents .ui-igrating .ui-icon.ui-igrating-vote,
+.pointerevents .ui-igrating .ui-icon.ui-igrating-vote,
+.touch .ui-igrating .ui-icon.ui-igrating-voteselected,
+.touchevents .ui-igrating .ui-icon.ui-igrating-voteselected,
+.pointerevents .ui-igrating .ui-icon.ui-igrating-voteselected,
+.touch .ui-igrating .ui-icon.ui-igrating-votehover,
+.touchevents .ui-igrating .ui-icon.ui-igrating-votehover,
+.pointerevents .ui-igrating .ui-icon.ui-igrating-votehover,
+.touch .ui-igrating .ui-icon.ui-igrating-votedisabled,
+.touchevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
+.pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
+.touch .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
+.touchevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
+.pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected {
+  background-image: url(images/igRating/ig-rating-touch.png) !important;
+}
+/* Iphone 4 Retina Display */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2) {
+  .touch .ui-igrating .ui-icon.ui-igrating-vote,
+  .touchevents .ui-igrating .ui-icon.ui-igrating-vote,
+  .pointerevents .ui-igrating .ui-icon.ui-igrating-vote,
+  .touch .ui-igrating .ui-icon.ui-igrating-voteselected,
+  .touchevents .ui-igrating .ui-icon.ui-igrating-voteselected,
+  .pointerevents .ui-igrating .ui-icon.ui-igrating-voteselected,
+  .touch .ui-igrating .ui-icon.ui-igrating-votehover,
+  .touchevents .ui-igrating .ui-icon.ui-igrating-votehover,
+  .pointerevents .ui-igrating .ui-icon.ui-igrating-votehover,
+  .touch .ui-igrating .ui-icon.ui-igrating-votedisabled,
+  .touchevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
+  .pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
+  .touch .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
+  .touchevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
+  .pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected {
+    background-image: url(images/igRating/ig-rating-touchx2.png) !important;
+  }
+}
+/* ============
+  Scheduler
+============= */
+#scheduler {
+  background: #FFFFFF;
+}
+.ui-igscheduler-core .ui-igscheduler-agendaview {
+  background-color: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+  background-color: transparent;
+  color: #000000;
+  border-color: #ebebeb !important;
+}
+.ui-igscheduler-core .ui-igscheduler-agendaview-message {
+  font-size: 1.1em;
+}
+.ui-igscheduler-header {
+  background: #FFFFFF;
+  border-color: #cccccc;
+}
+.ui-igscheduler-tabs {
+  color: #000000;
+}
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+  color: #00aade;
+}
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected .ui-icon {
+  color: #00aade;
+}
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
+  color: #009ecf;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject {
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time {
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-of-week-header,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location {
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected {
+  background-color: #FFFFFF;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-vertical-separator,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
+  background-color: #ebebeb;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-horizontal-separator,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator {
+  background-color: #ebebeb;
+}
+.ui-igscheduler-agendaview .null {
+  background-color: #ebebeb !important;
+}
+.ui-igscheduler-monthview {
+  box-shadow: 1px 2px 15px #cccccc;
+  z-index: 1;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-dayday-selected {
+  background-color: #666;
+  color: #787878;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today-indicator {
+  background: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today span,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today {
+  color: #00aade;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-month-header {
+  background-color: #00aade;
+  color: white;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-week-header {
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
+  background-color: transparent;
+  color: #cccccc;
+}
+.ui-igscheduler-selectall {
+  background-color: #00aade;
+}
+.ui-igscheduler-navigator-disabled-date-range-button {
+  color: #000000;
+}
+.ui-igscheduler-navigator-next-button:hover {
+  color: #000000;
+}
+.ui-igscheduler-navigator-next-button:hover span:after,
+.ui-igscheduler-navigator-previous-button:hover span:after {
+  border-color: #00aade;
+}
+.ui-igscheduler-navigator-back-button:hover,
+.ui-igscheduler-navigator-date-range-button:hover,
+.ui-igscheduler-navigator-forward-button:hover {
+  background-color: transparent;
+}
+.ui-igscheduler-today-button {
+  color: #000000;
+}
+.ui-igscheduler-today-button:hover {
+  background-color: transparent;
+  color: #00aade;
+}
+.ui-igscheduler-tabs:hover {
+  background-color: transparent;
+  color: #00aade;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
+  color: #00aade;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+  color: #fd472b;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
+  color: #00aade;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location-selected {
+  color: #2ccdff;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
+  margin: 10px 0;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview {
+  background-color: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
+  background-color: #cccccc;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
+  font-size: .75em;
+  padding: 0 0 0 3px!important;
+}
+.ui-igscheduler-tabs .ui-icon,
+.ui-igscheduler-today-button .ui-icon {
+  margin-top: -9px !important;
+}
+#scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #cccccc;
+}
+/* Week & day views */
+.ui-igscheduler-core .ui-igscheduler-dayweekview {
+  background-color: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-allday-event-area {
+  background-color: #D9D9D9;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt {
+  background-color: #D9D9D9;
+}
+.ui-igscheduler-core .ui-igscheduler-allday-event-subject {
+  font-size: .5em;
+  background-color: #D9D9D9;
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-location {
+  font-size: 1em;
+  background-color: transparent;
+  color: #303030;
+}
+/*
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-color-bar {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-header-area {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-topleft-corner {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor-area {}
+
+*/
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-subject {
+  font-size: 1.1em;
+  background-color: transparent;
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-day-header {
+  font-size: 1em;
+  background-color: transparent;
+  color: #999999;
+}
+.ui-igscheduler-monthview-day-selected {
+  background: #b3e6f5;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-navigation-header-date-text {
+  font-size: 1em;
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-resource-header {
+  background-color: transparent;
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot {
+  background-color: rgba(255, 255, 255, 0.005);
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor {
+  font-size: .8em;
+  background-color: transparent;
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-working-hour {
+  background-color: #eeeeee;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #b3e6f5 !important;
+}
+/*****************/
+/*   igSplitter  */
+/*****************/
+.ui-igsplitter-splitbar-horizontal.ui-state-default,
+.ui-igsplitter-splitbar-vertical.ui-state-default {
+  background: none #dcdcdc;
+  border-color: transparent;
+}
+.ui-igsplitter-splitbar-horizontal.ui-state-hover,
+.ui-igsplitter-splitbar-vertical.ui-state-hover {
+  background: none #36C0F3;
+  border-color: transparent;
+}
+.ui-igsplitter-splitbar-horizontal.ui-state-focus,
+.ui-igsplitter-splitbar-vertical.ui-state-focus {
+  border-width: 1px;
+  border-color: transparent;
+}
+.ui-igsplitter-collapse-button-vertical-left.ui-state-default,
+.ui-igsplitter-collapse-button-vertical-right.ui-state-default,
+.ui-igsplitter-collapse-button-horizontal-left.ui-state-default,
+.ui-igsplitter-collapse-button-horizontal-right.ui-state-default {
+  background-color: #d2d2d2;
+}
+/*
+=========================
+Spreadsheet colors
+=========================
+*/
+.ui-igspreadsheet-inputmessage {
+  background-color: #ebebeb;
+  border-color: #303030;
+  color: #000000;
+}
+/* ToolTip */
+.ui-igspreadsheet-tooltip {
+  background-color: #ebebeb;
+  border-color: #cccccc;
+  color: #303030;
+}
+/* Splitters */
+.ui-igspreadsheet-rowsplitter,
+.ui-igspreadsheet-columnsplitter,
+.ui-igspreadsheet-splitterintersection {
+  background-color: #ebebeb;
+}
+/* SelectAll */
+.ui-igspreadsheet-selectall {
+  background-color: #ebebeb;
+  color: #cccccc;
+}
+.ui-igspreadsheet-selectall.ui-state-active {
+  color: #00aade;
+  background-color: #2ccdff;
+}
+/* SpreadSheet Header & Footer background */
+.ui-igspreadsheet-tabareabackground,
+.ui-igspreadsheet-formulabar {
+  background-color: #f4f4f4;
+}
+/* SpreadSheet Footer top border */
+.ui-igspreadsheet-tabareaborder {
+  background-color: #999;
+}
+/* Splitter icon */
+.ui-igspreadsheet-tabareasplitter,
+.ui-igspreadsheet-nameboxsplitter {
+  color: #666;
+}
+/* Unselected tab */
+.ui-igspreadsheet-tabitem {
+  border-right: 1px solid #999;
+  border-left: 1px solid #999;
+  background-color: transparent;
+  border-bottom: 2px solid transparent;
+  /* reserved space so we don't see jumping when the tab is selected */
+  color: #666;
+}
+/* Tab hover */
+.ui-igspreadsheet-tabitem.ui-state-hover {
+  color: #00aade;
+}
+/* Active tab */
+.ui-igspreadsheet-tabitem-active {
+  background: #fff;
+  border-bottom-color: #00aade;
+}
+.ui-igspreadsheet-tabitem-active,
+.ui-igspreadsheet-tabitem-active.ui-state-hover {
+  color: #00aade;
+}
+/* [LIGHT|DARK TAB START]  */
+.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
+  color: #00aade;
+}
+.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span {
+  color: #ececec;
+}
+.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
+.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
+  color: #00aade;
+}
+.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
+.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
+  color: #00aade;
+}
+/* [LIGHT|DARK TAB END] */
+/* Tab Area Buttons */
+.ui-igspreadsheet-activateprevioushiddentab,
+.ui-igspreadsheet-activatenexthiddentab,
+.ui-igspreadsheet-scrollfirsttab,
+.ui-igspreadsheet-scrolllasttab,
+.ui-igspreadsheet-scrollprevioustab,
+.ui-igspreadsheet-scrollnexttab {
+  color: #666;
+}
+.ui-igspreadsheet-addnewworksheet.ui-state-hover,
+.ui-igspreadsheet-activateprevioushiddentab.ui-state-hover,
+.ui-igspreadsheet-activatenexthiddentab.ui-state-hover,
+.ui-igspreadsheet-scrollfirsttab.ui-state-hover,
+.ui-igspreadsheet-scrolllasttab.ui-state-hover,
+.ui-igspreadsheet-scrollprevioustab.ui-state-hover,
+.ui-igspreadsheet-scrollnexttab.ui-state-hover {
+  color: #006f92;
+}
+.ui-igspreadsheet-addnewworksheet.ui-state-disabled,
+.ui-igspreadsheet-scrollfirsttab.ui-state-disabled,
+.ui-igspreadsheet-scrolllasttab.ui-state-disabled,
+.ui-igspreadsheet-scrollprevioustab.ui-state-disabled,
+.ui-igspreadsheet-scrollnexttab.ui-state-disabled {
+  color: #c4c4c4;
+}
+/* Add New Worksheet */
+.ui-igspreadsheet-addnewworksheet {
+  color: #00aade;
+  cursor: pointer;
+}
+/* ScrollBar related */
+.ui-igspreadsheet-scrollbar-button-left,
+.ui-igspreadsheet-scrollbar-button-right,
+.ui-igspreadsheet-scrollbar-button-up,
+.ui-igspreadsheet-scrollbar-button-down {
+  background-color: #ebebeb;
+  border: 1px solid #999999;
+  color: #303030;
+}
+.ui-igspreadsheet-scrollbar-button-left.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-right.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-up.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-down.ui-state-hover {
+  background-color: #ebebeb;
+  border-color: #999999;
+  color: #303030;
+}
+.ui-igspreadsheet-scrollbar-button-left.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-right.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-up.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-down.ui-state-active {
+  background-color: #FFFFFF;
+  border-color: #999999;
+  color: #787878;
+}
+.ui-igspreadsheet-scrollbar-track-left,
+.ui-igspreadsheet-scrollbar-track-right,
+.ui-igspreadsheet-scrollbar-track-up,
+.ui-igspreadsheet-scrollbar-track-down {
+  background-color: #ebebeb;
+}
+.ui-igspreadsheet-scrollbar-thumb-vertical,
+.ui-igspreadsheet-scrollbar-thumb-horizontal {
+  background-color: #cccccc;
+  border: 1px solid #999999;
+}
+.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-hover,
+.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-hover,
+.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-active,
+.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-active {
+  background-color: #999999;
+  border-color: #ebebeb;
+}
+/* Headers
+   =======
+*/
+/* Cols & Rows Headers */
+.ui-igspreadsheet-columnheader,
+.ui-igspreadsheet-rowheader {
+  background-color: #f4f4f4;
+  color: #111;
+}
+/* Cols & Rows Headers borders  */
+.ui-igspreadsheet-columnheader {
+  border-right-color: #cccccc;
+}
+.ui-igspreadsheet-rowheader {
+  border-bottom-color: #cccccc;
+}
+/* Cols & Rows Header, Selected  */
+.ui-igspreadsheet-columnheader-selected {
+  border-right-color: #12c7ff;
+}
+.ui-igspreadsheet-rowheader-selected {
+  border-bottom-color: #12c7ff;
+}
+/* Cols & Rows Header, Selected but not focused */
+.ui-igspreadsheet-columnheader-selected,
+.ui-igspreadsheet-rowheader-selected {
+  background-color: #00aade;
+  color: #fff;
+}
+.ui-igspreadsheet-columnheader-selected.ui-state-highlight,
+.ui-igspreadsheet-rowheader-selected.ui-state-highlight {
+  color: #ffffff;
+}
+/* Selected cel, header col & row background and color */
+.ui-igspreadsheet-columnheader-selectedcells,
+.ui-igspreadsheet-rowheader-selectedcells {
+  background-color: #00aade;
+  color: #fff;
+}
+/* Selected cel, header col & row border color */
+.ui-igspreadsheet-columnheader-selectedcells {
+  border-right-color: #0096c5;
+}
+.ui-igspreadsheet-rowheader-selectedcells {
+  border-bottom-color: #0096c5;
+}
+/* Selected cel, header hover col & row  background & colors */
+.ui-igspreadsheet-columnheader-hover,
+.ui-igspreadsheet-rowheader-hover {
+  background-color: #12c7ff;
+  color: #fff;
+}
+.ui-igspreadsheet-columnheader-hover {
+  border-right-color: #0083ab;
+}
+.ui-igspreadsheet-rowheader-hover {
+  border-bottom-color: #0083ab;
+}
+.ui-igspreadsheet-header-resizeline {
+  background-color: #00aade;
+}
+/* Formula Bar
+   =======
+*/
+.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton {
+  background-color: #cccccc;
+  cursor: pointer;
+}
+.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton:hover {
+  opacity: 0.8;
+}
+.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton:before {
+  border-color: #111;
+}
+/* Buttons background */
+.ui-igspreadsheet-nameboxcontainer,
+.ui-igspreadsheet-formulabartextareacontainer,
+.ui-igspreadsheet-formulabarbuttoncontainer {
+  border: 1px solid #D9D9D9;
+  box-sizing: border-box;
+  background-color: #ececec;
+  border-radius: 6px;
+}
+/* Enabled buttons */
+.ui-igspreadsheet-formulabarenterbutton,
+.ui-igspreadsheet-formulabarcancelbutton {
+  color: #000000;
+}
+/* Disabled Buttons */
+.ui-igspreadsheet-formulabarenterbutton.ui-state-disabled,
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-disabled {
+  color: #c4c4c4;
+}
+.ui-igspreadsheet-formulabarenterbutton.ui-state-hover {
+  color: #00aade;
+}
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-hover {
+  color: #fd472b;
+}
+.ui-igspreadsheet-invaliddata {
+  border-color: #fd472b;
+}
+/*
+    Formula Bar END
+   ==================
+*/
+/* Multi cell selection background color */
+.ui-igspreadsheet-cellselection {
+  background-color: rgba(0, 170, 222, 0.22);
+  border-color: white;
+  outline-color: rgba(0, 170, 222, 0.22);
+}
+.ui-igspreadsheet-cellselection.ui-state-highlight {
+  outline-color: #00aade;
+}
+.ui-igspreadsheet-cellselectionhandle {
+  background-color: #00aade;
+  border-color: #ebebeb;
+}
+.ui-igspreadsheet .ui-menu {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.ui-igspreadsheet .ui-menu-item .ui-menu {
+  border-radius: 0 6px 6px 6px;
+}
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #00aade;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
+}
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #00aade;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-width: 1px;
+  /* METRO THEME */
+  border-color: transparent;
+  background: transparent;
+  color: #000000;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #000000;
+}
+/* Styles for jQuery 1.10.3 END */
+/* Styles for jQuery 1.11.1*/
+.ui-menu-item.ui-state-focus {
+  background: #00aade;
+  color: #fff;
+}
+.ui-menu .ui-menu-item {
+  margin: -1px;
+}
+/* Styles for jQuery 1.11.1 END */
+/***********************/
+/* Tile manager        */
+/***********************/
+.ui-state-hover .ui-igtile-inner-container {
+  color: #858585;
+}
+/**********/
+/* igTree */
+/**********/
+.ui-widget-content.ui-igtree-root {
+  background: none;
+  border: none;
+}
+.ui-igtree a {
+  color: #333333;
+}
+.ui-igtree a.ui-state-hover,
+.ui-igtree a.ui-state-active {
+  color: white;
+}
+.ui-igtree a.ui-state-focus {
+  color: #333333;
+  background: #94d7f3 none;
+  border: 1px solid #3ab5e9;
+  outline: none;
+}
+.ui-igtree a.ui-state-hover {
+  color: #4B4B4B;
+}
+.ui-igtree li a.ui-state-focus {
+  color: #666;
+}
+.ui-igtree-node.ui-igtree-parentnode .ui-icon {
+  background-image: url(images/ui-icons_858585_256x240.png);
+}
+.ui-igtree-checkbox .ui-icon,
+.ui-igtree .ui-igcheckbox-normal .ui-icon,
+.ui-igtree .ui-igcheckbox-small .ui-icon {
+  background-image: url(images/ui-icons_00AADE_256x240.png);
+}
+/***********************/
+/* TreeGrid            */
+/***********************/
+/*TreeGrid Paging Context Row*/
+.ui-igtreegrid-contextrow {
+  background-color: #FFFFFF;
+  color: #858585;
+}
+.ui-igtreegrid-contextrow-icon.ui-icon.ui-icon-bookmark {
+  background-image: url(../../structure/images/igGrid/filter-icons-333333.png);
+  background-position: -464px 0;
+}
+/************/
+/* igUpload */
+/************/
+/*.ui-iguploadmultiple .ui-igupload-container.ui-widget-content { border-color: #2884ac }*/
+.ui-igupload-progressbar-icon-default,
+.ui-igupload-progressbar-icon-default {
+  background-image: url(images/icon_sprite.png) !important;
+  background-position: 0px -128px !important;
+  background-repeat: no-repeat !important;
+}
+.ui-igupload-progressbar-icon-exe {
+  background-image: url(images/icon_sprite.png) !important;
+  background-position: 0px -144px !important;
+  background-repeat: no-repeat !important;
+}
+.ui-igupload-progressbar-icon-images {
+  background-image: url(images/icon_sprite.png) !important;
+  background-position: 0px -160px !important;
+  background-repeat: no-repeat !important;
+}
+.ui-igupload-progressbar-icon-music {
+  background-image: url(images/icon_sprite.png) !important;
+  background-position: 0px -176px !important;
+  background-repeat: no-repeat !important;
+}
+.ui-igupload-progressbar-icon-video {
+  background-image: url(images/icon_sprite.png) !important;
+  background-position: 0px -192px !important;
+  background-repeat: no-repeat !important;
+}
+.ui-igupload-cancel-button .ui-button-icon-primary {
+  background-image: url(images/ui-icons_858585_256x240.png);
+}
+.ui-state-hover.ui-igupload-cancel-button {
+  background-color: transparent !important;
+}
+.ui-igupload-cancel-button.ui-state-hover .ui-button-text {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+.ui-igupload-cancel-button.ui-state-hover .ui-icon-closethick,
+.ui-igupload-cancel-button.ui-state-focus .ui-icon-closethick {
+  background-image: url(images/ui-icons_00AADE_256x240.png);
+}
+.ui-igupload .ui-igprogressbar {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #d1d1d1));
+  background-image: -webkit-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: -moz-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: -o-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: -ms-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: linear-gradient(#d1d1d1, #d1d1d1);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD1D1D1', endColorstr='#FFD1D1D1');
+}
+.ui-igupload-progress-container {
+  background: none repeat scroll 0 0 white;
+}
+.ui-igupload-progressbar-filesize {
+  color: gray;
+}
+.ui-igupload-summaryprogress-label {
+  color: gray;
+}
+.ui-igupload-summaryprogress-secondary-label {
+  color: white;
+}
+/*******************
+*    IE6 fixes     *
+*******************/
+.ui-ie6 .ui-igprogressbar-range {
+  filter: none!important;
+  background-image: none!important;
+  background-color: #2686ae !important;
+}
+.ui-ie6 .ui-igupload-summaryprogres_summpbar_progress {
+  filter: none;
+  background-image: none;
+  background-color: #2686ae !important;
+}
+.ui-ie6 .ui-igprogressbar {
+  filter: none;
+  background-image: none;
+  background-color: #f9f9f9;
+}
+.ui-ie6 .ui-igupload-uploadprogress {
+  filter: none;
+  background-image: none;
+}
+/*******************
+*    Opera fixes   *
+*******************/
+.ui-opera .ui-igprogressbar-range {
+  background-image: none !important;
+  background-color: #2686ae !important;
+}
+.ui-igprogressbar {
+  border: none;
+}
+.ui-igupload-summaryprogresscontainer a {
+  color: #00AADE;
+}
+/***********************
+  IG video player
+  Fixed colours since it works with fixed images
+************************/
 .ui-igplayer {
   /* Put your rules here */
 }
@@ -2777,677 +4878,67 @@ ui-iggrid-groupbyarea a,
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF00AADE', endColorstr='#FF00AADE');
   border: 1px solid #288bb4;
 }
-/******************
-*  igupload  *
-******************/
-/*.ui-iguploadmultiple .ui-igupload-container.ui-widget-content { border-color: #2884ac }*/
-.ui-igupload-progressbar-icon-default,
-.ui-igupload-progressbar-icon-default {
-  background-image: url(images/icon_sprite.png) !important;
-  background-position: 0px -128px !important;
-  background-repeat: no-repeat !important;
+.ui-igplayer .ui-igbutton.ui-state-focus,
+.ui-igplayer .ui-button.ui-state-focus {
+  border-color: #b3e6f5;
 }
-.ui-igupload-progressbar-icon-exe {
-  background-image: url(images/icon_sprite.png) !important;
-  background-position: 0px -144px !important;
-  background-repeat: no-repeat !important;
+.ui-igplayer .ui-igprogressbar.ui-widget-content {
+  background-color: #ebebeb;
 }
-.ui-igupload-progressbar-icon-images {
-  background-image: url(images/icon_sprite.png) !important;
-  background-position: 0px -160px !important;
-  background-repeat: no-repeat !important;
+.ui-widget-header.ui-igplayer-controls {
+  color: #000000;
+  border-bottom: 0;
 }
-.ui-igupload-progressbar-icon-music {
-  background-image: url(images/icon_sprite.png) !important;
-  background-position: 0px -176px !important;
-  background-repeat: no-repeat !important;
+.ui-igplayer-related-list .ui-igplayer-related-video-hover img {
+  border: 1px solid #D9D9D9;
+  background-color: #ececec;
+  color: #000000;
+  border-width: 3px;
 }
-.ui-igupload-progressbar-icon-video {
-  background-image: url(images/icon_sprite.png) !important;
-  background-position: 0px -192px !important;
-  background-repeat: no-repeat !important;
+.ui-igplayer-bookmark-item-time {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0) !important;
 }
-.ui-igupload-cancel-button .ui-button-icon-primary {
-  background-image: url(images/ui-icons_858585_256x240.png);
+.ui-igslider .ui-igslider-bookmark.ui-state-default {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0) !important;
 }
-.ui-state-hover.ui-igupload-cancel-button {
-  background-color: transparent !important;
+.ui-igplayer-bookmark-item-time:hover,
+.ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time,
+.ui-igplayer-bookmark-list li:hover .ui-igplayer-bookmark-item-time {
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px !important;
 }
-.ui-igupload-cancel-button.ui-state-hover .ui-button-text {
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  -o-box-shadow: none;
-  box-shadow: none;
+.ui-igslider .ui-igslider-bookmark.ui-state-hover {
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px !important;
 }
-.ui-igupload-cancel-button.ui-state-hover .ui-icon-closethick,
-.ui-igupload-cancel-button.ui-state-focus .ui-icon-closethick {
-  background-image: url(images/ui-icons_00AADE_256x240.png);
+/* igProgressBar */
+.ui-igprogressbar.ui-widget-content {
+  border: 0;
 }
-.ui-igupload .ui-igprogressbar {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #d1d1d1));
-  background-image: -webkit-linear-gradient(#d1d1d1, #d1d1d1);
-  background-image: -moz-linear-gradient(#d1d1d1, #d1d1d1);
-  background-image: -o-linear-gradient(#d1d1d1, #d1d1d1);
-  background-image: -ms-linear-gradient(#d1d1d1, #d1d1d1);
-  background-image: linear-gradient(#d1d1d1, #d1d1d1);
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD1D1D1', endColorstr='#FFD1D1D1');
+.ui-igplayer .ui-widget-header a {
+  color: #000000;
 }
-.ui-igupload-progress-container {
-  background: none repeat scroll 0 0 white;
+.ui-igprogressbar-range {
+  background-color: #b3e6f5 !important;
 }
-.ui-igupload-progressbar-filesize {
-  color: gray;
-}
-.ui-igupload-summaryprogress-label {
-  color: gray;
-}
-.ui-igupload-summaryprogress-secondary-label {
-  color: white;
-}
-/*******************
-*    IE6 fixes     *
-*******************/
-.ui-ie6 .ui-igprogressbar-range {
-  filter: none!important;
-  background-image: none!important;
-  background-color: #2686ae !important;
-}
-.ui-ie6 .ui-igupload-summaryprogres_summpbar_progress {
-  filter: none;
-  background-image: none;
-  background-color: #2686ae !important;
-}
-.ui-ie6 .ui-igprogressbar {
-  filter: none;
-  background-image: none;
-  background-color: #f9f9f9;
-}
-.ui-ie6 .ui-igupload-uploadprogress {
-  filter: none;
-  background-image: none;
-}
-/*******************
-*    Opera fixes   *
-*******************/
-.ui-opera .ui-igprogressbar-range {
-  background-image: none !important;
-  background-color: #2686ae !important;
-}
-/********************
-*   IG Tree styles  *
-********************/
-.ui-widget-content.ui-igtree-root {
-  background: none;
-  border: none;
-}
-.ui-igtree a {
-  color: #333333;
-}
-.ui-igtree a.ui-state-hover,
-.ui-igtree a.ui-state-active {
-  color: white;
-}
-.ui-igtree a.ui-state-focus {
-  color: #333333;
-  background: #94d7f3 none;
-  border: 1px solid #3ab5e9;
-  outline: none;
-}
-/*********************
-*   Checkbox styles  *
-*********************/
-.ui-igcheckbox-small.ui-state-default,
-.ui-igcheckbox-normal.ui-state-default,
-.ui-igcombo-checkbox.ui-state-default {
-  background-image: none;
-  background-color: white;
-  border: 1px solid #bebebe;
-}
-.ui-igcheckbox-small.ui-corner-all,
-.ui-igcheckbox-normal.ui-corner-all,
-.ui-igcombo-checkbox.ui-corner-all {
-  border-radius: 2px;
-}
-.ui-igcheckbox-small.ui-state-hover,
-.ui-igcheckbox-normal.ui-state-hover,
-.ui-igcombo-checkbox.ui-state-hover {
-  background-color: #f4f4f4;
-  border-color: #858585;
-}
-.ui-igcheckbox-small.ui-state-focus,
-.ui-igcheckbox-normal.ui-state-focus,
-.ui-igcombo-checkbox.ui-state-focus {
-  border-color: #01aade;
-}
-.ui-igcombo-checkbox.ui-state-default,
-.ui-igcombo-checkbox.ui-state-hover,
-.ui-igcombo-checkbox.ui-state-focus {
-  background-image: none;
-}
-.ui-igcheckbox-small .ui-icon,
-.ui-igcheckbox-normal .ui-icon,
-.ui-iggrid th .ui-igcheckbox-normal.ui-state-default .ui-icon,
-.ui-igcombo-checkbox .ui-icon {
-  background-image: url(images/ui-icons_00AADE_256x240.png);
-}
-.ui-icon-check-f {
-  background-position: -64px -144px;
-}
-.ui-icon-check-p {
-  /*background-position: -96px -160px;*/
-  background-color: #00AADE;
-  background-image: none !important;
-  border: 2px solid white;
-  box-sizing: border-box;
-}
-/************************
-*   HTML Editor styles  *
-*************************/
-.ui-ightmleditor {
-  background-color: white;
-  border: 1px solid #cdcdcd;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #ffffff));
-  background-image: -webkit-linear-gradient(#ffffff, #ffffff);
-  background-image: -moz-linear-gradient(#ffffff, #ffffff);
-  background-image: -o-linear-gradient(#ffffff, #ffffff);
-  background-image: -ms-linear-gradient(#ffffff, #ffffff);
-  background-image: linear-gradient(#ffffff, #ffffff);
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFFFFFFF');
-}
-.ui-ightmleditor .ui-igtoolbar {
-  background: transparent;
-}
-.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-igbutton,
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton {
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  -o-border-radius: 0;
-  -ms-border-radius: 0;
-  -khtml-border-radius: 0;
-  border-radius: 0;
-}
-.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-default,
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-default {
-  background-color: transparent;
-  background-image: none;
-  border-color: transparent;
-}
-.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-hover,
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-hover {
-  background-color: #e2e2e2;
-  background-image: none;
-  background-repeat: no-repeat;
-  border: 1px solid #858585;
-}
-.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-focus,
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-focus {
-  background-color: #e2e2e2;
-  background-image: none;
-  background-repeat: no-repeat;
-  border: 1px solid #b9b9b9;
-}
-.ui-ightmleditor .ui-igtoolbar-wrap .ui-igbutton.ui-state-active,
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
-  border: 1px solid #00aade;
+.ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
   background-color: #00aade;
-  background-image: none;
-  background-repeat: no-repeat;
 }
-.ui-ightmleditor .ui-igcombo-fieldholder {
-  border-color: #cdcdcd;
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton,
+.ui-igplayer-related-video-bar .ui-button.ui-igbutton {
+  border: 1px solid #D9D9D9;
+  background-color: #ececec;
+  color: #000000;
 }
-.ui-ightmleditor-content iframe,
-.ui-ightmleditor-content textarea {
-  border: 1px solid #cdcdcd;
-  -moz-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
-  -o-box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.1);
-}
-/*breadcrumb styling*/
-.ui-igPathFinder .ui-button::after {
-  border-top: 1px solid #B9B9B9;
-  border-right: 1px solid #B9B9B9;
-  background: #F9F9F9;
-}
-.ui-igPathFinder .ui-button.ui-state-hover::after {
-  border-top: 1px solid #858585;
-  border-right: 1px solid #858585;
-  background: #E2E2E2;
-}
-.ui-igPathFinder .ui-button.ui-state-active::after {
-  border-top: 1px solid #00AADE;
-  border-right: 1px solid #00AADE;
-  background: #00AADE;
-}
-.ui-igPathFinder .ui-state-active {
-  border: 1px solid #00AADE;
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton:hover {
+  border: 1px solid #b3e6f5;
+  background-color: #00aade;
   color: #fff;
 }
-/*toolbar buttons*/
-.ui-igtoolbarbutton.ui-button.ui-state-active .ui-icon {
-  background-position-x: -32px;
+.ui-igplayer-bookmark-list li:hover {
+  background-color: #ececec;
 }
-.ui-igtoolbarbutton.ui-button.ui-state-active {
-  border-width: 1px;
+.ui-progressbar.ui-widget-content {
+  border: 0;
 }
-.ui-igtoolbarbutton.ui-button .ui-icon.ui-icon-triangle-1-s {
-  background-position: -64px -16px;
-}
-.ui-splitbutton.ui-state-active div.ui-igtoolbarbutton.ui-button,
-.ui-ightmleditor .ui-splitbutton.ui-state-active div.ui-igtoolbarbutton.ui-button {
-  background-color: #00AADE;
-}
-.ui-splitbutton.ui-state-active .ui-igtoolbarbutton .ui-icon {
-  background-position-x: -32px;
-}
-/******************
-*   Chart styles  *
-******************/
-.ui-chart-palette-1 {
-  border-color: #2380a8!important;
-  background-color: #44acd6!important;
-}
-.ui-chart-palette-2 {
-  border-color: #333333!important;
-  background-color: #494949!important;
-}
-.ui-chart-palette-3 {
-  border-color: gray!important;
-  background-color: #a8a8a8!important;
-}
-.ui-chart-palette-4 {
-  border-color: #185170!important;
-  background-color: #216e99!important;
-}
-.ui-chart-palette-5 {
-  border-color: #879922!important;
-  background-color: #a4ba29!important;
-}
-.ui-chart-palette-6 {
-  border-color: #fba609!important;
-  background-color: #fdbd48!important;
-}
-.ui-chart-palette-7 {
-  border-color: #8856b1!important;
-  background-color: #ff6a6f!important;
-}
-.ui-chart-palette-8 {
-  border-color: #e3720c!important;
-  background-color: #9e73c1!important;
-}
-.ui-chart-palette-9 {
-  border-color: #582c7d!important;
-  background-color: #f79036!important;
-}
-.ui-chart-palette-10 {
-  border-color: #582c7d!important;
-  background-color: #793bac!important;
-}
-.ui-chart-palette-11 {
-  border-color: #386a23!important;
-  background-color: #48892d!important;
-}
-.ui-chart-palette-12 {
-  border-color: #c62d36!important;
-  background-color: #d3404b!important;
-}
-.ui-chart-piechart-container,
-.ui-chart-legend-item-text {
-  font-size: 12px;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-.ui-chart-toolbar .ui-slider-handle {
-  height: 18px;
-  width: 18px;
-  margin-left: -9px !important;
-}
-.ui-widget-content.ui-chart-tooltip {
-  background-color: rgba(255, 255, 255, 0.85);
-}
-.ui-icon {
-  background-image: url(images/ui-icons_858585_256x240.png);
-}
-.ui-state-error .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
-}
-.ui-widget-content {
-  border-color: #BEBEBE;
-}
-input.ui-button.ui-state-active {
-  color: #ffffff;
-  border-width: 2px;
-}
-input.ui-button.ui-state-focus {
-  padding: 6px 19px !important;
-}
-.ui-button-text-only.ui-state-focus .ui-button-text {
-  padding: 8px 19px !important;
-}
-.ui-button-text-only.ui-state-active .ui-button-text {
-  padding: 8px 19px !important;
-}
-.ui-button-text-only .ui-button-text {
-  padding: 9px 20px !important;
-}
-input.ui-button {
-  padding: 7px 20px !important;
-}
-button.ui-button.ui-state-hover.ui-state-focus,
-a.ui-button.ui-state-hover.ui-state-focus {
-  background-color: #EAEAEA;
-}
-button.ui-button.ui-state-hover.ui-state-active.ui-state-focus,
-a.ui-button.ui-state-hover.ui-state-active.ui-state-focus {
-  background-color: #00AADE;
-}
-.ui-button-icon-only.ui-state-focus .ui-button-text,
-.ui-button-icons-only.ui-state-focus .ui-button-text {
-  padding: 2px 4px 4px !important;
-}
-.ui-button-text-icon-primary.ui-state-active .ui-button-text {
-  padding: 2px 11px 4px 24px !important;
-}
-.ui-button-text-icon-secondary.ui-state-active .ui-button-text {
-  padding: 2px 24px 4px 11px;
-}
-.ui-button-text-icons.ui-state-active .ui-button-text {
-  padding: 2px 24px 4px;
-}
-.ui-buttonset .ui-state-active .ui-button-text {
-  border-radius: 0px !important;
-}
-.ui-tabs .ui-tabs-nav li.ui-state-default {
-  border-width: 1px;
-}
-/* DATE PICKER  */
-.ui-datepicker {
-  border: 0px;
-}
-.ui-datepicker th {
-  color: #858585;
-}
-.ui-datepicker .ui-datepicker-title {
-  font-size: 1.1em;
-}
-.ui-datepicker .ui-datepicker-buttonpane {
-  border-top: 1px solid #D2D2D2;
-}
-.ui-accordion {
-  font-size: 1.1em !important;
-}
-.ui-accordion .ui-accordion-content {
-  border-color: #D2D2D2;
-}
-.ui-accordion .ui-accordion-header a {
-  font-weight: normal;
-}
-.ui-igedit-list .ui-igedit-listitem.ui-state-default,
-.ui-iggrid-filterddlist li.ui-state-default,
-.ui-iggrid-featurechooser-list li.ui-state-default,
-.ui-iggrid-hiding-dropdown-list li.ui-state-default,
-.ui-iggrid-columnmoving-dropdown-list li.ui-state-default,
-.ui-igcombo-listitemholder li.ui-state-default {
-  color: #4B4B4B;
-  text-shadow: none;
-}
-.ui-igedit-dropdown .ui-igedit-listitem.ui-igedit-listitemselected.ui-state-highlight {
-  color: #fff;
-}
-.ui-iggrid-addrow.ui-state-active .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png) !important;
-}
-/* IG GRID */
-.ui-iggrid .ui-iggrid-headercaption.ui-widget-header {
-  border-color: transparent;
-  background-color: #00AADE;
-  color: white;
-}
-.ui-iggrid thead th,
-.ui-iggrid thead th.ui-state-default {
-  border-bottom-width: 2px!important;
-}
-.ui-iggrid th.ui-state-default:first-child,
-.ui-iggrid table th:first-child {
-  border-left-color: transparent;
-}
-.ui-iggrid thead th.ui-state-hover,
-.ui-iggrid thead th.ui-state-hover:first-child {
-  border-color: #858585 #858585 #00AADE #858585;
-}
-.ui-iggrid th.ui-state-active,
-.ui-iggrid th.ui-state-active:first-child {
-  border-color: #00AADE;
-}
-.ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderactive .ui-iggrid-headertext {
-  color: #fff;
-}
-.ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderfocus.ui-state-focus .ui-iggrid-headertext {
-  color: #4B4B4B;
-}
-.ui-iggrid .ui-iggrid-header.ui-iggrid-sortableheaderfocus.ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_858585_256x240.png);
-}
-.ui-iggrid th.ui-state-active .ui-iggrid-indicatorcontainer .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
-}
-.ui-iggrid th.ui-state-focus {
-  border-color: #00AADE;
-}
-.ui-iggrid th a,
-.ui-iggrid th.ui-state-default a,
-.ui-iggrid th.ui-state-hover a,
-.ui-iggrid th.ui-state-active a {
-  text-shadow: none;
-}
-.ui-iggrid .ui-iggrid-toolbar {
-  border-top: 1px solid #e3e3e3;
-  border-bottom: 1px solid #e3e3e3;
-}
-.ui-iggrid-headertext {
-  color: #4B4B4B;
-}
-.ui-iggrid-headertable {
-  border-left: none!important;
-}
-.ui-iggrid td.ui-state-highlight {
-  border-style: solid;
-}
-/* Bug 213600, S.D. 25.02.2016, Selected row's last column cell text is overlapped by vertical scrollbar when using Metro theme
-.ui-iggrid td.ui-state-hover {
-    border-width: 1px 0 !important;
-    padding: 4px 5px;
-}
-
-.ui-iggrid td.ui-state-active {
-    border-width: 0 !important;
-    padding: 5px !important;
-}*/
-/*padding left for paging items with icons to the left */
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage,
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-prevpage {
-  padding: 5px 12px !important;
-}
-/*padding right for paging items with icons to the right */
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage,
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-lastpage {
-  padding: 5px 12px !important;
-}
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage,
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage {
-  border-right: 0;
-}
-.ui-iggrid .ui-iggrid-paging div,
-.ui-iggrid .ui-iggrid-paging span,
-.ui-iggrid .ui-iggrid-paging li,
-.ui-iggrid .ui-iggrid-paging input,
-.ui-iggrid .ui-iggrid-results span,
-.ui-iggrid .ui-iggrid-results input {
-  line-height: 1.2em !important;
-}
-.ui-iggrid-paging > .ui-iggrid-pagedropdowncontainer {
-  margin-top: 0.3em;
-}
-.ui-igedit-listitem.ui-state-highlight {
-  padding: 0 0 0 2px !important;
-}
-.ui-iggrid .ui-iggrid-footer {
-  border-width: 0 1px 1px;
-  background-color: #00AADE;
-  color: white;
-  line-height: 2.1em;
-}
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-firstpage,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-prevpage,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-nextpage,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-lastpage {
-  border-color: #00AADE;
-  background-color: #00AADE;
-  color: white;
-}
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-firstpage .ui-icon,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-prevpage .ui-icon,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-nextpage .ui-icon,
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-lastpage .ui-icon {
-  background-image: url(images/icon_sprite.png);
-}
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-firstpage .ui-icon {
-  background-position: 0 -63px;
-  margin-left: -4px;
-}
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-prevpage .ui-icon {
-  background-position: 0 -47px;
-  margin-left: -4px;
-}
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-nextpage .ui-icon {
-  background-position: -16px -47px;
-  margin-right: -4px;
-}
-.ui-iggrid .ui-iggrid-footer .ui-iggrid-lastpage .ui-icon {
-  background-position: -16px -63px;
-  margin-left: -4px;
-}
-.ui-iggrid-results .ui-iggrid-pagesizelabel,
-.ui-iggrid-results .ui-iggrid-pagesizelabel,
-.ui-iggrid-pagedropdowncontainer .ui-iggrid-pagedropdownlabels {
-  margin-top: 0.15em;
-}
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-page.ui-state-default {
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 5px 12px;
-}
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-pagecurrent.ui-state-active {
-  border: 1px solid #FFFFFF;
-  padding: 5px 12px;
-}
-.ui-iggrid .ui-iggrid-footer.ui-iggrid-pager .ui-iggrid-pagelink {
-  color: #ffffff;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
-  opacity: 0.7;
-  filter: alpha(opacity=70);
-}
-.ui-iggrid .ui-iggrid-footer.ui-iggrid-pager .ui-state-hover .ui-iggrid-pagelink,
-.ui-iggrid .ui-iggrid-footer.ui-iggrid-pager .ui-state-hover .ui-iggrid-pagelinkcurrent,
-.ui-iggrid-pagecurrent.ui-state-active.ui-state-hover a,
-.ui-iggrid-pagecurrent.ui-iggrid-page-hover a {
-  color: #ffffff;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-.ui-iggrid-paging .ui-iggrid-page.ui-iggrid-page-hover {
-  background-color: #EAEAEA;
-  border: 1px solid #B7B7B7;
-}
-.ui-iggrid .ui-igedit-button.ui-state-hover {
-  background-color: #EAEAEA;
-}
-.ui-iggrid .ui-igedit-button.ui-state-hover .ui-icon-triangle-1-s {
-  background-image: url(images/ui-icons_565656_256x240.png);
-}
-.ui-iggrid .ui-iggrid-filterbutton,
-.ui-iggrid-filterddlist .ui-iggrid-filtericon {
-  background-image: url(images/igGrid/filter-icons-858585.png) !important;
-}
-.ui-iggrid td.ui-iggrid-filtercell {
-  border: 0 none !important;
-  background: #00AADE;
-}
-/*Reset button on hide column dialog on grids */
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton {
-  font-size: 1.3em;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-default {
-  border-color: #fff;
-  background-color: transparent;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-default .ui-button-text {
-  color: white;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-hover {
-  border-color: #858585;
-  background-color: #E5E5E5;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-hover .ui-button-text {
-  color: #000;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-focus,
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-active {
-  border-color: #80D5EF;
-  border-width: 1px;
-}
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-focus .ui-button-text,
-.ui-iggrid-modaldialog-caption-buttoncontainer .ui-igbutton.ui-state-active .ui-button-text {
-  color: white;
-}
-/*Rating*/
-.ui-igrating .ui-igrating-selected.ui-state-highlight {
-  padding: 0!important;
-}
-/* Touch friendly */
-.touch .ui-igrating .ui-icon.ui-igrating-vote,
-.touchevents .ui-igrating .ui-icon.ui-igrating-vote,
-.pointerevents .ui-igrating .ui-icon.ui-igrating-vote,
-.touch .ui-igrating .ui-icon.ui-igrating-voteselected,
-.touchevents .ui-igrating .ui-icon.ui-igrating-voteselected,
-.pointerevents .ui-igrating .ui-icon.ui-igrating-voteselected,
-.touch .ui-igrating .ui-icon.ui-igrating-votehover,
-.touchevents .ui-igrating .ui-icon.ui-igrating-votehover,
-.pointerevents .ui-igrating .ui-icon.ui-igrating-votehover,
-.touch .ui-igrating .ui-icon.ui-igrating-votedisabled,
-.touchevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
-.pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
-.touch .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
-.touchevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
-.pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected {
-  background-image: url(images/igRating/ig-rating-touch.png) !important;
-}
-/* Iphone 4 Retina Display */
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2) {
-  .touch .ui-igrating .ui-icon.ui-igrating-vote,
-  .touchevents .ui-igrating .ui-icon.ui-igrating-vote,
-  .pointerevents .ui-igrating .ui-icon.ui-igrating-vote,
-  .touch .ui-igrating .ui-icon.ui-igrating-voteselected,
-  .touchevents .ui-igrating .ui-icon.ui-igrating-voteselected,
-  .pointerevents .ui-igrating .ui-icon.ui-igrating-voteselected,
-  .touch .ui-igrating .ui-icon.ui-igrating-votehover,
-  .touchevents .ui-igrating .ui-icon.ui-igrating-votehover,
-  .pointerevents .ui-igrating .ui-icon.ui-igrating-votehover,
-  .touch .ui-igrating .ui-icon.ui-igrating-votedisabled,
-  .touchevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
-  .pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabled,
-  .touch .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
-  .touchevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected,
-  .pointerevents .ui-igrating .ui-icon.ui-igrating-votedisabledselected {
-    background-image: url(images/igRating/ig-rating-touchx2.png) !important;
-  }
-}
-/***********************
-	IG video player
-************************/
 .ui-igplayer .ui-igplayer-controls,
 .ui-igplayer-tooltip .ui-widget-content {
   background: none;
@@ -3509,1167 +5000,3 @@ a.ui-button.ui-state-hover.ui-state-active.ui-state-focus {
 .ui-igplayer .ui-button.ui-state-focus {
   border-color: #00AADE;
 }
-/***********************
-	IG file upload
-************************/
-.ui-igprogressbar {
-  border: none;
-}
-.ui-igupload-summaryprogresscontainer a {
-  color: #00AADE;
-}
-/***********************
-	IG Combo
-************************/
-/********************
-*  ComboBox styles  *
-********************/
-.ui-igcombo.ui-state-focus {
-  border: 1px solid #00AADE;
-}
-.ui-igedit.ui-state-focus .ui-igedit-button-common,
-.ui-igedit.ui-state-active .ui-igedit-button-common,
-.ui-igcombo.ui-state-focus .ui-igcombo-button,
-.ui-igcombo.ui-state-active .ui-igcombo-button {
-  background-color: #00AADE;
-  border-color: #00AADE;
-}
-.ui-igcombo.ui-state-hover,
-.ui-igcombo.ui-state-default {
-  background-color: transparent;
-}
-.ui-igedit-input,
-.ui-igcombo-fieldholder,
-.ui-igcombo.ui-widget .ui-igcombo-clear.ui-unselectable,
-.ui-igcombo-clear,
-.ui-igcombo-clear.ui-state-hover,
-.ui-igedit-buttonclear,
-.ui-igedit-cleararea,
-.ui-igedit-cleararea.ui-state-hover,
-.ui-igedit.ui-state-hover .ui-igedit-cleararea,
-.ui-igedit.ui-state-focus .ui-igedit-cleararea {
-  background: none #ffffff;
-  border: 0 none;
-}
-.ui-igcombo-clear .ui-icon,
-.ui-igedit-buttonclear .ui-icon,
-.ui-igedit-cleararea .ui-icon,
-.ui-igedit.ui-state-focus .ui-igedit-cleararea .ui-icon,
-.ui-igedit.ui-state-active .ui-igedit-cleararea .ui-icon {
-  background-image: url(images/ui-icons_858585_256x240.png);
-}
-.ui-igcombo-clear.ui-state-hover .ui-icon,
-.ui-igedit-cleararea.ui-state-hover .ui-icon,
-.ui-igedit-cleararea.ui-state-default.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-hover .ui-igedit-cleararea.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-focus .ui-igedit-cleararea.ui-state-hover .ui-icon,
-.ui-igedit.ui-state-active .ui-igedit-cleararea.ui-state-hover .ui-icon,
-.ui-igcombo-button.ui-igcombo-button-pressed .ui-igcombo-buttonicon {
-  background-image: url(images/ui-icons_00AADE_256x240.png) !important;
-}
-.ui-igcombo-listitem.ui-igcombo-listitem-selected .ui-igcombo-listitem-match {
-  background-color: #00AADE;
-  color: #fff;
-}
-.ui-igcombo-field,
-ui-igcombo-fieldholder,
-.ui-igcombo-fieldholder-ltr {
-  box-shadow: 0 3px 2px rgba(100, 100, 100, 0.1), inset;
-}
-/* IE 10 input fix */
-input.ui-igcombo-field {
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  -o-box-shadow: none;
-  box-shadow: none;
-}
-.ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
-.ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
-.ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
-  background-color: #01aade;
-  color: #fff;
-}
-/***********************
-	IG Tree
-************************/
-.ui-igtree a.ui-state-hover {
-  color: #4B4B4B;
-}
-.ui-igtree li a.ui-state-focus {
-  color: #666;
-}
-.ui-igtree-node.ui-igtree-parentnode .ui-icon {
-  background-image: url(images/ui-icons_858585_256x240.png);
-}
-.ui-igtree-checkbox .ui-icon,
-.ui-igtree .ui-igcheckbox-normal .ui-icon,
-.ui-igtree .ui-igcheckbox-small .ui-icon {
-  background-image: url(images/ui-icons_00AADE_256x240.png);
-}
-/***********************
-	Editors
-************************/
-.ui-igedit-spinlowerimagepressed,
-.ui-igedit-spinupperimagepressed,
-.ui-igedit-buttonimagepressed {
-  background-image: url(images/ui-icons_ffffff_256x240.png) !important;
-}
-/*.ui-datepicker table {
-	border				: 1px solid #D2D2D2;
-	border-top-width	: 0;
-	margin				: 0;
-}*/
-/***********************
-	HTML Editor
-************************/
-.ui-ightmleditor {
-  background-image: none;
-  background-color: #FFF;
-}
-.ui-ightmleditor .ui-igPathFinder .ui-button-text {
-  padding: 0px 7px !important;
-}
-.ui-igtoolbar .ui-button.ui-igtoolbarbutton .ui-icon {
-  background-image: url(images/igHtmlEditor/html-editor-sprite.png) !important;
-}
-.ui-igtoolbar .ui-button .ui-icon.ui-icon-triangle-1-s {
-  background-image: url(images/ui-icons_858585_256x240.png) !important;
-}
-.ui-ightmleditor .ui-button-icon-only .ui-button-text {
-  padding: 0!important;
-}
-.ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-active {
-  background-position: -16px 0 !important;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-expand {
-  background-position: -16px -16px !important;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-redo {
-  background-position: -16px -32px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-undo {
-  background-position: -16px -48px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-increasefontsize {
-  background-position: -16px -80px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-decreasefontsize {
-  background-position: -16px -96px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-viewsource-icon {
-  background-position: -16px -160px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html {
-  background-position: -16px -112px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-add {
-  background-position: -16px -128px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-delete {
-  background-position: -16px -144px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-html-valid {
-  background-position: -16px -176px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addimage {
-  background-position: -16px -192px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-link {
-  background-position: -16px -208px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addlink {
-  background-position: -16px -224px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-unlink {
-  background-position: -16px -240px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-copy {
-  background-position: -16px -256px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-cut {
-  background-position: -16px -272px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-paste {
-  background-position: -16px -288px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-table {
-  background-position: -16px -304px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addrow {
-  background-position: -16px -320px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-addcolumn {
-  background-position: -16px -336px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removerow {
-  background-position: -16px -352px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removecolumn {
-  background-position: -16px -368px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyleft {
-  background-position: -16px -384px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifycenter {
-  background-position: -16px -400px !important;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyright {
-  background-position: -16px -416px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-justifyfull {
-  background-position: -16px -432px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-forecolor {
-  background-position: -16px -448px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-backcolor {
-  background-position: -16px -464px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-bold {
-  background-position: -16px -480px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-italic {
-  background-position: -16px -496px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-underline {
-  background-position: -16px -512px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-strikethrough {
-  background-position: -16px -528px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-horizontalrule {
-  background-position: -16px -544px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-indent {
-  background-position: -16px -560px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-removeindent {
-  background-position: -16px -576px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-unorderedlist {
-  background-position: -16px -592px;
-}
-.ui-igtoolbar .ui-button.ui-state-active .ui-icon.ui-igbutton-orderedlist {
-  background-position: -16px -608px;
-}
-/*****************
-*    igChart     *
-*****************/
-.ui-chart-palette-1 {
-  border-color: #00AADE!important;
-  background-color: #00AADE!important;
-}
-.ui-chart-palette-2 {
-  border-color: #4B4B4D!important;
-  background-color: #4B4B4D!important;
-}
-.ui-chart-palette-3 {
-  border-color: #FCB025!important;
-  background-color: #FCB025!important;
-}
-.ui-chart-palette-4 {
-  border-color: #EC6C2B!important;
-  background-color: #EC6C2B!important;
-}
-.ui-chart-palette-5 {
-  border-color: #36C0F3!important;
-  background-color: #36C0F3!important;
-}
-.ui-chart-palette-6 {
-  border-color: #5B17A8!important;
-  background-color: #5B17A8!important;
-}
-.ui-chart-palette-7 {
-  border-color: #054D99!important;
-  background-color: #054D99!important;
-}
-.ui-chart-palette-8 {
-  border-color: #19994F!important;
-  background-color: #19994F!important;
-}
-.ui-chart-palette-9 {
-  border-color: #BFE107!important;
-  background-color: #BFE107!important;
-}
-.ui-chart-palette-10 {
-  border-color: #75351A!important;
-  background-color: #75351A!important;
-}
-.ui-chart-palette-11 {
-  border-color: #EC6C2B!important;
-  background-color: #EC6C2B!important;
-}
-.ui-chart-palette-12 {
-  border-color: #C62D36!important;
-  background-color: #D3404B!important;
-}
-.ui-chart-piechart-container,
-.ui-chart-legend-item-text {
-  font-size: 12px;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-/*****************/
-/*   igSplitter  */
-/*****************/
-.ui-igsplitter-splitbar-horizontal.ui-state-default,
-.ui-igsplitter-splitbar-vertical.ui-state-default {
-  background: none #dcdcdc;
-  border-color: transparent;
-}
-.ui-igsplitter-splitbar-horizontal.ui-state-hover,
-.ui-igsplitter-splitbar-vertical.ui-state-hover {
-  background: none #36C0F3;
-  border-color: transparent;
-}
-.ui-igsplitter-splitbar-horizontal.ui-state-focus,
-.ui-igsplitter-splitbar-vertical.ui-state-focus {
-  border-width: 1px;
-  border-color: transparent;
-}
-.ui-igsplitter-collapse-button-vertical-left.ui-state-default,
-.ui-igsplitter-collapse-button-vertical-right.ui-state-default,
-.ui-igsplitter-collapse-button-horizontal-left.ui-state-default,
-.ui-igsplitter-collapse-button-horizontal-right.ui-state-default {
-  background-color: #d2d2d2;
-}
-/*******************/
-/* Sparkline chart */
-/*******************/
-.ui-sparkline {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 13px;
-  padding: 10px 5px 10px 5px;
-  border: 0px;
-}
-.ui-sparkline-tooltip {
-  -moz-box-shadow: 0 0 2px #555555;
-  -webkit-box-shadow: 0 0 2px #555555;
-  box-shadow: 0 0 2px #555555;
-  padding: 3px;
-}
-.ui-sparkline-sparkpath {
-  background: #2bb9e5;
-  border: 1px solid;
-}
-.ui-sparkline-negativesparkpath {
-  background: #B9242E;
-  border: 1px solid;
-}
-.ui-sparkline-trendline {
-  background: #7F7F7F;
-  border: 2px solid;
-}
-.ui-sparkline-markers {
-  background: #43ABD5;
-  border: 3px solid;
-}
-.ui-sparkline-firstmarker {
-  background: #237FA7;
-  border: 5px solid;
-}
-.ui-sparkline-lastmarker {
-  background: #FBC139;
-  border: 5px solid;
-}
-.ui-sparkline-highmarker {
-  background: #A3B929;
-  border: 4px solid;
-}
-.ui-sparkline-lowmarker {
-  background: #AF39FF;
-  border: 3px solid;
-}
-.ui-sparkline-negativemarkers {
-  background: #E5516F;
-  border: 3px solid;
-}
-.ui-sparkline-range {
-  background: gray;
-  opacity: 0.2;
-}
-.ui-sparkline-axis-x {
-  font-family: "Segoe UI", Arial, sans-serif;
-  border: 2px solid #989EA3;
-  color: #406090;
-}
-.ui-sparkline-axis-y {
-  font-family: "Segoe UI", Arial, sans-serif;
-  border: 2px solid #989EA3;
-  color: #406090;
-  text-align: right;
-}
-.ui-funnel {
-  font-family: Segoe UI, Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  color: #555555;
-  border: 0px;
-}
-.ui-funnel-tooltip {
-  -moz-box-shadow: 0 0 2px #555555;
-  -webkit-box-shadow: 0 0 2px #555555;
-  box-shadow: 0 0 2px #555555;
-  padding: 3px;
-}
-.ui-funnel-slice {
-  color: #FFFFFF;
-  border: 0;
-}
-.ui-funnel-slice-selected {
-  opacity: 1.0;
-}
-.ui-funnel-slice-unselected {
-  opacity: 0.49;
-  border-color: transparent;
-}
-/********************/
-/* igDoughnut Chart */
-/********************/
-.ui-doughnut {
-  border: 0px;
-  font-size: 12px;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-/****************/
-/* igPivot Grid */
-/****************/
-.ui-igpivot-metadataitem.ui-state-default {
-  background: #00AADE;
-  border: 1px solid #00AADE;
-  color: #FFFFFF;
-  text-shadow: none;
-}
-.ui-igpivot-metadataitem.ui-state-hover {
-  background: #0092BE;
-  border: 1px solid #00AADE;
-  color: #FFFFFF;
-  text-shadow: none;
-}
-.ui-igpivot-metadataitem.ui-state-default .ui-icon-close,
-.ui-igpivot-metadataitem.ui-state-hover .ui-icon-close {
-  background-image: url(images/ui-icons_FFFFFF_256x240.png);
-}
-/********************/
-/* igRadialGauge Chart */
-/********************/
-.ui-radialgauge-needle {
-  background-color: #333;
-}
-.ui-radialgauge-needleCap {
-  background-color: #494949;
-  border-color: #494949;
-}
-.ui-radialgauge-backing {
-  background-color: #ecedef;
-  border: #a8a8a8;
-}
-.ui-radialgauge-scale {
-  background-color: #44ACD6;
-  border: none;
-}
-.ui-radialgauge-tick {
-  background-color: #333;
-  border-top-color: transparent;
-}
-.ui-radialgauge-minorTick {
-  background-color: #494949;
-  border: none;
-}
-.ui-radialgauge-label {
-  background-color: #333;
-  border: none;
-}
-.ui-radialgauge-range-palette-1 {
-  background-color: #686868;
-  border-top-color: transparent;
-}
-.ui-radialgauge-range-palette-2 {
-  background-color: #8A9B0F;
-  border-top-color: transparent;
-}
-.ui-radialgauge-range-palette-3 {
-  background-color: #F14D0F;
-  border-top-color: transparent;
-}
-.ui-radialgauge-range-palette-4 {
-  background-color: #81106B;
-  border-top-color: transparent;
-}
-.ui-radialgauge-range-palette-5 {
-  background-color: #FCA910;
-  border-top-color: transparent;
-}
-.ui-radialgauge-range-palette-6 {
-  background-color: #037A54;
-  border-top-color: transparent;
-}
-.ui-radialgauge {
-  font-family: 'Arial', 'Segoe UI', 'Myriad Pro', sans-serif;
-  font-size: 16px;
-}
-.ui-igpivot-rowheaderlink {
-  color: #00AADE!important;
-}
-/***********************/
-/* igBulletgraph Chart */
-/***********************/
-.ui-bulletgraph-backing {
-  background-color: #ffffff;
-  border-color: #ffffff;
-}
-.ui-bulletgraph-targetvalue {
-  background-color: #fff;
-  border-color: #fff;
-}
-/* === TICKS / LABELS === */
-.ui-bulletgraph-tick {
-  background-color: #494949;
-  border: transparent;
-}
-.ui-bulletgraph-minortick {
-  background-color: #a8a8a8;
-  border: transparent;
-}
-.ui-bulletgraph-label {
-  background-color: #333;
-  border: transparent;
-}
-/* === RANGE VALUES === */
-.ui-bulletgraph-range-palette-1 {
-  background-color: #0092be;
-  border: transparent;
-}
-.ui-bulletgraph-range-palette-2 {
-  background-color: #00aade;
-  border: transparent;
-}
-.ui-bulletgraph-range-palette-3 {
-  background-color: #2bb9e5;
-  border: transparent;
-}
-.ui-bulletgraph-range-palette-4 {
-  background-color: #55c8eb;
-  border: transparent;
-}
-.ui-bulletgraph-range-palette-5 {
-  background-color: #80d7f2;
-  border: transparent;
-}
-/* === ACTUAL VALUES === */
-.ui-bulletgraph-value {
-  background-color: #FFFFFF;
-  border: transparent;
-}
-.ui-bulletgraph {
-  font-family: 'Arial', 'Segoe UI', 'Myriad Pro', sans-serif;
-  font-size: 12px;
-  color: #494949;
-}
-/***********************/
-/* igLinearGauge Chart */
-/***********************/
-.ui-lineargauge-backing {
-  background-color: #ffffff;
-  border-color: #ffffff;
-}
-.ui-lineargauge-needle {
-  background-color: #494949;
-  border-color: #494949;
-}
-.ui-lineargauge-scale {
-  background-color: #e0e0e0;
-  border-color: #e0e0e0;
-}
-/* TICKS AND LABELS */
-.ui-lineargauge-tick {
-  background-color: #494949;
-  border: transparent;
-}
-.ui-lineargauge-minortick {
-  background-color: #EBEBEB;
-  border: transparent;
-}
-.ui-lineargauge-label {
-  background-color: #333;
-  border: transparent;
-}
-/* RANGE VALUES */
-.ui-lineargauge-range-palette-1 {
-  background-color: #0092be;
-  border: transparent;
-}
-.ui-lineargauge-range-palette-2 {
-  background-color: #00aade;
-  border: transparent;
-}
-.ui-lineargauge-range-palette-3 {
-  background-color: #2bb9e5;
-  border: transparent;
-}
-.ui-lineargauge-range-palette-4 {
-  background-color: #55c8eb;
-  border: transparent;
-}
-.ui-lineargauge-range-palette-5 {
-  background-color: #80d7f2;
-  border: transparent;
-}
-/* NEEDLES */
-.ui-lineargauge-needle-palette-1 {
-  background-color: #e0e0e0;
-  border: transparent;
-}
-.ui-lineargauge-needle-palette-2 {
-  background-color: #c0c0c0;
-  border: transparent;
-}
-.ui-lineargauge-needle-palette-3 {
-  background-color: #999999;
-  border: transparent;
-}
-.ui-lineargauge-needle-palette-4 {
-  background-color: #494949;
-  border: transparent;
-}
-.ui-lineargauge-needle-palette-5 {
-  background-color: #353535;
-  border: transparent;
-}
-/* TOOLTIPS */
-.ui-lineargauge-tooltip {
-  border-style: none;
-  white-space: nowrap;
-  background-color: transparent;
-}
-.ui-lineargauge-range-tooltip {
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 4px;
-  background-color: rgba(230, 230, 230, 0.74);
-  padding: 4px;
-  font-weight: bold;
-}
-.ui-lineargauge-needle-tooltip {
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 4px;
-  background-color: rgba(230, 230, 230, 0.74);
-  padding: 4px;
-  font-weight: bold;
-}
-.ui-lineargauge {
-  font-family: 'Segoe UI', 'Arial', 'Myriad Pro', sans-serif;
-  font-size: 12px;
-  color: #494949;
-}
-/***********************/
-/* Tile manager        */
-/***********************/
-.ui-state-hover .ui-igtile-inner-container {
-  color: #858585;
-}
-/***********************/
-/* Popover       */
-/***********************/
-.ui-igpopover > .ui-widget-content {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
-}
-/*****************/
-/* Notifier      */
-/****************/
-.ui-igpopover.ui-ignotify-error .ui-icon {
-  background-image: url(images/ui-icons_ffffff_256x240.png);
-}
-.ui-igpopover.ui-ignotify-error.ui-ignotify-inline .ui-icon {
-  background-image: url(images/ui-icons_858585_256x240.png);
-}
-/***********************/
-/* TreeGrid            */
-/***********************/
-/*TreeGrid Paging Context Row*/
-.ui-igtreegrid-contextrow {
-  background-color: #FFFFFF;
-  color: #858585;
-}
-.ui-igtreegrid-contextrow-icon.ui-icon.ui-icon-bookmark {
-  background-image: url(../../structure/images/igGrid/filter-icons-333333.png);
-  background-position: -464px 0;
-}
-/* ============
-  Scheduler
-============= */
-#scheduler {
-  background: #fff;
-}
-.ui-igscheduler-core .ui-igscheduler-agendaview {
-  background-color: transparent;
-}
-.ui-igscheduler-core .ui-igscheduler-agendaview-message {
-  font-size: 1.1em;
-}
-.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
-  background-color: #F0F0F0;
-  color: #777777;
-}
-.ui-igscheduler-header {
-  border-color: #dadada;
-}
-.ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
-  color: #00aade;
-}
-.ui-igscheduler-tabs.ui-igscheduler-tabs-selected .ui-icon {
-  color: #00aade;
-}
-.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
-.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
-  color: #00aade;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject {
-  color: #444444;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time {
-  color: #888888;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-of-week-header,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-location {
-  color: #777777;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected {
-  background-color: #F0F0F0;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator {
-  background-color: #e8e8e8;
-}
-.ui-igscheduler-monthview {
-  box-shadow: 1px 2px 15px #cccccc;
-  z-index: 1;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator {
-  background-color: #e8e8e8;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-selected {
-  background-color: #F0F0F0;
-  color: #888888;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-today-indicator {
-  background: transparent;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-today {
-  color: #00aade;
-  font-weight: bold!important;
-}
-.ui-igscheduler-monthview-day-today span {
-  color: #00aade;
-}
-.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
-  background-color: transparent;
-  border-color: #dadada;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
-  background-color: #eeeeee;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-month-header {
-  background-color: #80d7f2;
-  color: white;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-week-header {
-  color: #444444;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
-.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
-  background-color: #fff;
-  color: #dadada;
-}
-.ui-igscheduler-selectall {
-  background-color: #80d7f2;
-}
-.ui-igscheduler-navigator-back-button:hover,
-.ui-igscheduler-navigator-date-range-button:hover,
-.ui-igscheduler-navigator-forward-button:hover {
-  background-color: transparent;
-}
-.ui-igscheduler-today-button:hover,
-.ui-igscheduler-tabs:hover {
-  background-color: #fff;
-  color: #777777;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
-  cursor: pointer;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
-  color: #00aade;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
-  color: #80d7f2;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
-  color: #00aade;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-location-selected {
-  color: #80d7f2;
-}
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
-  margin: 10px 0;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview {
-  background-color: transparent;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
-  background-color: #c0c0c0;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
-  font-size: .75em;
-}
-.ui-igscheduler-tabs .ui-icon,
-.ui-igscheduler-today-button .ui-icon {
-  margin-top: -9px !important;
-}
-/* Scheduler END */
-/*
-=========================
-Spreadsheet colors
-=========================
-*/
-.ui-igspreadsheet-inputmessage {
-  background-color: #ebebeb;
-  border-color: #303030;
-  color: #000000;
-}
-/* ToolTip ??? */
-.ui-igspreadsheet-tooltip {
-  background-color: #ebebeb;
-  border-color: #cccccc;
-  color: #303030;
-}
-/* Splitters ??? */
-.ui-igspreadsheet-rowsplitter,
-.ui-igspreadsheet-columnsplitter,
-.ui-igspreadsheet-splitterintersection {
-  background-color: #ebebeb;
-}
-/* SelectAll */
-.ui-igspreadsheet-selectall {
-  background-color: #ebebeb;
-  color: #cccccc;
-}
-.ui-igspreadsheet-selectall.ui-state-active {
-  color: #00aade;
-  background-color: #2ccdff;
-}
-/* SpreadSheet Header & Footer background */
-.ui-igspreadsheet-tabareabackground,
-.ui-igspreadsheet-formulabar {
-  background-color: #e4e4e4;
-}
-/* SpreadSheet Footer top border */
-.ui-igspreadsheet-tabareaborder {
-  background-color: #999;
-}
-/* Splitter icon */
-.ui-igspreadsheet-tabareasplitter,
-.ui-igspreadsheet-nameboxsplitter {
-  color: #666;
-}
-/* TabItem
- =========
- */
-/* Unselected tab */
-.ui-igspreadsheet-tabitem {
-  border-right: 1px solid #999;
-  border-left: 1px solid #999;
-  background-color: transparent;
-  border-bottom: 2px solid transparent;
-  /* reserved space so we don't see jumping when the tab is selected */
-  color: #666;
-}
-/* Tab hover */
-.ui-igspreadsheet-tabitem.ui-state-hover {
-  color: #00aade;
-}
-/* Active tab */
-.ui-igspreadsheet-tabitem-active {
-  background: #fff;
-  border-bottom-color: #00aade;
-}
-.ui-igspreadsheet-tabitem-active,
-.ui-igspreadsheet-tabitem-active.ui-state-hover {
-  color: #00aade;
-}
-/* [LIGHT|DARK TAB START]  */
-.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
-  color: #00aade;
-}
-.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span {
-  color: #ececec;
-}
-.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
-.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
-  color: #00aade;
-}
-.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
-.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span {
-  color: #00aade;
-}
-/* [LIGHT|DARK TAB END] */
-/* Tab Area Buttons */
-.ui-igspreadsheet-activateprevioushiddentab,
-.ui-igspreadsheet-activatenexthiddentab,
-.ui-igspreadsheet-scrollfirsttab,
-.ui-igspreadsheet-scrolllasttab,
-.ui-igspreadsheet-scrollprevioustab,
-.ui-igspreadsheet-scrollnexttab {
-  color: #666;
-}
-.ui-igspreadsheet-addnewworksheet.ui-state-hover,
-.ui-igspreadsheet-activateprevioushiddentab.ui-state-hover,
-.ui-igspreadsheet-activatenexthiddentab.ui-state-hover,
-.ui-igspreadsheet-scrollfirsttab.ui-state-hover,
-.ui-igspreadsheet-scrolllasttab.ui-state-hover,
-.ui-igspreadsheet-scrollprevioustab.ui-state-hover,
-.ui-igspreadsheet-scrollnexttab.ui-state-hover {
-  color: #006f92;
-}
-.ui-igspreadsheet-addnewworksheet.ui-state-disabled,
-.ui-igspreadsheet-scrollfirsttab.ui-state-disabled,
-.ui-igspreadsheet-scrolllasttab.ui-state-disabled,
-.ui-igspreadsheet-scrollprevioustab.ui-state-disabled,
-.ui-igspreadsheet-scrollnexttab.ui-state-disabled {
-  color: #c4c4c4;
-}
-/* Add New Worksheet */
-.ui-igspreadsheet-addnewworksheet {
-  color: #00aade;
-  cursor: pointer;
-}
-/* ScrollBar related
-====================
-*/
-.ui-igspreadsheet-scrollbar-button-left,
-.ui-igspreadsheet-scrollbar-button-right,
-.ui-igspreadsheet-scrollbar-button-up,
-.ui-igspreadsheet-scrollbar-button-down {
-  background-color: #ebebeb;
-  border: 1px solid #999999;
-  color: #303030;
-}
-.ui-igspreadsheet-scrollbar-button-left.ui-state-hover,
-.ui-igspreadsheet-scrollbar-button-right.ui-state-hover,
-.ui-igspreadsheet-scrollbar-button-up.ui-state-hover,
-.ui-igspreadsheet-scrollbar-button-down.ui-state-hover {
-  background-color: #ebebeb;
-  border-color: #999999;
-  color: #303030;
-}
-.ui-igspreadsheet-scrollbar-button-left.ui-state-active,
-.ui-igspreadsheet-scrollbar-button-right.ui-state-active,
-.ui-igspreadsheet-scrollbar-button-up.ui-state-active,
-.ui-igspreadsheet-scrollbar-button-down.ui-state-active {
-  background-color: #FFFFFF;
-  border-color: #999999;
-  color: #787878;
-}
-.ui-igspreadsheet-scrollbar-track-left,
-.ui-igspreadsheet-scrollbar-track-right,
-.ui-igspreadsheet-scrollbar-track-up,
-.ui-igspreadsheet-scrollbar-track-down {
-  background-color: #ebebeb;
-}
-.ui-igspreadsheet-scrollbar-thumb-vertical,
-.ui-igspreadsheet-scrollbar-thumb-horizontal {
-  background-color: #cccccc;
-  border: 1px solid #999999;
-}
-.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-hover,
-.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-hover,
-.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-active,
-.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-active {
-  background-color: #999999;
-  border-color: #ebebeb;
-}
-/* Headers
-   =======
-*/
-/* Cols & Rows Headers */
-.ui-igspreadsheet-columnheader,
-.ui-igspreadsheet-rowheader {
-  background-color: #e4e4e4;
-  color: #111;
-}
-/* Cols & Rows Headers borders  */
-.ui-igspreadsheet-columnheader {
-  border-right-color: #cccccc;
-}
-.ui-igspreadsheet-rowheader {
-  border-bottom-color: #cccccc;
-}
-/* Cols & Rows Header, Selected  */
-.ui-igspreadsheet-columnheader-selected {
-  border-right-color: #0083ab;
-}
-.ui-igspreadsheet-rowheader-selected {
-  border-bottom-color: #0083ab;
-}
-/* Cols & Rows Header, Selected but not focused */
-.ui-igspreadsheet-columnheader-selected,
-.ui-igspreadsheet-rowheader-selected {
-  background-color: #00aade;
-  color: #111;
-}
-.ui-igspreadsheet-columnheader-selected.ui-state-highlight,
-.ui-igspreadsheet-rowheader-selected.ui-state-highlight {
-  color: #abebff;
-}
-/* Selected cel, header col & row background and color */
-.ui-igspreadsheet-columnheader-selectedcells,
-.ui-igspreadsheet-rowheader-selectedcells {
-  background-color: #cccccc;
-  color: #111;
-}
-/* Selected cel, header col & row border color */
-.ui-igspreadsheet-columnheader-selectedcells {
-  border-right-color: #bfbfbf;
-}
-.ui-igspreadsheet-rowheader-selectedcells {
-  border-bottom-color: #bfbfbf;
-}
-/* Selected cel, header hover col & row  background & colors */
-.ui-igspreadsheet-columnheader-hover,
-.ui-igspreadsheet-rowheader-hover {
-  background-color: #12c7ff;
-  color: #78dfff;
-}
-.ui-igspreadsheet-columnheader-hover {
-  border-right-color: #0083ab;
-}
-.ui-igspreadsheet-rowheader-hover {
-  border-bottom-color: #0083ab;
-}
-.ui-igspreadsheet-header-resizeline {
-  background-color: #00aade;
-}
-/* Formula Bar
-   =======
-*/
-.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton {
-  background-color: #cccccc;
-  cursor: pointer;
-}
-.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton:hover {
-  opacity: 0.8;
-}
-.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton:before {
-  border-color: #111;
-}
-/* Buttons background */
-.ui-igspreadsheet-nameboxcontainer,
-.ui-igspreadsheet-formulabartextareacontainer,
-.ui-igspreadsheet-formulabarbuttoncontainer {
-  border: 1px solid #D9D9D9;
-  box-sizing: border-box;
-  background-color: #ececec;
-  border-radius: 6px;
-}
-/* Enabled buttons */
-.ui-igspreadsheet-formulabarenterbutton,
-.ui-igspreadsheet-formulabarcancelbutton {
-  color: #000000;
-}
-/* Disabled Buttons */
-.ui-igspreadsheet-formulabarenterbutton.ui-state-disabled,
-.ui-igspreadsheet-formulabarcancelbutton.ui-state-disabled {
-  color: #c4c4c4;
-}
-.ui-igspreadsheet-formulabarenterbutton.ui-state-hover {
-  color: #00aade;
-}
-.ui-igspreadsheet-formulabarcancelbutton.ui-state-hover {
-  color: #fd472b;
-}
-.ui-igspreadsheet-invaliddata {
-  border-color: #fd472b;
-}
-/*
-    Formula Bar END
-   ==================
-*/
-.ui-igspreadsheet-cellselection {
-  background-color: rgba(0, 170, 222, 0.22);
-  border-color: white;
-  outline-color: rgba(0, 170, 222, 0.22);
-}
-.ui-igspreadsheet-cellselection.ui-state-highlight {
-  outline-color: #00aade;
-}
-.ui-igspreadsheet-cellselectionhandle {
-  background-color: #00aade;
-  border-color: #ebebeb;
-}
-/* Icons image */
-.ui-icon.ui-igspreadsheet-copy-icon,
-.ui-icon.ui-igspreadsheet-cut-icon,
-.ui-icon.ui-igspreadsheet-paste-icon,
-.ui-icon.ui-igspreadsheet-paste-icon,
-.ui-icon.ui-igspreadsheet-clearcontents-icon,
-.ui-icon.ui-igspreadsheet-insertcellsshiftright-icon,
-.ui-icon.ui-igspreadsheet-insertcellsshiftdown-icon,
-.ui-icon.ui-igspreadsheet-insertrows-icon,
-.ui-icon.ui-igspreadsheet-insertcolumns-icon,
-.ui-icon.ui-igspreadsheet-deletecellsshiftleft-icon,
-.ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
-.ui-icon.ui-igspreadsheet-deleterows-icon,
-.ui-icon.ui-igspreadsheet-deletecolumns-icon {
-  background-image: url(images/igSpreadsheet/ig-Spreadsheet.png) !important;
-  left: 0.5em;
-  width: 16px;
-  height: 16px;
-}
-.ui-igspreadsheet-copy-icon {
-  background-position: 0 0;
-}
-.ui-igspreadsheet-cut-icon {
-  background-position: 0 -16px;
-}
-.ui-igspreadsheet-paste-icon {
-  background-position: 0 -32px;
-}
-.ui-igspreadsheet-clearcontents-icon {
-  background-position: 0 -128px;
-}
-.ui-igspreadsheet-insertcellsshiftdown-icon {
-  background-position: 0 -112px;
-}
-.ui-igspreadsheet-insertcellsshiftright-icon {
-  background-position: 0 -96px;
-}
-.ui-igspreadsheet-deletecellsshiftup-icon {
-  background-position: 0 -80px;
-}
-.ui-igspreadsheet-deletecellsshiftleft-icon {
-  background-position: 0 -64px;
-}
-.ui-igspreadsheet-insertrows-icon,
-.ui-igspreadsheet-deleterows-icon {
-  background-position: 0 -160px;
-}
-.ui-igspreadsheet-insertcolumns-icon,
-.ui-igspreadsheet-deletecolumns-icon {
-  background-position: 0 -144px;
-}
-.ui-igspreadsheet .ui-menu {
-  box-shadow: 0 0 10px #D9D9D9;
-}
-.ui-igspreadsheet .ui-menu-item .ui-menu {
-  border-radius: 0 6px 6px 6px;
-}
-.ui-igspreadsheet .ui-menu-item:hover {
-  background: rgba(0, 170, 222, 0.22);
-  border-radius: 0;
-}
-/*
-=========================
-Spreadsheet colors END
-=========================
-*/

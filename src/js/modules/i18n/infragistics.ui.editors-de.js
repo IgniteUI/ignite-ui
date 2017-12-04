@@ -9,13 +9,12 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( ["jquery"], factory );
 	} else {
-		return factory();
+		return factory(jQuery);
 	}
 }
-(function () {
-    $ = $ || {};
+(function ($) {
 	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
@@ -60,9 +59,9 @@
 		btnValueNotSupported: 'Ein anderer Schaltflächenwert ist erforderlich. Wert zwischen "dropdown", "clear" und "spin" wählen.',
 		scientificFormatErrMsg: 'Ein anderes scientificFormat ist erforderlich. Wert zwischen "E", "e", "E+" und "e+" wählen.',
 		spinDeltaIsOfTypeNumber: "Ein anderer Typ von spinDelta ist erforderlich. Eine positive Zahl sollte eingegeben werden.",
-		spinDeltaIsOfTypeNumberForPeriod: "A different type of spinDelta is required for the {0}. A positive number between {1} and {2} should be entered.",
-		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time period deltas, should be entered.",
-		spinDeltaShouldBeInRange: "The spinDelta option for {0} should be between {1} and {2}",
+		spinDeltaIsOfTypeNumberForPeriod: "Ein anderer Typ von spinDelta ist für {0} erforderlich. Eine positive Zahl zwischen {1} und {2} sollte eingegeben werden.",
+		spinDeltaIsOfTypeNumberOrObject: "Ein anderer Typ von spinDelta ist erforderlich. Eine positive Zahl oder ein Objekt, das verschiedene Zeitzonen-Deltas definiert, sollte festgelegt werden.",
+		spinDeltaShouldBeInRange: "Die spinDelta-Option für {0} sollte zwischen {1} und {2} liegen",
 		spinDeltaCouldntBeNegative: "Die spinDelta-Option kann nicht negativ sein. Eine positive Zahl sollte eingegeben werden.",
 		spinDeltaContainsExceedsMaxDecimals: "Maximal erlaubte Bruchzahlen für spinDelta sind auf {0} festgelegt. Entweder MaxDecimals ändern oder versuchen, Ihren Wert zu verringern.",
 		spinDeltaIncorrectFloatingPoint: 'Ein Gleitkomma-spinDelta erfordert eine andere Konfiguration. Stellen Sie den dataMode des Editors entweder auf „double“ oder „float“ oder stellen Sie spinDelta auf eine ganze Zahl.',

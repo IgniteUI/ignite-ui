@@ -25,7 +25,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -300,6 +300,12 @@
 			return this._getLocaleValue(state + "Msg");
 		},
 		changeLocale: function() {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.ignotifier#options:language)
+			Note that this method is for rare scenarios, use [language](ui.ignotifier#options:language) or [locale](ui.ignotifier#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			if (this.contentInner.attr("data-default-locale")) {
 				this._currentText = this._getDefaultMessageByState(this.options.state);
 				this._setNewContent(this._getTemplate());
@@ -559,14 +565,19 @@
 			return template;
 		},
 		_setNewContent: function (nc) {
-			var newContent = nc;
+			var newContent = nc, iconContainer = this.css.iconContainer, icon = "";
 			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;
 			}
-			newContent = newContent.replace(/\{0\}/g, this.css.iconContainer)
-				.replace(/\{1\}/g, this.options.showIcon ? this.css[ this.options.state + "Icon" ] : "")
+			if (this.options.showIcon) {
+				icon = this.css[ this.options.state + "Icon" ];
+			} else {
+				iconContainer += " hidden";
+			}
+			newContent = newContent.replace(/\{0\}/g, iconContainer)
+				.replace(/\{1\}/g, icon)
 				.replace(/\{2\}/g, this._currentText);
 			this.contentInner.html(newContent);
 		},
@@ -577,10 +588,10 @@
 				```
 			*/
 			this._setTargetState(true);
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
 	$.extend($.ui.igNotifier, { version: "<build_number>" });
-	return $.ui.igNotifier;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

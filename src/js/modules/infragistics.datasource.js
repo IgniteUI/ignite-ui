@@ -26,7 +26,7 @@
  *
  */
 
-/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer, escape */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -39,7 +39,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -2552,7 +2552,7 @@
 					ds.dataBind();
 				});
 			```
-			paramType="string" Primary key of the record
+			paramType="object" Primary key of the record
 			paramType="string" optional="true" the data source in which to search for the record. When not set it will use the current data source.
 			paramType="string" optional="true" Not used in $.ig.DataSource
 			returnType="object" a JavaScript object specifying the found record, or null if no record is found
@@ -4357,6 +4357,32 @@
 			}
 			return this._dataSummaries;
 		},
+		_applySchema: function (forceApply) {
+			var schema = this.schema(), ds,
+				s = this.settings.sorting,
+					p = this.settings.paging,
+					filtering = this.settings.filtering;
+			if (schema && schema.fields && schema.fields().length > 0 &&
+				(this.settings.localSchemaTransform || forceApply)) {
+				this._origDs = this._data;
+				schema._type = $.type(this._data);
+				ds = schema.transform(this._data);
+				this._data = ds;
+				this._dataView = this._data;
+				if (s.type === "local" && s.defaultFields.length > 0) {
+					this.sort(s.defaultFields, s.defaultDirection);
+				} else if (this.isGroupByApplied(s.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData : this._data,
+											s.expressions);
+				}
+				if (filtering.type === "local" && filtering.defaultFields.length > 0) {
+					this.filter(filtering.defaultFields);
+				}
+				if (p.enabled && p.type === "local") {
+					this._page();
+				}
+			}
+		},
 		_populateTransformedData: function (data) {
 			// M.H. populate summaries data
 			// when datasource is local and we want to get summaries when summaryExecution is afterfilteringbeforepaging
@@ -4981,7 +5007,7 @@
 							);
 							/* d = ffields[i].expr.getTime(); */
 						} else {
-							d = ffields[ i ].expr;
+							d = escape(ffields[ i ].expr);
 						}
 						if (params.filteringParams[ key ] === undefined) {
 							params.filteringParams[ key ] = ffields[ i ].cond +
@@ -5620,6 +5646,13 @@
 			}
 			if (isGb) {
 				this._generateGroupByData(data, fields);
+			}
+			if (resetPaging) {
+				if (!this._filter) {
+					this._data = data;
+				} else {
+					this._filteredData = data;
+				}
 			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
@@ -7290,7 +7323,8 @@
 						sumFuncName,
 						fieldValues,
 						sumFunc,
-						fieldType
+						fieldType,
+						res
 					);
 					if (!gbSummaryRec.summaries[ summary.field ]) {
 						gbSummaryRec.summaries[ summary.field ] = [];
@@ -9655,6 +9689,13 @@
 				fields.push({ name: key });
 			}
 		},
+		_applySchema: function (forceApply) {
+			var s = this.schema();
+			s.transform = $.proxy(this._transformSchema, this);
+			this._checkGeneratedSchema();
+			this._super(forceApply);
+			this.generateFlatDataView();
+		},
 		dataBind: function (callback, callee) {
 			/* data binds to the current data source
 			databinding works using the following workflow:
@@ -9772,7 +9813,9 @@
 			this._super(callDatabound);
 		},
 		_completeCallback: function () {
-			this.generateFlatDataView();
+			if (this.settings.localSchemaTransform) {
+				this.generateFlatDataView();
+			}
 			this._super();
 		},
 		getDataBoundDepth: function () {
@@ -9970,7 +10013,7 @@
 				isRootLevel = true;
 				level = 0;
 			}
-			if (!data || !this.settings.localSchemaTransform) {
+			if (!data) {
 				return data;
 			}
 			if ($.type(data) === "array") {
@@ -11618,4 +11661,5 @@
 			return ret;
 		}
 	});
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

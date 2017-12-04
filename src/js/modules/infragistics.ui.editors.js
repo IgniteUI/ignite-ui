@@ -27,7 +27,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -1202,7 +1202,7 @@
 			this._restoreDOMStructure();
 			this._deleteInternalProperties();
 			delete this.options;
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
@@ -1793,6 +1793,12 @@
 			}
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igtexteditor#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igtexteditor#options:language) or [locale](ui.igtexteditor#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			this._superApply(arguments);
 			this._changeLocaleForNotifier();
 		},
@@ -5291,6 +5297,9 @@
 			num = num / 1;
 			scientificPrecision = Math.abs(scientificPrecision);
 			if (scientificPrecision <= 20) {
+				if (scientificPrecision < this.options.minDecimals) {
+					scientificPrecision = this.options.minDecimals;
+				}
 				stringValue = num.toFixed(scientificPrecision);
 			}
 			return stringValue;
@@ -5902,6 +5911,12 @@
 			return this._getRegionalValue();
 		},
 		changeRegional: function() { //igNumericEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.ignumericeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.ignumericeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			if (this._focused) {
 				this._enterEditMode();
 			} else {
@@ -7905,7 +7920,7 @@
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
-				this._convertDateMaskToDigitMask(this.options.dateInputFormat);
+				this._convertDateMaskToDigitMask(this._inputFormat);
 			this._setNumericType();
 
 			// RegEx for /Date(milisecond)/
@@ -7961,6 +7976,14 @@
 			case "dateInputFormat":
 				this.options[ option ] = prevValue;
 				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "dateDisplayFormat":
+
+				// D.P. 30th Aug 2017 #1162 Runtime set of predefined dateDisplayFormat doesn't produce the expected pattern
+				this._applyRegionalSettings();
+				if (!this._editMode) {
+					this._editorInput.val(this._getDisplayValue());
+				}
+				break;
 			case "spinDelta":
 				try {
 					this._validateSpinSettings();
@@ -7977,34 +8000,40 @@
 				break;
 			}
 		},
-		_applyRegionalSettings: function () { //DateEditor
-			if (this.options.dateInputFormat !== null) {
-				if (this._inputFormat === undefined) {
-					this._inputFormat = this.options.dateInputFormat;
-				}
-				if (this._inputFormat === "date" || this._inputFormat === "dateLong" ||
-					this._inputFormat === "dateTime" || this._inputFormat === "time" ||
-					this._inputFormat === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalValue(this._inputFormat + "Pattern");
+		_applyRegionalSettings: function () { // DateEditor
+			var iFormat = this.options.dateInputFormat,
+				dFormat = this.options.dateDisplayFormat;
+
+			// N.A. September 12th, 2017 #1180 Preserve dateInputFormat and dateDisplayFormat options.
+			if (iFormat !== null) {
+				if (iFormat === "date" || iFormat === "dateLong" || iFormat === "dateTime" ||
+					iFormat === "time" || iFormat === "timeLong") {
+					this._inputFormat = this._getRegionalValue(iFormat + "Pattern");
+				} else {
+					this._inputFormat = iFormat;
 				}
 			} else {
-				this.options.dateInputFormat = this._getRegionalValue("datePattern");
+				this._inputFormat = this._getRegionalValue("datePattern");
 			}
-			if (this.options.dateDisplayFormat !== null) {
-				if (this._dispalyFormat === undefined) {
-					this._dispalyFormat = this.options.dateDisplayFormat;
-				}
-				if (this._dispalyFormat === "date" || this._dispalyFormat === "dateLong" ||
-					this._dispalyFormat === "dateTime" || this._dispalyFormat === "time" ||
-					this._dispalyFormat === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalValue(this._dispalyFormat + "Pattern");
+
+			if (dFormat !== null) {
+				if (dFormat === "date" || dFormat === "dateLong" || dFormat === "dateTime" ||
+					dFormat === "time" || dFormat === "timeLong") {
+					this._displayFormat = this._getRegionalValue(dFormat + "Pattern");
+				} else {
+					this._displayFormat = dFormat;
 				}
 			} else {
-				this.options.dateDisplayFormat = this.options.dateInputFormat;
-				this._dispalyFormat = this._inputFormat;
+				this._displayFormat = this._inputFormat;
 			}
 		},
-		changeRegional: function() {
+		changeRegional: function() { //igDateEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdateeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdateeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			var timeouts = this._timeouts;
 			this._initialize();
 			this._timeouts = timeouts;
@@ -9481,9 +9510,13 @@
 				}
 			} else {
 
-				// extractedDate = this._dateObjectValue;
 				// N.A. 11/10/2015 Bug #207560: Set new date using timestamp.
-				extractedDate = new Date(this._dateObjectValue.getTime());
+				// N.A. September 4th, 2017 #1109: When displayTimeOffset is defined and mask of that editor doesn't contain hours, then date needs offset.
+				if (this.options.displayTimeOffset !== null) {
+					extractedDate = this._getDateOffset(this._dateObjectValue);
+				} else {
+					extractedDate = new Date(this._dateObjectValue.getTime());
+				}
 			}
 			if (yearField !== null && yearField !== undefined) {
 				this._setDateField("FullYear", extractedDate, yearField);
@@ -9539,7 +9572,7 @@
 				dateObject = this._getDateOffset(dateObject);
 			}
 
-			return $.ig.formatDate(this.options.dateDisplayFormat, dateObject, this.options.regional);
+			return $.ig.formatDate(this._displayFormat, dateObject, this.options.regional);
 		},
 		_valueFromText: function (text) { //igDateEditor
 			// TODO Verify
@@ -11235,6 +11268,26 @@
 		},
 
 		// igDatePicker public methods
+		changeRegional: function() { //igDatePicker
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdatepicker#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdatepicker#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
+			var regional, opts = this.options.datepickerOptions;
+			regional = $.extend({}, this._dpRegion());
+			if (opts && typeof opts === "object") {
+				//Update from options for regionals only(!):
+				for (var key in regional) {
+					if (regional.hasOwnProperty(key)) {
+						regional[ key ] = opts[ key ] || regional[ key ];
+					}
+				}
+			}
+			this._editorInput.datepicker("option", regional);
+			this._super();
+		},
 		getCalendar: function () {
 			/* Returns a reference to the jQuery calendar used as a picker selector
 			```
@@ -11302,7 +11355,7 @@
 			```
 			*/
 			this._editorInput.datepicker("destroy");
-			this._super();
+			this._superApply(arguments);
 			return this;
 		}
 	});
@@ -11906,5 +11959,5 @@
 			}
 		}
 	});
-
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

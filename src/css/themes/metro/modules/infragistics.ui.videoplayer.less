@@ -1,0 +1,519 @@
+/***********************
+  IG video player
+  Fixed colours since it works with fixed images
+************************/
+
+.ui-igplayer {
+  /* Put your rules here */
+}
+/*	Globals */
+
+.ui-igplayer video {
+  /* Put your rules here */
+}
+
+.ui-igplayer a {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-controls {
+  background: none repeat-x;
+  border: medium none transparent;
+}
+/* Screen Modes classes */
+
+.ui-igplayer-normal-screen-mode {
+  /* Put your rules here */
+}
+/* FUll screen mode*/
+
+.ui-igplayer-full-screen-mode {
+  /* Put your rules here */
+}
+
+.ui-igplayer-full-screen-mode .ui-igplayer-controls {
+  /* Put your rules here */
+}
+
+.ui-igplayer-full-screen-mode video:after {
+  /* Put your rules here */
+}
+/* Creates some "shim" when we are on fullscren mode to overlay elements on page  */
+
+.ui-igplayer-full-screen-mode .ui-igplayer:before {
+  background: #4c4c4c;
+  background: rgba(0, 0, 0, 0.5);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #000000), color-stop(100%, #4c4c4c));
+  background-image: -webkit-linear-gradient(#000000, #4c4c4c);
+  background-image: -moz-linear-gradient(#000000, #4c4c4c);
+  background-image: -o-linear-gradient(#000000, #4c4c4c);
+  background-image: -ms-linear-gradient(#000000, #4c4c4c);
+  background-image: linear-gradient(#000000, #4c4c4c);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF000000', endColorstr='#FF4C4C4C');
+}
+
+/* Autohide behavior */
+
+.ui-igplayer-controls-show {
+  /* Put your rules here */
+}
+
+.ui-igplayer-controls-hide {
+  /* Put your rules here */
+}
+/* Layout elements */
+
+.ui-igplayer .ui-igplayer-playbutton {
+  font-weight: normal;
+  text-shadow: none;
+  /*rounded corners*/
+
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.ui-igplayer .ui-igplayer-playbutton .ui-icon-pause {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -23px -1px;
+}
+/* K.D. May 31st, 2011 Bug #77271 The play icon is overriden by jQuery themeswitcher */
+
+.ui-igplayer .ui-igplayer-playbutton .ui-icon-play {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -1px -1px;
+}
+
+.ui-igplayer .ui-igplayer-playbutton-icon {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -1px -1px;
+}
+
+.ui-igplayer .ui-igplayer-playbutton-text {
+  background: none !important;
+  border: none;
+  font-size: 11px;
+  color: #858585;
+  text-shadow: none;
+}
+
+.ui-igplayer .ui-igplayer-progressbar {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igslider-handle {
+  /*rounded corners*/
+
+  border-radius: 2px;
+}
+
+.ui-igplayer .ui-igprogressbar {
+  border: none;
+}
+
+.ui-igplayer .ui-igprogressbar-range {
+  height: 2px;
+  background-color: #00aade;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00aade), color-stop(100%, #00aade));
+  background-image: -webkit-linear-gradient(#00aade, #00aade);
+  background-image: -moz-linear-gradient(#00aade, #00aade);
+  background-image: -o-linear-gradient(#00aade, #00aade);
+  background-image: -ms-linear-gradient(#00aade, #00aade);
+  background-image: linear-gradient(#00aade, #00aade);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF00AADE', endColorstr='#FF00AADE');
+  border: 1px none;
+}
+
+.ui-igplayer .ui-igplayer-volumecontrol {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-volumecontrol .ui-icon-volume-on {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -62px -2px;
+}
+
+.ui-igplayer .ui-igplayer-volumecontrol .ui-icon-volume-off {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -82px -2px;
+}
+
+.ui-igplayer-fullscreen-button {
+  margin: 5px;
+}
+
+.ui-igplayer .ui-igplayer-fullscreen-button .ui-icon-arrow-4-diag {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -102px -2px;
+}
+
+.ui-igplayer .ui-igplayer-fullscreen-button .ui-icon-closethick {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -122px -2px;
+}
+
+.ui-igplayer .ui-igplayer-volumeslider {
+  width: 10px;
+  height: 40px;
+  position: absolute;
+}
+
+.ui-igplayer-related-video-replay {
+  margin: 5px;
+  height: 25px;
+}
+
+.ui-igplayer .ui-igplayer-related-video-replay .ui-icon-arrowrefresh-1-s {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_858585.png);
+  background-repeat: no-repeat;
+  background-position: -43px -2px;
+}
+
+.ui-igplayer .ui-igplayer-related-video-replay .ui-button-text {
+  font-size: 13px;
+  line-height: 17px;
+}
+
+.ui-igplayer .ui-igplayer-progresslabel {
+  color: #858585;
+}
+
+.ui-igplayer .ui-igplayer-centerplaybutton-play {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-centerplaybutton-play:active,
+.ui-igplayer-centerplaybutton-pause:active {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-centerplaybutton-play span,
+.ui-igplayer .ui-igplayer-centerplaybutton-pause span {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-centerplaybutton-pause {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-centerplaybutton-icon {
+  color: white;
+}
+
+.ui-igplayer .ui-igplayer-waiting {
+  /* Put your rules here */
+}
+
+.ui-igplayer .ui-igplayer-waiting-icon {
+  /* Put your rules here */
+}
+
+.ui-igplayer-title-controls {
+  /* Put your rules here */
+}
+/* Single play button and video title */
+
+.ui-igplayer-video-title {
+  color: #858585;
+}
+
+.ui-igplayer-playback-alone {
+  padding-right: 5px;
+}
+
+.ui-igplayer-playback-with-time {
+  /* Put your rules here */
+}
+/* Videoplayer state:active */
+
+.ui-igplayer.ui-igplayer-active video {
+  /* Put your rules here */
+}
+/****************************************/
+/***** These should be removed once *****/
+/***** the igButton is fixed        *****/
+/****************************************/
+
+.ui-igvideoplayerbutton {
+  /* Put your rules here */
+}
+
+.ui-igplayer-bookmark-container {
+  color: #4d4d4d;
+  background: #dadada;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dadada));
+  background-image: -webkit-linear-gradient(#ffffff, #dadada);
+  background-image: -moz-linear-gradient(#ffffff, #dadada);
+  background-image: -o-linear-gradient(#ffffff, #dadada);
+  background-image: -ms-linear-gradient(#ffffff, #dadada);
+  background-image: linear-gradient(#ffffff, #dadada);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFDADADA');
+}
+
+.ui-igplayer-bookmark-header {
+  border: 1px solid #00aade;
+  color: white;
+  background: #00aade;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00aade), color-stop(100%, #00aade));
+  background-image: -webkit-linear-gradient(#00aade, #00aade);
+  background-image: -moz-linear-gradient(#00aade, #00aade);
+  background-image: -o-linear-gradient(#00aade, #00aade);
+  background-image: -ms-linear-gradient(#00aade, #00aade);
+  background-image: linear-gradient(#00aade, #00aade);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF00AADE', endColorstr='#FF00AADE');
+}
+
+.ui-igplayer-bookmark-list {
+  border: 1px solid #bebebe;
+}
+
+.ui-igplayer-bookmark-list > li {
+  /* Put your rules here */
+
+  color: #4b4b4b;
+  background-color: white;
+  border: 1px solid white;
+}
+
+.ui-igplayer-bookmark-list > li:hover {
+  color: #666666;
+  background-color: #eaeaea;
+  border: 1px solid #b7b7b7;
+}
+
+.ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
+  color: white;
+  background-color: #00aade;
+  border: 1px solid #00aade;
+}
+
+.ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time {
+  /* Put your rules here */
+}
+
+.ui-igplayer-bookmark-item-time {
+  /* Put your rules here */
+}
+
+.ui-igplayer-bookmark-list > li:hover .ui-igplayer-bookmark-item-time {
+  /* Put your rules here */
+}
+
+.ui-igplayer-bookmark-item-title {
+  /* Put your rules here */
+}
+/* Custom tooltip for bookmarks used on igVideoPlayer */
+
+.ui-igslider .ui-igslider-bookmark-tooltip .ui-widget-content {
+  border: 1px solid #288bb4;
+  padding: 4px 10px;
+  background-color: #2686ae;
+  background-image: none;
+  color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3bb7eb), color-stop(100%, #2686ae));
+  background-image: -webkit-linear-gradient(#3bb7eb, #2686ae);
+  background-image: -moz-linear-gradient(#3bb7eb, #2686ae);
+  background-image: -o-linear-gradient(#3bb7eb, #2686ae);
+  background-image: -ms-linear-gradient(#3bb7eb, #2686ae);
+  background-image: linear-gradient(#3bb7eb, #2686ae);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF3BB7EB', endColorstr='#FF2686AE');
+}
+
+.ui-igslider .ui-igslider-bookmark-tooltip .ui-igtooltip-arrow-bottom {
+  background-color: transparent;
+  background-image: url(images/igVideoPlayer/igVPBookmarkSprite.png);
+  background-repeat: repeat-x;
+  background-position: 0px -40px;
+  height: 8px;
+}
+
+.ui-igplayer-bookmark-item-title:hover {
+  text-decoration: none;
+}
+/* igProgressBar */
+
+.ui-igprogressbar {
+  background-color: #d1d1d1;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #d1d1d1));
+  background-image: -webkit-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: -moz-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: -o-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: -ms-linear-gradient(#d1d1d1, #d1d1d1);
+  background-image: linear-gradient(#d1d1d1, #d1d1d1);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD1D1D1', endColorstr='#FFD1D1D1');
+}
+
+.ui-igprogressbar-range {
+  background-color: #00aade;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00aade), color-stop(100%, #00aade));
+  background-image: -webkit-linear-gradient(#00aade, #00aade);
+  background-image: -moz-linear-gradient(#00aade, #00aade);
+  background-image: -o-linear-gradient(#00aade, #00aade);
+  background-image: -ms-linear-gradient(#00aade, #00aade);
+  background-image: linear-gradient(#00aade, #00aade);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF00AADE', endColorstr='#FF00AADE');
+  border: 1px solid #288bb4;
+}
+.ui-igplayer .ui-igbutton.ui-state-focus,
+.ui-igplayer .ui-button.ui-state-focus {
+  border-color: @accent2;
+}
+
+.ui-igplayer .ui-igprogressbar.ui-widget-content {
+  background-color: @igGray4;
+}
+
+.ui-widget-header.ui-igplayer-controls {
+  color: @igGray10;
+  border-bottom: 0;
+}
+
+.ui-igplayer-related-list .ui-igplayer-related-video-hover img {
+  .stateNormal;
+  border-width: 3px;
+}
+
+.ui-igplayer-bookmark-item-time {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0) !important;
+}
+
+.ui-igslider .ui-igslider-bookmark.ui-state-default {
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0) !important;
+}
+
+.ui-igplayer-bookmark-item-time:hover,
+.ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time,
+.ui-igplayer-bookmark-list li:hover .ui-igplayer-bookmark-item-time {
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -17px !important;
+}
+
+.ui-igslider .ui-igslider-bookmark.ui-state-hover {
+  background: transparent url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -19px !important;
+}
+
+/* igProgressBar */
+.ui-igprogressbar.ui-widget-content {
+  border: 0;
+}
+
+.ui-igplayer .ui-widget-header a {
+  color: @text-color;
+}
+
+.ui-igprogressbar-range {
+  background-color: @accent2 !important;
+}
+
+.ui-igplayer-bookmark-list > li.ui-igplayer-bookmark-active-item {
+  background-color: @accent1;
+}
+
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton,
+.ui-igplayer-related-video-bar .ui-button.ui-igbutton {
+  .stateNormal;
+}
+
+.ui-igplayer-related-video-container a.ui-button.ui-igbutton:hover {
+  .stateActive;
+}
+
+.ui-igplayer-bookmark-list li:hover {
+  background-color: @igGray3;
+}
+
+.ui-progressbar.ui-widget-content {
+  border: 0;
+}
+
+
+.ui-igplayer .ui-igplayer-controls,
+.ui-igplayer-tooltip .ui-widget-content {
+  background: none;
+  box-shadow: 0 0 19px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.ui-igplayer .ui-igplayer-controls {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.ui-igplayer-tooltip .ui-widget-content,
+.ui-igtooltip > .ui-widget-content {
+  background-color: #FFF!important;
+  background-image: none!important;
+  border: none!important;
+  color: #858585!important;
+}
+
+.ui-igtooltip > .ui-widget-content {
+  padding: 5px;
+}
+
+.ui-igtooltip-arrow-bottom,
+.ui-igtooltip-arrow-top,
+.ui-igtooltip-arrow-left,
+.ui-igtooltip-arrow-right {
+  background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
+}
+
+.ui-igtooltip .ui-icon.ui-icon-close {
+  background-image: url(images/ui-icons_00AADE_256x240.png) !important;
+}
+
+.ui-igplayer .ui-state-active,
+.ui-igplayer .ui-state-focus {
+  border-width: 1px!important;
+}
+
+.ui-igplayer .ui-igplayer-volumecontrol.ui-state-active .ui-icon,
+.ui-igplayer .ui-igplayer-fullscreen-button.ui-state-active .ui-icon,
+.ui-igplayer .ui-igplayer-playbutton.ui-state-active .ui-icon,
+.ui-igplayer .ui-igplayer-related-video-replay.ui-state-active .ui-icon {
+  background-image: url(images/igVideoPlayer/igVideoPlayerIcons_FFFFFF.png);
+}
+
+.ui-igplayer .ui-igplayer-bookmark-item-title:hover {
+  text-decoration: none;
+}
+
+.ui-igplayer .ui-igplayer-bookmark-list {
+  border-top-color: #00AADE;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-default,
+.ui-igplayer .ui-button.ui-state-default {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-hover,
+.ui-igplayer .ui-button.ui-state-hover {
+  border: 1px solid #B9B9B9;
+  background-color: #E2E2E2;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-active,
+.ui-igplayer .ui-button.ui-state-active {
+  background-color: #00AADE;
+}
+
+.ui-igplayer .ui-igbutton.ui-state-focus,
+.ui-igplayer .ui-button.ui-state-focus {
+  border-color: #00AADE;
+}

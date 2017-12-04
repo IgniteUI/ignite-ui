@@ -25,7 +25,10 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	<!-- <script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script> -->
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-de.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-en.js"></script>
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -472,7 +475,6 @@
 				editor.blur();
 
 				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, today.getSeconds()));
-				debugger;
 				equal(editor.igDatePicker("value").getDate(), expectedDate.getDate(), "The date is not set");
 				equal(editor.igDatePicker("value").getHours(), expectedDate.getHours(), "The hours is not set");
 				equal(editor.igDatePicker("value").getMinutes(), expectedDate.getMinutes(), "The minutes is not set");
@@ -695,7 +697,7 @@
 			testId = "Apply different displayTimeOffset on picker display/values";
 			test(testId, 16, function(){
 				var today = new Date(),
-					todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+					todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())),
 					pickerTestOpts = [{
 						picker: {
 							displayTimeOffset: 240,
@@ -721,7 +723,7 @@
 						date: "",
 						day: "",
 						nextDate: (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
-						nextValue: today.toISOString().split("T")[0] + "T03:00:00.000Z"
+						nextValue: todayUTC.toISOString().split("T")[0] + "T03:00:00.000Z"
 					}, {
 						//#1002: igDatePicker drop down cannot be opened 
 						picker: {
@@ -1113,20 +1115,107 @@
 			});
 
 			testId = 'Runtime changes for local and regional options';
-			test(testId, 6, function () {
-				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
+			test(testId, 18, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) }),
+				$calendar = $editor.igDatePicker("getCalendar"),
+					checkCalendarTitle = function(title, regional) {
+						$editor.igDatePicker("showDropDown");
+
+						calendarTitle = $calendar.find(".ui-datepicker-title").text().replace(String.fromCharCode(160) /* no breaking space*/, " ");
+						equal(calendarTitle, title, "Title of the datepicker should be in " + regional);
+						$editor.igDatePicker("hideDropDown");
+					},
+					calendarTitle;
 
 				equal($editor.igDatePicker("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.en.Editor.datePickerButtonTitle, "Title of the button should be in English");
+				checkCalendarTitle("August 2017", "English");
+
+				$editor.igDatePicker("option", "language", "ja");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.ja.Editor.datePickerButtonTitle, "Title of the button should be in Japanese");
+				$editor.igDatePicker("option", "regional", "ja");
+				equal($editor.igDatePicker("displayValue"), "2017/08/18 18:06", "Display Format should be in Japanese");
+				$editor.igDatePicker("setFocus");
+				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Input Format should be in Japanese");
+				checkCalendarTitle("2017年 8月", "Japanese");
+
+				$editor.igDatePicker("value", new Date(2017, 9, 18, 18, 6));
+				$editor.igDatePicker("option", "regional", "de");
+				equal($editor.igDatePicker("displayValue"), "18.10.2017 18:06", "Format should be in German");
+				$editor.igDatePicker("setFocus");
+				equal($editor.igDatePicker("field").val(), "18.10.2017 18:06", "Input Format should be in German");
+				checkCalendarTitle("Oktober 2017", "German");
+
+				//custom datepickerOptions with prio:
+				$editor.igDatePicker("option", "datepickerOptions", { 
+					monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'S', 'Oct(custom)', 'Nov', 'Dec'],
+				 });
+				$editor.igDatePicker("option", "regional", "en-US");
+				equal($editor.igDatePicker("field").val(), "10/18/2017 06:06 PM", "Format should be in English");
+				checkCalendarTitle("Oct(custom) 2017", "English(custom)");
+				$editor.remove();
+
+				// Init datepicker without dateInputFormat or dateDisplayFormat defined
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ value: new Date(2017, 7, 18, 18, 6) });
+				equal($editor.igDatePicker("displayValue"), "8/18/2017", "Format should be in English");
 				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.en.Editor.datePickerButtonTitle, "Title of the button should be in English");
 				$editor.igDatePicker("option", "language", "ja");
 				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.ja.Editor.datePickerButtonTitle, "Title of the button should be in Japanese");
 				$editor.igDatePicker("option", "regional", "ja");
-				equal($editor.igDatePicker("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
+				equal($editor.igDatePicker("displayValue"), "2017/08/18", "Display Format should be in Japanese");
 				$editor.igDatePicker("setFocus");
-				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Display Format should be in German");
-				$editor.igDatePicker("option", "regional", "en");
-				equal($editor.igDatePicker("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
-				$editor.trigger("blur").remove();
+				equal($editor.igDatePicker("field").val(), "2017/08/18", "Input Format should be in Japanese");
+				$editor.igDatePicker("option", "regional", "en-US");
+				equal($editor.igDatePicker("field").val(), "08/18/2017", "Format should be in English");
+				$editor.remove();
+			});
+			var testId = 'displayTimeOffset enabled and setting date from drop down calendar';
+			test(testId, 6, function () {
+				var $editor, $ddButton, $input;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2017-12-08T00:00:00.000Z"),
+					dataMode: "date",
+					dateDisplayFormat: "dateTime",
+					enableUTCDates: true,
+					displayTimeOffset: 0,
+					dropDownAnimationDuration: 1
+				});
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$ddButton.click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$(".ui-datepicker-current-day").next().click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/9/2017 12:00 AM", "Display value is not correct");
+				$editor.remove();
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2017-12-08T00:00:00.000Z"),
+					dataMode: "date",
+					dateDisplayFormat: "dateTime",
+					enableUTCDates: true,
+					displayTimeOffset: 240,
+					dropDownAnimationDuration: 1
+				});
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$ddButton.click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
+				$ddButton.click();
+				$(".ui-datepicker-current-day").next().click();
+				$input.blur();
+				equal($editor.igDatePicker("displayValue"), "12/9/2017 4:00 AM", "Display value is not correct");
+				$editor.remove();
 			});
 	    });
 		function mouseInteraction(type, element) {

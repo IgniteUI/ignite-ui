@@ -1,193 +1,318 @@
 /* css for grid widget */
 
-.ui-iggrid { 
-    background-image: none;
-	border-width:0;
+.ui-iggrid {
+    background-image : none;
+    border-width     : 0;
 }
-.ui-iggrid .ui-helper-reset {line-height: 1.4; border:0 none;}
-.ui-iggrid-table {table-layout:fixed; width:100%; border-collapse: separate; }
-.ui-iggrid-headertable {table-layout:fixed; width:100%; white-space: normal; border-collapse: separate; }
-.ui-iggrid table th, .ui-iggrid table td {overflow:hidden; text-overflow: ellipsis; vertical-align:middle /* reset to default value */;}
-.ui-iggrid .ui-iggrid-headertable, .ui-iggrid .ui-iggrid-content, .ui-iggrid .ui-widget-content, .ui-iggrid-scrolldiv table {border-width:0;}
-.ui-iggrid .ui-iggrid-content {width: 100%;}
+
+.ui-iggrid .ui-helper-reset {
+    line-height : 1.4;
+    border      : 0 none;
+}
+
+.ui-iggrid-table {
+    table-layout    : fixed;
+    width           : 100%;
+    border-collapse : separate;
+}
+
+.ui-iggrid-headertable {
+    table-layout    : fixed;
+    width           : 100%;
+    white-space     : normal;
+    border-collapse : separate;
+}
+
+.ui-iggrid table th, .ui-iggrid table td {
+    overflow       : hidden;
+    text-overflow  : ellipsis;
+    vertical-align : middle /* reset to default value */;
+}
+
+.ui-iggrid .ui-iggrid-headertable, .ui-iggrid .ui-iggrid-content, .ui-iggrid .ui-widget-content, .ui-iggrid-scrolldiv table {
+    border-width : 0;
+}
+
+.ui-iggrid .ui-iggrid-content {
+    width : 100%;
+}
+
 /* Bug 214589 S.D., 22.02.2016, Missing borders; new classes for a MRL grid; header cell misalignment issue */
-.ui-iggrid-table-mrl,.ui-iggrid-headertable-mrl {border-collapse:collapse;table-layout:fixed;}
+.ui-iggrid-table-mrl, .ui-iggrid-headertable-mrl {
+    border-collapse : collapse;
+    table-layout    : fixed;
+}
 
 /* BUG:229991 Marin Popov 1.23.2017; When grid is MRL and width is in % the header cells and content cells are misaligned.*/
 .ui-iggrid-headertable-mrl {
-	width: 100%;
+    width : 100%;
 }
 
-.ui-iggrid>.ui-widget-header.ui-helper-reset {border-width:0;}
+.ui-iggrid > .ui-widget-header.ui-helper-reset {
+    border-width : 0;
+}
 
-.ui-widget-content.ui-iggrid-filterddlist, .ui-widget-content.ui-iggrid-hiding-dropdown-list, .ui-widget-content.ui-iggrid-columnmoving-dropdown-list, .ui-widget-content.ui-iggrid-featurechooser-list, .ui-iggrid-summaries-dropdown-listcontainer
-{
-    border: none; 
-    margin:0;
-    padding:0;
-    list-style-type: none;
+.ui-widget-content.ui-iggrid-filterddlist, .ui-widget-content.ui-iggrid-hiding-dropdown-list, .ui-widget-content.ui-iggrid-columnmoving-dropdown-list, .ui-widget-content.ui-iggrid-featurechooser-list, .ui-iggrid-summaries-dropdown-listcontainer {
+    border          : none;
+    margin          : 0;
+    padding         : 0;
+    list-style-type : none;
 }
 
 .ui-iggrid .ui-iggrid-headercaption, .ui-iggrid .ui-iggrid-footer, .ui-iggrid .ui-iggrid-toolbar {
-    padding: 0.6em 0.4em;
-    text-align: center;
-    cursor:default;
+    padding    : 0.6em 0.4em;
+    text-align : center;
+    cursor     : default;
 }
 
-.ui-iggrid th.ui-state-default, .ui-iggrid th.ui-state-hover, .ui-iggrid th.ui-state-active, 
-.ui-iggrid th.ui-state-default a, .ui-iggrid th.ui-state-hover a, .ui-iggrid th.ui-state-active a {font-weight: normal; text-align:left;}
+.ui-iggrid th.ui-state-default, .ui-iggrid th.ui-state-hover, .ui-iggrid th.ui-state-active,
+.ui-iggrid th.ui-state-default a, .ui-iggrid th.ui-state-hover a, .ui-iggrid th.ui-state-active a {
+    font-weight : normal;
+    text-align  : left;
+}
 
 .ui-iggrid .ui-ig-altrecord {
- background-color: rgba(153,153,153,0.2);
+    background-color : rgba(153, 153, 153, 0.2);
 }
 
 .ui-iggrid .ui-iggrid-footer, .ui-iggrid .ui-iggrid-toolbar {
-	font-weight: normal;
-    text-align: left;
-	display:block;
+    font-weight : normal;
+    text-align  : left;
+    display     : block;
 }
 
-.ui-iggrid th, .ui-iggrid th.ui-state-default, .ui-iggrid th.ui-state-hover, .ui-iggrid th.ui-state-active {text-align:left; white-space: nowrap; height: 1.6em;}
-.ui-iggrid table tbody td, .ui-iggrid .ui-iggrid-header, .ui-iggrid table th { padding: 4px; }
+.ui-iggrid th, .ui-iggrid th.ui-state-default, .ui-iggrid th.ui-state-hover, .ui-iggrid th.ui-state-active {
+    text-align  : left;
+    white-space : nowrap;
+    height      : 1.6em;
+}
+
+.ui-iggrid table tbody td, .ui-iggrid .ui-iggrid-header, .ui-iggrid table th {
+    padding : 4px;
+}
+
 .ui-iggrid .ui-iggrid-tablebody td {
-    border-width:1px;
+    border-width : 1px;
 }
 
-.ui-iggrid table thead a {text-decoration:none;}
-
-.ui-iggrid td.ui-state-default, 
-.ui-iggrid td.ui-state-highlight, 
-.ui-iggrid td.ui-state-hover
-{
-	border-width:1px;
-	font-weight:normal;
+.ui-iggrid table thead a {
+    text-decoration : none;
 }
-.ui-iggrid td.ui-state-highlight p {}
 
-.ui-iggrid .ui-iggrid-footer .ui-state-default, .ui-iggrid .ui-iggrid-toolbar .ui-state-default, .ui-iggrid .ui-iggrid-footer .ui-state-default a, .ui-iggrid .ui-iggrid-toolbar .ui-state-default a {text-decoration:none;}
+.ui-iggrid td.ui-state-default,
+.ui-iggrid td.ui-state-highlight,
+.ui-iggrid td.ui-state-hover {
+    border-width : 1px;
+    font-weight  : normal;
+}
+
+.ui-iggrid td.ui-state-highlight p {
+}
+
+.ui-iggrid .ui-iggrid-footer .ui-state-default, .ui-iggrid .ui-iggrid-toolbar .ui-state-default, .ui-iggrid .ui-iggrid-footer .ui-state-default a, .ui-iggrid .ui-iggrid-toolbar .ui-state-default a {
+    text-decoration : none;
+}
 
 .ui-iggrid .ui-iggrid-toolbar .ui-iggrid-results {
-    float: right;
+    float : right;
 }
+
 .ui-iggrid .ui-iggrid-footer .ui-iggrid-results {
-    float: left;
-    line-height: 1.9em;
+    float       : left;
+    line-height : 1.9em;
 }
+
 .ui-iggrid .ui-iggrid-paging,
 .ui-iggrid th .ui-iggrid-indicatorcontainer,
 .ui-iggrid th .ui-iggrid-indicatorcontainer .ui-icon {
-    float: right;
+    float : right;
 }
+
 .ui-iggrid .ui-iggrid-paging > div,
 .ui-iggrid .ui-iggrid-paging .ui-iggrid-paging-item span,
 .ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdownlabels,
 .ui-iggrid .ui-iggrid-paging li,
-/*.ui-iggrid .ui-iggrid-paging input,
-.ui-iggrid .ui-iggrid-results input,*/
+    /*.ui-iggrid .ui-iggrid-paging input,
+    .ui-iggrid .ui-iggrid-results input,*/
 .ui-iggrid .ui-iggrid-results span {
-    float: left; 
+    float       : left;
     /*padding:0 3px; */
-    padding: 0 0.3em;
-    line-height: 1.4em;
+    padding     : 0 0.3em;
+    line-height : 1.4em;
 }
-
 
 .ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer .ui-igedit-container,
 .ui-iggrid .ui-iggrid-results .ui-igedit-container,
 .ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer {
-    float: left;
-    height: 1.8em;
-    line-height: 1.4em;
-    }
+    float       : left;
+    height      : 1.8em;
+    line-height : 1.4em;
+}
 
 .ui-iggrid .ui-iggrid-results .ui-igedit-input,
 .ui-iggrid .ui-iggrid-paging .ui-igedit-input {
-line-height: 1.4em;
-/*min-height: 2em;*/
-}
-    .ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer,
-    .ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer .ui-igedit-input {
-         height:100%;
-    }
-    .ui-iggrid .ui-iggrid-paging .ui-iggrid-paging-item span.ui-icon,
-    .ui-iggrid .ui-iggrid-paging  .ui-iggrid-pagedropdowncontainer,
-    .ui-iggrid .ui-iggrid-results .ui-iggrid-pagesizedropdown {
-    padding:0;
-    }
-.ui-iggrid th .ui-iggrid-indicatorcontainer a
-{
-    float:right;
-	display:block;
+    line-height : 1.4em;
+    /*min-height: 2em;*/
 }
 
-.no-boxsizing .ui-iggrid-indicatorcontainer a {max-width: 16px;}
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer .ui-igedit-input {
+    height : 100%;
+}
 
-.ui-iggrid .ui-iggrid-paging .ui-igedit-button, 
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-paging-item span.ui-icon,
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-pagedropdowncontainer,
+.ui-iggrid .ui-iggrid-results .ui-iggrid-pagesizedropdown {
+    padding : 0;
+}
+
+.ui-iggrid th .ui-iggrid-indicatorcontainer a {
+    float   : right;
+    display : block;
+}
+
+.no-boxsizing .ui-iggrid-indicatorcontainer a {
+    max-width : 16px;
+}
+
+.ui-iggrid .ui-iggrid-paging .ui-igedit-button,
 .ui-iggrid .ui-iggrid-results .ui-igedit-button {
-    border-width:0 0 0 1px;
+    border-width : 0 0 0 1px;
 }
-a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
-.ui-iggrid .ui-iggrid-paging .ui-icon, .ui-iggrid .ui-iggrid-results .ui-icon{
-    padding:0; 
-}
-.ui-iggrid .ui-iggrid-paging-item, .ui-iggrid .ui-iggrid-results-item {float: left;}
-.ui-iggrid .ui-iggrid-paging-item {position:relative; height:1.4em;box-sizing:content-box;}
-.ui-iggrid .ui-iggrid-paging-item span {cursor:pointer;  -moz-user-select: none; -webkit-user-select: none; user-select: none;}
-.ui-iggrid .ui-iggrid-paging-item a:active, 
-.ui-iggrid .ui-iggrid-paging-item a:focus {outline:0 none;}
-.ui-iggrid .ui-iggrid-paging-item span.ui-icon  {
-    margin-top: -8px;
-    position: absolute;
-    top: 50%;
-}
-/* M.H. 28 Apr 2016 Fix for bug 216219: Auto-sizing a column with double mouse click doesn't take into account the column header text */
-.ui-iggrid-measurement-container .ui-iggrid-featurechooserbutton {padding-left: 2px;}
 
+a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
+    line-height : 1.4em;
+}
+
+.ui-iggrid .ui-iggrid-paging .ui-icon, .ui-iggrid .ui-iggrid-results .ui-icon {
+    padding : 0;
+}
+
+.ui-iggrid .ui-iggrid-paging-item, .ui-iggrid .ui-iggrid-results-item {
+    float : left;
+}
+
+.ui-iggrid .ui-iggrid-paging-item {
+    position   : relative;
+    height     : 1.4em;
+    box-sizing : content-box;
+}
+
+.ui-iggrid .ui-iggrid-paging-item span {
+    cursor              : pointer;
+    -moz-user-select    : none;
+    -webkit-user-select : none;
+    user-select         : none;
+}
+
+.ui-iggrid .ui-iggrid-paging-item a:active,
+.ui-iggrid .ui-iggrid-paging-item a:focus {
+    outline : 0 none;
+}
+
+.ui-iggrid .ui-iggrid-paging-item span.ui-icon {
+    margin-top : -8px;
+    position   : absolute;
+    top        : 50%;
+}
+
+/* M.H. 28 Apr 2016 Fix for bug 216219: Auto-sizing a column with double mouse click doesn't take into account the column header text */
+.ui-iggrid-measurement-container .ui-iggrid-featurechooserbutton {
+    padding-left : 2px;
+}
 
 /*boostrap border-box force fix*/
 .ui-iggrid .ui-iggrid-pager * {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+    -webkit-box-sizing : content-box;
+    -moz-box-sizing    : content-box;
+    box-sizing         : content-box;
 }
 
-.ui-iggrid-firstpage .ui-icon, .ui-iggrid-prevpage .ui-icon {left: 3px;}
-.ui-iggrid-nextpage .ui-icon, .ui-iggrid-lastpage .ui-icon {right:3px;}
+.ui-iggrid-firstpage .ui-icon, .ui-iggrid-prevpage .ui-icon {
+    left : 3px;
+}
+
+.ui-iggrid-nextpage .ui-icon, .ui-iggrid-lastpage .ui-icon {
+    right : 3px;
+}
 
 /*padding left for paging items with icons to the left */
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage, .ui-iggrid .ui-iggrid-paging .ui-iggrid-prevpage{padding-left:20px;}
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-firstpage, .ui-iggrid .ui-iggrid-paging .ui-iggrid-prevpage {
+    padding-left : 20px;
+}
+
 /*padding right for paging items with icons to the right */
-.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage, .ui-iggrid .ui-iggrid-paging .ui-iggrid-lastpage {padding-right:20px;}
+.ui-iggrid .ui-iggrid-paging .ui-iggrid-nextpage, .ui-iggrid .ui-iggrid-paging .ui-iggrid-lastpage {
+    padding-right : 20px;
+}
 
-.ui-iggrid-pagelist {padding: 0 6px;}
-.ui-iggrid-pagelist li {margin:0 0.1em;}
+.ui-iggrid-pagelist {
+    padding : 0 6px;
+}
 
-.ui-iggrid-colindicator {/* padding-right: 4px;*/ }
+.ui-iggrid-pagelist li {
+    margin : 0 0.1em;
+}
 
-.ui-iggrid .ui-iggrid-filterbutton {float:left;}
+.ui-iggrid .ui-iggrid-filterbutton {
+    float : left;
+}
+
 .ui-iggrid th .ui-iggrid-filterbutton,
-.ui-iggrid .ui-iggrid-filterbuttonright {float: right; margin: 0; }
-.ui-iggrid-filtercell  {padding:4px 0; white-space: nowrap; } 
-.ui-iggrid-filtercell .ui-igedit-field {text-align:left; }
-.ui-iggrid-scrolldiv {border-top:none!important; position:relative; min-height: 0%; background-color:#F3F3F3; border-bottom: 1px solid #DCDCDC;}
+.ui-iggrid .ui-iggrid-filterbuttonright {
+    float  : right;
+    margin : 0;
+}
 
-.ui-iggrid-scrolldiv.ui-iggrid-virtualscrolldiv:first-child{border-top: none!important; border-bottom: none!important;}
+.ui-iggrid-filtercell {
+    padding     : 4px 0;
+    white-space : nowrap;
+}
+
+.ui-iggrid-filtercell .ui-igedit-field {
+    text-align : left;
+}
+
+.ui-iggrid-scrolldiv {
+    border-top       : none !important;
+    position         : relative;
+    min-height       : 0%;
+    background-color : #f3f3f3;
+    border-bottom    : 1px solid #dcdcdc;
+}
+
+.ui-iggrid-scrolldiv.ui-iggrid-virtualscrolldiv:first-child {
+    border-top    : none !important;
+    border-bottom : none !important;
+}
+
 /*
 	required to prevent a firefox bug where the vertical scrollbar from
 	the horizontal scroller div is overlayed over the vertical scrollbar of the scrolling div
 */
-.ui-iggrid-scrolldiv { z-index: 1; }
+.ui-iggrid-scrolldiv {
+    z-index : 1;
+}
 
-.ui-iggrid-scrolldiv tbody {border:none!important;}
+.ui-iggrid-scrolldiv tbody {
+    border : none !important;
+}
 
-.ui-iggrid-sortableheader>a, span.ui-iggrid-headertext { font-size:1em; min-height: 18px;  /*float:left;*/}
-.ui-iggrid-headertext { cursor:default; }
+.ui-iggrid-sortableheader > a, span.ui-iggrid-headertext {
+    font-size  : 1em;
+    min-height : 18px; /*float:left;*/
+}
+
+.ui-iggrid-headertext {
+    cursor : default;
+}
+
 .ui-iggrid-sortableheader .ui-iggrid-headertext {
-    cursor: pointer;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-	-ms-user-select: none;
+    cursor              : pointer;
+    -moz-user-select    : none;
+    -webkit-user-select : none;
+    user-select         : none;
+    -ms-user-select     : none;
 }
 
 /* recalculate headertext width to allocate space for icons in header - IE9+ */
@@ -195,36 +320,39 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .ui-iggrid-colheaderdesc .ui-iggrid-headertext,
 .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
-    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 34px)!important; /**  FF 4-15  **/
-    width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
-    display:block;
-    text-overflow:ellipsis;
-    overflow: hidden;
-    white-space:nowrap;
-    float:left;
-    line-height: 1.6em;
- }
+    width         : -webkit-calc(100% - 34px) !important; /** Chrome / Safari 6 **/
+    width         : -moz-calc(100% - 34px) !important; /**  FF 4-15  **/
+    width         : calc(100% - 34px) !important; /** FF 16+, IE 9+, and future other browsers **/
+    display       : block;
+    text-overflow : ellipsis;
+    overflow      : hidden;
+    white-space   : nowrap;
+    float         : left;
+    line-height   : 1.6em;
+}
+
 /* two icons case */
 .ui-iggrid-headercell-featureenabled.ui-draggable .ui-iggrid-headertext,
 .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderdesc .ui-iggrid-headertext {
-    
-    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 34px)!important; /** FF 4-15  **/
-    width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
+
+    width : -webkit-calc(100% - 34px) !important; /** Chrome / Safari 6 **/
+    width : -moz-calc(100% - 34px) !important; /** FF 4-15  **/
+    width : calc(100% - 34px) !important; /** FF 16+, IE 9+, and future other browsers **/
 }
+
 /*Bug 208811, 08.03.2016 S.D., Group header�s height is twice as normal header height. */
-.ui-iggrid-multiheader-cell.ui-iggrid-headercell-featureenabled .ui-iggrid-headertext{
-    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 34px)!important; /** FF 4-15  **/
-    width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
+.ui-iggrid-multiheader-cell.ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
+    width : -webkit-calc(100% - 34px) !important; /** Chrome / Safari 6 **/
+    width : -moz-calc(100% - 34px) !important; /** FF 4-15  **/
+    width : calc(100% - 34px) !important; /** FF 16+, IE 9+, and future other browsers **/
 }
 
 /*center text in multicolumn headers*/
 .ui-iggrid-multiheader-cell.ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
-    text-indent: 18px;
+    text-indent : 18px;
 }
+
 /* touch version 1 icon */
 .touch .ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .touchevents .ui-iggrid-colheaderasc .ui-iggrid-headertext,
@@ -234,13 +362,12 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .pointerevents .ui-iggrid-colheaderdesc .ui-iggrid-headertext,
 .touch .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext,
 .touchevents .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext,
-.pointerevents .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext
-{    
+.pointerevents .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
 
-    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 34px)!important; /**  FF 4-15  **/
-    width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
-    line-height: 1.8em;
+    width       : -webkit-calc(100% - 34px) !important; /** Chrome / Safari 6 **/
+    width       : -moz-calc(100% - 34px) !important; /**  FF 4-15  **/
+    width       : calc(100% - 34px) !important; /** FF 16+, IE 9+, and future other browsers **/
+    line-height : 1.8em;
 }
 
 /* touch version 2 icons */
@@ -252,216 +379,218 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .pointerevents .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .touch .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderdesc .ui-iggrid-headertext,
 .touchevents .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderdesc .ui-iggrid-headertext,
-.pointerevents .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderdesc .ui-iggrid-headertext
-{    
+.pointerevents .ui-iggrid-headercell-featureenabled.ui-iggrid-colheaderdesc .ui-iggrid-headertext {
 
-    width: -webkit-calc(100% - 54px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 54px)!important; /**  FF 4-15  **/
-    width: calc(100% - 54px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
+    width : -webkit-calc(100% - 54px) !important; /** Chrome / Safari 6 **/
+    width : -moz-calc(100% - 54px) !important; /**  FF 4-15  **/
+    width : calc(100% - 54px) !important; /** FF 16+, IE 9+, and future other browsers **/
 }
+
 .touch .ui-iggrid-colindicator-asc,
 .touchevents .ui-iggrid-colindicator-asc,
 .pointerevents .ui-iggrid-colindicator-asc,
 .touch .ui-iggrid-colindicator-desc,
 .touchevents .ui-iggrid-colindicator-desc,
-.pointerevents .ui-iggrid-colindicator-desc
-{
-    margin-top:0.4em;
+.pointerevents .ui-iggrid-colindicator-desc {
+    margin-top : 0.4em;
 }
 
-.ui-iggrid-sortableheader { cursor: pointer; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
-.ui-iggrid-sortableheader>a:active, 
-.ui-iggrid-sortableheader>a:focus 
-{
-	outline:0 none;
+.ui-iggrid-sortableheader {
+    cursor              : pointer;
+    -moz-user-select    : none;
+    -webkit-user-select : none;
+    user-select         : none;
 }
+
+.ui-iggrid-sortableheader > a:active,
+.ui-iggrid-sortableheader > a:focus {
+    outline : 0 none;
+}
+
 .ui-iggrid-indicatorcontainer {
-    margin-top/*\**/:0.25em\9; /* value hack for OldIE */
-    margin-top: calc(0.8em - 8px); /* vertically centered for newer browsers */
+    margin-top /*\**/ : 0.25em \9; /* value hack for OldIE */
+    margin-top        : calc(0.8em - 8px); /* vertically centered for newer browsers */
 
-	/* #221461 // 11.01.2016 // M.Popov // Auto-sizing a column... */
-	min-width:34px;
+    /* #221461 // 11.01.2016 // M.Popov // Auto-sizing a column... */
+    min-width         : 34px;
 }
-
 
 /* remove paddings in nested tables */
-.ui-iggrid-layout-helper>tbody>tr>td  {padding:0!important; background:none transparent!important; vertical-align:top;}
+.ui-iggrid-layout-helper > tbody > tr > td {
+    padding        : 0 !important;
+    background     : none transparent !important;
+    vertical-align : top;
+}
 
 /*editors in grids*/
-.ui-iggrid .ui-igedit-fieldincontainer, .ui-iggrid .ui-igedit-button  {height:1.4em;}
-.ui-iggrid .ui-iggrid-results span, .ui-iggrid .ui-iggrid-pagedropdownlabels  {line-height:1.4em;}
-.ui-iggrid .ui-igedit-button, .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a {float:left; position:relative; height:1.4em;}
-.ui-iggrid .ui-igedit-buttonimage, 
-.ui-iggrid-filtercell .ui-iggrid-filterbutton {
-    position: absolute;    
-	top:50%;
-	left:50%;
-    margin-top: -8px!important;
-    margin-left: -8px!important;
-    width: 16px;
-    height: 16px;
- }
+.ui-iggrid .ui-igedit-fieldincontainer, .ui-iggrid .ui-igedit-button {
+    height : 1.4em;
+}
 
-.ui-igedit-dropdown .ui-igedit-listitem {    
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 100%;
-} 
+.ui-iggrid .ui-iggrid-results span, .ui-iggrid .ui-iggrid-pagedropdownlabels {
+    line-height : 1.4em;
+}
+
+.ui-iggrid .ui-igedit-button, .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a {
+    float    : left;
+    position : relative;
+    height   : 1.4em;
+}
+
+.ui-iggrid .ui-igedit-buttonimage,
+.ui-iggrid-filtercell .ui-iggrid-filterbutton {
+    position    : absolute;
+    top         : 50%;
+    left        : 50%;
+    margin-top  : -8px !important;
+    margin-left : -8px !important;
+    width       : 16px;
+    height      : 16px;
+}
+
 .ui-igedit-dropdown .ui-igedit-listitem {
-    font-size: 1.1em!important;
-    text-shadow:none;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
+    width              : 100%;
+}
+
+.ui-igedit-dropdown .ui-igedit-listitem {
+    font-size   : 1.1em !important;
+    text-shadow : none;
 }
 
 /* Filter cell options */
 
-.ui-iggrid .ui-iggrid-filtercell
-{     
-	font-size: 1em;
-    font-weight: normal; 
-}
-.ui-iggrid .ui-iggrid-filtercell .ui-igedit 
-{
-	width:100%!important;
-	height:1.6em;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	overflow:hidden;
-	border-radius: 0;
-	-moz-background-clip: padding; 
-    -webkit-background-clip: padding-box; 
-    background-clip: padding-box;  
-    display: block; /*Added to prevent extra space at the bottom */
+.ui-iggrid .ui-iggrid-filtercell {
+    font-size   : 1em;
+    font-weight : normal;
 }
 
-.ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor 
-{
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	line-height: 1.4em;
-	width: 100%!important;
-} 
- 
+.ui-iggrid .ui-iggrid-filtercell .ui-igedit {
+    width                   : 100% !important;
+    height                  : 1.6em;
+    -webkit-box-sizing      : border-box;
+    -moz-box-sizing         : border-box;
+    box-sizing              : border-box;
+    overflow                : hidden;
+    border-radius           : 0;
+    -moz-background-clip    : padding;
+    -webkit-background-clip : padding-box;
+    background-clip         : padding-box;
+    display                 : block; /*Added to prevent extra space at the bottom */
+}
+
+.ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor {
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
+    line-height        : 1.4em;
+    width              : 100% !important;
+}
+
 /*no filter icon*/
-.ui-iggrid .ui-iggrid-filtercell .ui-igedit:first-child input 
-{
- padding:0.3em;
+.ui-iggrid .ui-iggrid-filtercell .ui-igedit:first-child input {
+    padding : 0.3em;
 }
 
 /*filter icon on left*/
 
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a 
-{
-	margin-right:-2em;
-}		
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before
-{
-	color: #DCDCDC;
-	content:"|";
-	margin:0 0 0 1.4em;
-	text-shadow: none;
-    width:1.4em;
+.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a {
+    margin-right : -2em;
 }
-.ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor 
-{    
-	padding: 0 0 0 1.8em!important;
+
+.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before {
+    color       : #dcdcdc;
+    content     : "|";
+    margin      : 0 0 0 1.4em;
+    text-shadow : none;
+    width       : 1.4em;
 }
+
+.ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor {
+    padding : 0 0 0 1.8em !important;
+}
+
 /* dropdown filter */
-.ui-iggrid .ui-iggrid-filtercell .ui-igedit-button + .ui-iggrid-filtereditor 
-{
-	padding-right: 1.6em !important;
-	margin-right:-1.6em!important;
+.ui-iggrid .ui-iggrid-filtercell .ui-igedit-button + .ui-iggrid-filtereditor {
+    padding-right : 1.6em !important;
+    margin-right  : -1.6em !important;
 }
 
 /*filter icon on the right*/
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-igedit,
-.ui-iggrid-filtercell .ui-igedit:first-child
-{
-	/*margin-right:-2em;*/
+.ui-iggrid-filtercell .ui-igedit:first-child {
+    /*margin-right:-2em;*/
     /*No need for this anymore since we moved the icon INSIDE the editor container*/
 }
+
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-filtereditor,
-.ui-iggrid-filtercell .ui-igeditor-input-container:first-child .ui-iggrid-filtereditor 
-{
-	padding: 0 1.8em 0 0!important;
-	text-align:right!important;
-}
-.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer, 
-.ui-iggrid-filtercell .ui-igeditor-input-container+.ui-iggrid-indicatorcontainer
-{
-    float:right; 
-	margin-top:0;
-}
-/*
-BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the cell
-.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
-{
-    float:left;
-	width:calc(100% - 10px);
-}
-*/
-.ui-iggrid-filtercell  .ui-igedit-button-common~.ui-igeditor-input-container
-{
-    float:left;
-	width:calc(100% - 35px);
-} 
-.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer+.ui-igeditor-input-container
-{
-    width:auto;
-}
-.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a, 
-.ui-iggrid-filtercell .ui-igeditor-input-container+.ui-iggrid-indicatorcontainer a
-{    
-    margin:0 0 0 -1.4em!important;
-}
-.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before, 
-.ui-iggrid-filtercell .ui-igeditor-input-container+.ui-iggrid-indicatorcontainer a:before
-{
-    margin-right:1.4em;
-    margin-left:0;
-    text-align:right;
+.ui-iggrid-filtercell .ui-igeditor-input-container:first-child .ui-iggrid-filtereditor {
+    padding    : 0 1.8em 0 0 !important;
+    text-align : right !important;
 }
 
-body[dir="rtl"] .ui-iggrid-filtericoncontainer, 
-body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer
-{
-right: 3px;
+.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer,
+.ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer {
+    float      : right;
+    margin-top : 0;
 }
 
+.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container {
+    float : left;
+    width : 100%;
+}
+
+.ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
+    float : left;
+    width : calc(100% - 35px);
+}
+
+.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
+.ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer a {
+    margin : 0 0 0 -1.4em !important;
+}
+
+.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
+.ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer a:before {
+    margin-right : 1.4em;
+    margin-left  : 0;
+    text-align   : right;
+}
+
+body[dir="rtl"] .ui-iggrid-filtericoncontainer,
+body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
+    right : 3px;
+}
 
 /* rtl dropdown filters */
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button + .ui-igedit-field {
-    margin-left: -1.4em !important;
-    margin-right:0!important;
+    margin-left  : -1.4em !important;
+    margin-right : 0 !important;
 }
 
-.ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child
-{
-	width:1.4em!important;
-	height:1.6em!important;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+.ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child {
+    width              : 1.4em !important;
+    height             : 1.6em !important;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
 }
-
 
 /* no-boxsizing tweak needed for dropdown editors in grid*/
 .no-boxsizing .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button + .ui-igedit-field,
-.ie7 .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button + .ui-igedit-field
-{
-	margin-right:-5.2em!important;
+.ie7 .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button + .ui-igedit-field {
+    margin-right : -5.2em !important;
 }
 
 .no-boxsizing .ui-iggrid-pagedropdowncontainer .ui-igedit-field,
 .no-boxsizing .ui-iggrid-pagesizedropdown .ui-igedit-field,
 .ie7 .ui-iggrid-pagedropdowncontainer .ui-igedit-field,
-.ie7 .ui-iggrid-pagesizedropdown .ui-igedit-field
-{	
-    margin-right:-2em!important;
-    padding-top:0!important;
-    padding-bottom:0!important;
+.ie7 .ui-iggrid-pagesizedropdown .ui-igedit-field {
+    margin-right   : -2em !important;
+    padding-top    : 0 !important;
+    padding-bottom : 0 !important;
 }
 
 .no-boxsizing .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
@@ -469,103 +598,114 @@ right: 3px;
 .no-boxsizing .ui-iggrid-pagesizedropdown .ui-igedit-button,
 .ie7 .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
 .ie7 .ui-iggrid-pagedropdowncontainer .ui-igedit-button,
-.ie7 .ui-iggrid-pagesizedropdown .ui-igedit-button
-{
-    padding:0!important;
+.ie7 .ui-iggrid-pagesizedropdown .ui-igedit-button {
+    padding : 0 !important;
 }
 
 /* no-boxsizing tweak for filter icons */
-.ie7  .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
-.no-boxsizing .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a 
-{
-    left:0.7em;
+.ie7 .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
+.no-boxsizing .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a {
+    left : 0.7em;
 }
 
-
-
 /*advanced filtering*/
-.ui-iggrid-filterdd {}
-.ui-iggrid-filterddlistitemadvanced {padding:7px 0; overflow:hidden;}
-.ui-iggrid-filterddlistitemadvanced input { margin-right:7px;}
+.ui-iggrid-filterdd {
+}
+
+.ui-iggrid-filterddlistitemadvanced {
+    padding  : 7px 0;
+    overflow : hidden;
+}
+
+.ui-iggrid-filterddlistitemadvanced input {
+    margin-right : 7px;
+}
 
 /* dialog */
-.ui-iggrid-blockarea {z-index:9999;}
-.ui-iggrid-dialog {z-index:20001;}
+.ui-iggrid-blockarea {
+    z-index : 9999;
+}
+
+.ui-iggrid-dialog {
+    z-index : 20001;
+}
 
 .ui-iggrid-filterdialogaddconditionlist {
-    display: inline;
-    padding:0 5px;
+    display : inline;
+    padding : 0 5px;
 }
 
 .ui-iggrid-filterdialogaddcondition {
-	padding-top: 5px;
-	padding-bottom: 10px;
+    padding-top    : 5px;
+    padding-bottom : 10px;
 }
 
-.ui-iggrid-filtertable {margin-top:8px;}
+.ui-iggrid-filtertable {
+    margin-top : 8px;
+}
 
-.ui-iggrid-filtertable  td {
-	/* override alternate colors for rows in this table */
-	background-color: transparent!important;/*transparent so it works with any jquery UI theme*/
-	border: none!important;
-    vertical-align: top;
-    padding:2px 4px 2px 0;
+.ui-iggrid-filtertable td {
+    /* override alternate colors for rows in this table */
+    background-color : transparent !important; /*transparent so it works with any jquery UI theme*/
+    border           : none !important;
+    vertical-align   : top;
+    padding          : 2px 4px 2px 0;
 }
 
 .ui-iggrid-filterrow {
-	background-color: #CCCCCC; background-image:none;
+    background-color : #ccc;
+    background-image : none;
 }
 
 .ui-iggrid td.ui-iggrid-filtercell {
-	padding: 0;
-	margin: 0;
-	border:0 none;
-	border-top:none;
-    height: 1.6em;
+    padding    : 0;
+    margin     : 0;
+    border     : 0 none;
+    border-top : none;
+    height     : 1.6em;
 }
 
 .ui-iggrid-filtercell input {
-	border-top: 1px solid #FFF;
-	border-bottom: 1px solid #FFF;
-	padding: 0;
-	margin: 0;
+    border-top    : 1px solid #fff;
+    border-bottom : 1px solid #fff;
+    padding       : 0;
+    margin        : 0;
 }
 
 .ui-iggrid-filterdialogclearall {
-    text-decoration:underline;
-    background:none;
-    border:none;
-    font-size:13px;
-    color:inherit;
+    text-decoration : underline;
+    background      : none;
+    border          : none;
+    font-size       : 13px;
+    color           : inherit;
 }
 
 /*dropdowns in grids*/
 .ui-iggrid .ui-iggrid-pagesizedropdown.ui-state-default,
-.ui-iggrid .ui-iggrid-pagedropdowncontainer.ui-state-default
-{
-    background: #fff none;   
-     /* Prevent background color leak outs */
-  -webkit-background-clip: padding-box; 
-  -moz-background-clip:    padding; 
-  background-clip:         padding-box; 
+.ui-iggrid .ui-iggrid-pagedropdowncontainer.ui-state-default {
+    background              : #fff none;
+    /* Prevent background color leak outs */
+    -webkit-background-clip : padding-box;
+    -moz-background-clip    : padding;
+    background-clip         : padding-box;
 }
 
-.ui-iggrid .ui-igedit .ui-igedit-field 
-{ 
-    background: #fff none;   
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.ui-iggrid .ui-igedit-list .ui-igedit-listitem {font-size:1em; line-height:1.4em;}
-
-.ui-iggrid .ui-igedit-field
-{
-  /* bug 151806 fix requested by V.S. */
-  padding: 0 0 0 2px !important;
+.ui-iggrid .ui-igedit .ui-igedit-field {
+    background         : #fff none;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
 }
 
+.ui-iggrid .ui-igedit-list .ui-igedit-listitem {
+    font-size   : 1em;
+    line-height : 1.4em;
+}
 
+.ui-iggrid .ui-igedit-field {
+    /* bug 151806 fix requested by V.S. */
+    padding : 0 0 0 2px !important;
+}
 
 /*relative size dropdown for touch*/
 .touch .ui-iggrid-results .ui-igedit-container,
@@ -573,10 +713,10 @@ right: 3px;
 .pointerevents .ui-iggrid-results .ui-igedit-container,
 .touch .ui-iggrid-pagedropdowncontainer .ui-igedit-container,
 .touchevents .ui-iggrid-pagedropdowncontainer .ui-igedit-container,
-.pointerevents .ui-iggrid-pagedropdowncontainer .ui-igedit-container
-{
-	width:5em!important;
+.pointerevents .ui-iggrid-pagedropdowncontainer .ui-igedit-container {
+    width : 5em !important;
 }
+
 .touch .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
 .touchevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
@@ -588,37 +728,34 @@ right: 3px;
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-button,
 .touch .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
 .touchevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
-.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button
-{
-	height:1.4em!important;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button {
+    height             : 1.4em !important;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
 }
+
 .touch .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
 .touchevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
 .touch .ui-iggrid-results .ui-igedit-container .ui-igedit-field,
 .touchevents .ui-iggrid-results .ui-igedit-container .ui-igedit-field,
-.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-field
-{
-	width:3.4em!important;
+.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-field {
+    width : 3.4em !important;
 }
+
 .touch .ui-iggrid-pager .ui-igedit-container .ui-igedit-button,
 .touchevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-button,
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-button,
 .touch .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
 .touchevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
-.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button
-{
-	width:1.4em!important;			
-	padding: 0!important;
+.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button {
+    width   : 1.4em !important;
+    padding : 0 !important;
 }
-	
-
 
 /* Filtering icons */
-.ui-iggrid-filterbutton 
+/*.ui-iggrid-filterbutton
 {
     background: url(../images/igGrid/filter-icons-333333.png) no-repeat -32px 0!important;  
     border: 1px solid transparent;
@@ -626,723 +763,828 @@ right: 3px;
 .ui-iggrid th .ui-iggrid-filterbutton, .ui-iggrid-filterbuttonright 
 {
     background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -32px 0!important;
+}*/
+/* to remove this important we need to remove ui-icon and ui-icon-triangle-1-s from the filter button*/
+
+.ui-iggrid-filtericon {
+    display : block;
+    width   : 16px;
+    height  : 16px;
 }
-                /* to remove this important we need to remove ui-icon and ui-icon-triangle-1-s from the filter button*/
 
-.ui-iggrid-filtericon {display:block; width: 16px; height:16px;}
-.ui-iggrid-filtericonstartswith {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -112px 0;}
-.ui-iggrid-filtericondoesnotstartwith {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -128px 0;}
-.ui-iggrid-filtericonendswith {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -144px 0;}
-.ui-iggrid-filtericondoesnotendwith {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -160px 0;}
-.ui-iggrid-filtericoncontains {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -176px 0;}
-.ui-iggrid-filtericondoesnotcontain {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -192px 0;}
-.ui-iggrid-filtericonequals {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -208px 0;}
-.ui-iggrid-filtericondoesnotequal {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -224px 0;}
+.ui-iggrid-filtericonstartswith {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -112px 0;
+}
 
-.ui-iggrid-filtericongreaterthanorequalto {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -240px 0;}
-.ui-iggrid-filtericonlessthanorequalto {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -256px 0;}
-.ui-iggrid-filtericongreaterthan {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -272px 0;}
-.ui-iggrid-filtericonlessthan {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -288px 0;}
-.ui-iggrid-filtericonlike {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -304px 0;}
-.ui-iggrid-filtericonnotlike {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -320px 0;}
-.ui-iggrid-filtericonmatch {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -336px 0;}
-.ui-iggrid-filtericondoesnotmatch {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -352px 0;}
-.ui-iggrid-filtericontoppercentile {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -368px 0;}
-.ui-iggrid-filtericonbottompercentile {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -384px 0;}
+.ui-iggrid-filtericondoesnotstartwith {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -128px 0;
+}
+
+.ui-iggrid-filtericonendswith {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -144px 0;
+}
+
+.ui-iggrid-filtericondoesnotendwith {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -160px 0;
+}
+
+.ui-iggrid-filtericoncontains {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -176px 0;
+}
+
+.ui-iggrid-filtericondoesnotcontain {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -192px 0;
+}
+
+.ui-iggrid-filtericonequals {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -208px 0;
+}
+
+.ui-iggrid-filtericondoesnotequal {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -224px 0;
+}
+
+.ui-iggrid-filtericongreaterthanorequalto {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -240px 0;
+}
+
+.ui-iggrid-filtericonlessthanorequalto {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -256px 0;
+}
+
+.ui-iggrid-filtericongreaterthan {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -272px 0;
+}
+
+.ui-iggrid-filtericonlessthan {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -288px 0;
+}
+
+.ui-iggrid-filtericonlike {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -304px 0;
+}
+
+.ui-iggrid-filtericonnotlike {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -320px 0;
+}
+
+.ui-iggrid-filtericonmatch {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -336px 0;
+}
+
+.ui-iggrid-filtericondoesnotmatch {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -352px 0;
+}
+
+.ui-iggrid-filtericontoppercentile {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -368px 0;
+}
+
+.ui-iggrid-filtericonbottompercentile {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -384px 0;
+}
 
 /*boolean icons*/
-.ui-iggrid-filtericontrue {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -48px 0;}
-.ui-iggrid-filtericonfalse {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -64px 0;}
+.ui-iggrid-filtericontrue {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -48px 0;
+}
+
+.ui-iggrid-filtericonfalse {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -64px 0;
+}
+
 /* calendar icons */
-.ui-iggrid-filtericonafter, .ui-iggrid-filtericonbefore, .ui-iggrid-filtericontoday, .ui-iggrid-filtericonyesterday, .ui-iggrid-filtericonthismonth, .ui-iggrid-filtericonlastmonth, .ui-iggrid-filtericonnextmonth, .ui-iggrid-filtericonthisyear, .ui-iggrid-filtericonlastyear, .ui-iggrid-filtericonnextyear, .ui-iggrid-filtericonon, .ui-iggrid-filtericonnoton {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -400px 0;}
+.ui-iggrid-filtericonafter, .ui-iggrid-filtericonbefore, .ui-iggrid-filtericontoday, .ui-iggrid-filtericonyesterday, .ui-iggrid-filtericonthismonth, .ui-iggrid-filtericonlastmonth, .ui-iggrid-filtericonnextmonth, .ui-iggrid-filtericonthisyear, .ui-iggrid-filtericonlastyear, .ui-iggrid-filtericonnextyear, .ui-iggrid-filtericonon, .ui-iggrid-filtericonnoton {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -400px 0;
+}
 
 /*feature chooser icons*/
-.ui-icon.ui-iggrid-icon-summaries {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -416px 0;}
-.ui-icon.ui-iggrid-icon-groupby {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -464px 0;}
-.ui-icon.ui-iggrid-icon-hide {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -448px 0;}
+.ui-icon.ui-iggrid-icon-summaries {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -416px 0;
+}
+
+.ui-icon.ui-iggrid-icon-groupby {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -464px 0;
+}
+
+.ui-icon.ui-iggrid-icon-hide {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -448px 0;
+}
+
 /*column moving icons*/
 .ui-iggrid-columnmoving-dropdown-list li .ui-icon,
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-active .ui-icon {
-    background-image: url(../images/igGrid/filter-icons-333333.png);
-    background-repeat: no-repeat;
+    background-image  : url(../images/igGrid/filter-icons-333333.png);
+    background-repeat : no-repeat;
 }
-.ui-icon.ui-iggrid-icon-left {background-position: -511px 0;}
-.ui-icon.ui-iggrid-icon-right {background-position: -527px 0;}
-.ui-icon.ui-iggrid-icon-first {background-position: -543px 0;}
-.ui-icon.ui-iggrid-icon-last {background-position: -558px 0;}
+
+.ui-icon.ui-iggrid-icon-left {
+    background-position : -511px 0;
+}
+
+.ui-icon.ui-iggrid-icon-right {
+    background-position : -527px 0;
+}
+
+.ui-icon.ui-iggrid-icon-first {
+    background-position : -543px 0;
+}
+
+.ui-icon.ui-iggrid-icon-last {
+    background-position : -558px 0;
+}
+
 /*.ui-icon.ui-icon-arrowthick-1-n {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -480px 0;}
 .ui-icon.ui-icon-arrowthick-1-s {background: url(../images/igGrid/filter-icons-333333.png) no-repeat -496px 0;}*/
 
 /* TOUCH UI icons */
 .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer,
-.no-svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer  {
-    background-image:url(../images/igGrid/touch-icons.png)!important;
-    background-repeat:no-repeat;
-    height:60px;
-    width:60px;
-    margin: 0 auto;
+.no-svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer {
+    /*background-image:url(../images/igGrid/touch-icons.png)!important;*/
+    background-repeat : no-repeat;
+    height            : 60px;
+    width             : 60px;
+    margin            : 0 auto;
+    font-size: 3em;
+    left: 0;
 }
+
 .svg .ui-iggrid-featurechooser-list .ui-icon.ui-iggrid-featurechooser-li-iconcontainer {
-    background-image:url(../images/igGrid/touch-icons.svg)!important;
+    /*background-image:url(../images/igGrid/touch-icons.svg)!important;*/
 }
-.ui-iggrid-featurechooser-submenu
-{
-    z-index: 20000;
-    background-color: #E5E5E5;
-    border: 1px solid #B1B1B1;
-    padding: 4px;
-    
-    -moz-box-shadow: 	0 0 10px grey;
-    -webkit-box-shadow: 0 0 10px grey;
-    box-shadow: 		0 0 10px grey;
+
+.ui-iggrid-featurechooser-submenu {
+    z-index            : 20000;
+    background-color   : #e5e5e5;
+    border             : 1px solid #b1b1b1;
+    padding            : 4px;
+
+    -moz-box-shadow    : 0 0 10px grey;
+    -webkit-box-shadow : 0 0 10px grey;
+    box-shadow         : 0 0 10px grey;
 }
-.ui-iggrid-featurechooser-submenuicon 
-{
-    height: 15px;
-    position: relative !important;
-    margin: auto !important;
+
+.ui-iggrid-featurechooser-submenuicon {
+    height   : 15px;
+    position : relative !important;
+    margin   : auto !important;
 }
-.ui-icon.ui-iggrid-icon-sort-a-z {background-position:0 0;}
-.ui-icon.ui-iggrid-icon-sort-z-a {background-position:-60px 0;}
-.ui-icon.ui-iggrid-icon-multiple-sorting {background-position:-120px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-summaries {background-position:-180px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-fix {background-position:-240px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-unfix {background-position:-300px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-groupby {background-position:-360px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-column-chooser {background-position:-420px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-resize {background-position:-480px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-move {background-position:-540px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-hide {background-position:-600px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-show {background-position:-660px 0;}
-.ui-icon.ui-icon.ui-iggrid-icon-advanced-filter {background-position:-720px 0;}
-.ui-iggrid-featurechooser-list-submenu {padding: 5px;}
-.ui-iggrid-featurechooser-list-submenu li {margin-top: 2px; cursor: pointer; font-weight:normal;}
+
+.ui-icon.ui-iggrid-icon-sort-a-z {
+    background-position : 0 0;
+}
+
+.ui-icon.ui-iggrid-icon-sort-z-a {
+    background-position : -60px 0;
+}
+
+.ui-icon.ui-iggrid-icon-multiple-sorting {
+    background-position : -120px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-summaries {
+    background-position : -180px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-fix {
+    background-position : -240px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-unfix {
+    background-position : -300px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-groupby {
+    background-position : -360px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-column-chooser {
+    background-position : -420px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-resize {
+    background-position : -480px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-move {
+    background-position : -540px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-hide {
+    background-position : -600px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-show {
+    background-position : -660px 0;
+}
+
+.ui-icon.ui-icon.ui-iggrid-icon-advanced-filter {
+    background-position : -720px 0;
+}
+
+.ui-iggrid-featurechooser-list-submenu {
+    padding : 5px;
+}
+
+.ui-iggrid-featurechooser-list-submenu li {
+    margin-top  : 2px;
+    cursor      : pointer;
+    font-weight : normal;
+}
+
 /* hover & pressed states*/
 .ui-iggrid-featurechooser-list .ui-state-default .ui-icon {
 }
 
-
 /* Dropdown Menu */
-.ui-iggrid-filterdd, 
-.ui-iggrid-featurechooser-dropdown-dialog, 
+.ui-iggrid-filterdd,
+.ui-iggrid-featurechooser-dropdown-dialog,
 .ui-iggrid-hiding-dropdown-dialog,
 .ui-iggrid-columnmoving-dropdown-dialog,
 .ui-iggrid-summaries-dialog,
 .ui-igpivot-filterdropdown,
-.ui-igpivot-metadatadropdown  
-{
-    padding:1px; 
-    box-shadow: 0 0 5px #555555; 
-    z-index: 20000;
+.ui-igpivot-metadatadropdown {
+    padding    : 1px;
+    box-shadow : 0 0 5px #555;
+    z-index    : 20000;
 }
 
-.ui-iggrid-filterddlist li, 
-.ui-iggrid-hiding-dropdown-list li, 
-.ui-iggrid-columnmoving-dropdown-list li, 
-.ui-iggrid-summaries-dropdown-listcontainer li 
-{
-    position:relative; 
-    cursor:default;
-    border:none; 
-    padding-right:25px; 
-    padding-left:25px; 
-    line-height: 1.5em; 
-    margin: 2px 0!important; 
+.ui-iggrid-filterddlist li,
+.ui-iggrid-hiding-dropdown-list li,
+.ui-iggrid-columnmoving-dropdown-list li,
+.ui-iggrid-summaries-dropdown-listcontainer li {
+    position      : relative;
+    cursor        : default;
+    border        : none;
+    padding-right : 25px;
+    padding-left  : 25px;
+    line-height   : 1.5em;
+    margin        : 2px 0 !important;
 }
+
 /* Fixing issue with margins from new ui-menu */
-.ui-iggrid-columnmoving-dropdown-list li
-{
-    margin: 2px 0; 
+.ui-iggrid-columnmoving-dropdown-list li {
+    margin : 2px 0;
 }
+
 .ui-iggrid-filtericoncontainer, .ui-iggrid-columnmovingiconcontainer {
-    margin-left: -22px;
-    margin-top: -8px;
-    position: absolute;
-    top: 50%;
+    margin-left : -22px;
+    margin-top  : -8px;
+    position    : absolute;
+    top         : 50%;
 }
+
 .ui-iggrid-columnmovingiconcontainer .ui-icon {
-    top:0;
-    left:0;
+    top  : 0;
+    left : 0;
 
 }
-.ui-iggrid-featurechooser-li-iconcontainer 
-{
-    position: relative !important;
+
+.ui-iggrid-featurechooser-li-iconcontainer {
+    position : relative !important;
 }
+
 .ui-iggrid-featurechooser-li-container {
-    float: left;
-    text-align: center;
-    padding:0 5px;
-    cursor: pointer;
+    float      : left;
+    text-align : center;
+    padding    : 0 5px;
+    cursor     : pointer;
 }
 
 /* feature chooser popup indicator icon */
-.ui-iggrid-featurechooser-secondaryicon-container
-{
-    margin-top: -9px;
-    position: absolute;
-    right: 3px;
-    top: 50%;
+.ui-iggrid-featurechooser-secondaryicon-container {
+    margin-top : -9px;
+    position   : absolute;
+    right      : 3px;
+    top        : 50%;
 }
 
-    .ui-iggrid-featurechoosericoncontainer .ui-icon,
-    .ui-iggrid-featurechooser-secondaryicon-container .ui-icon {
-    position:static;
-    }
-.ui-iggrid-filterddlist *, .ui-iggrid-columnmoving-dropdown-list *, .ui-iggrid-hiding-dropdown-list *, .ui-iggrid-featurechooser-list *{white-space:nowrap;}
-
-.ui-iggrid-canceltextselection 
-{
-    -moz-user-select: none;
-    user-select: none;
+.ui-iggrid-featurechoosericoncontainer .ui-icon,
+.ui-iggrid-featurechooser-secondaryicon-container .ui-icon {
+    position : static;
 }
 
-.ui-iggrid-virtualrow td 
-{
-    padding: 0 4px !important;
+.ui-iggrid-filterddlist *, .ui-iggrid-columnmoving-dropdown-list *, .ui-iggrid-hiding-dropdown-list *, .ui-iggrid-featurechooser-list * {
+    white-space : nowrap;
 }
 
-.ui-iggrid-resizing-handle
-{
-	top: -100px;
-	height: 300px;
-	background: transparent url(../images/igGrid/blank.png) no-repeat 0 0;
-	z-index: 100; /* this is required to make the resizing handle above the hidden column indicator */
+.ui-iggrid-canceltextselection {
+    -moz-user-select : none;
+    user-select      : none;
 }
 
-.ui-iggrid-resizing-handle-cursor
-{
-	cursor: e-resize;
+.ui-iggrid-virtualrow td {
+    padding : 0 4px !important;
 }
 
-.ui-iggrid-resize-line
-{
-	width: 1px;
-	background-color: black;
-	position: absolute;
-	/* 
-		scrolling div now has a z-index of 1 so we need to 
-		have z-index on the resize line as well 
-	*/
-	z-index: 2;
-}
-.ui-iggrid  table tbody td.ui-iggrid-expandcolumn,
-.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-expandcolumn
-{
-    padding:0!important;
-}
-.ui-iggrid-expandbuttoncontainer, .ui-iggrid-expandbuttoncontainer-group-by
-{
-	width:30px;
-	height:2em;
-    display:block;
-    margin:0;
-}
-.ui-iggrid-expandbutton 
-{
-    width: 16px;
-    height: 16px;
-    float:left;
-    margin:20%;
+.ui-iggrid-resizing-handle {
+    top        : -100px;
+    height     : 300px;
+    background : transparent url(../images/igGrid/blank.png) no-repeat 0 0;
+    z-index    : 100; /* this is required to make the resizing handle above the hidden column indicator */
 }
 
-.ui-iggrid-expandbuttongb
-{
-    width: 16px;
-    height: 16px;
+.ui-iggrid-resizing-handle-cursor {
+    cursor : e-resize;
 }
 
-.ui-iggrid-expandcolumn
-{
-	-webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+.ui-iggrid-resize-line {
+    width            : 1px;
+    background-color : black;
+    position         : absolute;
+    /*
+        scrolling div now has a z-index of 1 so we need to
+        have z-index on the resize line as well
+    */
+    z-index          : 2;
+}
+
+.ui-iggrid table tbody td.ui-iggrid-expandcolumn,
+.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-expandcolumn {
+    padding : 0 !important;
+}
+
+.ui-iggrid-expandbuttoncontainer, .ui-iggrid-expandbuttoncontainer-group-by {
+    width   : 30px;
+    height  : 2em;
+    display : block;
+    margin  : 0;
+}
+
+.ui-iggrid-expandbutton {
+    width  : 16px;
+    height : 16px;
+    float  : left;
+    margin : 20%;
+}
+
+.ui-iggrid-expandbuttongb {
+    width  : 16px;
+    height : 16px;
+}
+
+.ui-iggrid-expandcolumn {
+    -webkit-user-select : none;
+    -khtml-user-select  : none;
+    -moz-user-select    : none;
+    -o-user-select      : none;
+    user-select         : none;
 
 }
 
-.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-nongrouprowemptycell 
-{
-	border-top-width: 0;
-	border-bottom-width: 0;
-}
-.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-last-emptycell
-{
-	border-bottom-width: 1px;
+.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-nongrouprowemptycell {
+    border-top-width    : 0;
+    border-bottom-width : 0;
 }
 
-.ui-iggrid-groupexpandcell 
-{
-    float:left !important;   
+.ui-iggrid .ui-iggrid-tablebody td.ui-iggrid-last-emptycell {
+    border-bottom-width : 1px;
 }
 
-.ui-iggrid td.ui-iggrid-childarea
-{
-	padding-left: 34px;
+.ui-iggrid-groupexpandcell {
+    float : left !important;
 }
 
-.ui-iggrid-childarea-collapsed 
-{
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-	border-width: 0 !important;
+.ui-iggrid td.ui-iggrid-childarea {
+    padding-left : 34px;
 }
 
-.ui-iggrid-childgridseparator
-{
-    clear:both;
-    display:block;
-    margin:1.4em 0;
-    height:0;
-    border-top:1px dotted #000;
-    border-bottom:1px dotted #FFF;
-    opacity:0.3; filter:alpha(opacity=30);
-}
-.ui-iggrid-summaryiconcontainer-group-by
-{
-    display:block;
-    margin-top: 4px;
+.ui-iggrid-childarea-collapsed {
+    padding-top    : 0 !important;
+    padding-bottom : 0 !important;
+    border-width   : 0 !important;
 }
 
-.ui-iggrid-summaryiconcolumn
-{
-	-webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-	vertical-align: top !important;
+.ui-iggrid-childgridseparator {
+    clear         : both;
+    display       : block;
+    margin        : 1.4em 0;
+    height        : 0;
+    border-top    : 1px dotted #000;
+    border-bottom : 1px dotted #fff;
+    opacity       : 0.3;
+    filter        : alpha(opacity=30);
 }
 
-.ui-iggrid-summarycolumn
-{
-	vertical-align: top !important;
+.ui-iggrid-summaryiconcontainer-group-by {
+    display    : block;
+    margin-top : 4px;
+}
+
+.ui-iggrid-summaryiconcolumn {
+    -webkit-user-select : none;
+    -khtml-user-select  : none;
+    -moz-user-select    : none;
+    -o-user-select      : none;
+    user-select         : none;
+    vertical-align      : top !important;
+}
+
+.ui-iggrid-summarycolumn {
+    vertical-align : top !important;
 }
 
 /**************
 *   Tooltip  *
 **************/
-.ui-iggrid-tooltip
-{
+.ui-iggrid-tooltip {
 }
 
-.ui-iggrid-tooltip-content
-{
+.ui-iggrid-tooltip-content {
 }
 
 .ui-tooltip,
-.ui-iggrid .ui-tooltip 
- {
-    background: none #fff;
-    box-shadow: 0 0 5px #AAAAAA;
-    padding: 8px;
-    z-index: 9999;
-    border-width: 1px;
+.ui-iggrid .ui-tooltip {
+    background   : none #fff;
+    box-shadow   : 0 0 5px #aaa;
+    padding      : 8px;
+    z-index      : 9999;
+    border-width : 1px;
 }
 
 /**************
 *    Moving   *
 ***************/
-.ui-iggrid-columnmoving-dragtop
-{
-	background: url(../images/igGrid/filter-icons-333333.png) no-repeat -80px 4px;
+.ui-iggrid-columnmoving-dragtop {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -80px 4px;
 }
 
-.ui-iggrid-columnmoving-dragbottom
-{
-	background: url(../images/igGrid/filter-icons-333333.png) no-repeat -96px -4px;
+.ui-iggrid-columnmoving-dragbottom {
+    background : url(../images/igGrid/filter-icons-333333.png) no-repeat -96px -4px;
 }
 
-.ui-iggrid-columnmoving-dragtop.ui-iggrid-columnmoving-dragleft
-{
-	-webkit-transform: rotate(-45deg);
-	-moz-transform: rotate(-45deg);
-	-ms-transform: rotate(-45deg);
-	-o-transform: rotate(-45deg);
-	transform: rotate(-45deg);
+.ui-iggrid-columnmoving-dragtop.ui-iggrid-columnmoving-dragleft {
+    -webkit-transform : rotate(-45deg);
+    -moz-transform    : rotate(-45deg);
+    -ms-transform     : rotate(-45deg);
+    -o-transform      : rotate(-45deg);
+    transform         : rotate(-45deg);
 }
 
-.ui-iggrid-columnmoving-dragbottom.ui-iggrid-columnmoving-dragleft
-{
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate(45deg);
+.ui-iggrid-columnmoving-dragbottom.ui-iggrid-columnmoving-dragleft {
+    -webkit-transform : rotate(45deg);
+    -moz-transform    : rotate(45deg);
+    -ms-transform     : rotate(45deg);
+    -o-transform      : rotate(45deg);
+    transform         : rotate(45deg);
 }
 
-.ui-iggrid-columnmoving-dragtop.ui-iggrid-columnmoving-dragright
-{
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate(45deg);
+.ui-iggrid-columnmoving-dragtop.ui-iggrid-columnmoving-dragright {
+    -webkit-transform : rotate(45deg);
+    -moz-transform    : rotate(45deg);
+    -ms-transform     : rotate(45deg);
+    -o-transform      : rotate(45deg);
+    transform         : rotate(45deg);
 }
 
-.ui-iggrid-columnmoving-dragbottom.ui-iggrid-columnmoving-dragright
-{
-	-webkit-transform: rotate(-45deg);
-	-moz-transform: rotate(-45deg);
-	-ms-transform: rotate(-45deg);
-	-o-transform: rotate(-45deg);
-	transform: rotate(-45deg);
+.ui-iggrid-columnmoving-dragbottom.ui-iggrid-columnmoving-dragright {
+    -webkit-transform : rotate(-45deg);
+    -moz-transform    : rotate(-45deg);
+    -ms-transform     : rotate(-45deg);
+    -o-transform      : rotate(-45deg);
+    transform         : rotate(-45deg);
 }
 
 .ui-iggrid-moving-indicator {
-    cursor: pointer;
-    display: block;
-    float: right;
-    font-family: "Segoe UI",Arial,sans-serif;
-    font-size: 10px;
-    height: 16px;
-    line-height: 20px;
-    text-align: center;
-    width: 16px;
-    background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -576px 0;
+    cursor      : pointer;
+    display     : block;
+    float       : right;
+    font-size   : 10px;
+    height      : 16px;
+    line-height : 20px;
+    text-align  : center;
+    width       : 16px;
+    /* background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -576px 0;*/
 }
 
 /* summaries */
 
-.ui-iggrid th .ui-iggrid-summaries-header-icon.ui-icon
-{
-	display: inline-block;
-	float: right;    
-    background: transparent url(../images/igGrid/filter-icons-FFFFFF.png)  no-repeat -416px 0;
+.ui-iggrid th .ui-iggrid-summaries-header-icon.ui-icon {
+    display : inline-block;
+    float   : right;
+    /*background: transparent url(../images/igGrid/filter-icons-FFFFFF.png)  no-repeat -416px 0;*/
 }
 
-.ui-iggrid-summaries-headerbuttoncontainer
-{
-    float: right;
-    border:1px solid transparent;
+.ui-iggrid-summaries-headerbuttoncontainer {
+    float  : right;
+    border : 1px solid transparent;
     /*width:16px; 
     height:16px;*/
 }
-.ui-iggrid tfoot td.ui-state-default .ui-icon.ui-iggrid-icon-summaries
-{
-    background: transparent url(../images/igGrid/filter-icons-333333.png)  no-repeat -416px 0;
+
+.ui-iggrid tfoot td.ui-state-default .ui-icon.ui-iggrid-icon-summaries {
+    /*background: transparent url(../images/igGrid/filter-icons-333333.png)  no-repeat -416px 0;*/
 }
 
 .ui-iggrid-summaries-footer-icon-container {
-    float: left;
-    border:1px solid transparent;
-    width:16px; 
-    height:16px;
-}
-.ui-iggrid-summaries-dialog
-{
-    z-index: 20000;
-    background-color: #ffffff;
-    padding:6px 0;
-}
-.ui-iggrid-summaries-footer-text-container 
-{
-    font-size:0.9em;
-    margin-left: 25px;
-}
-.ui-iggrid-footer-text-container 
-{
-    float: right;
+    float  : left;
+    border : 1px solid transparent;
+    width  : 16px;
+    height : 16px;
 }
 
-.ui-iggrid-footer-icon-container 
-{
-    float: left;
+.ui-iggrid-summaries-dialog {
+    z-index          : 20000;
+    background-color : #fff;
+    padding          : 6px 0;
 }
 
-.ui-igbutton-summaries-footer 
-{
-    width: 10px;
-	height: 20px;
-	border: solid 1px gray;
+.ui-iggrid-summaries-footer-text-container {
+    font-size   : 0.9em;
+    margin-left : 25px;
 }
 
-.ui-iggrid-summaries-footer-dialog-buttons-container 
-{
-    margin-top: 6px;
-    padding-left: 25px;
-    padding-right: 6px;
+.ui-iggrid-footer-text-container {
+    float : right;
+}
+
+.ui-iggrid-footer-icon-container {
+    float : left;
+}
+
+.ui-igbutton-summaries-footer {
+    width  : 10px;
+    height : 20px;
+    border : solid 1px gray;
+}
+
+.ui-iggrid-summaries-footer-dialog-buttons-container {
+    margin-top    : 6px;
+    padding-left  : 25px;
+    padding-right : 6px;
 }
 
 .ui-iggrid tfoot td.ui-state-default,
 .ui-iggrid tfoot td.ui-state-hover,
-.ui-iggrid tfoot .ui-iggrid-footerextracell
-{
-    background-image:none;
-    text-shadow:none;
-    border-top-width:0;
-    border-left-width:0;
-    padding:4px 0;
+.ui-iggrid tfoot .ui-iggrid-footerextracell {
+    background-image  : none;
+    text-shadow       : none;
+    border-top-width  : 0;
+    border-left-width : 0;
+    padding           : 4px 0;
 }
 
-.ui-iggrid tfoot .ui-iggrid-footerextracell 
-{
-    border-right-width:1px;
-    border-bottom-width:1px;
-    border-style: solid;
-    }
-.ui-iggrid tfoot tr:first-child td
-{
-   border-top-width: 1px;
+.ui-iggrid tfoot .ui-iggrid-footerextracell {
+    border-right-width  : 1px;
+    border-bottom-width : 1px;
+    border-style        : solid;
 }
 
-.ui-iggrid tfoot td:first-child, 
-.ui-iggrid tfoot .ui-iggrid-footerextracell 
-{
-   border-left-width: 1px;
+.ui-iggrid tfoot tr:first-child td {
+    border-top-width : 1px;
 }
-.ui-iggrid-summaries-dialog label
-{
-    line-height:1.5em;
-    margin-left:25px;
+
+.ui-iggrid tfoot td:first-child,
+.ui-iggrid tfoot .ui-iggrid-footerextracell {
+    border-left-width : 1px;
 }
+
+.ui-iggrid-summaries-dialog label {
+    line-height : 1.5em;
+    margin-left : 25px;
+}
+
 .ui-iggrid-summaries-dialog .ui-widget-content.ui-button,
 .ui-dialog .ui-widget-content.ui-button {
-   border-width:1px;
+    border-width : 1px;
 }
 
-.ui-iggrid-summaries-dialog .ui-igcheckbox-normal
-{
-    position:absolute; 
-    top:50%;
-    margin-top: -9px;
-    
-}
-.ui-iggrid-footertable {table-layout:fixed; width:100%; border-collapse: separate; background-color:#fff; }
-.ui-iggrid .ui-iggrid-footertable {border:none;}
+.ui-iggrid-summaries-dialog .ui-igcheckbox-normal {
+    position   : absolute;
+    top        : 50%;
+    margin-top : -9px;
 
+}
+
+.ui-iggrid-footertable {
+    table-layout     : fixed;
+    width            : 100%;
+    border-collapse  : separate;
+    background-color : #fff;
+}
+
+.ui-iggrid .ui-iggrid-footertable {
+    border : none;
+}
 
 /* Group by */
 
-.ui-iggrid-groupbydroppableedge 
-{
-    opacity: 0.5;
+.ui-iggrid-groupbydroppableedge {
+    opacity : 0.5;
 }
 
-.ui-iggrid-groupbyarea 
-{
-    background-color: #EEEEEE;
-    border-bottom: 1px solid #999999;
-    border-top: 1px solid #EEEEEE;
-    border-left: 1px solid #EEEEEE;
-    border-right: 1px solid #EEEEEE;
-     color: #333333;
-    padding-left: 5px;
-    padding-bottom: 5px;
-	position: relative;
-	overflow: hidden;
-	min-height:4em;
+.ui-iggrid-groupbyarea {
+    background-color : #eee;
+    border-bottom    : 1px solid #999;
+    border-top       : 1px solid #eee;
+    border-left      : 1px solid #eee;
+    border-right     : 1px solid #eee;
+    color            : #333;
+    padding-left     : 5px;
+    padding-bottom   : 5px;
+    position         : relative;
+    overflow         : hidden;
+    min-height       : 4em;
 }
 
-.ui-iggrid-groupbyareahover 
-{
-    border: 1px solid #999999;
+.ui-iggrid-groupbyareahover {
+    border : 1px solid #999;
 }
 
 .ui-iggrid-nodrop {
-	cursor: not-allowed !important;
+    cursor : not-allowed !important;
 }
 
 .ui-iggrid-grouparealist {
-	display: inline;
-	list-style-type: none;
-	padding-bottom: 0;
-	margin-bottom: 0;
-	padding-left: 0;
-	margin-left: 0;
+    display         : inline;
+    list-style-type : none;
+    padding-bottom  : 0;
+    margin-bottom   : 0;
+    padding-left    : 0;
+    margin-left     : 0;
 }
+
 .ui-iggrid-grouparealist li,
 .ui-iggrid-grouparealist li.ui-state-default {
-	display: inline; 
-	border-width:0; 
-	padding-left:0.4em;
-	line-height: 1.6em;
-	height:1.6em; 
-	overflow-y: hidden;
+    display      : inline;
+    border-width : 0;
+    padding-left : 0.4em;
+    line-height  : 1.6em;
+    height       : 1.6em;
+    overflow-y   : hidden;
 }
-.ui-iggrid-grouparealist li span
-{
-    cursor:pointer;
+
+.ui-iggrid-grouparealist li span {
+    cursor : pointer;
 }
+
 .ui-iggrid-groupedcolumnlabel,
 .ui-iggrid-groupedcolumnlabel.ui-state-default {
-    border:0 none;
+    border : 0 none;
 }
-.ui-iggrid-groupedcolumnlabel .ui-icon
-{       
-    float:right;
+
+.ui-iggrid-groupedcolumnlabel .ui-icon {
+    float      : right;
     /* vertical alignment */
-    position:relative; 
-    top:50%;
-    margin-top:-8px;
+    position   : relative;
+    top        : 50%;
+    margin-top : -8px;
 }
 
 .ui-iggrid-groupbyareatext {
-	display:block;
-	margin:0.4em 0;
-	text-align:center;
+    display    : block;
+    margin     : 0.4em 0;
+    text-align : center;
 }
+
 .ui-iggrid-groupbylabelrightedge,
-.ui-widget .ui-iggrid-groupbylabelrightedge.ui-state-default
-{   float:left;
-	height:1.6em;
-    width: 0.85em;    
-    border:none;
-    background: transparent url(../images/igGrid/group-by-label-right-edge.png) no-repeat right center;
-    padding-left: 0 !important;
-    opacity: .30; 
-    -ms-filter: "alpha(opacity=30)"; 
-    filter: alpha(opacity=30);
-    -khtml-opacity: .30; 
-    -moz-opacity: .30; 
+.ui-widget .ui-iggrid-groupbylabelrightedge.ui-state-default {
+    float          : left;
+    height         : 1.6em;
+    width          : 0.85em;
+    border         : none;
+    background     : transparent url(../images/igGrid/group-by-label-right-edge.png) no-repeat right center;
+    padding-left   : 0 !important;
+    opacity        : .30;
+    -ms-filter     : "alpha(opacity=30)";
+    filter         : alpha(opacity=30);
+    -khtml-opacity : .30;
+    -moz-opacity   : .30;
 }
 
-.ui-iggrid-groupbylayoutlabel 
-{
-    font-style: italic;
-    letter-spacing: 1px;
-	padding-right: 10px;
-	border-right: 1px solid;
-	margin-right:10px;
-	line-height: 1.6em;
-	
-    opacity: .40; 
-    -ms-filter: "alpha(opacity=40)"; 
-    filter: alpha(opacity=40);
-    -khtml-opacity: .40; 
-    -moz-opacity: .40; 
+.ui-iggrid-groupbylayoutlabel {
+    font-style     : italic;
+    letter-spacing : 1px;
+    padding-right  : 10px;
+    border-right   : 1px solid;
+    margin-right   : 10px;
+    line-height    : 1.6em;
+
+    opacity        : .40;
+    -ms-filter     : "alpha(opacity=40)";
+    filter         : alpha(opacity=40);
+    -khtml-opacity : .40;
+    -moz-opacity   : .40;
 }
 
+.ui-iggrid-groupbylabelrightedge + .ui-iggrid-groupedcolumnlabel {
+    margin-left  : -1.4em;
+    padding-left : 2em;
+    border-left  : none;
+}
 
-.ui-iggrid-groupbylabelrightedge + .ui-iggrid-groupedcolumnlabel {margin-left:-1.4em; padding-left:2em; border-left:none;} /*adjacent labels*/
+/*adjacent labels*/
 
 .ui-iggrid-groupbylabelrightedgeend,
-.ui-iggrid-groupbylabelrightedgeend.ui-state-default
-{   
-    background:none transparent;
-    float: right;
-    border-color: #EEEEEE #EEEEEE #EEEEEE transparent;
-    border-style: solid;
-    border-width:0.85em 0 0.86em 0.85em;
-    height: 0;
-    width: 0;
+.ui-iggrid-groupbylabelrightedgeend.ui-state-default {
+    background   : none transparent;
+    float        : right;
+    border-color : #eee #eee #eee transparent;
+    border-style : solid;
+    border-width : 0.85em 0 0.86em 0.85em;
+    height       : 0;
+    width        : 0;
 }
 
-.ui-iggrid-groupedcolumnlabel span:first-child + span
-{
-    float:left;
+.ui-iggrid-groupedcolumnlabel span:first-child + span {
+    float : left;
 }
-
-    
 
 /*******************
 *   Row Selectors  *
 ********************/
-.ui-iggrid-rowselector-class
-{
-	font-weight:normal;
+.ui-iggrid-rowselector-class {
+    font-weight : normal;
 }
 
 .ui-iggrid-rowselector-class .ui-igcheckbox-normal,
-.ui-iggrid-rowselector-header .ui-igcheckbox-normal
-{
-	float:right;
-}
-    
-.ui-iggrid-rowselector-class .ui-iggrid-rowselector-row-number 
-{
-    float:left;
-}
-      
-.ui-iggrid-rowselector-header
-{
+.ui-iggrid-rowselector-header .ui-igcheckbox-normal {
+    float : right;
 }
 
-.ui-iggrid-rowselector-footer 
-{
+.ui-iggrid-rowselector-class .ui-iggrid-rowselector-row-number {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
-.ui-iggrid th.ui-iggrid-rowselector-class .ui-icon
-{
-  float:left;
-  margin-right:0.2em;
-  opacity:0; 
-  filter:alpha(opacity=0);
+
+.ui-iggrid-rowselector-header {
+}
+
+.ui-iggrid-rowselector-footer {
+}
+
+.ui-iggrid th.ui-iggrid-rowselector-class .ui-icon {
+    float        : left;
+    margin-right : 0.2em;
+    opacity      : 0;
+    filter       : alpha(opacity=0);
 
 }
 
 .ui-iggrid th.ui-iggrid-rowselector-class.ui-state-active .ui-icon,
-.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-active .ui-icon 
-{
-    opacity:1; 
-    filter:alpha(opacity=100);
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-active .ui-icon {
+    opacity : 1;
+    filter  : alpha(opacity=100);
 }
-
 
 /*******************
 *   Hiding  *
 ********************/
-.ui-iggrid-columnchooser-handlebar
-{
-	height: 15px;
+.ui-iggrid-columnchooser-handlebar {
+    height : 15px;
 }
 
-
-.ui-iggrid-hiding-hiddencolumnindicator
-{
-	top: -100px;
-	height: 300px;
-    background-color: transparent;
-	background-image: url(../images/igGrid/diagonals-medium.png);
-	opacity:0.3;
-	filter:alpha(opacity=30);
-	cursor: pointer;
+.ui-iggrid-hiding-hiddencolumnindicator {
+    top              : -100px;
+    height           : 300px;
+    background-color : transparent;
+    background-image : url(../images/igGrid/diagonals-medium.png);
+    opacity          : 0.3;
+    filter           : alpha(opacity=30);
+    cursor           : pointer;
 }
 
-.ui-iggrid-hiding-indicator
-{
-	float: right;
-	display: block;
-	width: 16px;
-	height: 16px;
-	line-height:13px; 
-	font-size:20px;
-	text-align: center;
-	font-family: "Segoe UI",Arial,sans-serif;
-	cursor: pointer;
-	margin-top:-1px;
+.ui-iggrid-hiding-indicator {
+    float       : right;
+    display     : block;
+    width       : 16px;
+    height      : 16px;
+    line-height : 13px;
+    font-size   : 20px;
+    text-align  : center;
+    font-family : "Segoe UI", Arial, sans-serif;
+    cursor      : pointer;
+    margin-top  : -1px;
 }
+
 /* not supported in IE7 and IE6
 .ui-iggrid-hiding-indicator:after { content:"�"; }
 */
 
-
-.ui-dialog .ui-iggrid-columnchooser-caption.ui-dialog-titlebar
-{
-	padding-right: 30px; /* add padding so that the positioned close("X") button doesn't go over the text */ 
+.ui-dialog .ui-iggrid-columnchooser-caption.ui-dialog-titlebar {
+    padding-right : 30px; /* add padding so that the positioned close("X") button doesn't go over the text */
 }
 
-.ui-dialog-title.ui-iggrid-columnchooser-caption-title
-{
-	white-space: nowrap; 
-	overflow: hidden;              /* "overflow" value must be different from "visible" */   
-	width:100%;
-	margin-right:0;
-	-o-text-overflow: ellipsis;    /* Opera 9-10 */  
-	text-overflow:    ellipsis;    /* IE, WebKit (Safari, Chrome), Firefox 7, Opera 11 */  
+.ui-dialog-title.ui-iggrid-columnchooser-caption-title {
+    white-space      : nowrap;
+    overflow         : hidden; /* "overflow" value must be different from "visible" */
+    width            : 100%;
+    margin-right     : 0;
+    -o-text-overflow : ellipsis; /* Opera 9-10 */
+    text-overflow    : ellipsis; /* IE, WebKit (Safari, Chrome), Firefox 7, Opera 11 */
 }
 
-.ui-dialog .ui-iggrid-columnchooser-content th 
-{
-    text-align:left;
-    padding:0 4px;
-   font-size:0.85em;
-   text-transform:uppercase;
+.ui-dialog .ui-iggrid-columnchooser-content th {
+    text-align     : left;
+    padding        : 0 4px;
+    font-size      : 0.85em;
+    text-transform : uppercase;
 }
-.ui-dialog .ui-iggrid-columnchooser-content td
-{
-	white-space: nowrap; 
-    padding:0 4px;
+
+.ui-dialog .ui-iggrid-columnchooser-content td {
+    white-space : nowrap;
+    padding     : 0 4px;
 }
 
 /*******************
@@ -1352,251 +1594,238 @@ right: 3px;
 /* editing TD grid-cell */
 
 /* NOTE: padding should be exactly the same as "ui-iggrid table tbody td" */
-.ui-iggrid-editingcell 
-{
-    text-align:left !important; 
-    vertical-align:top !important; 
-    padding:4px; 
-    line-height:normal; /* undo line-height of ui-helper-reset in header */
- }
- 
-/* container of editor: margin-right/bottom can be modified, but not margin-left/top */
-.ui-iggrid-editor  
-{
-    position:absolute; 
-    padding:0 !important;
-    margin-right:0;
-    margin-bottom:0;
- }
+.ui-iggrid-editingcell {
+    text-align     : left !important;
+    vertical-align : top !important;
+    padding        : 4px;
+    line-height    : normal; /* undo line-height of ui-helper-reset in header */
+}
 
-.ui-widget-content.ui-iggrid-buttoncontainer 
-{
-    white-space:nowrap; 
-    z-index:1; 
-    -moz-box-shadow: 0 0 5px #555555; 
-    -webkit-box-shadow: 0 0 5px #555555; 
-    box-shadow: 0 0 5px #555555;
-    border-width:1px;
-    border-style:solid; 
+/* container of editor: margin-right/bottom can be modified, but not margin-left/top */
+.ui-iggrid-editor {
+    position      : absolute;
+    padding       : 0 !important;
+    margin-right  : 0;
+    margin-bottom : 0;
 }
-.ui-iggrid-button  
-{
-    display:inline-block; 
-    cursor: default; 
-    margin:5px; 
-    padding:0; 
-    white-space:nowrap;
+
+.ui-widget-content.ui-iggrid-buttoncontainer {
+    white-space        : nowrap;
+    z-index            : 1;
+    -moz-box-shadow    : 0 0 5px #555;
+    -webkit-box-shadow : 0 0 5px #555;
+    box-shadow         : 0 0 5px #555;
+    border-width       : 1px;
+    border-style       : solid;
 }
+
+.ui-iggrid-button {
+    display     : inline-block;
+    cursor      : default;
+    margin      : 5px;
+    padding     : 0;
+    white-space : nowrap;
+}
+
 /* NOTE: padding should be exactly the same as "ui-iggrid table tbody td" */
 
-td.ui-iggrid-addrow 
-{
-    text-align:left;
-    position:relative;
-    cursor: default;
-    font-weight:normal;
-    white-space:nowrap;
-    padding:4px;
+td.ui-iggrid-addrow {
+    text-align  : left;
+    position    : relative;
+    cursor      : default;
+    font-weight : normal;
+    white-space : nowrap;
+    padding     : 4px;
 }
-.ui-iggrid-addrow .ui-icon 
-{
-    margin-right:5px;
-    float:none;
+
+.ui-iggrid-addrow .ui-icon {
+    margin-right : 5px;
+    float        : none;
 }
 
 /* icon and text positioning in buttons */
-.ui-iggrid-button .ui-icon
-{   
-    float:none; 
-    width:16px; 
-    height:16px; 
-    margin-left: 6px;
-    margin-top: -8px;
-    position: absolute;
-    top: 50%;    
+.ui-iggrid-button .ui-icon {
+    float       : none;
+    width       : 16px;
+    height      : 16px;
+    margin-left : 6px;
+    margin-top  : -8px;
+    position    : absolute;
+    top         : 50%;
 }
-.ui-iggrid-button .ui-icon + span
-{
-    padding:3px 12px 5px 25px;
+
+.ui-iggrid-button .ui-icon + span {
+    padding : 3px 12px 5px 25px;
 }
 
 /* 10.26.2016. BUG #227831 Marin Popov make the icon for "delete row" consistent */
 .ui-iggrid-deletebutton {
-	cursor:pointer;
-	box-sizing: initial!important;
-	left: 51%; /* shouldn't be decorated with !important so that Updating can position the button manually */
+    cursor     : pointer;
+    box-sizing : initial !important;
+    left       : 51%; /* shouldn't be decorated with !important so that Updating can position the button manually */
 }
 
 .ui-iggrid-button-icon-only,
-.ui-iggrid-deletebutton  
-{
-    display:inline-block;
-    white-space:nowrap;
-    width:16px;
-    height:16px;
-    padding:3px !important;
-    z-index:1;
+.ui-iggrid-deletebutton {
+    display     : inline-block;
+    white-space : nowrap;
+    width       : 16px;
+    height      : 16px;
+    padding     : 3px !important;
+    z-index     : 1;
 }
 
 .ui-iggrid-button-icon-only .ui-icon,
-.ui-iggrid-deleteicon 
-{
-    float:none; 
-    position: absolute;
-    margin-top:-8px;
-    margin-left:-8px;
-    top:50%;
-    left:50%;
+.ui-iggrid-deleteicon {
+    float       : none;
+    position    : absolute;
+    margin-top  : -8px;
+    margin-left : -8px;
+    top         : 50%;
+    left        : 50%;
 }
 
 /* 211419 S.D. 05.02.2016 Fix for the new add a child row and delete row buttons */
 
 /*#treegrid_updating_deletehover .ui-icon,#treegrid_updating_add_child_hover .ui-icon*/
-.ui-iggrid-deletebutton .ui-icon
-{
-    font-size: 16px !important;
+.ui-iggrid-deletebutton .ui-icon {
+    font-size : 16px !important;
 }
 
 /* End 211419 S.D. 05.02.2016 */
 
 .ui-iggrid-deletedrecord th,
-.ui-iggrid-deletedrecord td
-{
-	opacity:0.5;
-	filter:alpha(opacity=50);
-	text-decoration: line-through;
-	font-style:italic;
-}
-.ui-iggrid-modifiedrecord td
-{
-	
-}
-.ui-iggrid .ui-igedit-disabled, .ui-iggrid .ui-igcombo-disabled
-{
-	opacity:1;
-	filter:alpha(opacity=100);
-	color: #d0d0d0;
+.ui-iggrid-deletedrecord td {
+    opacity         : 0.5;
+    filter          : alpha(opacity=50);
+    text-decoration : line-through;
+    font-style      : italic;
 }
 
-.ui-iggrid-modifiedrecord>td
-{
-    font-style: italic;
+.ui-iggrid-modifiedrecord td {
+
+}
+
+.ui-iggrid .ui-igedit-disabled, .ui-iggrid .ui-igcombo-disabled {
+    opacity : 1;
+    filter  : alpha(opacity=100);
+    color   : #d0d0d0;
+}
+
+.ui-iggrid-modifiedrecord > td {
+    font-style : italic;
 }
 
 /* IE7 ONLY - VALID HACKs */
-       
-*:first-child+html .ui-iggrid-deleteicon,
-*:first-child+html .ui-iggrid-addrowicon
-{        
-   display:block!important;
+
+*:first-child + html .ui-iggrid-deleteicon,
+*:first-child + html .ui-iggrid-addrowicon {
+    display : block !important;
 }
-*:first-child+html .ui-iggrid-addrowicon {float:left;}
+
+*:first-child + html .ui-iggrid-addrowicon {
+    float : left;
+}
 
 /*******************
 *   Merged Cells  *
 ********************/
 
 .ui-iggrid .ui-state-highlight,
-.ui-iggrid-mergedcell.ui-state-highlight
-{
-	border-top-color:transparent;
-	border-bottom-color:transparent;
+.ui-iggrid-mergedcell.ui-state-highlight {
+    border-top-color    : transparent;
+    border-bottom-color : transparent;
 }
 
 .ui-iggrid-mergedcell,
-.ui-iggrid-mergedcell.ui-state-highlight
-{
-	color: #aaa;
-}
-.ui-iggrid .ui-iggrid-mergedcellsbottom.ui-state-highlight,
-.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcellsbottom.ui-state-highlight
-{
-	border-bottom-color: #bbb;
-}
-.ui-iggrid .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom
-{
-	border-bottom-color: #aaa;
+.ui-iggrid-mergedcell.ui-state-highlight {
+    color : #aaa;
 }
 
-.ui-iggrid .ui-iggrid-physicalmergedcell
-{
-	vertical-align: top;
+.ui-iggrid .ui-iggrid-mergedcellsbottom.ui-state-highlight,
+.ui-iggrid .ui-ig-altrecord .ui-iggrid-mergedcellsbottom.ui-state-highlight {
+    border-bottom-color : #bbb;
+}
+
+.ui-iggrid .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+    border-bottom-color : #aaa;
 }
 
 /**********************
 *  Features chooser   *
 **********************/
-.ui-iggrid-featurechooser-dropdown-dialog {  
+.ui-iggrid-featurechooser-dropdown-dialog {
 }
 
 .ui-iggrid-featurechooser-headercontainer {
-    float: right;
+    float : right;
 }
 
 .ui-iggrid-featurechooser-list {
-    float:left;
+    float : left;
 }
 
 .ui-iggrid-featurechooser-list li,
 .touch .ui-iggrid-featurechooser-list.ui-menu li,
 .touchevents .ui-iggrid-featurechooser-list.ui-menu li,
-.pointerevents .ui-iggrid-featurechooser-list.ui-menu li
-{
-    display: inline-block;
-    float: left;
-    max-width:70px;
-    text-align:center;
-    overflow: hidden;
-    height:94px;
-    line-height:1.2em;
-    font-size:11px;
+.pointerevents .ui-iggrid-featurechooser-list.ui-menu li {
+    display     : inline-block;
+    float       : left;
+    max-width   : 70px;
+    text-align  : center;
+    overflow    : hidden;
+    height      : 94px;
+    line-height : 1.2em;
+    font-size   : 11px;
 }
 
 .ui-iggrid-featurechooser-list li.ui-state-default {
-background-color: transparent;
+    background-color : transparent;
 }
+
 .ui-iggrid-featurechooser-list li.ui-state-default:hover,
 .ui-iggrid-featurechooser-list li.ui-state-hover {
-background-color: #EEEEEE;
+    background-color : #eee;
 }
 
 /* menu items have less opacity when not selected */
 .ui-iggrid-featurechooser-list .ui-icon, .ui-iggrid-hiding-dropdown-list .ui-icon, .ui-iggrid-columnmoving-dropdown-list .ui-icon {
-    opacity:0.6; filter:alpha(opacity=60);    
-}
-.ui-iggrid-featurechooser-list .item-selected .ui-icon, .ui-iggrid-hiding-dropdown-list .item-selected .ui-icon, .ui-iggrid-columnmoving-dropdown-list .item-selected .ui-icon
-{
-    opacity:1; filter:alpha(opacity=100);    
+    opacity : 0.6;
+    filter  : alpha(opacity=60);
 }
 
-.ui-iggrid-featurechooser-list .ui-iggrid-featurechooserddlistitemtext, .ui-iggrid-hiding-dropdown-list .ui-iggrid-hiding-dropdown-ddlistitemtext, .ui-iggrid-columnmoving-dropdown-list .ui-iggrid-columnmoving-dropdown-ddlistitemtext
-{
-    font-weight:normal;
-    white-space: normal;
-}
-.ui-iggrid-featurechooser-list .item-selected .ui-iggrid-featurechooserddlistitemtext, .ui-iggrid-hiding-dropdown-list .item-selected .ui-iggrid-hiding-dropdown-ddlistitemtext, .ui-iggrid-columnmoving-dropdown-list .item-selected .ui-iggrid-columnmoving-dropdown-ddlistitemtext
-{
-    font-weight:bold;
+.ui-iggrid-hiding-dropdown-list .item-selected .ui-icon, .ui-iggrid-columnmoving-dropdown-list .item-selected .ui-icon {
+    opacity : 1;
+    filter  : alpha(opacity=100);
 }
 
-.ui-iggrid-featurechooser-list li.ui-iggrid-featurechooser-separator, 
+.ui-iggrid-featurechooser-list .ui-iggrid-featurechooserddlistitemtext, .ui-iggrid-hiding-dropdown-list .ui-iggrid-hiding-dropdown-ddlistitemtext, .ui-iggrid-columnmoving-dropdown-list .ui-iggrid-columnmoving-dropdown-ddlistitemtext {
+    font-weight : normal;
+    white-space : normal;
+}
+
+.ui-iggrid-hiding-dropdown-list .item-selected .ui-iggrid-hiding-dropdown-ddlistitemtext,
+.ui-iggrid-columnmoving-dropdown-list .item-selected .ui-iggrid-columnmoving-dropdown-ddlistitemtext {
+    font-weight : bold;
+}
+
+.ui-iggrid-featurechooser-list li.ui-iggrid-featurechooser-separator,
 .touch .ui-iggrid-featurechooser-list li.ui-iggrid-featurechooser-separator,
 .touchevents .ui-iggrid-featurechooser-list li.ui-iggrid-featurechooser-separator,
-.pointerevents .ui-iggrid-featurechooser-list li.ui-iggrid-featurechooser-separator
-{
-    background-color: #BBBBBB;
-    border-right: 1px solid #333333;
-    float: left;
-    font-size: 1%;
-    width:1px;
-    height: 74px;
-    margin: 10px 5px;
-    opacity: 0.2;
- }
+.pointerevents .ui-iggrid-featurechooser-list li.ui-iggrid-featurechooser-separator {
+    background-color : #bbb;
+    border-right     : 1px solid #333;
+    float            : left;
+    font-size        : 1%;
+    width            : 1px;
+    height           : 74px;
+    margin           : 10px 5px;
+    opacity          : 0.2;
+}
 
 /* Safari needs the text to display as block in order to go to 2 lines */
 .ui-iggrid-featurechooserddlistitemtext {
-display:block;
+    display : block;
 }
 
 /*******************
@@ -1610,46 +1839,44 @@ display:block;
 .ui-iggrid-groupby-dialog-groupedcolumns ul,
 .ui-iggrid-sorting-dialog-sortedcolumns ul,
 .ui-iggrid-sorting-dialog-sortedcolumns ul,
-.ui-iggrid-sorting-dialog-unsortedcolumns ul
-{
-    line-height: 2.5em;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    white-space: nowrap;
-    cursor: pointer;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -ms-user-select: none;
- }
- 
-.ui-iggrid-modaldialog-caption-buttoncontainer
-{
-    display: block;
-    float: right;
-    font-size: 0.75em;
+.ui-iggrid-sorting-dialog-unsortedcolumns ul {
+    line-height        : 2.5em;
+    list-style-type    : none;
+    padding            : 0;
+    margin             : 0;
+    white-space        : nowrap;
+    cursor             : pointer;
+    -khtml-user-select : none;
+    -moz-user-select   : none;
+    -o-user-select     : none;
+    -ms-user-select    : none;
 }
-.ui-iggrid-modaldialog-footer
-{
+
+.ui-iggrid-modaldialog-caption-buttoncontainer {
+    display   : block;
+    float     : right;
+    font-size : 0.75em;
 }
-.ui-iggrid-columnchooser-itemhidden, 
-.ui-iggrid-columnchooser-itemhidden a
-{
-    color: Gray;
+
+.ui-iggrid-modaldialog-footer {
 }
-.ui-iggrid-columnchooser-text 
-{
-    margin: 0 0 0 5px;
+
+.ui-iggrid-columnchooser-itemhidden,
+.ui-iggrid-columnchooser-itemhidden a {
+    color : Gray;
 }
-.ui-iggrid-modaldialog-content
-{
-    margin: 0;
-    padding: 0;
+
+.ui-iggrid-columnchooser-text {
+    margin : 0 0 0 5px;
 }
-.ui-iggrid-dialog-text
-{
-    padding:0 0 0 1em;
+
+.ui-iggrid-modaldialog-content {
+    margin  : 0;
+    padding : 0;
+}
+
+.ui-iggrid-dialog-text {
+    padding : 0 0 0 1em;
 }
 
 .ui-iggrid-groupby-dialog-groupedcolumns,
@@ -1657,9 +1884,8 @@ display:block;
 .ui-iggrid-moving-dialog-columns .ui-iggrid-dialog-sortedcolumns,
 .ui-iggrid-dialog-unsortedcolumns,
 .ui-iggrid-dialog-unsortedcolumns ul,
-.ui-iggrid-dialog-sortedcolumns ul
-{
-    width: 100%;
+.ui-iggrid-dialog-sortedcolumns ul {
+    width : 100%;
 }
 
 .ui-iggrid-groupby-dialog-groupedcolumns li,
@@ -1671,12 +1897,11 @@ display:block;
 .ui-iggrid-dialog-sortedcolumns li,
 .ui-iggrid-sorting-dialog-sortedcolumns li,
 .ui-iggrid-sorting-dialog-unsortedcolumns li,
-.ui-iggrid-columnchooser-item
-{
-    position:relative;
-    height: 2.5em;
-    border-width:0 0 1px 0;
-    background: transparent none;
+.ui-iggrid-columnchooser-item {
+    position     : relative;
+    height       : 2.5em;
+    border-width : 0 0 1px 0;
+    background   : transparent none;
 }
 
 /*
@@ -1690,208 +1915,196 @@ display:block;
     border: none;
 }*/
 
-.ui-iggrid-dialog-unsortedcolumns ul li, .ui-iggrid-dialog-sortedcolumns ul li
-{
-    margin: 0;
-    padding: 0;
+.ui-iggrid-dialog-unsortedcolumns ul li, .ui-iggrid-dialog-sortedcolumns ul li {
+    margin  : 0;
+    padding : 0;
 }
+
 .ui-iggrid-dialog-unsortedcolumns-sortbybutton a,
 .ui-iggrid-dialog-groupby-button a,
 .ui-iggrid-columnchooser-item a,
-.ui-iggrid-sorting-dialog-unsortedcolumns-sortbybutton a
-{
-    text-decoration: none;
-    cursor: pointer;
-    font-size: 0.8em;
+.ui-iggrid-sorting-dialog-unsortedcolumns-sortbybutton a {
+    text-decoration : none;
+    cursor          : pointer;
+    font-size       : 0.8em;
 }
-.ui-iggrid-dialog-ascdescbutton-selected span
-{
-    border-color: Red;
+
+.ui-iggrid-dialog-ascdescbutton-selected span {
+    border-color : Red;
 }
-.ui-iggrid-multiplesorting-dialog-slide
-{
-    margin: 0 auto;
-	padding: 0;
-	border-width: 1px 0 0 0;
-	background: transparent none;
+
+.ui-iggrid-multiplesorting-dialog-slide {
+    margin       : 0 auto;
+    padding      : 0;
+    border-width : 1px 0 0 0;
+    background   : transparent none;
 }
-.ui-iggrid-multiplesorting-dialog-slide-button-container
-{
-    text-align: center;
-	padding: 0 0 0 0;
-	margin: 0 auto;
-	display: block;
-	font: bold 120%/100% Arial, Helvetica, sans-serif;
-	color: black;
-	text-decoration: none;
+
+.ui-iggrid-multiplesorting-dialog-slide-button-container {
+    text-align      : center;
+    padding         : 0 0 0 0;
+    margin          : 0 auto;
+    display         : block;
+    font            : bold 120%/100% Arial, Helvetica, sans-serif;
+    color           : black;
+    text-decoration : none;
 }
-.ui-iggrid-dialog-sortedcolumns-list 
-{
-    margin: 0;
-    padding: 0;
+
+.ui-iggrid-dialog-sortedcolumns-list {
+    margin  : 0;
+    padding : 0;
 }
-.ui-iggrid-dialog-sortedcolumns-list li
-{
-    list-style-type:none;
-    margin: 12px 0;
-    padding: 12px 0;
+
+.ui-iggrid-dialog-sortedcolumns-list li {
+    list-style-type : none;
+    margin          : 12px 0;
+    padding         : 12px 0;
 }
-.ui-iggrid-dialog-unsortedcolumns-list 
-{
-    margin: 0;
-    padding: 0;
+
+.ui-iggrid-dialog-unsortedcolumns-list {
+    margin  : 0;
+    padding : 0;
 }
-.ui-iggrid-dialog-unsortedcolumns-list li
-{
-    list-style-type:none;
-    padding: 0 0 5px 0;
+
+.ui-iggrid-dialog-unsortedcolumns-list li {
+    list-style-type : none;
+    padding         : 0 0 5px 0;
 }
+
 .ui-iggrid-groupby-dialog-groupedcolumns .ui-iggrid-dialog-groupedbuttons,
-.ui-iggrid-sorting-dialog-sortedcolumns .ui-iggrid-sorting-dialog-sortbybuttons
-{
-    line-height: 1.3em;
-    width: 1.8em;
-    float: right;
-    position: absolute;
+.ui-iggrid-sorting-dialog-sortedcolumns .ui-iggrid-sorting-dialog-sortbybuttons {
+    line-height : 1.3em;
+    width       : 1.8em;
+    float       : right;
+    position    : absolute;
 }
 
-.ui-iggrid-multiplesorting-dialog-slide .ui-iggrid-sorting-dialog-button-slide
-{
-    height: 0.8em;
-    width: 4em;
-}
-.ui-igbutton-remove
-{
-    position:absolute;
-    right:0;
-    top:50%;
-    margin-top:-0.9em;
-    
-}
-.ui-iggrid-dialog-button-slide 
-{
-    height: 20px;
-    line-height: 20px;
+.ui-iggrid-multiplesorting-dialog-slide .ui-iggrid-sorting-dialog-button-slide {
+    height : 0.8em;
+    width  : 4em;
 }
 
-.ui-iggrid-groupby-dialog-tree .ui-igtree-root
-{
-   margin-top: 0.3em;
-   margin-bottom: 0.3em;
-   margin-right: 1em;
+.ui-igbutton-remove {
+    position   : absolute;
+    right      : 0;
+    top        : 50%;
+    margin-top : -0.9em;
+
 }
 
-.ui-iggrid-dialog-layouts-dd-field
-{
-    float: left;
-}
-.ui-iggrid-dialog-layouts-dd-button
-{
-    float: left;
-}
-.ui-iggrid-dialog-layouts-dd
-{
-    float: left;
-    margin-left: 5px;
-}
-.ui-iggrid-groupby-dialog-layoutscontainer
-{
-    margin-bottom: 1em;
+.ui-iggrid-dialog-button-slide {
+    height      : 20px;
+    line-height : 20px;
 }
 
-.ui-iggrid-groupby-dialog-groupedcolumns .ig-sorting-indicator, 
-.ui-iggrid-sorting-dialog-sortedcolumns .ig-sorting-indicator 
-{
-    float: left;
-    position: relative;
-    top: 50%;
-    
-    margin-top: -1em;
-    height: 2em; 
-    width: 3.8em;   
+.ui-iggrid-groupby-dialog-tree .ui-igtree-root {
+    margin-top    : 0.3em;
+    margin-bottom : 0.3em;
+    margin-right  : 1em;
+}
+
+.ui-iggrid-dialog-layouts-dd-field {
+    float : left;
+}
+
+.ui-iggrid-dialog-layouts-dd-button {
+    float : left;
+}
+
+.ui-iggrid-dialog-layouts-dd {
+    float       : left;
+    margin-left : 5px;
+}
+
+.ui-iggrid-groupby-dialog-layoutscontainer {
+    margin-bottom : 1em;
+}
+
+.ui-iggrid-groupby-dialog-groupedcolumns .ig-sorting-indicator,
+.ui-iggrid-sorting-dialog-sortedcolumns .ig-sorting-indicator {
+    float      : left;
+    position   : relative;
+    top        : 50%;
+
+    margin-top : -1em;
+    height     : 2em;
+    width      : 3.8em;
 }
 
 .ui-iggrid-dialog-groupby-button,
 .ui-iggrid-columnchooser-hidebutton,
-.ui-iggrid-sorting-dialog-unsortedcolumns-sortbybutton
-{
-    clear:left;
-    float: left;
-    min-width: 3.8em;
-    display: block;
-    margin-top: -1.3em;
-    position: relative;
-    top: 50%;
+.ui-iggrid-sorting-dialog-unsortedcolumns-sortbybutton {
+    clear      : left;
+    float      : left;
+    min-width  : 3.8em;
+    display    : block;
+    margin-top : -1.3em;
+    position   : relative;
+    top        : 50%;
 }
 
-.ui-iggrid-columnchooser-hidebutton
-{
-    display: block;
-    clear:left;
-    float: left;
-    min-width: 2em;
+.ui-iggrid-columnchooser-hidebutton {
+    display   : block;
+    clear     : left;
+    float     : left;
+    min-width : 2em;
 }
 
-
-.ui-iggrid-dialog-layouts-dd-field 
-{
-    padding: 0 1.5em 0 0.5em;
-    overflow: hidden;
-}
- 
-.ig-combo-icon-container
-{
-   position: relative;
+.ui-iggrid-dialog-layouts-dd-field {
+    padding  : 0 1.5em 0 0.5em;
+    overflow : hidden;
 }
 
-.ig-combo-icon-container a
- {
-   position: absolute;
-   top: 50%;
-   margin-top: -8px;
-   right: 0.2em;    
+.ig-combo-icon-container {
+    position : relative;
+}
+
+.ig-combo-icon-container a {
+    position   : absolute;
+    top        : 50%;
+    margin-top : -8px;
+    right      : 0.2em;
 }
 
 /********** //Group By Modal Dialog *********/
-
 
 /*************************
 *  Multi-column Headers   *
 **************************/
 
 .ui-iggrid th.ui-iggrid-multiheader-cell {
-    text-align:center;
+    text-align : center;
 }
 
 .ui-iggrid-multiheader-expanded {
-    cursor: pointer;
-    display: block;
-    float: left;
-    font-family: "Segoe UI",Arial,sans-serif;
-    font-size: 10px;
-    height: 16px;
-    line-height: 20px;
-    text-align: center;
-    width: 16px;
-    background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat 0 0;
+    cursor      : pointer;
+    display     : block;
+    float       : left;
+    font-family : "Segoe UI", Arial, sans-serif;
+    font-size   : 10px;
+    height      : 16px;
+    line-height : 20px;
+    text-align  : center;
+    width       : 16px;
+    background  : url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat 0 0;
 }
 
 .ui-iggrid-multiheader-collapsed {
-    cursor: pointer;
-    display: block;
-    float: left;
-    font-family: "Segoe UI",Arial,sans-serif;
-    font-size: 10px;
-    height: 16px;
-    line-height: 20px;
-    text-align: center;
-    width: 16px;
-    background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -16px 0;
+    cursor      : pointer;
+    display     : block;
+    float       : left;
+    font-family : "Segoe UI", Arial, sans-serif;
+    font-size   : 10px;
+    height      : 16px;
+    line-height : 20px;
+    text-align  : center;
+    width       : 16px;
+    background  : url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -16px 0;
 }
 
 div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer,
 div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
-	float: left;
+    float : left;
 }
 
 /*******************
@@ -1899,223 +2112,211 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 *******************/
 
 .ui-iggrid-fixedcontainer {
-    background-color:#f3f3f3;
-    border-bottom: 1px solid #DCDCDC;
+    background-color : #f3f3f3;
+    border-bottom    : 1px solid #dcdcdc;
 }
 
 .ui-iggrid-fixedcontainer-left {
-	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
-		Borderline is from inner side of the box - in this way border-width is not included in outer width of the container. 
-		NOTE: the container(outer fixed container) should have width set */
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	border-right: 2px solid #555555 !important;
+    /* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box.
+        Borderline is from inner side of the box - in this way border-width is not included in outer width of the container.
+        NOTE: the container(outer fixed container) should have width set */
+    box-sizing         : border-box;
+    -moz-box-sizing    : border-box;
+    -webkit-box-sizing : border-box;
+    border-right       : 2px solid #555 !important;
 }
+
 .ui-iggrid-fixedcontainer-right {
-	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
-		Borderline is from inner side of the box - in this way border-width is not included in outer width of the container. 
-		NOTE: the container(outer fixed container) should have width set */
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	border-left: 2px solid #555555 !important;
+    /* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box.
+        Borderline is from inner side of the box - in this way border-width is not included in outer width of the container.
+        NOTE: the container(outer fixed container) should have width set */
+    box-sizing         : border-box;
+    -moz-box-sizing    : border-box;
+    -webkit-box-sizing : border-box;
+    border-left        : 2px solid #555 !important;
 }
-.ui-iggrid-fixcolumn-headerbuttoncontainer 
-{
-    float: right;
+
+.ui-iggrid-fixcolumn-headerbuttoncontainer {
+    float : right;
 }
 
 /* Removing left borders in right fixed table and left unfixed table */
 .ui-iggrid-fixedcontainer-right .ui-iggrid-table > tbody > tr > td:last-child,
 .ui-iggrid .ui-iggrid-table.ui-iggrid-unfixed-table-left > tbody > tr > td:first-child {
-    border-left-width: 0!important;
+    border-left-width : 0 !important;
 }
+
 /* Removing right borders in left fixed table and right unfixed table */
 .ui-iggrid-fixedcontainer-left .ui-iggrid-table > tbody > tr > td:last-child,
 .ui-iggrid .ui-iggrid-table.ui-iggrid-unfixed-table-right > tbody > tr > td:first-child {
-    border-right-width: 0!important;
+    border-right-width : 0 !important;
 }
 
 /* Vertical rendering */
-.ui-iggrid-responsive-vertical tr>td:first-child { 
-    font-weight:bold;
+.ui-iggrid-responsive-vertical tr > td:first-child {
+    font-weight : bold;
 }
 
-
 /* Touch friendly */
-		
-		.touch .ui-iggrid th .ui-iggrid-indicatorcontainer a,
-		.touchevents .ui-iggrid th .ui-iggrid-indicatorcontainer a,
-		.pointerevents .ui-iggrid th .ui-iggrid-indicatorcontainer a
-		{
-			padding     : 0 5px;
-		}
-		
-		.touch .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igedit,
-		.touchevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igedit,
-		.pointerevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igedit,
-		.touch .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
-		.touchevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
-		.pointerevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child
-		{
-			height      : 2.4em!important;
-		}
-		
-		.touch .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
-		.touchevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
-		.pointerevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child
-		{
-			width       : 2em!important;
-			margin-left : -2.4em;
-		}	
-		/* Bug 207105, S.D. 24.09.2015, [igGrid] Overview page cuts the editors in half on a touch monitor under chrome & firefox
 
-		.touch .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor,
-		.touchevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor,
-		.pointerevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor
-		{		
-			height      : 2.4em !important;
-			line-height : 2.4em !important;
-			padding-left: 2.4em !important;
-		}
-		
-		.touch .ui-iggrid-filtercell  .ui-iggrid-indicatorcontainer a,
-		.touchevents .ui-iggrid-filtercell  .ui-iggrid-indicatorcontainer a,
-		.pointerevents .ui-iggrid-filtercell  .ui-iggrid-indicatorcontainer a
-		{
-			padding     : 0.2em;
-			width       : 2em;
-			height      : 2em;
-			margin-right: -2.4em;
-		}
-		
-		.touch .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
-		.touchevents .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
-		.pointerevents .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before
-		{
-			font-size   : 1.4em;
-			margin-left : 1.2em;
-		}
-		
-		.touch .ui-iggrid-filtercell .ui-iggrid-filterbutton,
-		.touchevents .ui-iggrid-filtercell .ui-iggrid-filterbutton,
-		.pointerevents .ui-iggrid-filtercell .ui-iggrid-filterbutton,
-		.touch .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button span,
-		.touchevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button span,
-		.pointerevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button span
-		{		
-			top         : 1.2em;
-			left        : 1em;
-		} */
-		
-		.touch .ui-menu li,
-		.touchevents .ui-menu li,
-		.pointerevents .ui-menu li
-		{
-			line-height : 2.4em;
-		}
-		
-		/*grid paging list*/
-		.touch .ui-iggrid table tbody td,
-		.touchevents .ui-iggrid table tbody td,
-		.pointerevents .ui-iggrid table tbody td,
-		.touch .ui-iggrid .ui-iggrid-header,
-		.touchevents .ui-iggrid .ui-iggrid-header,
-		.pointerevents .ui-iggrid .ui-iggrid-header,
-		.touch .ui-iggrid table th,
-		.touchevents .ui-iggrid table th,
-		.pointerevents .ui-iggrid table th,
-		.touch .ui-iggrid .ui-iggrid-filtereditor,
-		.touchevents .ui-iggrid .ui-iggrid-filtereditor,
-		.pointerevents .ui-iggrid .ui-iggrid-filtereditor
-		{
-			padding     : 0.4em;
-		}
-		
-		.touch .ui-iggrid .ui-iggrid-results,
-		.touchevents .ui-iggrid .ui-iggrid-results,
-		.pointerevents .ui-iggrid .ui-iggrid-results,
-		.touch .ui-iggrid .ui-iggrid-paging,
-		.touchevents .ui-iggrid .ui-iggrid-paging,
-		.pointerevents .ui-iggrid .ui-iggrid-paging
-		{
-			font-size   : 1.2em;
-		}
-		
-		.touch .ui-iggrid-pagelist li,
-		.touchevents .ui-iggrid-pagelist li,
-		.pointerevents .ui-iggrid-pagelist li
-		{
-			margin      : 0 0.2em;
-		}
-		
-		.touch .ui-igedit-dropdown .ui-igedit-listitem,
-		.touchevents .ui-igedit-dropdown .ui-igedit-listitem,
-		.pointerevents .ui-igedit-dropdown .ui-igedit-listitem
-		{
-			
-		}
-		
-		
-		/*Samples/demos.dev/grid/editing.html*/
-		.touch .ui-iggrid-button,
-		.touchevents .ui-iggrid-button,
-		.pointerevents .ui-iggrid-button
-		{
-		    font-size   : 1.3em;
-		}
-	
-	
+.touch .ui-iggrid th .ui-iggrid-indicatorcontainer a,
+.touchevents .ui-iggrid th .ui-iggrid-indicatorcontainer a,
+.pointerevents .ui-iggrid th .ui-iggrid-indicatorcontainer a {
+    padding : 0 5px;
+}
+
+.touch .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igedit,
+.touchevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igedit,
+.pointerevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer + .ui-igedit,
+.touch .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
+.touchevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
+.pointerevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child {
+    height : 2.4em !important;
+}
+
+.touch .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
+.touchevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child,
+.pointerevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button:first-child {
+    width       : 2em !important;
+    margin-left : -2.4em;
+}
+
+/* Bug 207105, S.D. 24.09.2015, [igGrid] Overview page cuts the editors in half on a touch monitor under chrome & firefox
+
+.touch .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor,
+.touchevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor,
+.pointerevents .ui-iggrid .ui-iggrid-filtercell .ui-iggrid-filtereditor
+{
+    height      : 2.4em !important;
+    line-height : 2.4em !important;
+    padding-left: 2.4em !important;
+}
+
+.touch .ui-iggrid-filtercell  .ui-iggrid-indicatorcontainer a,
+.touchevents .ui-iggrid-filtercell  .ui-iggrid-indicatorcontainer a,
+.pointerevents .ui-iggrid-filtercell  .ui-iggrid-indicatorcontainer a
+{
+    padding     : 0.2em;
+    width       : 2em;
+    height      : 2em;
+    margin-right: -2.4em;
+}
+
+.touch .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
+.touchevents .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before,
+.pointerevents .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a:before
+{
+    font-size   : 1.4em;
+    margin-left : 1.2em;
+}
+
+.touch .ui-iggrid-filtercell .ui-iggrid-filterbutton,
+.touchevents .ui-iggrid-filtercell .ui-iggrid-filterbutton,
+.pointerevents .ui-iggrid-filtercell .ui-iggrid-filterbutton,
+.touch .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button span,
+.touchevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button span,
+.pointerevents .ui-iggrid-filtercell .ui-igedit-container .ui-igedit-button span
+{
+    top         : 1.2em;
+    left        : 1em;
+} */
+
+.touch .ui-menu li,
+.touchevents .ui-menu li,
+.pointerevents .ui-menu li {
+    line-height : 2.4em;
+}
+
+/*grid paging list*/
+.touch .ui-iggrid table tbody td,
+.touchevents .ui-iggrid table tbody td,
+.pointerevents .ui-iggrid table tbody td,
+.touch .ui-iggrid .ui-iggrid-header,
+.touchevents .ui-iggrid .ui-iggrid-header,
+.pointerevents .ui-iggrid .ui-iggrid-header,
+.touch .ui-iggrid table th,
+.touchevents .ui-iggrid table th,
+.pointerevents .ui-iggrid table th,
+.touch .ui-iggrid .ui-iggrid-filtereditor,
+.touchevents .ui-iggrid .ui-iggrid-filtereditor,
+.pointerevents .ui-iggrid .ui-iggrid-filtereditor {
+    padding : 0.4em;
+}
+
+.touch .ui-iggrid .ui-iggrid-results,
+.touchevents .ui-iggrid .ui-iggrid-results,
+.pointerevents .ui-iggrid .ui-iggrid-results,
+.touch .ui-iggrid .ui-iggrid-paging,
+.touchevents .ui-iggrid .ui-iggrid-paging,
+.pointerevents .ui-iggrid .ui-iggrid-paging {
+    font-size : 1.2em;
+}
+
+.touch .ui-iggrid-pagelist li,
+.touchevents .ui-iggrid-pagelist li,
+.pointerevents .ui-iggrid-pagelist li {
+    margin : 0 0.2em;
+}
+
+.touch .ui-igedit-dropdown .ui-igedit-listitem,
+.touchevents .ui-igedit-dropdown .ui-igedit-listitem,
+.pointerevents .ui-igedit-dropdown .ui-igedit-listitem {
+
+}
+
+/*Samples/demos.dev/grid/editing.html*/
+.touch .ui-iggrid-button,
+.touchevents .ui-iggrid-button,
+.pointerevents .ui-iggrid-button {
+    font-size : 1.3em;
+}
+
 .touch .ui-iggrid-expandbuttoncontainer,
 .touchevents .ui-iggrid-expandbuttoncontainer,
 .pointerevents .ui-iggrid-expandbuttoncontainer,
 .touch .ui-iggrid-expandbuttoncontainer-group-by,
 .touchevents .ui-iggrid-expandbuttoncontainer-group-by,
-.pointerevents .ui-iggrid-expandbuttoncontainer-group-by
-{
-display: table-cell;
-    height: 3.6em;
-    vertical-align: middle;
-}	
+.pointerevents .ui-iggrid-expandbuttoncontainer-group-by {
+    display        : table-cell;
+    height         : 3.6em;
+    vertical-align : middle;
+}
 
 .touch .ui-iggrid-expandbutton,
 .touchevents .ui-iggrid-expandbutton,
-.pointerevents .ui-iggrid-expandbutton
-{
-margin:1em 20%;
+.pointerevents .ui-iggrid-expandbutton {
+    margin : 1em 20%;
 }
+
 .touch .ui-iggrid tbody td.ui-iggrid-childarea,
 .touchevents .ui-iggrid tbody td.ui-iggrid-childarea,
-.pointerevents .ui-iggrid tbody td.ui-iggrid-childarea
-{
-	padding-left: 34px;
+.pointerevents .ui-iggrid tbody td.ui-iggrid-childarea {
+    padding-left : 34px;
 }
 
 .ui-iggrid-featurechooser-list-submenu {
-    padding: 4px;
-    overflow: hidden;
-    font-size: 14px;
-    line-height: 26px;
-    background-color: #fff;
-    background-image: none;
+    padding          : 4px;
+    overflow         : hidden;
+    font-size        : 14px;
+    line-height      : 26px;
+    background-color : #fff;
+    background-image : none;
     /* Added to make a consistent look and feel among all Jquery themes */
-    min-width: 60px;
-    color: #333;
-    font-weight: normal;
-    border: none;
+    min-width        : 60px;
+    color            : #333;
+    font-weight      : normal;
+    border           : none;
 }
 
 .ui-iggrid-featurechooser-list-submenu li.ui-state-default,
-.ui-iggrid-featurechooser-list-submenu li.ui-state-hover
- {
-    background: transparent none;
-    color:#333;
-    border:none;
-    text-shadow:none;
-    padding:5px;
+.ui-iggrid-featurechooser-list-submenu li.ui-state-hover {
+    background  : transparent none;
+    color       : #333;
+    border      : none;
+    text-shadow : none;
+    padding     : 5px;
 }
 
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover {
-    background:#eee;
+    background : #eee;
 }

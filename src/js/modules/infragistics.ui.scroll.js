@@ -25,7 +25,7 @@
 	} else {
 
 		// Browser globals
-		factory(jQuery);
+		return factory(jQuery);
 	}
 }
 (function ($) {
@@ -897,6 +897,15 @@
 					this._scrollLeft(scrollOptions.scrollLeft, false);
 				}
 			}
+		},
+
+		changeLocale: function () {
+			/* This method overrides the base method and does nothing, because the scoll container shouldn't change the container locales
+			Note that this method is for rare scenarios, use [language](ui.igupload#options:language) or [locale](ui.igupload#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 		},
 
 		_setOption: function (key, value) {
@@ -3874,13 +3883,13 @@
 				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id);
 				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id);
 				$(window).off("resize.igscroll_" + this.element[ 0 ].id);
-				$.Widget.prototype.destroy.apply(this, arguments);
+				this._superApply(arguments);
 			}
 			return this;
 		}
 	});
 	$.extend($.ui.igScroll, { version: "<build_number>" });
-	$(document).on("igcontrolcreated", function (event, args) {
+	$(document).on("iggridrendered igtreegridrendered", function (event, args) {
 		/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
 		var container = args.owner.scrollContainer();
 		if (container.length === 0 && args.owner.container) {
@@ -3891,5 +3900,5 @@
 			container.data("igScroll")._bKeyboardNavigation = false;
 		}
 	});
-	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
+	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

@@ -171,6 +171,77 @@
 			equal($.ig.Date.prototype.toStringFormat(dt, "MMM dd"), "Oct 11", "Date.toStringFormat formats MMM dd correctly");
 			equal($.ig.Date.prototype.toStringFormat(dt, "MMM"), "Oct", "Date.toStringFormat formats MMM correctly");
 			equal($.ig.Date.prototype.toStringFormat(dt, "yyyy"), "1980", "Date.toStringFormat formats yyyy correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "yy"), "80", "Date.toStringFormat formats yy correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "HH"), "12", "Date.toStringFormat formats HH correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "hh"), "12", "Date.toStringFormat formats hh correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "mm"), "00", "Date.toStringFormat formats mm correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "ss"), "00", "Date.toStringFormat formats ss correctly");	
+			equal($.ig.Date.prototype.toStringFormat(dt, "hh:mmtt"), "12:00PM", "Date.toStringFormat formats hh:mmtt correctly");	
+			equal($.ig.Date.prototype.toStringFormat(dt, "d"), "10/11/1980", "Date.toStringFormat formats d correctly");
+			// travis ci build doesn't seem to fully implement the part of toLocaleString where it infers the format based on the given options, causing several of these tests to fail. commenting for now.
+			// equal($.ig.Date.prototype.toStringFormat(dt, "D"), "Saturday, October 11, 1980", "Date.toStringFormat formats D correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "f"), "Saturday, October 11, 1980, 12:00 PM", "Date.toStringFormat formats f correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "F"), "Saturday, October 11, 1980, 12:00:00 PM", "Date.toStringFormat formats F correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "g"), "10/11/1980, 12:00:00 PM", "Date.toStringFormat formats g correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "G"), "10/11/1980, 12:00:00 PM", "Date.toStringFormat formats G correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "M"), "October 11", "Date.toStringFormat formats M correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "m"), "October 11", "Date.toStringFormat formats m correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "t"), "12:00 PM", "Date.toStringFormat formats t correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "T"), "12:00:00 PM", "Date.toStringFormat formats T correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "y"), "October 1980", "Date.toStringFormat formats y correctly");
+			// equal($.ig.Date.prototype.toStringFormat(dt, "Y"), "October 1980", "Date.toStringFormat formats Y correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "hh:mm:ss:ff"), "12:00:00:00", "Date.toStringFormat formats hh:mm:ss:ff correctly");
+		});
+
+		test("Test IsAssignableFrom", function () {
+		    // type itself
+		    ok($.ig.Enum.prototype.$type.isAssignableFrom($.ig.Enum.prototype.$type), "Enum type");
+
+		    // base type
+		    ok($.ig.IEnumerable.prototype.$type.isAssignableFrom($.ig.IList.prototype.$type), "Base type of IList is IEnumerable");
+
+		    // interfaces
+		    ok($.ig.IConvertible.prototype.$type.isAssignableFrom($.ig.Enum.prototype.$type), "Enum implements IConvertible");
+		    ok($.ig.IComparable$1.prototype.$type.specialize($.ig.Int32.prototype.$type).isAssignableFrom($.ig.Int32.prototype.$type), "Int32 implements IComparable<Int32>");
+		    ok($.ig.IEquatable$1.prototype.$type.specialize($.ig.Int32.prototype.$type).isAssignableFrom($.ig.Int32.prototype.$type), "Int32 implements IEquatable<Int32>");
+		});
+
+		test("Test stringCompare2", function () {
+			var c = $.ig.CultureInfo.prototype.currentCulture();
+			var o = $.ig.CompareOptions.prototype.none;
+			
+		    equal($.ig.util.stringCompare2("A", "B", c, o), -1, "A before B");
+		    equal($.ig.util.stringCompare2("B", "A", c, o), 1, "B before A");
+		    equal($.ig.util.stringCompare2("A", "A", c, o), 0, "A === A");
+		    equal($.ig.util.stringCompare2(null, "A", c, o), -1, "null befoe A");
+		    equal($.ig.util.stringCompare2("A", null, c, o), 1, "A after null");
+		    equal($.ig.util.stringCompare2(null, "", c, o), -1, "null before empty");
+		    equal($.ig.util.stringCompare2("", null, c, o), 1, "empty after null");
+		});
+
+		test("Test trimStart", function () {
+		    equal("  ABC  ".trimStart(), "ABC  ", "No arguments");
+		    equal("  ABC  ".trimStart([]), "ABC  ", "Empty array argument");
+		    equal("  ABC  ".trimStart([' ']), "ABC  ", "Explicit space argument");
+		    equal("aa  ABC  aa".trimStart(['a']), "  ABC  aa", "Nonstandard trim character");
+		    equal("aa  ABC  aa".trimStart('a'), "  ABC  aa", "character only");
+		    equal("aa  ABC  aa".trimStart('a', ' '), "ABC  aa", "Multiple characters only");
+		});
+
+		test("Test trimEnd", function () {
+		    equal("  ABC  ".trimEnd(), "  ABC", "No arguments");
+		    equal("  ABC  ".trimEnd([]), "  ABC", "Empty array argument");
+		    equal("  ABC  ".trimEnd([' ']), "  ABC", "Explicit space argument");
+		    equal("aa  ABC  aa".trimEnd(['a']), "aa  ABC  ", "Nonstandard trim character");
+		    equal("aa  ABC  aa".trimEnd('a'), "aa  ABC  ", "character only");
+		    equal("aa  ABC  aa".trimEnd('a', ' '), "aa  ABC", "Multiple characters only");
+		});
+
+		test("Test $.ig.encode", function () {
+			equal($.ig.encode("<div></div>"), "&lt;div&gt;&lt;/div&gt;", "Should encode div element");
+			equal($.ig.encode("&lt;div&gt;&lt;/div&gt;"), "&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;", "Should encode encoded div element");
+			equal($.ig.encode("<span id='span1'></span>"), "&lt;span id=&#39;span1&#39;&gt;&lt;/span&gt;", "Should encode span element with attribute and single quote");
+			equal($.ig.encode("<span id=\"span1\"></span>"), "&lt;span id=&#34;span1&#34;&gt;&lt;/span&gt;", "Should encode span element with attribute and double quote")
 		});
 	</script>
 </head>

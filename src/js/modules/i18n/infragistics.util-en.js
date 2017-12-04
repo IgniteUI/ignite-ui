@@ -15,8 +15,20 @@
 	}
 }
 (function () {
-    $ = $ || {};
-    $.ig = $.ig || {};
+	window.igRoot = window.igRoot || {};
+	/* jshint ignore:start */
+	if (window.$ !== undefined || typeof $ === "function") {
+		window.igRoot = window.$ || $;
+	}
+	/* jshint ignore:end */
+
+	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
+	window.$ig = window.$ig || window.igRoot.ig;
+
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
+
+	$ = $ || {};
+	$.ig = $.ig || {};
 	$.ig.util = $.ig.util || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.en = $.ig.locale.en || {};
@@ -42,5 +54,5 @@
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.en.util;
-	return $.ig.locale.en.util;
+	return igRoot;
 }));// REMOVE_FROM_COMBINED_FILES
