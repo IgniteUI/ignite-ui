@@ -1665,6 +1665,39 @@
 			ok(!$input.is(":focus"), "The input should not be focused");
 			$editor.remove();
 		});
+
+		testId = "Scrollbar is not visible when not needed";
+		test(testId, 6, function () {
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["one", "two", "three"], width: 98, height: 58, button: "dropdown" });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$ddList = $editor.igTextEditor("dropDownContainer");
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			console.log("Client Height: " + $ddList[0].clientHeight + " Scroll height: " + $ddList[0].scrollHeight)
+			ok($ddList[0].clientHeight >= $ddList[0].scrollHeight, "Scrollbar is visible!");	
+			
+			$editor.remove();
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six", "seven"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$ddList = $editor.igTextEditor("dropDownContainer");
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			console.log("Client Height: " + $ddList[0].clientHeight + " Scroll height: " + $ddList[0].scrollHeight)
+			ok($ddList[0].clientHeight >= $ddList[0].scrollHeight, "Scrollbar is not visible!");	
+			
+			$editor.remove();
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$ddList = $editor.igTextEditor("dropDownContainer");
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			console.log("Client Height: " + $ddList[0].clientHeight + " Scroll height: " + $ddList[0].scrollHeight)
+			ok($ddList[0].clientHeight < $ddList[0].scrollHeight, "Scrollbar is not visible!");	
+			
+			$editor.remove();
+		});
 	});
 
 	// Helper functions
