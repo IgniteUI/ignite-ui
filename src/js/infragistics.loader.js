@@ -2617,14 +2617,6 @@ $.ig._loadWorkItem.prototype = {
 		this._loadMonitor();
 	},
 
-	loadWidgetCss: function (widgetName) {
-		this._loadFeatures("css", widgetName);
-	},
-
-	loadWidgetScripts: function (widgetName) {
-		this._loadFeatures("script", widgetName);
-	},
-
 	_queueItem: function (fileName, loadingEntity, itemType, itemPriority) {
 		if (!this._loadingEntities[ loadingEntity ].queue[ fileName ]) {
 			this._loadingEntities[ loadingEntity ].queue[ fileName ] = {
