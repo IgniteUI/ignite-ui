@@ -1687,7 +1687,15 @@
 		});
 
 		testId = "Scrollbar is not visible when not needed";
-		test(testId, 6, function () {
+		test(testId, 10, function () {
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["one"], width: 98, height: 58, button: "dropdown" });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$ddList = $editor.igTextEditor("dropDownContainer");
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			ok($ddList[0].clientHeight >= $ddList[0].scrollHeight, "Scrollbar is visible!");
+			$editor.remove();
+
 			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["one", "two", "three"], width: 98, height: 58, button: "dropdown" });
 			$ddButton = $editor.igTextEditor("dropDownButton");
 			$ddList = $editor.igTextEditor("dropDownContainer");
@@ -1710,6 +1718,16 @@
 			ok(!$input.is(":focus"), "The input should not be focused");
 			$ddButton.click();
 			ok($ddList[0].clientHeight < $ddList[0].scrollHeight, "Scrollbar is not visible!");	
+			
+			$editor.remove();
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$ddList = $editor.igTextEditor("dropDownContainer");
+			$lastItem = $editor.igTextEditor("dropDownContainer").last();
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			ok((($ddList.offset().top + $ddList.outerHeight(true)) - ($lastItem.offset().top + $lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");	
 			
 			$editor.remove();
 		});
