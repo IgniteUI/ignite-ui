@@ -2403,8 +2403,8 @@
 
 				//TODO - hide scroll
 			} else {
-				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + list.length);
-				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + list.length;
+				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + 2);
+				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + 2;
 			}
 			this._dropDownList = dropdown;
 			this._setDropDownListWidth();
