@@ -2411,13 +2411,13 @@
 				itemHeight = 23;
 			}
 			if (list.length < this.options.visibleItemsCount) {
-				dropdown.css("height", parseFloat(itemHeight * list.length));
-				this._listInitialHeight = parseFloat(itemHeight * list.length);
+				dropdown.css("height", parseFloat((itemHeight * list.length) + 2));
+				this._listInitialHeight = parseFloat((itemHeight * list.length) + 2);
 
 				//TODO - hide scroll
 			} else {
-				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + 2);
-				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + 2;
+				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + list.length);
+				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + list.length;
 			}
 			this._dropDownList = dropdown;
 			this._setDropDownListWidth();
