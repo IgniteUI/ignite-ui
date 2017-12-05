@@ -2411,8 +2411,8 @@
 				itemHeight = 23;
 			}
 			if (list.length < this.options.visibleItemsCount) {
-				dropdown.css("height", parseFloat(itemHeight * list.length));
-				this._listInitialHeight = parseFloat(itemHeight * list.length);
+				dropdown.css("height", parseFloat(itemHeight * list.length) + 2);
+				this._listInitialHeight = parseFloat(itemHeight * list.length) + 2;
 
 				//TODO - hide scroll
 			} else {
