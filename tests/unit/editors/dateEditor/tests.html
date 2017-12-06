@@ -3395,7 +3395,7 @@
 						dateInputFormat: "yy"
 					},
 					expRes: [{
-						display: (new Date(new Date().setMonth(new Date().getMonth() + 1)).getFullYear()).toString().replace("20", "")
+						display: new Date().getFullYear().toString().replace("20", "")
 					}, {
 						display: (new Date().getFullYear() - 1).toString().replace("20", "")
 					}]
