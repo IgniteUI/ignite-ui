@@ -4189,11 +4189,13 @@
 				if (!chart) {
 					return;
 				}
-				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) || wait.indexOf("width") >= 0;
+				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) ||
+				    wait.indexOf("width") >= 0;
 				if (chart.width && percWidthChange) {
 					chart.width(width);
 				}
-				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) || wait.indexOf("height") >= 0;
+				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) ||
+				    wait.indexOf("height") >= 0;
 				if (chart.height && percHeightChange) {
 					chart.height(height);
 				}
