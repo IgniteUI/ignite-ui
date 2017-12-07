@@ -2136,7 +2136,8 @@ body .ui-tooltip {
   background: #485563;
 }
 .ui-iggrid th.ui-state-active,
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #485563;
 }
 .ui-iggrid .ui-iggrid-footer,
