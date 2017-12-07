@@ -2362,7 +2362,7 @@
 		},
 		_renderList: function () {
 			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, dropdown,
-				id = this.id, htmll, listBorderHeight;
+				id = this.id, html, listBorderHeight;
 
 			html = "<div id='" + id + "_list" + "' tabindex='-1' class='" +
 				this.css.dropDownList + "' role='listbox' aria-activedescendant='" +
