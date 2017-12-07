@@ -3212,7 +3212,8 @@ body .ui-tooltip {
   background: #ecf0f1;
 }
 .ui-iggrid th.ui-state-active,
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #ecf0f1;
 }
 .ui-iggrid .ui-iggrid-footer,
