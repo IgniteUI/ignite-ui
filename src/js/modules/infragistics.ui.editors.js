@@ -9832,13 +9832,15 @@
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
 						if (newHour >= 13) {
-							newHour = newHour - hours;
 							if (newHour > 13 || delta > 1) {
 								amPmUpdateDelta = true;
 							}
-							if (currentAmPm === "pm") {
+
+							//  N.A. December 5th, 2017 #1304: In 12 hours format the time period 12:00-12:59 has already changed AM/PM, so we don't need to updated it at 1:00 or at any time with any spin < 12.
+							if (currentAmPm === "pm" && (currentHour < 12 || currentHour === 12 && delta === 12)) {
 								dayUpdateDelta = true;
 							}
+							newHour = newHour - hours;
 						}
 					}
 				}
