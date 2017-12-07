@@ -3965,6 +3965,52 @@
 				equal($editor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
 				$editor.remove();
 			});
+
+			var testId = 'Testing spin minutes in 12 hours format';
+			test(testId, 4, function () {
+				var $dtEditor = $("<input/>").appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2017, 11, 8, 12, 45),
+					dataMode: "date",
+					dateInputFormat: "dateTime",
+					buttonType: "spin",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					} 
+				});
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				clickElement(spinUpButton, false, false);
+				$dtEditor.trigger("blur");
+				stop();
+				setTimeout(function () {
+					start();
+					value = $dtEditor.igDateEditor("value");
+					expectedValue = new Date(2017, 11, 8, 13);
+					equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
+					equal($dtEditor.igDateEditor("displayValue"), "12/8/2017 1:00 PM", 'The initial value is not as expected');
+					
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(15);
+					clickElement(spinDownButton, false, false);
+					$dtEditor.data("igDateEditor")._setCursorPosition(12);
+					clickElement(spinUpButton, false, false);
+					$dtEditor.trigger("blur");
+					expectedValue = new Date(2017, 11, 9, 0, 45);
+					value = $dtEditor.igDateEditor("value");
+					equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
+					equal($dtEditor.igDateEditor("displayValue"), "12/9/2017 12:45 AM", 'The initial value is not as expected');
+					$dtEditor.remove();
+				}, 300);
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
