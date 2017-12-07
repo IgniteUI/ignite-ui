@@ -9829,8 +9829,8 @@
 								amPmUpdateDelta = true;
 							}
 
-							//  N.A. December 5th, 2017 #1304: In 12 hours format the time period 12:00-12:59 has already changed AM/PM, so we don't need to updated it at 1:00.
-							if (currentAmPm === "pm" && currentHour < 12) {
+							//  N.A. December 5th, 2017 #1304: In 12 hours format the time period 12:00-12:59 has already changed AM/PM, so we don't need to updated it at 1:00 or at any time with any spin < 12.
+							if (currentAmPm === "pm" && (currentHour < 12 || currentHour === 12 && delta === 12)) {
 								dayUpdateDelta = true;
 							}
 							newHour = newHour - hours;
