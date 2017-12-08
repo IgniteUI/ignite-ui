@@ -1655,7 +1655,8 @@ input.ui-igbutton {
 
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
 
-.ui-iggrid-table-mrl td,.ui-iggrid-table-mrl td.ui-state-hover {
+.ui-iggrid .ui-iggrid-table-mrl tbody td,
+.ui-iggrid .ui-iggrid-table-mrl tbody td.ui-state-hover {
     border:1px solid @table-border-color;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th, .ui-iggrid .ui-iggrid-table-mrl th{
@@ -1815,10 +1816,16 @@ input.ui-igbutton {
     color: @ui-icons-light;
 }
 
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
 .ui-iggrid tbody td {
-    border-left: 1px solid transparent!important;
-    border-right: 1px solid transparent!important;
+    border-left: 1px solid @table-border-color;
+    border-right: 1px solid @table-border-color;
 }
+
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+    border-right: 1px solid @table-border-color;
+}
+/* BUG 246065 END */
 
 .ui-iggrid tbody td,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,

@@ -2104,10 +2104,10 @@ body .ui-tooltip {
 }
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
-  border: 1px solid #ececec !important;
+  border: 1px solid #ececec;
 }
-.ui-iggrid .ui-iggrid-table-mrl td.ui-state-hover {
-  border-color: #FFFFFF !important;
+.ui-iggrid .ui-iggrid-table-mrl tbody td.ui-state-hover {
+  border-color: #FFFFFF;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th,
 .ui-iggrid .ui-iggrid-table-mrl th.ui-state-default {

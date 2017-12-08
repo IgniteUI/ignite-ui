@@ -2362,7 +2362,7 @@
 		},
 		_renderList: function () {
 			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, dropdown,
-				id = this.id, html;
+				id = this.id, html, listBorderHeight;
 
 			html = "<div id='" + id + "_list" + "' tabindex='-1' class='" +
 				this.css.dropDownList + "' role='listbox' aria-activedescendant='" +
@@ -2381,30 +2381,37 @@
 			}
 			html += "</div>";
 			dropdown = $(html);
-			if (currentItem) {
-				currentItem = $(currentItem);
-			}
 
 			if (this.options.dropDownAttachedToBody) {
 				$(document.body).append(dropdown);
 			} else {
 				this._editorContainer.append(dropdown);
 			}
-			itemHeight = currentItem.css("height");
-			itemHeight = parseFloat(itemHeight);
+			itemHeight = dropdown.children().eq(0).outerHeight();
 			if (itemHeight === 0) {
 
 				// According to Designers, when height is 0, this is better solution, then setting min-height: 23 in CSS.
 				itemHeight = 23;
 			}
+
+			if (this._calculateDropDownListOrientation() === "bottom") {
+				listBorderHeight = parseInt(dropdown.css("borderBottomWidth"));
+			} else {
+				listBorderHeight = parseInt(dropdown.css("borderTopWidth"));
+			}
+
 			if (list.length < this.options.visibleItemsCount) {
-				dropdown.css("height", parseFloat(itemHeight * list.length));
-				this._listInitialHeight = parseFloat(itemHeight * list.length);
+				dropdown.css("height", parseFloat(itemHeight * list.length +
+					listBorderHeight));
+				this._listInitialHeight = parseFloat(itemHeight * list.length +
+					listBorderHeight);
 
 				//TODO - hide scroll
 			} else {
-				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + 2);
-				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + 2;
+				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight);
+				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight;
 			}
 			this._dropDownList = dropdown;
 			this._setDropDownListWidth();

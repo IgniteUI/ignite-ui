@@ -861,8 +861,8 @@ body .ui-tooltip {
   color: #333333;
 }
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
-.ui-iggrid-table-mrl .ui-widget-content td {
-  border: 1px solid rgba(153, 153, 153, 0.06) !important;
+.ui-iggrid .ui-iggrid-table-mrl tbody td {
+  border: 1px solid rgba(153, 153, 153, 0.06);
 }
 .ui-iggrid-table-mrl .ui-widget-content td.ui-state-hover,
 .ui-iggrid-table-mrl .ui-widget-content .ui-iggrid-altrecord td.ui-state-hover {
