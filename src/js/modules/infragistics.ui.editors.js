@@ -2375,7 +2375,7 @@
 		},
 		_renderList: function () {
 			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, dropdown,
-				id = this.id, html;
+				id = this.id, html, listBorderHeight;
 
 			html = "<div id='" + id + "_list" + "' tabindex='-1' class='" +
 				this.css.dropDownList + "' role='listbox' aria-activedescendant='" +
@@ -2394,30 +2394,38 @@
 			}
 			html += "</div>";
 			dropdown = $(html);
-			if (currentItem) {
-				currentItem = $(currentItem);
-			}
 
 			if (this.options.dropDownAttachedToBody) {
 				$(document.body).append(dropdown);
 			} else {
 				this._editorContainer.append(dropdown);
 			}
-			itemHeight = currentItem.css("height");
-			itemHeight = parseFloat(itemHeight);
+			itemHeight = dropdown.children().eq(0).outerHeight();
+
 			if (itemHeight === 0) {
 
 				// According to Designers, when height is 0, this is better solution, then setting min-height: 23 in CSS.
 				itemHeight = 23;
 			}
+
+			if (this._calculateDropDownListOrientation() === "bottom") {
+				listBorderHeight = parseInt(dropdown.css("borderBottomWidth"));
+			} else {
+				listBorderHeight = parseInt(dropdown.css("borderTopWidth"));
+			}
+
 			if (list.length < this.options.visibleItemsCount) {
-				dropdown.css("height", parseFloat(itemHeight * list.length));
-				this._listInitialHeight = parseFloat(itemHeight * list.length);
+				dropdown.css("height", parseFloat(itemHeight * list.length +
+					listBorderHeight));
+				this._listInitialHeight = parseFloat(itemHeight * list.length +
+					listBorderHeight);
 
 				//TODO - hide scroll
 			} else {
-				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + 2);
-				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + 2;
+				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight);
+				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight;
 			}
 			this._dropDownList = dropdown;
 			this._setDropDownListWidth();
@@ -9825,13 +9833,15 @@
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
 						if (newHour >= 13) {
-							newHour = newHour - hours;
 							if (newHour > 13 || delta > 1) {
 								amPmUpdateDelta = true;
 							}
-							if (currentAmPm === "pm") {
+
+							//  N.A. December 5th, 2017 #1304: In 12 hours format the time period 12:00-12:59 has already changed AM/PM, so we don't need to updated it at 1:00 or at any time with any spin < 12.
+							if (currentAmPm === "pm" && (currentHour < 12 || currentHour === 12 && delta === 12)) {
 								dayUpdateDelta = true;
 							}
+							newHour = newHour - hours;
 						}
 					}
 				}
