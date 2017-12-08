@@ -222,7 +222,8 @@
 }
 
 .ui-iggrid th.ui-state-active,
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus{
   background: @table-bg-active;
 }
 
@@ -282,10 +283,16 @@
   color: @ui-icons-darker;
 }
 
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
 .ui-iggrid tbody td {
-  border-left: 1px solid transparent!important;
-  border-right: 1px solid transparent!important;
+  border-left: 1px solid @table-border-color;
+  border-right: 1px solid @table-border-color;
 }
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+  border-right: 1px solid @table-border-color;
+}
+/* BUG 246065 END */
+
 
 .ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,

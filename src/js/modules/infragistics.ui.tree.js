@@ -2004,50 +2004,50 @@
 				if (bindings.searchFieldXPath) {
 					schema.searchField = bindings.searchFieldXPath;
 				}
-			}
 
-			schema.fields = [];
-			if (bindings.textKey) {
-				schema.fields.push({ name: bindings.textKey, type: "string", xpath: bindings.textXPath });
-				schema.textKey = bindings.textKey;
-			}
-			if (bindings.valueKey) {
-				schema.fields.push({ name: bindings.valueKey, type: "string", xpath: bindings.valueXPath });
-				schema.valueKey = bindings.valueKey;
-			}
-			if (bindings.navigateUrlKey) {
-				schema.fields.push({
-					name: bindings.navigateUrlKey, type: "string", xpath: bindings.navigateUrlXPath
-				});
-				schema.navigateUrlKey = bindings.navigateUrlKey;
-			}
-			if (bindings.imageUrlKey) {
-				schema.fields.push({
-					name: bindings.imageUrlKey, type: "string", xpath: bindings.imageUrlXPath
-				});
-				schema.imageUrlKey = bindings.imageUrlKey;
-			}
-			if (bindings.targetKey) {
-				schema.fields.push({ name: bindings.targetKey, type: "string" });
-				schema.targetKey = bindings.targetKey;
-			}
-			if (bindings.expandedKey) {
-				schema.fields.push({ name: bindings.expandedKey, type: "boolean" });
-				schema.expandedKey = bindings.expandedKey;
-			}
-			if (bindings.checkedKey) {
-				schema.fields.push({ name: bindings.checkedKey, type: "string" });
-				schema.checkedKey = bindings.checkedKey;
-			}
-			if (bindings.primaryKey) {
-				schema.fields.push({ name: bindings.primaryKey, type: "string" });
-				schema.primaryKey = bindings.primaryKey;
-			}
-			if (bindings.childDataProperty) {
-				schema.fields.push({
-					name: bindings.childDataProperty, type: "object", xpath: bindings.childDataXPath
-				});
-				schema.childDataProperty = bindings.childDataProperty;
+				schema.fields = [];
+				if (bindings.textKey) {
+					schema.fields.push({ name: bindings.textKey, type: "string", xpath: bindings.textXPath });
+					schema.textKey = bindings.textKey;
+				}
+				if (bindings.valueKey) {
+					schema.fields.push({ name: bindings.valueKey, type: "string", xpath: bindings.valueXPath });
+					schema.valueKey = bindings.valueKey;
+				}
+				if (bindings.navigateUrlKey) {
+					schema.fields.push({
+						name: bindings.navigateUrlKey, type: "string", xpath: bindings.navigateUrlXPath
+					});
+					schema.navigateUrlKey = bindings.navigateUrlKey;
+				}
+				if (bindings.imageUrlKey) {
+					schema.fields.push({
+						name: bindings.imageUrlKey, type: "string", xpath: bindings.imageUrlXPath
+					});
+					schema.imageUrlKey = bindings.imageUrlKey;
+				}
+				if (bindings.targetKey) {
+					schema.fields.push({ name: bindings.targetKey, type: "string" });
+					schema.targetKey = bindings.targetKey;
+				}
+				if (bindings.expandedKey) {
+					schema.fields.push({ name: bindings.expandedKey, type: "boolean" });
+					schema.expandedKey = bindings.expandedKey;
+				}
+				if (bindings.checkedKey) {
+					schema.fields.push({ name: bindings.checkedKey, type: "string" });
+					schema.checkedKey = bindings.checkedKey;
+				}
+				if (bindings.primaryKey) {
+					schema.fields.push({ name: bindings.primaryKey, type: "string" });
+					schema.primaryKey = bindings.primaryKey;
+				}
+				if (bindings.childDataProperty) {
+					schema.fields.push({
+						name: bindings.childDataProperty, type: "object", xpath: bindings.childDataXPath
+					});
+					schema.childDataProperty = bindings.childDataProperty;
+				}
 			}
 
 			// K.D. March 30th, 2012 Bug #106890 When the data source type is remoteUrl and responseDataKey is set, then searchField in the
@@ -4286,7 +4286,7 @@
 			```
 				var nodes = $(".selector").igTree("nodeFromElement", element);
 			```
-				paramType="object" optional="false" Specifies the node element.
+				paramType="$" optional="false" Specifies the node jQuery element.
 				returnType="object" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			if (element.length > 0) {
