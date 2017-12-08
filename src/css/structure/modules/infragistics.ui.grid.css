@@ -38,7 +38,8 @@
 }
 
 /* Bug 214589 S.D., 22.02.2016, Missing borders; new classes for a MRL grid; header cell misalignment issue */
-.ui-iggrid-table-mrl, .ui-iggrid-headertable-mrl {
+.ui-iggrid-table-mrl,
+.ui-iggrid-headertable-mrl {
     border-collapse : collapse;
     table-layout    : fixed;
 }
@@ -47,6 +48,17 @@
 .ui-iggrid-headertable-mrl {
     width : 100%;
 }
+
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
+.ui-iggrid-headertable-mrl-scrollable {
+    border-spacing: 0;
+    border-collapse: separate;
+    box-sizing: border-box;
+}
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable tr th {
+    border-right: 0;
+}
+/* BUG 246065 END */
 
 .ui-iggrid > .ui-widget-header.ui-helper-reset {
     border-width : 0;
