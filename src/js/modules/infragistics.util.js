@@ -4191,14 +4191,14 @@
 				}
 				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) ||
 					wait.indexOf("width") >= 0;
-  				if (chart.width && percWidthChange) {
-  					chart.width(width);
-  				}
+				if (chart.width && percWidthChange) {
+					chart.width(width);
+				}
 				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) ||
 					wait.indexOf("height") >= 0;
-  				if (chart.height && percHeightChange) {
-  					chart.height(height);
-  				}
+				if (chart.height && percHeightChange) {
+					chart.height(height);
+				}
 				if ((percWidthChange || percHeightChange) && obj.notify) {
 					chart[ obj.notify ]();
 				}
