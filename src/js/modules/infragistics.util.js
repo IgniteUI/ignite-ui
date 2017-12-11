@@ -3961,6 +3961,10 @@
 			// width/height flags which trigger timer and adjustments of width/height on ticks
 			perc = obj.perc;
 		if (!prop) {
+			if (obj.observer) {
+                obj.observer.disconnect();
+                delete obj.observer;
+            }
 			if (obj.tickID) {
 				obj.onTick(true);
 			}
@@ -3969,6 +3973,28 @@
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
+
+		if (window.MutationObserver && !obj.observer) {
+            var oldCollapsed = elem[ 0 ].style.display == "none";
+            var observer = new MutationObserver(function (event) {
+                var collapsed = elem[ 0 ].style.display == "none";
+
+                if (collapsed !== oldCollapsed) {
+                    oldCollapsed = collapsed;
+                    if (notifyResized && chart) {
+                        chart[ notifyResized ]();
+                    }
+                }
+            });
+            observer.observe(elem[ 0 ], {
+                attributes: true,
+                attributeFilter: [ "style" ],
+                childList: false,
+                characterData: false
+            });
+            obj.observer = observer;
+        }
+
 		if (!val) {
 			val = elem[ prop ]();
 		}
