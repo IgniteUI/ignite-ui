@@ -88,10 +88,15 @@
 
 		$(function () {
 			"use strict"
-			
+
 			// Define Model
 			function ViewModel() {
 				var self = this, i;
+				var tmp = [];
+
+				for (var j = 0; j < 75; j++) {
+					tmp.push({ Name: j + 1 });
+				}
 
 				self.data = ko.observableArray(ds1);
 				ds1[0] = ko.observable(ds1[0]);
@@ -105,6 +110,9 @@
 					{ "Color": "Blue" },
 					{ "Color": "Red" },
 				]);
+
+				self.nameList = ko.observableArray(tmp);
+				self.selectCode = ko.observableArray();
 
 				self.item = { name: "name5", value: 5 };
 				self.addItem = function () {
@@ -233,7 +241,8 @@
 				testId_15 = '[ID15] Test enableSelectionChangedUpdate property',
 				testId_16 = '[ID16] Bug #186778 Test setting values with null',
                 testId_17 = '[ID17] Custom values should be persisted in the combo input',
-                testId_18 = '[ID18] Selected Items should be unselect after passing an empty array'
+				testId_18 = '[ID18] Selected Items should be unselect after passing an empty array',
+				testId_19 = '[ID19] Selecting an item in a virtualized combo should preserve position in dropdown list'
 
 			test(testId_1, function () {
 				ok(typeof (ko.bindingHandlers.igCombo) !== 'undefined', 'igCombo extension for KnockoutJS is not loaded.');
@@ -334,7 +343,7 @@
             test(testId_18, function() {
                 var $combo = $('#comboClearSelectedVal'),
                     $comboInput = $combo.data('igCombo')._options.$input;
-                
+
                 ok($combo.igCombo("selectedItems").length > 0, "There are some selected items.");
                 ok($comboInput.val() !== "", "There is some values that persists into the input")
 
@@ -342,7 +351,36 @@
 
                 ok($combo.igCombo("selectedItems") === null, "Selected items were successfuly removed.");
                 ok($comboInput.val() === "", "There aren't any values into the input.")
-            });
+			});
+
+			test(testId_19, function() {
+				var $combo = $("#virtualizationWithSelection"),
+					$listCont = $combo.data("igCombo")._options.$dropDownListCont,
+					$listItems;
+
+				$combo.igCombo("openDropDown");
+				for (var i = 0; i < 75; i++) {
+					emulateKeyBoard("down", false, false, false, $combo);
+				}
+
+				$listItems = $combo.igCombo("listItems");
+				stop();
+
+				setTimeout(function() {
+					start();
+					equal($listItems.last().text(), "75");
+					emulateClick($listItems.last());
+					var lastItem = $listItems.last();
+					stop();
+
+					setTimeout(function() {
+						start();
+						$listItems = $combo.igCombo("listItems");
+						equal($listItems.last().text(), lastItem.text());
+						$combo.igCombo("closeDropDown");
+					}, 200);
+				}, 100);
+			});
 
 			var testId = 'Test disabled binding';
 			test(testId, 12, function () {
@@ -389,6 +427,28 @@
 				ok($('#comboBasic').igCombo('valueInput').val() === newValue, 'The igCombo is not updated properly from the knockout extension');
 				ok($('#comboSelectedItems').igCombo('valueInput').val() === newValue, 'The igCombo is not updated properly from the knockout extension');
 
+			}
+
+			function emulateKeyBoard(key, ctrl, shift, alt, element) {
+				var keyDown = jQuery.Event("keydown"),
+					keyUp = jQuery.Event("keyup");
+
+				keyDown.ctrlKey = keyUp.ctrlKey = ctrl;
+				keyDown.altKey = keyUp.altKey = alt;
+				keyDown.shiftKey = keyUp.shiftKey = shift;
+
+				switch (key) {
+					case "up": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.UP; break;
+					case "left": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.LEFT; break;
+					case "right": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.RIGHT; break;
+					case "down": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.DOWN; break;
+					case "enter": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.ENTER; break;
+					case "esc": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.ESCAPE; break;
+					default: keyDown.keyCode = keyUp.keyCode = key; break;
+				}
+
+				element.trigger(keyDown);
+				element.trigger(keyUp);
 			}
 
 			function emulateClick($element, ctrl, shift) {
@@ -546,14 +606,32 @@
             igCombo: {
                 dataSource: data,
                 textKey: 'name',
-                valueKey: 'value',
-                selectedItems: selectedItems,
+				valueKey: 'value',
+				selectedItems: selectedItems,
                 multiSelection: {
                     enabled: true
                 }
             }
         " />
-    </div>
+	</div>
+	<div class="test-container">
+		<label class="view-container">Selecting items in virtualized combo beyond visible items count</label>
+		<input type="text" id="virtualizationWithSelection" data-bind="
+			igCombo: {
+				animationShowDuration: 0,
+				animationHideDuration: 0,
+				selectedItems: selectCode,
+				dataSource: nameList,
+				textKey: 'Name',
+				valueKey: 'Name',
+				multiSelection: {
+					enabled: true,
+					showCheckboxes: true
+				},
+				virtualization: true,
+			}
+		" />
+	</div>
 	<div class="clear-floating"></div>
 	<div class="view-container">
 		<!--MVVM-V-->
@@ -659,7 +737,7 @@
 		}, igComboDisable: isDisabled" />
 
 	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
-	
+
 	<div id="bigDataContainer"></div>
 </div>
 </body>
