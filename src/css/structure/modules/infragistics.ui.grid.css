@@ -2125,3 +2125,12 @@ margin:1em 20%;
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover {
     background:#eee;
 }
+
+/* BUG 220509 11.12.2017 Marin Popov */
+.ui-widget .ui-igedit.ui-state-disabled {
+    opacity: 1;
+}
+.ui-igedit.ui-state-disabled .ui-igeditor-input-container{
+    opacity: .5;
+}
+/* END BUG 220509 */
