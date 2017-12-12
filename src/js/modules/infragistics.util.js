@@ -4041,8 +4041,7 @@
 			obj.onTick = obj.onTick || function (stop) {
 
 				// request to call notifyResized
-				var resize,
-					obj = this,
+				var obj = this,
 					chart = obj.chart,
 					elem = obj.elem,
 					perc = obj.perc || "",
@@ -4077,15 +4076,17 @@
 				if (!chart) {
 					return;
 				}
-				if (chart.width && ((perc.indexOf("width") >= 0 && width !== oldWidth) ||
-					wait.indexOf("width") >= 0)) {
-					chart.width(resize = width);
+				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) ||
+				    wait.indexOf("width") >= 0;
+				if (chart.width && percWidthChange) {
+					chart.width(width);
 				}
-				if (chart.height && ((perc.indexOf("height") >= 0 && height !== oldHeight) ||
-					wait.indexOf("height") >= 0)) {
-					chart.height(resize = height);
+				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) ||
+				    wait.indexOf("height") >= 0;
+				if (chart.height && percHeightChange) {
+					chart.height(height);
 				}
-				if (resize && obj.notify) {
+				if ((percWidthChange || percHeightChange) && obj.notify) {
 					chart[ obj.notify ]();
 				}
 			};
