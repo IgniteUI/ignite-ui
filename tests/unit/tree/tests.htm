@@ -165,7 +165,15 @@
 						"Tables": "https://test"
 					}
 				}]
-			};
+			},
+			pivotData = [
+				{
+					"caption": "All Products'",
+					"uniqueName": "[Product].[Product].[AllProducts].&[All Products']",
+					"children": []
+				}
+			];
+
 		$(document).ready(function () {
 			$.mockjaxSettings.logging = 0;  // only critical error messages
 			$.mockjax({
@@ -1229,6 +1237,7 @@
 			testId_7 = "igTree bug #203489 applyChangesToNode does not pesist node state for selection and focus.";
 			testId_8 = "igTree hierarchical JSON remote load on demand (Bug 217440 : Child populate with responseDataKey)";
 			testId_9 = "igTree binding to XML";
+			testId_10 = "igTree binding to data that contains apostrophes";
 			
 			test(testId_1, function () {
 				var nodeCount = $('#tree2').find('li[data-role=node]').length;
@@ -1657,7 +1666,26 @@
 						ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name, "Child nodes were not populated successfully.");
 				});
 			});
-			
+
+			test(testId_10, function () {
+				var $treeApos = $('#treeApos').igTree({
+						dataSource: pivotData,
+						checkboxMode: "triState",
+						bindings: {
+							textKey: "caption",
+							valueKey: "uniqueName",
+							childDataProperty: "children"
+						}
+					}), 
+					nodeValue = pivotData[0].uniqueName.replace("'", "\\'"),
+					nodeText = pivotData[0].caption.replace("'", "\\'");
+				
+				ok($treeApos.igTree("nodesByValue", nodeValue).length === 1, "nodesByValue API does not work with value that contains apostrophes");
+				ok($treeApos.igTree("findNodesByText", nodeText).length === 1, "findNodesByText API does not work with value that contains apostrophes");
+				$treeApos.igTree("removeNodesByValue", nodeValue);
+				ok($treeApos.igTree("nodesByValue", nodeValue).length === 0, "Node with value that contains apostrophes should be deleted");
+				ok(pivotData.length === 0, "pivotData data source should be empty");
+			});
 			/* ***************** END igTree databinding ***************** */
 			
 			/* ***************** igTree Client events ***************** */
@@ -2569,6 +2597,7 @@
 			<div id="tree4"></div>
 			<div id="tree5"></div>
 			<div id="remoteLOD"></div>
+			<div id="treeApos"></div>
 		</div>
 		
 		<!-- END Tree Databinding -->
