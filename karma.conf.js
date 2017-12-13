@@ -26,9 +26,12 @@ module.exports = function(config) {
       { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
       { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
 
+      "tests/test-patch.js",
+
       // load HTML beds?
       //'tests/unit/**/*test*.htm*'
-      "tests/unit/colorpicker/tests.html"
+      "tests/unit/colorpicker/tests.html",
+      "tests/unit/colorpickersplitbutton/tests.html"
     ],
     proxies: {
       "bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js",
