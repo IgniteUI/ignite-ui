@@ -25,13 +25,15 @@
 	}
 }
 (function ($, ko) {
-	function updatePropertyValue(element, bindingType, viewModel, newValue) {
-		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*value\\s*:\\s*)?([^{},\\s]+)"),
+	function updatePropertyValue(element, bindingType, viewModel, newValue, boundProperty) {
+		var boundPropertyResolved = boundProperty !== undefined ? boundProperty : "value";
+
+		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*"+ boundPropertyResolved + "\\s*:\\s*)?([^{},\\s]+)"),
 			key,
 			res = $(element).attr("data-bind").match(reg);
 		if (res) {
 			key = res[ 1 ];
-			if (viewModel[ key ]) {
+			if (viewModel.hasOwnProperty(key)) {
 				viewModel[ key ] = newValue;
 			}
 		}
@@ -484,9 +486,9 @@
 			//In that case the model is updated on valueChanged event
 			editor.bind("igcheckboxeditorvaluechanged", function (event, args) {
 				if (ko.isObservable(valueAccessor().checked)) {
-					valueAccessor().checked(args.newValue);
+					valueAccessor().checked(args.newState);
 				} else {
-					updatePropertyValue(element, "igCheckboxEditor", viewModel, args.newValue);
+					updatePropertyValue(element, "igCheckboxEditor", viewModel, args.newState, "checked");
 				}
 			});
 			ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
@@ -500,9 +502,17 @@
 			} else {
 				return;
 			}
-			current = editor.igCheckboxEditor("value");
+			// DD - December 13th, 2017 - #1437
+			// If we haven't set any value explicitly the value and the check state will be synchronized. In that case we can set value directly.
+			// However if we do have a value, it will be a string, and we should set the checked option isntead of overriding it.
+			var noValue = typeof editor.igCheckboxEditor("value") === "boolean";
+
+			current = noValue ? editor.igCheckboxEditor("value") : editor.igCheckboxEditor("option", "checked");
 			if (current !== value) {
-				editor.igCheckboxEditor("value", value);
+				if(noValue)
+					editor.igCheckboxEditor("value", value);
+				else
+					editor.igCheckboxEditor("option", "checked", value);
 			}
 		}
 	};

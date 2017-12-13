@@ -124,7 +124,7 @@
 			ok(model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
 			$igEditor.click();
 			ok(!model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
-			model.isChecked(true);
+			model.isCheckedWithValue(true);
 			ok($igEditor.igCheckboxEditor("option", "checked"), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
 			$igEditor.remove();
 		});
