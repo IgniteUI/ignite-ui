@@ -135,7 +135,7 @@ The package for this development repository is available on both [`npm`](https:/
 To get started follow the respective package manager installation:
 
 #### Ignite UI CLI
-To get started with the Ignite UI CLI and Ignite UI for Angular:
+To get started with the Ignite UI CLI and Ignite UI:
 
 ```
 npm i -g igniteui-cli
