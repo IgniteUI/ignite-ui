@@ -134,6 +134,17 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 The package for this development repository is available on both [`npm`](https://www.npmjs.com/package/ignite-ui) and [`bower`](https://github.com/IgniteUI/ignite-ui-bower).
 To get started follow the respective package manager installation:
 
+#### Ignite UI CLI
+To get started with the Ignite UI CLI and Ignite UI for Angular:
+
+```
+npm i -g igniteui-cli
+ig new <project name> --framework=jquery
+cd <project name>
+ig add combo <component name>
+ig start
+```
+
 #### npm
 ```shell
 npm install ignite-ui
