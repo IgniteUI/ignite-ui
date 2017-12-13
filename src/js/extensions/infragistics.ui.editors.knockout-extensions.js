@@ -25,10 +25,12 @@
 	}
 }
 (function ($, ko) {
-	function updatePropertyValue(element, bindingType, viewModel, newValue, boundProperty) {
-		var boundPropertyResolved = boundProperty !== undefined ? boundProperty : "value";
+	function updatePropertyValue(element, bindingType, viewModel, newValue, boundTo) {
+		if (boundTo === undefined) {
+			boundTo = "value";
+		}
 
-		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*"+ boundPropertyResolved + "\\s*:\\s*)?([^{},\\s]+)"),
+		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*" + boundTo + "\\s*:\\s*)?([^{},\\s]+)"),
 			key,
 			res = $(element).attr("data-bind").match(reg);
 		if (res) {
@@ -502,17 +504,12 @@
 			} else {
 				return;
 			}
-			// DD - December 13th, 2017 - #1437
-			// If we haven't set any value explicitly the value and the check state will be synchronized. In that case we can set value directly.
-			// However if we do have a value, it will be a string, and we should set the checked option isntead of overriding it.
-			var noValue = typeof editor.igCheckboxEditor("value") === "boolean";
 
-			current = noValue ? editor.igCheckboxEditor("value") : editor.igCheckboxEditor("option", "checked");
+			// DD - December 13th, 2017 - #1437
+			// Use the checked option instead of the value, because it is not always synched with the checked state.
+			current = editor.igCheckboxEditor("option", "checked");
 			if (current !== value) {
-				if(noValue)
-					editor.igCheckboxEditor("value", value);
-				else
-					editor.igCheckboxEditor("option", "checked", value);
+				editor.igCheckboxEditor("option", "checked", value);
 			}
 		}
 	};
