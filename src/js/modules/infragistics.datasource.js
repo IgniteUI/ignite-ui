@@ -2552,7 +2552,7 @@
 					ds.dataBind();
 				});
 			```
-			paramType="string" Primary key of the record
+			paramType="object" Primary key of the record
 			paramType="string" optional="true" the data source in which to search for the record. When not set it will use the current data source.
 			paramType="string" optional="true" Not used in $.ig.DataSource
 			returnType="object" a JavaScript object specifying the found record, or null if no record is found
@@ -7510,7 +7510,9 @@
 			/* type="string" this is the property (path) in the data source where the records are located. */
 			searchField: null,
 			/* type="string" this is the property in the resulting object where actual resulting records will be put. (So the result will not be array but an object if this is defined), after the potential data source transformation */
-			outputResultsName: null
+			outputResultsName: null,
+			/* type="string" this is the property (xpath) in the data source where the child records of a record are located. Used in XML binding. */
+			childDataProperty: null
 		},
 		init: function (type, options) {
 			$.ig.DataSchema.prototype.schema.fields = [];

@@ -267,7 +267,10 @@
 
 	$.ig.util.getLocaleValue = function (collection, key) {
 		var language = $.ig.util.language,
-			locale = $.ig.locale[ language ][ collection ];
+			locale = ($.ig.locale[ language ] && $.ig.locale[ language ][ collection ]) ||
+				($.ig[ collection ] && $.ig[ collection ].locale) ||
+				/* excel exporter locale seems to be generated with lower cases for its defaults */
+				($.ig[ collection.toLowerCase() ] && $.ig[ collection.toLowerCase() ].locale);
 		return locale[ key ] || "";
 	};
 
@@ -1625,6 +1628,7 @@
 		result = result.replace("tt", hours < 12 ? "AM" : "PM");
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
+		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
 		return result;
 	};
 
@@ -3361,6 +3365,12 @@
 			return this.compare5(string1, string2, $.ig.CompareOptions.prototype.none);
 		},
 		compare5: function (string1, string2, options) {
+			if (string1 === null) {
+				return string2 === null ? 0 : -1;
+			} else if (string2 === null) {
+				return 1;
+			}
+
 			return this.compare1(string1, 0, string1.length, string2, 0, string2.length, options);
 		},
 		indexOf1: function (source, value) {
@@ -3752,9 +3762,12 @@
 	String.prototype.trimStart = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		if (this.length === 0) {
@@ -3768,9 +3781,12 @@
 	String.prototype.trimEnd = function () {
 		var args = [ " " ];
 		if (arguments.length > 0) {
-			args = Array.prototype.slice.call(arguments);
-			if (args.length === 1 && Array.isArray(args[ 0 ])) {
-				args = args[ 0 ];
+			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
+				if (arguments[ 0 ].length > 0) {
+					args = arguments[ 0 ];
+				}
+			} else {
+				args = Array.prototype.slice.call(arguments);
 			}
 		}
 		var i = this.length - 1;
@@ -4058,6 +4074,10 @@
 			// width/height flags which trigger timer and adjustments of width/height on ticks
 			perc = obj.perc;
 		if (!prop) {
+			if (obj.observer) {
+				obj.observer.disconnect();
+				delete obj.observer;
+			}
 			if (obj.tickID) {
 				obj.onTick(true);
 			}
@@ -4066,6 +4086,28 @@
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
+
+		if (window.MutationObserver && !obj.observer) {
+			var oldCollapsed = elem[ 0 ].style.display == "none";
+			var observer = new MutationObserver(function (event) {
+				var collapsed = elem[ 0 ].style.display == "none";
+
+				if (collapsed !== oldCollapsed) {
+					oldCollapsed = collapsed;
+					if (notifyResized && chart) {
+						chart[ notifyResized ]();
+					}
+				}
+			});
+			observer.observe(elem[ 0 ], {
+				attributes: true,
+				attributeFilter: [ "style" ],
+				childList: false,
+				characterData: false
+			});
+			obj.observer = observer;
+		}
+
 		if (!val) {
 			val = elem[ prop ]();
 		}
@@ -4138,8 +4180,7 @@
 			obj.onTick = obj.onTick || function (stop) {
 
 				// request to call notifyResized
-				var resize,
-					obj = this,
+				var obj = this,
 					chart = obj.chart,
 					elem = obj.elem,
 					perc = obj.perc || "",
@@ -4174,15 +4215,17 @@
 				if (!chart) {
 					return;
 				}
-				if (chart.width && ((perc.indexOf("width") >= 0 && width !== oldWidth) ||
-					wait.indexOf("width") >= 0)) {
-					chart.width(resize = width);
+				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) ||
+				    wait.indexOf("width") >= 0;
+				if (chart.width && percWidthChange) {
+					chart.width(width);
 				}
-				if (chart.height && ((perc.indexOf("height") >= 0 && height !== oldHeight) ||
-					wait.indexOf("height") >= 0)) {
-					chart.height(resize = height);
+				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) ||
+				    wait.indexOf("height") >= 0;
+				if (chart.height && percHeightChange) {
+					chart.height(height);
 				}
-				if (resize && obj.notify) {
+				if ((percWidthChange || percHeightChange) && obj.notify) {
 					chart[ obj.notify ]();
 				}
 			};

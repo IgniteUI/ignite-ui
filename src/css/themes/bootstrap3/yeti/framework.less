@@ -1735,35 +1735,6 @@ body .ui-tooltip {
   background-position: -80px -208px;
 }
 
-/* Scheduler icons */
-.ui-igscheduler {
-  .ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
-    .ui-icon
-    {
-      color: @ui-icons-darker;
-    }
-  }
-  .ui-igscheduler-tabs,
-  .ui-igscheduler-today-button{
-    &:hover {
-      .ui-icon
-      {
-        color: @ui-icons-darker;
-      }
-    }
-  }
-  .ui-icon-calendar-day {
-    background-position: -96px -208px;
-  }
-  .ui-icon-calendar {
-    background-position: -112px -208px;
-  }
-  .ui-icon-note {
-    background-position: -128px -208px;
-  }
-}
-/* Scheduler icons END */
-
 .ui-icon-grip-dotted-vertical {
   background-position: 0 -224px;
 }
@@ -1857,6 +1828,19 @@ body .ui-tooltip {
 /*
  * jQuery UI Menu Overrides
  */
+
+.ui-menu .ui-menu-item {
+  border:none;
+  border-top: 1px solid transparent;
+  padding: 0;
+  &:first-of-type{
+    border-top:none;
+  }
+}
+
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 
 .ui-menu{
   background: @dropdown-bg;

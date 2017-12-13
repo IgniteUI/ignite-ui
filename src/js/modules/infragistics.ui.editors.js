@@ -1793,6 +1793,12 @@
 			}
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igtexteditor#options:language)
+			Note that this method is for rare scenarios, see [language](ui.igtexteditor#options:language) or [locale](ui.igtexteditor#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			this._superApply(arguments);
 			this._changeLocaleForNotifier();
 		},
@@ -2369,7 +2375,7 @@
 		},
 		_renderList: function () {
 			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, dropdown,
-				id = this.id, html;
+				id = this.id, html, listBorderHeight;
 
 			html = "<div id='" + id + "_list" + "' tabindex='-1' class='" +
 				this.css.dropDownList + "' role='listbox' aria-activedescendant='" +
@@ -2388,30 +2394,38 @@
 			}
 			html += "</div>";
 			dropdown = $(html);
-			if (currentItem) {
-				currentItem = $(currentItem);
-			}
 
 			if (this.options.dropDownAttachedToBody) {
 				$(document.body).append(dropdown);
 			} else {
 				this._editorContainer.append(dropdown);
 			}
-			itemHeight = currentItem.css("height");
-			itemHeight = parseFloat(itemHeight);
+			itemHeight = dropdown.children().eq(0).outerHeight();
+
 			if (itemHeight === 0) {
 
 				// According to Designers, when height is 0, this is better solution, then setting min-height: 23 in CSS.
 				itemHeight = 23;
 			}
+
+			if (this._calculateDropDownListOrientation() === "bottom") {
+				listBorderHeight = parseInt(dropdown.css("borderBottomWidth"));
+			} else {
+				listBorderHeight = parseInt(dropdown.css("borderTopWidth"));
+			}
+
 			if (list.length < this.options.visibleItemsCount) {
-				dropdown.css("height", parseFloat(itemHeight * list.length));
-				this._listInitialHeight = parseFloat(itemHeight * list.length);
+				dropdown.css("height", parseFloat(itemHeight * list.length +
+					listBorderHeight));
+				this._listInitialHeight = parseFloat(itemHeight * list.length +
+					listBorderHeight);
 
 				//TODO - hide scroll
 			} else {
-				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + 2);
-				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + 2;
+				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight);
+				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight;
 			}
 			this._dropDownList = dropdown;
 			this._setDropDownListWidth();
@@ -5905,6 +5919,12 @@
 			return this._getRegionalValue();
 		},
 		changeRegional: function() { //igNumericEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.ignumericeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.ignumericeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			if (this._focused) {
 				this._enterEditMode();
 			} else {
@@ -6684,9 +6704,15 @@
 						// Move to next char on the mask
 						// We need to detect Escaped chars
 
+						// A.M. November 29th, 2017 #1246
 						if (mask.charAt(i) === "\\") {
-							i++;
-							j--;
+							var flags = [ "C", "&", "a", "A", "?", "L", "0", "9", "#" ];
+							if (flags.indexOf(ch) > -1) {
+								i++;
+							} else {
+								i++;
+								j--;
+							}
 						} else if (mask.charAt(i) === "<" || mask.charAt(i) === ">") {
 							j--;
 						}
@@ -8010,6 +8036,12 @@
 			}
 		},
 		changeRegional: function() { //igDateEditor
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdateeditor#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdateeditor#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			var timeouts = this._timeouts;
 			this._initialize();
 			this._timeouts = timeouts;
@@ -9807,13 +9839,15 @@
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
 						if (newHour >= 13) {
-							newHour = newHour - hours;
 							if (newHour > 13 || delta > 1) {
 								amPmUpdateDelta = true;
 							}
-							if (currentAmPm === "pm") {
+
+							//  N.A. December 5th, 2017 #1304: In 12 hours format the time period 12:00-12:59 has already changed AM/PM, so we don't need to updated it at 1:00 or at any time with any spin < 12.
+							if (currentAmPm === "pm" && (currentHour < 12 || currentHour === 12 && delta === 12)) {
 								dayUpdateDelta = true;
 							}
+							newHour = newHour - hours;
 						}
 					}
 				}
@@ -11245,6 +11279,12 @@
 
 		// igDatePicker public methods
 		changeRegional: function() { //igDatePicker
+			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdatepicker#options:regional)
+			Note that this method is for rare scenarios, use [regional](ui.igdatepicker#options:regional) option setter
+			```
+				$(".selector").%%WidgetName%%("changeRegional");
+			```
+			*/
 			var regional, opts = this.options.datepickerOptions;
 			regional = $.extend({}, this._dpRegion());
 			if (opts && typeof opts === "object") {

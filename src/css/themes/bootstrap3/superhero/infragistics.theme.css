@@ -1720,43 +1720,6 @@ body .ui-tooltip {
 .ui-icon-squaresmall-close {
   background-position: -80px -208px;
 }
-/* Scheduler icons */
-.ui-igscheduler .ui-igscheduler-tabs.ui-igscheduler-tabs-selected .ui-icon {
-  color: #222222;
-}
-.ui-igscheduler .ui-igscheduler-tabs:hover .ui-icon,
-.ui-igscheduler .ui-igscheduler-today-button:hover .ui-icon {
-  color: #222222;
-}
-.ui-igscheduler .ui-icon-calendar-day {
-  background-position: -96px -208px;
-}
-.ui-igscheduler .ui-icon-calendar {
-  background-position: -112px -208px;
-}
-.ui-igscheduler .ui-icon-note {
-  background-position: -128px -208px;
-}
-/* Scheduler icons END */
-.ui-icon-grip-dotted-vertical {
-  background-position: 0 -224px;
-}
-.ui-icon-grip-dotted-horizontal {
-  background-position: -16px -224px;
-}
-.ui-icon-grip-solid-vertical {
-  background-position: -32px -224px;
-}
-.ui-icon-grip-solid-horizontal {
-  background-position: -48px -224px;
-}
-.ui-icon-gripsmall-diagonal-se {
-  background-position: -64px -224px;
-}
-.ui-icon-grip-diagonal-se,
-.ui-dialog .ui-icon-grip-diagonal-se {
-  background-position: -80px -224px;
-}
 /* Misc visuals
 ----------------------------------*/
 /* Corner radius */
@@ -1818,6 +1781,20 @@ body .ui-tooltip {
 /*
  * jQuery UI Menu Overrides
  */
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid transparent;
+  padding: 0;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
+.ui-igspreadsheet .ui-menu .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  padding: 0;
+}
 .ui-menu {
   background: #4E5D6C;
   color: #EBEBEB;
@@ -3236,7 +3213,8 @@ body .ui-tooltip {
   background: #485563;
 }
 .ui-iggrid th.ui-state-active,
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #485563;
 }
 .ui-iggrid .ui-iggrid-footer,
@@ -3286,6 +3264,15 @@ body .ui-tooltip {
 .ui-iggrid th.ui-state-active.ui-state-hover .ui-icon {
   color: #222222;
 }
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
+.ui-iggrid tbody td {
+  border-left: 1px solid #4E5D6C;
+  border-right: 1px solid #4E5D6C;
+}
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+  border-right: 1px solid #4E5D6C;
+}
+/* BUG 246065 END */
 .ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
@@ -3356,8 +3343,8 @@ body .ui-tooltip {
 .ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
   border-color: transparent!important;
@@ -3549,7 +3536,7 @@ body .ui-tooltip {
 /* Summaries */
 .ui-iggrid .ui-widget-footer,
 .ui-iggrid .ui-iggrid-footertable {
-  background: transparent;
+  background: #2B3E50;
   border-bottom: 1px solid #4E5D6C;
   border-right: 1px solid #4E5D6C;
 }
@@ -3564,7 +3551,7 @@ body .ui-tooltip {
   background-color: #485563;
 }
 .ui-iggrid tfoot td.ui-state-default .ui-icon {
-  color: #222222;
+  color: #888888;
 }
 /* Column Moving custom icons */
 .ui-iggrid-columnmoving-dragtop {
@@ -3766,7 +3753,11 @@ body .ui-tooltip {
   font-size: 1.1em;
 }
 .ui-igscheduler-header {
-  border-color: #dadada;
+  background: #22313f;
+  border-color: #4E5D6C;
+}
+.ui-igscheduler-tabs {
+  color: #EBEBEB;
 }
 .ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
   color: #DF691A;
@@ -3776,7 +3767,7 @@ body .ui-tooltip {
 }
 .ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
 .ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
-  color: #DF691A;
+  color: #d16318;
 }
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time,
@@ -3794,7 +3785,13 @@ body .ui-tooltip {
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-selected {
   background-color: #f0f0f0;
 }
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator {
+.ui-igscheduler-core .ui-igscheduler-dayweek-vertical-separator,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
+  background-color: #4E5D6C;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-horizontal-separator,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator {
   background-color: #4E5D6C;
 }
 .ui-igscheduler-agendaview .null {
@@ -3804,23 +3801,15 @@ body .ui-tooltip {
   box-shadow: 1px 2px 15px #070b0e;
   z-index: 1;
 }
-.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator {
-  background-color: #4E5D6C;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
-  background-color: #4E5D6C;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-selected {
+.ui-igscheduler-core .ui-igscheduler-monthview-dayday-selected {
   background-color: rgba(0, 0, 0, 0.12);
   color: #888;
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-day-today-indicator {
   background: transparent;
 }
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today span,
 .ui-igscheduler-core .ui-igscheduler-monthview-day-today {
-  color: #DF691A;
-}
-.ui-igscheduler-monthview-day-today span {
   color: #DF691A;
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-month-header {
@@ -3838,28 +3827,31 @@ body .ui-tooltip {
 .ui-igscheduler-selectall {
   background-color: #DF691A;
 }
-.ui-igscheduler-appointment-dialog-save-button,
-.ui-igscheduler-appointment-dialog-cancel-button {
-  border-color: #4E5D6C;
-  background: #dadada;
+.ui-igscheduler-navigator-disabled-date-range-button {
+  color: #EBEBEB;
 }
-.ui-igscheduler-appointment-dialog-save-button:hover,
-.ui-igscheduler-appointment-dialog-cancel-button:hover {
-  background: #e8e8e8;
+.ui-igscheduler-navigator-next-button:hover {
+  color: #EBEBEB;
+}
+.ui-igscheduler-navigator-next-button:hover span:after,
+.ui-igscheduler-navigator-previous-button:hover span:after {
+  border-color: #DF691A;
 }
 .ui-igscheduler-navigator-back-button:hover,
 .ui-igscheduler-navigator-date-range-button:hover,
 .ui-igscheduler-navigator-forward-button:hover {
   background-color: transparent;
 }
-.ui-igscheduler-today-button:hover,
-.ui-igscheduler-tabs:hover {
-  background-color: #fff;
-  color: #777;
+.ui-igscheduler-today-button {
+  color: #EBEBEB;
 }
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
-.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
-  cursor: pointer;
+.ui-igscheduler-today-button:hover {
+  background-color: transparent;
+  color: #DF691A;
+}
+.ui-igscheduler-tabs:hover {
+  background-color: transparent;
+  color: #DF691A;
 }
 .ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
   color: #DF691A;
@@ -3880,16 +3872,81 @@ body .ui-tooltip {
   background-color: transparent;
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
-  background-color: #c0c0c0;
+  background-color: #ccc;
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
   font-size: .75em;
+  padding: 0 0 0 3px!important;
 }
 .ui-igscheduler-tabs .ui-icon,
 .ui-igscheduler-today-button .ui-icon {
   margin-top: -9px !important;
 }
 #scheduler .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
+  background-color: #4E5D6C;
+}
+/* Week & day views */
+.ui-igscheduler-core .ui-igscheduler-dayweekview {
+  background-color: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-allday-event-area {
+  background-color: #bcbcbc;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt {
+  background-color: #bcbcbc;
+}
+.ui-igscheduler-core .ui-igscheduler-allday-event-subject {
+  font-size: .5em;
+  background-color: #bcbcbc;
+  color: #444;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-location {
+  font-size: 1em;
+  background-color: transparent;
+  color: #777;
+}
+/*
+
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-color-bar {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-header-area {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-topleft-corner {}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor-area {}
+
+*/
+.ui-igscheduler-core .ui-igscheduler-dayweek-appt-subject {
+  font-size: 1.1em;
+  background-color: transparent;
+  color: #444;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-day-header {
+  font-size: 1em;
+  background-color: transparent;
+  color: #999999;
+}
+.ui-igscheduler-monthview-day-selected {
+  background: #4E5D6C;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-navigation-header-date-text {
+  font-size: 1em;
+  color: #EBEBEB;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-resource-header {
+  font-size: 1.1em;
+  background-color: transparent;
+  color: #EBEBEB;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot {
+  background-color: rgba(255, 255, 255, 0.005);
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor {
+  font-size: .8em;
+  background-color: transparent;
+  color: #EBEBEB;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-working-hour {
+  background-color: #eeeeee;
+}
+.ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-selected {
   background-color: #4E5D6C;
 }
 /**************/
@@ -4078,7 +4135,7 @@ Spreadsheet colors
 .ui-igspreadsheet-columnheader,
 .ui-igspreadsheet-rowheader {
   background-color: #2B3E50;
-  color: #111;
+  color: #e8e8e8;
 }
 /* Cols & Rows Headers borders  */
 .ui-igspreadsheet-columnheader {
@@ -4191,6 +4248,64 @@ Spreadsheet colors
 }
 .ui-igspreadsheet .ui-menu {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+/* Styles for jQuery 1.12.1*/
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item-wrapper.ui-state-active .ui-icon {
+  color: #fff;
+}
+/* Styles for jQuery 1.12.1 END */
+/* Styles for jQuery 1.10.3*/
+.ui-menu-item .ui-state-focus:hover,
+.ui-menu-item a.ui-state-active {
+  color: #fff;
+  background: #DF691A;
+}
+.ui-menu-item .ui-state-focus:hover .ui-icon,
+.ui-menu-item a.ui-state-active .ui-icon {
+  color: #fff;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  border-color: transparent;
+  background: transparent;
+  color: #EBEBEB;
+}
+.ui-igspreadsheet .ui-menu-item > a .ui-icon {
+  color: #EBEBEB;
+}
+/* Styles for jQuery 1.10.3 END */
+/* Styles for jQuery 1.11.1*/
+.ui-menu-item.ui-state-focus {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-menu-item.ui-state-active > div,
+.ui-menu-item.ui-state-active {
+  background: #DF691A;
+}
+.ui-menu .ui-menu-item {
+  margin: -1px;
+}
+.ui-menu .ui-menu-item .ui-icon {
+  color: #EBEBEB;
+}
+/* Styles for jQuery 1.11.1 END */
+.ui-menu .ui-menu-item.ui-state-focus > span {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div {
+  background: #DF691A;
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-focus > div .ui-icon {
+  color: #fff;
+}
+.ui-menu .ui-menu-item.ui-state-active .ui-icon,
+.ui-menu .ui-menu-item.ui-state-focus .ui-icon {
+  color: #fff;
 }
 /***********************/
 /* Tile manager        */

@@ -4896,6 +4896,12 @@
 			}
 		},
 		changeLocale: function() {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igvideoplayer#options:language)
+			Note that this method is for rare scenarios, use [language](ui.igvideoplayer#options:language) or [locale](ui.igvideoplayer#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			this._super();
 			var $button = $("#" + this._id("_rv_bar_replay")),
 				$progressLabel = $("#" + this._id("_ctrls_pl"));

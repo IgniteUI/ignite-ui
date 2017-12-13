@@ -104,6 +104,8 @@ $.ig.loaderClass.locale.descriptions = {
 	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
 	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
 	financialDescription: "Contains the financial series for the igDataChart.",
+	shapeDataSourceDescription: "This module supports loading shape data from various data sources.",
+	shapeChartDescription: "Component that renders areas in orthogonal (Cartesian) coordinate system into a canvas on the page.",
 	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
 	funnelChartDescription: "Component to create a funnel chart that displays values associated with different categories in a conic shape.",
 	linearGaugeDescription: "Component that visualizes data in the form of a linear gauge enriched with scales, tick marks and needles.",
@@ -160,8 +162,7 @@ $.ig.dependencies = [
 		widget: "igUtil",
 		priority: true,
 		scripts: [ "$path$/modules/infragistics.util.js",
-		"$path$/modules/infragistics.util.jquery.js",
-		"$path$/modules/infragistics.util.jquerydeferred.js" ],
+		"$path$/modules/infragistics.util.jquery.js" ],
 		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [  ],
@@ -187,7 +188,11 @@ $.ig.dependencies = [
 	},
 	{
         widget: "_igOlap",
-        dependency: [ { name: "igUtil" } ],
+        dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_collections_extended" },
+			{ name: "_ig_ext_threading" }
+		],
         scripts: [ "$path$/modules/infragistics.olap.js" ],
         group: $.ig.loaderClass.locale.frameworkGroup,
         internal: true,
@@ -195,7 +200,12 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igOlapXmlaDataSource",
-		dependency: [ { name: "_igOlap" } ],
+		dependency: [
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_web" },
+			{ name: "_ig_ext_xml" },
+			{ name: "_igOlap" }
+		],
 		scripts: [ "$path$/modules/infragistics.olapxmladatasource.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
 		css: [  ],
@@ -289,9 +299,20 @@ $.ig.dependencies = [
 	{
 		widget: "_ig_ext_web",
 		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_threading" } ],
+		dependency: [
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_threading" }
+		],
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_web.js" ]
+	},
+	{
+		widget: "_ig_ext_xml",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_core" }, { name: "_ig_ext_collections" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_xml.js" ]
 	},
 	{
 		widget: "_ig_dv_core",
@@ -413,30 +434,25 @@ $.ig.dependencies = [
 		widget: "VisualData",
 		group: $.ig.loaderClass.locale.miscGroup,
 		dependency: [ { name: "_ig_dv_visualdata" }],
-		internal: true,
 		description: $.ig.loaderClass.locale.descriptions.visualDataDescription
 	},
-
+	{
+		widget: "igShapeDataSource",
+		dependency: [
+			{ name: "_ig_ext_web" },
+			{ name: "_ig_dv_geo" }
+		],
+		scripts: [  ],
+		group: $.ig.loaderClass.locale.frameworkGroup,
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.shapeDataSourceDescription
+	},
 	{
 		widget: "igChartLegend",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_legend" }, { name: "igWidget" }, { name: "_ig_dv_commonwidget" }  ],
 		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js" ],
 		description: $.ig.loaderClass.locale.descriptions.chartLegendDescription
-	},
-	{
-		widget: "igDateTimeAxis",
-		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_dv_extendedaxes" } ],
-		scripts: [],
-		description: $.ig.loaderClass.locale.descriptions.dateTimeAxisDescription
-	},
-	{
-		widget: "igTimeXAxis",
-		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_dv_extendedaxes" } ],
-		scripts: [],
-		description: $.ig.loaderClass.locale.descriptions.timeXAxisDescription
 	},
 	{
 		widget: "igOverviewPlusDetailPane",
@@ -547,6 +563,22 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [ "$path$/modules/infragistics.datachart_annotation.js" ],
 		description: $.ig.loaderClass.locale.descriptions.annotationDescription
+	},
+	{
+		widget: "DateTimeAxis",
+        parentWidget: "igDataChart",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		scripts: [],
+		description: $.ig.loaderClass.locale.descriptions.dateTimeAxisDescription
+	},
+	{
+		widget: "TimeXAxis",
+        parentWidget: "igDataChart",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		scripts: [],
+		description: $.ig.loaderClass.locale.descriptions.timeXAxisDescription
 	},
 	{
         widget: "Interactivity",
@@ -2574,26 +2606,6 @@ $.ig._loadWorkItem.prototype = {
 		}
 	},
 
-	_loadAllFeatures: function (type) {
-		var i, j,
-			len = this._loader._resources.length, jlen = 0,
-			scriptData,
-			item,
-			loadingEntity = "ALL",
-			res;
-
-		for (i = 0; i < len; i++) {
-			scriptData = this._loader._resources[ i ];
-			this._loadDependency(scriptData, loadingEntity, type);
-			res = (type === "script" ? scriptData.scripts : scriptData.css);
-			res = res || [  ];
-			jlen = res.length;
-			for (j = 0; j < jlen; j++) {
-				item = res[ j ];
-				this._queueItem(item, loadingEntity, type, scriptData.priority);
-			}
-		}
-	},
 	loadWidgetResources: function (widgetName, callback) {
 		if (this._loadingEntities[ widgetName ] !== undefined) {
 			this._loadingEntities[ widgetName ].call.push(callback);
@@ -2602,30 +2614,6 @@ $.ig._loadWorkItem.prototype = {
 		}
 		this._loadFeatures("css", widgetName);
 		this._loadFeatures("script", widgetName);
-		this._loadMonitor();
-	},
-
-	loadWidgetCss: function (widgetName) {
-		this._loadFeatures("css", widgetName);
-	},
-
-	loadWidgetScripts: function (widgetName) {
-		this._loadFeatures("script", widgetName);
-	},
-
-	loadAllScripts: function () {
-		this._loadAllFeatures("script");
-	},
-
-	loadAllCss: function () {
-		this._loadAllFeatures("css");
-	},
-
-	loadAllResources: function (callback) {
-		var loadingEntity = "ALL";
-		this._loadingEntities[ loadingEntity ] = { name: loadingEntity, call: [ callback ], queue: [  ] };
-		this._loadAllFeatures("css");
-		this._loadAllFeatures("script");
 		this._loadMonitor();
 	},
 

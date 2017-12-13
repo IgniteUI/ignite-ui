@@ -2828,7 +2828,8 @@
 				progressBarFileSize = $("#" + self._id("_pbrflsz", formNumber)),
 				singleProgressBarWidth = $("#" + self._id("_snglpbar", formNumber)).width(),
 				singleProgressBar = $("#" + self._id("_snglpbar", formNumber)),
-				progressBarFileSizeWidth = progressBarFileSize.width();
+				progressBarFileSizeWidth = progressBarFileSize.width(),
+				offsetLeft;
 
 			/* M.H. 22 Aug 2012 Fix for bug #119469 */
 			if (progressBarFileName.length === 0) {
@@ -2849,7 +2850,8 @@
 												.width();
 					progressBarFileSize.text(originalFileSize);
 				}
-				while (progressBarFileName.position().left +
+				offsetLeft = progressBarFileName.position().left - this.container().position().left;
+				while (offsetLeft +
 						progressBarFileName.width() +
 						progressBarFileSizeWidth >= singleProgressBarWidth &&
 						(previousFileName !== fileName)) {
@@ -2860,7 +2862,7 @@
 					}
 					progressBarFileName.text(fileName + this._getLocaleValue("labelProgressBarFileNameContinue"));
 				}
-				if (progressBarFileName.position().left +
+				if (offsetLeft +
 					progressBarFileName.width() +
 					progressBarFileSize.width() >= singleProgressBarWidth) {
 					fileName = this._getLocaleValue("labelProgressBarFileNameContinue");
@@ -3368,6 +3370,12 @@
 			}
 		},
 		changeLocale: function () {
+			/* changes the all locales into the widget element to the language specified in [options.language](ui.igupload#options:language)
+			Note that this method is for rare scenarios, use [language](ui.igupload#options:language) or [locale](ui.igupload#options:locale) option setter
+			```
+				$(".selector").%%WidgetName%%("changeLocale");
+			```
+			*/
 			var $button = $("#" + this._id("_ibb")),
 				$sumarryProgressTmp = $("#upload_summplbl"),
 				self = this;

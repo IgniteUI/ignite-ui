@@ -190,6 +190,7 @@
 			equal($.ig.Date.prototype.toStringFormat(dt, "T"), "12:00:00 PM", "Date.toStringFormat formats T correctly");
 			// equal($.ig.Date.prototype.toStringFormat(dt, "y"), "October 1980", "Date.toStringFormat formats y correctly");
 			// equal($.ig.Date.prototype.toStringFormat(dt, "Y"), "October 1980", "Date.toStringFormat formats Y correctly");
+			equal($.ig.Date.prototype.toStringFormat(dt, "hh:mm:ss:ff"), "12:00:00:00", "Date.toStringFormat formats hh:mm:ss:ff correctly");
 		});
 
 		test("Test IsAssignableFrom", function () {
@@ -203,6 +204,37 @@
 		    ok($.ig.IConvertible.prototype.$type.isAssignableFrom($.ig.Enum.prototype.$type), "Enum implements IConvertible");
 		    ok($.ig.IComparable$1.prototype.$type.specialize($.ig.Int32.prototype.$type).isAssignableFrom($.ig.Int32.prototype.$type), "Int32 implements IComparable<Int32>");
 		    ok($.ig.IEquatable$1.prototype.$type.specialize($.ig.Int32.prototype.$type).isAssignableFrom($.ig.Int32.prototype.$type), "Int32 implements IEquatable<Int32>");
+		});
+
+		test("Test stringCompare2", function () {
+			var c = $.ig.CultureInfo.prototype.currentCulture();
+			var o = $.ig.CompareOptions.prototype.none;
+			
+		    equal($.ig.util.stringCompare2("A", "B", c, o), -1, "A before B");
+		    equal($.ig.util.stringCompare2("B", "A", c, o), 1, "B before A");
+		    equal($.ig.util.stringCompare2("A", "A", c, o), 0, "A === A");
+		    equal($.ig.util.stringCompare2(null, "A", c, o), -1, "null befoe A");
+		    equal($.ig.util.stringCompare2("A", null, c, o), 1, "A after null");
+		    equal($.ig.util.stringCompare2(null, "", c, o), -1, "null before empty");
+		    equal($.ig.util.stringCompare2("", null, c, o), 1, "empty after null");
+		});
+
+		test("Test trimStart", function () {
+		    equal("  ABC  ".trimStart(), "ABC  ", "No arguments");
+		    equal("  ABC  ".trimStart([]), "ABC  ", "Empty array argument");
+		    equal("  ABC  ".trimStart([' ']), "ABC  ", "Explicit space argument");
+		    equal("aa  ABC  aa".trimStart(['a']), "  ABC  aa", "Nonstandard trim character");
+		    equal("aa  ABC  aa".trimStart('a'), "  ABC  aa", "character only");
+		    equal("aa  ABC  aa".trimStart('a', ' '), "ABC  aa", "Multiple characters only");
+		});
+
+		test("Test trimEnd", function () {
+		    equal("  ABC  ".trimEnd(), "  ABC", "No arguments");
+		    equal("  ABC  ".trimEnd([]), "  ABC", "Empty array argument");
+		    equal("  ABC  ".trimEnd([' ']), "  ABC", "Explicit space argument");
+		    equal("aa  ABC  aa".trimEnd(['a']), "aa  ABC  ", "Nonstandard trim character");
+		    equal("aa  ABC  aa".trimEnd('a'), "aa  ABC  ", "character only");
+		    equal("aa  ABC  aa".trimEnd('a', ' '), "aa  ABC", "Multiple characters only");
 		});
 
 		test("Test $.ig.encode", function () {

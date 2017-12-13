@@ -24,14 +24,21 @@
 }
 (function ($, ko) {
     function selectItems(combo, selectedItems) {
-        var valueKey = combo.igCombo("option", "valueKey"),
+		var valueKey = combo.igCombo("option", "valueKey"),
+			allowCustomValue = combo.igCombo("option", "allowCustomValue"),
 			selectedValues = [],
 			index, item, value;
 
+		selectedItems = ko.utils.unwrapObservable(selectedItems);
+
         // R.K. 18th January, 2017: #746 Custom values are not persisted in the combo input
-        if (ko.utils.unwrapObservable(selectedItems) &&
-                ko.utils.unwrapObservable(selectedItems).length) {
-            selectedItems = ko.utils.unwrapObservable(selectedItems);
+		if (selectedItems) {
+			// A.K 15th October, 2017: #1381 Text of selected item remains after selectedItems option is cleared
+			// If we have allCustomValue set to true and we've typed smth that doesn't match any record of the dataSource, we have
+			// to prevent this value to be added into selectedValues collection.
+			if (allowCustomValue && !selectedItems.length) {
+				return;
+			}
             for (index = 0; index < selectedItems.length; index++) {
                 item = selectedItems[ index ];
                 if (typeof item === "function") {
@@ -167,6 +174,8 @@
 				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+                dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
+                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
 				$comboList, i;
 
             if (listLength !== dataSource.length) {
@@ -192,6 +201,14 @@
                 // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
                 // This necessay in cases, when data source was empty array initially.
                 combo.igCombo("option", "dataSource", dataSource);
+
+                // R.K. 29th November, 2017 #246482: When an item is selected from the bottom of the list,
+                // the combo list "scrolls" back to top and the vertical scroll bar is positioned incorrectly.
+                // This happens with virtualization enabled. We're keeping the last scrollTop position and
+                // after data-bind, we reset the scrollbar to it minus 1px triggering the re-rendering of the correct list items.
+                if (options.virtualization) {
+                    dropDownScroller.scrollTop(lastScrollTop - 1);
+                }
             }
         }
     };
