@@ -73,6 +73,9 @@
         <div id="lodpagesize-scroll"></div>
         <div id="lodpagesize-keyboard"></div>
     </div>
+    <div class="cont">
+        <div id="combo-247163"></div>
+    </div>
 
     <script>
         $(function() {
@@ -88,7 +91,8 @@
                 testId_10 = 'The last item is not displayed in the dropdown list if virtualization is enabled.',
                 testId_11 = 'Mouse events',
                 testId_12 = "Small pageSize does not trigger load on demand (scroll)",
-                testId_13 = "Small pageSize does not trigger load on demand (keyboard)";
+                testId_13 = "Small pageSize does not trigger load on demand (keyboard)",
+                testId_14 = "Virtualization with grouping and data source with less items than visibleItemsCount";
 
             $.mockjaxSettings.logging = 0;
 
@@ -967,6 +971,114 @@
                     }, 550);
 
                 }, 500);
+            });
+
+            asyncTest(testId_14, function() {
+                var data = [
+                    {
+                        "country": "FRANCE",
+                        "city": "Paris",
+                        "latitude": 0,
+                        "description": "Paris, FRANCE",
+                        "id": 100000003,
+                        "state": "",
+                        "longitude": 0
+                    },
+                    {
+                        "country": "FRANCE",
+                        "city": "Leone",
+                        "latitude": 0,
+                        "description": "Leone, FRANCE",
+                        "id": 100000002,
+                        "state": "",
+                        "longitude": 0
+                    },
+                    {
+                        "country": "INDIA",
+                        "city": "PUNE",
+                        "latitude": 0,
+                        "description": "Pune, INDIA",
+                        "id": 100000005,
+                        "state": "",
+                        "longitude": 0
+                    },
+                    {
+                        "country": "RUSSIA",
+                        "city": "Moscow",
+                        "latitude": 0,
+                        "description": "Moscow, RUSSIA",
+                        "id": 100000004,
+                        "state": "",
+                        "longitude": 0
+                    },
+                    {
+                        "country": "RUSSIA",
+                        "city": "Vladivostok",
+                        "latitude": 0,
+                        "description": "Vladivostok, RUSSIA",
+                        "id": 100000001,
+                        "state": "",
+                        "longitude": 0
+                    }
+                ],
+
+                $combo = $("#combo-247163").igCombo({
+                            dataSource: data,
+                            animationShowDuration: 0,
+                            animationHideDuration: 0,
+                            width: "300px",
+                            textKey: "description",
+                            valueKey: "id",
+                            filteringType: "local",
+                            filteringCondition: "contains",
+                            highlightMatchesMode: "contains",
+                            selectItemBySpaceKey: false,
+                            grouping: {
+                                key: "country"
+                            },
+                            autoComplete: true,
+                            visibleItemsCount: 10,
+                            virtualization: true
+                        }),
+                $dropDown,
+                $headers,
+                $input,
+                $listItems;
+
+                $combo.igCombo("openDropDown");
+
+                $dropDown = $combo.igCombo("dropDown");
+                $input = $combo.igCombo("textInput");
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                $headers = $dropDown.find('li').filter(".ui-igcombo-group-header");
+
+                equal($listItems.length, data.length, "Correct number of list items");
+                equal($headers.length, 3, "Corrent number of group headers");
+
+                $combo.igCombo("closeDropDown");
+
+                typeInInput("par", $input);
+
+                setTimeout(function() {
+                    start();
+
+                    emulateKeyBoard("enter", false, false, false, $input);
+
+                    stop();
+
+                    setTimeout(function() {
+                        start();
+
+                        $combo.igCombo("deselectAll");
+                        $combo.igCombo("openDropDown");
+
+                        $listItems = $dropDown.find('.ui-igcombo-listitem');
+                        $headers = $dropDown.find('li').filter(".ui-igcombo-group-header");
+
+                        equal($listItems.length, data.length, "Correct number of list items after filter");
+                        equal($headers.length, 3, "Corrent number of group headers after filter");
+                    }, 250);
+                }, 250);
             });
         });
     </script>
