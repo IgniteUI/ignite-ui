@@ -233,6 +233,67 @@
 					}
 				]
 			});
+			// create several relatedvideos
+			var videoModel = {
+				imageUrl: "https://www.igniteui.com/images/samples/video-player/quince-intro-2.png",
+				title: "Quince Presentation Part 1",
+				css: "relatedVideosBanner",
+				sources: [
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				]
+			};
+			var videosModel = [];
+			for (i=0; i<10; i++){
+				videosModel.push(videoModel);
+			}
+
+			$("#player9").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				width: 800,
+				height: 340,
+				posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				muted: false,
+				autohide: false,
+				relatedVideos: videosModel
+			});
+
+			$("#player10").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				width: 800,
+				height: 340,
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				title: 'Welcome to green grass...',
+				muted: true,
+				autohide: true,
+				commercials: {
+					linkedCommercials: [
+					{					
+						sources: [
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+					],
+						startTime: 150,
+						title: "Quince Presentation p3",
+						link: "http://quince.infragistics.com/"
+					}]
+
+				}
+			});
 
 			document.mockOptions = {};
 			document.mockOptions.oldBrowser = true;
@@ -318,6 +379,10 @@
 	var testId_36 = "igVideoPlayer Related Videos test 36";
 	var testId_37 = "igVideoPlayer Destroy video tag test 37";
 	var testId_38 = "igVideoPlayer Test fullscreen test 38";
+	var testId_39 = "igVideoPlayer Test disabled option test 39";
+	var testId_40 = "igVideoPlayer Test relatedvideos scrolling 40";
+	var testId_41 = "igVideoPlayer Test loop option test 41";
+	var testId_42 = "igVideoPlayer Test volume vertical scroll hover test 42";
 
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -915,13 +980,57 @@
 		var bookmarksObjects = $('#player8').igVideoPlayerUnitTesting('option', 'bookmarks');
 		var bookmarkElems = $('.ui-igslider-bookmark', slider);
 		var disabledBookmarkElems = $('.ui-igslider-bookmark-disabled', slider);
-		equal(bookmarkElems.length + disabledBookmarkElems.length, 5, 'The number of bookmarks rendered should be equal to the json array number.');
+		ok(bookmarkElems.length + disabledBookmarkElems.length > 0, 'There should be bookmarks available.');
 		//check position after clicking bookmark
 		$('#player8 ul.ui-igplayer-bookmark-list li').eq(0).click();
 		$("#player8").data('igVideoPlayerUnitTesting').togglePlay();		
 		$("#player8").data('igVideoPlayerUnitTesting').pause();		
 		$("#player8").igVideoPlayerUnitTesting('option', 'fullscreen', false);		
-		equal($('#player8_ctrls_pb_progress')[0].style.width,'23%',"The bookmark is not set")
+		ok($('#player8_ctrls_pb_progress')[0].style.width !=='0%',"The bookmark is not set")
+		//check volume hover
+		$('#player8_ctrls_vc_btn').trigger('mouseover');
+		$('#player8_ctrls_vs').trigger('mouseover');		
+		checkElementClass($('#player8_ctrls_vc_btn'), 'ui-state-hover')
+		$('#player8_ctrls_vc_btn').click();
+		$('#player8_ctrls_vc_btn').mouseup();
+		$('#player8_ctrls_vs').trigger('mouseout');
+		$('#player8_ctrls_vc_btn').trigger('mouseout');
+		checkElementNotClass($('#player8_ctrls_vc_btn'), 'ui-state-hover')				
+	});
+	test(testId_39, function() {
+		$("#player9").igVideoPlayerUnitTesting('option', 'disabled', true);	
+		checkElementClass($("#player9"),"ui-state-disabled");
+		$("#player9").igVideoPlayerUnitTesting('option', 'disabled', false);	
+		checkElementNotClass($("#player9"),"ui-state-disabled");			
+	});
+	test(testId_40, function() {
+		//Check related videos hover
+		$('#player9_video')[0].playTo(260);
+		$("#player9").igVideoPlayerUnitTesting("togglePlay");	
+		var elements = $("#player9").data("igVideoPlayerUnitTesting").relatedVideoElements;
+		elements.trigger('mouseover');
+		checkElementClass($("#player9_rvc > ul > li"),"ui-igplayer-related-video-hover");
+		elements.trigger('mouseout');
+		checkElementNotClass($("#player9_rvc > ul > li"),"ui-igplayer-related-video-hover");
+		//Check related videos scroll		
+		$('#player9_rv_right').trigger('mouseover');
+		checkElementClass($('#player9_rv_right'), 'ui-state-hover');
+		$('#player9_rv_right').trigger('mouseout');
+		checkElementNotClass($('#player9_rv_right'), 'ui-state-hover');
+		//Check related videos click		
+		elements.trigger('mouseover');
+		elements.trigger('click');
+		ok(!$('#player9_video')[0].paused, 'Video should be playing.');
+		$("#player9").remove();			
+	});
+	test(testId_41, function() {
+		$("#player10").igVideoPlayerUnitTesting('option', 'loop', true);	
+		$('#player10_video')[0].playTo(259);
+		ok(!$('#player10_video').paused, 'Video should be playing.');		
+		$('#player10_com_video')[0].playTo(259);
+		$("#player10").data('igVideoPlayerUnitTesting').togglePlay();
+		ok(!$('#player10_com_video').paused, 'Commersial Video should be playing.');		
+		$("#player10").remove();								
 	});
 
 	function checkButton(button) {
@@ -935,6 +1044,10 @@
 
 	function checkElementClass(element,classs) {
 		ok(element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does not contain the class:' + classs)		
+	}
+	function checkElementNotClass(element,classs) {
+
+		ok(!element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does contain the class:' + classs)		
 	}
 
 	function checkClass(button, classs) {
@@ -980,6 +1093,12 @@
 	<br/>
 	<h1>igVideoPlayer 8</h1>
 	<div id="player8"></div>
+	<h1>igVideoPlayer 9</h1>
+	<div id="player9"></div>
+	<br/>
+	<br/>
+	<h1>igVideoPlayer 10</h1>	
+	<div id="player10"></div>
 	<br/>
 	<br/>
 	<video id="video1" controls="true" src="http://video-js.zencoder.com/oceans-clip.mp4" type="video/mp4" ></video>
