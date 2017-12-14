@@ -1555,7 +1555,6 @@
                 repositionInterval: null,
                 disableScroll: false,
                 cachedGroupLength: null,
-                initialGroupHeaders: 1,
 
                 // The string that will be used to match item"s text when user types in drop down mode
                 dropDownModeSearchBy: "",
@@ -2163,7 +2162,10 @@
         _groupsMarkup: function () {
             var groups, groupsLen, i,
 				dataView,
-				dataLen = this._itemsToRenderCount(),
+                dataLen = this._itemsToRenderCount(),
+
+                // Initial group headers
+                headers = 1,
 				markup = "";
 
             // Sort the data source to extract all groups
@@ -2179,15 +2181,18 @@
             groups = this._groups(dataView);
 
             // Get group headers count and subtract them from list items when virtualization is enabled
-            if (this.options.virtualization) {
+            // R.K. 14th December, 2017 #247163
+            // Items are not correctly rendering when the data source items are less than the Combo visible items count
+            // with grouping and virtualization enabled
+            if (this._isPossibleToVirtualize()) {
                 for (i = 0; i < dataLen; i++) {
                     if (this._isBoundaryOfGroups(dataView, i)) {
-                        this._options.initialGroupHeaders++;
+                        headers++;
                         i++;
                     }
                 }
 
-                dataView = dataView.slice(0, dataLen - this._options.initialGroupHeaders);
+                dataView = dataView.slice(0, dataLen - headers);
                 groups = this._groups(dataView);
             }
 
