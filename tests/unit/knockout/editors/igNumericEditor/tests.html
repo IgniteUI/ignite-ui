@@ -40,7 +40,6 @@
 
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
 	
-	
 
 	
 	<script type="text/javascript">
@@ -50,6 +49,7 @@
 		QUnit.config.reorder = false;
 		function viewModel() {
 			nonObservable = 244;
+			this.nonObservable2 = 245;
 			this.number = ko.observable(25);
 			this.textValue = ko.observable("Some Val");
 			setDefaultNumber = function() {
@@ -181,7 +181,7 @@
 		});
 		
 		testID = "Value set to nonObservable value";
-			test(testID, 5, function () {
+		test(testID, 5, function () {
 			stop();
 			setTimeout(function () {
 				start();
@@ -229,6 +229,42 @@
 				}, 200);
 		});
 	
+		testID = "Value set when bound to a ViewModel's non-observable field";
+		test(testID, 4, function () {
+			stop();
+			setTimeout(function () {
+				start();
+
+				$("#tempContainer").empty();
+
+				// create the igNumericEditor widget in ONCHANGE (default) update mode and bind its properties
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igNumericEditor: { value: nonObservable2, width: 160 }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+				var myEditor = $("#tempEditor"); // obtain the widget
+				model.nonObservable2 = 245;
+				equal(model.nonObservable2, 245); // check the inital value
+				myEditor.focus(); // focus editor
+				myEditor.val(255); // change the editor's value
+				myEditor.blur(); // lose editor's focus to allow KO to update the binding
+				equal(model.nonObservable2, 255); // check for the new value
+
+				$("#tempContainer").empty();
+
+				// create the igNumericEditor widget in IMMEDIATE update mode and bind its properties
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igNumericEditor: { value: nonObservable2, width: 160, updateMode:\"immediate\" }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+				myEditor = $("#tempEditor"); // obtain the widget
+				model.nonObservable2 = 245;
+				equal(model.nonObservable2, 245); // check the inital value
+				myEditor.focus(); // focus editor again
+				typeInInput("256", myEditor.igNumericEditor("field")); // type a new value in the editor
+				myEditor.blur(); // lose editor's focus to allow KO to update the binding
+				equal(model.nonObservable2, 256); // check for the new value
+				
+				$("#tempContainer").empty();
+			}, 200);
+		});
+
 		testID = "ListItem change -> immediate";
 		test(testID, 13, function () {
 			$("#tempContainer").empty();
@@ -392,6 +428,7 @@
 			equal($editor.igNumericEditor("value"), null, "Editor should have null as a value");
 			$editor.remove();
 		});
+		
 	});
 
 	function testImmediate(element) {
