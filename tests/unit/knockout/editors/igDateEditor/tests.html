@@ -43,7 +43,7 @@
         var  testID;
 		QUnit.config.reorder = false;
 		function viewModel() {
-			nonObservable = "11/17/2007";
+			this.nonObservable = "11/17/2007";
 			this.nullable = ko.observable(null);
 			this.dateValue = ko.observable(new Date("12/12/2012"));
 
@@ -258,7 +258,7 @@
 					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDateEditor: { value: nonObservable, width: 160 }'></input>");
 					ko.applyBindings(model, document.getElementById("tempEditor"));
 					//equal($("#tempEditor").igDateEditor("text"), nonObservable, "NonObservable text is assigned correctly");
-					date = new Date(nonObservable);
+					date = new Date(model.nonObservable);
 					equal($("#tempEditor").igDateEditor("value").toString(), date.toString(), "NonObservable value is assigned correctly");
 
 					$("#tempEditor").igDateEditor("value", "10/10/2010");
@@ -477,6 +477,83 @@
 			ok(!$editor.igDateEditor("editorContainer").hasClass($.ui.igDateEditor.prototype.css.disabled), "Editor should be enabled");
 			$editor.remove();
 			$chk.remove();
+		});
+
+		var testId = 'Test value set to non-observable value remains non-observable after changing it in UI.';
+		test(testId, 3, function () {
+
+			// Creating an input with a non-observable value.
+			$("#tempContainer").empty();
+			$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDateEditor: { value: nonObservable, width: 160 }'></input>");
+			ko.applyBindings(model, document.getElementById("tempEditor"));
+
+			// Verify that the initial non-observable value is assigned correctly.
+			date = new Date(model.nonObservable);
+			equal($("#tempEditor").igDateEditor("value").toString(), date.toString(), "NonObservable value is assigned correctly");
+
+			// Change igEditor's value in UI so the igdateeditorvaluechanged gets fired
+			// and verify the change is reflected, but the value remains nonObservable.
+			stringDate = "01/01/2009";
+			editorInput = $("#tempEditor").igDateEditor("field");
+			editorInput.focus().val(stringDate);
+			editorInput.blur();
+			equal($("#tempEditor").igDateEditor("value").toString(), new Date(stringDate).toString(), "Value should be changed when interact through UI");
+			ok(!ko.isObservable($("#tempEditor").igDateEditor("value")), "Value should be non-observable");
+
+			$("#tempContainer").empty();
+		});
+
+		testID = "updateMode set to immediate";
+			test(testID, 1, function () {
+			var err;
+			QUnit.throws(function () {
+				$("#tempContainer").empty();
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDateEditor: { value: dateValue, width: 160, updateMode:\"immediate\" }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+			}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+			$("#tempContainer").empty();
+		});
+
+		var testId = 'Test IvalidValue for Date object';
+		test(testId, 3, function () {
+
+			// Creating an input with an observable value.
+			$("#tempContainer").empty();
+			$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDateEditor: { value: dateValue, width: 160 }'></input>");
+			ko.applyBindings(model, document.getElementById("tempEditor"));
+			
+			// Set model.dateValue to "/Date(1224043200000)/" and verify the editor's value is correct.
+			var val = "/Date(1224043200000)/";
+			var valDate = new Date(1224043200000);			
+			model.dateValue(val);
+			equal($("#tempEditor").igDateEditor("value").toString(), valDate.toString(), "Value of the editor should be valid.")
+
+			// Set model.dateValue to "/Date("abc")/" and verify the editor's value remains the previouse one, because the new value is invalid.
+			val = "/Date(\"abc\")/";
+			valDate = new Date("abc");
+			model.dateValue(val);
+			equal(valDate.toString(), "Invalid Date", "Value should be 'Invalid Date'");
+			notEqual($("#tempEditor").igDateEditor("value").toString(), valDate.toString(), "Editor's value should not be invalid.");
+			
+			$("#tempContainer").empty();
+		});
+		
+		var testId = 'Test isNaN for Date object';
+		test(testId, 2, function () {
+
+			// Creating an input with an observable value.
+			$("#tempContainer").empty();
+			$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDateEditor: { value: dateValue, width: 160 }'></input>");
+			ko.applyBindings(model, document.getElementById("tempEditor"));
+			
+			// Set model.DateValue to NaN value and verify the editor's value remains the previous one, because the new value is NaN.
+			var date = "invaliddate";
+			var parsedDate = Date.parse(date);
+			model.dateValue(date);
+			ok(isNaN(parsedDate), "Parsed Date should be NaN.");
+			notEqual($("#tempEditor").igDateEditor("value").toString(), parsedDate.toString(), "Editor's value should not be NaN.");
+
+			$("#tempContainer").empty();
 		});
 
 			function inputCheckImmediate() {
