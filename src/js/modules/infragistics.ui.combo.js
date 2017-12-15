@@ -1399,216 +1399,216 @@
 				Use ui.items to obtain reference to array of new selected items. That can be null.
 				Use ui.oldItems to obtain reference to array of old selected items. That can be null.
 			*/
-            selectionChanged: "selectionChanged"
-        },
-        css: {
-            /* Class applied to the wrapper element. */
-            comboWrapper: "ui-igcombo-wrapper",
-            /* Class applied to the combo element. */
-            combo: "ui-igcombo ui-widget ui-state-default ui-corner-all ui-unselectable",
-            /* Class applied to the combo in drop down mode. */
-            dropDownMode: "ui-igcombo-mode-dropdown",
-            /* Class applied to the combo in read only mode. */
-            readOnlyMode: "ui-igcombo-mode-readonly",
-            /* Class applied to the combo in read only list mode. */
-            readOnlyListMode: "ui-igcombo-mode-readonlylist",
-            /* Class applied to the text box container */
-            textBox: "ui-igcombo-textbox ui-state-default ui-corner-all",
-            /* Class applied to the editing element. */
-            field: "ui-igcombo-field ui-corner-all",
-            /* Class applied to the holder of editing element. */
-            fieldHolder: "ui-igcombo-fieldholder",
-            /* Class applied to the holder of editing element when direction is left to right. */
-            fieldHolderLTR: "ui-igcombo-fieldholder-ltr ui-corner-left",
-            /* Class applied to the holder of editing element when direction is right to left. */
-            fieldHolderRTL: "ui-igcombo-fieldholder-rtl ui-corner-right",
-            /* Class applied to the drop down list when direction is right to left*/
-            dropDownListRTL: "ig-rtl",
-            /* Class applied to the DIV element which represents the drop down button. */
-            button: "ui-igcombo-button ui-state-default ui-unselectable",
-            /* Classes applied to the DIV element which represents image on drop down button. */
-            buttonIcon: "ui-igcombo-buttonicon ui-icon-triangle-1-s ui-icon",
-            /* Class applied to the DIV element which represents drop down button when direction is left to right. */
-            buttonLTR: "ui-igcombo-button-ltr ui-corner-right",
-            /* Class applied to the DIV element which represents drop down button when direction is right to left. */
-            buttonRTL: "ui-igcombo-button-rtl ui-corner-left",
-            /* Class applied to the DIV element which represents clear button. */
-            clear: "ui-igcombo-clear ui-unselectable",
-            /* Class applied to the DIV element which represents clear button with right to left direction */
-            clearRTL: "ui-igcombo-clear-rtl ui-unselectable",
-            /* Classes applied to the SPAN element of clear button in mouse-over state. */
-            clearHover: "ui-igcombo-clear-hover ui-state-hover",
-            /* Class applied to the DIV element which represents image on clear button. */
-            clearIcon: "ui-igcombo-clearicon ui-icon-circle-close ui-icon",
-            /* Class applied to the DIV element which represents the combo drop down. It contains the list, the header and the footer containers. */
-            dropDown: "ui-igcombo-dropdown ui-widget ui-widget-content ui-corner-all",
-            /* Class applied to the DIV element which is used as container for drop down list. */
-            list: "ui-igcombo-list",
-            /* Class applied to the drop down container element when virtualization is enabled. */
-            listOverflow: "ui-igcombo-list-overflow",
-            /* Class applied to the UL element which is used as container for list items. */
-            listItemHolder: "ui-igcombo-listitemholder",
-            /* Classes applied to the LI element which represents item in drop down list. */
-            listItem: "ui-igcombo-listitem ui-state-default ui-unselectable",
-            /* Classes applied to the DIV element which represents header in combo drop down. */
-            header: "ui-igcombo-header",
-            /* Classes applied to the DIV element which represents footer in combo drop down. */
-            footer: "ui-igcombo-footer",
-            /* Classes applied to the element which holds group of list items in drop down list. */
-            group: "ui-igcombo-group",
-            /* Classes applied to the header element of each group */
-            groupHeader: "ui-igcombo-group-header ui-state-default ui-unselectable",
-            /* Class applied to the list item elements hover with mouse or navigated to by keyboard */
-            itemInFocus: "ui-igcombo-item-in-focus",
-            /* Class applied to the text in LI element which represents highlighted text in dropdown list. */
-            listItemHighlighted: "ui-igcombo-highlight",
-            /* Class applied to LI element that is shown when no matches are found while filtering */
-            noMatchFound: "ui-igcombo-nomatchfound",
-            /* Class applied to the SPAN element which represents text of item in dropdown list when checkboxes are enabled. */
-            listItemTextWithCheckbox: "ui-igcombo-listitemtextwithcheckbox",
-            /* Class applied to the SPAN element which represents checkbox in list item. */
-            checkbox: "ui-igcombo-checkbox ui-state-default ui-corner-all ui-igcheckbox-small",
-            /* Class applied to the SPAN element which represents icon in unchecked checkbox. */
-            checkboxOff: "ui-icon ui-igcombo-checkbox-off ui-igcheckbox-small-off",
-            /* Class applied to the SPAN element which represents icon in unchecked checkbox. */
-            checkboxOn: "ui-icon ui-icon-check ui-igcombo-checkbox-on ui-igcheckbox-small-on",
-            /* Class applied to the hidden input field */
-            hiddenField: "ui-igcombo-hidden-field",
-            /* Class applied to elements when hovered. */
-            hover: "ui-state-hover",
-            /* Class applied to elements in active state. */
-            active: "ui-state-active",
-            /* Class applied to unselectable elements */
-            unselectable: "ui-unselectable",
-            /* Class applied to drop down element when it is closed. */
-            noBorder: "ui-igcombo-no-border",
-            /* Class applied to the scroll holder element when virtualization is enabled. */
-            scrollHolder: "ui-igcombo-scrollholder ui-unselectable",
-            /* Class applied to the scroll element when virtualization is enabled. */
-            scroll: "ui-igcombo-scroll ui-unselectable",
-            /* Class applied to the span element in the footer that represents the number of records in data source view */
-            recordsView: "ui-igcombo-records-view",
-            /* Class applied to the span element in the footer that represents the number of records in the data source */
-            recordsData: "ui-igcombo-records-data",
-            /* Class applied to the span element in the footer that represents the number of filtered records on the server */
-            recordsServer: "ui-igcombo-records-server",
-            /* Class applied to the span element in the footer that represents the number of total records on the server */
-            recordsServerTotal: "ui-igcombo-records-server-total",
-            /* Class applied to the DIV which represents overlay over drop down list while data is retrieving. */
-            loading: "ui-igcombo-loading",
-            /* Class applied to filtered list items to hide them */
-            hidden: "ui-helper-hidden",
-            /* Class applied to combo top element when in readonly mode */
-            disabled: "ui-state-disabled",
-            /* Class applied to combo drop down element when top orientation is used */
-            orientationTop: "ui-igcombo-orientation-top",
-            /* Class applied to combo drop down element when bottom orientation is used */
-            orientationBottom: "ui-igcombo-orientation-bottom"
-        },
-        /* Number of records in igCombo (view of dataSource) */
-        RECORDS_VIEW: "{0}",
-        /* Number of records in dataSource */
-        RECORDS_DATA: "{1}",
-        /* Number of (filtered) records on server */
-        RECORDS_SERVER: "{2}",
-        /* Number of all records on server */
-        RECORDS_SERVER_TOTAL: "{3}",
-        _createWidget: function (options) {
-            var mode;
+			selectionChanged: "selectionChanged"
+		},
+		css: {
+			/* Class applied to the wrapper element. */
+			comboWrapper: "ui-igcombo-wrapper",
+			/* Class applied to the combo element. */
+			combo: "ui-igcombo ui-widget ui-state-default ui-corner-all ui-unselectable",
+			/* Class applied to the combo in drop down mode. */
+			dropDownMode: "ui-igcombo-mode-dropdown",
+			/* Class applied to the combo in read only mode. */
+			readOnlyMode: "ui-igcombo-mode-readonly",
+			/* Class applied to the combo in read only list mode. */
+			readOnlyListMode: "ui-igcombo-mode-readonlylist",
+			/* Class applied to the text box container */
+			textBox: "ui-igcombo-textbox ui-state-default ui-corner-all",
+			/* Class applied to the editing element. */
+			field: "ui-igcombo-field ui-corner-all",
+			/* Class applied to the holder of editing element. */
+			fieldHolder: "ui-igcombo-fieldholder",
+			/* Class applied to the holder of editing element when direction is left to right. */
+			fieldHolderLTR: "ui-igcombo-fieldholder-ltr ui-corner-left",
+			/* Class applied to the holder of editing element when direction is right to left. */
+			fieldHolderRTL: "ui-igcombo-fieldholder-rtl ui-corner-right",
+			/* Class applied to the drop down list when direction is right to left*/
+			dropDownListRTL: "ig-rtl",
+			/* Class applied to the DIV element which represents the drop down button. */
+			button: "ui-igcombo-button ui-state-default ui-unselectable",
+			/* Classes applied to the DIV element which represents image on drop down button. */
+			buttonIcon: "ui-igcombo-buttonicon ui-icon-triangle-1-s ui-icon",
+			/* Class applied to the DIV element which represents drop down button when direction is left to right. */
+			buttonLTR: "ui-igcombo-button-ltr ui-corner-right",
+			/* Class applied to the DIV element which represents drop down button when direction is right to left. */
+			buttonRTL: "ui-igcombo-button-rtl ui-corner-left",
+			/* Class applied to the DIV element which represents clear button. */
+			clear: "ui-igcombo-clear ui-unselectable",
+			/* Class applied to the DIV element which represents clear button with right to left direction */
+			clearRTL: "ui-igcombo-clear-rtl ui-unselectable",
+			/* Classes applied to the SPAN element of clear button in mouse-over state. */
+			clearHover: "ui-igcombo-clear-hover ui-state-hover",
+			/* Class applied to the DIV element which represents image on clear button. */
+			clearIcon: "ui-igcombo-clearicon ui-icon-circle-close ui-icon",
+			/* Class applied to the DIV element which represents the combo drop down. It contains the list, the header and the footer containers. */
+			dropDown: "ui-igcombo-dropdown ui-widget ui-widget-content ui-corner-all",
+			/* Class applied to the DIV element which is used as container for drop down list. */
+			list: "ui-igcombo-list",
+			/* Class applied to the drop down container element when virtualization is enabled. */
+			listOverflow: "ui-igcombo-list-overflow",
+			/* Class applied to the UL element which is used as container for list items. */
+			listItemHolder: "ui-igcombo-listitemholder",
+			/* Classes applied to the LI element which represents item in drop down list. */
+			listItem: "ui-igcombo-listitem ui-state-default ui-unselectable",
+			/* Classes applied to the DIV element which represents header in combo drop down. */
+			header: "ui-igcombo-header",
+			/* Classes applied to the DIV element which represents footer in combo drop down. */
+			footer: "ui-igcombo-footer",
+			/* Classes applied to the element which holds group of list items in drop down list. */
+			group: "ui-igcombo-group",
+			/* Classes applied to the header element of each group */
+			groupHeader: "ui-igcombo-group-header ui-state-default ui-unselectable",
+			/* Class applied to the list item elements hover with mouse or navigated to by keyboard */
+			itemInFocus: "ui-igcombo-item-in-focus",
+			/* Class applied to the text in LI element which represents highlighted text in dropdown list. */
+			listItemHighlighted: "ui-igcombo-highlight",
+			/* Class applied to LI element that is shown when no matches are found while filtering */
+			noMatchFound: "ui-igcombo-nomatchfound",
+			/* Class applied to the SPAN element which represents text of item in dropdown list when checkboxes are enabled. */
+			listItemTextWithCheckbox: "ui-igcombo-listitemtextwithcheckbox",
+			/* Class applied to the SPAN element which represents checkbox in list item. */
+			checkbox: "ui-igcombo-checkbox ui-state-default ui-corner-all ui-igcheckbox-small",
+			/* Class applied to the SPAN element which represents icon in unchecked checkbox. */
+			checkboxOff: "ui-icon ui-igcombo-checkbox-off ui-igcheckbox-small-off",
+			/* Class applied to the SPAN element which represents icon in unchecked checkbox. */
+			checkboxOn: "ui-icon ui-icon-check ui-igcombo-checkbox-on ui-igcheckbox-small-on",
+			/* Class applied to the hidden input field */
+			hiddenField: "ui-igcombo-hidden-field",
+			/* Class applied to elements when hovered. */
+			hover: "ui-state-hover",
+			/* Class applied to elements in active state. */
+			active: "ui-state-active",
+			/* Class applied to unselectable elements */
+			unselectable: "ui-unselectable",
+			/* Class applied to drop down element when it is closed. */
+			noBorder: "ui-igcombo-no-border",
+			/* Class applied to the scroll holder element when virtualization is enabled. */
+			scrollHolder: "ui-igcombo-scrollholder ui-unselectable",
+			/* Class applied to the scroll element when virtualization is enabled. */
+			scroll: "ui-igcombo-scroll ui-unselectable",
+			/* Class applied to the span element in the footer that represents the number of records in data source view */
+			recordsView: "ui-igcombo-records-view",
+			/* Class applied to the span element in the footer that represents the number of records in the data source */
+			recordsData: "ui-igcombo-records-data",
+			/* Class applied to the span element in the footer that represents the number of filtered records on the server */
+			recordsServer: "ui-igcombo-records-server",
+			/* Class applied to the span element in the footer that represents the number of total records on the server */
+			recordsServerTotal: "ui-igcombo-records-server-total",
+			/* Class applied to the DIV which represents overlay over drop down list while data is retrieving. */
+			loading: "ui-igcombo-loading",
+			/* Class applied to filtered list items to hide them */
+			hidden: "ui-helper-hidden",
+			/* Class applied to combo top element when in readonly mode */
+			disabled: "ui-state-disabled",
+			/* Class applied to combo drop down element when top orientation is used */
+			orientationTop: "ui-igcombo-orientation-top",
+			/* Class applied to combo drop down element when bottom orientation is used */
+			orientationBottom: "ui-igcombo-orientation-bottom"
+		},
+		/* Number of records in igCombo (view of dataSource) */
+		RECORDS_VIEW: "{0}",
+		/* Number of records in dataSource */
+		RECORDS_DATA: "{1}",
+		/* Number of (filtered) records on server */
+		RECORDS_SERVER: "{2}",
+		/* Number of all records on server */
+		RECORDS_SERVER_TOTAL: "{3}",
+		_createWidget: function (options) {
+			var mode;
 
-            // Private variables
-            this._options = {
-                $window: $(window),
-                $comboWrapper: null,
-                $combo: null,
-                $input: null,
-                $hiddenInput: null,
-                $fieldCont: null,
-                $clearCont: null,
-                $clearIcon: null,
-                $dropDownBtnCont: null,
-                $dropDownBtnIcon: null,
-                $dropDownCont: null,
-                $dropDownListCont: null,
-                $dropDownList: null,
-                $header: undefined,
-                $footer: undefined,
-                $dropDownScrollCont: null,
-                $dropDownScroll: null,
-                $loading: null,
-                $noMatchFound: null,
-                $itemsToSelectOnShiftUpDown: $(),
-                $itemsToSelectOnShiftClick: $(),
-                selectedData: [ ],
-                keyNavItemData: null,
-                autoSelectedItemData: null,
-                autoCompleteItemData: null,
-                inputVal: "",
-                highlightElement: "span",
-                ltr: true,
-                dropDownOpened: false,
-                deltaItemsForLoadOnDemand: 5,
-                dataBinding: false,
-                shiftKeyCode: 16,
-                validator: null,
-                shiftDown: false,
+			// Private variables
+			this._options = {
+				$window: $(window),
+				$comboWrapper: null,
+				$combo: null,
+				$input: null,
+				$hiddenInput: null,
+				$fieldCont: null,
+				$clearCont: null,
+				$clearIcon: null,
+				$dropDownBtnCont: null,
+				$dropDownBtnIcon: null,
+				$dropDownCont: null,
+				$dropDownListCont: null,
+				$dropDownList: null,
+				$header: undefined,
+				$footer: undefined,
+				$dropDownScrollCont: null,
+				$dropDownScroll: null,
+				$loading: null,
+				$noMatchFound: null,
+				$itemsToSelectOnShiftUpDown: $(),
+				$itemsToSelectOnShiftClick: $(),
+				selectedData: [ ],
+				keyNavItemData: null,
+				autoSelectedItemData: null,
+				autoCompleteItemData: null,
+				inputVal: "",
+				highlightElement: "span",
+				ltr: true,
+				dropDownOpened: false,
+				deltaItemsForLoadOnDemand: 5,
+				dataBinding: false,
+				shiftKeyCode: 16,
+				validator: null,
+				shiftDown: false,
 
-                // If the initial element is input or select, cache the name, remove it, set it to the hidden input for submit and upon destroy return it
-                nameAttribute: "",
+				// If the initial element is input or select, cache the name, remove it, set it to the hidden input for submit and upon destroy return it
+				nameAttribute: "",
 
-                // Subscribe to fire callbacks when selection is changed from api
-                internalSelChangeSubs: [],
-                initialDataBinding: true,
-                remoteFilteringTriggerEvt: null,
-                preventInputBlur: false,
+				// Subscribe to fire callbacks when selection is changed from api
+				internalSelChangeSubs: [],
+				initialDataBinding: true,
+				remoteFilteringTriggerEvt: null,
+				preventInputBlur: false,
 
-                // Track whether mouse down started from any list item to highlight elements on mouse hover
-                mouseDownStartedFromListItem: false,
+				// Track whether mouse down started from any list item to highlight elements on mouse hover
+				mouseDownStartedFromListItem: false,
 
-                // We need to cache the records in order to have correct input values for remote filtering
-                cachedData: [ ],
-                strDataSource: null,
-                updateInputValuesOnRemoteFilter: false,
-                hasFooterVariables: false,
+				// We need to cache the records in order to have correct input values for remote filtering
+				cachedData: [ ],
+				strDataSource: null,
+				updateInputValuesOnRemoteFilter: false,
+				hasFooterVariables: false,
 
-                // Tracks whether the input field had text selection when a key was pressed down,
-                // to handle correctly backspace when auto complete is enabled
-                hadInputSelectionOnKeydown: false,
+				// Tracks whether the input field had text selection when a key was pressed down,
+				// to handle correctly backspace when auto complete is enabled
+				hadInputSelectionOnKeydown: false,
 
-                // The filtering expression
-                expression: null,
-                preventItemSeparatorOnFocus: false,
-                preventDropDownOnFocus: false,
-                keyUpTimeout: null,
-                repositionInterval: null,
-                disableScroll: false,
-                cachedGroupLength: null,
+				// The filtering expression
+				expression: null,
+				preventItemSeparatorOnFocus: false,
+				preventDropDownOnFocus: false,
+				keyUpTimeout: null,
+				repositionInterval: null,
+				disableScroll: false,
+				cachedGroupLength: null,
 
-                // The string that will be used to match item"s text when user types in drop down mode
-                dropDownModeSearchBy: "",
-                dropDownModeSearchByResetTimeout: null,
-                dropDownModeSearchByResetDelay: 1000,
-                originalOptions: options,
+				// The string that will be used to match item"s text when user types in drop down mode
+				dropDownModeSearchBy: "",
+				dropDownModeSearchByResetTimeout: null,
+				dropDownModeSearchByResetDelay: 1000,
+				originalOptions: options,
 
-                // S.T. 6th July, 2015 #201924: Use template for checkbox markup
-                checkboxItemTemplate: "<span class='{css.checkbox}'>" +
-                    "<span class='{css.checkboxOff}''></span></span>" +
-                    "<div class='{css.listItemTextWithCheckbox}'>{innerMarkup}</div>",
-                scrollCallback: null,
+				// S.T. 6th July, 2015 #201924: Use template for checkbox markup
+				checkboxItemTemplate: "<span class='{css.checkbox}'>" +
+					"<span class='{css.checkboxOff}''></span></span>" +
+					"<div class='{css.listItemTextWithCheckbox}'>{innerMarkup}</div>",
+				scrollCallback: null,
 
-                // T.I. 29-Oct-2015 #202222: When filtering is loading and click outside the combo the input value is not cleared
-                closingDropDownOnBlur: false,
+				// T.I. 29-Oct-2015 #202222: When filtering is loading and click outside the combo the input value is not cleared
+				closingDropDownOnBlur: false,
 
-                // Handles data for composition events
-                // P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
-                composition: null
-            };
+				// Handles data for composition events
+				// P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
+				composition: null
+			};
 
-            if (options) {
-                mode = options.mode;
+			if (options) {
+				mode = options.mode;
 
-                // Default closeDropDownOnSelect to false when multi selection is enabled
-                if (options.multiSelection && options.multiSelection.enabled &&
+				// Default closeDropDownOnSelect to false when multi selection is enabled
+				if (options.multiSelection && options.multiSelection.enabled &&
 					options.closeDropDownOnSelect === undefined) {
 					options.closeDropDownOnSelect = false;
 				}
@@ -2186,53 +2186,53 @@
 		_groupsMarkup: function () {
 			var groups, groupsLen, i,
 				dataView,
-                dataLen = this._itemsToRenderCount(),
+				dataLen = this._itemsToRenderCount(),
 
-                // Initial group headers
-                headers = 1,
+				// Initial group headers
+				headers = 1,
 				markup = "";
 
-            // Sort the data source to extract all groups
-            this._sortDataSource();
-            dataView = this.options.dataSource.dataView();
+			// Sort the data source to extract all groups
+			this._sortDataSource();
+			dataView = this.options.dataSource.dataView();
 
-            // Cache the count of all groups in data source
-            if (this.options.virtualization && !this._options.cachedGroupLength) {
-                this._options.cachedGroupLength = this._groups(dataView).length;
-            }
+			// Cache the count of all groups in data source
+			if (this.options.virtualization && !this._options.cachedGroupLength) {
+				this._options.cachedGroupLength = this._groups(dataView).length;
+			}
 
-            dataView = dataView.slice(0, dataLen);
-            groups = this._groups(dataView);
+			dataView = dataView.slice(0, dataLen);
+			groups = this._groups(dataView);
 
-            // Get group headers count and subtract them from list items when virtualization is enabled
-            // R.K. 14th December, 2017 #247163
-            // Items are not correctly rendering when the data source items are less than the Combo visible items count
-            // with grouping and virtualization enabled
-            if (this._isPossibleToVirtualize()) {
-                for (i = 0; i < dataLen; i++) {
-                    if (this._isBoundaryOfGroups(dataView, i)) {
-                        headers++;
-                        i++;
-                    }
-                }
+			// Get group headers count and subtract them from list items when virtualization is enabled
+			// R.K. 14th December, 2017 #247163
+			// Items are not correctly rendering when the data source items are less than the Combo visible items count
+			// with grouping and virtualization enabled
+			if (this._isPossibleToVirtualize()) {
+				for (i = 0; i < dataLen; i++) {
+					if (this._isBoundaryOfGroups(dataView, i)) {
+						headers++;
+						i++;
+					}
+				}
 
-                dataView = dataView.slice(0, dataLen - headers);
-                groups = this._groups(dataView);
-            }
+				dataView = dataView.slice(0, dataLen - headers);
+				groups = this._groups(dataView);
+			}
 
-            for (i = 0, groupsLen = groups.length; i < groupsLen; i++) {
-                markup += this._groupMarkup(groups[ i ]);
-            }
+			for (i = 0, groupsLen = groups.length; i < groupsLen; i++) {
+				markup += this._groupMarkup(groups[ i ]);
+			}
 
-            return markup;
-        },
-        _noMatchMarkup: function () {
+			return markup;
+		},
+		_noMatchMarkup: function () {
 			return '<li unselectable="on" class="' + this.css.noMatchFound + " " +
 				this.css.unselectable + '" data-localeid="noMatchFoundText">' +
 					this._getLocaleValue("noMatchFoundText") + "</li>";
 		},
-        _renderItems: function (success, msg, data) {
-            var markup, dropDownScrollHeight, schema, noCancel,
+		_renderItems: function (success, msg, data) {
+			var markup, dropDownScrollHeight, schema, noCancel,
 				options = this.options,
 				_options = this._options,
 				lod = this.options.loadOnDemandSettings,
@@ -6279,28 +6279,28 @@
 				this._itemsFromData(this._options.selectedData) : null;
 		},
 		filter: function (texts, event) {
-            /* Triggers filtering.
-            ```
-                //filter by string
-                $(".selector").igCombo("filter", "Bob");
+			/* Triggers filtering.
+			```
+				//filter by string
+				$(".selector").igCombo("filter", "Bob");
 
-                //filter by array of strings
-                $(".selector").igCombo("filter", ["Smith", "Mary"], true);
+				//filter by array of strings
+				$(".selector").igCombo("filter", ["Smith", "Mary"], true);
 
-                //filter by string and trigger events
-                $(".selector").igCombo("filter", "Bob", true);
-            ```
-                paramType="string|array" optional="true" Filter by string, or array of strings.
-                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-                returnType="object" Returns reference to this igCombo.
-            */
+				//filter by string and trigger events
+				$(".selector").igCombo("filter", "Bob", true);
+			```
+				paramType="string|array" optional="true" Filter by string, or array of strings.
+				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+				returnType="object" Returns reference to this igCombo.
+			*/
 			var expressions = [],
 				type = this.options.filteringType,
 				clearFiltering = texts === "",
 				ds = this.options.dataSource;
 
-            if (!this._isFilteringEnabled()) {
-                return this;
+			if (!this._isFilteringEnabled()) {
+				return this;
 			}
 
 			expressions = this._options.expression =
@@ -6314,62 +6314,62 @@
 			}
 
 			this.filterByExpressions(expressions, event);
-        },
-        filterByExpressions: function (expressions, event) {
-            /* Creates expressions for filtering.
-            ```
-                //filter by expression
-                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
+		},
+		filterByExpressions: function (expressions, event) {
+			/* Creates expressions for filtering.
+			```
+				//filter by expression
+				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
 
-                //filter by array of expressions
-                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
+				//filter by array of expressions
+				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
 
-                //filter by array of expressions and trigger events
-                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
-            ```
-                paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
-                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-                returnType="object" Returns reference to this igCombo.
-            */
-            var noCancel,
+				//filter by array of expressions and trigger events
+				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
+			```
+				paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
+				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+				returnType="object" Returns reference to this igCombo.
+			*/
+			var noCancel,
 				logic = this.options.filteringLogic,
-                filterExprUrlKey = this.options.filterExprUrlKey,
-                type = this.options.filteringType,
-                ds = this.options.dataSource,
-                paging = ds.settings.paging,
-                filtering = ds.settings.filtering,
-                textKeyValueOption = this.options.textKey;
+				filterExprUrlKey = this.options.filterExprUrlKey,
+				type = this.options.filteringType,
+				ds = this.options.dataSource,
+				paging = ds.settings.paging,
+				filtering = ds.settings.filtering,
+				textKeyValueOption = this.options.textKey;
 
-            if (!this._isFilteringEnabled()) {
-                return this;
+			if (!this._isFilteringEnabled()) {
+				return this;
 			}
 
-            // R.K 18th October 2016: #434 Filtering event returns wrong expression
-            filtering.type = type;
+			// R.K 18th October 2016: #434 Filtering event returns wrong expression
+			filtering.type = type;
 			filtering.caseSensitive = this.options.caseSensitive;
 
 			// A.K. September 13th, 2017 #1184 igCombo filters its items when loading next chunk of data
-            filtering.expressions = expressions;
-            filtering.expressions.forEach(function(element) {
-                if (element.fieldName === undefined) {
-                    element.fieldName = textKeyValueOption;
-                }
-            });
+			filtering.expressions = expressions;
+			filtering.expressions.forEach(function(element) {
+				if (element.fieldName === undefined) {
+					element.fieldName = textKeyValueOption;
+				}
+			});
 
 			// A.K. September 13th, 2017 #1183 igCombo filtered event is fired, even if filtering event is cancelled
-            noCancel = event ? this._triggerFiltering(event) : true;
-            if (noCancel) {
+			noCancel = event ? this._triggerFiltering(event) : true;
+			if (noCancel) {
 
-                // Handle local filtering
-                if (type === "local") {
+				// Handle local filtering
+				if (type === "local") {
 					ds.filter(filtering.expressions, logic, true);
 
-                    if (this.options.virtualization) {
-                        this._handleLocalFilteringWithVirt(ds);
-                    } else {
-                        this._handleLocalFiltering(ds);
-                    }
-                }
+					if (this.options.virtualization) {
+						this._handleLocalFilteringWithVirt(ds);
+					} else {
+						this._handleLocalFiltering(ds);
+					}
+				}
 
 				if (type === "remote") {
 					if (paging) {
@@ -6395,8 +6395,8 @@
 				}
 			}
 
-            return this;
-        },
+			return this;
+		},
 		clearFiltering: function (event) {
 			/* Clears filtering.
 			```
