@@ -243,6 +243,15 @@
 			equal($.ig.encode("<span id='span1'></span>"), "&lt;span id=&#39;span1&#39;&gt;&lt;/span&gt;", "Should encode span element with attribute and single quote");
 			equal($.ig.encode("<span id=\"span1\"></span>"), "&lt;span id=&#34;span1&#34;&gt;&lt;/span&gt;", "Should encode span element with attribute and double quote")
 		});
+		
+		test("Test $.ig.stringToColor", function () {
+			assert.deepEqual($.ig.stringToColor(null), { a: 0, r: 0, g: 0, b: 0 }, "Passing null to stringToColor should return transparent.");
+			assert.equal($.ig.stringToColor("papayawhip"), "ffefd5", "Passing papayawhip to stringToColor should look as delicious as whipped papaya.");
+			assert.deepEqual($.ig.stringToColor("rgba(13, 14, 15, 16)"), { r: 13, g: 14, b: 15, a: 16 }, "Passing rgba(13, 14, 15, 16) to stringToColor should return that color.");
+			assert.deepEqual($.ig.stringToColor("rgb(13, 14, 15)"), { r: 13, g: 14, b: 15 }, "Passing rgb(13, 14, 15) to stringToColor should return that color.");
+			assert.deepEqual($.ig.stringToColor("#beefed"), { r: 190, g: 239, b: 237 }, "Passing #beefed to stringToColor should return a nice pale cyan color.");
+			assert.deepEqual($.ig.stringToColor("#def"), { r: 221, g: 238, b: 255 }, "Passing #def to stringToColor should return a nice pale lavender color.");
+		});
 	</script>
 </head>
 <body>
