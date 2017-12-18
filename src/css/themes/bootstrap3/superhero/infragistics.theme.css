@@ -2192,6 +2192,9 @@ body .ui-tooltip {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
 }
+.ui-iggrid td.ui-state-hover {
+  border-color: transparent;
+}
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
   border-right: 1px solid #4E5D6C;
 }
