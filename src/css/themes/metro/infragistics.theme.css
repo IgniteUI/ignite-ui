@@ -2944,15 +2944,15 @@ input.ui-igcombo-field {
 /**********/
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
 .ui-iggrid-table-mrl .ui-widget-content td {
-  border: 1px solid rgba(153, 153, 153, 0.06) !important;
+  border: 1px solid #ebebeb !important;
 }
 .ui-iggrid-table-mrl .ui-widget-content td.ui-state-hover,
 .ui-iggrid-table-mrl .ui-widget-content .ui-iggrid-altrecord td.ui-state-hover {
-  border: 1px solid #b1b1b1 !important;
+  border: 1px solid #dedede !important;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th,
 .ui-iggrid .ui-iggrid-table-mrl th {
-  border: 2px solid #00aade !important;
+  border: 1px solid #ebebeb !important;
 }
 .ui-iggrid {
   /* Put your rules here */
@@ -3081,7 +3081,7 @@ input.ui-igcombo-field {
 .ui-iggrid .ui-ig-altrecord td,
 .ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class,
 .ui-iggrid tbody .ui-ig-altrecord td.ui-state-default {
-  border-color: #e3e3e3 white white #e3e3e3;
+  border-color: #ebebeb white white #ebebeb;
   border-width: 1px;
 }
 /*sorting*/
