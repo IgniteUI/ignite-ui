@@ -8,9 +8,9 @@
 	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
 	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
 	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
-	
+<!-- 	
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script> -->
 
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
@@ -29,10 +29,11 @@
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 	$(document).ready(function () {
+
 		// Create a editors
 		var errorSpan;
 		function loadTestbeds() {
-			$(function () {
+
 			    $("#chkInput").igCheckboxEditor({ tabIndex: 2 });
 			    $("#chkInput2").igCheckboxEditor();
 			    $("#chkInput3").igCheckboxEditor({
@@ -51,20 +52,20 @@
 					valueChanging: function (evts, args) {
 						return false;
 					}
-			});
+				});
 				try {
 					$("#chkLabel").igCheckboxEditor();
 				} catch (e) {
 					errorSpan = e;
-		}
+				}
 				$("#chkStyled").igCheckboxEditor({ iconClass: "ui-icon-close", checked: true });
 				$("#chkAttr").igCheckboxEditor();
 				$("#chkNull").igCheckboxEditor();
-			});
+
 		}
 		initialized = false;
 		module("igCheckboxEditor", {
-			setup: function() {
+			before: function() {
 				//pause testing until tree is initialized
 				if (!initialized) {
 					stop();
@@ -73,26 +74,28 @@
 					initialized = true;
 				}
 			},
-			teardown: function() {
+			after: function() {
 			}
 		});
 		
 		var testId = '[ID1] Checkbox Editor initialization.';
-		test(testId, 9, function () {
+		test(testId, function (assert) {
+			assert.expect(9);
 			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkLabel = $('#chkLabel'), $chkSpan = $('#chkSpan');
-			equal(typeof ($chkInput.igCheckboxEditor), 'function', "Editors Scripts not loaded");
-			notStrictEqual($chkInput.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in an INPUT');
-			notStrictEqual($chkContainer.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a DIV');
-			notStrictEqual($chkSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
-			equal($chkInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
-			equal(errorSpan.message, $.ig.Editor.locale.instantiateCheckBoxErrMsg, "Error message is wrong");
-			equal($chkInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
-			equal($chkContainer.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
-			equal($chkContainer.igCheckboxEditor("inputName"), "agree", 'Input name shoud be set');
+			assert.equal(typeof ($chkInput.igCheckboxEditor), 'function', "Editors Scripts not loaded");
+			assert.notStrictEqual($chkInput.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in an INPUT');
+			assert.notStrictEqual($chkContainer.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a DIV');
+			assert.notStrictEqual($chkSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
+			assert.equal($chkInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			assert.equal(errorSpan.message, $.ig.Editor.locale.instantiateCheckBoxErrMsg, "Error message is wrong");
+			assert.equal($chkInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			assert.equal($chkContainer.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			assert.equal($chkContainer.igCheckboxEditor("inputName"), "agree", 'Input name shoud be set');
 		});
 
 		testId = '[ID2] Check for stlye';
-		test(testId, 12, function () {
+		test(testId, function (assert) {
+			assert.expect(12);
 			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'),
 				css = $chkInput.data("igCheckboxEditor").css;
 
@@ -123,7 +126,8 @@
 		});
 
 		testId = '[ID3] Check for checked';
-		test(testId, 15, function () {
+		test(testId, function (assert) {
+			assert.expect(15);
 			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkSpan = $("#chkSpan");
 
 			ok(isChecked($chkInput, false), 'The initial value is not as expexted');
@@ -163,7 +167,8 @@
 		});
 
 		testId = '[ID4] Check width/height';
-		test(testId, 7, function () {
+		test(testId, function (assert) {
+			assert.expect(7);
 			var $chkInput = $("#chkInputche"), $chkContainer = $('#chkContainer'), css = $chkInput.data("igCheckboxEditor").css;
 
 			// Default stlye from CSS
@@ -182,7 +187,8 @@
 		});
 
 		testId = '[ID5] Disabled/readonly and other options and methods';
-		test(testId, 6, function () {
+		test(testId, function (assert) {
+			assert.expect(6);
 			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkSpan = $("#chkSpan"), $chkAttr = $("#chkAttr");
 
 			$chkContainer.igCheckboxEditor("option", "readOnly", true);
@@ -210,7 +216,8 @@
 		});
 
 		testId = '[ID6] Check styled properties';
-		test(testId, 2, function () {
+		test(testId, function (assert) {
+			assert.expect(2);
 			var $chk = $("#chkStyled");
 			ok($chk.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-close"), "Close icon not applied");
 			$chk.igCheckboxEditor("option", "iconClass", "ui-icon-plus");
@@ -218,7 +225,8 @@
 		});
 
 		testId = '[ID7] Check events';
-		test(testId, 1, function () {
+		test(testId, function (assert) {
+			assert.expect(1);
 			$chkInput = $("#chkInputche");
 
 			$chkInput.click();
@@ -226,7 +234,8 @@
 		});
 
 		testId = '[ID8] Check destroy';
-		test(testId, 11, function () {
+		test(testId, function (assert) {
+			assert.expect(11);
 			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkAttr = $("#chkAttr");
 			// Put some wrong value to the true/false values and expect an exception
 			$chkInput.val("fail");
@@ -258,7 +267,8 @@
 		});
 
 		testId = '[ID9] Check label click support';
-		test(testId, 8, function () {
+		test(testId, function (assert) {
+			assert.expect(8);
 		    var $chkInput2 = $("#chkInput2"), $chkLabel2 = $('#label2'),
                 $chkInput3 = $("#chkInput3"), $chkLabel3 = $('#label3');
 
@@ -281,7 +291,8 @@
 		});
 
 		testId = '[ID10] Check focus using the focus API';
-		test(testId, 5, function () {
+		test(testId, function (assert) {
+			assert.expect(5);
 		    $chk = $("#chkStyled"), $chk1 = $("#chkInput2"), css = $chk.data("igCheckboxEditor").css;
 		    $chk.igCheckboxEditor("setFocus");
 		    ok($chk.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
@@ -303,7 +314,8 @@
 		});
 
 		testId = '[ID11] Check exception when setting null';
-		test(testId, 1, function () {
+		test(testId, function (assert) {
+			assert.expect(1);
 
 			throws(
 				function () { $("#chkNull").igCheckboxEditor("value", null); },
@@ -312,7 +324,8 @@
 		});
 
 		var testId = 'Testing key code event arguments';
-		test(testId, 3, function () {
+		test(testId, function (assert) {
+			assert.expect(3);
 			var keyD, keyP, keyU;
 
 			$chkInput = $('<input/>').appendTo("#testBedContainer").igCheckboxEditor({
@@ -388,7 +401,7 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
     </div>
-    <div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+    <div id="qunit-fixture" style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
         <label id="label1" for="chkInput">Label 1</label>
         <input id="chkInput" />
         <label id="label2" for="chkInput2">Label 2</label>

@@ -3,7 +3,15 @@
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
+const reporters = ['progress'];
+
 module.exports = function(config) {
+
+  if (config.singleRun) {
+    // when running with `--singleRun=true` instrument:
+    reporters.push("coverage");
+  }
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -22,15 +30,19 @@ module.exports = function(config) {
       { pattern: "src/js/**/*", included: false, served: true },
       { pattern: "src/css/**/*", included: false, served: true },
       // { pattern: "bower_components/qunit/**/*", included: false, served: true },
-      { pattern: "bower_components/jquery/**/*", included: false, served: true },
-      { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
-      { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
+      // { pattern: "bower_components/jquery/**/*", included: false, served: true },
+      // { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
+      // { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
 
       "tests/test-patch.js",
 
+      "bower_components/jquery/dist/jquery.js",
+      "bower_components/jquery-ui/jquery-ui.js",
       // load HTML beds?
+      // These get included in the test run file, alternatively https://stackoverflow.com/a/16414357 ?
       //'tests/unit/**/*test*.htm*'
       "tests/unit/colorpicker/tests.html",
+      "tests/unit/editors/checkboxEditor/tests.html",
       "tests/unit/colorpickersplitbutton/tests.html"
     ],
     proxies: {
@@ -46,7 +58,7 @@ module.exports = function(config) {
         //reorder: false,
         showUI: true,
         testTimeout: 5000,
-        fixture: "#qunit-fixture" // does this trigger .html file handling?
+        //fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
       }
     },
 
@@ -72,7 +84,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: reporters,
 
 
     // web server port
