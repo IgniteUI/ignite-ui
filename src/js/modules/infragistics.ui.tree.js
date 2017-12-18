@@ -2634,7 +2634,7 @@
 					}
 				}
 				li = "<li class='" + this._buildNodeCssString(data[ i ], depth, binding) +
-					"' data-path='" + childPath + "' data-value='" + value + "' data-role='node'>";
+					"' data-path='" + childPath + "' data-value=\"" + value + "\" data-role='node'>";
 
 				children = data[ i ][ binding.childDataProperty ];
 				if (typeof children === "function") {
