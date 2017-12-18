@@ -497,6 +497,7 @@
 			}
 
 			offset = handle.offset();
+
 			// N.P. December 12th, 2017 #516 .andSelf() has been deprecated and is now an alias for .addBack(), which should be used with jQuery 1.8 and later.
 			mouseOverHandle = !$(event.target).addBack().is(".ui-igslider-handle");
 			this._clickOffset = mouseOverHandle ? { left: 0, top: 0 } : {
