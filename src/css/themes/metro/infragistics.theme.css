@@ -3236,6 +3236,7 @@ input.ui-igcombo-field {
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover,
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive,
 .ui-igedit-list .ui-igedit-listitem.ui-state-hover,
 .ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-iggrid-filterddlist li.ui-state-hover,

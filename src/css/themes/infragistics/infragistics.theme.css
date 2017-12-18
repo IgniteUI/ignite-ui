@@ -3353,6 +3353,7 @@ input.ui-igbutton {
   color: #444444;
 }
 .ui-iggrid-filterddlist li.ui-state-active,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive,
 .ui-iggrid-filterddlistitem.ui-state-active a,
 .ui-iggrid-featurechooser-list li.ui-state-active,
 .ui-iggrid-featurechooser-list.ui-state-active a,
