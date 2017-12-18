@@ -112,7 +112,12 @@
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
   border:1px solid @table-border-color;
 }
+
+.ui-iggrid .ui-iggrid-table-mrl tbody .ui-iggrid-altrecord td {
+  border:1px solid darken(@table-border-color, 10%);
+}
 /* footer summary tables*/
+
 
 .ui-iggrid tfoot td {
   border-color: @table-border-color;
@@ -287,6 +292,10 @@
 .ui-iggrid tbody td {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
+}
+
+.ui-iggrid tbody td.ui-state-hover {
+  border-color: transparent;
 }
 
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
