@@ -38,6 +38,7 @@
 
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
 
+	<script type="text/javascript" src="../../../common/test-util.js"></script>
 	
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
@@ -45,7 +46,7 @@
         var testID, eventTriggered;
 		QUnit.config.reorder = false;
 		function viewModel() {
-			nonObservable = 244;
+			this.nonObservable = 244;
 			this.number = ko.observable(25);
 			this.currencyNumber = ko.observable(32);
 			this.textValue = ko.observable("Some Val");
@@ -187,52 +188,34 @@
 		});
 	
 		testID = "Value set to nonObservable value";
-			test(testID, 5, function () {
-			stop();
-			setTimeout(function () {
-				start();
-				var err, evt;			
-					$("#tempContainer").empty();
-					//Default Update Mode
-					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igCurrencyEditor: { value: nonObservable, width: 160 }'></input>");
-					ko.applyBindings(model, document.getElementById("tempEditor"));
-					equal($("#tempEditor").igCurrencyEditor("value"), nonObservable, "NonObservable value is assigned correctly");
-					//$("#tempEditor").igNumericEditor("value", "New non Observable");
-					evt = $.Event("keypress");
-					evt.keyCode = 51;
-					$("#outerInput").trigger(evt);
-					notEqual($("#tempEditor").igCurrencyEditor("value"), $('#inputEditor1').igCurrencyEditor("value"), "The value should not be updated");
-					//Set Defaul value from the model
-					$("#resetButton").click();
-					//The value of the nonObservable should not be updated
-					notEqual($("#tempEditor").igCurrencyEditor("value"), $('#inputEditor1').igCurrencyEditor("value"), "The value should not be updated");
-					$("#tempContainer").empty();
-					//immediate update mode
-					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igCurrencyEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }'></input>");
-					ko.applyBindings(model, document.getElementById("tempEditor"));
-					equal($("#tempEditor").igCurrencyEditor("value"), nonObservable, "NonObservable value is assigned correctly");
-					evt = $.Event("keydown");
-					evt.keyCode = 51;
-					$("#tempEditor").trigger(evt);
-					evt = $.Event("keypress");
-					evt.keyCode = 51;
-					$("#tempEditor").trigger(evt);
-					evt = $.Event("keyup");
-					evt.keyCode = 51;
-					$("#tempEditor").trigger(evt);
-					
-					evt = $.Event("keydown");
-					evt.keyCode = 55;
-					$("#tempEditor").trigger(evt);
-					evt = $.Event("keypress");
-					evt.keyCode = 55;
-					$("#tempEditor").trigger(evt);
-					evt = $.Event("keyup");
-					evt.keyCode = 55;
-					$("#tempEditor").trigger(evt);
-					notEqual($("#tempEditor").igCurrencyEditor("value"), $('#inputEditor1').igCurrencyEditor("value"), "The value should not be updated");
-					$("#tempContainer").empty();
-				}, 200);
+			test(testID, 6, function () {
+				var evt;			
+				$("#tempContainer").empty();
+				// Default Update Mode
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igCurrencyEditor: { value: nonObservable, width: 160 }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+				equal($("#tempEditor").igCurrencyEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
+
+				$("#tempEditor").igCurrencyEditor("select");
+				$.ig.TestUtil.keyInteraction(49, $("#tempEditor"));
+				$("#tempEditor").trigger("blur");
+				equal($("#tempEditor").igCurrencyEditor("value"), model.nonObservable, "The value should be updated");
+				model.nonObservable = 42;
+				// The value of the checkbox editor shouldn't be updated
+				notEqual($("#tempEditor").igCurrencyEditor("value"), model.nonObservable, "The value should not be updated");
+				$("#tempContainer").empty();
+				
+				// Immediate update mode
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igCurrencyEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+				equal($("#tempEditor").igCurrencyEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
+				$("#tempEditor").igCurrencyEditor("select");
+				$.ig.TestUtil.keyInteraction(49, $("#tempEditor"));
+				equal($("#tempEditor").igCurrencyEditor("value"), model.nonObservable, "The value should be updated");
+				
+				model.nonObservable = 42;
+				notEqual($("#tempEditor").igCurrencyEditor("value"), model.nonObservable, "The value should not be updated");
+				$("#tempContainer").empty();
 		});
 	
 		testID = "ListItem change -> immediate";

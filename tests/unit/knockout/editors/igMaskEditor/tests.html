@@ -40,7 +40,7 @@
 
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
 	
-	
+	<script type="text/javascript" src="../../../common/test-util.js"></script>
 
 	
 	<script type="text/javascript">
@@ -49,7 +49,7 @@
         var  testID;
 		QUnit.config.reorder = false;
 		function viewModel() {
-			nonObservable = "8a6d";
+			this.nonObservable = "8a6d";
 			this.number = ko.observable(25);
 			this.currencyNumber = ko.observable(32);
 			this.maskValue = ko.observable("8a6d");
@@ -190,38 +190,30 @@
 		});
 		
 		testID = "Value set to nonObservable value";
-			test(testID, 5, function () {
-			stop();
-			setTimeout(function () {
-				start();
-				var err, evt;			
-					$("#tempContainer").empty();
-					//Default Update Mode
-					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, inputMask: \"9&9&\", width: 160 }'></input>");
+			test(testID, 4, function () {
+				var evt, err;			
+				$("#tempContainer").empty();
+				// Default Update Mode
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, width: 160 }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+				equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
+
+				$("#tempEditor").igMaskEditor("select");
+				$.ig.TestUtil.keyInteraction(49, $("#tempEditor"));
+				$("#tempEditor").trigger("blur");
+				equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "The value should be updated");
+				model.nonObservable = 42;
+				// The value of the checkbox editor shouldn't be updated
+				notEqual($("#tempEditor").igMaskEditor("value"), model.nonObservable, "The value should not be updated");
+				$("#tempContainer").empty();
+
+				QUnit.throws(function () {
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }'></input>");
 					ko.applyBindings(model, document.getElementById("tempEditor"));
-					equal($("#tempEditor").igMaskEditor("value"), nonObservable, "NonObservable value is assigned correctly");
-					//$("#tempEditor").igNumericEditor("value", "New non Observable");
-					evt = $.Event("keypress");
-					evt.keyCode = 51;
-					$("#outerInput").trigger(evt);
-					notEqual($("#tempEditor").igMaskEditor("value"), $('#inputEditor1').igMaskEditor("value"), "The value should not be updated");
-					//Set Defaul value from the model
-					$("#resetButton").click();
-					//The value of the nonObservable should not be updated
-					notEqual($("#tempEditor").igMaskEditor("value"), $('#inputEditor1').igMaskEditor("value"), "The value should not be updated");
-					$("#tempContainer").empty();
-					//immediate update mode
-					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, width: 160, inputMask: \"9&9&\", updateMode:\"onchange\" }'></input>");
-					ko.applyBindings(model, document.getElementById("tempEditor"));
-					equal($("#tempEditor").igMaskEditor("value"), nonObservable, "NonObservable value is assigned correctly");
-					keyboardType($("#tempEditor"), 57);
-					keyboardType($("#tempEditor"), 70);
-					keyboardType($("#tempEditor"), 50);
-					keyboardType($("#tempEditor"), 83);
-					
-					notEqual($("#tempEditor").igMaskEditor("value"), $('#inputEditor1').igMaskEditor("value"), "The value should not be updated");
-					$("#tempContainer").empty();
-				}, 200);
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1;
+				}, 'An error was correctly thrown when updateMode option is not correctly changed');
++				$("#tempContainer").empty();
 		});
 
 			testID = "updateMode -> onChange";
