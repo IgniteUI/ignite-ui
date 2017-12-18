@@ -3106,7 +3106,8 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-active,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-active a,
 .ui-igcombo-listitemholder li.ui-state-active,
-.ui-igcombo-listitemholder li.ui-state-active a {
+.ui-igcombo-listitemholder li.ui-state-active a,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive {
   border: 1px solid #0263b7;
   background-color: #0275d8;
   color: #fff; }

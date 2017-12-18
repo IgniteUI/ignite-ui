@@ -3456,7 +3456,8 @@ body .ui-tooltip {
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-active,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-active a,
 .ui-igcombo-listitemholder li.ui-state-active,
-.ui-igcombo-listitemholder li.ui-state-active a {
+.ui-igcombo-listitemholder li.ui-state-active a,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive {
   border: 1px solid #c15b17;
   background-color: #DF691A;
   color: #fff;
