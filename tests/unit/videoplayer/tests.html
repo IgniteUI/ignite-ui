@@ -294,6 +294,20 @@
 
 				}
 			});
+			$("#player11").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				width: 800,
+				height: 340,
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				title: 'Welcome to green grass...',
+				muted: true,
+				autohide: true
+			});
 
 			document.mockOptions = {};
 			document.mockOptions.oldBrowser = true;
@@ -382,7 +396,7 @@
 	var testId_39 = "igVideoPlayer Test disabled option test 39";
 	var testId_40 = "igVideoPlayer Test relatedvideos scrolling 40";
 	var testId_41 = "igVideoPlayer Test loop option test 41";
-	var testId_42 = "igVideoPlayer Test volume vertical scroll hover test 42";
+	var testId_42 = "igVideoPlayer slider test 42";
 
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -1032,6 +1046,34 @@
 		ok(!$('#player10_com_video').paused, 'Commersial Video should be playing.');		
 		$("#player10").remove();								
 	});
+	test(testId_42, function() {
+		$("#player11").data('igVideoPlayerUnitTesting').togglePlay();								
+		$("#player11").data('igVideoPlayerUnitTesting').togglePlay();	
+		$("#player11").mouseover();		
+		$("#player11_ctrls_s > a").click();
+
+		var handle = $('.ui-igslider-handle', $('#player11_ctrls_s')),
+			videoElem = $('#player11_video')[0],
+			currentTime = videoElem.currentTime,
+			mousedown = jQuery.Event("mousedown"),
+			mousemove = jQuery.Event("mousemove");
+		mousedown.which = 1;
+		mousemove.pageX = handle.offset().left - 20;
+		mousemove.button = 0;
+		handle.trigger(mousedown);
+		handle.trigger(mousemove);
+		handle.trigger('mouseup');
+		
+		handle.trigger(mousedown);
+		handle.trigger(mousemove);
+		handle.trigger('mouseup');
+
+		handle.trigger(mousedown);
+		handle.trigger(mousemove);
+		handle.trigger('mouseup');
+
+		ok($('#player11_video')[0].paused, 'Video should be paused.');	
+	});
 
 	function checkButton(button) {
 		checkClass(button, 'ui-widget');
@@ -1041,6 +1083,7 @@
 		ok(button.attr('role') === 'button', 'The button with id: ' + button[0].id + ' does not contain the attr role: button');
 		ok(button.attr('href') === '#', 'The button with id: ' + button[0].id + ' does not contain the attr href: #');
 	}
+	
 
 	function checkElementClass(element,classs) {
 		ok(element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does not contain the class:' + classs)		
@@ -1099,6 +1142,10 @@
 	<br/>
 	<h1>igVideoPlayer 10</h1>	
 	<div id="player10"></div>
+	<br/>
+	<br/>
+	<h1>igVideoPlayer 11</h1>	
+	<div id="player11"></div>
 	<br/>
 	<br/>
 	<video id="video1" controls="true" src="http://video-js.zencoder.com/oceans-clip.mp4" type="video/mp4" ></video>
