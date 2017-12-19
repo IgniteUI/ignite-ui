@@ -3556,7 +3556,8 @@ ui-iggrid-groupbyarea a,
 .ui-iggrid th.ui-state-active .ui-iggrid-indicatorcontainer .ui-icon {
   color: #ffffff;
 }
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   border-color: #00AADE;
 }
 .ui-iggrid th a,

@@ -22,6 +22,7 @@ When working on an issue for the Ignite UI repository, you need to be aware of a
 4. `status: third-party-issue` this is the status of an issue that has been reviewed, has been determined to be an issue, but the root case is not in the Ignite UI code. Example would be browser specific bugs caused by the particular browser's rendering or JavaScript engines. Remove other statuses and place only this one if you're the one performing the investigation.
 5. `status: not-to-fix` this is the status of issues that derive from our code, but have been decided to leave as is. This is done when fixes require general design and/or architecture changes and are very risky.
 6. `status: duplicate` this is the status of issues that are duplicates of another issue. When applying the duplicate status, make sure to reference the duplicated issue in a comment.
+7. `status: resolved` apply this status once you've resolved the issue you're working on and you have an open pull request to all applicable branches.
 
 ## Testing - applicable to pull requests
 1. `status: awaiting-test` this is the initial status of pull requests. If you're performing the pull request, please place this status on it. Pull requests are accepted if and only if all status checks pass, review is performed, and the pull request has been tested and contains `status: verified`.

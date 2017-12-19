@@ -7510,7 +7510,9 @@
 			/* type="string" this is the property (path) in the data source where the records are located. */
 			searchField: null,
 			/* type="string" this is the property in the resulting object where actual resulting records will be put. (So the result will not be array but an object if this is defined), after the potential data source transformation */
-			outputResultsName: null
+			outputResultsName: null,
+			/* type="string" this is the property (xpath) in the data source where the child records of a record are located. Used in XML binding. */
+			childDataProperty: null
 		},
 		init: function (type, options) {
 			$.ig.DataSchema.prototype.schema.fields = [];
