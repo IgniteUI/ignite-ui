@@ -1,4 +1,4 @@
-﻿/*!@license
+﻿﻿/*!@license
  * Infragistics.Web.ClientUI Editors <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
@@ -11413,7 +11413,7 @@
 			this._dropDownOpened = true;
 
 			// Open Dropdown
-			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
+			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue, pickerInst;
 			this._cancelBlurDatePickerOpen = true;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
@@ -11442,6 +11442,8 @@
 			if (currentInputValue === undefined) {
 				currentInputValue = this._editorInput.val();
 			}
+
+			pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
 			try {
 				if (this.options.suppressKeyboard) {
 					if (this._focused) {
@@ -11466,6 +11468,10 @@
 				this._editorInput.datepicker("show");
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
+					if (pickerInst) {
+						// D.P. 19th Dec 2017 #1453 Pprevent further parsing from messing with selection
+						pickerInst.lastVal = currentInputValue;
+					}
 				}
 			}
 
