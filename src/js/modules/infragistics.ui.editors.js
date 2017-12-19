@@ -8537,7 +8537,7 @@
 				} else if (flag === 22) {
 					txt += "0";
 				} else {
-					txt += "00";
+					txt += "90";
 					if (flag === 3) {
 						txt += "00";
 					}
@@ -10807,6 +10807,22 @@
 		_listMouseDownHandler: function () { // igDatePicker
 		},
 		_updateDropdownSelection: function () { //igDatePicker
+			var pickerInst, cursorPosition,
+				val = this._editorInput.val();
+
+			// D.P. 19th Dec 2017 #1453 Update the `datepicker` selection if the input mask if fulfilled
+			if (this._pickerOpen && this._validateRequiredPrompts(val)) {
+				cursorPosition = this._getCursorPosition();
+				pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
+				this._editorInput.datepicker("setDate", this._valueFromText(val));
+
+				// restore input after picker updates input:
+				this._editorInput.val(val);
+				if (pickerInst) {
+					pickerInst.lastVal = val;
+				}
+				this._setCursorPosition(cursorPosition);
+			}
 		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010
@@ -10893,6 +10909,10 @@
 					}
 
 					self._processValueChanging(date);
+
+					// D.P. 19th Dec 2017 #1453 - Entered date is converted to today's date when pressing the Enter key
+					// Double onSelect bug + getDate cause a parse on the text we already formatted, setting lastVal skips that:
+					inst.lastVal = self._getEditModeValue();
 					self._triggerItemSelected.call(self,
 						inst.dpDiv.find(".ui-datepicker-calendar>tbody>tr>td .ui-state-hover"),
 							dateFromPicker);
