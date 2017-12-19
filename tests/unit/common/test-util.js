@@ -111,7 +111,7 @@
 		 * @param {number} ms Amount of ms to wait
 		 */
 		wait: function (ms) {
-			if (false) {
+			if (typeof Promise !== "undefined") {
 				return new Promise(function(resolve) { 
 					setTimeout(resolve, ms)
 				});
