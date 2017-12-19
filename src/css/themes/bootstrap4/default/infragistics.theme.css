@@ -3090,7 +3090,8 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-hover,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
 .ui-igcombo-listitemholder li.ui-state-hover,
-.ui-igcombo-listitemholder li.ui-state-hover a {
+.ui-igcombo-listitemholder li.ui-state-hover a,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive {
   border-color: #01549b;
   background-color: #025fb0;
   color: #fff; }
@@ -3106,8 +3107,7 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-active,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-active a,
 .ui-igcombo-listitemholder li.ui-state-active,
-.ui-igcombo-listitemholder li.ui-state-active a,
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive {
+.ui-igcombo-listitemholder li.ui-state-active a {
   border: 1px solid #0263b7;
   background-color: #0275d8;
   color: #fff; }
