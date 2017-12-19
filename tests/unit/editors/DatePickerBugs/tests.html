@@ -439,7 +439,7 @@
 				}
 
 				//tomorrow if in same month, or yesterday
-				target = nextInMonth(today, 1) || target.setDate(target.getDate() - 1);
+				target = nextInMonth(today, 1) || new Date(target.setDate(target.getDate() - 1));
 				targetString = getDDmmYYYY(target, "-");
 				targetKeys = targetString.replace(/-/g, "");
 
@@ -469,12 +469,18 @@
 					if (!(newTarget = nextInMonth(today, 2))) {
 						tomorrow = false;
 						newTarget = target;
-						newTarget.setDate(newTarget.getDate() - 1);
+						newTarget.setDate(newTarget.getDate() - 2);
 					}
 					targetString = getDDmmYYYY(newTarget, "-");
 
 					// use keyboard nav to another date:
-					$.ig.TestUtil.keyInteraction(tomorrow ? 39 : 37, $editor.igDatePicker("field"), "ctrlKey");
+					if (tomorrow) {
+						$.ig.TestUtil.keyInteraction(39, $editor.igDatePicker("field"), "ctrlKey");
+					} else {
+						$.ig.TestUtil.keyInteraction(37, $editor.igDatePicker("field"), "ctrlKey");
+						$.ig.TestUtil.keyInteraction(37, $editor.igDatePicker("field"), "ctrlKey");
+					}
+
 					equal($calendar.find(".ui-datepicker-days-cell-over").text(), newTarget.getDate(), "Calendar selection should have moved");
 					$.ig.TestUtil.keyInteraction(13, $editor.igDatePicker("field"));
 
@@ -488,6 +494,7 @@
 					// simply press enter on the already selected date
 					$.ig.TestUtil.keyInteraction(13, $editor.igDatePicker("field"));
 					equal($editor.igDatePicker("field").val(), targetString, "Selecting the same date again should not change the input");
+					$editor.remove();
 					done();
 				}).catch(function (er) {
 					assert.pushResult({ result: false, message: er.message });
