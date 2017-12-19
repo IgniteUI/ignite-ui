@@ -3124,6 +3124,9 @@ body .ui-tooltip {
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
   border: 1px solid #4E5D6C;
 }
+.ui-iggrid .ui-iggrid-table-mrl tbody .ui-iggrid-altrecord td {
+  border: 1px solid #39444e;
+}
 /* footer summary tables*/
 .ui-iggrid tfoot td {
   border-color: #4E5D6C;
@@ -3266,8 +3269,11 @@ body .ui-tooltip {
 }
 /* BUG 246065 Marin Popov 07.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
 .ui-iggrid tbody td {
-  border-left: 1px solid #4E5D6C;
-  border-right: 1px solid #4E5D6C;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+.ui-iggrid tbody td.ui-state-hover {
+  border-color: transparent;
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
   border-right: 1px solid #4E5D6C;
