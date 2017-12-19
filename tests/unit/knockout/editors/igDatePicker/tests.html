@@ -39,7 +39,7 @@
         var  testID;
 		QUnit.config.reorder = false;
 		function viewModel() {
-			nonObservable = "11/17/2007";
+			this.nonObservable = "11/17/2007";
 			this.nullable = ko.observable(null);
 			this.dateValue = ko.observable(new Date("12/12/2012"));
 			
@@ -68,7 +68,10 @@
 			setDefaultDate5 = function () {
 				this.dateValue("/Date(1224043200000)/");  
 			};
+
 			this.isDisabled =  ko.observable(false);
+
+			this.invalidDate = ko.observable("");
 		};
 		
 		model = new viewModel();
@@ -111,23 +114,27 @@
 			equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
 			
 		});
+
 		testID = "Update model -> editor (input)" ;
 		test(testID, 6, function () { //Passing
 			var editor = $('#inputEditor1');
 			editor.igDatePicker("showDropDown");
-			var calendar = editor.igDatePicker("getCalendar");
-			//editor.datepicker("setDate", new Date(2012, 9, 12)); // This doesn't work in PhantomJS, use the code below.
-			editor.val("10/12/2012");
-			editor.datepicker("hide");
-			editor.blur();
+
+			selectDateFromDropdown(editor, "10/12/2012");
 
 			checkEditorsValues("10/12/2012", "Values are as expected");
 			checkFieldsValues(new Date(2012, 9, 12).toString(), "Values are as expected");
 		});
 		
 		testID = "Update Model, check editors";
-		test(testID, 30, function () { //Partially Passing (Chrome fail)
+		test(testID, 36, function () { //Partially Passing (Chrome fail)
 			var date;
+
+			$("#resetButton5").click();
+			date = new Date(1224043200000);
+			checkEditorsValues(getShortDateAsString(date), "Values are as expected", date);			
+			checkFieldsValues("/Date(1224043200000)/", "Values are as expected");		
+
 			$("#resetButton4").click();
 			date = new Date();
 			checkEditorsValues(getShortDateAsString(date), "Values are as expected", date);			
@@ -154,6 +161,7 @@
 			
 			
 		});
+
 		testID = "updateMode set to not allowed value";
 			test(testID, 1, function () { //Passing
 			var err;
@@ -165,9 +173,6 @@
 			$("#tempContainer").empty();
 		});
 			
-
-
-		
 		testID = "update from outside input";		
 			test(testID, 24, function () {	//Passing	
 				var date;
@@ -228,6 +233,51 @@
 				$editor.remove();
 				$chk.remove();
 			});
+			
+			var testId = 'Test invalid dates binding';
+			test(testId, 2, function () {
+				var editor = $("#invalidValuesEditor");
+
+				model.invalidDate("/Date(-1)");
+				equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
+
+				model.invalidDate(NaN);
+				equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
+			});
+
+			testID = "updateMode set to not allowed value";
+			test(testID, 2, function () {
+				var err;
+				throws(function () {
+					$("#tempContainer").empty();
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDatePicker: { value: dateValue, width: 160, updateMode:\"none\" }'></input>");
+					ko.applyBindings(model, document.getElementById("tempEditor"));
+				}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+				ko.cleanNode(document.getElementById("tempEditor"));
+				$("#tempContainer").empty();
+				
+				throws(function () {
+					$("#tempContainer").empty();
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDatePicker: { value: dateValue, width: 160, updateMode:\"immediate\" }'></input>");
+					ko.applyBindings(model, document.getElementById("tempEditor"));
+				}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+				ko.cleanNode(document.getElementById("tempEditor"));
+				$("#tempContainer").empty();
+			});
+
+			testID = "datePicker bound to non-observable value";
+			test(testID, 2 , function () {
+				var date = new Date("12/15/2017");
+				var editor = $("#nonObservableEditor");
+
+				selectDateFromDropdown(editor, "12/15/2017");
+
+				ok(date.toString() === model.nonObservable.toString(), "Changes in the date picker should be reflected in the view model");
+
+				model.nonObservable = new Date("12/31/2017");
+				ok(editor.igDatePicker("value").toString() !== model.nonObservable.toString() , "Changes in the view model shouldn't be reflected in the editor");
+			});
+
 		}); // Document Ready handler
 
 		
@@ -302,6 +352,13 @@
 			evt = $.Event("keyup");
 			evt.keyCode = keyCode;
 			element.trigger(evt);			
+		}
+
+		function selectDateFromDropdown(editor, date) {
+			editor.igDatePicker("showDropDown");
+			editor.val(date);
+			editor.datepicker("hide");
+			editor.blur();
 		}
 </script>
 </head>
@@ -386,7 +443,6 @@
 			<input id="resetButton3" type="button" data-bind="click: setDefaultDate3" value="Reset Date"></input><br />
 			<input id="resetButton4" type="button" data-bind="click: setDefaultDate4" value="Reset Date"></input><br/>
 			<input id="resetButton5" type="button" data-bind="click: setDefaultDate5" value="Reset Date"></input><br/>
-			
 		</td>
 	</tr>
 </table>
@@ -410,6 +466,15 @@
           }, igEditorDisable: isDisabled" />
 
 		<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
+
+		<div id="invalidValuesTest">
+			<input id="invalidValuesEditor"  data-bind="igDatePicker: { value: invalidDate, width: '160px' }"/>
+		</div>
+		
+		<div id="nonObservableTest">
+			<input id="nonObservableEditor"  data-bind="igDatePicker: { value: nonObservable, width: '160px' }"/>
+		</div>
+</div>
 </div>
 </body>
 </html>
