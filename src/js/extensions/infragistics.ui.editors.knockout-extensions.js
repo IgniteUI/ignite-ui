@@ -25,13 +25,17 @@
 	}
 }
 (function ($, ko) {
-	function updatePropertyValue(element, bindingType, viewModel, newValue) {
-		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*value\\s*:\\s*)?([^{},\\s]+)"),
+	function updatePropertyValue(element, bindingType, viewModel, newValue, boundTo) {
+		if (boundTo === undefined) {
+			boundTo = "value";
+		}
+
+		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*" + boundTo + "\\s*:\\s*)?([^{},\\s]+)"),
 			key,
 			res = $(element).attr("data-bind").match(reg);
 		if (res) {
 			key = res[ 1 ];
-			if (viewModel[ key ]) {
+			if (viewModel.hasOwnProperty(key)) {
 				viewModel[ key ] = newValue;
 			}
 		}
@@ -484,9 +488,9 @@
 			//In that case the model is updated on valueChanged event
 			editor.bind("igcheckboxeditorvaluechanged", function (event, args) {
 				if (ko.isObservable(valueAccessor().checked)) {
-					valueAccessor().checked(args.newValue);
+					valueAccessor().checked(args.newState);
 				} else {
-					updatePropertyValue(element, "igCheckboxEditor", viewModel, args.newValue);
+					updatePropertyValue(element, "igCheckboxEditor", viewModel, args.newState, "checked");
 				}
 			});
 			ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
@@ -500,9 +504,12 @@
 			} else {
 				return;
 			}
-			current = editor.igCheckboxEditor("value");
+
+			// DD - December 13th, 2017 - #1437
+			// Use the checked option instead of the value, because it is not always synched with the checked state.
+			current = editor.igCheckboxEditor("option", "checked");
 			if (current !== value) {
-				editor.igCheckboxEditor("value", value);
+				editor.igCheckboxEditor("option", "checked", value);
 			}
 		}
 	};
