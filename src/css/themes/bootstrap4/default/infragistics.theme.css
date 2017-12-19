@@ -3090,13 +3090,13 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-hover,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
 .ui-igcombo-listitemholder li.ui-state-hover,
-.ui-igcombo-listitemholder li.ui-state-hover a {
+.ui-igcombo-listitemholder li.ui-state-hover a,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive {
   border-color: #01549b;
   background-color: #025fb0;
   color: #fff; }
 
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive,
 .ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-iggrid-filterddlist li.ui-state-active,
 .ui-iggrid-filterddlistitem.ui-state-active a,
