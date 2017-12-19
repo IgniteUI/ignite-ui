@@ -11247,7 +11247,10 @@
 				}
 
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
-				this._enterEditMode();
+				if (!this._editMode) {
+					// D.P. Don't enter edit mode if already editing to avoid resetting entered text
+					this._enterEditMode();
+				}
 				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
