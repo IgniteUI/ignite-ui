@@ -2557,7 +2557,7 @@
 		$editor.igNumericEditor("setFocus");
 		$editor.igNumericEditor("field").val("34");
 		$editor.trigger("blur");
-		equal($editor.igNumericEditor("value"), 34, "Value should be null");
+		equal($editor.igNumericEditor("value"), 34, "Value should be 34");
 		$editor.igNumericEditor("setFocus");
 		$editor.igNumericEditor("field").val("");
 		$editor.trigger("blur");
