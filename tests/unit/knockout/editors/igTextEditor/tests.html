@@ -36,11 +36,9 @@
 	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>	
 	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
 
-	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script> -
-	
-	
+	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
+	<script type="text/javascript" src="../../../common/test-util.js"></script>
 
-	
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
 	$(document).ready(function () {
@@ -49,7 +47,9 @@
 		function viewModel() {
 			nonObservable = "NonObservable";
 			this.number = ko.observable(25);
+			this.text = "Just text";
 			this.textValue = ko.observable("Some Val");
+			this.items =  ["item 1", "item 2", "item 3"];
 			setDefaultNumber = function() {
 				this.number(27);   
 			};
@@ -388,6 +388,48 @@
 			$chk.remove();
 		});
 
+		testId = 'Verify non-observable value change is not reflected in the UI';
+		test(testId, 2, function() {
+			var $editor = $("#edOnChange");
+			equal($editor.igTextEditor("value"), model.text, "Unexpected editor value!");
+			
+			model.text = "new";
+
+			notEqual($editor.igTextEditor("value"), model.text, "Editor's value updated unexpectedly!");			
+		});
+
+		testId = 'Verify non-observable value changed via typing does not update the UI (updateMode: immediate)';
+		test(testId, 3, function() {	
+			var $editor = $("#edImmediate");
+			equal($editor.igTextEditor("value"), "Just text", "Unexpected editor value initially!");
+			
+			$editor.igTextEditor("setFocus");
+			var util = $.ig.TestUtil;
+			util.keyInteraction(83, $editor);
+
+			equal($editor.igTextEditor("field").val(), model.text, "Underlying property value not changed!");
+			notEqual($("#edOnChange").igTextEditor("value"), model.text, "Non-observable value's change reflected in the UI!");		
+		});
+
+		testId = 'Verify non-observable value changed via selection does not update the UI (updateMode: immediate)';
+		test(testId, 3, function() {
+			var $editor = $("#edListItems");
+			$editor.igTextEditor("dropDownButton").click();
+			stop();
+			setTimeout(function () {
+				start();			
+				var item1 = $editor.data("igTextEditor")._listItems()[0];
+				mouseInteraction("click", item1);	
+				stop();
+				setTimeout(function () {
+					start();
+					equal($editor.igTextEditor("value"), "item 1", "Editor's value was not updated!");
+					equal(model.text, $editor.igTextEditor("value"), "Underlying value was not updated!");
+					notEqual($("#edOnChange").igTextEditor("value"), "item 1", "Non-observable value's change reflected in the UI!");
+				}, 100)
+			},100);
+			
+		});
 		function testImmediate(element) {
 			//editorID is the element postfixed with Editor1
 			var editorID = element + "Editor1", editorInput;
@@ -603,8 +645,24 @@
 
 		<input id="edDisabledNotObs1" data-bind="igTextEditor: {
 			width: '200'
-	  }, igEditorDisable: isDisabledNotObsTrue" />
+	  	}, igEditorDisable: isDisabledNotObsTrue" />
 	<input id="chkDisabledNotObs1" type="checkbox" data-bind="checked: isDisabledNotObsTrue"/>
+	<input id="edImmediate" data-bind="igTextEditor: {
+		value: text,
+		updateMode: 'immediate',
+		tabIndex: 1
+		}" />
+		<input id="edOnChange" data-bind="igTextEditor: {
+			value: text,
+			tabIndex: 1
+		}" />
+		<input id="edListItems" data-bind="igTextEditor: {
+			value: text,
+			updateMode: 'immediate',
+			tabIndex: 1,
+			listItems: items,
+			dropdownitemselecting: testFunction
+		}" />
 </div>
 </body>
 </html>
