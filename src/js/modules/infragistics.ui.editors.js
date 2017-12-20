@@ -4834,7 +4834,13 @@
 				}
 			}
 			if (value !== this.value()) {
-				this._updateValue(value);
+
+				// N.A. December 20th, 2017 #665: When new value is empty string we call clearValue(), to properly set new value according to the editor options.
+				if (value === "" ) {
+					this._clearValue();
+				} else {
+					this._updateValue(value);
+				}
 			}
 			this._setSpinButtonsState(value);
 		},
