@@ -1,4 +1,4 @@
-﻿﻿﻿/*!@license
+/*!@license
  * Infragistics.Web.ClientUI Editors <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
