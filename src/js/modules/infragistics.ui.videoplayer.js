@@ -4772,11 +4772,18 @@
 			var videoElem = this.currentVideo[ 0 ],
 				rawDuration = videoElem.duration;
 			if (val !== null && val !== undefined) {
-			    try {
-			        // A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
-					if ($.ig.util.isIE) {
-					    $("video").bind("canplay", function () { this.currentTime = val; });
-					}
+				try {
+						// M.V. Dec 21, 2017 #1461 bellow fix introduced #1461 issue. I changed the fix for
+						// #218835 with a fix which fixes both #1461 and #218835.
+						// // A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
+						// if ($.ig.util.isIE) {
+						// 	$("video").bind("canplay", function () { this.currentTime = val; });
+						// }
+						if($.ig.util.isIE){
+							$(videoElem).on('loadedmetadata', function(){
+								this.currentTime = val;
+							});
+						}
 					    videoElem.currentTime = val;
 					    $("#" + this._id("_ctrls_pb"))
 						    .igProgressBar("option", "value", (val / rawDuration).toFixed(2) * 100);
