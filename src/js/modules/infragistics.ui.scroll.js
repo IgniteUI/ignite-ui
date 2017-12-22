@@ -754,6 +754,8 @@
 			this._linkedVBar = null;
 			this._elemWidth = elem.width();
 			this._elemHeight = elem.height();
+			this._minVDragHeightPx = 15; // in px
+			this._minHDragWidthPx = 15; // in px
 
 			//IDs of the timeouts used for waiting until hiding, switching to simple scrollbars, touch inertia
 			this._showScrollbarsAnimId = 0;
@@ -768,6 +770,7 @@
 			//Determines if the scroll event for the content is triggered when trying to sync it on a specific axis
 			this._scrollFromSyncContentH = false;
 			this._scrollFromSyncContentV = false;
+			this._bInternalScroll = false;
 
 			//Track if events should not be triggered
 			this._cancelScrolling = false;
@@ -1181,7 +1184,7 @@
 			this._elemWidth = this.element.width();
 
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				this._vDragHeight = this._percentInViewV * 100;
+				this._vDragHeight = this._calculateVDragHeight();
 				this._vBarDrag.css("height", this._vDragHeight + "%");
 				/* Update classes if only vertical scrollbar will be visible */
 				if (this._percentInViewH >= 1) {
@@ -1207,7 +1210,7 @@
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				this._hDragWidth = this._percentInViewH * 100;
+				this._hDragWidth = this._calculateHDragWidth();
 				this._hBarDrag.css("width", this._hDragWidth + "%");
 				/* Update classes if only vertical scrollbar will be visible */
 				if (this._percentInViewV >= 1) {
@@ -1444,6 +1447,7 @@
 				}
 			}
 
+			this._bInternalScroll = true;
 			if (this.options.scrollOnlyHBar) {
 				this._moveHBarX(destX);
 			} else {
@@ -1499,7 +1503,7 @@
 				}
 
 			}
-
+			this._bInternalScroll = true;
 			if (this.options.scrollOnlyVBar) {
 				this._moveVBarY(destY);
 			} else {
@@ -2125,19 +2129,24 @@
 				this._scrollFromSyncContentH = false;
 			}
 
-			var posX, posY;
-			if (this.options.scrollOnlyHBar) {
-				posX = this._getScrollbarHPosition();
-			} else {
-				posX = this._getContentPositionX();
-			}
-			if (this.options.scrollOnlyVBar) {
-				posY = this._getScrollbarVPosition();
-			} else {
-				posY = this._getContentPositionY();
-			}
+			if (!this._bInternalScroll)
+			{
+				var posX, posY;
+				if (this.options.scrollOnlyHBar) {
+					posX = this._getScrollbarHPosition();
+				} else {
+					posX = this._getContentPositionX();
+				}
+				if (this.options.scrollOnlyVBar) {
+					posY = this._getScrollbarVPosition();
+				} else {
+					posY = this._getContentPositionY();
+				}
 
-			this._updateScrollbarsPos(posX, posY);
+				this._updateScrollbarsPos(posX, posY);
+			} else {
+				this._bInternalScroll = false;
+			}
 
 			return false;
 		},
@@ -2703,13 +2712,6 @@
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
-			// jscs:disable
-			this._vDragHeight = this._percentInViewV * 100;
-			// jscs:enable
-			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
-				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
-				.css("height", this._vDragHeight + "%");
-
 			if (!bRenderScrollbarH) {
 				this._vBarTrack.addClass(css.verticalScrollTrackSingleScrollbar);
 				this._vBarArrowDown.addClass(css.verticalScrollArrowDownSingleScrollbar);
@@ -2729,7 +2731,30 @@
 					.appendTo(this._container[ 0 ].parentElement);
 			}
 
+			this._vDragHeight = this._calculateVDragHeight();
+			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
+				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
+				.css("height", this._vDragHeight + "%");
+
+			if (this.options.scrollbarVParent) {
+				this._vBarTrack.append(this._vBarDrag);
+			} else {
+				this._vBarTrack.append(this._vBarDrag);
+			}
+
 			this._bindCustomScrollBarV();
+		},
+
+		/** Calculates the vertical drag height and returns it in percents based on the vertical track height*/
+		_calculateVDragHeight: function () {
+			var dragHeightPx;
+
+			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
+			dragHeightPx = (this._vBarTrack.height() / this._contentHeight) * this._vBarTrack.height();
+			dragHeightPx = (dragHeightPx < this._minVDragHeightPx ? this._minVDragHeightPx : dragHeightPx);
+
+			//Turn it into percents.
+			return (dragHeightPx / this._vBarTrack.height()) * 100;
 		},
 
 		_bindCustomScrollBarV: function() {
@@ -3056,8 +3081,13 @@
 			if (this._bUseVDrag) {
 				var curPosY = this._getContentPositionY(),
 					offset = event.pageY - this._dragLastY,
-					nextPosY = curPosY + (offset * (this._getContentHeight() / (this._elemHeight - 3 * 17)));
+					dragbPosY = this._getTransform3dValueY(this._vBarDrag),
+					nextPosY;
 
+				/**	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
+				  *	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0. */
+				nextPosY = ((dragbPosY + offset) / (this._vBarTrack.height() - this._vBarDrag.height())) *
+							(this._getContentHeight() - this.element.height());
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: false,
@@ -3175,13 +3205,6 @@
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
-			// jscs:disable
-			this._hDragWidth = this._percentInViewH * 100;
-			// jscs:enable
-			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
-				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
-				.css("width", this._hDragWidth + "%");
-
 			if (!bRenderScrollbarV) {
 				this._hBarTrack.addClass(css.horizontalScrollTrackSingleScrollbar);
 				this._hBarArrowRight.addClass(css.horizontalScrollArrowRightSingleScrollbar);
@@ -3201,9 +3224,32 @@
 					.appendTo(this._container[ 0 ].parentElement);
 			}
 
+			this._hDragWidth = this._calculateHDragWidth();
+			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
+				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
+				.css("width", this._hDragWidth + "%");
+
+			if (this.options.scrollbarHParent) {
+				this._hBarTrack.append(this._hBarDrag);
+			} else {
+				this._hBarTrack.append(this._hBarDrag);
+			}
+
 			this._bindCustomScrollBarH();
 		},
 
+		/** Calculates the horizontal drag width and returns it in percents based on the horizontal track width */
+		_calculateHDragWidth: function ()
+		{
+			var dragWidthPx;
+
+			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
+			dragWidthPx = (this._hBarTrack.width() / this._contentWidth) * this._hBarTrack.width();
+			dragWidthPx = (dragWidthPx < this._minHDragWidthPx ? this._minHDragWidthPx : dragWidthPx);
+
+			//Turn it into percents.
+			return (dragWidthPx / this._hBarTrack.width()) * 100;
+		},
 		_bindCustomScrollBarH: function () {
 			this._holdTimeoutID = 0;
 			this._bMouseDownH = false;
@@ -3548,8 +3594,13 @@
 			if (this._bUseHDrag) {
 				var curPosX = this._getContentPositionX(),
 					offset = evt.pageX - this._dragLastX,
-					nextPostX = curPosX + (offset * (this._getContentWidth() / this._elemWidth));
+					dragbPosX = this._getTransform3dValueX(this._hBarDrag),
+					nextPostX;
 
+				//	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
+				//	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0.
+				nextPostX = ((dragbPosX + offset) / (this._hBarTrack.width() - this._hBarDrag.width())) *
+							(this._getContentWidth() - this.element.width());
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: true,
@@ -3702,22 +3753,20 @@
 
 			function updateCSS() {
 				if (self._hBarDrag) {
-					// jscs:disable
-					/**	destX * self._percentInViewH - the translated position of the thumb based on the scroll position
-						(self._hBarTrack.width() / self.element.width() - multiple with it since the track is not 100% the width of the container and the thumb will go out of it otherwise */
-					calculatedDest = destX * self._percentInViewH * (self._hBarTrack.width() / self.element.width());
-					// jscs:enable
+					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
+					  * Drag pos c in (a,b),  scroll pos z in (x, y) => c = (z - x) / (y - x) * (b - a) + a = (z / y) * b , because a = 0 and x = 0. */
+					calculatedDest = (destX / (self._contentWidth - self.element.width())) *
+										(self._hBarTrack.width() - self._hBarDrag.width());
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
 						.css("-moz-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Firefox */
 						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
 				}
 				if (self._vBarDrag) {
-					// jscs:disable
-					/**	destY * self._percentInViewV - the translated position of the thumb based on the scroll position
-						(self._vBarTrack.height() / self.element.height()) - multiple with it since the track is not 100% the height of the container and the thumb will go out of it otherwise */
-					calculatedDest = destY * self._percentInViewV * (self._vBarTrack.height() / self.element.height());
-					// jscs:enable
+					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
+					  * Drag pos c in (a,b),  scroll pos z in (x, y) => c = (z - x) / (y - x) * (b - a) + a = (z / y) * b , because a = 0 and x = 0. */
+					calculatedDest = (destY / (self._contentHeight - self.element.height())) *
+										(self._vBarTrack.height() - self._vBarDrag.height());
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-moz-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
