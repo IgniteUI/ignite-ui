@@ -365,7 +365,8 @@
 .ui-igcombo-listitemholder li.ui-state-hover,
 .ui-igcombo-listitemholder li.ui-state-active,
 .ui-igcombo-listitemholder li.ui-state-hover a,
-.ui-igcombo-listitemholder li.ui-state-active a {
+.ui-igcombo-listitemholder li.ui-state-active a,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive{
   background-color: #eaeaea;
   background-image: none;
   background-repeat: repeat-x;
@@ -717,7 +718,9 @@ ui-iggrid-groupbyarea a,
   color: @ui-icons-light;
 }
 
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus
+{
   border-color: #00AADE;
 }
 

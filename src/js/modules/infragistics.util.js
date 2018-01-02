@@ -4074,6 +4074,10 @@
 			// width/height flags which trigger timer and adjustments of width/height on ticks
 			perc = obj.perc;
 		if (!prop) {
+			if (obj.observer) {
+				obj.observer.disconnect();
+				delete obj.observer;
+			}
 			if (obj.tickID) {
 				obj.onTick(true);
 			}
@@ -4082,6 +4086,28 @@
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
+
+		if (window.MutationObserver && !obj.observer) {
+			var oldCollapsed = elem[ 0 ].style.display == "none";
+			var observer = new MutationObserver(function (event) {
+				var collapsed = elem[ 0 ].style.display == "none";
+
+				if (collapsed !== oldCollapsed) {
+					oldCollapsed = collapsed;
+					if (notifyResized && chart) {
+						chart[ notifyResized ]();
+					}
+				}
+			});
+			observer.observe(elem[ 0 ], {
+				attributes: true,
+				attributeFilter: [ "style" ],
+				childList: false,
+				characterData: false
+			});
+			obj.observer = observer;
+		}
+
 		if (!val) {
 			val = elem[ prop ]();
 		}
@@ -4154,8 +4180,7 @@
 			obj.onTick = obj.onTick || function (stop) {
 
 				// request to call notifyResized
-				var resize,
-					obj = this,
+				var obj = this,
 					chart = obj.chart,
 					elem = obj.elem,
 					perc = obj.perc || "",
@@ -4190,15 +4215,17 @@
 				if (!chart) {
 					return;
 				}
-				if (chart.width && ((perc.indexOf("width") >= 0 && width !== oldWidth) ||
-					wait.indexOf("width") >= 0)) {
-					chart.width(resize = width);
+				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) ||
+				    wait.indexOf("width") >= 0;
+				if (chart.width && percWidthChange) {
+					chart.width(width);
 				}
-				if (chart.height && ((perc.indexOf("height") >= 0 && height !== oldHeight) ||
-					wait.indexOf("height") >= 0)) {
-					chart.height(resize = height);
+				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) ||
+				    wait.indexOf("height") >= 0;
+				if (chart.height && percHeightChange) {
+					chart.height(height);
 				}
-				if (resize && obj.notify) {
+				if ((percWidthChange || percHeightChange) && obj.notify) {
 					chart[ obj.notify ]();
 				}
 			};

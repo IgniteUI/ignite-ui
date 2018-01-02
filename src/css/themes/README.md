@@ -3,7 +3,7 @@ Infragistics Themes
 =====================
 
 
-1. Default
+1. infragistics - Default
 2. infragistics - 2012
 3. Metro
 4. IOS
@@ -13,15 +13,17 @@ Infragistics Themes
 ### Themes - file structure
 
 
-* **images** - Contain all images related to the theme (This will be removed after we implement the web font in each theme)
- 
-* **infragistics.theme.less** - The root file which import all partial.
- 
-* **infragistics-ignite-ui-controls** - Contain all theme styles related to ignite ui controls
- 
-* **jquery-ui-overrides.less** -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
- 
-* **variables.less** - Contain all theme variables.
+* **images** - Contain all images related to the theme
+
+* **infragistics.theme.less** - The root file which import all partial files.
+
+* **Modules** - Contain all theme styles related to ignite ui modules.
+
+* **Styles-guide** - In progress theme style guide
+
+* **framework.less** -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
+
+* **variables.less** - Theme variables.
  
 * **mixins.less** - Contain all mixins related to Ignite UI components
 
@@ -32,29 +34,20 @@ Infragistics Themes
 ### File order:
 
 ```diff
-//Theme variables
+// Ignite UI Theme variables
 @import "variables.less";
- 
-//Ignite UI mixins
+
+// Ignite UI Mixins
 @import "mixins.less";
- 
-//Icons font
-@import (css)"../../../../structure/fonts/style.css";
- 
-//JQuery UI styles
-@import (css)"../../../../structure/jquery-ui.css";
- 
-//JQuery UI Overrides
-@import "jquery-ui-overrides.less";
- 
-//Ignite UI styles
-@import "infragistics-ignite-ui-controls.less";
- 
-//Font styles
-@import (css)"../../../../structure/icons-styles.css";
- 
-//Use this file to override all infragistics & jQuery styles
-@import "overrides";
+
+// Font styles
+@import (css)"icons-styles.css";
+
+// JQuery UI Theme
+@import "framework.less";
+
+//Ignite UI modules
+@import "modules/modules";
 ```
 
 **Note:** File order is important in order the theme to work correctly.
@@ -72,6 +65,7 @@ To add/remove/change icons form the web font:
 2. Make the desired modification, download and replace the changed font.
 
 
-
 **IMPORTANT:**
-in order the font to work you need to specify the prefix for the icons clsss. In "icomoon.io", font settings. The prefix should be "ui-icon-". Keep the name for the font the same in order to override the existing font.
+in order the font to work you need to specify the prefix for the icons clsss.
+In "icomoon.io", font settings. The prefix should be "ui-icon-".
+Keep the name for the font the same in order to override the existing font.

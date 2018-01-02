@@ -39,8 +39,16 @@
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
 	$(document).ready(function () {
+		QUnit.config.reorder = false;
+
 		function viewModel() {
 			this.isDisabled =  ko.observable(false);
+
+			this.isChecked = ko.observable(false);
+			this.isCheckedNonObservable = false;
+
+			this.isCheckedWithValue = ko.observable(false);
+			this.isCheckedNonObservableWithValue = false;
 		};
 		
 		model = new viewModel();
@@ -59,7 +67,7 @@
 			teardown: function() {
 			}
 		});
-		
+
 		var testId = 'Test disabled binding';
 		test(testId, 9, function () {
 			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
@@ -80,6 +88,73 @@
 			$editor.remove();
 			$chk.remove();
 		});
+
+		testId = 'Test isChecked binding observable';
+		test(testId, 4, function() {
+			var $igEditor = $("#edCheckedObservable");
+
+			ok(!model.isChecked(), "The view model observable and the igCheckEditor isCheked property should be synced.");
+			$igEditor.click();
+			ok(model.isChecked(), "The view model observable and the igCheckEditor isCheked property should be synced.");
+			$igEditor.click();
+			ok(!model.isChecked(), "The view model observable and the igCheckEditor isCheked property should be synced.");
+			model.isChecked(true);
+			ok($igEditor.igCheckboxEditor("option", "checked"), "The view model observable and the igCheckEditor isCheked property should be synced.");
+			$igEditor.remove();
+		});
+
+		testId = 'Test isChecked binding non-observable';
+		test(testId, 3, function() {
+			var $igEditor = $("#edCheckedNonObservable");
+
+			ok(!model.isCheckedNonObservable, "The view model observable and the igCheckEditor isCheckedNonObservable property should be synced.");
+			$igEditor.click();
+			ok(model.isCheckedNonObservable, "The view model observable and the igCheckEditor isCheckedNonObservable property should be synced.");
+			$igEditor.click();
+			ok(!model.isCheckedNonObservable, "The view model observable and the igCheckEditor isCheckedNonObservable property should be synced.");
+			$igEditor.remove();
+		});
+
+		testId = 'Test isChecked binding observable with value';
+		test(testId, 4, function() {
+			var $igEditor = $("#edCheckedObservableWithValue");
+
+			ok(!model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
+			$igEditor.click();
+			ok(model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
+			$igEditor.click();
+			ok(!model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
+			model.isCheckedWithValue(true);
+			ok($igEditor.igCheckboxEditor("option", "checked"), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
+			$igEditor.remove();
+		});
+
+		testId = 'Test isChecked binding non-observable with value';
+		test(testId, 3, function() {
+			var $igEditor = $("#edCheckedNonObservableWithValue");
+
+			ok(!model.isCheckedNonObservableWithValue, "The view model observable and the igCheckEditor isCheckedNonObservableWithValue property should be synced.");
+			$igEditor.click();
+			ok(model.isCheckedNonObservableWithValue, "The view model observable and the igCheckEditor isCheckedNonObservableWithValue property should be synced.");
+			$igEditor.click();
+			ok(!model.isCheckedNonObservableWithValue, "The view model observable and the igCheckEditor isCheckedNonObservableWithValue property should be synced.");
+			$igEditor.remove();
+		});
+
+		testId = 'Test updateMode not allowed value';
+		test(testId, 1, function() {
+			var err;
+			QUnit.throws(function () {
+				$("#containerDiv").empty();
+				$("#containerDiv").append("<input id=\"tempEditor\" data-bind=\"igCheckboxEditor: { checked: isCheckedWithValue, updateMode: 'None' }\"></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+			}, function (err) {
+			    return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1;
+			}, 'An error was correctly thrown when updateMode option is not correctly changed');
+			ko.cleanNode(document.getElementById("tempEditor"));
+			$("#containerDiv").empty();
+		});
+
 	});//document ready
 </script>
 </head>
@@ -95,7 +170,14 @@
 	<input id="edDisabled" data-bind="igCheckboxEditor: { checked: false }, igEditorDisable: isDisabled" />
 
 	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
+
+	<input id="edCheckedObservable" data-bind="igCheckboxEditor: { checked: isChecked }"/>
+	<input id="edCheckedObservableWithValue" data-bind="igCheckboxEditor: { checked: isCheckedWithValue, value: 'Test'  }"/>
+
+	<input id="edCheckedNonObservable" data-bind="igCheckboxEditor: { checked: isCheckedNonObservable }"/>
+	<input id="edCheckedNonObservableWithValue" data-bind="igCheckboxEditor: { checked: isCheckedNonObservableWithValue, value: 'Test' }"/>
+
+	<div id="containerDiv"></div>
 </div>
 </body>
 </html>
-

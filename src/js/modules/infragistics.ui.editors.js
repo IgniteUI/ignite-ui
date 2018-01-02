@@ -2375,7 +2375,7 @@
 		},
 		_renderList: function () {
 			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, dropdown,
-				id = this.id, html;
+				id = this.id, html, listBorderHeight;
 
 			html = "<div id='" + id + "_list" + "' tabindex='-1' class='" +
 				this.css.dropDownList + "' role='listbox' aria-activedescendant='" +
@@ -2394,30 +2394,38 @@
 			}
 			html += "</div>";
 			dropdown = $(html);
-			if (currentItem) {
-				currentItem = $(currentItem);
-			}
 
 			if (this.options.dropDownAttachedToBody) {
 				$(document.body).append(dropdown);
 			} else {
 				this._editorContainer.append(dropdown);
 			}
-			itemHeight = currentItem.css("height");
-			itemHeight = parseFloat(itemHeight);
+			itemHeight = dropdown.children().eq(0).outerHeight();
+
 			if (itemHeight === 0) {
 
 				// According to Designers, when height is 0, this is better solution, then setting min-height: 23 in CSS.
 				itemHeight = 23;
 			}
+
+			if (this._calculateDropDownListOrientation() === "bottom") {
+				listBorderHeight = parseInt(dropdown.css("borderBottomWidth"));
+			} else {
+				listBorderHeight = parseInt(dropdown.css("borderTopWidth"));
+			}
+
 			if (list.length < this.options.visibleItemsCount) {
-				dropdown.css("height", parseFloat(itemHeight * list.length));
-				this._listInitialHeight = parseFloat(itemHeight * list.length);
+				dropdown.css("height", parseFloat(itemHeight * list.length +
+					listBorderHeight));
+				this._listInitialHeight = parseFloat(itemHeight * list.length +
+					listBorderHeight);
 
 				//TODO - hide scroll
 			} else {
-				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) + 2);
-				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) + 2;
+				dropdown.css("height", parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight);
+				this._listInitialHeight = parseFloat(itemHeight * this.options.visibleItemsCount) +
+				listBorderHeight;
 			}
 			this._dropDownList = dropdown;
 			this._setDropDownListWidth();
@@ -6696,9 +6704,15 @@
 						// Move to next char on the mask
 						// We need to detect Escaped chars
 
+						// A.M. November 29th, 2017 #1246
 						if (mask.charAt(i) === "\\") {
-							i++;
-							j--;
+							var flags = [ "C", "&", "a", "A", "?", "L", "0", "9", "#" ];
+							if (flags.indexOf(ch) > -1) {
+								i++;
+							} else {
+								i++;
+								j--;
+							}
 						} else if (mask.charAt(i) === "<" || mask.charAt(i) === ">") {
 							j--;
 						}
@@ -8524,7 +8538,7 @@
 				} else if (flag === 22) {
 					txt += "0";
 				} else {
-					txt += "00";
+					txt += "90";
 					if (flag === 3) {
 						txt += "00";
 					}
@@ -9825,13 +9839,15 @@
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
 						if (newHour >= 13) {
-							newHour = newHour - hours;
 							if (newHour > 13 || delta > 1) {
 								amPmUpdateDelta = true;
 							}
-							if (currentAmPm === "pm") {
+
+							//  N.A. December 5th, 2017 #1304: In 12 hours format the time period 12:00-12:59 has already changed AM/PM, so we don't need to updated it at 1:00 or at any time with any spin < 12.
+							if (currentAmPm === "pm" && (currentHour < 12 || currentHour === 12 && delta === 12)) {
 								dayUpdateDelta = true;
 							}
+							newHour = newHour - hours;
 						}
 					}
 				}
@@ -10792,6 +10808,22 @@
 		_listMouseDownHandler: function () { // igDatePicker
 		},
 		_updateDropdownSelection: function () { //igDatePicker
+			var pickerInst, cursorPosition,
+				val = this._editorInput.val();
+
+			// D.P. 19th Dec 2017 #1453 Update the `datepicker` selection if the input mask if fulfilled
+			if (this._pickerOpen && this._validateRequiredPrompts(val)) {
+				cursorPosition = this._getCursorPosition();
+				pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
+				this._editorInput.datepicker("setDate", this._valueFromText(val));
+
+				// restore input after picker updates input:
+				this._editorInput.val(val);
+				if (pickerInst) {
+					pickerInst.lastVal = val;
+				}
+				this._setCursorPosition(cursorPosition);
+			}
 		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010
@@ -10878,6 +10910,10 @@
 					}
 
 					self._processValueChanging(date);
+
+					// D.P. 19th Dec 2017 #1453 - Entered date is converted to today's date when pressing the Enter key
+					// Double onSelect bug + getDate cause a parse on the text we already formatted, setting lastVal skips that:
+					inst.lastVal = self._getEditModeValue();
 					self._triggerItemSelected.call(self,
 						inst.dpDiv.find(".ui-datepicker-calendar>tbody>tr>td .ui-state-hover"),
 							dateFromPicker);
@@ -11192,7 +11228,7 @@
 			this._dropDownOpened = true;
 
 			// Open Dropdown
-			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
+			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue, pickerInst;
 			this._cancelBlurDatePickerOpen = true;
 			this._positionDropDownList();
 			if (this.options.dropDownOrientation  === "top") {
@@ -11212,7 +11248,10 @@
 				}
 
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
-				this._enterEditMode();
+				if (!this._editMode) {
+					// D.P. Don't enter edit mode if already editing to avoid resetting entered text
+					this._enterEditMode();
+				}
 				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
@@ -11221,6 +11260,7 @@
 				currentInputValue = this._editorInput.val();
 			}
 
+			pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
 			try {
 				if (this.options.suppressKeyboard) {
 					if (this._focused) {
@@ -11239,6 +11279,10 @@
 				this._editorInput.datepicker("show");
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
+					if (pickerInst) {
+						// D.P. 19th Dec 2017 #1453 Pprevent further parsing from messing with selection
+						pickerInst.lastVal = currentInputValue;
+					}
 				}
 			} catch (ex) {
 
