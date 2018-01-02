@@ -1149,7 +1149,6 @@
 				elem.hide();
 			}
 			self._created = true;
-			self._save();
 		},
 
 		// get around combination of jQuery with IE7 and other versions of IE
@@ -1433,7 +1432,6 @@
 			}
 			if (_lastTop && !zi0) {
 				_lastTop.element.css("zIndex", _lastTop._lastZ || -1);
-				_lastTop._save();
 			}
 			if (_lastZ >= _maxZ) {
 				_maxZ++;
@@ -1451,7 +1449,6 @@
 			self._lastZ = _lastZ = zi0 || ((modal || _modals.length > 0) ? _maxZ : zi);
 			if (!zi0) {
 				elem.css("zIndex", zi0 || _maxZ);
-				self._save();
 			}
 			elem0.scrollTop = scrollTop;
 			elem0.scrollLeft = scrollLeft;
@@ -1476,29 +1473,7 @@
 				return this.element.children(".ui-igdialog-content");
 			}
 			this.element.children(".ui-igdialog-content").html(newContent);
-		},
-		_save: function () {
-			var str, input, pos, o = this.options, name = o.inputName;
-			if (!name) {
-				return;
-			}
-			input = $('input[name="' + name + '"]');
-			if (input.length === 0) {
-				input = input.parents("form")[ 0 ] || document.forms[ 0 ];
-				if (!input) {
-					return;
-				}
-				input = $('<input type="hidden" name="' + name + '" />').appendTo(input);
-			}
-			str = "s" + (o.pinned ? "1" : "") + (this._opened ? (this._min ? 2 : (this._max ? 3 : 1)) : 0) +
-				(o.width ? ":w" + o.width : "") + (o.height ? ":h" + o.height : "") +
-					(":z" + this.element.css("zIndex") || o.zIndex);
-			pos = o.position;
-			if (pos && pos.length === 2) {
-				str += ":p" + pos[ 0 ] + "," + pos[ 1 ];
-			}
-			input.val(str);
-		},
+		},		
 		_open: function (e, raiseEvt) {
 			var self = this,
 				o = self.options,
@@ -1537,7 +1512,6 @@
 			if (raiseEvt) {
 				self._fireState(e, false, arg);
 			}
-			self._save();
 			return self;
 		},
 		_initContainer: function (container, change) {
@@ -1711,7 +1685,6 @@
 			if (!noFocus && this._vis) {
 				this._setFocus();
 			}
-			this._save();
 		},
 		_onMax: function (e, noSize, noFocus) {
 			var but,
@@ -1761,7 +1734,6 @@
 			if (!noFocus && this._vis) {
 				this._setFocus();
 			}
-			this._save();
 		},
 		_onPin: function (e, noSize, noFocus) {
 			var but, elem, parent, dad, pos,
@@ -1825,7 +1797,6 @@
 					this._doModal();
 				}
 			}
-			this._save();
 		},
 		_doClose: function (e, destroy) {
 			var i,
@@ -1868,7 +1839,6 @@
 			} else if (_visCount === (i = _modals.length)) {
 				_modals[ i - 1 ]._setFocus();
 			}
-			self._save();
 		},
 
 		// fire stateChanging/ed event
@@ -2095,7 +2065,6 @@
 						var doc = $(document);
 						o.position = [ ui.position.left - doc.scrollLeft(), ui.position.top - doc.scrollTop() ];
 						$(this).removeClass(self.css.dragging);
-						self._save();
 					}
 				});
 			}
@@ -2150,7 +2119,6 @@
 					$(this).removeClass(self.css.resizing);
 					o.height = $(this).height();
 					o.width = $(this).width();
-					self._save();
 				}
 			}).find(".ui-resizable-se").addClass("ui-icon ui-icon-grip-diagonal-se");
 			r = elem.data("resizable") || elem.data("ui-resizable");
@@ -2292,7 +2260,6 @@
 				}
 			}
 			self._doModal();
-			self._save();
 		},
 
 		// adjust px width and height of dialog (not minimized)
@@ -2717,7 +2684,6 @@
 			}
 			if (key === "zIndex") {
 				elem.css("zIndex", val);
-				this._save();
 			}
 			if (this._vis) {
 				pos = key === "position";
