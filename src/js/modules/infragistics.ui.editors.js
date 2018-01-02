@@ -1,4 +1,4 @@
-/*!@license
+﻿/*!@license
  * Infragistics.Web.ClientUI Editors <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
@@ -11464,6 +11464,10 @@
 				this._editorInput.datepicker("show");
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
+					if (pickerInst) {
+						// D.P. 19th Dec 2017 #1453 Prevent further parsing from messing with selection
+						pickerInst.lastVal = currentInputValue;
+					}
 				}
 			} catch (ex) {
 
@@ -11471,10 +11475,6 @@
 				this._editorInput.datepicker("show");
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
-					if (pickerInst) {
-						// D.P. 19th Dec 2017 #1453 Pprevent further parsing from messing with selection
-						pickerInst.lastVal = currentInputValue;
-					}
 				}
 			}
 
