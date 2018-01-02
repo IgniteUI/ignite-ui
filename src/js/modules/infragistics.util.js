@@ -2833,11 +2833,14 @@
 			g: 0,
 			b: 0
 		};
-
+		var transparent = { a: 0, r: 0, g: 0, b: 0 };
+		if (!str) {
+			return transparent;
+		}
 		var asColorName = str.replace(" ", "").toLowerCase();
 
 		if (asColorName === "transparent") {
-			return { a: 0, r: 0, g: 0, b: 0 };
+			return transparent;
 		}
 
 		if ($.ig.util.wellKnownColors[ asColorName ] !== undefined) {
