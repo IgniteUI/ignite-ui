@@ -9,7 +9,6 @@
 *	jquery-1.9.1.js
 *	infragistics.util.js
 *   infragistics.util.jquery.js
-*   infragistics.util.jquerydeferred.js
 *	infragistics.ui.editors.js
 */
 

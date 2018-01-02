@@ -20,7 +20,6 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
@@ -30,6 +29,7 @@
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -413,6 +413,94 @@
 					equal(valueChangedCounter, 1, "Value changing should be called just once!");
 				}, 400);
 			});
+
+			testId = "Issue 1453 - Entered date is converted to today's date when pressing the Enter key.";
+			test(testId, function (assert) {
+				assert.expect(10);
+				var done = assert.async(),
+					today = target = new Date(),
+					targetString, targetKeys, tomorrow = true,
+					todayString = getDDmmYYYY(today, "-"),
+					$editor = $('<input/>').appendTo("#qunit-fixture2").igDatePicker({
+						dateInputFormat: "dd-MMM-yyyy"
+					}),
+					$calendar = $editor.igDatePicker("getCalendar");
+
+				function nextInMonth(date, skipDays) {
+					var target = new Date(date.getTime());
+					target.setDate(date.getDate() + skipDays);
+
+					if (target.getMonth() === date.getMonth()) {
+						return target;
+					}
+					//in a diff month
+					return null;
+				}
+
+				//tomorrow if in same month, or yesterday
+				target = nextInMonth(today, 1) || new Date(target.setDate(target.getDate() - 1));
+				targetString = getDDmmYYYY(target, "-");
+				targetKeys = targetString.replace(/-/g, "");
+
+				$editor.igDatePicker("field").focus();
+				$editor.igDatePicker("showDropDown");
+
+				$.ig.TestUtil.wait(400).then(function () {
+					// picker opens with today as default
+					strictEqual($calendar.find(".ui-datepicker-current-day").length, 0, "Calendar should have no initial selection");
+					//type in the date +/- a day, control check what's typed:
+					$.ig.TestUtil.type(targetKeys.substring(0, targetKeys.length -1), $editor.igDatePicker("field"));
+					strictEqual($calendar.find(".ui-datepicker-current-day").length, 0, "Calendar selection should not update until date if completed");
+					
+					$.ig.TestUtil.type(targetKeys.substring(targetKeys.length -1), $editor.igDatePicker("field"));
+					equal($editor.igDatePicker("field").val(), targetString, "Typed text should match");
+					equal($calendar.find(".ui-datepicker-current-day").text(), target.getDate(), "Calendar selection should be updated with typed in date");
+
+					$.ig.TestUtil.keyInteraction(13, $editor.igDatePicker("field"));
+					equal($editor.igDatePicker("field").val(), targetString, "Typed text should remain after enter");
+					equal($editor.igDatePicker("value").toLocaleDateString(), target.toLocaleDateString(), "Value should match typed selection");
+
+					// force-reopen the calendar
+					$editor.igDatePicker("showDropDown");
+					return $.ig.TestUtil.wait(400);
+				}).then(function() {
+					var newTarget;
+					if (!(newTarget = nextInMonth(today, 2))) {
+						tomorrow = false;
+						newTarget = target;
+						newTarget.setDate(newTarget.getDate() - 2);
+					}
+					targetString = getDDmmYYYY(newTarget, "-");
+
+					// use keyboard nav to another date:
+					if (tomorrow) {
+						$.ig.TestUtil.keyInteraction(39, $editor.igDatePicker("field"), "ctrlKey");
+					} else {
+						$.ig.TestUtil.keyInteraction(37, $editor.igDatePicker("field"), "ctrlKey");
+						$.ig.TestUtil.keyInteraction(37, $editor.igDatePicker("field"), "ctrlKey");
+					}
+
+					equal($calendar.find(".ui-datepicker-days-cell-over").text(), newTarget.getDate(), "Calendar selection should have moved");
+					$.ig.TestUtil.keyInteraction(13, $editor.igDatePicker("field"));
+
+					equal($editor.igDatePicker("field").val(), targetString, "Typed text should remain after enter");
+					equal($editor.igDatePicker("value").toLocaleDateString(), newTarget.toLocaleDateString(), "Value should match typed selection");
+
+					// force-reopen the calendar
+					$editor.igDatePicker("showDropDown");
+					return $.ig.TestUtil.wait(400);
+				}).then(function () {
+					// simply press enter on the already selected date
+					$.ig.TestUtil.keyInteraction(13, $editor.igDatePicker("field"));
+					equal($editor.igDatePicker("field").val(), targetString, "Selecting the same date again should not change the input");
+					$editor.remove();
+					done();
+				}).catch(function (er) {
+					assert.pushResult({ result: false, message: er.message });
+					done();
+					throw er;
+				});
+			});
 		});
 
 		function getDDmmYYYYHHSS(date) {
@@ -456,8 +544,9 @@
 
 			return result;
 		}
-		function getDDmmYYYY(date) {
-			var result = "", day, month;
+		function getDDmmYYYY(date, separator) {
+			var result = "", day, month,
+				separator = separator || "/";
 			if (typeof date.getTime !== "function") {
 				return;
 			}
@@ -474,9 +563,9 @@
 				month = month.toString();
 			}
 			result += day;
-			result += "/";
+			result += separator;
 			result += month;
-			result += "/";
+			result += separator;
 			result += date.getFullYear();
 			return result;
 		}
@@ -591,7 +680,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="qunit-fixture2" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 
 		
 		<input id="221368Editor1" />
