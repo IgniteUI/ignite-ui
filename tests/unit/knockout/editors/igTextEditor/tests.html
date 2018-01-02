@@ -338,7 +338,24 @@
 				}, 200);
 			}, 200);
 		});
-
+		var testId = 'Test valueChanged event with non-observable value';
+		test(testId, 3, function () {
+			var $editor = $("#edOnChange");
+			
+			eventTriggered = false; // global parameter
+			$editor.igTextEditor("setFocus");
+			typeInInput("Peter", $editor.igTextEditor("field"));
+			notEqual(model.text, $editor.igTextEditor("field").val(), "Unexpected underlying property value!");
+			$editor.trigger("blur");
+			stop();
+			setTimeout(function() {
+				start();
+				ok(eventTriggered, "valueChanged is thrown");
+				eventTriggered = false;
+			}, 200);
+			
+			equal(model.text, $editor.igTextEditor("value"), "Unexpected underlying property value!");
+		});
 		var testId = 'Test disabled binding';
 		test(testId, 28, function () {
 			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
@@ -395,7 +412,8 @@
 			
 			model.text = "new";
 
-			notEqual($editor.igTextEditor("value"), model.text, "Editor's value updated unexpectedly!");			
+			notEqual($editor.igTextEditor("value"), model.text, "Editor's value updated unexpectedly!");
+
 		});
 
 		testId = 'Verify non-observable value changed via typing does not update the UI (updateMode: immediate)';
@@ -654,7 +672,8 @@
 		}" />
 		<input id="edOnChange" data-bind="igTextEditor: {
 			value: text,
-			tabIndex: 1
+			tabIndex: 1,
+			valueChanged: testFunction
 		}" />
 		<input id="edListItems" data-bind="igTextEditor: {
 			value: text,
