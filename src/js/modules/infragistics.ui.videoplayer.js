@@ -5200,8 +5200,8 @@
 						// if ($.ig.util.isIE) {
 						// 	$("video").bind("canplay", function () { this.currentTime = val; });
 						// }
-						if($.ig.util.isIE){
-							$(videoElem).on('loadedmetadata', function(){
+						if ($.ig.util.isIE) {
+							$(videoElem).on("loadedmetadata", function() {
 								this.currentTime = val;
 							});
 						}
