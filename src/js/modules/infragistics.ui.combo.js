@@ -53,7 +53,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					width : "300px"
+					width: "300px"
 				});
 
 				//Get
@@ -70,7 +70,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					height : "25px"
+					height: "25px"
 				});
 
 				//Get
@@ -87,7 +87,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownWidth : 200
+					dropDownWidth: 200
 				});
 
 				//Get
@@ -105,7 +105,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dataSource : data
+					dataSource: data
 				});
 
 				//Get
@@ -120,7 +120,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dataSourceType : "xml"
+					dataSourceType: "xml"
 				});
 
 				//Get
@@ -133,7 +133,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dataSourceUrl : "data.svc"
+					dataSourceUrl: "data.svc"
 				});
 
 				//Get
@@ -145,7 +145,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					responseTotalRecCountKey : "count"
+					responseTotalRecCountKey: "count"
 				});
 
 				//Get
@@ -157,7 +157,7 @@
 			```
 			//Initialize
 			$(".selector").igCombo({
-				responseDataKey : "d.results"
+				responseDataKey: "d.results"
 			});
 
 			//Get
@@ -170,7 +170,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					responseDataType : "text"
+					responseDataType: "text"
 				});
 
 				//Get
@@ -188,7 +188,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					responseContentType : "application/json; charset=utf-8"
+					responseContentType: "application/json; charset=utf-8"
 				});
 
 				//Get
@@ -200,7 +200,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					requestType : "get"
+					requestType: "get"
 				});
 
 				//Get
@@ -212,7 +212,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					valueKey : "ProductID"
+					valueKey: "ProductID"
 				});
 
 				//Get
@@ -224,7 +224,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					textKey : "ProductName"
+					textKey: "ProductName"
 				});
 
 				//Get
@@ -248,7 +248,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					headerTemplate : "<div class='dropDownHeaderFooter'>Available Products</div>"
+					headerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>"
 				});
 
 				//Get
@@ -270,7 +270,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					footerTemplate : "<div class='dropDownHeaderFooter'>Available Products</div>"
+					footerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>"
 				});
 
 				//Get
@@ -285,7 +285,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					inputName : "textField"
+					inputName: "textField"
 				});
 
 				//Get
@@ -300,7 +300,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					animationShowDuration : 25
+					animationShowDuration: 25
 				});
 
 				//Get
@@ -315,7 +315,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					animationHideDuration : 25
+					animationHideDuration: 25
 				});
 
 				//Get
@@ -331,7 +331,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownAttachedToBody : false
+					dropDownAttachedToBody: false
 				});
 
 				//Get
@@ -344,7 +344,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filteringType : "remote"
+					filteringType: "remote"
 				});
 
 				//Get
@@ -362,7 +362,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filterExprUrlKey : "filter"
+					filterExprUrlKey: "filter"
 				});
 
 				//Get
@@ -378,7 +378,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filteringCondition : "startsWith"
+					filteringCondition: "startsWith"
 				});
 
 				//Get
@@ -403,7 +403,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filteringLogic : "and"
+					filteringLogic: "and"
 				});
 
 				//Get
@@ -593,7 +593,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					mode : "readonlylist"
+					mode: "readonlylist"
 				});
 
 				//Get
@@ -606,7 +606,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					virtualization : true
+					virtualization: true
 				});
 
 				//Get
@@ -712,7 +712,7 @@
 					grouping: {
 						key: "Country",
 						dir: "desc"
-					},
+					}
 				});
 
 				//Get
@@ -729,7 +729,7 @@
 					$(".selector").igCombo({
 						grouping: {
 							key: "Country"
-						},
+						}
 					});
 
 					//Get
@@ -748,7 +748,7 @@
 						grouping: {
 							key: "Country",
 							dir: "desc"
-						},
+						}
 					});
 
 					//Get
@@ -787,7 +787,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					highlightMatchesMode : "startsWith"
+					highlightMatchesMode: "startsWith"
 				});
 
 				//Get
@@ -807,7 +807,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					caseSensitive : true
+					caseSensitive: true
 				});
 
 				//Get
@@ -822,7 +822,7 @@
 			```
 				//Initializes
 				$(".selector").igCombo({
-					autoSelectFirstMatch : false
+					autoSelectFirstMatch: false
 				});
 
 				//Get
@@ -838,7 +838,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					autoComplete : true
+					autoComplete: true
 				});
 
 				//Get
@@ -885,7 +885,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					delayInputChangeProcessing : 500
+					delayInputChangeProcessing: 500
 				});
 
 				//Get
@@ -900,7 +900,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					tabIndex : 3
+					tabIndex: 3
 				});
 
 				//Get
@@ -915,7 +915,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownOnFocus : true
+					dropDownOnFocus: true
 				});
 
 				//Get
@@ -945,7 +945,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					selectItemBySpaceKey : true
+					selectItemBySpaceKey: true
 				});
 
 				//Get
@@ -964,7 +964,7 @@
 					multiSelection: {
 						enabled: true
 					},
-					initialSelectedItems : [
+					initialSelectedItems: [
 						{ index: 0 },
 						{ index: 1 },
 						{ index: 2 }
@@ -973,7 +973,7 @@
 
 				//Initialize with value
 				$(".selector").igCombo({
-					initialSelectedItems : [
+					initialSelectedItems: [
 						{ value: 5 }
 					]
 				});
@@ -982,7 +982,7 @@
 				var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
 			```
 			*/
-			initialSelectedItems: [ {
+			initialSelectedItems: [{
 				/* type="number" optional="true" Index of item in the list. The index should be greater than -1 and less than the count of the [items](ui.igcombo#methods:items) in the list (rows in dataSource).
 				```
 					//Initialize
@@ -990,7 +990,7 @@
 						multiSelection: {
 							enabled: true
 						},
-						initialSelectedItems : [
+						initialSelectedItems: [
 							{ index: 1 },
 							{ index: 3 },
 							{ index: 5 }
@@ -1009,9 +1009,9 @@
 						multiSelection: {
 							enabled: true
 						},
-						initialSelectedItems : [
+						initialSelectedItems: [
 							{ value: 2 },
-							{ value: 5 },
+							{ value: 5 }
 						]
 					});
 
@@ -1019,12 +1019,12 @@
 					var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
 				``` */
 				value: null
-			} ],
+			}],
 			/* type="bool" Gets/Sets ability to prevent submitting form on enter key press.
 			```
 				//Initialize
 				$(".selector").igCombo({
-					preventSubmitOnEnter : true
+					preventSubmitOnEnter: true
 				});
 
 				//Get
@@ -1046,7 +1046,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					format : "auto"
+					format: "auto"
 				});
 
 				//Get
@@ -1059,7 +1059,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					suppressKeyboard : true
+					suppressKeyboard: true
 				});
 
 				//Get
@@ -1075,7 +1075,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					enableClearButton : false
+					enableClearButton: false
 				});
 
 				//Get
@@ -1090,7 +1090,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownOrientation : "top"
+					dropDownOrientation: "top"
 				});
 
 				//Get
@@ -1583,7 +1583,6 @@
 				repositionInterval: null,
 				disableScroll: false,
 				cachedGroupLength: null,
-				initialGroupHeaders: 1,
 
 				// The string that will be used to match item"s text when user types in drop down mode
 				dropDownModeSearchBy: "",
@@ -1604,6 +1603,7 @@
 				// P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
 				composition: null
 			};
+
 			if (options) {
 				mode = options.mode;
 
@@ -2187,6 +2187,9 @@
 			var groups, groupsLen, i,
 				dataView,
 				dataLen = this._itemsToRenderCount(),
+
+				// Initial group headers
+				headers = 1,
 				markup = "";
 
 			// Sort the data source to extract all groups
@@ -2202,15 +2205,18 @@
 			groups = this._groups(dataView);
 
 			// Get group headers count and subtract them from list items when virtualization is enabled
-			if (this.options.virtualization) {
+			// R.K. 14th December, 2017 #247163
+			// Items are not correctly rendering when the data source items are less than the Combo visible items count
+			// with grouping and virtualization enabled
+			if (this._isPossibleToVirtualize()) {
 				for (i = 0; i < dataLen; i++) {
 					if (this._isBoundaryOfGroups(dataView, i)) {
-						this._options.initialGroupHeaders++;
+						headers++;
 						i++;
 					}
 				}
 
-				dataView = dataView.slice(0, dataLen - this._options.initialGroupHeaders);
+				dataView = dataView.slice(0, dataLen - headers);
 				groups = this._groups(dataView);
 			}
 
@@ -6273,28 +6279,28 @@
 				this._itemsFromData(this._options.selectedData) : null;
 		},
 		filter: function (texts, event) {
-            /* Triggers filtering.
-            ```
-                //filter by string
-                $(".selector").igCombo("filter", "Bob");
+			/* Triggers filtering.
+			```
+				//filter by string
+				$(".selector").igCombo("filter", "Bob");
 
-                //filter by array of strings
-                $(".selector").igCombo("filter", ["Smith", "Mary"], true);
+				//filter by array of strings
+				$(".selector").igCombo("filter", ["Smith", "Mary"], true);
 
-                //filter by string and trigger events
-                $(".selector").igCombo("filter", "Bob", true);
-            ```
-                paramType="string|array" optional="true" Filter by string, or array of strings.
-                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-                returnType="object" Returns reference to this igCombo.
-            */
+				//filter by string and trigger events
+				$(".selector").igCombo("filter", "Bob", true);
+			```
+				paramType="string|array" optional="true" Filter by string, or array of strings.
+				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+				returnType="object" Returns reference to this igCombo.
+			*/
 			var expressions = [],
 				type = this.options.filteringType,
 				clearFiltering = texts === "",
 				ds = this.options.dataSource;
 
-            if (!this._isFilteringEnabled()) {
-                return this;
+			if (!this._isFilteringEnabled()) {
+				return this;
 			}
 
 			expressions = this._options.expression =
@@ -6308,62 +6314,62 @@
 			}
 
 			this.filterByExpressions(expressions, event);
-        },
-        filterByExpressions: function (expressions, event) {
-            /* Creates expressions for filtering.
-            ```
-                //filter by expression
-                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
+		},
+		filterByExpressions: function (expressions, event) {
+			/* Creates expressions for filtering.
+			```
+				//filter by expression
+				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}]);
 
-                //filter by array of expressions
-                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
+				//filter by array of expressions
+				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "or"}, {cond: "startsWith", expr: "Mary", logic: "and"}]);
 
-                //filter by array of expressions and trigger events
-                $(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
-            ```
-                paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
-                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
-                returnType="object" Returns reference to this igCombo.
-            */
-            var noCancel,
+				//filter by array of expressions and trigger events
+				$(".selector").igCombo("filterByExpressions", [{cond: "startsWith", expr: "Smith", logic: "and"}, {cond: "endsWith", expr: "Sauerkraut", logic: "and"}], true);
+			```
+				paramType="array" optional="false" Filter by array of objects, such as each object represents filtering expression.
+				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [filtering](ui.igcombo#events:filtering) and [filtered](ui.igcombo#events:filtered) events.
+				returnType="object" Returns reference to this igCombo.
+			*/
+			var noCancel,
 				logic = this.options.filteringLogic,
-                filterExprUrlKey = this.options.filterExprUrlKey,
-                type = this.options.filteringType,
-                ds = this.options.dataSource,
-                paging = ds.settings.paging,
-                filtering = ds.settings.filtering,
-                textKeyValueOption = this.options.textKey;
+				filterExprUrlKey = this.options.filterExprUrlKey,
+				type = this.options.filteringType,
+				ds = this.options.dataSource,
+				paging = ds.settings.paging,
+				filtering = ds.settings.filtering,
+				textKeyValueOption = this.options.textKey;
 
-            if (!this._isFilteringEnabled()) {
-                return this;
+			if (!this._isFilteringEnabled()) {
+				return this;
 			}
 
-            // R.K 18th October 2016: #434 Filtering event returns wrong expression
-            filtering.type = type;
+			// R.K 18th October 2016: #434 Filtering event returns wrong expression
+			filtering.type = type;
 			filtering.caseSensitive = this.options.caseSensitive;
 
 			// A.K. September 13th, 2017 #1184 igCombo filters its items when loading next chunk of data
-            filtering.expressions = expressions;
-            filtering.expressions.forEach(function(element) {
-                if (element.fieldName === undefined) {
-                    element.fieldName = textKeyValueOption;
-                }
-            });
+			filtering.expressions = expressions;
+			filtering.expressions.forEach(function(element) {
+				if (element.fieldName === undefined) {
+					element.fieldName = textKeyValueOption;
+				}
+			});
 
 			// A.K. September 13th, 2017 #1183 igCombo filtered event is fired, even if filtering event is cancelled
-            noCancel = event ? this._triggerFiltering(event) : true;
-            if (noCancel) {
+			noCancel = event ? this._triggerFiltering(event) : true;
+			if (noCancel) {
 
-                // Handle local filtering
-                if (type === "local") {
+				// Handle local filtering
+				if (type === "local") {
 					ds.filter(filtering.expressions, logic, true);
 
-                    if (this.options.virtualization) {
-                        this._handleLocalFilteringWithVirt(ds);
-                    } else {
-                        this._handleLocalFiltering(ds);
-                    }
-                }
+					if (this.options.virtualization) {
+						this._handleLocalFilteringWithVirt(ds);
+					} else {
+						this._handleLocalFiltering(ds);
+					}
+				}
 
 				if (type === "remote") {
 					if (paging) {
@@ -6389,8 +6395,8 @@
 				}
 			}
 
-            return this;
-        },
+			return this;
+		},
 		clearFiltering: function (event) {
 			/* Clears filtering.
 			```
