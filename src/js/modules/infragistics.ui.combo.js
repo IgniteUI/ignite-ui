@@ -53,7 +53,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					width : "300px"
+					width: "300px"
 				});
 
 				//Get
@@ -70,7 +70,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					height : "25px"
+					height: "25px"
 				});
 
 				//Get
@@ -87,7 +87,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownWidth : 200
+					dropDownWidth: 200
 				});
 
 				//Get
@@ -105,7 +105,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dataSource : data
+					dataSource: data
 				});
 
 				//Get
@@ -120,7 +120,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dataSourceType : "xml"
+					dataSourceType: "xml"
 				});
 
 				//Get
@@ -133,7 +133,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dataSourceUrl : "data.svc"
+					dataSourceUrl: "data.svc"
 				});
 
 				//Get
@@ -145,7 +145,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					responseTotalRecCountKey : "count"
+					responseTotalRecCountKey: "count"
 				});
 
 				//Get
@@ -157,7 +157,7 @@
 			```
 			//Initialize
 			$(".selector").igCombo({
-				responseDataKey : "d.results"
+				responseDataKey: "d.results"
 			});
 
 			//Get
@@ -170,7 +170,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					responseDataType : "text"
+					responseDataType: "text"
 				});
 
 				//Get
@@ -188,7 +188,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					responseContentType : "application/json; charset=utf-8"
+					responseContentType: "application/json; charset=utf-8"
 				});
 
 				//Get
@@ -200,7 +200,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					requestType : "get"
+					requestType: "get"
 				});
 
 				//Get
@@ -212,7 +212,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					valueKey : "ProductID"
+					valueKey: "ProductID"
 				});
 
 				//Get
@@ -224,7 +224,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					textKey : "ProductName"
+					textKey: "ProductName"
 				});
 
 				//Get
@@ -248,7 +248,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					headerTemplate : "<div class='dropDownHeaderFooter'>Available Products</div>"
+					headerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>"
 				});
 
 				//Get
@@ -270,7 +270,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					footerTemplate : "<div class='dropDownHeaderFooter'>Available Products</div>"
+					footerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>"
 				});
 
 				//Get
@@ -285,7 +285,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					inputName : "textField"
+					inputName: "textField"
 				});
 
 				//Get
@@ -300,7 +300,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					animationShowDuration : 25
+					animationShowDuration: 25
 				});
 
 				//Get
@@ -315,7 +315,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					animationHideDuration : 25
+					animationHideDuration: 25
 				});
 
 				//Get
@@ -331,7 +331,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownAttachedToBody : false
+					dropDownAttachedToBody: false
 				});
 
 				//Get
@@ -344,7 +344,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filteringType : "remote"
+					filteringType: "remote"
 				});
 
 				//Get
@@ -362,7 +362,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filterExprUrlKey : "filter"
+					filterExprUrlKey: "filter"
 				});
 
 				//Get
@@ -378,7 +378,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filteringCondition : "startsWith"
+					filteringCondition: "startsWith"
 				});
 
 				//Get
@@ -403,7 +403,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					filteringLogic : "and"
+					filteringLogic: "and"
 				});
 
 				//Get
@@ -593,7 +593,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					mode : "readonlylist"
+					mode: "readonlylist"
 				});
 
 				//Get
@@ -606,7 +606,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					virtualization : true
+					virtualization: true
 				});
 
 				//Get
@@ -712,7 +712,7 @@
 					grouping: {
 						key: "Country",
 						dir: "desc"
-					},
+					}
 				});
 
 				//Get
@@ -729,7 +729,7 @@
 					$(".selector").igCombo({
 						grouping: {
 							key: "Country"
-						},
+						}
 					});
 
 					//Get
@@ -748,7 +748,7 @@
 						grouping: {
 							key: "Country",
 							dir: "desc"
-						},
+						}
 					});
 
 					//Get
@@ -787,7 +787,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					highlightMatchesMode : "startsWith"
+					highlightMatchesMode: "startsWith"
 				});
 
 				//Get
@@ -807,7 +807,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					caseSensitive : true
+					caseSensitive: true
 				});
 
 				//Get
@@ -822,7 +822,7 @@
 			```
 				//Initializes
 				$(".selector").igCombo({
-					autoSelectFirstMatch : false
+					autoSelectFirstMatch: false
 				});
 
 				//Get
@@ -838,7 +838,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					autoComplete : true
+					autoComplete: true
 				});
 
 				//Get
@@ -885,7 +885,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					delayInputChangeProcessing : 500
+					delayInputChangeProcessing: 500
 				});
 
 				//Get
@@ -900,7 +900,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					tabIndex : 3
+					tabIndex: 3
 				});
 
 				//Get
@@ -915,7 +915,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownOnFocus : true
+					dropDownOnFocus: true
 				});
 
 				//Get
@@ -945,7 +945,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					selectItemBySpaceKey : true
+					selectItemBySpaceKey: true
 				});
 
 				//Get
@@ -964,7 +964,7 @@
 					multiSelection: {
 						enabled: true
 					},
-					initialSelectedItems : [
+					initialSelectedItems: [
 						{ index: 0 },
 						{ index: 1 },
 						{ index: 2 }
@@ -973,7 +973,7 @@
 
 				//Initialize with value
 				$(".selector").igCombo({
-					initialSelectedItems : [
+					initialSelectedItems: [
 						{ value: 5 }
 					]
 				});
@@ -982,7 +982,7 @@
 				var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
 			```
 			*/
-			initialSelectedItems: [ {
+			initialSelectedItems: [{
 				/* type="number" optional="true" Index of item in the list. The index should be greater than -1 and less than the count of the [items](ui.igcombo#methods:items) in the list (rows in dataSource).
 				```
 					//Initialize
@@ -990,7 +990,7 @@
 						multiSelection: {
 							enabled: true
 						},
-						initialSelectedItems : [
+						initialSelectedItems: [
 							{ index: 1 },
 							{ index: 3 },
 							{ index: 5 }
@@ -1009,9 +1009,9 @@
 						multiSelection: {
 							enabled: true
 						},
-						initialSelectedItems : [
+						initialSelectedItems: [
 							{ value: 2 },
-							{ value: 5 },
+							{ value: 5 }
 						]
 					});
 
@@ -1019,12 +1019,12 @@
 					var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
 				``` */
 				value: null
-			} ],
+			}],
 			/* type="bool" Gets/Sets ability to prevent submitting form on enter key press.
 			```
 				//Initialize
 				$(".selector").igCombo({
-					preventSubmitOnEnter : true
+					preventSubmitOnEnter: true
 				});
 
 				//Get
@@ -1046,7 +1046,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					format : "auto"
+					format: "auto"
 				});
 
 				//Get
@@ -1059,7 +1059,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					suppressKeyboard : true
+					suppressKeyboard: true
 				});
 
 				//Get
@@ -1075,7 +1075,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					enableClearButton : false
+					enableClearButton: false
 				});
 
 				//Get
@@ -1090,7 +1090,7 @@
 			```
 				//Initialize
 				$(".selector").igCombo({
-					dropDownOrientation : "top"
+					dropDownOrientation: "top"
 				});
 
 				//Get
