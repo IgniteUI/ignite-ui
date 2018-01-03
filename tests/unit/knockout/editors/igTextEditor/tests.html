@@ -337,7 +337,7 @@
 				}, 200);
 			}, 200);
 		});
-		var testId = 'Test valueChanged event with non-observable value';
+		testId = 'Test valueChanged event with non-observable value';
 		test(testId, 3, function () {
 			var $editor = $("#edOnChange");
 			
@@ -355,7 +355,7 @@
 			
 			equal(model.text, $editor.igTextEditor("value"), "Unexpected underlying property value!");
 		});
-		var testId = 'Test disabled binding';
+		testId = 'Test disabled binding';
 		test(testId, 28, function () {
 			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
 			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
