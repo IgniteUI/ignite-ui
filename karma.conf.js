@@ -33,12 +33,13 @@ module.exports = function(config) {
       // { pattern: "bower_components/jquery/**/*", included: false, served: true },
       // { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
       // { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
-
-      "tests/test-patch.js",
-
+      
+      "node_modules/qunitjs/qunit/qunit.css",
+      "node_modules/qunitjs/qunit/qunit.js",
       "bower_components/jquery/dist/jquery.js",
       "bower_components/jquery-ui/jquery-ui.js",
-      // load HTML beds?
+      "tests/test-patch.js",
+
       // These get included in the test run file, alternatively https://stackoverflow.com/a/16414357 ?
       //'tests/unit/**/*test*.htm*'
       "tests/unit/colorpicker/tests.html",
@@ -46,8 +47,7 @@ module.exports = function(config) {
       "tests/unit/colorpickersplitbutton/tests.html"
     ],
     proxies: {
-      "bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js",
-      "bower_components/qunit/**/*.css": "/node_modules/qunitjs/qunit/qunit.css"
+      //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
     },
 
     client: {
@@ -58,7 +58,7 @@ module.exports = function(config) {
         //reorder: false,
         showUI: true,
         testTimeout: 5000,
-        //fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
+        fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
       }
     },
 

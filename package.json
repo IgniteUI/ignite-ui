@@ -16,6 +16,7 @@
   ],
   "license": "Apache-2.0",
   "scripts": {
+    "test": "karma start",
     "preinstall": "npm install -g bower",
     "postinstall": "npm install -g grunt-cli && bower install"
   },
