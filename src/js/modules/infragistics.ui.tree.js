@@ -1765,6 +1765,7 @@
 		},
 		_create: function () {
 			var opt = this.options;
+			this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
 			this.dataBind();
 			this.element.addClass(this.css.tree);
 
@@ -3978,7 +3979,7 @@
 					siblings = node.siblings();
 
 					for (i; i < siblings.length; i++) {
-						this.collapse($(siblings[ i ]));
+						this.collapse($(siblings[ i ]), event);
 					}
 				}
 				if (event) {
@@ -4128,10 +4129,6 @@
 				prevent = true;
 			}
 
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
-
 			// To do: Implement multiple selection logic
 			if (this._selectedNode[ 0 ].path !== null) {
 				if (this._selectedNode[ 0 ].path !== nodeId) {
@@ -4176,10 +4173,6 @@
 			}
 			var css = this.css, nodeId = node.attr("data-path");
 
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
-
 			if (this._selectedNode[ 0 ].path !== null) {
 				if (this._selectedNode[ 0 ].path === nodeId) {
 					node.children("a").removeClass(css.nodeSelected);
@@ -4218,9 +4211,6 @@
 			```
 				returnType="object" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
 			return this._selectedNode[ 0 ];
 		},
 		findNodesByText: function (text, parent) {

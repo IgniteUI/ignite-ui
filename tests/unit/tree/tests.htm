@@ -1798,7 +1798,7 @@
 					}
 				});
 			});
-			test(testId_3, function () {
+			test(testId_3, 33, function () {
 				var changedFired = false, changingFired = false, clickFired = false;
 				$('#tree9').igTree({
 					nodeClick: function (event, args) {
@@ -1849,7 +1849,7 @@
 				$('#tree9').find('li[data-path=0] > a').click();
 				$('#tree9').find('li[data-path=0] > a').dblclick();
 			});
-			test(testId_4, function () {
+			test(testId_4, 39, function () {
 				var expandingFired = false, expandedFired = false, collapsingFired = false, collapsedFired = false;
 				$('#tree9').igTree({
 					singleBranchExpand: true,
@@ -1857,6 +1857,8 @@
 					nodeExpanding: function (event, args) {
 						if (!expandingFired) {
 							expandingFired = true;
+							ok(!collapsingFired, 'Node collapsing event has fired prematurely on single branch expand');
+							ok(!collapsedFired, 'Node collapsed event has fired prematurely on single branch expand');
 							ok(!expandedFired, 'Node expanded event fired before node expanding event');
 							ok(args.owner === $('#tree9').data('igTree'), 'Owner argument does not match');
 							equal(args.node.path, '1', 'Expanding node path event argument is not null');
@@ -1864,8 +1866,6 @@
 							equal(args.node.data, $('#tree9').igTree('option', 'dataSource').root().data()[1], 'Expanding node data event argument is not null');
 							equal(args.node.binding, $('#tree9').igTree('option', 'bindings'), 'Expanding node binding event argument is not null');
 						} else {
-							ok(!collapsingFired, 'Node collapsing event has fired prematurely on single branch expand');
-							ok(!collapsedFired, 'Node collapsed event has fired prematurely on single branch expand');
 							ok(args.owner === $('#tree9').data('igTree'), 'Owner argument does not match');
 							equal(args.node.path, '2', 'Expanding node path event argument is not null');
 							equal(args.node.element.attr('data-path'), '2', 'Expanding node element event argument is not null');
@@ -1876,6 +1876,8 @@
 					nodeExpanded: function (event, args) {
 						if (!expandedFired) {
 							expandedFired = true;
+							ok(!collapsingFired, 'Node collapsing event has not fired');
+							ok(!collapsedFired, 'Node collapsed event has not fired');
 							ok(expandingFired, 'Node expanding event has not fired yet');
 							ok(args.owner === $('#tree9').data('igTree'), 'Owner argument does not match');
 							equal(args.node.path, '1', 'Expanding node path event argument is not null');
@@ -1883,8 +1885,6 @@
 							equal(args.node.data, $('#tree9').igTree('option', 'dataSource').root().data()[1], 'Expanding node data event argument is not null');
 							equal(args.node.binding, $('#tree9').igTree('option', 'bindings'), 'Expanding node binding event argument is not null');
 						} else {
-							ok(collapsingFired, 'Node collapsing event has not fired');
-							ok(collapsedFired, 'Node collapsed event has not fired');
 							ok(args.owner === $('#tree9').data('igTree'), 'Owner argument does not match');
 							equal(args.node.path, '2', 'Expanding node path event argument is not null');
 							equal(args.node.element.attr('data-path'), '2', 'Expanding node element event argument is not null');
@@ -1895,6 +1895,7 @@
 					nodeCollapsing: function (event, args) {
 						collapsingFired = true;
 						ok(!collapsedFired, 'Node collapsed event fired before node collapsing event');
+						collapsedFired = false;
 						ok(args.owner === $('#tree9').data('igTree'), 'Owner argument does not match');
 						equal(args.node.path, '1', 'Expanding node path event argument is not null');
 						equal(args.node.element.attr('data-path'), '1', 'Expanding node element event argument is not null');
@@ -1902,8 +1903,10 @@
 						equal(args.node.binding, $('#tree9').igTree('option', 'bindings'), 'Expanding node binding event argument is not null');
 					},
 					nodeCollapsed: function (event, args) {
+						start();
 						collapsedFired = true;
 						ok(collapsingFired, 'Node collapsing event has not fired yet');
+						collapsingFired = false;
 						ok(args.owner === $('#tree9').data('igTree'), 'Owner argument does not match');
 						equal(args.node.path, '1', 'Expanding node path event argument is not null');
 						equal(args.node.element.attr('data-path'), '1', 'Expanding node element event argument is not null');
@@ -1911,11 +1914,22 @@
 						equal(args.node.binding, $('#tree9').igTree('option', 'bindings'), 'Expanding node binding event argument is not null');
 					}
 				});
+				stop();
 				equal($('#tree9').igTree('option', 'animationDuration'), 0, 'Animation duration did not setup properly');
 				var node = $('#tree9').igTree('nodeByPath', '1');
-				$('#tree9').igTree('toggle', node);
+				node.children(".ui-igtree-expander:first").click();
 				node = $('#tree9').igTree('nodeByPath', '2');
-				$('#tree9').igTree('toggle', node);
+				node.children(".ui-igtree-expander:first").click();
+				// check that no errors are thrown on checkbox API with checkboxMode="off" which is default
+				try {
+					$('#tree9').igTree('toggleCheckstate', node);
+					var nodeObj = $('#tree9').igTree('nodeFromElement', node);
+					$('#tree9').igTree('checkNode', nodeObj);
+					$('#tree9').igTree('uncheckNode', nodeObj);
+					$('#tree9').igTree('partiallyCheckNode', nodeObj);
+				} catch (e) {
+					ok(false, e.message);
+				}
 			});
 			test(testId_5, function () {
 				var changingFired = false, changedFired = false;
