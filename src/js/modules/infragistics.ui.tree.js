@@ -3325,10 +3325,6 @@
 			if (checkState !== shouldBe) {
 				checkbox.attr("data-chk", shouldBe);
 				switch (shouldBe) {
-				case "off":
-					checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-						.addClass(css.checkboxOff);
-					break;
 				case "partial":
 					checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
 						.addClass(css.checkboxPartial);
@@ -3340,6 +3336,7 @@
 				default:
 					checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
 						.addClass(css.checkboxOff);
+					break;
 				}
 				parent = this.parentNode(parent);
 				if (parent) {
@@ -3717,10 +3714,8 @@
 				case "partial":
 					this.partiallyCheckNode(node);
 					break;
-				case "off":
-					this.uncheckNode(node);
-					break;
 				default:
+					this.uncheckNode(node);
 					break;
 				}
 				break;
@@ -4340,9 +4335,6 @@
 				paramType="object" optional="false" Specifies the node element.
 				returnType="bool" True if the node is selected, false otherwise.
 			*/
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
 			if (node && node.length > 0) {
 				return this._selectedNode[ 0 ].path === node.attr("data-path");
 			}
