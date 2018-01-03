@@ -982,7 +982,7 @@
 				var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
 			```
 			*/
-			initialSelectedItems: [ {
+			initialSelectedItems: [{
 				/* type="number" optional="true" Index of item in the list. The index should be greater than -1 and less than the count of the [items](ui.igcombo#methods:items) in the list (rows in dataSource).
 				```
 					//Initialize
@@ -1019,7 +1019,7 @@
 					var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
 				``` */
 				value: null
-			} ],
+			}],
 			/* type="bool" Gets/Sets ability to prevent submitting form on enter key press.
 			```
 				//Initialize
