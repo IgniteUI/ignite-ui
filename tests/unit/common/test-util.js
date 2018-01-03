@@ -7,8 +7,8 @@
 		
 		// Use: $.ig.TestUtil.checkClass(elementToCheck, classToCheckFor)
 		checkClass: function (element, cls) {
-			if (typeof(ok) === 'function') {
-				ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
+			if (QUnit && typeof(QUnit.ok) === 'function') {
+				QUnit.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
 			} else {
 				return element.hasClass(cls);
 			}
