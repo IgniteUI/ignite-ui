@@ -12,6 +12,7 @@
 
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.dialog.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-en.js"></script>
@@ -77,6 +78,23 @@
 			teardown: function() {
 			}
 		});
+
+        function simulateEvent(target, name, options) {
+			var event = jQuery.Event(name);
+			event.target = target;
+			$.extend(event, options);
+			$(target).trigger(event);
+		}
+
+        function getElementDimensions(element) {
+			var offset = element.offset(),
+				top = offset.top,
+				bottom = top + element[0].offsetHeight,
+				left = offset.left,
+				right = left + element[0].offsetWidth;
+
+			return { top: top, bottom: bottom, left: left, right: right };
+		}
 
         var testId = '[ID1] dialog structure and layout';
         test(testId, function () {
@@ -430,6 +448,214 @@
             }, 1000);
 
         });
+
+        test("Press tab and Esc", function () {            
+            $("#dialog6").igDialog({
+                modal: true,
+                trackFocus: false
+            });
+
+            var dialog = $("#dialog6").data().igDialog;            
+
+            $.ig.TestUtil.keyInteraction(9, $("#dialog6").igDialog());
+            $.ig.TestUtil.keyInteraction(9, $("#dialog6").igDialog());
+
+            $.ig.TestUtil.keyInteraction(27,$("#dialog6").igDialog());
+
+            equal(dialog.options.state,"closed","The dialog is closed");
+
+            $("#dialog6").igDialog("option", "trackFocus", true);
+            equal(dialog.options.trackFocus, true,"The dialog's trackFocus is true");
+
+            dialog.destroy();
+        }); 
+
+        test("Restore", function () {            
+            $("#dialog6").igDialog({
+                state: "maximized"
+            });
+
+            var dialog = $("#dialog6").data().igDialog;        
+
+            dialog.restore();
+            dialog.minimize();
+            dialog.restore();    
+
+            equal(dialog.options.state,"minimized","The dialog is restored");
+
+            dialog.destroy();
+        }); 
+
+        test("Initizlize Container", function () {   
+            try 
+            {         
+                var objContainer = $("#newContainer")
+                $("#dialog5").igDialog("option", "container");
+                $("#dialog5").igDialog("option", "container", "objContainer");
+                $("#dialog5").igDialog("option", "container", objContainer);
+
+                $.ig.TestUtil.keyInteraction(9, $("#dialog5").igDialog());
+            }
+            catch (e) 
+            { 
+                ok(false, "Container not set.") 
+            }
+            ok(true,"Container is set");
+        }); 
+
+        test("Start minimized and pinned", function () {            
+            $("#dialog6").igDialog({
+                state: "minimized",
+                pinned: true
+            });
+
+            var dialog = $("#dialog6").data().igDialog; 
+
+            equal(dialog.options.state, "minimized","The dialog is minimized");
+            equal(dialog.options.pinned, true, "The dialog is pinned");
+
+            dialog.destroy();
+        }); 
+
+        test("Set different options", function () {            
+            $("#dialog6").igDialog({
+                draggable: false,
+                resizable: false,
+                modal: true,
+                trackFocus: false,
+                pinned: true,
+                showFooter: true,
+                position: {left:-50, top: 50}
+            });
+
+            var dialog = $("#dialog6").data().igDialog; 
+
+            $("#dialog6").igDialog("option", "draggable", true);
+            equal(dialog.options.draggable, true,"The dialog is draggable");
+
+            $("#dialog6").igDialog("option", "resizable", true);
+            equal(dialog.options.resizable, true,"The dialog is resizable");
+            
+            $("#dialog6").igDialog("option", "modal", false);
+            equal(dialog.options.modal, false,"The dialog is not modal");
+
+            $("#dialog6").igDialog("option", "headerText", "Dialog6");
+            equal(dialog.options.headerText, "Dialog6","The dialog's header text is Dialog6");
+
+            $("#dialog6").igDialog("option", "footerText", "footer");
+            equal(dialog.options.footerText, "footer","The dialog has footer");
+
+            $("#dialog6").igDialog("option", "tabIndex", 1);
+            equal(dialog.options.tabIndex, 1,"The dialog's tab index is 1");
+
+            $("#dialog6").igDialog("option", "zIndex", 1);
+            equal(dialog.options.zIndex, 1,"The dialog's z index is 1");
+
+            $("#dialog6").igDialog("option", "trackFocus", true);
+            equal(dialog.options.trackFocus, true,"The dialog's trackFocus is true");
+
+            dialog.changeLocale();
+            dialog.destroy();
+        });  
+
+        test("Header tests", function () {            
+            $("#dialog5").igDialog({
+                draggable: true,
+                resizable: true,
+                enableDblclick: false
+            });
+
+            var dialog = $("#dialog5").data().igDialog; 
+            $("#dialog5").igDialog("option", "modal", false);
+            dialog.moveToTop();
+
+            var header = $('#dialog5').find('.ui-igdialog-header'),
+                dim = getElementDimensions(header),
+                vCenter = (dim.top + dim.bottom) / 2;
+
+            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right, pageY: vCenter });
+
+            $("#dialog5").igDialog("option", "state", "maximized");
+
+            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right, pageY: vCenter });
+
+            $("#dialog5").igDialog("option", "state", "opened");
+
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });    
+            equal(dialog.options.state, "opened","The dialog is opened"); 
+
+            $("#dialog5").igDialog("option", "enableDblclick", true);
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });    
+            equal(dialog.options.state, "maximized","The dialog is maximized"); 
+
+            $("#dialog5").igDialog("option", "state", "minimized");
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });    
+            equal(dialog.options.state, "opened","The dialog is not opened after being minimized");  
+
+            simulateEvent(header, "touchstart", { which: 1, pageX: dim.right, pageY: vCenter, touches: 1});    
+            simulateEvent(header, "touchmove", { which: 1, pageX: dim.right + 10, pageY: vCenter });    
+            simulateEvent(header, "touchend", { which: 1, pageX: dim.right + 10, pageY: vCenter });    
+
+            $("#dialog5").igDialog("option", "showHeader", false);           
+                  
+        }); 
+
+        test("Resize horizontally", function () {            
+            $("#dialog5").igDialog({
+                draggable: true,
+                resizable: true,
+            });
+
+            var dialog = $("#dialog5").data().igDialog; 
+            $("#dialog5").igDialog("option", "modal", false);
+            dialog.moveToTop();            
+
+            var seResizer = $('#dialog5').find('.ui-resizable-se'),
+                dim = getElementDimensions($('#dialog5')),
+                vCenter = (dim.top + dim.bottom) / 2,
+                xCenter = (dim.left + dim.right) / 2;
+
+            simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: dim.right - 100, pageY: vCenter});
+            simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+
+            var resultDim = getElementDimensions($('#dialog5'));
+            equal(resultDim.right, dim.right,"The dialog is not opened after being minimized");  
+
+            simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: dim.right , pageY: vCenter + 1000});
+            simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+        }); 
+
+        test("InputName", function () {            
+            $("#dialog6").igDialog({     
+                inputName: "input1",
+                position: [100,100]
+            });
+
+            $("#dialog6").igDialog("option", "inputName", "input2");
+            $("#dialog6").igDialog("option", "state", "minimized");
+
+            ok($("#input1")[0].value.indexOf("s1:w300") !== -1,"The saved value is correct");  
+        }); 
+
+        test("toPX", function () {            
+            $("#dialog5").igDialog({     
+                width: 200,
+                height: 200
+            });
+
+             $("#dialog5").igDialog("option", "width", '20em');
+             equal($("#dialog5")[0].offsetWidth, 322,"The dialog's width is calculated correctly from 'em'");  
+
+             $("#dialog5").igDialog("option", "width", '10%');
+             //equal($("#dialog5")[0].offsetWidth, 194,"The dialog's width is calculated correctly from '%'");  
+
+        }); 
     });
     </script>
 </head>
@@ -440,7 +666,7 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
     </div>
-    <div id="container1" style="float:left;overflow:auto;padding:20px;position:absolute;width:400px;">
+    <div id="container1" style="float:left;overflow:auto;padding:20px;position:absolute;width:400px;height:400px;">
         <div id="dialog1" title="Title of DIV" style="background-color:orange;">
             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog1</p>
         </div>
@@ -454,6 +680,12 @@
             <iframe id="testFrame"></iframe>
         </div>
         <div id="dialog5"></div>
+        <div id="dialog6" title="Title of DIV" style="background-color:orange;">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog6</p>        
+        </div>
+        <form id="form1">
+            <input id="input1" name="input1"></input>
+        </form>
         <div id="newContainer"></div>
     </div>
     <div id="newContainer"></div>
