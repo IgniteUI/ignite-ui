@@ -265,7 +265,7 @@
 			return template;
 		},
 		_handleEach: function (template, tokens) {
-			var tmpl = template, eachVar, body, forSub, sub, expr, inner;
+			var tmpl = template, eachVar, body, forSub, sub, expr;
 			eachVar = this.regExp.sub.exec(tmpl);
 			tmpl = tmpl.replace(eachVar[ 0 ], "");
 			tmpl = tmpl.replace("$data", eachVar[ 0 ]);
@@ -285,12 +285,6 @@
 			tmpl = tmpl.replace(tokens[ 2 ], 'result += "' + body + '"');
 			tmpl = tmpl.replace(/\}\}/, this._directives[ tokens[ 1 ] ].close);
 			tmpl = tmpl.replace(tokens[ 3 ], this._directives[ tokens[ 1 ] ].end);
-
-			// Check for a nested blocks and recursively handle them
-			if (this.regExp.block.test(tmpl)) {
-				inner = this.regExp.block.exec(tmpl);
-				tmpl = tmpl.replace(inner[ 0 ], this._handleCompleteBlock(inner));
-			}
 
 			// Parse the contents of the block
 			// Put all data members on the stack

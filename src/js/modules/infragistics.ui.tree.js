@@ -1765,6 +1765,7 @@
 		},
 		_create: function () {
 			var opt = this.options;
+			this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
 			this.dataBind();
 			this.element.addClass(this.css.tree);
 
@@ -3324,10 +3325,6 @@
 			if (checkState !== shouldBe) {
 				checkbox.attr("data-chk", shouldBe);
 				switch (shouldBe) {
-				case "off":
-					checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
-						.addClass(css.checkboxOff);
-					break;
 				case "partial":
 					checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxOff)
 						.addClass(css.checkboxPartial);
@@ -3339,6 +3336,7 @@
 				default:
 					checkIcon.removeClass(css.checkboxOn).removeClass(css.checkboxPartial)
 						.addClass(css.checkboxOff);
+					break;
 				}
 				parent = this.parentNode(parent);
 				if (parent) {
@@ -3716,10 +3714,8 @@
 				case "partial":
 					this.partiallyCheckNode(node);
 					break;
-				case "off":
-					this.uncheckNode(node);
-					break;
 				default:
+					this.uncheckNode(node);
 					break;
 				}
 				break;
@@ -3978,7 +3974,7 @@
 					siblings = node.siblings();
 
 					for (i; i < siblings.length; i++) {
-						this.collapse($(siblings[ i ]));
+						this.collapse($(siblings[ i ]), event);
 					}
 				}
 				if (event) {
@@ -4128,10 +4124,6 @@
 				prevent = true;
 			}
 
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
-
 			// To do: Implement multiple selection logic
 			if (this._selectedNode[ 0 ].path !== null) {
 				if (this._selectedNode[ 0 ].path !== nodeId) {
@@ -4176,10 +4168,6 @@
 			}
 			var css = this.css, nodeId = node.attr("data-path");
 
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
-
 			if (this._selectedNode[ 0 ].path !== null) {
 				if (this._selectedNode[ 0 ].path === nodeId) {
 					node.children("a").removeClass(css.nodeSelected);
@@ -4218,9 +4206,6 @@
 			```
 				returnType="object" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
 			return this._selectedNode[ 0 ];
 		},
 		findNodesByText: function (text, parent) {
@@ -4350,9 +4335,6 @@
 				paramType="object" optional="false" Specifies the node element.
 				returnType="bool" True if the node is selected, false otherwise.
 			*/
-			if (!this._selectedNode) {
-				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
-			}
 			if (node && node.length > 0) {
 				return this._selectedNode[ 0 ].path === node.attr("data-path");
 			}
