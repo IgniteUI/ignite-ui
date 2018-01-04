@@ -6,7 +6,7 @@
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.videoplayer.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.html5.css" rel="stylesheet" />
-    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
     <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
@@ -308,6 +308,34 @@
 				autohide: true
 			});
 
+			$("#player13").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				width: 800,
+				height: 200,
+				banners: [{
+					imageUrl: 'http://www.portabellasgrille.com/menu/img/pizza.gif',
+					link: 'http://mrpizza.bg/',
+					times: [0, 5, 10],
+					visible: true,
+					closeBanner: true,
+					animate: true,
+					autohide: true,
+					preload: true,
+					width: "350px",
+					height: "40px"
+				}],
+				bookmarks: [
+					{
+						title: 'mark',
+						description: 'Here we see a nice green field.',
+						time: 60
+					}
+				]
+			});
 			document.mockOptions = {};
 			document.mockOptions.oldBrowser = true;
 			$("#player6").igVideoPlayerUnitTesting({
@@ -396,6 +424,15 @@
 	var testId_40 = "igVideoPlayer Test relatedvideos scrolling 40";
 	var testId_41 = "igVideoPlayer Test loop option test 41";
 	var testId_42 = "igVideoPlayer slider test 42";
+	var testId_45 = "igVideoPlayer Test disable option on initiation";
+	var testId_46 = "igVideoPlayer Instantiate on an invalid tag like input";
+	var testId_47 = "igVidioPlayer Test screenshot of the current vidio frame";
+	var testId_48 = "igVideoPlayer Test seeking, ended and duration methods return correct values";
+	var testId_49 = "igVidioPlayer Test changing currentTime on a paused vidio";
+	var testId_50 = "igVidioPlayer Test related videos fullscreen and replay";
+	var testId_51 = "igVidioPlayer Dummy Test";
+	var testId_52 = "igVidioPlayer Test entering fullscrren via double click"
+	var testId_53 = "igVidioPlayer Test setting sources after initiation"
 
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -722,8 +759,114 @@
 		}
 	});
 
-	test(testId_25, 0, function() {
-		// TODO!
+	test(testId_25, function(assert) {
+		assert.expect(12);
+		$("#player13").igVideoPlayerUnitTesting("play");
+		checkClass($('#player13_ctrls_play_lbl'),'ui-icon-pause');
+
+		$("#player13_ctrls_pb").trigger('mousemove');
+		$("#player13_ctrls_pb").trigger('mouseout');
+
+		var slider = $("#player13_ctrls_s").children(':first');
+		checkClass(slider, 'ui-igslider-handle');
+		
+		$('#player13_ctrls_play_lbl').trigger('click');
+		checkClass($('#player13_ctrls_play_lbl'),'ui-icon-play');		
+
+		slider.trigger('mouseover');
+		checkClass(slider, 'ui-state-hover');
+		
+		var homePos = slider.position().left,
+			ev = jQuery.Event('keydown');		
+			ev.keyCode = $.ui.keyCode.END;
+
+		slider.focus();	
+		slider.trigger(ev);
+
+		stop();
+		setTimeout(function(){
+			start();
+
+			var endPos = slider.position().left;
+			ok(homePos < endPos);			
+
+			slider.trigger('click');
+
+			ev = jQuery.Event('keydown');
+			ev.keyCode = $.ui.keyCode.HOME;
+
+			slider.trigger(ev);
+
+			stop();
+			setTimeout(function(){
+				start();
+
+				var zeroPos = slider.position().left;
+				equal(zeroPos, homePos);	
+				
+				checkElementClass($("#player13_ctrls_play_lbl"), 'ui-icon-play');
+
+				ev = jQuery.Event('keydown');
+				ev.keyCode = $.ui.keyCode.SPACE;
+
+				$("#player13_ctrls_play").focus();
+				$("#player13_ctrls_play").trigger(ev);
+
+				checkElementClass($("#player13_ctrls_play_lbl"), 'ui-icon-pause');
+
+				$("#player13_ctrls_fs_btn_lbl").focus();
+				$("#player13_ctrls_fs_btn_lbl").trigger('click');
+
+				stop();
+				setTimeout(function(){
+					start();
+
+					checkElementClass($("#player13_ctrls_fs_btn_lbl"),'ui-icon-closethick');
+
+					ev = jQuery.Event('keydown');
+					ev.keyCode = $.ui.keyCode.ESCAPE;
+
+					$("#player13_ctrls_fs_btn_lbl").trigger(ev);
+
+					checkElementClass($("#player13_ctrls_fs_btn_lbl"),'ui-icon-arrow-4-diag');
+
+					var counter = 0,
+					bannerClick = jQuery.Event("click");
+					$("#player13").one("click", function() {
+						counter++;
+					});
+
+					$("#player13_banner_grid0").trigger('click');
+					equal(counter, 1);
+
+					$("#player13_ctrls_vc_btn").focus();
+
+					ev = jQuery.Event('keydown');
+					ev.keyCode = $.ui.keyCode.TAB;
+					$("#player13_ctrls_vc_btn").trigger(ev);
+
+					var vs = $("#player13_ctrls_vs").children(':first'),
+						vsPos = vs.position().top;
+
+					ev = jQuery.Event('keydown');
+					ev.keyCode = $.ui.keyCode.HOME;
+					vs.trigger(ev);
+
+					stop();
+					setTimeout(function(){
+						start();
+						vsPosNew = vs.position().top;
+
+						ok(vsPosNew > vsPos);
+
+						vs.focus();
+						ev = jQuery.Event('keydown');
+						ev.keyCode = $.ui.keyCode.TAB;
+						vs.trigger(ev);
+					}, 500);
+				}, 500);
+			}, 900);
+		},900);
 	});
 
 	test(testId_26, function() {
@@ -1073,7 +1216,434 @@
 
 		ok($('#player11_video')[0].paused, 'Video should be paused.');	
 	});
+	test(testId_45, function(assert)	{
+		assert.expect(3);
+		var video = $("#video2").igVideoPlayer({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+			width: 800,
+			height: 200,
+			disabled: true,
+			fullscreen: true,
+			preload: true,
+			loop: true
+		});
 
+		checkElementClass($("#video2_container"), 'ui-state-disabled');
+
+		video.igVideoPlayer("option", "disabled", false);
+		checkElementNotClass($("#video2_container"), 'ui-state-disabled');
+
+		var counter = 0, 
+		dblclick = jQuery.Event("dblclick");
+		dblclick.button = 0;
+		video.one( "dblclick", function() {
+			counter++;
+		});
+
+		video.trigger(dblclick);
+		equal(counter, 1);
+
+		video.remove();
+	});
+	test(testId_46, function(assert){
+		assert.expect(1);
+		try 
+		{
+			$("#input").igVideoPlayer({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+			width: 800,
+			height: 340
+		});
+		} catch (ex) {
+			equal(ex.message, 'The Infragistics HTML5 Video Player can be instantiated only on a DIV tag.');
+		}
+		$("#input").remove();
+	});
+	// test(testId_47, 2, function()
+	// {
+	// 	//var done = assert.async();
+	// 	$("#video2").igVideoPlayer({
+	// 		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+	// 				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+	// 				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+	// 				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+	// 		width: 800,
+	// 		height: 340,
+	// 		disabled: false
+	// 		// playing: function (event, ui) {
+	// 		// 	//event.preventDefault();
+
+	// 		// 	var screen = $("#video2").igVideoPlayer("screenshot");
+	// 		// 	equal(screen.tagName, 'CANVAS');
+	// 		// 	$("#video2").igVideoPlayer("pause");
+	// 		// 	start();
+	// 		// }
+	// 	});
+
+	// 	var paused = $("#video2").igVideoPlayer("paused");
+
+	// 	if (paused)
+	// 	{
+	// 		ok(paused, true)
+	// 		$("#video2").igVideoPlayer("play");
+	// 		stop();
+	// 		setTimeout(function(){
+	// 			//start();
+	// 			var screen = $("#video2").igVideoPlayer("screenshot");
+	// 			start();
+	// 			equal(screen.tagName, 'CANVAS');
+	// 			$("#video2").igVideoPlayer("pause");
+	// 		},500);
+	// 	}
+	// });
+	test(testId_48, function(assert){
+		assert.expect(9);
+		var video = $("#player11").igVideoPlayer({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+			width: 800,
+			height: 340,
+			language: "ja",
+			commercials: {
+				linkedCommercials: [
+				{
+					sources: [
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				],
+					startTime: 0,
+					endTime: 5,
+					title: "Quince Presentation p1",
+					link: "http://quince.infragistics.com/"
+				},
+				{
+					sources: [
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				],
+					startTime: 10,
+					title: "Quince Presentation p3",
+					link: "http://quince.infragistics.com/"
+				}]
+			}
+		});
+
+		var counter = 0,
+		click = jQuery.Event("click");
+		click.button = 0;
+		$("#player11").one("click", function() {
+			counter++;
+		});
+
+		video.igVideoPlayer("play");
+
+		equal(video.igVideoPlayer("seeking"), false);
+		equal(video.igVideoPlayer("duration"), 260);
+
+		var ended = video.igVideoPlayer("ended");
+		if (!ended)
+		{
+			stop();
+			setTimeout(function(){
+				start();
+				video.igVideoPlayer("changeLocale");
+				ok($('#player11_ad_msg_c').is(':visible'));
+				checkElementClass($('#player11_ad_msg_c'), 'ui-igplayer-ad-msg-container');
+				
+				var close = $('#player11_ad_msg_close_picn').is(':visible');
+				if (close)
+				{
+					$('#player11_play').trigger(click);
+					equal(counter, 1);
+
+					$('#player11_ad_msg_c').trigger('mouseover');
+					checkElementClass($('#player11_ad_msg_c'), 'ui-state-hover');
+					
+					$('#player11_ad_msg_c').trigger('mouseout');
+					checkElementNotClass($('#player11_ad_msg_c'), 'ui-state-hover');
+
+					$('#player11_ad_msg_close_picn').trigger(click);
+					video.igVideoPlayer("pause");
+
+					stop();
+					setTimeout(function(){
+						start();
+						equal(video.igVideoPlayer("paused"), true);
+						
+						ok($('#player11_ad_msg_c').is(':visible'));
+
+						$("#player11").igVideoPlayer("resetCommercialsShow");
+					}, 200);
+				}
+			}, 600);
+		}
+	});
+	test(testId_49, function(assert){
+		assert.expect(2);
+		var video = $("#player11").igVideoPlayer({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+			width: 800,
+			height: 340
+		});
+
+		video.igVideoPlayer("play");
+
+		var ended = video.igVideoPlayer("ended");
+
+		if (!ended)
+		{
+			stop();
+			setTimeout(function(){
+				start();
+				video.igVideoPlayer("togglePlay");
+
+				equal(video.igVideoPlayer("paused"), true);
+
+				var val = video.igVideoPlayer("duration") / 3;
+				if (val > 0)
+				{
+					video.igVideoPlayer("currentTime", val);
+				}
+
+				video.igVideoPlayer("togglePlay");
+
+				stop();
+				setTimeout(function(){
+					start();
+
+					var currentTime = video.igVideoPlayer("currentTime");
+					ok(currentTime > val);
+					video.remove();
+				}, 300);
+			}, 900);
+		}
+	});
+		test(testId_50, function (assert) {
+			assert.expect(4);
+			var video = $("#player12").igVideoPlayer({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				width: 800,
+				height: 200,
+				relatedVideos: [
+					{
+						imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
+						title: "Some cool skype video.",
+						width: "55px",
+						height: "55px",
+						sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+							"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+							"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+							"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+						]
+					},
+					{
+						imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
+						title: "Bick buck bunny.",
+						width: "80px",
+						height: "30px",
+						sources: ["http://snapshot.opera.com/resources/BigBuckBunny.ogv",
+							"http://snapshot.opera.com/resources/BigBuckBunny.mp4",
+							"http://snapshot.opera.com/resources/BigBuckBunny.webm"
+						]
+					}
+				]
+			});
+
+			var d = video.igVideoPlayer("duration");
+
+			stop();
+			setTimeout(function () {
+				start();
+				$('#player12_video')[0].playTo(d);
+
+				stop();
+				setTimeout(function () {
+					start();
+					checkElementClass($('#player12_rv_bar_fs_lbl'), 'ui-icon-arrow-4-diag');
+
+					$('#player12_rv_bar_fs').trigger('click');
+
+					stop();
+					setTimeout(function () {
+						start();
+						checkElementClass($('#player12_rv_bar_fs_lbl'), 'ui-icon-closethick');
+
+						$('#player12_rv_bar_fs').trigger('click');
+
+						stop();
+						setTimeout(function () {
+							start();
+
+							var firstRV = $("ul.ui-igplayer-related-list").children(':first');
+
+							firstRV.trigger('mouseover');
+							ok($('.ui-igplayer-related-video-hover-x48').css('display') !== 'none');
+
+							firstRV.trigger('mouseout');
+							ok($('.ui-igplayer-related-video-hover-x48').css('display') == 'none');
+
+							stop();
+							setTimeout(function () {
+								start();
+								$('#player12_rv_bar_replay_lbl').trigger('click');
+								video.remove();
+							}, 600);
+						}, 900);
+					}, 800);
+				}, 800);
+			}, 1100);
+		});
+		test(testId_51, function (assert) {
+			assert.expect(2);
+			var video = $("#player14").igVideoPlayer({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				width: 800,
+				height: 200,
+				commercials: {
+					embeddedCommercials: [
+						{
+							sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
+							startTime: 1,
+							endTime: 30,
+							title: "Quince Presentation p1",
+							link: "http://quince.infragistics.com/"
+						}],
+					alwaysPlayCommercials: true
+				}
+			});
+
+			video.igVideoPlayer("option", "alwaysPlayCommercials", false);
+			video.igVideoPlayer("option", "progressLabelFormat", "Time=${currentTime} / Total=${duration}");
+
+			video.igVideoPlayer("currentTime", 10);
+			video.igVideoPlayer("play");
+
+			equal(video.igVideoPlayer("paused"), false);
+
+			video.igVideoPlayer("option", "alwaysPlayCommercials", true);
+
+			var pbCounter = 0,
+				ev = jQuery.Event('click');
+			ev.button = 0;
+
+			$("#player14_video").on("click", function () {
+				pbCounter++;
+			});
+
+			stop();
+			setTimeout(function () {
+				start();
+				$("#player14_video").trigger(ev);
+				equal(pbCounter, 1);
+				video.igVideoPlayer("destroy");
+			}, 800);
+		});
+		test(testId_52, function (assert) {
+			assert.expect(3);
+			var counter = 0,
+				dblclick = jQuery.Event("dblclick");
+			dblclick.button = 0;
+
+			$("#player13_video").one("dblclick", function () {
+				counter++;
+			});
+
+			$("#player13_video").trigger(dblclick);
+
+			var fullScreen = $("#player13").igVideoPlayerUnitTesting("option", "fullscreen");
+			equal(1, counter);
+			equal(fullScreen, true);
+
+			var mark = $("#player13_ctrls_pb").next();
+			checkElementClass(mark, 'ui-igslider-bookmark');
+
+			var paused = $("#player13").igVideoPlayerUnitTesting("paused");
+			if (!paused) {
+				$("#player13").igVideoPlayerUnitTesting("pause");
+
+				stop();
+				setTimeout(function () {
+					start();
+
+					var bmOffset = mark.offset(),
+						bmWidth = mark.width(),
+						bmHeight = mark.height(),
+						x = bmOffset.left + bmWidth / 2,
+						y = bmOffset.top + bmHeight / 2;
+
+					var ev = jQuery.Event('click');
+					ev.button = 0;
+					ev.clientX = x;
+					ev.clientY = y;
+
+					$(document.elementFromPoint(x, y)).trigger(ev);
+
+					stop();
+					setTimeout(function () {
+						start();
+
+						$("#player13").igVideoPlayerUnitTesting("option", "fullscreen", false);
+						$("#player13").remove();
+					}, 500);
+				}, 500);
+			}
+		});
+		test(testId_53, function (assert) {
+			assert.expect(2);
+			$("#player14").igVideoPlayer({
+				width: 800,
+				height: 200,
+				browserControls: true
+			});
+
+			var counter = 0,
+				click = jQuery.Event("click");
+			$("#player14_detectError").one("click", function () {
+				counter++;
+			});
+
+			$("#player14_detectError").trigger(click);
+
+			equal(1, counter);
+
+			$("#player14").igVideoPlayer("option", "sources", ["http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"]);
+
+			$("#player14").igVideoPlayer("play");
+
+			stop();
+			setTimeout(function () {
+				start();
+
+				equal(false, $("#player14").igVideoPlayer("paused"));
+				$("#player14").remove();
+			}, 600);
+		});
+	
 	function checkButton(button) {
 		checkClass(button, 'ui-widget');
 		checkClass(button, 'ui-state-default');
@@ -1082,7 +1652,6 @@
 		ok(button.attr('role') === 'button', 'The button with id: ' + button[0].id + ' does not contain the attr role: button');
 		ok(button.attr('href') === '#', 'The button with id: ' + button[0].id + ' does not contain the attr href: #');
 	}
-	
 
 	function checkElementClass(element,classs) {
 		ok(element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does not contain the class:' + classs)		
@@ -1091,7 +1660,6 @@
 
 		ok(!element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does contain the class:' + classs)		
 	}
-
 	function checkClass(button, classs) {
 		ok(button.hasClass(classs), 'The button with id: ' + button[0].id + ' does not contain the class: ' + classs);
 	}
@@ -1105,6 +1673,22 @@
      <ol id="qunit-tests"></ol>
 </div>
 <div id="testBedContainer">
+	<video id="video2"></video>
+	<br/>
+	<br/>
+	<div id="player14"></div>
+	<br/>
+	<br/>	
+	<div id="player12"></div>
+	<br/>
+	<br/>	
+	<div id="player13"></div>
+	<br/>
+	<br/>
+	<h1>igVideoPlayer 11</h1>	
+	<div id="player11"></div>
+	<br/>
+	<br/>
 	<h1>igVideoPlayer 1</h1>
 	<div id="player1"></div>
 	<br/>
@@ -1150,7 +1734,7 @@
 	<video id="video1" controls="true" src="http://video-js.zencoder.com/oceans-clip.mp4" type="video/mp4" ></video>
 	<br/>
 	<br/>
-	<video id="video2"></video>
+	<input id="input"></input>
 </div>
 </body>
 </html>
