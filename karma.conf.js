@@ -33,9 +33,7 @@ module.exports = function(config) {
       // { pattern: "bower_components/jquery/**/*", included: false, served: true },
       // { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
       // { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
-      
-      "node_modules/qunitjs/qunit/qunit.css",
-      "node_modules/qunitjs/qunit/qunit.js",
+
       "bower_components/jquery/dist/jquery.js",
       "bower_components/jquery-ui/jquery-ui.js",
       "tests/test-patch.js",
@@ -116,5 +114,5 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
-}
+  });
+};
