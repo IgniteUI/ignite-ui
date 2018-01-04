@@ -729,12 +729,26 @@ $.ig.dependencies = [
 		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ],
 		description: $.ig.loaderClass.locale.descriptions.bulletGraphDescription
 	},
-
+	{
+		widget: "_ig_datachart_domainchart",
+		dependency: [ 
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_dv_core" },
+			{ name: "_ig_datachart_core" },
+			{ name: "_ig_dv_dataseriesadapter" },
+			{ name: "_ig_ext_ui" }],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_domainchart.js" ],
+		internal: true
+	},
 	{
 		widget: "igCategoryChart",
 		dependency: [ { name: "_ig_dv_dataseriesadapter" }, { name: "_ig_datachart_categorycore" },
 					{ name: "igWidget" },
-					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" } ],
+					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" },
+			    		{ name: "_ig_datachart_domainchart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.datachart_category.js",
@@ -772,7 +786,8 @@ $.ig.dependencies = [
 		widget: "igShapeChart",
 		dependency: [ { name: "_ig_dv_dataseriesadapter" }, { name: "igWidget" },
 					{ name: "Scatter" }, { name: "Shape" },
-					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" } ],
+					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" },
+			    		{ name: "_ig_datachart_domainchart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.shapechart.js",
