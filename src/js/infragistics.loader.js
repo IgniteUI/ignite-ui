@@ -748,7 +748,7 @@ $.ig.dependencies = [
 		dependency: [ { name: "_ig_dv_dataseriesadapter" }, { name: "_ig_datachart_categorycore" },
 					{ name: "igWidget" },
 					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" },
-			    		{ name: "_ig_datachart_domainchart" } ],
+					{ name: "_ig_datachart_domainchart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.datachart_category.js",
