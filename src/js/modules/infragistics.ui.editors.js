@@ -217,8 +217,8 @@
 		},
 		events: {
 			/* igWidget events go here */
-			/* cancel="true" Fired before rendering of the editor has finished.			
-				
+			/* cancel="true" Fired before rendering of the editor has finished.
+
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%rendering", function (evt, ui) {
@@ -237,8 +237,8 @@
 				eventArgument="ui.element" argType="object" Gets a reference to the editor element.
 			*/
 			rendering: "rendering",
-			/* cancel="false" Fired after rendering of the editor has finished.	
-				
+			/* cancel="false" Fired after rendering of the editor has finished.
+
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%rendered", function (evt, ui) {
@@ -257,8 +257,8 @@
 				eventArgument="ui.element" argType="object" Gets a reference to the editor element.
 			*/
 			rendered: "rendered",
-			/* cancel="true" Fired on mousedown event.	
-				
+			/* cancel="true" Fired on mousedown event.
+
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mousedown", function (evt, ui) {
@@ -275,11 +275,11 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
-				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.				
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			mousedown: "mousedown",
-			/* cancel="false" Fired on mouseup event.	
-				
+			/* cancel="false" Fired on mouseup event.
+
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mouseup", function (evt, ui) {
@@ -299,8 +299,8 @@
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			mouseup: "mouseup",
-			/* cancel="false" Fired on mousemove at any part of editor including the drop-down list.			
-				
+			/* cancel="false" Fired on mousemove at any part of editor including the drop-down list.
+
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mousemove", function (evt, ui) {
@@ -320,7 +320,7 @@
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			mousemove: "mousemove",
-			/* cancel="false" Fired on mouseover at any part of editor including the drop-down list.			
+			/* cancel="false" Fired on mouseover at any part of editor including the drop-down list.
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mouseover", function (evt, ui) {
@@ -355,9 +355,9 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object.				
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.element" argType="object" Gets a reference to the event target.				
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 				eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
@@ -404,7 +404,7 @@
 			*/
 			focus: "focus",
 			/* cancel="true" Fired on keydown event.
-				Return false in order to cancel key action.				
+				Return false in order to cancel key action.
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%keydown", function (evt, ui) {
@@ -426,7 +426,7 @@
 			*/
 			keydown: "keydown",
 			/* cancel="true" Fired on keypress event.
-				Return false in order to cancel key action.				
+				Return false in order to cancel key action.
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%keypress", function (evt, ui) {
@@ -486,14 +486,14 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets the editor input.
 				eventArgument="ui.newValue" argType="object" Gets the editor's new value.
 				eventArgument="ui.oldValue" argType="object" Gets the editor's old value.
 			*/
 			valueChanging: "valueChanging",
-			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.				
+			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
@@ -507,7 +507,7 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets the editor input.
 				eventArgument="ui.newValue" argType="object" Gets the value entered from the user after internal formatting.
@@ -1686,9 +1686,9 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.				
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
@@ -1707,8 +1707,8 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
-				eventArgument="ui.owner" argType="object" Gets a reference to the editor.				
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
@@ -1727,9 +1727,9 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.				
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
@@ -1748,9 +1748,9 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.				
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
@@ -1769,9 +1769,9 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.				
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is about to be selected.
@@ -1791,8 +1791,8 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
-				eventArgument="ui.owner" argType="object" Gets a reference to the editor.				
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
@@ -1813,8 +1813,8 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
-				eventArgument="ui.owner" argType="object" Gets a reference to the editor.				
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.text" argType="object" Gets a reference to the new text.
 				eventArgument="ui.oldText" argType="object" Gets a reference to the old text.
 			*/
@@ -10775,9 +10775,9 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
 				eventArgument="ui.calendar" argType="object" Gets a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
-			*/			
+			*/
 			dropDownListOpening: "dropDownListOpening",
-			/* cancel="false" Fired after the drop down is opened.	
+			/* cancel="false" Fired after the drop down is opened.
 				```
 				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
@@ -11559,7 +11559,7 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor element.
@@ -11583,7 +11583,7 @@
 					}
 				});
 				```
-				eventArgument="evt" argType="event" jQuery event object. 
+				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor element.
