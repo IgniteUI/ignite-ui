@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.dialog.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-es.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-en.js"></script>
     
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -449,75 +450,78 @@
         });
 
         test("Press tab and Esc", function () {            
-            $("#dialog6").igDialog({
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
                 modal: true,
-                trackFocus: false
+                trackFocus: false,
+                position: [100,100]
             });
 
-            var dialog = $("#dialog6").data().igDialog;            
+            var dialog = $dialog.data().igDialog;            
 
-            $.ig.TestUtil.keyInteraction(9, $("#dialog6").igDialog());
-            $.ig.TestUtil.keyInteraction(9, $("#dialog6").igDialog());
+            $.ig.TestUtil.keyInteraction(9, $dialog);
 
-            $.ig.TestUtil.keyInteraction(27,$("#dialog6").igDialog());
+            $.ig.TestUtil.keyInteraction(27, $dialog);
 
             equal(dialog.options.state,"closed","The dialog is closed");
 
-            $("#dialog6").igDialog("option", "trackFocus", true);
+            $dialog.igDialog("option", "trackFocus", true);
             equal(dialog.options.trackFocus, true,"The dialog's trackFocus is true");
 
-            dialog.destroy();
+            $dialog.remove();
         }); 
 
         test("Restore", function () {            
-            $("#dialog6").igDialog({
-                state: "maximized"
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                state: "maximized",
+                position: [100,100]
             });
 
-            var dialog = $("#dialog6").data().igDialog;        
+            var dialog = $dialog.data().igDialog;        
 
             dialog.restore();
             dialog.minimize();
             dialog.restore();    
 
-            equal(dialog.options.state,"minimized","The dialog is restored");
+            equal(dialog.options.state,"opened","The dialog is restored");
 
-            dialog.destroy();
+            $dialog.remove();
         }); 
 
-        test("Initizlize Container", function () {   
-            try 
-            {         
-                var objContainer = $("#newContainer")
-                $("#dialog5").igDialog("option", "container");
-                $("#dialog5").igDialog("option", "container", "objContainer");
-                $("#dialog5").igDialog("option", "container", objContainer);
+        test("Initizlize Container", function () {  
+            $dialog = $("<div></div>").igDialog({
+                position: [100,100]
+            });
+      
+            var objContainer = $("#newContainer")
+            $dialog.igDialog("option", "container");
+            $dialog.igDialog("option", "container", "objContainer");
+            $dialog.igDialog("option", "container", objContainer);
 
-                $.ig.TestUtil.keyInteraction(9, $("#dialog5").igDialog());
-            }
-            catch (e) 
-            { 
-                ok(false, "Container not set.") 
-            }
-            ok(true,"Container is set");
+            $.ig.TestUtil.keyInteraction(9, $dialog);
+            ok($dialog.igDialog("option", "container").is(objContainer), "Container is set");
         }); 
 
         test("Start minimized and pinned", function () {            
-            $("#dialog6").igDialog({
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
                 state: "minimized",
-                pinned: true
+                pinned: true,
+                position: [100,100]
             });
 
-            var dialog = $("#dialog6").data().igDialog; 
+            var dialog = $dialog.data().igDialog; 
 
             equal(dialog.options.state, "minimized","The dialog is minimized");
             equal(dialog.options.pinned, true, "The dialog is pinned");
 
-            dialog.destroy();
+            $dialog.remove();
         }); 
 
         test("Set different options", function () {            
-            $("#dialog6").igDialog({
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
                 draggable: false,
                 resizable: false,
                 modal: true,
@@ -527,133 +531,178 @@
                 position: {left:-50, top: 50}
             });
 
-            var dialog = $("#dialog6").data().igDialog; 
+            var dialog = $dialog.data().igDialog; 
 
-            $("#dialog6").igDialog("option", "draggable", true);
+            $dialog.igDialog("option", "draggable", true);
             equal(dialog.options.draggable, true,"The dialog is draggable");
 
-            $("#dialog6").igDialog("option", "resizable", true);
+            $dialog.igDialog("option", "resizable", true);
             equal(dialog.options.resizable, true,"The dialog is resizable");
             
-            $("#dialog6").igDialog("option", "modal", false);
+            $dialog.igDialog("option", "modal", false);
             equal(dialog.options.modal, false,"The dialog is not modal");
 
-            $("#dialog6").igDialog("option", "headerText", "Dialog6");
+            $dialog.igDialog("option", "headerText", "Dialog6");
             equal(dialog.options.headerText, "Dialog6","The dialog's header text is Dialog6");
 
-            $("#dialog6").igDialog("option", "footerText", "footer");
+            $dialog.igDialog("option", "footerText", "footer");
             equal(dialog.options.footerText, "footer","The dialog has footer");
 
-            $("#dialog6").igDialog("option", "tabIndex", 1);
+            $dialog.igDialog("option", "tabIndex", 1);
             equal(dialog.options.tabIndex, 1,"The dialog's tab index is 1");
 
-            $("#dialog6").igDialog("option", "zIndex", 1);
+            $dialog.igDialog("option", "zIndex", 1);
             equal(dialog.options.zIndex, 1,"The dialog's z index is 1");
 
-            $("#dialog6").igDialog("option", "trackFocus", true);
+            $dialog.igDialog("option", "trackFocus", true);
             equal(dialog.options.trackFocus, true,"The dialog's trackFocus is true");
 
-            dialog.changeLocale();
-            dialog.destroy();
+            $dialog.remove();
         });  
 
         test("Header tests", function () {            
-            $("#dialog5").igDialog({
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
                 draggable: true,
                 resizable: true,
-                enableDblclick: false
-            });
-
-            var dialog = $("#dialog5").data().igDialog; 
-            $("#dialog5").igDialog("option", "modal", false);
-            dialog.moveToTop();
-
-            var header = $('#dialog5').find('.ui-igdialog-header'),
-                dim = getElementDimensions(header),
-                vCenter = (dim.top + dim.bottom) / 2;
-
-            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
-            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
-            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right, pageY: vCenter });
-
-            $("#dialog5").igDialog("option", "state", "maximized");
-
-            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
-            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
-            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right, pageY: vCenter });
-
-            $("#dialog5").igDialog("option", "state", "opened");
-
-            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });    
-            equal(dialog.options.state, "opened","The dialog is opened"); 
-
-            $("#dialog5").igDialog("option", "enableDblclick", true);
-            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });    
-            equal(dialog.options.state, "maximized","The dialog is maximized"); 
-
-            $("#dialog5").igDialog("option", "state", "minimized");
-            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });    
-            equal(dialog.options.state, "opened","The dialog is not opened after being minimized");  
-
-            simulateEvent(header, "touchstart", { which: 1, pageX: dim.right, pageY: vCenter, touches: 1});    
-            simulateEvent(header, "touchmove", { which: 1, pageX: dim.right + 10, pageY: vCenter });    
-            simulateEvent(header, "touchend", { which: 1, pageX: dim.right + 10, pageY: vCenter });    
-
-            $("#dialog5").igDialog("option", "showHeader", false);           
-                  
-        }); 
-
-        test("Resize horizontally", function () {            
-            $("#dialog5").igDialog({
-                draggable: true,
-                resizable: true,
-            });
-
-            var dialog = $("#dialog5").data().igDialog; 
-            $("#dialog5").igDialog("option", "modal", false);
-            dialog.moveToTop();            
-
-            var seResizer = $('#dialog5').find('.ui-resizable-se'),
-                dim = getElementDimensions($('#dialog5')),
-                vCenter = (dim.top + dim.bottom) / 2,
-                xCenter = (dim.left + dim.right) / 2;
-
-            simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
-            simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: dim.right - 100, pageY: vCenter});
-            simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
-
-            var resultDim = getElementDimensions($('#dialog5'));
-            equal(resultDim.right, dim.right,"The dialog is not opened after being minimized");  
-
-            simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
-            simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: dim.right , pageY: vCenter + 1000});
-            simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
-        }); 
-
-        test("InputName", function () {            
-            $("#dialog6").igDialog({     
-                inputName: "input1",
+                enableDblclick: false,
                 position: [100,100]
             });
 
-            $("#dialog6").igDialog("option", "inputName", "input2");
-            $("#dialog6").igDialog("option", "state", "minimized");
+            var dialog = $dialog.data().igDialog; 
 
-            ok($("#input1")[0].value.indexOf("s1:w300") !== -1,"The saved value is correct");  
+            var header = $dialog.find('.ui-igdialog-header'),
+                dim = getElementDimensions(header),
+                vCenter = (dim.top + dim.bottom) / 2;
+
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+
+            var resultDim = getElementDimensions(header);
+            equal(resultDim.right, dim.right - 10,"The dialog is positioned correctly");
+
+            $dialog.igDialog("option", "state", "maximized");
+
+            dim = getElementDimensions(header),
+            vCenter = (dim.top + dim.bottom) / 2;
+
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+
+            resultDim = getElementDimensions($dialog);
+            equal(resultDim.right - 1, dim.right,"The dialog is not moved");
+
+            $dialog.igDialog("option", "state", "opened");
+
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+            equal(dialog.options.state, "opened","The dialog is opened"); 
+
+            $dialog.igDialog("option", "enableDblclick", true);
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+            equal(dialog.options.state, "maximized","The dialog is maximized"); 
+
+            $dialog.igDialog("option", "state", "minimized");
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+            equal(dialog.options.state, "opened","The dialog is not opened after being minimized");
+
+            simulateEvent(header, "touchstart", { which: 1, pageX: dim.right, pageY: vCenter, originalEvent:{touches:"1"}});
+            simulateEvent(header, "touchmove", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent:{touches:"1"} });
+            simulateEvent(header, "touchend", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent:{touches:"1"} });
+
+            $dialog.igDialog("option", "showHeader", false);
+
+            resultDim = getElementDimensions(header);
+            equal(resultDim.left, 0,"The dialog doesn't have header");
+            equal(resultDim.top, 0,"The dialog doesn't have header");
+
+            $dialog.remove();
+        }); 
+
+        test("Resize horizontally", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                draggable: true,
+                resizable: true,
+                position: [100,100]
+            });
+
+            var dialog = $dialog.data().igDialog; 
+            $dialog.igDialog("option", "modal", false);
+            dialog.moveToTop();            
+
+            var seResizer = $dialog.find('.ui-resizable-se'),
+                dim = getElementDimensions($dialog),
+                vPoint = dim.bottom - 3,
+                xPoint = dim.right - 3;
+
+            var dialogWidth = dialog.options.width;
+
+            simulateEvent(seResizer[0], "mouseover", { which: 1, pageX: xPoint, pageY: vPoint });
+            simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: xPoint, pageY: vPoint });
+            simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: xPoint - 10, pageY: vPoint});
+            simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: xPoint, pageY: vPoint });
+
+            var resultDim = getElementDimensions($dialog);
+            equal(dialog.options.width, dialogWidth - 10,"The dialog is resized correctly");  
+
+            $dialog.remove();
+        }); 
+
+        test("InputName", function () {
+            $form = $("<form id='form1'></form>").appendTo("#container1");
+            $input = $("<input id='input1' name='input1'></input>").appendTo("#form1");
+
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({   
+                inputName: "input1",
+                position: [100,100]
+            });            
+
+            $dialog.igDialog("option", "inputName", "input2");
+            $dialog.igDialog("option", "state", "minimized");
+
+            ok($input[0].value.indexOf("s1:w300") !== -1,"The saved value is correct");  
+            ok($input[0].value.indexOf("p100,100") !== -1,"The saved value is correct");  
+
+            $dialog.remove();
+            $form.remove();
+            $input.remove();
         }); 
 
         test("toPX", function () {            
-            $("#dialog5").igDialog({     
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({   
                 width: 200,
-                height: 200
+                height: 200,
+                position: [100,100]
             });
 
-             $("#dialog5").igDialog("option", "width", '20em');
-             equal($("#dialog5")[0].offsetWidth, 322,"The dialog's width is calculated correctly from 'em'");  
+             $dialog.igDialog("option", "width", '20em');
+             equal($dialog[0].offsetWidth, 322,"The dialog's width is calculated correctly from 'em'");               
 
-             $("#dialog5").igDialog("option", "width", '10%');
-             //equal($("#dialog5")[0].offsetWidth, 194,"The dialog's width is calculated correctly from '%'");  
+             $dialog.remove();
+        }); 
 
+        test("Change locale", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({   
+                position: [100,100]
+            });
+
+            var closeButton = $dialog.find('.ui-igdialog-buttonclose');
+
+            equal(closeButton[0].getAttribute('title'), 'Close' ,"The title of the Close Button is 'Close'");  
+
+            $dialog.data().igDialog.options.language = "es";
+            $dialog.data().igDialog.changeLocale();
+
+            equal(closeButton[0].getAttribute('title'), 'Cerrar' ,"The title of the Close Button is localized to 'Cerrar'");                 
+
+            $dialog.remove();
         }); 
     });
     </script>
@@ -679,12 +728,6 @@
             <iframe id="testFrame"></iframe>
         </div>
         <div id="dialog5"></div>
-        <div id="dialog6" title="Title of DIV" style="background-color:orange;">
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog6</p>        
-        </div>
-        <form id="form1">
-            <input id="input1" name="input1"></input>
-        </form>
         <div id="newContainer"></div>
     </div>
     <div id="newContainer"></div>
