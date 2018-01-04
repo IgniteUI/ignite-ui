@@ -941,7 +941,7 @@
 			});
 		});
 		// test for issue #454
-		QUnit.test(bugTest_1, 1, function (assert) {
+		QUnit.test(bugTest_1, function (assert) {
 			var cloneOpts, zi, done,
 				chart = this.chart(),
 				zoombar = this.zoombar();
@@ -951,7 +951,7 @@
 			zoombar.igZoombar({
 				target: chart,
 				zoomChanging: function () {
-					ok(true, "zoomChanging fires due to a change in zoom")
+					assert.ok(true, "zoomChanging fires due to a change in zoom")
 				}
 			});
 			done = assert.async();
