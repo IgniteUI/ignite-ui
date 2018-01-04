@@ -731,7 +731,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_datachart_domainchart",
-		dependency: [ 
+		dependency: [
 			{ name: "igUtil" },
 			{ name: "_ig_ext_core" },
 			{ name: "_ig_ext_collections" },
@@ -787,7 +787,7 @@ $.ig.dependencies = [
 		dependency: [ { name: "_ig_dv_dataseriesadapter" }, { name: "igWidget" },
 					{ name: "Scatter" }, { name: "Shape" },
 					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" },
-			    		{ name: "_ig_datachart_domainchart" } ],
+					{ name: "_ig_datachart_domainchart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.shapechart.js",
