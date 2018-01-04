@@ -3,8 +3,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8707f9ff8ee94bba9e1f897ef40cd66e)](https://www.codacy.com/app/kdinev/ignite-ui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IgniteUI/ignite-ui&amp;utm_campaign=Badge_Grade)
 
-[![npm](https://img.shields.io/npm/v/ignite-ui.svg?maxAge=2592000)](https://www.npmjs.com/package/ignite-ui)
-[![Bower](https://img.shields.io/bower/v/ignite-ui.svg?maxAge=2592000)](https://github.com/IgniteUI/ignite-ui-bower)
+[![npm version](https://badge.fury.io/js/ignite-ui.svg)](https://badge.fury.io/js/ignite-ui)
+[![Bower version](https://badge.fury.io/bo/ignite-ui.svg)](https://badge.fury.io/bo/ignite-ui)
 
 
 Ignite UI™ helps you build powerful, high-performance web-based applications. Inside Ignite UI you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
