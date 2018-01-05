@@ -37,12 +37,14 @@ module.exports = function(config) {
       "bower_components/jquery/dist/jquery.js",
       "bower_components/jquery-ui/jquery-ui.js",
       "tests/test-patch.js",
+      "tests/unit/common/test-util.js",
 
       // These get included in the test run file, alternatively https://stackoverflow.com/a/16414357 ?
       //'tests/unit/**/*test*.htm*'
       "tests/unit/colorpicker/tests.html",
       "tests/unit/editors/checkboxEditor/tests.html",
-      "tests/unit/colorpickersplitbutton/tests.html"
+      "tests/unit/colorpickersplitbutton/tests.html",
+      "tests/unit/zoombar/tests.html"
     ],
     proxies: {
       //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
