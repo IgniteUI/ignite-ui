@@ -29,6 +29,10 @@
 
 	<script type="text/javascript">
 		QUnit.module("igCheckboxEditor unit tests", {
+			labelTag: '<label></label>',
+			divTag: '<div></div>',
+			spanTag: '<span></span>',
+			inputTag: '<input></input>',
 			label1Selector: "label1",
 			chkInput1Selector: "chkInput1",
 			label2Selector: "label2",
@@ -119,169 +123,250 @@
 				$(this.id(this.chkAttrSelector)).igCheckboxEditor();
 				$(this.id(this.chkNullSelector)).igCheckboxEditor();
 			},
-			afterEach: function () {
-			},
+			afterEach: function () {},
 			id: function (selector) {
 				return "#" + selector;
+			},
+
+			addElementById: function (params) {
+				if (params === null || (params instanceof Array) === false)
+					return null;
+
+				var id = params[0],
+					elementType = params[1],
+					$qunitFixture = $('#qunit-fixture'),
+					$element;
+
+				if (id === null || elementType === null)
+					return null;
+
+				$element = $(elementType);
+				if ($element === null)
+					return;
+
+				$element.attr("id", id);
+				$qunitFixture.append($element);
+				return $element;
 			}
 		});
 
 		QUnit.test('[ID1] Checkbox Editor initialization.', function (assert) {
+			var checkBoxInInputSelector = 'checkBoxInInput',
+				$chkLabel = this.addElementById(['labelForCheckBoxInDiv', this.labelTag]),
+				$chkInInput = this.addElementById([checkBoxInInputSelector, this.inputTag]),
+				$chkInDiv = this.addElementById(['checkBoxInDivSpcial', this.divTag]),
+				$chkInSpan = this.addElementById(['checkBoxInSpan', this.spanTag]);
+
+			$chkLabel.attr('for', checkBoxInInputSelector).text("Label 1");
+			$chkInInput.igCheckboxEditor();
+			$chkInDiv.igCheckboxEditor({
+				checked: true,
+				value: "Agree",
+				inputName: "agree",
+				tabIndex: 1
+			});
+			$chkInSpan.igCheckboxEditor();
+
 			assert.expect(9);
-			var $chkInput = $(this.id(this.chkInput1Selector)),
-				$chkContainer = $(this.id(this.chkContainerSelector)),
-				$chkLabel = $(this.id(this.chkLabelSelector)),
-				$chkSpan = $(this.id(this.chkSpanSelector));
-
-			console.dir(this.error);
-
-			assert.equal(typeof ($chkInput.igCheckboxEditor), 'function', "Editors Scripts not loaded");
-			assert.notStrictEqual($chkContainer.data("igCheckboxEditor"), undefined,'Error creating igCheckboxEditor in a DIV');
-			assert.notStrictEqual($chkInput.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in an INPUT');
-			assert.notStrictEqual($chkSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
-			assert.equal($chkInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			assert.equal(typeof ($chkInInput.igCheckboxEditor), 'function', "Editors Scripts not loaded");
+			assert.notStrictEqual($chkInDiv.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a DIV');
+			assert.notStrictEqual($chkInInput.data("igCheckboxEditor"), undefined,
+				'Error creating igCheckboxEditor in an INPUT');
+			assert.notStrictEqual($chkInSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
+			assert.equal($chkInInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
 			assert.throws(function () {
 					$chkLabel.igCheckboxEditor();
 				},
 				Error($.ig.Editor.locale.instantiateCheckBoxErrMsg),
 				"igCheckboxEditor requires a different element. Use INPUT, SPAN or DIV element."
 			);
-			assert.equal($chkInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
-			assert.equal($chkContainer.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
-			assert.equal($chkContainer.igCheckboxEditor("inputName"), "agree", 'Input name shoud be set');
+			assert.equal($chkInInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox",
+				'Type of igCheckboxEditor is not checkbox');
+			assert.equal($chkInDiv.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox",
+				'Type of igCheckboxEditor is not checkbox');
+			assert.equal($chkInDiv.igCheckboxEditor("inputName"), "agree", 'Input name shoud be set');
 		});
 
 		QUnit.test('[ID2] Check for stlye', function (assert) {
+			var $chkInInput = this.addElementById(['checkBoxInInput', this.inputTag]),
+				$chkInDiv = this.addElementById(['checkBoxInDivSpcial', this.divTag]),
+				css;
+
+			$chkInInput.igCheckboxEditor();
+			$chkInDiv.igCheckboxEditor({
+				checked: true,
+				value: "Agree",
+				inputName: "agree",
+				tabIndex: 1
+			});
+			css = $chkInDiv.data("igCheckboxEditor").css
+
 			assert.expect(12);
-			var $chkInput = $(this.id(this.chkInput1Selector)),
-				$chkContainer = $(this.id(this.chkContainerSelector)),
-				css = $chkInput.data("igCheckboxEditor").css;
+			assert.ok($chkInDiv.hasClass(css.containerChecked), "Checked container style not applied");
+			assert.ok($chkInDiv.hasClass(css.container.split(" ")[0]), "Container classes not applied");
+			assert.ok($chkInDiv.hasClass(css.container.split(" ")[1]), "Container classes not applied");
+			assert.ok($chkInDiv.hasClass(css.container.split(" ")[2]), "Container classes not applied");
+			$chkInDiv.mouseover();
+			assert.ok($chkInDiv.hasClass(css.hover), "Hover class not applied");
+			$chkInDiv.mousedown();
+			assert.ok($chkInDiv.hasClass(css.active), "Active class not applied");
+			assert.ok($chkInDiv.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
+			assert.ok($chkInDiv.hasClass(css.containerChecked), "Checked class not applied on the container");
+			$chkInDiv.mouseup();
+			$chkInDiv.mouseout();
 
-			assert.ok($chkContainer.hasClass(css.containerChecked), "Checked container style not applied");
-			assert.ok($chkContainer.hasClass(css.container.split(" ")[0]), "Container classes not applied");
-			assert.ok($chkContainer.hasClass(css.container.split(" ")[1]), "Container classes not applied");
-			assert.ok($chkContainer.hasClass(css.container.split(" ")[2]), "Container classes not applied");
-			$chkContainer.mouseover();
-			assert.ok($chkContainer.hasClass(css.hover), "Hover class not applied");
-			$chkContainer.mousedown();
-			assert.ok($chkContainer.hasClass(css.active), "Active class not applied");
-			assert.ok($chkContainer.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
-			assert.ok($chkContainer.hasClass(css.containerChecked), "Checked class not applied on the container");
-			$chkContainer.mouseup();
-			$chkContainer.mouseout();
+			$chkInDiv.igCheckboxEditor("toggle");
+			assert.ok(!$chkInDiv.hasClass(css.containerChecked), "Checked class not removed form the container");
+			$chkInDiv.igCheckboxEditor("toggle");
 
-			$chkContainer.igCheckboxEditor("toggle");
-			assert.ok(!$chkContainer.hasClass(css.containerChecked), "Checked class not removed form the container");
-			$chkContainer.igCheckboxEditor("toggle");
-
-			$chkInput.mouseover();
-			assert.ok($chkInput.data("igCheckboxEditor")._editorContainer.hasClass(css.hover), "Hover class not applied");
-			$chkInput.mousedown();
-			assert.ok($chkInput.data("igCheckboxEditor")._editorContainer.hasClass(css.active), "Active class not applied");
-			assert.ok($chkInput.data("igCheckboxEditor")._editorContainer.hasClass(css.focus), "Focus class not applied");
-			$chkInput.mouseup();
-			$chkInput.mouseout();
+			$chkInInput.mouseover();
+			assert.ok($chkInInput.data("igCheckboxEditor")._editorContainer.hasClass(css.hover), "Hover class not applied");
+			$chkInInput.mousedown();
+			assert.ok($chkInInput.data("igCheckboxEditor")._editorContainer.hasClass(css.active), "Active class not applied");
+			assert.ok($chkInInput.data("igCheckboxEditor")._editorContainer.hasClass(css.focus), "Focus class not applied");
+			$chkInInput.mouseup();
+			$chkInInput.mouseout();
 		});
 
 		QUnit.test('[ID3] Check for checked', function (assert) {
-			assert.expect(15);
-			var $chkInput = $(this.id(this.chkInput1Selector)),
-				$chkContainer = $(this.id(this.chkContainerSelector)),
-				$chkSpan = $(this.id(this.chkSpanSelector));
+			var $chkInInput = this.addElementById(['checkBoxInInput', this.inputTag]),
+				$chkInDiv = this.addElementById(['checkBoxInDivSpcial', this.divTag]),
+				$chkInSpan = this.addElementById(['checkBoxInSpan', this.spanTag]);
 
-			assert.ok(isChecked($chkInput, false), 'The initial value is not as expexted');
-			assert.ok(isChecked($chkContainer, "Agree", true), 'The initial value is not as expexted');
-			assert.ok(isValueChanged($chkContainer, "Agree"), 'The value attribute is not as expected');
-			$chkContainer.igCheckboxEditor("option", "value", "Don't agree");
-			assert.ok(isValueChanged($chkContainer, "Don't agree"), 'The value attribute is not as expected');
-			$chkInput.click();
-			assert.ok(isChecked($chkInput, true), 'The value is not updated properly');
-			$chkInput.click().click().click().click().click().blur().click().click();
-			assert.ok(isChecked($chkInput, false), 'The value is not updated properly');
-			$chkInput.igCheckboxEditor("toggle");
-			assert.ok(isChecked($chkInput, true), 'The value after toggle is not updated correctly');
-			$chkInput.igCheckboxEditor("toggle");
-			assert.ok(isChecked($chkInput, false), 'The value after toggle is not updated correctly');
-			$chkContainer.igCheckboxEditor("value", false);
-			assert.ok(isValueChanged($chkContainer, false), 'The value after toggle is not updated correctly');
+			$chkInInput.igCheckboxEditor();
+			$chkInDiv.igCheckboxEditor({
+				checked: true,
+				value: "Agree",
+				inputName: "agree",
+				tabIndex: 1
+			});
+			$chkInSpan.igCheckboxEditor();
+
+			assert.expect(15);
+			assert.ok(isChecked($chkInInput, false), 'The initial value is not as expexted');
+			assert.ok(isChecked($chkInDiv, "Agree", true), 'The initial value is not as expexted');
+			assert.ok(isValueChanged($chkInDiv, "Agree"), 'The value attribute is not as expected');
+			$chkInDiv.igCheckboxEditor("option", "value", "Don't agree");
+			assert.ok(isValueChanged($chkInDiv, "Don't agree"), 'The value attribute is not as expected');
+			$chkInInput.click();
+			assert.ok(isChecked($chkInInput, true), 'The value is not updated properly');
+			$chkInInput.click().click().click().click().click().blur().click().click();
+			assert.ok(isChecked($chkInInput, false), 'The value is not updated properly');
+			$chkInInput.igCheckboxEditor("toggle");
+			assert.ok(isChecked($chkInInput, true), 'The value after toggle is not updated correctly');
+			$chkInInput.igCheckboxEditor("toggle");
+			assert.ok(isChecked($chkInInput, false), 'The value after toggle is not updated correctly');
+			$chkInDiv.igCheckboxEditor("value", false);
+			assert.ok(isValueChanged($chkInDiv, false), 'The value after toggle is not updated correctly');
 			// Set the value as string
-			$chkContainer.igCheckboxEditor("value", "true");
-			assert.ok(isValueChanged($chkContainer, "true"), 'The value after toggle is not updated correctly');
-			$chkContainer.igCheckboxEditor("value", "false");
-			$chkInput.igCheckboxEditor("value", true);
-			assert.ok(isChecked($chkInput, true), 'The value is not updated properly');
+			$chkInDiv.igCheckboxEditor("value", "true");
+			assert.ok(isValueChanged($chkInDiv, "true"), 'The value after toggle is not updated correctly');
+			$chkInDiv.igCheckboxEditor("value", "false");
+			$chkInInput.igCheckboxEditor("value", true);
+			assert.ok(isChecked($chkInInput, true), 'The value is not updated properly');
 			assert.throws(function () {
-					$chkInput.igCheckboxEditor("value", "fail");
+					$chkInInput.igCheckboxEditor("value", "fail");
 				},
 				Error($.ig.Editor.locale.cannotParseNonBoolValue),
 				"igCheckboxEditor acepted wrong value."
 			);
-			assert.ok(isChecked($chkInput, true), 'The value is not updated properly');
-			fireKeyEvent($chkInput, 32);
-			assert.ok(isChecked($chkInput, false), 'The value is not updated properly');
-			assert.equal($chkSpan.igCheckboxEditor("field").attr("id"), $chkSpan.attr("id"),
+			assert.ok(isChecked($chkInInput, true), 'The value is not updated properly');
+			fireKeyEvent($chkInInput, 32);
+			assert.ok(isChecked($chkInInput, false), 'The value is not updated properly');
+			assert.equal($chkInSpan.igCheckboxEditor("field").attr("id"), $chkInSpan.attr("id"),
 				"editorInput is equal to the input");
 		});
 
 		QUnit.test('[ID4] Check width/height', function (assert) {
+			var $chkInInput = this.addElementById(['checkBoxInInput', this.inputTag]),
+				$chkInDiv = this.addElementById(['checkBoxInDivSpcial', this.divTag]),
+				css;
+
+			$chkInInput.igCheckboxEditor({
+				width: 64,
+				height: 48,
+			});
+			$chkInDiv.igCheckboxEditor({
+				checked: true,
+				value: "Agree",
+				inputName: "agree",
+				tabIndex: 1
+			});
+			css = $chkInDiv.data("igCheckboxEditor").css
+
 			assert.expect(7);
-			var $chkInput = $(this.id(this.chkInputcheSelector)),
-				$chkContainer = $(this.id(this.chkContainerSelector)),
-				css = $chkInput.data("igCheckboxEditor").css;
-
 			// Default stlye from CSS
-			assert.equal($chkContainer.igCheckboxEditor("editorContainer").css("width"), "16px", "Width is not correct");
-			assert.equal($chkContainer.igCheckboxEditor("editorContainer").css("height"), "16px", "Height is not correct");
+			assert.equal($chkInDiv.igCheckboxEditor("editorContainer").css("width"), "16px", "Width is not correct");
+			assert.equal($chkInDiv.igCheckboxEditor("editorContainer").css("height"), "16px", "Height is not correct");
 
-			$chkContainer.igCheckboxEditor("option", "width", 32);
-			$chkContainer.igCheckboxEditor("option", "height", 32);
-			assert.equal($chkContainer.igCheckboxEditor("editorContainer").css("width"), "32px", "Width is not correct");
-			assert.equal($chkContainer.igCheckboxEditor("editorContainer").css("height"), "32px", "Height is not correct");
-			assert.ok($chkContainer.igCheckboxEditor("field").hasClass(css.iconCentered), "Style is not applied");
+			$chkInDiv.igCheckboxEditor("option", "width", 32);
+			$chkInDiv.igCheckboxEditor("option", "height", 32);
+			assert.equal($chkInDiv.igCheckboxEditor("editorContainer").css("width"), "32px", "Width is not correct");
+			assert.equal($chkInDiv.igCheckboxEditor("editorContainer").css("height"), "32px", "Height is not correct");
+			assert.ok($chkInDiv.igCheckboxEditor("field").hasClass(css.iconCentered), "Style is not applied");
 
 			// Style set from the options
-			assert.equal($chkInput.igCheckboxEditor("editorContainer").css("width"), "64px", "Width is not correct");
-			assert.equal($chkInput.igCheckboxEditor("editorContainer").css("height"), "48px", "Height is not correct");
+			assert.equal($chkInInput.igCheckboxEditor("editorContainer").css("width"), "64px", "Width is not correct");
+			assert.equal($chkInInput.igCheckboxEditor("editorContainer").css("height"), "48px", "Height is not correct");
 		});
 
 		QUnit.test('[ID5] Disabled/readonly and other options and methods', function (assert) {
+			var $chkInDiv = this.addElementById(['checkBoxInDivSpcial', this.divTag]),
+				$chkInSpan = this.addElementById(['checkBoxInSpan', this.spanTag]),
+				$chkInSpanWithAttr = this.addElementById(['checkBoxInSpanWithAttr', this.spanTag]);
+
+			$chkInDiv.igCheckboxEditor({
+				checked: true,
+				value: "Agree",
+				inputName: "agree",
+				tabIndex: 1
+			});
+			$chkInSpan.igCheckboxEditor();
+			$chkInSpanWithAttr.igCheckboxEditor({
+				checked: "checked",
+				readonly: "readonly",
+				disabled: "disabled",
+				"aria-labelledby": "aria-labelledby"
+			});
+
 			assert.expect(7);
-			var $chkInput = $(this.id(this.chkInput1Selector)),
-				$chkContainer = $(this.id(this.chkContainerSelector)),
-				$chkSpan = $(this.id(this.chkSpanSelector)),
-				$chkAttr = $(this.id(this.chkAttrSelector));
 
-			$chkContainer.igCheckboxEditor("option", "readOnly", true);
-			$chkContainer.click();
-			assert.ok(isChecked($chkContainer, "Agree", true), 'Read only should not allow the value to changed');
-			$chkContainer.igCheckboxEditor("option", "readOnly", false);
+			$chkInDiv.igCheckboxEditor("option", "readOnly", true);
+			$chkInDiv.click();
+			assert.ok(isChecked($chkInDiv, "Agree", true), 'Read only should not allow the value to changed');
+			$chkInDiv.igCheckboxEditor("option", "readOnly", false);
 
-			$chkContainer.igCheckboxEditor("option", "disabled", true);
-			assert.ok(isDisabled($chkContainer, true), 'The checkbox is not disabled');
-			$chkContainer.igCheckboxEditor("option", "disabled", false);
-			$chkContainer.igCheckboxEditor("option", "disabled", false); // Set the same value in order to have coverage
-			assert.ok(isDisabled($chkContainer, false), 'The checkbox is not enabled');
-			$chkContainer.igCheckboxEditor("option", "fake", false); // Set fake value in order to have coverage
-			$chkContainer.igCheckboxEditor("inputName", "notagree");
-			assert.equal($chkContainer.igCheckboxEditor("inputName"), "notagree", 'Input name is not changed');
+			$chkInDiv.igCheckboxEditor("option", "disabled", true);
+			assert.ok(isDisabled($chkInDiv, true), 'The checkbox is not disabled');
+			$chkInDiv.igCheckboxEditor("option", "disabled", false);
+			$chkInDiv.igCheckboxEditor("option", "disabled", false); // Set the same value in order to have coverage
+			assert.ok(isDisabled($chkInDiv, false), 'The checkbox is not enabled');
+			$chkInDiv.igCheckboxEditor("option", "fake", false); // Set fake value in order to have coverage
+			$chkInDiv.igCheckboxEditor("inputName", "notagree");
+			assert.equal($chkInDiv.igCheckboxEditor("inputName"), "notagree", 'Input name is not changed');
 
-			$chkSpan.igCheckboxEditor("option", "checked", false);
-			$chkSpan.igCheckboxEditor("option", "size", "large");
-			$chkSpan.igCheckboxEditor("option", "checked", true);
-			assert.equal($chkSpan.igCheckboxEditor("value"), true, "Not checked");
-			assert.ok($chkSpan.data("igCheckboxEditor")._editorInput.hasClass("ui-igcheckbox-large-on"),
+			$chkInSpan.igCheckboxEditor("option", "checked", false);
+			$chkInSpan.igCheckboxEditor("option", "size", "large");
+			$chkInSpan.igCheckboxEditor("option", "checked", true);
+			assert.equal($chkInSpan.igCheckboxEditor("value"), true, "Not checked");
+			assert.ok($chkInSpan.data("igCheckboxEditor")._editorInput.hasClass("ui-igcheckbox-large-on"),
 				"Large style not applied");
-			$chkAttr.igCheckboxEditor("option", "disabled", false);
-			$chkAttr.click();
-			assert.ok($chkAttr.igCheckboxEditor("option", "checked", true), "Should stay as checked");
+			$chkInSpanWithAttr.igCheckboxEditor("option", "disabled", false);
+			$chkInSpanWithAttr.click();
+			assert.ok($chkInSpanWithAttr.igCheckboxEditor("option", "checked", true), "Should stay as checked");
 		});
 
 		QUnit.test('[ID6] Check styled properties', function (assert) {
+			var $chkInInputStyled = this.addElementById(['checkBoxInInputStyled', this.spanTag]);
+			$($chkInInputStyled).igCheckboxEditor({
+				iconClass: "ui-icon-close",
+				checked: true
+			});
+
 			assert.expect(2);
-			var $chk = $(this.id(this.chkStyledSelector));
-			assert.ok($chk.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-close"), "Close icon not applied");
-			$chk.igCheckboxEditor("option", "iconClass", "ui-icon-plus");
-			assert.ok($chk.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-plus"), "Plus icon not applied");
+			assert.ok($chkInInputStyled.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-close"), "Close icon not applied");
+			$chkInInputStyled.igCheckboxEditor("option", "iconClass", "ui-icon-plus");
+			assert.ok($chkInInputStyled.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-plus"), "Plus icon not applied");
 		});
 
 		QUnit.test('[ID7] Check events', function (assert) {
@@ -328,7 +413,6 @@
 		});
 
 		QUnit.test('[ID9] Check label click support', function (assert) {
-			debugger;
 			assert.expect(8);
 			var $chkInput2 = $(this.id(this.chkInput2Selector)),
 				$chkLabel2 = $(this.id(this.label2Selector)),
@@ -338,18 +422,22 @@
 			// state == value, state != internal
 			click($chkLabel2[0]); // only native click works for labels
 			assert.ok(isChecked($chkInput2, true, true), 'Clicking the label did not toggle the ckeckbox');
-			assert.strictEqual($chkInput2.data("igCheckboxEditor")._valueInput[0].checked, true, "Internal input checked was modified incorrectly without explicit value!");
+			assert.strictEqual($chkInput2.data("igCheckboxEditor")._valueInput[0].checked, true,
+				"Internal input checked was modified incorrectly without explicit value!");
 			click($chkLabel2[0]);
 			assert.ok(isChecked($chkInput2, false, false), 'Clicking the label did not toggle the ckeckbox');
-			assert.strictEqual($chkInput2.data("igCheckboxEditor")._valueInput[0].checked, true, "Internal input checked was modified incorrectly without explicit value!");
+			assert.strictEqual($chkInput2.data("igCheckboxEditor")._valueInput[0].checked, true,
+				"Internal input checked was modified incorrectly without explicit value!");
 
 			// state != value, state == internal
 			click($chkLabel3[0]); // only native click works for labels
 			assert.ok(isChecked($chkInput3, "accpetedRules", true), 'Clicking the label did not toggle the ckeckbox');
-			assert.strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, true, "Internal input checked was modified incorrectly without explicit value!");
+			assert.strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, true,
+				"Internal input checked was modified incorrectly without explicit value!");
 			click($chkLabel3[0]);
 			assert.ok(isChecked($chkInput3, "accpetedRules", false), 'Clicking the label did not toggle the ckeckbox');
-			assert.strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, false, "Internal input checked was modified incorrectly without explicit value!");
+			assert.strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, false,
+				"Internal input checked was modified incorrectly without explicit value!");
 		});
 
 		QUnit.test('[ID10] Check focus using the focus API', function (assert) {
@@ -360,7 +448,8 @@
 				css = $chk.data("igCheckboxEditor").css;
 			$chk.igCheckboxEditor("setFocus");
 			assert.ok($chk.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
-			assert.ok($(document.activeElement).html() === $chk.igCheckboxEditor("editorContainer").html(), "Focus class not applied");
+			assert.ok($(document.activeElement).html() === $chk.igCheckboxEditor("editorContainer").html(),
+				"Focus class not applied");
 			$chk1.igCheckboxEditor("setFocus");
 			assert.ok($chk1.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not removed");
 
@@ -368,7 +457,8 @@
 				checked: true
 			});
 			$chkEditor.igCheckboxEditor("setFocus", 500);
-			assert.ok(!$chkEditor.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class should not be still applied");
+			assert.ok(!$chkEditor.igCheckboxEditor("editorContainer").hasClass(css.focus),
+				"Focus class should not be still applied");
 			setTimeout(function () {
 				assert.ok($chkEditor.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class should be applied");
 				$chkEditor.remove();
@@ -418,7 +508,8 @@
 
 		function isChecked($input, expectedValue, expectedState) {
 			var one = $input.igCheckboxEditor("value") === expectedValue;
-			var two = $input.data("igCheckboxEditor").options.checked === (expectedState !== undefined ? expectedState : expectedValue);
+			var two = $input.data("igCheckboxEditor").options.checked === (expectedState !== undefined ? expectedState :
+				expectedValue);
 			return $input.igCheckboxEditor("value") === expectedValue &&
 				$input.data("igCheckboxEditor").options.checked === (expectedState !== undefined ? expectedState : expectedValue);
 		}
