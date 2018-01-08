@@ -2544,6 +2544,25 @@
 		equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in German");
 		$editor.trigger("blur").remove();
 	});
+
+	testId = 'Null value set as nullValue and empty string set as value';
+	test(testId, 3, function () {
+		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({ allowNullValue: true, nullValue: null, value: 0 });
+
+		$editor.igNumericEditor("setFocus");
+		$editor.igNumericEditor("field").val("");
+		$editor.trigger("blur");
+		equal($editor.igNumericEditor("value"), null, "Value should be null");
+		$editor.igNumericEditor("setFocus");
+		$editor.igNumericEditor("field").val("34");
+		$editor.trigger("blur");
+		equal($editor.igNumericEditor("value"), 34, "Value should be 34");
+		$editor.igNumericEditor("setFocus");
+		$editor.igNumericEditor("field").val("");
+		$editor.trigger("blur");
+		equal($editor.igNumericEditor("value"), null, "Value should be null");
+		$editor.remove();
+	});
 });
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
