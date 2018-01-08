@@ -2716,7 +2716,7 @@
 				},
 				"compositionend.editor": function () {
 					setTimeout(function () {
-						var value, pastedValue, widgetName = self.widgetName,
+						var pastedValue, widgetName = self.widgetName,
 							cursorPosition = self._getCursorPosition(),
 							selection = { start: cursorPosition, end: cursorPosition };
 
@@ -2727,7 +2727,7 @@
 						switch (widgetName) {
 							case "igMaskEditor":
 								{
-									pastedValue = value = self._replaceStringRange(self._compositionStartValue,
+									pastedValue = self._replaceStringRange(self._compositionStartValue,
 										self._currentCompositionValue, self._copositionStartIndex,
 										self._copositionStartIndex + self._currentCompositionValue.length - 1);
 								}
@@ -2735,28 +2735,24 @@
 							case "igDateEditor":
 							case "igDatePicker":
 								{
-									value = self._currentCompositionValue;
-									value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-									pastedValue = value = self._parseValueByMask(value);
-									if (value !== self._maskWithPrompts) {
-										value = self._parseDateFromMaskedValue(value);
-									} else if (self.options.revertIfNotValid) {
+									pastedValue = self._parseValueByIMEMask();
+									if (pastedValue === self._maskWithPrompts && self.options.revertIfNotValid) {
+
 										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
-										pastedValue = value = self._maskedValue;
+										pastedValue = self._maskedValue;
 										selection.start = 0;
-										selection.end = value.length;
+										selection.end = pastedValue.length;
 									}
 								}
 								break;
 							default: {
-								pastedValue = value = self._editorInput.val();
+								pastedValue = self._editorInput.val();
 							}
 						}
 
 						//T.P. 7th April 2016. Bug 217371 - In case of text/mask editor the full width numbers should not be converted to half width,
 						//because they are valid characters.
 						if (widgetName !== "igTextEditor" && widgetName !== "igMaskEditor") {
-							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
 
@@ -9105,10 +9101,15 @@
 				}
 				return;
 			}
-			if ($.type(value) === "date") {
-				parsedVal = value;
-			} else {
-				parsedVal = this._parseDateFromMaskedValue(value);
+			parsedVal = value;
+			if ($.type(parsedVal) !== "date") {
+
+				// N.A. January 8th, 2018 #1417: In some browsers (like IE 11 and Firefox) blur event (therefore _processInternalValueChanging) is fired before compositionend one.
+				// That's why we need to convert the IME input into date here, not in compositionend event.
+				if (this._inComposition === true) {
+					parsedVal = this._parseValueByIMEMask();
+				}
+				parsedVal = this._parseDateFromMaskedValue(parsedVal);
 			}
 			parsedVal = this._getValueBetweenMinMax(parsedVal);
 			if (this._validateValue(parsedVal)) {
@@ -9124,6 +9125,14 @@
 					value = this._valueInput.val();
 				}
 			}
+		},
+		_parseValueByIMEMask: function() {
+			var value;
+
+			value = this._currentCompositionValue;
+			value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
+			value = this._parseValueByMask(value);
+			return value;
 		},
 		_isValidDate: function (date) {
 			date = this._getDateObjectFromValue(date);
