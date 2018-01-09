@@ -1327,6 +1327,9 @@
 			if (this._min) {
 				this._onMin();
 			}
+
+			// S.S. - Call fix state in order to restore the state
+			this._fixState();
 			return this;
 		},
 		pin: function () {
