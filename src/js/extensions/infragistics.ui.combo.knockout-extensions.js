@@ -225,7 +225,7 @@
             }
             index = valueAccessor().index;
             dsItem = valueAccessor().value;
-            item = $(combo.igCombo("dropDown").find("li")[ index ]);
+            item = $(combo.igCombo("dropDown").find("li").eq(index));
             combo.data("igCombo")._updateItem(item, dsItem);
             combo.data("igCombo")._updateInputValues();
         }
