@@ -3,7 +3,7 @@ node_js:
 - 'node'
 script:
 - npm run cover
-#- grunt coveralls
+- cat ./coverage/lcov.info | coveralls
 
 before_deploy:
 # clone bower repo
