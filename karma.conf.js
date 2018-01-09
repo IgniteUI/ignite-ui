@@ -27,15 +27,14 @@ module.exports = function(config) {
     files: [
       // http://karma-runner.github.io/1.0/config/files.html
       // serve resources
+      { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
+      // TODO: because.. jquery-ui package has no bundle
+      { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
+
+      // TODO: Explicit expand and load in order from config?
       { pattern: "src/js/**/*", included: false, served: true },
       { pattern: "src/css/**/*", included: false, served: true },
-      // { pattern: "bower_components/qunit/**/*", included: false, served: true },
-      // { pattern: "bower_components/jquery/**/*", included: false, served: true },
-      // { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
-      // { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
 
-      "bower_components/jquery/dist/jquery.js",
-      "bower_components/jquery-ui/jquery-ui.js",
       "tests/test-patch.js",
       "tests/unit/common/test-util.js",
 
@@ -43,8 +42,10 @@ module.exports = function(config) {
       //'tests/unit/**/*test*.htm*'
       "tests/unit/colorpicker/tests.html",
       "tests/unit/editors/checkboxEditor/tests.html",
+      "tests/unit/editors/AriaRendering/tests.html",
       "tests/unit/colorpickersplitbutton/tests.html",
-      "tests/unit/zoombar/tests.html"
+      "tests/unit/zoombar/tests.html",
+      "tests/*-test.js"
     ],
     proxies: {
       //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
@@ -70,14 +71,19 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/js/**/*.js": "coverage"
+      "src/**/*.js": "coverage"
     },
 
     // https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
     coverageReporter: {
-      type : 'lcov',
       dir : 'coverage/',
-      subdir: '.', // default outputs per-browser folders
+      reporters: [
+        {  
+          type : 'lcov',
+          subdir: '.' // default outputs per-browser folders 
+        },
+        { type: 'text-summary' }
+      ],
       includeAllSources: true
     },
 

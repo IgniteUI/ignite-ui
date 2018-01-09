@@ -39,23 +39,27 @@
 
 	    QUnit.module("igColorPicker unit tests", unitTestsSetup);
 
-	    QUnit.test("_create", function () {
+	    QUnit.test("_create", function (assert) {
+			assert.expect(1);
 	        var expectedHtmlMarkup = '<div class="igColorPicker-customColors"><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #ffffff;"></div><div class="igColorPicker-color" style="background-color: #000000;"></div><div class="igColorPicker-color" style="background-color: #EEECE1;"></div><div class="igColorPicker-color" style="background-color: #1F497D;"></div><div class="igColorPicker-color" style="background-color: #4F81BD;"></div><div class="igColorPicker-color" style="background-color: #C0504D;"></div><div class="igColorPicker-color" style="background-color: #9BBB59;"></div><div class="igColorPicker-color" style="background-color: #8064A2;"></div><div class="igColorPicker-color" style="background-color: #4BACC6;"></div><div class="igColorPicker-color" style="background-color: #F79646;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #F2F2F2;"></div><div class="igColorPicker-color" style="background-color: #7F7F7F;"></div><div class="igColorPicker-color" style="background-color: #DDD9C3;"></div><div class="igColorPicker-color" style="background-color: #C6D9F0;"></div><div class="igColorPicker-color" style="background-color: #DBE5F1;"></div><div class="igColorPicker-color" style="background-color: #F2DCDB;"></div><div class="igColorPicker-color" style="background-color: #EBF1DD;"></div><div class="igColorPicker-color" style="background-color: #E5E0EC;"></div><div class="igColorPicker-color" style="background-color: #DBEEF3;"></div><div class="igColorPicker-color" style="background-color: #FDEADA;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #D8D8D8;"></div><div class="igColorPicker-color" style="background-color: #595959;"></div><div class="igColorPicker-color" style="background-color: #C4BD97;"></div><div class="igColorPicker-color" style="background-color: #8DB3E2;"></div><div class="igColorPicker-color" style="background-color: #B8CCE4;"></div><div class="igColorPicker-color" style="background-color: #E5B9B7;"></div><div class="igColorPicker-color" style="background-color: #D7E3BC;"></div><div class="igColorPicker-color" style="background-color: #CCC1D9;"></div><div class="igColorPicker-color" style="background-color: #B7DDE8;"></div><div class="igColorPicker-color" style="background-color: #FAC08F;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #BFBFBF;"></div><div class="igColorPicker-color" style="background-color: #3F3F3F;"></div><div class="igColorPicker-color" style="background-color: #938953;"></div><div class="igColorPicker-color" style="background-color: #548DD4;"></div><div class="igColorPicker-color" style="background-color: #95B3D7;"></div><div class="igColorPicker-color" style="background-color: #D99694;"></div><div class="igColorPicker-color" style="background-color: #C3D69B;"></div><div class="igColorPicker-color" style="background-color: #B2A1C7;"></div><div class="igColorPicker-color" style="background-color: #92CDDC;"></div><div class="igColorPicker-color" style="background-color: #FAC08F;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #A5A5A5;"></div><div class="igColorPicker-color" style="background-color: #262626;"></div><div class="igColorPicker-color" style="background-color: #494429;"></div><div class="igColorPicker-color" style="background-color: #17365D;"></div><div class="igColorPicker-color" style="background-color: #366092;"></div><div class="igColorPicker-color" style="background-color: #953734;"></div><div class="igColorPicker-color" style="background-color: #76923C;"></div><div class="igColorPicker-color" style="background-color: #5F497A;"></div><div class="igColorPicker-color" style="background-color: #31859B;"></div><div class="igColorPicker-color" style="background-color: #E36C09;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #7F7F7F;"></div><div class="igColorPicker-color" style="background-color: #0C0C0C;"></div><div class="igColorPicker-color" style="background-color: #1D1B10;"></div><div class="igColorPicker-color" style="background-color: #0F243E;"></div><div class="igColorPicker-color" style="background-color: #244061;"></div><div class="igColorPicker-color" style="background-color: #632423;"></div><div class="igColorPicker-color" style="background-color: #4F6128;"></div><div class="igColorPicker-color" style="background-color: #3F3151;"></div><div class="igColorPicker-color" style="background-color: #205867;"></div><div class="igColorPicker-color" style="background-color: #974806;"></div></div></div><div class="ui-colorpicker-standardcolors"><div class="igColorPicker-color" style="background-color: #C00000;"></div><div class="igColorPicker-color" style="background-color: #FF0000;"></div><div class="igColorPicker-color" style="background-color: #FFC000;"></div><div class="igColorPicker-color" style="background-color: #FFFF00;"></div><div class="igColorPicker-color" style="background-color: #92D050;"></div><div class="igColorPicker-color" style="background-color: #00B050;"></div><div class="igColorPicker-color" style="background-color: #00B0F0;"></div><div class="igColorPicker-color" style="background-color: #0070C0;"></div><div class="igColorPicker-color" style="background-color: #002060;"></div><div class="igColorPicker-color" style="background-color: #7030A0;"></div></div>';
 
 	        assert.deepEqual($(this.actualColorPicker.igColorPicker("colorTable")).html(), expectedHtmlMarkup, "color table does not append right markup.");
 	    });
 
-	    QUnit.test("_changeSelectedColor", function () {
+	    QUnit.test("_changeSelectedColor", function (assert) {
+			assert.expect(1);
 	        this.actualColorPicker.igColorPicker("selectColor", this.firstColor);
 	        assert.ok(this.firstColorElement.hasClass("selected-color"), "first color wasn't selected.");
 	    });
 
-	    QUnit.test("_changeColorOptions", function() {
+	    QUnit.test("_changeColorOptions", function (assert) {
+			assert.expect(1);
 	    	this.actualColorPicker.igColorPicker("option", "colors", []);
 	    	assert.equal(this.actualColorPicker.igColorPicker("customColorTable").children().length, 0, "colors were not removed as elements.")
 	    });
 	    
-	    QUnit.test("_changeStandardColorsOption", function () {
+	    QUnit.test("_changeStandardColorsOption", function (assert) {
+			assert.expect(6);
 	    	var colors = ["#f0ff0f", "#000a00", "#FEECE1"];
 	    	
 	    	assert.notEqual(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, colors.length, "standardColors length is equal with given colors length.");
@@ -75,28 +79,33 @@
 	    	assert.ok(clickFirstCustomColor.hasClass("selected-color"), "click event was not triggered.");
 	    });
 	    
-	    QUnit.test("selectColor", function () {
+	    QUnit.test("selectColor", function (assert) {
+			assert.expect(1);
 	    	this.actualColorPicker.igColorPicker("selectColor", "#000000");
 	    	assert.ok(this.secondColorElement.hasClass("selected-color"), "color was not selected.");
 	    });
 	    
-	    QUnit.test("_getColorByElement", function () {
+	    QUnit.test("_getColorByElement", function (assert) {
+			assert.expect(1);
 	    	var expectedResult = this.secondColorElement.css("background-color");
 	    	var getColor = this.actualColorPicker.igColorPicker("colorFromElement", this.secondColorElement);
 	    	assert.equal(getColor, expectedResult, "color was not get by element.");   	
 	    });
 	    
-	    QUnit.test("_clickFirstCustomColor", function () {
+	    QUnit.test("_clickFirstCustomColor", function (assert) {
+			assert.expect(1);
 	    	var clickFirstCustomColor = this.actualColorPicker.find(".igColorPicker-table").find(".igColorPicker-customColors").find(".igColorPicker-row").first().find(".igColorPicker-color").first().click();
 	    	assert.ok(clickFirstCustomColor.hasClass("selected-color"), "click event was not triggered.");
 	    });
 
-	    QUnit.test("_clickFirstStandardColor", function () {
+	    QUnit.test("_clickFirstStandardColor", function (assert) {
+			assert.expect(1);
 	    	var firstStandardColor = this.actualColorPicker.find(".igColorPicker-table").find(".ui-colorpicker-standardcolors").children().first().click();
 	    	assert.ok(firstStandardColor.hasClass("selected-color"), "click event was not triggered.");
 	    });
 	    
-	    QUnit.test("_setTheSameOptionValue", function () {
+	    QUnit.test("_setTheSameOptionValue", function (assert) {
+			assert.expect(4);
 	    	var color = ["#C00000"];
 	    	
 	    	assert.notEqual(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, color.length, "color value is equal with standardColor value."); 
@@ -111,7 +120,8 @@
 	    	assert.equal(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, color.length, "standard color length isn't equal with given color length.");
 	    });
 
-	    QUnit.test("selectedColor", function () {
+	    QUnit.test("selectedColor", function (assert) {
+			assert.expect(2);
 	    	var getSelectedColor = this.actualColorPicker.igColorPicker("selectedColor");
 	    	assert.equal(getSelectedColor, null, "selected color exist.");
 
