@@ -71,6 +71,7 @@
 
 
 	    QUnit.test("_onColorSelect", function (assert) {
+			assert.expect(1)
 	    	var firstElemCustomColorsColorPicker = this.actualColorPickerSplitButton.parent().find(".igColorPicker-customColors").find(".igColorPicker-color").first();
 	        
 	        firstElemCustomColorsColorPicker.click();
@@ -82,6 +83,7 @@
 	    });
 
 	    QUnit.test("expand", function (assert) {
+			assert.expect(1)
 	        this.actualColorPickerSplitButton.igColorPickerSplitButton("expand", true);
 	        this.actualColorPickerSplitButton.trigger('expanded');
 	        var isExpanded = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
@@ -90,6 +92,7 @@
 	    });
 
 	    QUnit.test("setColor", function (assert) {
+			assert.expect(2)
 	    	var getDefaultValue = this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor");
 	    	assert.equal(getDefaultValue, "#000", "default color value isn't euqal with given color value");
 
@@ -101,6 +104,7 @@
 	    });
 
 	    QUnit.test("_onDefaultButtonClick", function (assert) {
+			assert.expect(2)
 	    	// Check before click if input element exist
 	    	var clickInputValue = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
 	    	var getDefaultButton = this.actualColorPickerSplitButton.igColorPickerSplitButton().children(":first").children(":first");
@@ -115,6 +119,7 @@
 	    });
 
 	    QUnit.test("_setOptinWithEqualKeyValues", function (assert) {
+			assert.expect(3)
 	    	var color = "#afafaf";
 
 	    	assert.notEqual(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "defaultColor option hasn't different value from given color value");
@@ -128,6 +133,7 @@
 	    });
 	    
 	    QUnit.test("collapse", function (assert) {
+			assert.expect(1)
 			this.actualColorPickerSplitButton.igColorPickerSplitButton("collapse", true);
 			var isCollapsed = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
 			assert.ok(isCollapsed, "collapse event was not trigger");

@@ -43,8 +43,8 @@ module.exports = function(config) {
       "tests/unit/colorpicker/tests.html",
       "tests/unit/editors/checkboxEditor/tests.html",
       "tests/unit/colorpickersplitbutton/tests.html",
-      "tests/unit/zoombar/tests.html"
-      //"tests/*-test.js"
+      "tests/unit/zoombar/tests.html",
+      "tests/*-test.js"
     ],
     proxies: {
       //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
