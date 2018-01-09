@@ -42,6 +42,7 @@ module.exports = function(config) {
       //'tests/unit/**/*test*.htm*'
       "tests/unit/colorpicker/tests.html",
       "tests/unit/editors/checkboxEditor/tests.html",
+      "tests/unit/editors/AriaRendering/tests.html",
       "tests/unit/colorpickersplitbutton/tests.html",
       "tests/unit/zoombar/tests.html",
       "tests/*-test.js"
