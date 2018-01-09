@@ -422,7 +422,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
-				eventArgument="ui.key" argType="object" Gets the value of the keyCode. The argument type might differ depending on the key.
+				eventArgument="ui.key" argType="object" Gets the value of the keyCode.
 			*/
 			keydown: "keydown",
 			/* cancel="true" Fired on keypress event.
@@ -444,7 +444,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
-				eventArgument="ui.key" argType="object" Gets the value of the keyCode. The argument type might differ depending on the key.
+				eventArgument="ui.key" argType="object" Gets the value of the keyCode.
 				eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			keypress: "keypress",
@@ -466,7 +466,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
-				eventArgument="ui.key" argType="object" Gets the value of the keyCode. The argument type might differ depending on the key.
+				eventArgument="ui.key" argType="object" Gets the value of the keyCode.
                 eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			keyup: "keyup",
@@ -489,8 +489,8 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets the editor input.
-				eventArgument="ui.newValue" argType="object" Gets the editor's new value. The argument type might differ depending on the editor.
-				eventArgument="ui.oldValue" argType="object" Gets the editor's old value. The argument type might differ depending on the editor.
+				eventArgument="ui.newValue" argType="object" Gets the editor's new value. The argument type might differ depending on the editor type.
+				eventArgument="ui.oldValue" argType="object" Gets the editor's old value. The argument type might differ depending on the editor type.
 			*/
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.
@@ -510,8 +510,8 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets the editor input.
-				eventArgument="ui.newValue" argType="object" Gets the value entered from the user after internal formatting. The argument type might differ depending on the editor.
-				eventArgument="ui.originalValue" argType="object" Gets the value entered from the user before internal formatting. The argument type might differ depending on the editor.
+				eventArgument="ui.newValue" argType="object" Gets the value entered from the user after internal formatting. The argument type might differ depending on the editor type.
+				eventArgument="ui.originalValue" argType="object" Gets the value entered from the user before internal formatting. The argument type might differ depending on the editor type.
 			*/
 			valueChanged: "valueChanged"
 		},
