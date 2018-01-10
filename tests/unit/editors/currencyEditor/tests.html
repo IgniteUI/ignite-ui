@@ -34,15 +34,14 @@
 	<script type="text/javascript">
 		/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 		$(document).ready(function () {
-			QUnit.module("igCheckboxEditor unit tests", {
+			QUnit.module("igCurrencyEditor unit tests", {
 				divTag: '<div></div>',
 				inputTag: '<input></input>',
+				util: $.ig.TestUtil,
 
 				beforeEach: function () { },
 
 				afterEach: function () { },
-
-				util: $.ig.TestUtil,
 			});
 
 			QUnit.test("Currency Symbol", function (assert) {
@@ -185,13 +184,13 @@
 
 				//Change allowNullValue option
 				$currencyEditor.igCurrencyEditor("option", "allowNullValue", true);
-				
+
 				// Get Null value
 				assert.equal($currencyEditor.igCurrencyEditor("value"), "", "The value is not an empty string");
-				
+
 				//Set Null value
 				$currencyEditor.igCurrencyEditor("value", null);
-				
+
 				//Get null value
 				assert.equal($currencyEditor.igCurrencyEditor("value"), null, "The value is not an null");
 				$currencyEditor.remove();
@@ -199,109 +198,134 @@
 
 			QUnit.test('Clear button state', function (assert) {
 				assert.expect(2);
-				var $editor;
 
-				$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ buttonType: "clear" });
-				ok(!$editor.igCurrencyEditor("clearButton").is(":visible"), "Clear button is not hidden");
-				$editor.igCurrencyEditor("value", 45);
-				ok($editor.igCurrencyEditor("clearButton").is(":visible"), "Clear button is not visible");
-				$editor.remove();
+				var $currencyEditor = this.util.appendToFixture(this.inputTag);
+				$currencyEditor.igCurrencyEditor(
+					{
+						buttonType: "clear"
+					});
+
+				assert.notOk($currencyEditor.igCurrencyEditor("clearButton").is(":visible"), "Clear button is not hidden");
+				$currencyEditor.igCurrencyEditor("value", 45);
+				assert.ok($currencyEditor.igCurrencyEditor("clearButton").is(":visible"), "Clear button is not visible");
 			});
 
 			QUnit.test("Lists testing, selection-value match", function (assert) {
 				assert.expect(44);
-				var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
-					editorSetup = function (options) {
-						$editor = $("<input />").appendTo("#testBedContainer")
-							.igCurrencyEditor(options);
-						$field = $editor.igCurrencyEditor("field");
-						$ddButton = $editor.igCurrencyEditor("dropDownButton");
-						$spinUpButton = $editor.igCurrencyEditor("spinUpButton");
-						$spinDownButton = $editor.igCurrencyEditor("spinDownButton");
-					};
 
-				editorSetup({
+				var $currencyEditor,
+					$field,
+					$ddButton,
+					$spinUpButton,
+					$spinDownButton,
+					setUpEditor,
+					util = this.util,
+					inputTag = this.inputTag;
+
+				setUpEditor = function (options) {
+					if ($currencyEditor)
+						$currencyEditor.remove();
+					$currencyEditor = util.appendToFixture(inputTag);
+					$currencyEditor.igCurrencyEditor(options);
+					$field = $currencyEditor.igCurrencyEditor("field");
+					$ddButton = $currencyEditor.igCurrencyEditor("dropDownButton");
+					$spinUpButton = $currencyEditor.igCurrencyEditor("spinUpButton");
+					$spinDownButton = $currencyEditor.igCurrencyEditor("spinDownButton");
+				}
+
+				setUpEditor({
 					listItems: [1, 2, 3],
 					buttonType: "dropdown",
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
 				});
 
-				$editor.igCurrencyEditor("value", 1);
+				$currencyEditor.igCurrencyEditor("value", 1);
 				$ddButton.click();
-				ok($editor.igCurrencyEditor("getSelectedListItem").hasClass($.ui.igCurrencyEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
-				assert.equal($editor.igCurrencyEditor("selectedListIndex"), 0, "Selected index does not reflect value");
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "1", "Selected item does not reflect value");
+				assert.ok($currencyEditor.igCurrencyEditor("getSelectedListItem").hasClass($.ui.igCurrencyEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+				assert.equal($currencyEditor.igCurrencyEditor("selectedListIndex"), 0, "Selected index does not reflect value");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "1", "Selected item does not reflect value");
 
 				// select item2:
-				$editor.igCurrencyEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "2", "Selected item (API) did not update after selection");
+				$currencyEditor.igCurrencyEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "2", "Selected item (API) did not update after selection");
 
 				// change value in edit mode:
 				$ddButton.click();
-				util.keyDownChar(51 /*3*/, $field);
+				this.util.keyDownChar(51, $field);
 				$field.val("3");
-				util.keyPressChar(51, $field);
-				util.keyUpChar(51, $field);
-				util.keyInteraction(13, $field);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "3", "Selected item (API) did not update after value update.");
-				$editor.remove();
+				this.util.keyPressChar(51, $field);
+				this.util.keyUpChar(51, $field);
+				this.util.keyInteraction(13, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "3", "Selected item (API) did not update after value update.");
 
 				//initial value, clear:
-				editorSetup({
+				$currencyEditor.remove();
+				$currencyEditor = this.util.appendToFixture(this.inputTag);
+				$currencyEditor.igCurrencyEditor({
 					listItems: [1, 123, 2, 3, 156, 99],
 					buttonType: "dropdown, clear",
 					value: 2,
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
 				});
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
-				assert.equal($editor.igCurrencyEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
+				$field = $currencyEditor.igCurrencyEditor("field");
+				$ddButton = $currencyEditor.igCurrencyEditor("dropDownButton");
+				$spinUpButton = $currencyEditor.igCurrencyEditor("spinUpButton");
+				$spinDownButton = $currencyEditor.igCurrencyEditor("spinDownButton");
 
-				$editor.igCurrencyEditor("value", 999);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
+				assert.equal($currencyEditor.igCurrencyEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
 
-				$editor.igCurrencyEditor("value", 3);
+				$currencyEditor.igCurrencyEditor("value", 999);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+				$currencyEditor.igCurrencyEditor("value", 3);
 				$ddButton.click();
-				util.keyInteraction(38, $field);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value.");
-				assert.equal($editor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "2", "Active item did not move from original selection.");
-				util.keyDownChar(54 /*6*/, $field);
+				this.util.keyInteraction(38, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value.");
+				assert.equal($currencyEditor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "2", "Active item did not move from original selection.");
+
+				this.util.keyDownChar(54, $field);
+
 				$field.val("156");
-				util.keyPressChar(54, $field);
-				util.keyUpChar(54, $field);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "156", "Selected item not updated when typing.");
-				util.keyInteraction(40, $field);
-				assert.equal($editor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "99", "Active item did not move from new selection.");
-				util.keyDownChar(56 /*8*/, $field);
+				this.util.keyPressChar(54, $field);
+				this.util.keyUpChar(54, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "156", "Selected item not updated when typing.");
+
+				this.util.keyInteraction(40, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "99", "Active item did not move from new selection.");
+
+				this.util.keyDownChar(56 /*8*/, $field);
 				$field.val("8");
-				util.keyPressChar(56, $field);
-				util.keyUpChar(56, $field);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
-				assert.equal($editor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");
-				util.keyInteraction(13, $field);
-				assert.equal($editor.igCurrencyEditor("value"), 8, "Value not set correctly on enter without list selection.");
-				ok(!$editor.igCurrencyEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
+				this.util.keyPressChar(56, $field);
+				this.util.keyUpChar(56, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
+				assert.equal($currencyEditor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");
+
+				this.util.keyInteraction(13, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("value"), 8, "Value not set correctly on enter without list selection.");
+				assert.ok(!$currencyEditor.igCurrencyEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
 
 				$ddButton.click();
 				$field.val("2");
-				util.keyInteraction(13, $field);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "2", "Selected item does not reflect value.");
+				this.util.keyInteraction(13, $field);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "2", "Selected item does not reflect value.");
 
-				$editor.igCurrencyEditor("clearButton").click();
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
-				assert.equal($editor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+				$currencyEditor.igCurrencyEditor("clearButton").click();
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
+				assert.equal($currencyEditor.igCurrencyEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+
 				$field.blur();
-				$editor.igCurrencyEditor("value", 99);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "99", "Selected item does not reflect value.");
-				$editor.igCurrencyEditor("clearButton").click();
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
-				$editor.remove();
+				$currencyEditor.igCurrencyEditor("value", 99);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "99", "Selected item does not reflect value.");
+
+				$currencyEditor.igCurrencyEditor("clearButton").click();
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
 
 				// spin + isLimitedToListValues
 				var listItems = [5, 44.5, 44, 575, 55.4, 243, 10];
-				editorSetup({
+				setUpEditor({
 					spinDelta: 1,
 					isLimitedToListValues: true,
 					listItems: listItems,
@@ -310,37 +334,43 @@
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
 				});
-				util.click($spinUpButton);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
-				assert.strictEqual($editor.igCurrencyEditor("value"), 44.5, "Value not changed on spin button");
-				for (var i = 0; i < 3; i++) {
-					util.click($spinUpButton);
-				}
-				assert.strictEqual($editor.igCurrencyEditor("value"), 5, "Value not changed on spin button");
-				ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
-				$editor.igCurrencyEditor("spinDown");
-				assert.strictEqual($editor.igCurrencyEditor("value"), 44.5, "Value not changed on spin method");
-				$editor.igCurrencyEditor("spinUp");
-				assert.strictEqual($editor.igCurrencyEditor("value"), 5, "Value not changed on spin method");
 
-				$editor.focus();
-				util.click($spinUpButton);
-				util.click($spinDownButton);
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
-				ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+				this.util.click($spinUpButton);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
+				assert.strictEqual($currencyEditor.igCurrencyEditor("value"), 44.5, "Value not changed on spin button");
+
+				for (var i = 0; i < 3; i++) {
+					this.util.click($spinUpButton);
+				}
+
+				assert.strictEqual($currencyEditor.igCurrencyEditor("value"), 5, "Value not changed on spin button");
+				assert.ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+
+				$currencyEditor.igCurrencyEditor("spinDown");
+				assert.strictEqual($currencyEditor.igCurrencyEditor("value"), 44.5, "Value not changed on spin method");
+
+				$currencyEditor.igCurrencyEditor("spinUp");
+				assert.strictEqual($currencyEditor.igCurrencyEditor("value"), 5, "Value not changed on spin method");
+
+				$currencyEditor.focus();
+				this.util.click($spinUpButton);
+				this.util.click($spinDownButton);
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
+				assert.notOk($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled"); //30
 
 				$ddButton.click();
 				for (var i = 2; i < listItems.length; i++) {
-					util.click($spinDownButton);
-					assert.equal($editor.igCurrencyEditor("getSelectedListItem").index(), i, "Selection not changed on spin button with open dropdown.");
+					this.util.click($spinDownButton);
+					assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").index(), i, "Selection not changed on spin button with open dropdown.");
 				}
-				ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
-				$editor.igCurrencyEditor("spinUp");
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
-				$editor.remove();
+
+				assert.ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+
+				$currencyEditor.igCurrencyEditor("spinUp");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
 
 				// list items with decimalSeparator
-				editorSetup({
+				setUpEditor({
 					listItems: [10, 0.15, 55.47, 12045, 2413.5],
 					buttonType: "spin, clear",
 					value: 55.47,
@@ -348,162 +378,102 @@
 					decimalSeparator: ",",
 					groupSeparator: "."
 				});
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
-				$editor.igCurrencyEditor("value", 12045);
-				$editor.focus();
-				$editor.blur();
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
+
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
+
+				$currencyEditor.igCurrencyEditor("value", 12045);
+				$currencyEditor.focus();
+				$currencyEditor.blur();
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
 
 				$ddButton.click();
-				$editor.igCurrencyEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
-				assert.equal($editor.igCurrencyEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
-				$editor.blur();
-				assert.equal($editor.igCurrencyEditor("value"), 0.15, "Selected item did not update text with correct decimalSeparator.");
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
+				$currencyEditor.igCurrencyEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				assert.equal($currencyEditor.igCurrencyEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator."); //????
 
-				$editor.igCurrencyEditor("value", 12045);
-				$editor.igCurrencyEditor("spinDown");
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
-				$editor.focus();
-				$editor.igCurrencyEditor("spinDown");
-				assert.equal($editor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
+				$currencyEditor.blur();
+				assert.equal($currencyEditor.igCurrencyEditor("value"), 0.15, "Selected item did not update text with correct decimalSeparator.");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
 
-				$editor.remove();
+				$currencyEditor.igCurrencyEditor("value", 12045);
+				$currencyEditor.igCurrencyEditor("spinDown");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
+
+				$currencyEditor.focus();
+				$currencyEditor.igCurrencyEditor("spinDown");
+				assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 			});
 
 			QUnit.test('MaxValue SpinUpButton', function (assert) {
 				assert.expect(2);
-				var $editor;
 
-				$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor: 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
-				ok($editor.igCurrencyEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
-				$editor.igCurrencyEditor("value", 8);
-				$editor.blur();
-				ok($editor.igCurrencyEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
-				$editor.remove();
+				var $currencyEditor = this.util.appendToFixture(this.inputTag);
+
+				$currencyEditor.igCurrencyEditor(
+					{
+						displayFactor: 1, maxValue: 8, spinDelta: 1, buttonType: "spin"
+					});
+
+				assert.ok($currencyEditor.igCurrencyEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+				$currencyEditor.igCurrencyEditor("value", 8);
+				$currencyEditor.blur();
+				assert.ok($currencyEditor.igCurrencyEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
 			});
 
 			QUnit.test('MinValue SpinDownButton', function (assert) {
 				assert.expect(2);
-				var $editor;
 
-				$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor: 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
-				ok($editor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
-				$editor.igCurrencyEditor("value", 2);
-				$editor.blur();
-				ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
-				$editor.remove();
+				var $currencyEditor = this.util.appendToFixture(this.inputTag);
+				$currencyEditor.igCurrencyEditor(
+					{
+						displayFactor: 1, minValue: 2, spinDelta: 1, buttonType: "spin"
+					});
+
+				assert.ok($currencyEditor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+				$currencyEditor.igCurrencyEditor("value", 2);
+				$currencyEditor.blur();
+				assert.ok($currencyEditor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
 			});
 
 			QUnit.test('Reaching MinValue with clear button disables SpinDownButton', function (assert) {
 				assert.expect(2);
-				var $editor;
 
-				$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor: 1, maxValue: 8, minValue: 5, spinDelta: 1, buttonType: "spin, clear" });
-				ok($editor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
-				$editor.igCurrencyEditor("value", 6);
-				$editor.blur();
-				$editor.igCurrencyEditor("clearButton").click();
-				ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
-				$editor.remove();
+				var $currencyEditor = this.util.appendToFixture(this.inputTag);
+
+				$currencyEditor.igCurrencyEditor(
+					{
+						 displayFactor: 1, maxValue: 8, minValue: 5, spinDelta: 1, buttonType: "spin, clear" 
+					});
+
+				assert.ok($currencyEditor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+				$currencyEditor.igCurrencyEditor("value", 6);
+				$currencyEditor.blur();
+				$currencyEditor.igCurrencyEditor("clearButton").click();
+				assert.ok($currencyEditor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
 			});
 
 			QUnit.test('Runtime changes for local and regional options', function (assert) {
 				assert.expect(6);
-				var $editor = $("<input/>").appendTo("#testBedContainer").igCurrencyEditor({ buttonType: "spin", value: 1234567.123 });
 
-				assert.equal($editor.igCurrencyEditor("displayValue"), "$1,234,567.12", "Format should be in English");
-				assert.equal($editor.igCurrencyEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
-				$editor.igCurrencyEditor("option", "language", "de");
-				assert.equal($editor.igCurrencyEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
-				$editor.igCurrencyEditor("option", "regional", "de");
-				assert.equal($editor.igCurrencyEditor("displayValue"), "1.234.567,12 €", "Format should be in German");
-				$editor.igCurrencyEditor("setFocus");
-				assert.equal($editor.igCurrencyEditor("field").val(), "1234567,12", "Input Format should be in German");
-				$editor.igCurrencyEditor("option", "regional", "en");
-				assert.equal($editor.igCurrencyEditor("field").val(), "1234567.12", "Input Format should be in German");
-				$editor.trigger("blur").remove();
+				var $currencyEditor = this.util.appendToFixture(this.inputTag);
+
+				$currencyEditor.igCurrencyEditor({ buttonType: "spin", value: 1234567.123 });
+
+				assert.equal($currencyEditor.igCurrencyEditor("displayValue"), "$1,234,567.12", "Format should be in English");
+				assert.equal($currencyEditor.igCurrencyEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+				
+				$currencyEditor.igCurrencyEditor("option", "language", "de");
+				assert.equal($currencyEditor.igCurrencyEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+				
+				$currencyEditor.igCurrencyEditor("option", "regional", "de");
+				assert.equal($currencyEditor.igCurrencyEditor("displayValue"), "1.234.567,12 €", "Format should be in German");
+				
+				$currencyEditor.igCurrencyEditor("setFocus");
+				assert.equal($currencyEditor.igCurrencyEditor("field").val(), "1234567,12", "Input Format should be in German");
+				
+				$currencyEditor.igCurrencyEditor("option", "regional", "en");
+				assert.equal($currencyEditor.igCurrencyEditor("field").val(), "1234567.12", "Input Format should be in German");
 			});
 		});
-
-		function testSelection(input, start, end) {
-			assert.equal(input[0].selectionStart, start, "The selection doesn't start from index 0 ");
-			assert.equal(input[0].selectionEnd, end, "The selection doesn't start from index 0 ");
-		}
-		function keyInteraction(key, target, special) {
-			keyDownChar(key, target, special);
-			keyPressChar(key, target, special);
-			keyUpChar(key, target, special);
-		}
-		function keyDownChar(key, target, special) {
-			var evt = $.Event("keydown");
-			evt.keyCode = key;
-			evt.charCode = key;
-			if (special) {
-				evt[special] = true;
-			}
-			target.trigger(evt);
-		}
-		function keyPressChar(key, target, special) {
-			var evt = $.Event("keypress");
-			evt.keyCode = key;
-			evt.charCode = key;
-			if (special) {
-				evt[special] = true;
-			}
-			target.trigger(evt);
-		}
-		function keyUpChar(key, target, special) {
-			var evt = $.Event("keyup");
-			evt.keyCode = key;
-			evt.charCode = key;
-			if (special) {
-				evt[special] = true;
-			}
-			target.trigger(evt);
-		}
-		function mouseup(element) {
-			// create a mouse click event
-			var event = document.createEvent('MouseEvents');
-			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0);
-
-			// send click to element
-			element.dispatchEvent(event);
-		}
-		function mousedown(element) {
-			// create a mouse click event
-			var event = document.createEvent('MouseEvents');
-			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0);
-
-			// send click to element
-			element.dispatchEvent(event);
-		}
-		function mouseover(element) {
-			// create a mouse click event
-			var event = document.createEvent('MouseEvents');
-			event.initMouseEvent('mouseover', true, true, window, 1, 0, 0);
-
-			// send click to element
-			element.dispatchEvent(event);
-		}
-		function mouseout(element) {
-			// create a mouse click event
-			var event = document.createEvent('MouseEvents');
-			event.initMouseEvent('mouseout', true, true, window, 1, 0, 0);
-
-			// send click to element
-			element.dispatchEvent(event);
-		}
-		function mouseclick(element) {
-			// create a mouse click event
-			var event = document.createEvent('MouseEvents');
-			event.initMouseEvent('click', true, true, window, 1, 0, 0);
-
-			// send click to element
-			element.dispatchEvent(event);
-		}
 	</script>
-
 </head>
-
 </html>
