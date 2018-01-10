@@ -342,8 +342,8 @@
 			voteDisabledSelected: "ui-igrating-votedisabledselected ui-state-disabled"
 		},
 		events: {
-			/* cancel="true" Event which is raised before hover value is changed.
-				If application returns false, then action is canceled and hover value stays unchanged.
+			/* cancel="true" Fired before hover value is changed.
+				If the application returns false, then the action is canceled and the value remains unchanged.
 				```
 				//Bind after initialization
 				$(document).delegate(".selector", "igratinghoverchange", function (evt, ui) {
@@ -361,12 +361,12 @@
 					hoverChange : function(evt, ui) {...}
 				});
 				```
-				Function takes arguments evt and ui.
-				Use ui.value to get new value.
-				Use ui.oldValue to get old value. */
-			hoverChange: null,
-			/* cancel="true" Event which is raised before (selected) value is changed.
-				If application returns false, then action is canceled and value stays unchanged.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.value" argType="number" Gets the new hovered value.
+				eventArgument="ui.oldValue" argType="number" Gets the old value.*/
+			hoverChange: "hoverChange",
+			/* cancel="true" Fired before (selected) value is changed.
+				If the application returns false, then the action is canceled and the value remains unchanged.
 				```
 				//Bind after initialization
 				$(document).delegate(".selector", "igratingvaluechange", function (evt, ui) {
@@ -383,12 +383,11 @@
 				$(".selector").igRating({
 					valueChange : function(evt, ui) {...}
 				});
-
 				```
-				Function takes arguments evt and ui.
-				Use ui.value to get new value.
-				Use ui.oldValue to get old value. */
-			valueChange: null
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.value" argType="number" Gets the new selected value.
+				eventArgument="ui.oldValue" argType="number" Gets the previously selected value.*/
+			valueChange: "valueChange"
 		},
 		_create: function () {
 			var inp, cont, elem,
