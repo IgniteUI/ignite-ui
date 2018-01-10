@@ -647,7 +647,10 @@
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
 				equal(selector.length, 2, 'The checkboxes did not cascade ot the API method returned wrong');
 				node = $('#tree14').igTree('nodeByPath', '0_0_0');
+				var partialNode = $('#tree14').igTree('nodeByPath', '0_0');
+				$.ig.TestUtil.checkClass(partialNode.children('[data-role=checkbox]').children("span"), 'ui-state-disabled', "The node doesn't have partial checkstate.");
 				$('#tree14').igTree('toggleCheckstate', node);
+				assert.ok(!partialNode.children('[data-role=checkbox]').children("span").hasClass('ui-state-disabled'), "The partial checkstate class wasn't removed.");
 				selector = $('#tree14').igTree('checkedNodes');
 				data = $('#tree14').igTree('nodeDataFor', '0');
 				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
