@@ -1545,7 +1545,22 @@
 			*/
 			fileSizeDecimalDisplay: 2,
 			/* type="int" Maximum size(in bytes) allowed for the file to be uploaded. If it is set to null or -1 there is no limitation otherwise if the size(of the selected file) exceeds this value it is not allowed to be uploaded. This option is used for validation only on client side and only if the browser supports HTML5 file API and share information about the file size */
-			maxFileSize: null
+			maxFileSize: null,
+			/* type="bool" Get or set whether to use only one request for sending data, when you are sending more than one file.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					sendDataInOneRequest : true
+				});
+
+				//Get
+				var sendDataInOneRequest = $(".selector").igUpload("option", "sendDataInOneRequest");
+
+				//Set
+				$(".selector").igUpload("option", "sendDataInOneRequest", true);
+			```
+			*/
+			sendDataInOneRequest: false
 		},
 		events: {
 			/* cancel="true" Defines the name of the file upload selecting event. Fired when browse button is pressed.
@@ -2355,11 +2370,29 @@
 			var	res, i,
 				filesLength = files.length,
 				data = this.fileInfoData,
-				fileId = data.formNumber;
+				fileId = data.formNumber,
+				o = this.options;
 
 			for (i = 0; i < filesLength; i++) {
 				res = this._html5createForm(files[ i ], i, fileId);
 			}
+
+			if (o.autoStartUpload && o.sendDataInOneRequest) {
+				var retVal = this._html5upload();
+
+				if (retVal) {
+					data.batch = [];
+					this._spbCheckModeButton();
+				} else {
+					var idsToRemove = data.batch;
+					for (i = 0; i < idsToRemove.length; i++) {
+						var id = idsToRemove[ i ];
+						this._removeIframe(id);
+						this._removeFileUpload(id);
+					}
+				}
+			}
+
 			return res;
 		},
 		_html5upload: function (fileId) {
@@ -2367,20 +2400,91 @@
 				formData = new FormData(),
 				o = this.options,
 				self = this,
-				fileInfo = this.fileInfoData.filesInfo[ fileId ],
-				file = fileInfo.file,
-				key = fileInfo.key,
 				cid = o.controlId,
-				upload = xhr.upload,
+				upload = xhr.upload;
+
+			var	fileInfo, file, key, uploadUrl;
+
+			if (fileId !== undefined) {
+				fileInfo = this.fileInfoData.filesInfo[ fileId ];
+				file = fileInfo.file;
+				key = fileInfo.key;
+
 				uploadUrl = o.uploadUrl + "?key=" + key + "&cid=" + cid + "&multiple=true";
-				/*start_time = new Date().getTime(),
-				max_file_size = 1048576 * opts.maxfilesize; */
-			xhr.open("POST", uploadUrl);
-			xhr.withCredentials = "true";
-			self._trigger(self.events.onFormDataSubmit,
-						  null,
-						  { formData: formData, fileId: fileId, fileInfo: fileInfo, xhr: xhr, owner: self });
-			formData.append(this._id("_frm", fileId) + "_if", file);
+
+				xhr.open("POST", uploadUrl);
+				xhr.withCredentials = "true";
+
+				self._trigger(self.events.onFormDataSubmit,
+					null,
+					{ formData: formData, fileId: fileId, fileInfo: fileInfo, xhr: xhr, owner: self });
+
+				formData.append(this._id("_frm", fileId) + "_if", file);
+				this.fileInfoData.filesInfo[ fileId ].xhr = xhr;
+			} else {
+				var idsToSend = this.fileInfoData.batch,
+					fileSize = 0;
+
+				fileInfo = [];
+				file = [];
+				key = "";
+				fileId = [];
+
+				for (var i = 0; i < idsToSend.length; i++) {
+					var currentFileId = idsToSend[ i ],
+						currentFileInfo = this.fileInfoData.filesInfo[ currentFileId ],
+						currentFile = currentFileInfo.file,
+						currentKey = currentFileInfo.key,
+						currentFileSize = 0;
+
+					if (currentFile) {
+						currentFileSize = currentFile.size;
+					}
+
+					if ($.type(currentFileSize) === "number") {
+						fileSize += currentFileSize;
+					}
+
+					formData.append(this._id("_frm", currentFileId) + "_if", currentFile);
+					this.fileInfoData.filesInfo[ currentFileId ].xhr = xhr;
+
+					fileInfo.push(currentFileInfo);
+					file.push(currentFile);
+
+					if (key === "") {
+						key += currentKey;
+					} else {
+						key += ";" + currentKey;
+					}
+
+					fileId.push(currentFileId);
+
+					self._trigger(self.events.onFormDataSubmit,
+						null,
+						{ formData: formData,
+						  fileId: currentFileId,
+						  fileInfo: currentFileInfo,
+						  xhr: xhr,
+						  owner: self });
+				}
+
+				if ($.type(o.maxFileSize) === "number" &&
+					$.type(fileSize) === "number" &&
+					o.maxFileSize > -1 &&
+					fileSize > o.maxFileSize) {
+					self._setError( fileId,
+									this._getLocaleValue("errorMessageMaxFileSizeExceeded"),
+									self._const.clientSideErrorCode.maxFileSizeExcceeded,
+									"clientside" );
+					return false;
+				}
+
+				uploadUrl = o.uploadUrl + "?key=" + key + "&cid=" + cid + "&multiple=true";
+
+				xhr.open("POST", uploadUrl);
+				xhr.withCredentials = "true";
+			}
+
 			upload.addEventListener("progress", function (e) {
 				self._html5progress(e, fileId);
 			}, false);
@@ -2390,7 +2494,6 @@
 				self._getFileStatus(fileId, true);
 			}, false);
 
-			this.fileInfoData.filesInfo[ fileId ].xhr = xhr;
 			xhr.onload = function (e) {
 				var responseText, response, error, msg;
 				self._trigger(self.events.onXHRLoad,
@@ -2430,8 +2533,19 @@
 				}
 			};
 			xhr.send(formData);
+
+			return true;
 		},
-		_html5progress: function (e, formNumber, isFinish) {
+		_html5progress: function (e, formInfo, isFinish) {
+			if (typeof formInfo === "number") {
+				this._html5progressSingle(e, formInfo, isFinish);
+			} else {
+				for (var i = 0; i < formInfo.length; i++) {
+					this._html5progressSingle(e, formInfo[ i ], isFinish);
+				}
+			}
+		},
+		_html5progressSingle: function(e, formNumber, isFinish) {
 			var self = this, singleFileData, data = {};
 
 			if (e.lengthComputable || isFinish) {
@@ -2548,7 +2662,7 @@
 			self._spbRenderProgress();
 			self._HTMLSingleUpload(fileId);
 			this._saveFileSize(fileSize, fileId);
-			if (o.autostartupload === true) {
+			if (o.autostartupload === true && o.sendDataInOneRequest === false) {
 				/* in multiple upload mode - if we can upload - check the number for maxSimultaneousFilesUploads */
 				if (self._checkCanUpload() === true) {
 					self.startUpload(fileId);
@@ -3775,19 +3889,29 @@
 				idsToSubmit = this.fileInfoData.batch,
 				l = idsToSubmit.length, pendingIDs = [];
 
-			for (i = 0; i < l; i++) {
-				id = idsToSubmit[ i ];
-				if (self._checkCanUpload()) {
-					/* M.H. 27 Jul 2011 - fix bug 77339 */
-					/*self._addUploadingID(id); */
-					self.startUpload(id);
-					/*submittedIDs.push(id); */
-				} else {
-					self._addPendingId(id);
-					pendingIDs.push(id);
+			if (this.options.sendDataInOneRequest === false) {
+				for (i = 0; i < l; i++) {
+					id = idsToSubmit[ i ];
+					if (self._checkCanUpload()) {
+						/* M.H. 27 Jul 2011 - fix bug 77339 */
+						/*self._addUploadingID(id); */
+						self.startUpload(id);
+						/*submittedIDs.push(id); */
+					} else {
+						self._addPendingId(id);
+						pendingIDs.push(id);
+					}
+				}
+
+				this.fileInfoData.batch = [];
+			} else {
+				var result = this._html5upload();
+
+				if (result === true) {
+					this.fileInfoData.batch = [];
 				}
 			}
-			this.fileInfoData.batch = [];
+
 			/*self._trigger(self.events.batchFileStartUpload, null, {submittedIDs: submittedIDs, pendingIDs: pendingIDs});*/
 			/* we should clear ids array once we have submitted forms */
 		},
@@ -3954,7 +4078,7 @@
 		_spbCheckModeButton: function () {
 			var allFilesData = this.fileInfoData;
 
-			if (this.options.autostartupload) {
+			if (this.options.autoStartUpload) {
 				if (allFilesData.pendingQueueIDs.length > 0 || allFilesData.uploadingIDs.length > 0) {
 					this._spbSetCancelButton();
 				} else {
@@ -4044,7 +4168,8 @@
 				maxSimultaneousFilesUploads = o.maxSimultaneousFilesUploads;
 
 			if (o.mode === "multiple" && maxSimultaneousFilesUploads !== null &&
-				data.uploadingIDs.length >= maxSimultaneousFilesUploads) {
+				data.uploadingIDs.length >= maxSimultaneousFilesUploads &&
+				o.sendDataInOneRequest === false) {
 				canUpload = false;
 				if (maxSimultaneousFilesUploads <= 0) {
 					this._setError(this._getLocaleValue("errorMessageMaxSimultaneousFiles"), null,

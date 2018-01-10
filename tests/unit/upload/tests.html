@@ -20,7 +20,7 @@
 
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
-	
+
 	<style type="text/css">
 		body {
 			font-family: Verdana;
@@ -41,11 +41,11 @@
                 totalCountUploadedFiles = 0,
                 uploader1Id = 'igUpload1',
                 uploader2Id = 'igUpload2',
-                uploader3Id = 'igUpload3',
+				uploader3Id = 'igUpload3',
                 uploader1 = $('#' + uploader1Id),
-                uploader2 = $('#' + uploader2Id),
+				uploader2 = $('#' + uploader2Id),
                 isTest10Started = false;
-                uploader2 = $('#' + uploader3Id);
+				uploader2 = $('#' + uploader3Id);
 	        // Test mockServer
 
 	        id = $.mockjax({
@@ -53,11 +53,11 @@
 	            contentType: 'text/json',
 	            /*
 	            responseText: {
-	            bytesUploaded: 3785397, status: 2, size: 3785397                
-	            }   
+	            bytesUploaded: 3785397, status: 2, size: 3785397
+	            }
 	            */
 	            response: function (settings) {
-	                //alert(getParam('command', settings.url)); //settings.url + ' ' + 
+	                //alert(getParam('command', settings.url)); //settings.url + ' ' +
 	                var key = getParam('key', settings.url),
                     response = mockServer.processRequest(key);
 
@@ -93,7 +93,7 @@
 	                progressUrl: 'http://localhost/asdfasdf'
 	            });
 	        }
-			
+
 			initialized = false;
 			module("igUpload", {
 				setup: function() {
@@ -108,7 +108,7 @@
 				teardown: function() {
 				}
 			});
-			
+
 
 			var testId_1 = "igUpload test init button 1: Test init browse button - width and label";
 
@@ -137,7 +137,7 @@
 			var testId_14 = "igUpload MULTIPLE MODE test show/hide details 14: Test show/hide details button";
 			var testId_15 = "igUpload MULTIPLE MODE test cancel multiple files while uploading 15: Test multiple files while uploading.";
 
-			//autostartupload False 
+			//autostartupload False
 			var testId_16 = "igUpload MULTIPLE MODE - NOT AUTOSTARTUPLOAD test file selecting 16: Test file selecting when autostartupload is false.";
 			var testId_17 = "igUpload MULTIPLE MODE - NOT AUTOSTARTUPLOAD test start uploading batch of files 17: Test starting upload batch files when autostartupload is false.";
 			var testId_18 = "igUpload MULTIPLE MODE - NOT AUTOSTARTUPLOAD test cancel uploading batch files 18: Test canceling upload batch files when autostartupload is false.";
@@ -150,7 +150,7 @@
 
 			// Upload Interactions
 
-			// Server Response 
+			// Server Response
 
 
 			test(testId_1, function () {
@@ -208,7 +208,7 @@
 			});
 
 			asyncTest(testId_4, function () {
-				// test file uploaded event triggering                    
+				// test file uploaded event triggering
 				var innerData;
 
 				uploader1.bind("iguploadfileuploaded", function (event, data) {
@@ -243,7 +243,7 @@
 			});
 
 			asyncTest(testId_6, function () {
-				//SINGLE MODE test cancel 
+				//SINGLE MODE test cancel
 				var cancelButton = $('#' + uploader1Id + '_1__cbtn'),
 					click = jQuery.Event("click"),
 					innerData;
@@ -261,7 +261,7 @@
 					innerData = uploader1.data('igUpload').fileInfoData;
 					equal(innerData.filesInfo.length, 2, 'Count of all files in innerdata should be 2.');
 					start();
-					
+
 				}, 1000);
 			});
 
@@ -319,12 +319,12 @@
 			var isTest2Started = false;
 
 			asyncTest(testId_10, function () {
-				// test file uploaded event triggering                    
+				// test file uploaded event triggering
 				var innerData;
 				if (startTestCounter != null && currentTestCounter++ < startTestCounter) {
 					return;
 				}
-				
+
 				$('#' + uploader2Id).bind("iguploadfileuploading", fileUploaderHandler);
 			});
 
@@ -345,12 +345,12 @@
 						checkUploadedData(uploader2Id, 1);
 						checkUploadedData(uploader2Id, 2);
 						start();
-						
+
 						}, 500);
 				}
 			}
-			
-			
+
+
 			asyncTest(testId_15, function () {
 				// MULTIPLE UPLOAD test Cancel multiple upload
 					$('#' + uploader2Id).unbind("iguploadfileuploading", fileUploaderHandler);
@@ -364,11 +364,11 @@
 					uploadNewFile(uploader2Id);
 					uploadNewFile(uploader2Id);
 					buttonSummaryCancel.trigger(click);
-						
+
 					setTimeout(function () {
 						equal($('#igUpload2_spbtncncl').igButton('option', 'disabled'), true, 'Cancel button should be disabled because all files are uploaded.');
 
-					
+
 						innerData = $('#' + uploader2Id).data('igUpload').fileInfoData;
 
 						checkCancelFile(uploader2Id, 4);
@@ -390,8 +390,8 @@
 
 						checkFileSizeUploaded(innerData.fileSizeUploaded, innerData.fileSizeTotal, filesInfo);
 						checkFileCountUploaded(innerData.countTotalFiles, filesInfo);
-						start();                       
-						
+						start();
+
 					}, 1000);
 			});
 
@@ -421,9 +421,9 @@
 				setTimeout(function () {
 					buttonSummaryProgress.trigger(click);
 				}, 100);
-				
-				
-				setTimeout( 
+
+
+				setTimeout(
 					function () {
 						var innerData = $('#' + uploader3Id).data('igUpload').fileInfoData;
 						equal(innerData.batch.length, 0, 'Inner array for batch should be with length 0.');
@@ -434,7 +434,7 @@
 						checkClearAllButton(uploader3Id);
 						start();
 						//equal($('#' + uploader3Id + '_clrabtn').igButton('option', 'disabled'), true, 'Clear uploaded button should be enabled - all files are hidden');
-					}, 
+					},
 				2000);
 			});
 
@@ -455,6 +455,53 @@
 				//verify text
 				var uploadFileNameContainer = $("#upload_243975_1__fus").find("span.ui-igupload-progressbar-filename");
 				equal(uploadFileNameContainer.text(), "FileWithLoooongText.xml", "File text should be correct.");
+			});
+
+			test("Test one request multiple uploads.", function () {
+				var upOneRequestid = "uploaderOneRequest",
+					container = "<div id=\"" + upOneRequestid + "\"></div>",
+					click = jQuery.Event("click");
+
+				$(container).appendTo("#mainContainer");
+
+				var uploaderOneRequest = $("#" + upOneRequestid);
+
+				uploaderOneRequest.igUpload({
+					mode: 'multiple',
+					controlId:'serverID1',
+					sendDataInOneRequest: true,
+	                progressUrl: 'http://localhost/asdfasdf'
+				});
+
+				uploadNewFileOnInit(upOneRequestid);
+				uploadNewFile(upOneRequestid);
+				uploadNewFile(upOneRequestid);
+
+				var uploadButton = $('#'+ upOneRequestid +'_spbtncncl');
+				click.button = 0;
+
+				uploadButton.trigger(click);
+				stop();
+
+				setTimeout(
+					function(){
+						var innerData = uploaderOneRequest.data('igUpload').fileInfoData;
+						var filesInfo = innerData.filesInfo;
+
+						QUnit.ok(innerData.countTotalFiles == 3, "There should be 3 total files");
+
+						var xhr;
+
+						for (var i = 0; i < innerData.countTotalFiles; i++) {
+							if(xhr) {
+								QUnit.equal(xhr, filesInfo[ i ].xhr, "All the files should be sent with one XHR request");
+							}
+
+							xhr = filesInfo[ i ].xhr;
+						}
+
+						start();
+					}, 2000);
 			});
 
 	        function checkClearAllButton(uploaderId) {
@@ -532,7 +579,7 @@
 	            } else if (fileStatus === 2) {
 	                //totalCountUploadedFiles++;
 	                equal(uploadedBytes, totalSize, 'Uploaded bytes should be equal to total size when status is finished.');
-	                //equal (totalCountUploadedFiles, innerData.countUploadingFiles, 'Count of uploading files should be equal to the inner data.');                    
+	                //equal (totalCountUploadedFiles, innerData.countUploadingFiles, 'Count of uploading files should be equal to the inner data.');
 	                $('#' + uploaderId).bind("iguploadfileuploaded", function (event, data) {
 	                    checkUploadedData(uploaderId, fileId);
 	                    $('#' + uploaderId).unbind("iguploadfileuploaded");
