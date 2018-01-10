@@ -618,7 +618,7 @@
 			QUnit.test(testId_7, function (assert) {
 				var node = $('#tree14').igTree('nodeByPath', '0'), checkbox = node.children('[data-role=checkbox]'),
 					data = $('#tree14').igTree('nodeDataFor', '0'), binding = $('#tree14').igTree('option', 'bindings');
-				assert.expect(39);
+				assert.expect(41);
 				$('#tree14').igTree('option', 'checkboxMode', 'triState');
 				assert.equal(checkbox.attr('data-chk'), 'off', 'The checkstate of the checkbox is rendered as on');
 				assert.equal(data[ binding.checkedKey ], "off", 'The checkstate data of the checkbox is rendered as on');
@@ -694,7 +694,10 @@
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
 				assert.equal(selector.length, 2, 'The checkboxes did not cascade ot the API method returned wrong');
 				node = $('#tree14').igTree('nodeByPath', '0_0_0');
+				var partialNode = $('#tree14').igTree('nodeByPath', '0_0');
+				$.ig.TestUtil.checkClass(partialNode.children('[data-role=checkbox]').children("span"), 'ui-state-disabled', "The node doesn't have partial checkstate.");
 				$('#tree14').igTree('toggleCheckstate', node);
+				assert.ok(!partialNode.children('[data-role=checkbox]').children("span").hasClass('ui-state-disabled'), "The partial checkstate class wasn't removed.");
 				selector = $('#tree14').igTree('checkedNodes');
 				data = $('#tree14').igTree('nodeDataFor', '0');
 				assert.equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
