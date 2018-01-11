@@ -1,11 +1,13 @@
 language: node_js
 node_js:
 - 'node'
-# https://github.com/travis-ci/travis-ci/issues/8836
-sudo: required
+# https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-356879951
+addons:
+  chrome: stable
 
 script:
 - npm run cover
+after_success:
 - cat ./coverage/lcov.info | coveralls
 
 before_deploy:
