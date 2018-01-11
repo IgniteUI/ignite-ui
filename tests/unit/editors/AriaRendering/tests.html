@@ -30,6 +30,7 @@
 	<script type="text/javascript">
 		QUnit.module("igEditors ARIA rendering", {
 			divTag: '<div></div>',
+			util: $.ig.TestUtil,
 
 			beforeEach: function () { },
 
@@ -40,14 +41,14 @@
 			assert.expect(28);
 
 			var igTextEditorId = "#igTextEditor",
-				$igTextEditor = $.ig.TestUtil.appendToFixture(this.divTag, { id: igTextEditorId }),
+				$igTextEditor = this.util.appendToFixture(this.divTag, { id: igTextEditorId }),
 				igCurrencyEditorId = "#igCurrencyEditor",
-				$igCurrencyEditor = $.ig.TestUtil.appendToFixture(this.divTag, { id: igCurrencyEditorId }),
-				$igDateEditor = $.ig.TestUtil.appendToFixture(this.divTag, { id: "igGateEditorId" }),
-				$igDatePicker = $.ig.TestUtil.appendToFixture(this.divTag, { id: "igDatePickerId" }),
-				$igMaskEditor = $.ig.TestUtil.appendToFixture(this.divTag, { id: "igMaskEditorId" }),
-				$igNumericEditor = $.ig.TestUtil.appendToFixture(this.divTag, { id: "igNumericEditorId" }),
-				$igPercentEditor = $.ig.TestUtil.appendToFixture(this.divTag, { id: "igPercentEditorId" }),
+				$igCurrencyEditor = this.util.appendToFixture(this.divTag, { id: igCurrencyEditorId }),
+				$igDateEditor = this.util.appendToFixture(this.divTag, { id: "igDateEditorId" }),
+				$igDatePicker = this.util.appendToFixture(this.divTag, { id: "igDatePickerId" }),
+				$igMaskEditor = this.util.appendToFixture(this.divTag, { id: "igMaskEditorId" }),
+				$igNumericEditor = this.util.appendToFixture(this.divTag, { id: "igNumericEditorId" }),
+				$igPercentEditor = this.util.appendToFixture(this.divTag, { id: "igPercentEditorId" }),
 				$dropDownButton,
 				$clearButton,
 				$spinUpButton,
@@ -143,8 +144,8 @@
 			assert.expect(3);
 
 			var igDatePickerId = "igDatePickerId",
-				$igDatePicker = $.ig.TestUtil.appendToFixture(this.divTag, { id: igDatePickerId }),
-				$buttonCnangeUSLocale = $.ig.TestUtil.appendToFixture("<button></button>");
+				$igDatePicker = this.util.appendToFixture(this.divTag, { id: igDatePickerId }),
+				$buttonCnangeUSLocale = this.util.appendToFixture("<button></button>");
 
 			$igDatePicker.igDatePicker({
 				buttonType: "dropdown,spin,clear",

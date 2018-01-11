@@ -133,7 +133,7 @@
 			$chkInDiv.mouseout();
 
 			$chkInDiv.igCheckboxEditor("toggle");
-			assert.ok(!$chkInDiv.hasClass(css.containerChecked), "Checked class not removed form the container");
+			assert.notOk($chkInDiv.hasClass(css.containerChecked), "Checked class not removed form the container");
 			$chkInDiv.igCheckboxEditor("toggle");
 
 			$chkInInput.mouseover();
@@ -417,7 +417,7 @@
 
 			$chkInInput.igCheckboxEditor("editorContainer").blur();
 			$chkInInput.igCheckboxEditor("setFocus", 500);
-			assert.ok(!$chkInInput.igCheckboxEditor("editorContainer").hasClass(css.focus),"Focus class should not be still applied");
+			assert.notOk($chkInInput.igCheckboxEditor("editorContainer").hasClass(css.focus),"Focus class should not be still applied");
 			setTimeout(function () {
 				assert.ok($chkInInput.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class should be applied");
 				$chkInInput.remove();
