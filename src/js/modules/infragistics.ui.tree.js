@@ -3836,7 +3836,7 @@
 			}
 
 			checkbox.attr("data-chk", "on");
-			checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
+			checkIcon.removeClass(css.checkboxOff).removeClass(css.checkboxPartial).addClass(css.checkboxOn);
 			nodeObj.data[ nodeObj.binding.checkedKey ] = "on";
 
 			if (opt.checkboxMode.toLowerCase() === "tristate") {

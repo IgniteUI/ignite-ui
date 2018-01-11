@@ -775,8 +775,8 @@
 			enableDblclick: "auto"
 		},
 		events: {
-			/* cancel="true" Event which is raised before the state of dialog was changed.
-				Return false in order to cancel action.
+			/* cancel="true" Event which is raised before the state of the dialog was changed.
+				Return false in order to cancel the action.
 				```
 				//Bind after initialization
 				$(document).delegate(".selector", "igdialogstatechanging", function (evt, ui) {
@@ -800,7 +800,7 @@
 					//  - "close"
 					//  - "minimize"
 					//  - "maximize"
-					//  - "restpore"
+					//  - "restore"
 					//  - "pin"
 					//  - "unpin"
 					ui.action
@@ -811,20 +811,12 @@
 					stateChanging : function(evt, ui) {...}
 				});
 				```
-				The function takes arguments "evt" and "ui".
-				Use evt to obtain the browser event. That parameter can be null if the state was modified from the code.
-				Use ui.owner to obtain a reference to the igDialog.
-				Use ui.button to obtain the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
-				Use ui.oldState to obtain the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
-				Use ui.oldPinned to obtain the boolean value of the old pin state of the dialog.
-				Use ui.action to obtain the name of the action. That can be one of the following:
-				"open" - request to open the dialog
-				"close" - request to close the dialog
-				"minimize" - request to minimize the dialog
-				"maximize" - request to maximize the dialog
-				"restore" - request to restore the dialog from minimized or maximized state
-				"pin" - request to pin the dialog
-				"unpin" - request to unpin the dialog
+				eventArgument="evt" argType="event" JQuery event object. That parameter can be null if the state was modified from the code.
+				eventArgument="ui.owner" argType="object" Gets a reference to the igDialog widget.
+				eventArgument="ui.button" argType="string" Gets the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
+				eventArgument="ui.oldState" argType="string" Gets the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
+				eventArgument="ui.oldPinned" argType="bool" Gets the boolean value of the old pin state of the dialog.
+				eventArgument="ui.action" argType="string" Gets the name of the action. That can be one of the following: "open" - request to open the dialog. "close" - request to close the dialog. "minimize" - request to minimize the dialog. "maximize" - request to maximize the dialog. "restore" - request to restore the dialog from minimized or maximized state. "pin" - request to pin the dialog. "unpin" - request to unpin the dialog.
 			*/
 			stateChanging: null,
 			/* cancel="false" Event which is raised after the state of the dialog was changed.
@@ -851,7 +843,7 @@
 					//  - "close"
 					//  - "minimize"
 					//  - "maximize"
-					//  - "restpore"
+					//  - "restore"
 					//  - "pin"
 					//  - "unpin"
 					ui.action
@@ -862,23 +854,15 @@
 					stateChanged : function(evt, ui) {...}
 				});
 				```
-				The function takes arguments "evt" and "ui".
-				Use evt to obtain the browser event. That parameter can be null if the state was modified from the code.
-				Use ui.owner to obtain a reference to the igDialog.
-				Use ui.button to obtain the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
-				Use ui.oldState to obtain the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
-				Use ui.oldPinned to obtain the boolean value of the old pin state of the dialog.
-				Use ui.action to obtain the name of the action. That can be one of the following:
-				"open" - the dialog was opened. Note: the event is raised before a possible "openAnimation" started.
-				"close" - the dialog was closed. Note: the event is raised before a possible "closeAnimation" started.
-				"minimize" - the dialog was minimized
-				"maximize" - the dialog was maximized
-				"restore" - the dialog was restored from minimized or maximized state
-				"pin" - the dialog was pinned
-				"unpin" - the dialog was unpinned
+				eventArgument="evt" argType="event" JQuery event object. That parameter can be null if the state was modified from the code.
+				eventArgument="ui.owner" argType="object" Gets a reference to the igDialog widget.
+				eventArgument="ui.button" argType="string" Gets the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
+				eventArgument="ui.oldState" argType="string" Gets the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
+				eventArgument="ui.oldPinned" argType="bool" Gets the boolean value of the old pin state of the dialog.
+				eventArgument="ui.action" argType="string" Gets the name of the action. That can be one of the following: "open" - the dialog was opened. Note: the event is raised before a possible "openAnimation" started. "close" - the dialog was closed. Note: the event is raised before a possible "closeAnimation" started. "minimize" - the dialog was minimized. "maximize" - the dialog was maximized. "restore" - the dialog was restored from minimized or maximized state. "pin" - the dialog was pinned. "unpin" - the dialog was unpinned.
 			*/
 			stateChanged: null,
-			/* cancel="false" Event which is raised after the end of the animation when the dialod was closed or opened.
+			/* cancel="false" Event which is raised after the end of the animation when the dialog was closed or opened.
 				```
 				//Bind after initialization
 				$(document).delegate(".selector", "igdialoganimationended", function (evt, ui) {
@@ -899,11 +883,12 @@
 					animationEnded : function(evt, ui) {...}
 				});
 				```
-				The function takes arguments "evt" and "ui".
-				Use ui.owner to obtain a reference to the igDialog.
-				Use ui.action to obtain the name of the action, which triggered the animation.
-				"open" - the dialog was opened
-				"close" - the dialog was closed
+				eventArgument="evt" argType="event" JQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the igDialog widget.
+				eventArgument="ui.button" argType="string" Gets the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
+				eventArgument="ui.oldState" argType="string" Gets the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
+				eventArgument="ui.oldPinned" argType="bool" Gets the boolean value of the old pin state of the dialog.
+				eventArgument="ui.action" argType="string" Gets the name of the action, which triggered the animation.
 			*/
 			animationEnded: null,
 			/* cancel="false" Event which is raised when the dialog or its content gets focus.
@@ -921,9 +906,8 @@
 				$(".selector").igDialog({
 					focus : function(evt, ui) {...}
 				```
-				The function takes arguments "evt" and "ui".
-				Use evt to obtain the browser event.
-				Use ui.owner to obtain a reference to the igDialog.
+				eventArgument="evt" argType="event" JQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the igDialog widget.
 			*/
 			focus: null,
 			/* cancel="false" Event which is raised when the dialog or its content loses focus.
@@ -942,9 +926,8 @@
 					blur : function(evt, ui) {...}
 				});
 				```
-				The function takes arguments "evt" and "ui".
-				Use evt to obtain the browser event.
-				Use ui.owner to obtain a reference to the igDialog.
+				eventArgument="evt" argType="event" JQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the igDialog widget.
 			*/
 			blur: null
 		},
