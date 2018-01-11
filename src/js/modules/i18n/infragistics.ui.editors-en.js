@@ -32,6 +32,7 @@
 		ariaMaskEditorFieldLabel: 'Mask Editor',
 		ariaDateEditorFieldLabel: 'Date Editor',
 		ariaDatePickerFieldLabel: 'Date Picker',
+		ariaTimePickerFieldLabel: 'Time Picker',
 		ariaSpinUpButton: 'Spin up',
 		ariaSpinDownButton: 'Spin down',
 		ariaDropDownButton: 'Drop down',
@@ -86,7 +87,8 @@
 		noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems.",
 		decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
 		decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
-		decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
+		decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values.",
+		timePickerNoSuchMethod: "The time picker does not support this method."
 	};
 
 	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.en.Editor;
