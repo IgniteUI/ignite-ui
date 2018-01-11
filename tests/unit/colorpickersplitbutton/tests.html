@@ -10,12 +10,10 @@
     <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.splitbutton.css" media="screen" />
     <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.colorpicker.css" media="screen" />
 	
-	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-     
-	<!-- <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<link type="text/css" href="../../../node_modules/qunitjs/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
-	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script> -->
+	<script type="text/javascript" src="../../../node_modules/qunitjs/qunit/qunit.js"></script>
 
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -27,122 +25,11 @@
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.colorpickersplitbutton.js"></script>
 
-	<script type="text/javascript">
-	    var equalWithEpsilon = function (a, b, epsilon) {
-	        return Math.abs(a - b) < epsilon;
-	    }
-
-	    var unitTestsSetup = {
-	        colorPickerSplitButtonSelector: "color-picker-split-button",
-	        actualColorPickerSplitButton: null,
-	        beforeEach: function () {
-	            $('body').append($("<div></div>").attr("id", this.colorPickerSplitButtonSelector));
-	            $(this.id(this.colorPickerSplitButtonSelector)).igColorPickerSplitButton({
-	                items: [{
-	                    name: "textColor",
-	                    label: "Font Color",
-	                    icon: "ui-igbutton-forecolor"
-	                }],
-	                defaultItemName: "textColor",
-	                hasDefaultIcon: false,
-	                selectedTextColor: "red",
-	                expanded: function (evt, ui) {
-	                	$('<input>').attr('type','hidden').val('expanded').appendTo(evt.target);
-	                },
-	                 click: function (evt, ui) {
-	                	$('<input>').attr('type','hidden').val('clicked').appendTo(evt.target);
-	                },
-	                collapsed: function (evt, ui) {
-	                	$('<input>').attr('type','hidden').val('collapsed').appendTo(evt.target);
-	                }
-	            });
-	            this.actualColorPickerSplitButton = $(this.id(this.colorPickerSplitButtonSelector));
-	        },
-	        afterEach: function () {
-	            this.actualColorPickerSplitButton.igColorPickerSplitButton("destroy");
-	            $(this.id(this.colorPickerSplitButtonSelector)).remove();
-	        },
-	        id: function (selector) {
-	            return "#" + selector;
-	        }
-	    };
-
-	    QUnit.module("igColorPickerSplitButton unit tests", unitTestsSetup);
-
-
-	    QUnit.test("_onColorSelect", function (assert) {
-			assert.expect(1)
-	    	var firstElemCustomColorsColorPicker = this.actualColorPickerSplitButton.parent().find(".igColorPicker-customColors").find(".igColorPicker-color").first();
-	        
-	        firstElemCustomColorsColorPicker.click();
-
-	        var getDefaultColorOptionVal = this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor");
-	        var getColorFromCustColorsColorPicker = firstElemCustomColorsColorPicker.css("background-color");
-			
-	        assert.deepEqual(getDefaultColorOptionVal, getColorFromCustColorsColorPicker, "default color was not changed");
-	    });
-
-	    QUnit.test("expand", function (assert) {
-			assert.expect(1)
-	        this.actualColorPickerSplitButton.igColorPickerSplitButton("expand", true);
-	        this.actualColorPickerSplitButton.trigger('expanded');
-	        var isExpanded = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
-	        
-	        assert.equal(isExpanded, "expanded", "expand event was not triggered");
-	    });
-
-	    QUnit.test("setColor", function (assert) {
-			assert.expect(2)
-	    	var getDefaultValue = this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor");
-	    	assert.equal(getDefaultValue, "#000", "default color value isn't euqal with given color value");
-
-	    	var  color = "#f0f0f0";
-	        this.actualColorPickerSplitButton.igColorPickerSplitButton("setColor", color);
-	        var getDefaultChangedColor = this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor");
-	        
-	        assert.equal(getDefaultChangedColor, color, "default color value wasn't changed");
-	    });
-
-	    QUnit.test("_onDefaultButtonClick", function (assert) {
-			assert.expect(2)
-	    	// Check before click if input element exist
-	    	var clickInputValue = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
-	    	var getDefaultButton = this.actualColorPickerSplitButton.igColorPickerSplitButton().children(":first").children(":first");
-	    	
-	    	assert.equal(clickInputValue, undefined, "default button was clicked");
-	    	
-	    	getDefaultButton.click();
-	    	// Check after click the input element value
-	    	clickInputValue = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
-			debugger;
-	    	assert.equal(clickInputValue, "clicked", "default button was not clicked");
-	    });
-
-	    QUnit.test("_setOptinWithEqualKeyValues", function (assert) {
-			assert.expect(3)
-	    	var color = "#afafaf";
-
-	    	assert.notEqual(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "defaultColor option hasn't different value from given color value");
-
-	    	this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor", color);
-	    	assert.equal(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "default color value was not changed");
-	    	
-	    	this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor", color);
-	    	assert.equal(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "default color value was change with given color value");
-	    
-	    });
-	    
-	    QUnit.test("collapse", function (assert) {
-			assert.expect(1)
-			this.actualColorPickerSplitButton.igColorPickerSplitButton("collapse", true);
-			var isCollapsed = this.actualColorPickerSplitButton.igColorPickerSplitButton().find("input").val();
-			assert.ok(isCollapsed, "collapse event was not trigger");
-	    });
-	</script>
+	<script type="text/javascript" src="colorpickersplitbutton-test.js"></script>
 </head>
 <body>
-	<!--<div id="qunit"></div>
-    <div id="qunit-fixture"></div>-->
+	<!-- <div id="qunit"></div> -->
+    <div id="qunit-fixture"></div>
 	
 	
 	<div style="float:right;width:400px;overflow:auto;">
@@ -151,6 +38,5 @@
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
 	</div>
-	
 </body>
 </html>
