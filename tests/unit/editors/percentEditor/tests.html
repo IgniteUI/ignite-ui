@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 	<meta charset="UTF-8" />
 	<title>Infragistics jQuery Client Editors - Numeric Editors </title>
@@ -22,7 +23,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                  
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 
@@ -31,306 +32,406 @@
 	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
-	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 		$(document).ready(function () {
-			var util = $.ig.TestUtil;
-			// Create a editors
-			function loadTestbeds() {
-				$(function () {
-					$("#pEditor1").igPercentEditor({
-						dataMode: 'float',
-						displayFactor: 1,
-						value: 10,
-						percentSymbol: "%%"
-					});
-					$("#pEditor2").igPercentEditor({
-						displayFactor: 1,
-						value: 30,
-						positivePattern: "%(n)"
-					});
-					$("#pEditor4").igPercentEditor({
-						displayFactor: 100,
-						dataMode: 'float',
-						value: 0.05
-					});
-					$("#pEditor6").igPercentEditor({
-					   displayFactor: 1
-					});
-					$("#pEditor7").igPercentEditor({
-						buttonType: "spin",
-						maxDecimals: 5,
-						minValue: 0.2,
-						maxValue: 0.6
-					});
-					$("#emptyEditor").igPercentEditor({
-						displayFactor: 1,
-						buttonType: "spin, clear"
-					});
-					$("#percentEditorList").igPercentEditor({
-						listItems: [0.12, 0.53, 1.00, 1.50],
-						isLimitedToListValues: true
-					});
-					$("#pEditor8").igPercentEditor({
-						scientificFormat : "e"
-					});
-					$("#pEditor9").igPercentEditor();
+			QUnit.module("igPercentEditor unit tests", {
+				divTag: '<div></div>',
+				inputTag: '<input></input>'
+			});
 
-					$("#pEditor10").igPercentEditor({
-						buttonType:"spin",
-						spinWrapAround: true,
-						maxValue: 3,
-						minValue: 0,
-						displayFactor : 1
-					});
+			// var util = $.ig.TestUtil;
+			// // Create a editors
+			// function loadTestbeds() {
+			// 	$(function () {
+			// 		$("#pEditor1").igPercentEditor({
+			// 			dataMode: 'float',
+			// 			displayFactor: 1,
+			// 			value: 10,
+			// 			percentSymbol: "%%"
+			// 		});
+			// 		$("#pEditor2").igPercentEditor({
+			// 			displayFactor: 1,
+			// 			value: 30,
+			// 			positivePattern: "%(n)"
+			// 		});
+			// 		$("#pEditor4").igPercentEditor({
+			// 			displayFactor: 100,
+			// 			dataMode: 'float',
+			// 			value: 0.05
+			// 		});
+			// 		$("#pEditor6").igPercentEditor({
+			// 		   displayFactor: 1
+			// 		});
+			// 		$("#pEditor7").igPercentEditor({
+			// 			buttonType: "spin",
+			// 			maxDecimals: 5,
+			// 			minValue: 0.2,
+			// 			maxValue: 0.6
+			// 		});
+			// 		$("#emptyEditor").igPercentEditor({
+			// 			displayFactor: 1,
+			// 			buttonType: "spin, clear"
+			// 		});
+			// 		$("#percentEditorList").igPercentEditor({
+			// 			listItems: [0.12, 0.53, 1.00, 1.50],
+			// 			isLimitedToListValues: true
+			// 		});
+			// 		$("#pEditor8").igPercentEditor({
+			// 			scientificFormat : "e"
+			// 		});
+			// 		$("#pEditor9").igPercentEditor();
 
-					$("#pEditor11").igPercentEditor({
-						buttonType:"spin",
-						value: 3,
-						maxValue: 3,
-						spinWrapAround: true
-					});
+			// 		$("#pEditor10").igPercentEditor({
+			// 			buttonType:"spin",
+			// 			spinWrapAround: true,
+			// 			maxValue: 3,
+			// 			minValue: 0,
+			// 			displayFactor : 1
+			// 		});
 
-					$("#pasteEditor").igPercentEditor();
+			// 		$("#pEditor11").igPercentEditor({
+			// 			buttonType:"spin",
+			// 			value: 3,
+			// 			maxValue: 3,
+			// 			spinWrapAround: true
+			// 		});
 
-					$("#percentDouble").igPercentEditor({       
-						displayFactor : 1,
-						value: 2.5,
-						spinDelta: 2,
-						dataMode: "double"
-					});
+			// 		$("#pasteEditor").igPercentEditor();
+
+			// 		$("#percentDouble").igPercentEditor({       
+			// 			displayFactor : 1,
+			// 			value: 2.5,
+			// 			spinDelta: 2,
+			// 			dataMode: "double"
+			// 		});
+			// 	});
+			// }
+			// initialized = false;
+			// module("igPercentEditor", {
+			// 	setup: function () {
+			// 		//pause testing until tree is initialized
+			// 		if (!initialized) {
+			// 			stop();
+			// 			loadTestbeds();
+			// 			setTimeout(function () { start(); }, 100);
+			// 			initialized = true;
+			// 		}
+			// 	},
+			// 	teardown: function () {
+			// 	}
+			// });
+
+			QUnit.test('[ID1] Percent Editor initialization', function (assert) {
+				assert.expect(5);
+
+				var editor1 = $.ig.TestUtil.appendToFixture(this.divTag, { id: "pEditor1" });
+				editor1.igPercentEditor({
+					dataMode: 'float',
+					displayFactor: 1,
+					value: 10,
+					percentSymbol: "%%"
 				});
-			}
-			initialized = false;
-			module("igPercentEditor", {
-				setup: function () {
-					//pause testing until tree is initialized
-					if (!initialized) {
-						stop();
-						loadTestbeds();
-						setTimeout(function () { start(); }, 100);
-						initialized = true;
-					}
-				},
-				teardown: function () {
-				}
+
+				var editor2 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor2" });
+				editor2.igPercentEditor({
+					displayFactor: 1,
+					value: 30,
+					positivePattern: "%(n)"
+				});
+
+				assert.ok(typeof (editor1.igPercentEditor) === 'function', "Editor's script is not loaded.");
+				assert.ok(editor1.data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in an input element.');
+				assert.ok(editor2.data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in a div element.');
+				assert.equal(editor1.igPercentEditor("value"), 10, 'The initial value is not as expexted.');
+				assert.equal(editor2.igPercentEditor("value"), 30, 'The initial value is not as expexted.');
 			});
 
-			var testId = 'Percent Editor initialization.';
-			test(testId, 5, function () {
-				ok(typeof ($("#pEditor1").igPercentEditor) === 'function', "Editors Script is not loaded");
-				ok($('#pEditor1').data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in an input');
-				ok($('#pEditor2').data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in a div');
-				equal($('#pEditor1').igPercentEditor("value"), 10, 'The initial value is not as expexted');
-				equal($('#pEditor2').igPercentEditor("value"), 30, 'The initial value is not as expexted');			
+			QUnit.test('[ID2] Percent Editor API', function (assert) {
+				assert.expect(6);
+
+				var editor1 = $.ig.TestUtil.appendToFixture(this.divTag, { id: "pEditor1" });
+				editor1.igPercentEditor({
+					dataMode: 'float',
+					displayFactor: 1,
+					value: 10,
+					percentSymbol: "%%"
+				});
+
+				var expectdDisplayValue = "10.00%%";
+				editorDisplayValue = editor1.igPercentEditor("displayValue");
+				assert.equal(editorDisplayValue, expectdDisplayValue, "Initial editor display Value");
+
+				editor1.igPercentEditor("percentSymbol", "%");
+				expectdDisplayValue = "10.00%";
+				editorDisplayValue = editor1.igPercentEditor("displayValue");
+				assert.equal(editorDisplayValue, expectdDisplayValue, "Editor value after changing the percent option.");
+				assert.equal(editor1.igPercentEditor("percentSymbol"), "%");
+
+				editor1.igPercentEditor("option", "positivePattern", "+n%");
+				expectdDisplayValue = "+10.00%";
+				editorDisplayValue = editor1.igPercentEditor("displayValue");
+				assert.equal(editorDisplayValue, expectdDisplayValue, "Editor value after changing the positivePattern option.");
+
+				var editor4 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor4" });
+				editor4.igPercentEditor({
+					displayFactor: 100,
+					dataMode: 'float',
+					value: 0.05
+				});
+
+				var editor6 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor6" });
+				editor6.igPercentEditor({
+					displayFactor: 1
+				});
+
+				//Internal value parse
+				editor6.igPercentEditor("option", "decimalSeparator", "x");
+				assert.strictEqual(editor6.data("igPercentEditor")._valueFromText("1264x89"), 1264.89, "The parsed editor value is not correct");
+				assert.strictEqual(editor4.data("igPercentEditor")._valueFromText("22%"), 0.22, "The parsed editor value is not correct");
 			});
 
-			var testId = 'Percent Editor API';
-			test(testId, 6, function () {
-				var editor = $('#pEditor1'), value;
-				
-				value = editor.igPercentEditor("displayValue");
-				equal(value, "10.00%%", "Initial Value");
-				editor.igPercentEditor("percentSymbol", "%");
-				value = editor.igPercentEditor("displayValue");
-				equal(value, "10.00%", "Value after change");
-				equal(editor.igPercentEditor("percentSymbol"), "%");
-				editor.igPercentEditor("option", "positivePattern", "+n%");
-				value = editor.igPercentEditor("displayValue");
-				equal(value, "+10.00%", "Value after change");
 
-				//internal value parse
-				$("#pEditor6").igPercentEditor("option", "decimalSeparator", "x");
-				strictEqual($('#pEditor6').data("igPercentEditor")._valueFromText("1264x89"), 1264.89, "The parsed value is not correct");
-				strictEqual($('#pEditor4').data("igPercentEditor")._valueFromText("22%"), 0.22, "The parsed value is not correct");
+
+			QUnit.test('[ID3] Runtime Min/Max value', function (assert) {
+				assert.expect(6);
+
+				var expectedEditorValue = 0.5;
+				var editor = $.ig.TestUtil.appendToFixture(this.inputTag);
+				editor.igPercentEditor({
+					value: expectedEditorValue
+				});
+
+				editor.igPercentEditor("option", "minValue", -1.5);
+				var actualEditorValue = editor.igPercentEditor("value");
+				assert.strictEqual(actualEditorValue, expectedEditorValue, "Editor value should remain the same");
+				editor.igPercentEditor("option", "maxValue", 0.5);
+				actualEditorValue = editor.igPercentEditor("value");
+				assert.strictEqual(actualEditorValue, expectedEditorValue, "Editor value should remain the same");
+				editor.igPercentEditor("option", "maxValue", 0.4);
+				actualEditorValue = editor.igPercentEditor("value");
+				assert.strictEqual(actualEditorValue, 0.4, "Editor value should be set to max value.");
+				assert.equal(editor.igPercentEditor("field").val(), "40.00%", "Text not updated with max value");
+				editor.igPercentEditor("value", 0);
+				editor.igPercentEditor("option", "minValue", 0.1);
+				actualEditorValue = editor.igPercentEditor("value");
+				assert.strictEqual(actualEditorValue, 0.1, "Editor value should be set to min value.");
+				assert.equal(editor.igPercentEditor("field").val(), "10.00%", "Text not updated with min value");
 			});
 
-			testId = "Runtime Min/Max value";
-			test(testId, 6, function () {
-				var $editor = $('<input />').appendTo("#testBedContainer")
-					.igPercentEditor({
-						value: 0.5
-					});
-				
-				$editor.igPercentEditor("option", "minValue", -1.5);
-				strictEqual($editor.igPercentEditor("value"), 0.5, "Value should remain the same");
-				$editor.igPercentEditor("option", "maxValue", 0.5);
-				strictEqual($editor.igPercentEditor("value"), 0.5, "Value should remain the same");
-				$editor.igPercentEditor("option", "maxValue", 0.4);
-				strictEqual($editor.igPercentEditor("value"), 0.4, "Value should be set to max");
-				equal($editor.igPercentEditor("field").val(), "40.00%", "Text not updated with max value");
-				$editor.igPercentEditor("value", 0);
-				$editor.igPercentEditor("option", "minValue", 0.1);
-				strictEqual($editor.igPercentEditor("value"), 0.1, "Value should be set to min");
-				equal($editor.igPercentEditor("field").val(), "10.00%", "Text not updated with min value");
+			QUnit.test('[ID4] Editors initialization with display factor different from 1 and 100', function (assert) {
+				assert.expect(3);
 
-				$editor.remove();
-			});
+				var editorInput3 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor3" });
+				var editorInput4 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor4" });
+				var editorInput5 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor5" });
+				editorInput4.igPercentEditor({
+					displayFactor: 100,
+					dataMode: 'float',
+					value: 0.05
+				});
 
-			var testId = 'Editors initialization with display factor different from 1 and 100';
-			test(testId, 3, function () {			   
-				throws(function () {
-				  $("#pEditor3").igPercentEditor({
-					   displayFactor: 50
+				assert.throws(function () {
+					editorInput3.igPercentEditor({
+						displayFactor: 50
 					});
 				}, "There is no exception when the display factor is not 1 or 100");
-				throws(function () {
-					$("#pEditor5").igPercentEditor({
-					   displayFactor: "50"
+				assert.throws(function () {
+					editorInput5.igPercentEditor({
+						displayFactor: "50"
 					});
-				}, "DisplayFactor option is of type number");	
-				throws(function () {
-					$("#pEditor4").igPercentEditor("option", "displayFactor", "14");
-				}, "DisplayFactor option is of type number");	
+				}, "DisplayFactor option is of type number");
+				assert.throws(function () {
+					editorInput4.igPercentEditor("option", "displayFactor", "14");
+				}, "DisplayFactor option is of type number");
 			});
-			
-			var testId = 'Testing display factor with default value of 100';
-			test(testId, 18, function () {
-				equal($('#pEditor4').igPercentEditor("value"), 0.05, 'The initial value is not as expexted');
-				$("#pEditor4").igPercentEditor("value", -2.14);
-				equal($('#pEditor4').igPercentEditor("value"), -2.14, "New value is not correct");
-				equal($("#pEditor4").igPercentEditor("displayValue"), "-214.00%", "Display value by displayFactor = 100 is wrong");
-				throws(function () {
-					$("#pEditor4").igPercentEditor("option", "displayFactor", 14);
+
+			QUnit.test('[ID5] Testing display factor with default value of 100', function (assert) {
+				assert.expect(18);
+
+				var editorInput4 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor4" });
+				editorInput4.igPercentEditor({
+					displayFactor: 100,
+					dataMode: 'float',
+					value: 0.05
+				});
+
+				assert.equal(editorInput4.igPercentEditor("value"), 0.05, 'The initial value is not as expexted');
+				editorInput4.igPercentEditor("value", -2.14);
+				assert.equal(editorInput4.igPercentEditor("value"), -2.14, "New value is not correct");
+				assert.equal(editorInput4.igPercentEditor("displayValue"), "-214.00%", "Display value by displayFactor = 100 is wrong");
+				assert.throws(function () {
+					editorInput4.igPercentEditor("option", "displayFactor", 14);
 				}, "There is no exception when the display factor is not 1 or 100");
-				
-				$("#pEditor7").igPercentEditor("value", 700);
-				equal($('#pEditor7').igPercentEditor("value"), 0.6, "New value is not correct");
-				$("#pEditor7").igPercentEditor("value", 0.3);
-				equal($('#pEditor7').igPercentEditor("value"), 0.3, "New value is not correct");
-				equal($('#pEditor7').igPercentEditor("displayValue"), "30.00%", "New dispaly value is not correct");
-				$("#pEditor7").igPercentEditor("value", 700);
-				equal($('#pEditor7').igPercentEditor("value"), 0.6, "New value is not correct");
 
-				//$("#pEditor7").igPercentEditor("setFocus");
-				$("#pEditor7").igPercentEditor("field").val(30);
-				$("#pEditor7").igPercentEditor("field").trigger("paste");
-				// need to blur to update value..
-				$("#pEditor7").igPercentEditor("field").trigger("blur");
-				equal($('#pEditor7').igPercentEditor("value"), 0.3, "New value is not correct");
+				var editorInput7 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor7" });
+				editorInput7.igPercentEditor({
+					buttonType: "spin",
+					maxDecimals: 5,
+					minValue: 0.2,
+					maxValue: 0.6
+				});
 
-				$("#pEditor7").igPercentEditor("field").val(90);
-				$("#pEditor7").igPercentEditor("field").trigger("paste");
-				$("#pEditor7").igPercentEditor("field").trigger("blur");
-				equal($('#pEditor7').igPercentEditor("value"), 0.6, "Max value not set");
+				editorInput7.igPercentEditor("value", 700);
+				assert.equal(editorInput7.igPercentEditor("value"), 0.6, "New value is not correct");
+				editorInput7.igPercentEditor("value", 0.3);
+				assert.equal(editorInput7.igPercentEditor("value"), 0.3, "New value is not correct");
+				assert.equal(editorInput7.igPercentEditor("displayValue"), "30.00%", "New dispaly value is not correct");
+				editorInput7.igPercentEditor("value", 700);
+				assert.equal(editorInput7.igPercentEditor("value"), 0.6, "New value is not correct");
 
+				editorInput7.igPercentEditor("setFocus");
+				editorInput7.igPercentEditor("field").val(30);
+				editorInput7.igPercentEditor("field").trigger("paste");
+				// Need to blur to update value..
+				editorInput7.igPercentEditor("field").trigger("blur");
+				assert.equal(editorInput7.igPercentEditor("value"), 0.3, "New value is not correct");
 
-				$("#pEditor7").igPercentEditor("field").val(20);
-				$("#pEditor7").igPercentEditor("field").trigger("paste");
-				$("#pEditor7").igPercentEditor("field").trigger("blur");
-				equal($('#pEditor7').igPercentEditor("value"), 0.2, "New value is not correct");
+				editorInput7.igPercentEditor("field").val(90);
+				editorInput7.igPercentEditor("field").trigger("paste");
+				editorInput7.igPercentEditor("field").trigger("blur");
+				assert.equal(editorInput7.igPercentEditor("value"), 0.6, "Max value not set");
 
-				$("#pEditor7").igPercentEditor("field").val(10);
-				$("#pEditor7").igPercentEditor("field").trigger("paste");
-				$("#pEditor7").igPercentEditor("field").trigger("blur");
-				equal($('#pEditor7').igPercentEditor("value"), 0.2, "New value is not correct");
+				editorInput7.igPercentEditor("field").val(20);
+				editorInput7.igPercentEditor("field").trigger("paste");
+				editorInput7.igPercentEditor("field").trigger("blur");
+				assert.equal(editorInput7.igPercentEditor("value"), 0.2, "New value is not correct");
+
+				editorInput7.igPercentEditor("field").val(10);
+				editorInput7.igPercentEditor("field").trigger("paste");
+				editorInput7.igPercentEditor("field").trigger("blur");
+				assert.equal(editorInput7.igPercentEditor("value"), 0.2, "New value is not correct");
 
 				// 207134: Entered value of 12.12 is chaged to 12.11 in the Percent Editor
-				var field = $('#pEditor4').igPercentEditor("field");
+				var field = editorInput4.igPercentEditor("field");
 				field.focus();
 				field.val("12.12");
 				field.blur();
-				equal($('#pEditor4').igPercentEditor("displayValue"), "12.12%", "Decimal percent display value changed");
-				equal($('#pEditor4').igPercentEditor("value"), 0.1212, "Decimal percent value changed");
+				assert.equal(editorInput4.igPercentEditor("displayValue"), "12.12%", "Decimal percent display value changed");
+				assert.equal(editorInput4.igPercentEditor("value"), 0.1212, "Decimal percent value changed");
 
 				// 20719:  Entered value is not correct after blurring the editor
 				field.focus();
 				field.val("33.33");
 				field.blur();
-				equal($('#pEditor4').igPercentEditor("displayValue"), "33.33%", "Decimal percent display value changed");
-				equal($('#pEditor4').igPercentEditor("value"), 0.3333, "Decimal percent value changed");
+				assert.equal(editorInput4.igPercentEditor("displayValue"), "33.33%", "Decimal percent display value changed");
+				assert.equal(editorInput4.igPercentEditor("value"), 0.3333, "Decimal percent value changed");
 				field.focus();
 				field.val("15.50");
 				field.blur();
-				equal($('#pEditor4').igPercentEditor("displayValue"), "15.50%", "Decimal percent display value changed");
-				equal($('#pEditor4').igPercentEditor("value"), 0.155, "Decimal percent value changed");
-
+				assert.equal(editorInput4.igPercentEditor("displayValue"), "15.50%", "Decimal percent display value changed");
+				assert.equal(editorInput4.igPercentEditor("value"), 0.155, "Decimal percent value changed");
 			});
 
-			testId = "Group and decimal Separators";
-			test(testId, 1, function () {
-				var containerInput = $('#pEditor6').igPercentEditor("field");
+			QUnit.test('[ID6] Group and decimal separators', function (assert) {
+				assert.expect(1);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor6" });
+				editorInput.igPercentEditor({
+					displayFactor: 1
+				});
 
 				// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
-				$("#pEditor6").igPercentEditor("option", "groupSeparator", "");
-				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
-				$("#pEditor6").igPercentEditor("option", "value", 1264.89);
-				equal($("#pEditor6").igPercentEditor("displayValue"), "1264,89%", "The decimal value is not correct");
+				editorInput.igPercentEditor("option", "groupSeparator", "");
+				editorInput.igPercentEditor("option", "decimalSeparator", ",");
+				editorInput.igPercentEditor("option", "value", 1264.89);
+				assert.equal(editorInput.igPercentEditor("displayValue"), "1264,89%", "The decimal value is not correct.");
 			});
-			testId = "Spin functionality";
-			test(testId, 4, function () {
+
+			QUnit.test('[ID7] Spin functionality', function (assert) {
+				assert.expect(4);
+
 				// For 207435 Spinning up and down is not possible when the editor is empty
-				$("#percentEditor3").igPercentEditor("value", null);
-				$("#emptyEditor").igPercentEditor("spinUp");
-				equal($("#emptyEditor").igPercentEditor("value"), $("#emptyEditor").igPercentEditor("option", "spinDelta"), "Spin failed with no intial value");
+				var editorInput3 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor3" });
+				editorInput3.igPercentEditor();
+				editorInput3.igPercentEditor("value", null);
+				var emptyEditorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "emptyEditor" });
+				emptyEditorInput.igPercentEditor();
+				emptyEditorInput.igPercentEditor("spinUp");
+				assert.equal(emptyEditorInput.igPercentEditor("value"), emptyEditorInput.igPercentEditor("option", "spinDelta"), "Spin failed with no intial value.");
 
-				// spin in edit mode:
-				$("#pEditor7").igPercentEditor("value", 0.57);
-				$("#pEditor7").igPercentEditor("field").focus();
-				$("#pEditor7").igPercentEditor("spinDown");
-				equal($("#pEditor7").igPercentEditor("field").val(), "56", "Edit value after spin down is not correct");
-				$("#pEditor7").igPercentEditor("field").blur();
+				// Spin in edit mode:
+				var editorInput7 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor7" });
+				editorInput7.igPercentEditor({
+					buttonType: "spin",
+					maxDecimals: 5,
+					minValue: 0.2,
+					maxValue: 0.6
+				});
+				editorInput7.igPercentEditor("value", 0.57);
+				editorInput7.igPercentEditor("field").focus();
+				editorInput7.igPercentEditor("spinDown");
+				assert.equal(editorInput7.igPercentEditor("field").val(), "56", "Edit value after spin down is not correct");
+				editorInput7.igPercentEditor("field").blur();
 
-				// spin without edit mode
-				$("#pEditor7").igPercentEditor("value", 0.57);
-				$("#pEditor7").igPercentEditor("spinDown");
-				equal($('#pEditor7').igPercentEditor("value"), 0.56, "New value after spin down is not correct");
-				equal($('#pEditor7').igPercentEditor("displayValue"), "56.00%", "Display value after spin down is not correct");
+				// Spin without edit mode
+				editorInput7.igPercentEditor("value", 0.57);
+				editorInput7.igPercentEditor("spinDown");
+				assert.equal(editorInput7.igPercentEditor("value"), 0.56, "New value after spin down is not correct");
+				assert.equal(editorInput7.igPercentEditor("displayValue"), "56.00%", "Display value after spin down is not correct");
 			});
 
-			testId = "List items";
-			test(testId, 2, function () {
-				var field = $('#percentEditorList').igPercentEditor("field");
+			QUnit.test('[ID8] List items.', function (assert) {
+				assert.expect(2);
 
 				// For 207200: Values > 100 cannot be entered or selected when 'isLimitedToListValues: true'
+				var percentEditorListInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "percentEditorList" });
+				percentEditorListInput.igPercentEditor({
+					listItems: [0.12, 0.53, 1.00, 1.50],
+					isLimitedToListValues: true
+				});
+				var field = percentEditorListInput.igPercentEditor("field");
+
 				field.focus();
 				field.val("100");
 				field.blur();
-				equal($("#percentEditorList").igPercentEditor("displayValue"), "100.00%", "Entered value is not accepted");
-				$('#percentEditorList').igPercentEditor("dropDownButton").click();
-				$('#percentEditorList').igPercentEditor("dropDownContainer").find(".ui-igedit-listitem").filter(function () {
+				assert.equal(percentEditorListInput.igPercentEditor("displayValue"), "100.00%", "Entered value is not accepted");
+				percentEditorListInput.igPercentEditor("dropDownButton").click();
+				percentEditorListInput.igPercentEditor("dropDownContainer").find(".ui-igedit-listitem").filter(function () {
 					return $(this).text() === "150";
 				}).click();
-				equal($("#percentEditorList").igPercentEditor("value"), 1.5, "Selected value is not accepted");
+				assert.equal(percentEditorListInput.igPercentEditor("value"), 1.5, "Selected value is not accepted");
 			});
 
-			testId = "Lists testing P2, selection-value match";
-			test(testId, 44, function () {
-				var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
-					editorSetup = function (options) {
-						$editor = $("<input />").appendTo("#testBedContainer")
-						.igPercentEditor(options);
-						$field = $editor.igPercentEditor("field");
-						$ddButton = $editor.igPercentEditor("dropDownButton");
-						$spinUpButton = $editor.igPercentEditor("spinUpButton");
-						$spinDownButton = $editor.igPercentEditor("spinDownButton");
-					};
+			QUnit.test('[ID9] Lists testing P2, selection-value match', function (assert) {
+				assert.expect(44);
+
+				var editorInput, field, ddButton, spinUpButton, spinDownButton;
+				var util = $.ig.TestUtil;
+
+				var editorSetup = function (options, element) {
+					editorInput = util.appendToFixture(element);
+					editorInput.igPercentEditor(options);
+					field = editorInput.igPercentEditor("field");
+					ddButton = editorInput.igPercentEditor("dropDownButton");
+					spinUpButton = editorInput.igPercentEditor("spinUpButton");
+					spinDownButton = editorInput.igPercentEditor("spinDownButton");
+				};
 
 				editorSetup({
 					listItems: [0.1, 0.2, 0.3],
 					buttonType: "dropdown",
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
-				});
+				}, this.inputTag);
 
-				$editor.igPercentEditor("value", 0.1);
-				$ddButton.click();
-				ok($editor.igPercentEditor("getSelectedListItem").hasClass($.ui.igPercentEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
-				equal($editor.igPercentEditor("selectedListIndex"), 0, "Selected index does not reflect value");
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "10", "Selected item does not reflect value");
+				editorInput.igPercentEditor("value", 0.1);
+				ddButton.click();
+				assert.ok(editorInput.igPercentEditor("getSelectedListItem").hasClass($.ui.igPercentEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+				assert.equal(editorInput.igPercentEditor("selectedListIndex"), 0, "Selected index does not reflect value");
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "10", "Selected item does not reflect value");
 
-				// select item2:
-				$editor.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "20", "Selected item (API) did not update after selection");
+				// Select item2:
+				editorInput.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "20", "Selected item (API) did not update after selection");
 
-				// change value in edit mode:
-				$ddButton.click();
-				util.keyDownChar(51 /*3*/, $field);
-				$field.val("30");
-				util.keyPressChar(51, $field);
-				util.keyUpChar(51, $field);
-				util.keyInteraction(13, $field);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "30", "Selected item (API) did not update after value update.");
-				$editor.remove();
+				// Change value in edit mode:
+				ddButton.click();
+				$.ig.TestUtil.keyDownChar(51 /*3*/, field);
+				field.val("30");
+				$.ig.TestUtil.keyPressChar(51, field);
+				$.ig.TestUtil.keyUpChar(51, field);
+				$.ig.TestUtil.keyInteraction(13, field);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "30", "Selected item (API) did not update after value update.");
 
 				//initial value, clear:
 				editorSetup({
@@ -339,52 +440,51 @@
 					value: 0.02,
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
-				});
-				equal($editor.igPercentEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
-				equal($editor.igPercentEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
+				}, this.inputTag);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
+				assert.equal(editorInput.igPercentEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
 
-				$editor.igPercentEditor("value", 999);
-				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+				editorInput.igPercentEditor("value", 999);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
 
-				$editor.igPercentEditor("value", 0.03);
-				$ddButton.click();
-				util.keyInteraction(38, $field);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value.");
-				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "2", "Active item did not move from original selection.");
-				util.keyDownChar(54 /*6*/, $field);
-				$field.val("156");
-				util.keyPressChar(54, $field);
-				util.keyUpChar(54, $field);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "156", "Selected item not updated when typing.");
-				util.keyInteraction(40, $field);
-				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "99", "Active item did not move from new selection.");
-				util.keyDownChar(56 /*8*/, $field);
-				$field.val("8");
-				util.keyPressChar(56, $field);
-				util.keyUpChar(56, $field);
-				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
-				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");						
-				util.keyInteraction(13, $field);
-				equal($editor.igPercentEditor("value"), 0.08, "Value not set correctly on enter without list selection.");
-				ok(!$editor.igPercentEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
-				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
+				editorInput.igPercentEditor("value", 0.03);
+				ddButton.click();
+				util.keyInteraction(38, field);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value.");
+				assert.equal(editorInput.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "2", "Active item did not move from original selection.");
+				util.keyDownChar(54 /*6*/, field);
+				field.val("156");
+				util.keyPressChar(54, field);
+				util.keyUpChar(54, field);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "156", "Selected item not updated when typing.");
+				util.keyInteraction(40, field);
+				assert.equal(editorInput.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "99", "Active item did not move from new selection.");
+				util.keyDownChar(56 /*8*/, field);
+				field.val("8");
+				util.keyPressChar(56, field);
+				util.keyUpChar(56, field);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
+				assert.equal(editorInput.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");
+				util.keyInteraction(13, field);
+				assert.equal(editorInput.igPercentEditor("value"), 0.08, "Value not set correctly on enter without list selection.");
+				assert.notOk(editorInput.igPercentEditor("dropDownVisible"), "Dropdown list did not close on enter.");
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
 
-				$ddButton.click();
-				$field.val("2");
-				util.keyInteraction(13, $field);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "2", "Selected item does not reflect value.");
+				ddButton.click();
+				field.val("2");
+				util.keyInteraction(13, field);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "2", "Selected item does not reflect value.");
 
-				$editor.igPercentEditor("clearButton").click();
-				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
-				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
-				$field.blur();
-				$editor.igPercentEditor("value", 0.99);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "99", "Selected item does not reflect value.");
-				$editor.igPercentEditor("clearButton").click();
-				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
-				$editor.remove();
+				editorInput.igPercentEditor("clearButton").click();
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
+				assert.equal(editorInput.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+				field.blur();
+				editorInput.igPercentEditor("value", 0.99);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "99", "Selected item does not reflect value.");
+				editorInput.igPercentEditor("clearButton").click();
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
 
-				// spin + isLimitedToListValues
+				// Spin + isLimitedToListValues
 				var listItems = [0.05, 0.445, 0.44, 5.75, 0.554, 2.43, 0.1];
 				editorSetup({
 					spinDelta: 1,
@@ -394,423 +494,456 @@
 					value: 0.44,
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
-				});
-				util.click($spinUpButton);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
-				strictEqual($editor.igPercentEditor("value"), 0.445, "Value not changed on spin button");
+				}, this.inputTag);
+
+				util.click(spinUpButton);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
+				assert.strictEqual(editorInput.igPercentEditor("value"), 0.445, "Value not changed on spin button");
 				for (var i = 0; i < 3; i++) {
-					util.click($spinUpButton);
+					util.click(spinUpButton);
 				}
-				strictEqual($editor.igPercentEditor("value"), 0.05, "Value not changed on spin button");
-				ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
-				$editor.igPercentEditor("spinDown");
-				strictEqual($editor.igPercentEditor("value"), 0.445, "Value not changed on spin method");
-				$editor.igPercentEditor("spinUp");
-				strictEqual($editor.igPercentEditor("value"), 0.05, "Value not changed on spin method");
+				assert.strictEqual(editorInput.igPercentEditor("value"), 0.05, "Value not changed on spin button");
+				assert.ok(spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+				editorInput.igPercentEditor("spinDown");
+				assert.strictEqual(editorInput.igPercentEditor("value"), 0.445, "Value not changed on spin method");
+				editorInput.igPercentEditor("spinUp");
+				assert.strictEqual(editorInput.igPercentEditor("value"), 0.05, "Value not changed on spin method");
 
-				$editor.focus();
-				util.click($spinUpButton);
-				util.click($spinDownButton);
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
-				ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+				editorInput.focus();
+				util.click(spinUpButton);
+				util.click(spinDownButton);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
+				assert.ok(!spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
 
-				$ddButton.click();
+				ddButton.click();
 				for (var i = 2; i < listItems.length; i++) {
-					util.click($spinDownButton);
-					equal($editor.igPercentEditor("getSelectedListItem").index(), i, "Selection not changed on spin button with open dropdown.");
+					util.click(spinDownButton);
+					assert.equal(editorInput.igPercentEditor("getSelectedListItem").index(), i, "Selection not changed on spin button with open dropdown.");
 				}
-				ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
-				$editor.igPercentEditor("spinUp");
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
-				$editor.remove();
+				assert.ok(spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+				editorInput.igPercentEditor("spinUp");
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
 
-				// list items with decimalSeparator
+				// List items with decimalSeparator
 				editorSetup({
-					listItems: [ 0.1, 0.0015, 0.5547, 120.45, 24.135],
+					listItems: [0.1, 0.0015, 0.5547, 120.45, 24.135],
 					buttonType: "spin, clear",
 					value: 0.5547,
 					isLimitedToListValues: true, // attempt list values spin
 					decimalSeparator: ",",
 					groupSeparator: "."
-				});
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
-				$editor.igPercentEditor("value", 120.45);
-				$editor.focus();
-				$editor.blur();
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
-				
-				$ddButton.click();
-				$editor.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
-				equal($editor.igPercentEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
-				$editor.blur();
-				equal($editor.igPercentEditor("value"), 0.0015, "Selected item did not update text with correct decimalSeparator.");
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
+				}, this.inputTag);
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
+				editorInput.igPercentEditor("value", 120.45);
+				editorInput.focus();
+				editorInput.blur();
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
 
-				$editor.igPercentEditor("value", 120.45);
-				$editor.igPercentEditor("spinDown");
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
-				$editor.focus();
-				$editor.igPercentEditor("spinDown");
-				equal($editor.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
+				ddButton.click();
+				editorInput.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				assert.equal(editorInput.igPercentEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
+				editorInput.blur();
+				assert.equal(editorInput.igPercentEditor("value"), 0.0015, "Selected item did not update text with correct decimalSeparator.");
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
 
-				$editor.remove();
+				editorInput.igPercentEditor("value", 120.45);
+				editorInput.igPercentEditor("spinDown");
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
+				editorInput.focus();
+				editorInput.igPercentEditor("spinDown");
+				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 			});
-			
-			var testId = 'Percent Editor Scientific format.';
-			test(testId, 2, function () {
-				var field = $('#pEditor8').igPercentEditor("field");
+
+			QUnit.test('[ID10] Percent Editor Scientific format', function (assert) {
+				assert.expect(2);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor8" });
+				editorInput.igPercentEditor({
+					scientificFormat: "e"
+				});
+				var field = editorInput.igPercentEditor("field");
 
 				field.focus();
 				field.val("10");
 				field.blur();
-				equal($("#pEditor8").igPercentEditor("displayValue"), "1e1%", "Displayed value is not correct!");
+				assert.equal(editorInput.igPercentEditor("displayValue"), "1e1%", "Displayed value is not correct!");
 
-				$("#pEditor8").igPercentEditor("option", "scientificFormat", "e+")
-				$('#pEditor8').igPercentEditor("value", 0.57);
-				equal($("#pEditor8").igPercentEditor("displayValue"), "5.7e+1%", "Displayed value is not correct for e+!");
+				editorInput.igPercentEditor("option", "scientificFormat", "e+")
+				editorInput.igPercentEditor("value", 0.57);
+				assert.equal(editorInput.igPercentEditor("displayValue"), "5.7e+1%", "Displayed value is not correct for e+!");
 			});
 
-			var testId = 'Percent Editor Set options.';
-			test(testId, 2, function () {
-				$("#pEditor9").igPercentEditor("option", "displayFactor", 1);
-				throws(function () {
-					$("#pEditor9").igPercentEditor("option", "displayFactor", "1");
+			QUnit.test('[ID11] Percent editor set options', function (assert) {
+				assert.expect(2);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor9" });
+				editorInput.igPercentEditor();
+
+				editorInput.igPercentEditor("option", "displayFactor", 1);
+				assert.throws(function () {
+					editorInput.igPercentEditor("option", "displayFactor", "1");
 				}, "displayFactor requires a different value. Its value should be set to 1 or 100 as a number.");
 
-				throws(function () {
-					$("#pEditor9").igPercentEditor("option", "displayFactor", 10);
+				assert.throws(function () {
+					editorInput.igPercentEditor("option", "displayFactor", 10);
 				}, "displayFactor requires a different value. Its value should be set to 1 or 100 as a number.");
-
 			});
 
+			QUnit.test('[ID12] Percent Spin up', function (assert) {
+				assert.expect(8);
 
-
-			var testId = 'Percent Spin up.';
-			test(testId, 8, function () {
-				$("#pEditor10").focus();
-				$("#pEditor10").igPercentEditor("spinUp");
-				$("#pEditor10").blur();
-				equal($('#pEditor10').igPercentEditor("displayValue"), "0.01%", "Display value after spin up is not correct");
-
-				$("#pEditor10").igPercentEditor("spinDown");
-				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "Display value after spin up is not correct");
-
-				$("#pEditor10").igPercentEditor("value", 3);
-				$("#pEditor10").igPercentEditor("spinUp", 3);				
-				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "spinWrapAround does not return minValue");
-
-				$("#pEditor10").igPercentEditor("spinUp", 3);				
-				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "SpinUp method does not take into account delta parameter.");
-
-				$("#pEditor10").igPercentEditor("spinDown", 3);				
-				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "SpinDown method does not take into account delta parameter.");
-
-				$("#pEditor10").igPercentEditor("spinDown", 3);				
-				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "spinWrapAround does not return maxValue");
-
-				var editor = $("#percentDouble");
-				editor.igPercentEditor("setFocus");
-				editor.igPercentEditor("spinUp");
-				editor.igPercentEditor("field").blur();
-				equal(editor.igPercentEditor("value"), "4.5", "Value after spin up is not correct");
-				equal(editor.igPercentEditor("displayValue"), "4.50%", "Display value after spin up is not correct");
-			});
-
-			var testId = 'Paste and insert';
-			test(testId, 8, function () {
-				var $editor = $("#pasteEditor"),
-					editorInput = $editor.igPercentEditor("field");
-
-				$("#pEditor11").igPercentEditor("field").focus();
-				$("#pEditor11").igPercentEditor( "insert", "1" );	
-				
-				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
-
-				//#287: Percent/Currency insert method not working with existing value outside edit mode
-				$("#pEditor11").igPercentEditor("field").blur();
-				$("#pEditor11").igPercentEditor( "insert", "2" );
-				equal($("#pEditor11").igPercentEditor("field").val(), "2.00%", "The text after insert (out of edit) is not correct");	
-				strictEqual($("#pEditor11").igPercentEditor("value"), 0.02, "The text after insert (out of edit) is not correct");	
-
-				editorInput.trigger("focus");
-				stop();
-				setTimeout(function () {
-					util.paste(editorInput[0], "33");					
-					setTimeout(function () {
-						start();
-						equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
-						equal(editorInput.val(), "33", "The text after paste is not correct");	
-						
-						// paste "+0024" in front, ultimately only adding 24:
-						editorInput[0].setSelectionRange(0);
-						var parseInt = window.parseInt;
-						window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
-						util.paste(editorInput[0], "+0024");
-						stop();
-						setTimeout(function () {
-							window.parseInt = parseInt;
-							start();
-							equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
-							equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
-							
-							editorInput.trigger("blur");	
-							strictEqual($editor.igPercentEditor("value"), 24.33, "The value after paste is not correct");
-						}, 20);
-					}, 20);
-				}, 100);
-			});
-
-			var testId = 'Drag and Drop';
-			test(testId, 13, function () {
-				var $editor = $("#pasteEditor"),
-					editorInput = $editor.igPercentEditor("field");
-
-				$editor.blur().igPercentEditor("value", 0);
-				
-				// drag enter/leave events:
-				editorInput.trigger("dragenter");
-				equal(editorInput.val(), "0", "Editor didn't enter edit mode on dragenter");
-				editorInput.trigger("dragleave");
-				equal(editorInput.val(), "0.00%", "Editor exited edit mode on inner dragleave");
-				editorInput.trigger("dragenter");
-				equal(editorInput.val(), "0", "Editor didn't enter edit mode on dragenter");
-
-				stop();
-				editorInput[0].selectionStart = 0;
-				util.drop(editorInput[0], "33");					
-				setTimeout(function () {
-					start();
-					equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop");
-					equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop");
-					equal(editorInput.val(), "330", "The text after drop is not correct");	
-					editorInput[0].selectionStart = 1;
-					util.drop(editorInput[0], "5");
-					stop();
-					setTimeout(function () {
-						start();
-						equal(editorInput[0].selectionStart, 1, "Cusrsor position not correct after drop. Should be like [|24|330]");
-						equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop. Should be like [|24|330]");
-						equal(editorInput.val(), "3530", "The text after positioned drop is not correct");
-						
-						// drop "+0024" in front, ultimately only adding 24:						
-						editorInput[0].selectionStart = 0;
-						var parseInt = window.parseInt;
-						window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
-						util.drop(editorInput[0], "+0024");
-						stop();
-						setTimeout(function () {
-							window.parseInt = parseInt;
-							start();
-							equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop. Should be like [|24|3530]");
-							equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop. Should be like [|24|3530]");
-							equal(editorInput.val(), "243530", "The text after positioned drop is not correct");
-							
-							editorInput.trigger("blur");	
-							strictEqual($editor.igPercentEditor("value"), 2435.3, "The value after drop is not correct");
-						}, 20);
-					}, 20);					
-				}, 20);
-			});
-			testId = "Test nullValue on initialization";
-			test(testId, 4, function(){
-				var $editor = $("<input id='editor'/>").
-				appendTo("#testBedContainer").igPercentEditor({ allowNullValue: false});
-				//Get null Value
-				equal($editor.igPercentEditor("value"), "", "The value is not an empty string");
-				//Set null Value
-				$editor.igPercentEditor("value", null);
-				equal($editor.igPercentEditor("value"), "", "The value is not an empty string");
-				//CHange allowNullValue option
-				$editor.igPercentEditor("option", "allowNullValue", true);
-				// Get Null value
-				equal($editor.igPercentEditor("value"), "", "The value is not an empty string");
-				//Set Null value
-				$editor.igPercentEditor("value", null);
-				//Get null value
-				equal($editor.igPercentEditor("value"), null, "The value is not an empty string");
-				$editor.remove();
-			});
-
-			var testId = "Revert functionality.";
-			test(testId, 3, function(){
-				var $notRevert = $("<input id='notRevert' />").igPercentEditor({
-					revertIfNotValid: false,
-					blur: function(evt, ui){
-							ui.owner.insert("null");
-						}
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor10" });
+				editorInput.igPercentEditor({
+					buttonType: "spin",
+					spinWrapAround: true,
+					maxValue: 3,
+					minValue: 0,
+					displayFactor: 1
 				});
 
-				$notRevert.blur();
-				equal($notRevert.igPercentEditor("value"), "", "When there is no valid value in the editor and enter incorrect value, the editor's value is supposed to be empty string.");
+				editorInput.focus();
+				editorInput.igPercentEditor("spinUp");
+				editorInput.blur();
+				assert.equal(editorInput.igPercentEditor("displayValue"), "0.01%", "Display value after spin up is not correct");
 
-				var $revertMinMax = $("<input id='revertMinMax' />").igPercentEditor({
+				editorInput.igPercentEditor("spinDown");
+				assert.equal(editorInput.igPercentEditor("displayValue"), "0.00%", "Display value after spin up is not correct");
+
+				editorInput.igPercentEditor("value", 3);
+				editorInput.igPercentEditor("spinUp", 3);
+				assert.equal(editorInput.igPercentEditor("displayValue"), "0.00%", "spinWrapAround does not return minValue");
+
+				editorInput.igPercentEditor("spinUp", 3);
+				assert.equal(editorInput.igPercentEditor("displayValue"), "3.00%", "SpinUp method does not take into account delta parameter.");
+
+				editorInput.igPercentEditor("spinDown", 3);
+				assert.equal(editorInput.igPercentEditor("displayValue"), "0.00%", "SpinDown method does not take into account delta parameter.");
+
+				editorInput.igPercentEditor("spinDown", 3);
+				assert.equal(editorInput.igPercentEditor("displayValue"), "3.00%", "spinWrapAround does not return maxValue");
+
+				var dblPercentEditorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "percentDouble" });
+				dblPercentEditorInput.igPercentEditor({
+					displayFactor: 1,
+					value: 2.5,
+					spinDelta: 2,
+					dataMode: "double"
+				});
+
+				dblPercentEditorInput.igPercentEditor("setFocus");
+				dblPercentEditorInput.igPercentEditor("spinUp");
+				dblPercentEditorInput.igPercentEditor("field").blur();
+				assert.equal(dblPercentEditorInput.igPercentEditor("value"), "4.5", "Value after spin up is not correct");
+				assert.equal(dblPercentEditorInput.igPercentEditor("displayValue"), "4.50%", "Display value after spin up is not correct");
+			});
+
+			// 	var testId = 'Paste and insert';
+			// 	test(testId, 8, function () {
+			// 		var $editor = $("#pasteEditor"),
+			// 			editorInput = $editor.igPercentEditor("field");
+
+			// 		$("#pEditor11").igPercentEditor("field").focus();
+			// 		$("#pEditor11").igPercentEditor( "insert", "1" );	
+
+			// 		equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
+
+			// 		//#287: Percent/Currency insert method not working with existing value outside edit mode
+			// 		$("#pEditor11").igPercentEditor("field").blur();
+			// 		$("#pEditor11").igPercentEditor( "insert", "2" );
+			// 		equal($("#pEditor11").igPercentEditor("field").val(), "2.00%", "The text after insert (out of edit) is not correct");	
+			// 		strictEqual($("#pEditor11").igPercentEditor("value"), 0.02, "The text after insert (out of edit) is not correct");	
+
+			// 		editorInput.trigger("focus");
+			// 		stop();
+			// 		setTimeout(function () {
+			// 			util.paste(editorInput[0], "33");					
+			// 			setTimeout(function () {
+			// 				start();
+			// 				equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
+			// 				equal(editorInput.val(), "33", "The text after paste is not correct");	
+
+			// 				// paste "+0024" in front, ultimately only adding 24:
+			// 				editorInput[0].setSelectionRange(0);
+			// 				var parseInt = window.parseInt;
+			// 				window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
+			// 				util.paste(editorInput[0], "+0024");
+			// 				stop();
+			// 				setTimeout(function () {
+			// 					window.parseInt = parseInt;
+			// 					start();
+			// 					equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
+			// 					equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
+
+			// 					editorInput.trigger("blur");	
+			// 					strictEqual($editor.igPercentEditor("value"), 24.33, "The value after paste is not correct");
+			// 				}, 20);
+			// 			}, 20);
+			// 		}, 100);
+			// 	});
+
+			// 	var testId = 'Drag and Drop';
+			// 	test(testId, 13, function () {
+			// 		var $editor = $("#pasteEditor"),
+			// 			editorInput = $editor.igPercentEditor("field");
+
+			// 		$editor.blur().igPercentEditor("value", 0);
+
+			// 		// drag enter/leave events:
+			// 		editorInput.trigger("dragenter");
+			// 		equal(editorInput.val(), "0", "Editor didn't enter edit mode on dragenter");
+			// 		editorInput.trigger("dragleave");
+			// 		equal(editorInput.val(), "0.00%", "Editor exited edit mode on inner dragleave");
+			// 		editorInput.trigger("dragenter");
+			// 		equal(editorInput.val(), "0", "Editor didn't enter edit mode on dragenter");
+
+			// 		stop();
+			// 		editorInput[0].selectionStart = 0;
+			// 		util.drop(editorInput[0], "33");					
+			// 		setTimeout(function () {
+			// 			start();
+			// 			equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop");
+			// 			equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop");
+			// 			equal(editorInput.val(), "330", "The text after drop is not correct");	
+			// 			editorInput[0].selectionStart = 1;
+			// 			util.drop(editorInput[0], "5");
+			// 			stop();
+			// 			setTimeout(function () {
+			// 				start();
+			// 				equal(editorInput[0].selectionStart, 1, "Cusrsor position not correct after drop. Should be like [|24|330]");
+			// 				equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop. Should be like [|24|330]");
+			// 				equal(editorInput.val(), "3530", "The text after positioned drop is not correct");
+
+			// 				// drop "+0024" in front, ultimately only adding 24:						
+			// 				editorInput[0].selectionStart = 0;
+			// 				var parseInt = window.parseInt;
+			// 				window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
+			// 				util.drop(editorInput[0], "+0024");
+			// 				stop();
+			// 				setTimeout(function () {
+			// 					window.parseInt = parseInt;
+			// 					start();
+			// 					equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop. Should be like [|24|3530]");
+			// 					equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop. Should be like [|24|3530]");
+			// 					equal(editorInput.val(), "243530", "The text after positioned drop is not correct");
+
+			// 					editorInput.trigger("blur");	
+			// 					strictEqual($editor.igPercentEditor("value"), 2435.3, "The value after drop is not correct");
+			// 				}, 20);
+			// 			}, 20);					
+			// 		}, 20);
+			// 	});
+
+			QUnit.test('[ID15] Test nullValue on initialization', function (assert) {
+				assert.expect(4);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag);
+				editorInput.igPercentEditor({ allowNullValue: false });
+				//Get null Value
+				assert.equal(editorInput.igPercentEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				editorInput.igPercentEditor("value", null);
+				assert.equal(editorInput.igPercentEditor("value"), "", "The value is not an empty string");
+				//Change allowNullValue option
+				editorInput.igPercentEditor("option", "allowNullValue", true);
+				// Get Null value
+				assert.equal(editorInput.igPercentEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				editorInput.igPercentEditor("value", null);
+				//Get null value
+				assert.equal(editorInput.igPercentEditor("value"), null, "The value is not an empty string");
+			});
+
+			QUnit.test('[ID16] Revert functionality', function (assert) {
+				assert.expect(3);
+
+				var nonRevertableEditorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "nonRevert" });
+				nonRevertableEditorInput.igPercentEditor({
+					revertIfNotValid: false,
+					blur: function (evt, ui) {
+						ui.owner.insert("null");
+					}
+				});
+
+				nonRevertableEditorInput.blur();
+				assert.equal(nonRevertableEditorInput.igPercentEditor("value"),
+					"",
+					"When there is no valid value in the editor and enter incorrect value, the editor's value is supposed to be empty string.");
+
+				var revertMinMaxInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "revertMinMax" });
+				revertMinMaxInput.igPercentEditor({
 					revertIfNotValid: true,
 					displayFactor: 1,
 					listItems: [10, 20, 30],
 					value: 10,
-					isLimitedToListValues : true,
-					blur: function(evt, ui){
-							ui.owner.insert(15);
-						}
+					isLimitedToListValues: true,
+					blur: function (evt, ui) {
+						ui.owner.insert(15);
+					}
 				});
-				$revertMinMax.blur();
-				equal($revertMinMax.igPercentEditor("value"), "10", "The value should be reverted when the new value is not in the listItems.");
-				
-				var $revertEditor = $("<input id='revertEditor' />").igPercentEditor({
-						value: 12,
-						blur: function(evt, ui){
-							ui.owner.insert("abc");
-						},
-						revertIfNotValid: true
-					});
-				$revertEditor.blur();
-				equal($revertEditor.igPercentEditor("value"), "0.12", "The value is not reverted when wrong value was entered.");
+				revertMinMaxInput.blur();
+				assert.equal(revertMinMaxInput.igPercentEditor("value"),
+					"10",
+					"The value should be reverted when the new value is not in the listItems.");
 
-				$revertEditor.remove();
-				$revertMinMax.remove();
-				$notRevert.remove();
+				var revertableEditorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "revertEditor" });
+				revertableEditorInput.igPercentEditor({
+					value: 12,
+					blur: function (evt, ui) {
+						ui.owner.insert("abc");
+					},
+					revertIfNotValid: true
+				});
+				revertableEditorInput.blur();
+				assert.equal(revertableEditorInput.igPercentEditor("value"),
+					"0.12",
+					"The value is not reverted when wrong value was entered.");
 			});
 
-			var testId = "Spin events with spinWrapAround set to false.";
-			test(testId, 2, function(){
-				var $falseWrapAround = $("<input id='falseWrapAround' />").igPercentEditor({
+			QUnit.test('[ID17] Spin events with spinWrapAround set to false', function (assert) {
+				assert.expect(2);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "falseWrapAround" });
+				editorInput.igPercentEditor({
 					buttonType: "spin",
 					spinWrapAround: false,
 					spinDelta: 1,
-					displayFactor: 1, 
+					displayFactor: 1,
 					minValue: 0,
 					maxValue: 10,
 					value: 10
 				});
-				$falseWrapAround.igPercentEditor("spinUp");
-				equal($falseWrapAround.igPercentEditor("value"), "10", "The editor value should be reverted to the maxValue.");
 
-				$falseWrapAround.igPercentEditor("value", "0");
-				$falseWrapAround.igPercentEditor("spinDown");
-				equal($falseWrapAround.igPercentEditor("value"), "0", "The editor value should be reverted to the minValue.");
+				editorInput.igPercentEditor("spinUp");
+				assert.equal(editorInput.igPercentEditor("value"), "10", "The editor value should be reverted to the maxValue.");
 
-				$falseWrapAround.remove();
-				
+				editorInput.igPercentEditor("value", "0");
+				editorInput.igPercentEditor("spinDown");
+				assert.equal(editorInput.igPercentEditor("value"), "0", "The editor value should be reverted to the minValue.");
 			});
 
-			var testId = "Spin events with set scientificFormat.";
-			test(testId, 3, function(){
-				var $focusedSpinUp = $("<input id='focusedSpinUp' />").appendTo("#testBedContainer")
-					.igPercentEditor({
-						buttonType: "spin",
-						minValue: 0,
-						scientificFormat: "E"
-					});
+			QUnit.test('[ID18] Spin events with set scientificFormat', function (assert) {
+				assert.expect(3);
 
-				$focusedSpinUp.focus();
-				equal($focusedSpinUp.igPercentEditor("field").val(), "0E0", "The wrong value is set in the editor in edit mode.");
-				$focusedSpinUp.igPercentEditor("spinUp");
-				equal($focusedSpinUp.igPercentEditor("field").val(), "1E0", "The wrong value is set in the editor in edit mode.");
-				$focusedSpinUp.blur();
-				equal($focusedSpinUp.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
-				$focusedSpinUp.remove();
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "focusedSpinUp" });
+				editorInput.igPercentEditor({
+					buttonType: "spin",
+					minValue: 0,
+					scientificFormat: "E"
+				});
+
+				editorInput.focus();
+				assert.equal(editorInput.igPercentEditor("field").val(), "0E0", "The wrong value is set in the editor in edit mode.");
+				editorInput.igPercentEditor("spinUp");
+				assert.equal(editorInput.igPercentEditor("field").val(), "1E0", "The wrong value is set in the editor in edit mode.");
+				editorInput.blur();
+				assert.equal(editorInput.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
 			});
-			var testId = "Test inserting invalid value when the min value is set.";
-			test(testId, 2, function(){
-				var $minVal = $("<input id='minVal' />").igPercentEditor({
+
+			QUnit.test('[ID19] Test inserting invalid value when the min value is set', function (assert) {
+				assert.expect(2);
+
+				var editorInput1 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "minVal" });
+				editorInput1.igPercentEditor({
 					minValue: 10,
 					dispalayFactor: 1
 				});
 
-				$minVal.igPercentEditor("insert", "9");
-				equal($minVal.igPercentEditor("option", "value"), $minVal.igPercentEditor("option", "minValue"), "The min value of the editor is not set correctly.");
+				editorInput1.igPercentEditor("insert", "9");
+				assert.equal(editorInput1.igPercentEditor("option", "value"), editorInput1.igPercentEditor("option", "minValue"), "The min value of the editor is not set correctly.");
 
-				var $setRunTimePrevValue = $("<input id='setRunTimePrevValue' />").igPercentEditor({
-					minValue: 0
+				var editorInput2 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "setRunTimePrevValue" });
+				editorInput2.igPercentEditor({
+				minValue: 0
 				});
-				$setRunTimePrevValue.igPercentEditor("option", "revertIfNotValid", true);
-				$setRunTimePrevValue.igPercentEditor("value", -1);
-				equal($setRunTimePrevValue.igPercentEditor("field").val(), "0.00%", "The editor's value is supposed to be the same as the previous one.");
 
-				$setRunTimePrevValue.remove();
-				$minVal.remove();
-			});
+				editorInput2.igPercentEditor("option", "revertIfNotValid", true);
+				editorInput2.igPercentEditor("value", -1);
+				assert.equal(editorInput2.igPercentEditor("field").val(), "0.00%", "The editor's value is supposed to be the same as the previous one.");
+		});
 
-			var testId = 'Clear button state';
-			test(testId, 2, function () {
-				var $editor;
+			// 	var testId = 'Clear button state';
+			// 	test(testId, 2, function () {
+			// 		var $editor;
 
-				$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ buttonType: "clear" });
-				ok(!$editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not hidden");
-				$editor.igPercentEditor("value", 45);
-				ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
-				$editor.remove();
-			});
+			// 		$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ buttonType: "clear" });
+			// 		ok(!$editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not hidden");
+			// 		$editor.igPercentEditor("value", 45);
+			// 		ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
+			// 		$editor.remove();
+			// 	});
+
+			// 	var testId = 'MaxValue SpinUpButton';
+			// test(testId, 2, function () {
+			// 	var $editor;
+
+			// 	$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
+			// 	ok($editor.igPercentEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+			// 	$editor.igPercentEditor("value", 8);
+			// 	$editor.blur();
+			// 	ok($editor.igPercentEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
+			// 	$editor.remove();
+			// });
+
+			// var testId = 'MinValue SpinDownButton';
+			// test(testId, 2, function () {
+			// 	var $editor;
+
+			// 	$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
+			// 	ok($editor.igPercentEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			// 	$editor.igPercentEditor("value", 2);
+			// 	$editor.blur();
+			// 	ok($editor.igPercentEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
+			// 	$editor.remove();
+			// });
+
+			// testId = 'Runtime changes for local and regional options';
+			// test(testId, 6, function () {
+			// 	var $editor = $("<input/>").appendTo("#testBedContainer").igPercentEditor({ buttonType: "spin", value: 1234567.123, displayFactor: 1 });
+
+			// 	equal($editor.igPercentEditor("displayValue"), "1,234,567.12%", "Format should be in English");
+			// 	equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+			// 	$editor.igPercentEditor("option", "language", "de");
+			// 	equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+			// 	$editor.igPercentEditor("option", "regional", "de");
+			// 	equal($editor.igPercentEditor("displayValue"), "1.234.567,12%", "Format should be in German");
+			// 	$editor.igPercentEditor("setFocus");
+			// 	equal($editor.igPercentEditor("field").val(), "1234567,12", "Input Format should be in German");
+			// 	$editor.igPercentEditor("option", "regional", "en");
+			// 	equal($editor.igPercentEditor("field").val(), "1234567.12", "Input Format should be in German");
+			// 	$editor.trigger("blur").remove();
+			// });
+		});
+	
 			
-			var testId = 'MaxValue SpinUpButton';
-		test(testId, 2, function () {
-			var $editor;
-
-			$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
-			ok($editor.igPercentEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
-			$editor.igPercentEditor("value", 8);
-			$editor.blur();
-			ok($editor.igPercentEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
-			$editor.remove();
-		});
-		
-		var testId = 'MinValue SpinDownButton';
-		test(testId, 2, function () {
-			var $editor;
-
-			$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
-			ok($editor.igPercentEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
-			$editor.igPercentEditor("value", 2);
-			$editor.blur();
-			ok($editor.igPercentEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
-			$editor.remove();
-		});
-
-		testId = 'Runtime changes for local and regional options';
-		test(testId, 6, function () {
-			var $editor = $("<input/>").appendTo("#testBedContainer").igPercentEditor({ buttonType: "spin", value: 1234567.123, displayFactor: 1 });
-
-			equal($editor.igPercentEditor("displayValue"), "1,234,567.12%", "Format should be in English");
-			equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
-			$editor.igPercentEditor("option", "language", "de");
-			equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
-			$editor.igPercentEditor("option", "regional", "de");
-			equal($editor.igPercentEditor("displayValue"), "1.234.567,12%", "Format should be in German");
-			$editor.igPercentEditor("setFocus");
-			equal($editor.igPercentEditor("field").val(), "1234567,12", "Input Format should be in German");
-			$editor.igPercentEditor("option", "regional", "en");
-			equal($editor.igPercentEditor("field").val(), "1234567.12", "Input Format should be in German");
-			$editor.trigger("blur").remove();
-		});
-	});
 	</script>
 </head>
-<body>
-<div style="float:right;width:400px;overflow:auto">
-	 <h1 id="qunit-header">Test results</h1>
-	 <h2 id="qunit-banner"></h2>
-	 <h2 id="qunit-userAgent"></h2>
-	 <ol id="qunit-tests"></ol>
-</div>
-<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
-	<div id="pEditor1"></div>
-	<input id="pEditor2" />
-	<input id="pEditor3" />
-	<input id="pEditor4" />
-	<input id="pEditor5" />
-	<input id="pEditor6" />
-	<input id="pEditor7" />
-	<input id="emptyEditor" />
-	<input id="percentEditorList" />
-	<input id="pEditor8" />
-	<input id="pEditor9" />	
-	<input id="pEditor10" />
-	<input id="pEditor11" />
-	<div id="pasteEditor"></div>
-	<div id="percentDouble"></div>
-    
-	
-</div>
-</body>
-</html>
 
+<body>
+	<div style="float:right;width:400px;overflow:auto">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		<div id="pEditor1"></div>
+		<input id="pEditor2" />
+		<input id="pEditor3" />
+		<input id="pEditor4" />
+		<input id="pEditor5" />
+		<input id="pEditor6" />
+		<input id="pEditor7" />
+		<input id="emptyEditor" />
+		<input id="percentEditorList" />
+		<input id="pEditor8" />
+		<input id="pEditor9" />
+		<input id="pEditor10" />
+		<input id="pEditor11" />
+		<div id="pasteEditor"></div>
+		<div id="percentDouble"></div>
+
+
+	</div>
+</body>
+
+</html>
