@@ -397,9 +397,10 @@
 
 				var editorInput, field, ddButton, spinUpButton, spinDownButton;
 				var util = $.ig.TestUtil;
+				var inputElement = this.inputTag;
 
-				var editorSetup = function (options, element) {
-					editorInput = util.appendToFixture(element);
+				var editorSetup = function (options) {
+					editorInput = util.appendToFixture(inputElement);
 					editorInput.igPercentEditor(options);
 					field = editorInput.igPercentEditor("field");
 					ddButton = editorInput.igPercentEditor("dropDownButton");
@@ -412,7 +413,7 @@
 					buttonType: "dropdown",
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
-				}, this.inputTag);
+				});
 
 				editorInput.igPercentEditor("value", 0.1);
 				ddButton.click();
@@ -440,7 +441,7 @@
 					value: 0.02,
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
-				}, this.inputTag);
+				});
 				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
 				assert.equal(editorInput.igPercentEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
 
@@ -494,7 +495,7 @@
 					value: 0.44,
 					// remove animation to avoid waiting, show() with effect ignores 0
 					dropDownAnimationDuration: -1
-				}, this.inputTag);
+				});
 
 				util.click(spinUpButton);
 				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
@@ -532,7 +533,7 @@
 					isLimitedToListValues: true, // attempt list values spin
 					decimalSeparator: ",",
 					groupSeparator: "."
-				}, this.inputTag);
+				});
 				assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
 				editorInput.igPercentEditor("value", 120.45);
 				editorInput.focus();
@@ -853,68 +854,98 @@
 
 				var editorInput2 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "setRunTimePrevValue" });
 				editorInput2.igPercentEditor({
-				minValue: 0
+					minValue: 0
 				});
 
 				editorInput2.igPercentEditor("option", "revertIfNotValid", true);
 				editorInput2.igPercentEditor("value", -1);
 				assert.equal(editorInput2.igPercentEditor("field").val(), "0.00%", "The editor's value is supposed to be the same as the previous one.");
+			});
+
+			QUnit.test('[ID20] Clear button state', function (assert) {
+				assert.expect(2);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag);
+				editorInput.igPercentEditor({ buttonType: "clear" });
+				var clearBtnIsVisisble = editorInput.igPercentEditor("clearButton").is(":visible");
+				assert.notOk(clearBtnIsVisisble, "Clear button is not hidden");
+				editorInput.igPercentEditor("value", 45);
+				clearBtnIsVisisble = editorInput.igPercentEditor("clearButton").is(":visible");
+				assert.ok(clearBtnIsVisisble, "Clear button is not visible");
+			});
+
+			QUnit.test('[ID21] MaxValue SpinUpButton', function (assert) {
+				assert.expect(2);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag);
+				editorInput.igPercentEditor({
+					displayFactor: 1,
+					maxValue: 8,
+					spinDelta: 1,
+					buttonType: "spin"
+				});
+				var spinUpBtnIsVisisble = editorInput.igPercentEditor("spinUpButton").is(":visible");
+				assert.ok(spinUpBtnIsVisisble, "Spin up button is hidden");
+				editorInput.igPercentEditor("value", 8);
+				editorInput.blur();
+				var spinUpBtnIsDisabled = editorInput.igPercentEditor("spinUpButton").hasClass("ui-state-disabled");
+				assert.ok(spinUpBtnIsDisabled, "Spin up button is not disabled.");
+			});
+
+
+			QUnit.test('[ID22] MinValue SpinDownButton', function (assert) {
+				assert.expect(2);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag);
+				editorInput.igPercentEditor({
+					displayFactor: 1,
+					minValue: 2,
+					spinDelta: 1,
+					buttonType: "spin"
+				});
+
+				var spinDownBtnIsVisisble = editorInput.igPercentEditor("spinDownButton").is(":visible");
+				assert.ok(spinDownBtnIsVisisble, "Spin down button is hidden");
+				editorInput.igPercentEditor("value", 2);
+				editorInput.blur();
+				var spinDownBtnIsDisabled = editorInput.igPercentEditor("spinDownButton").hasClass("ui-state-disabled");
+				assert.ok(spinDownBtnIsDisabled, "Spin down button is not disabled.");
+			});
+
+			QUnit.test('[ID23] Runtime changes for local and regional options', function (assert) {
+				assert.expect(6);
+
+				var editorInput = $.ig.TestUtil.appendToFixture(this.inputTag);
+				editorInput.igPercentEditor({
+					buttonType: "spin",
+					value: 1234567.123,
+					displayFactor: 1
+				});
+
+				var done = assert.async();
+
+				assert.equal(editorInput.igPercentEditor("displayValue"), "1,234,567.12%", "Format should be in English");
+				assert.equal(editorInput.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+				editorInput.igPercentEditor("option", "language", "de");
+				assert.equal(editorInput.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
+				editorInput.igPercentEditor("option", "regional", "de");
+				assert.equal(editorInput.igPercentEditor("displayValue"), "1.234.567,12%", "Format should be in German");
+				editorInput.igPercentEditor("setFocus");
+
+				$.ig.TestUtil.wait(100).then(function () {
+					assert.equal(editorInput.igPercentEditor("field").val(), "1234567,12", "Input format should be in German");
+					editorInput.igPercentEditor("option", "regional", "en");
+					return $.ig.TestUtil.wait(100);
+				}).then(function () {
+					assert.equal(editorInput.igPercentEditor("field").val(), "1234567.12", "Input format should be in German");
+					done();
+				}).catch(function (er) {
+					assert.pushResult({ result: false, message: er.message });
+					done();
+					throw er;
+				});
+			});
 		});
-
-			// 	var testId = 'Clear button state';
-			// 	test(testId, 2, function () {
-			// 		var $editor;
-
-			// 		$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ buttonType: "clear" });
-			// 		ok(!$editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not hidden");
-			// 		$editor.igPercentEditor("value", 45);
-			// 		ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
-			// 		$editor.remove();
-			// 	});
-
-			// 	var testId = 'MaxValue SpinUpButton';
-			// test(testId, 2, function () {
-			// 	var $editor;
-
-			// 	$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
-			// 	ok($editor.igPercentEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
-			// 	$editor.igPercentEditor("value", 8);
-			// 	$editor.blur();
-			// 	ok($editor.igPercentEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
-			// 	$editor.remove();
-			// });
-
-			// var testId = 'MinValue SpinDownButton';
-			// test(testId, 2, function () {
-			// 	var $editor;
-
-			// 	$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
-			// 	ok($editor.igPercentEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
-			// 	$editor.igPercentEditor("value", 2);
-			// 	$editor.blur();
-			// 	ok($editor.igPercentEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
-			// 	$editor.remove();
-			// });
-
-			// testId = 'Runtime changes for local and regional options';
-			// test(testId, 6, function () {
-			// 	var $editor = $("<input/>").appendTo("#testBedContainer").igPercentEditor({ buttonType: "spin", value: 1234567.123, displayFactor: 1 });
-
-			// 	equal($editor.igPercentEditor("displayValue"), "1,234,567.12%", "Format should be in English");
-			// 	equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
-			// 	$editor.igPercentEditor("option", "language", "de");
-			// 	equal($editor.igPercentEditor("spinUpButton").attr("title"), $.ig.locale.de.Editor.spinUpperTitle, "Title of the button should be in German");
-			// 	$editor.igPercentEditor("option", "regional", "de");
-			// 	equal($editor.igPercentEditor("displayValue"), "1.234.567,12%", "Format should be in German");
-			// 	$editor.igPercentEditor("setFocus");
-			// 	equal($editor.igPercentEditor("field").val(), "1234567,12", "Input Format should be in German");
-			// 	$editor.igPercentEditor("option", "regional", "en");
-			// 	equal($editor.igPercentEditor("field").val(), "1234567.12", "Input Format should be in German");
-			// 	$editor.trigger("blur").remove();
-			// });
-		});
-	
-			
 	</script>
 </head>
 
