@@ -1550,17 +1550,17 @@
 			```
 				//Initialize
 				$(".selector").igUpload({
-					sendDataInOneRequest : true
+					useSingleRequest : true
 				});
 
 				//Get
-				var sendDataInOneRequest = $(".selector").igUpload("option", "sendDataInOneRequest");
+				var useSingleRequest = $(".selector").igUpload("option", "useSingleRequest");
 
 				//Set
-				$(".selector").igUpload("option", "sendDataInOneRequest", true);
+				$(".selector").igUpload("option", "useSingleRequest", true);
 			```
 			*/
-			sendDataInOneRequest: false
+			useSingleRequest: false
 		},
 		events: {
 			/* cancel="true" Defines the name of the file upload selecting event. Fired when browse button is pressed.
@@ -2377,7 +2377,7 @@
 				res = this._html5createForm(files[ i ], i, fileId);
 			}
 
-			if (o.autoStartUpload && o.sendDataInOneRequest) {
+			if (o.autoStartUpload && o.useSingleRequest) {
 				var retVal = this._html5upload();
 
 				if (retVal) {
@@ -2459,13 +2459,15 @@
 
 					fileId.push(currentFileId);
 
-					self._trigger(self.events.onFormDataSubmit,
-						null,
-						{ formData: formData,
-						  fileId: currentFileId,
-						  fileInfo: currentFileInfo,
-						  xhr: xhr,
-						  owner: self });
+					var eventArgs = {
+						formData: formData,
+						fileId: currentFileId,
+						fileInfo: currentFileInfo,
+						xhr: xhr,
+						owner: self
+					};
+
+					self._trigger(self.events.onFormDataSubmit, null, eventArgs);
 				}
 
 				if ($.type(o.maxFileSize) === "number" &&
@@ -2662,7 +2664,7 @@
 			self._spbRenderProgress();
 			self._HTMLSingleUpload(fileId);
 			this._saveFileSize(fileSize, fileId);
-			if (o.autostartupload === true && o.sendDataInOneRequest === false) {
+			if (o.autostartupload === true && o.useSingleRequest === false) {
 				/* in multiple upload mode - if we can upload - check the number for maxSimultaneousFilesUploads */
 				if (self._checkCanUpload() === true) {
 					self.startUpload(fileId);
@@ -3889,7 +3891,7 @@
 				idsToSubmit = this.fileInfoData.batch,
 				l = idsToSubmit.length, pendingIDs = [];
 
-			if (this.options.sendDataInOneRequest === false) {
+			if (this.options.useSingleRequest === false) {
 				for (i = 0; i < l; i++) {
 					id = idsToSubmit[ i ];
 					if (self._checkCanUpload()) {
@@ -4169,7 +4171,7 @@
 
 			if (o.mode === "multiple" && maxSimultaneousFilesUploads !== null &&
 				data.uploadingIDs.length >= maxSimultaneousFilesUploads &&
-				o.sendDataInOneRequest === false) {
+				o.useSingleRequest === false) {
 				canUpload = false;
 				if (maxSimultaneousFilesUploads <= 0) {
 					this._setError(this._getLocaleValue("errorMessageMaxSimultaneousFiles"), null,
