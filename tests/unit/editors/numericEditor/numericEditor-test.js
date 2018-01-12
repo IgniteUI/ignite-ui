@@ -118,7 +118,6 @@ $(document).ready(function () {
 
 		editorInput = $editor.igNumericEditor("field");
 		text = editorInput.val();
-		console.log("TEXT " + text + " AAAAAAAA");
 
 		editorInput.focus();
 		$editor.on("ignumericeditortextchanged", function (evt, args) {
@@ -145,216 +144,307 @@ $(document).ready(function () {
 
 	QUnit.test("Spin buttons disabling when the min/max value is exceeded", function (assert) {
 		assert.expect(22);
-		var container = $('#minMaxDisableSpins').igNumericEditor("editorContainer"),
-			containerInput = $('#minMaxDisableSpins').igNumericEditor("field"),
-			spinUpButton = $('#minMaxDisableSpins').igNumericEditor("spinUpButton"),
-			spinDownButton = $('#minMaxDisableSpins').igNumericEditor("spinDownButton");
+
+		var $editorInDiv = this.util.appendToFixture(this.divTag),
+			container,
+			containerInput,
+			spinUpButton,
+			spinDownButton;
+
+		$editorInDiv.igNumericEditor({
+			minValue: 10,
+			maxValue: 99,
+			value: 10,
+			buttonType: "spin",
+			spinWrapAround: false
+		});
+
+		container = $editorInDiv.igNumericEditor("editorContainer");
+		containerInput = $editorInDiv.igNumericEditor("field");
+		spinUpButton = $editorInDiv.igNumericEditor("spinUpButton");
+		spinDownButton = $editorInDiv.igNumericEditor("spinDownButton");
+
 		//spin down to disable spin Down button
-		mousedown(spinDownButton[0]);
-		mouseup(spinDownButton[0]);
-		$('#minMaxDisableSpins').igNumericEditor("option", "suppressNotifications", true);
+		this.util.click(spinDownButton[0]);
+		$editorInDiv.igNumericEditor("option", "suppressNotifications", true);
 		//assert.equal(container.find("span:contains('Min value exceeded')").length, 1, "Notifier text 'Min value exceeded' is missing");
-		assert.equal($('#minMaxDisableSpins').igNumericEditor("value"), "10", "The minValue is not respected");
+		assert.equal($editorInDiv.igNumericEditor("value"), "10", "The minValue is not respected");
 		assert.equal(spinDownButton.hasClass("ui-state-disabled"), true, "Button spinDown is not disabled");
 		assert.equal(spinDownButton.attr("disabled"), "disabled", "Button spinDown desn't have disabled attribute");
-		assert.ok(!$('#minMaxDisableSpins').hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins has warning class with suppressed notifications");
+		assert.notOk($editorInDiv.hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins has warning class with suppressed notifications");
 
 		// spin up to remove disabled state
-		mousedown(spinUpButton[0]);
-		mouseup(spinUpButton[0]);
+		this.util.click(spinUpButton[0]);
 		//assert.equal(container.find("span:contains('Min value exceeded')").length, 0, "Notifier text 'Min value exceeded' is not hidden");
-		assert.equal($('#minMaxDisableSpins').igNumericEditor("value"), "11", "The minValue is not respected");
+		assert.equal($editorInDiv.igNumericEditor("value"), "11", "The minValue is not respected");
 		assert.equal(spinDownButton.hasClass("ui-state-disabled"), false, "Button spinDown is not disabled");
 		assert.equal(spinDownButton.attr("disabled"), undefined, "Button spinDown desn't have disabled attribute");
 
-		$('#minMaxDisableSpins').igNumericEditor("value", 99);
+		$editorInDiv.igNumericEditor("value", 99);
 		container.blur();
 
-		mousedown(spinUpButton[0]);
-		mouseup(spinUpButton[0]);
+		this.util.click(spinUpButton[0]);
 		//assert.equal(container.find("span:contains('Max value exceeded')").length, 1, "Notifier text 'Max value exceeded' is missing");
-		assert.equal($('#minMaxDisableSpins').igNumericEditor("value"), "99", "The maxValue is not respected");
+		assert.equal($editorInDiv.igNumericEditor("value"), "99", "The maxValue is not respected");
 		assert.equal(spinUpButton.hasClass("ui-state-disabled"), true, "Button spinUp is not disabled");
 		assert.equal(spinUpButton.attr("disabled"), "disabled", "Button spinDown desn't have disabled attribute");
 
 		// spin down to remove disabled state
-		mousedown(spinDownButton[0]);
-		mouseup(spinDownButton[0]);
+		this.util.click(spinDownButton[0]);
 		//assert.equal(container.find("span:contains('Max value exceeded')").length, 0, "Notifier text 'Max value exceeded' is not hidden");
-		assert.equal($('#minMaxDisableSpins').igNumericEditor("value"), "98", "The minValue is not respected");
+		assert.equal($editorInDiv.igNumericEditor("value"), "98", "The minValue is not respected");
 		assert.equal(spinDownButton.hasClass("ui-state-disabled"), false, "Button spinDown is not disabled");
 		assert.equal(spinDownButton.attr("disabled"), undefined, "Button spinDown desn't have disabled attribute");
 
-		$('#minMaxDisableSpins').igNumericEditor("option", "suppressNotifications", false);
-		mousedown(spinUpButton[0]);
-		mouseup(spinUpButton[0]);
-		assert.ok($('#minMaxDisableSpins').hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins missing warning class without suppressed notifications");
+		$editorInDiv.igNumericEditor("option", "suppressNotifications", false);
+		this.util.click(spinUpButton[0]);
+		assert.ok($editorInDiv.hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins missing warning class without suppressed notifications");
 
 		// with decimalSeparator in edit mode
-		var $editor = $("<input>").appendTo("#testBedContainer")
-			.igNumericEditor({
-				buttonType: "spin",
-				maxValue: 15,
-				minValue: 5,
-				value: 14.7,
-				decimalSeparator: ",",
-				groupSeparator: ".",
-			});
-		spinUpButton = $editor.igNumericEditor("spinUpButton");
-		spinDownButton = $editor.igNumericEditor("spinDownButton");
+		$editorInDiv.remove();
+		$editorInDiv = this.util.appendToFixture(this.inputTag).igNumericEditor({
+			buttonType: "spin",
+			maxValue: 15,
+			minValue: 5,
+			value: 14.7,
+			decimalSeparator: ",",
+			groupSeparator: ".",
+		});
+		spinUpButton = $editorInDiv.igNumericEditor("spinUpButton");
+		spinDownButton = $editorInDiv.igNumericEditor("spinDownButton");
 
-		$editor.focus();
-		mousedown(spinUpButton[0]);
-		mouseup(spinUpButton[0]);
-		assert.ok($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("isVisible"),
+		$editorInDiv.focus();
+		this.util.click(spinUpButton[0]);
+		assert.ok($editorInDiv.igNumericEditor("editorContainer").data("igNotifier") && $editorInDiv.igNumericEditor("editorContainer").igNotifier("isVisible"),
 			"No warning message shown for exceeding max value on spin");
 		assert.ok(spinUpButton.hasClass("ui-state-disabled"), "Button spinUp is not disabled");
-		assert.equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
+		assert.equal($editorInDiv.igNumericEditor("editorContainer").data("igNotifier") && $editorInDiv.igNumericEditor("editorContainer").igNotifier("container").text(),
 			$.ig.Editor.locale.maxValErrMsg.replace("{0}", 15));
-		assert.equal($editor.igNumericEditor("field").val(), "15", "Text not set to the maximum on spin up");
-		$editor.igNumericEditor("value", 5.5);
-		mousedown(spinDownButton[0]);
-		mouseup(spinDownButton[0]);
-		assert.ok($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("isVisible"),
+		assert.equal($editorInDiv.igNumericEditor("field").val(), "15", "Text not set to the maximum on spin up");
+		$editorInDiv.igNumericEditor("value", 5.5);
+		this.util.click(spinDownButton[0]);
+		assert.ok($editorInDiv.igNumericEditor("editorContainer").data("igNotifier") && $editorInDiv.igNumericEditor("editorContainer").igNotifier("isVisible"),
 			"No warning message shown for exceeding min value on spin");
 		assert.ok(spinDownButton.hasClass("ui-state-disabled"), "Button spinDown is not disabled");
-		assert.equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
+		assert.equal($editorInDiv.igNumericEditor("editorContainer").data("igNotifier") && $editorInDiv.igNumericEditor("editorContainer").igNotifier("container").text(),
 			$.ig.Editor.locale.minValErrMsg.replace("{0}", 5));
-		assert.equal($editor.igNumericEditor("field").val(), "5", "Text not set to the minimum on spin down");
-
-		$editor.remove();
+		assert.equal($editorInDiv.igNumericEditor("field").val(), "5", "Text not set to the minimum on spin down");
 	});
 
 	QUnit.test('Clear value', function (assert) {
 		assert.expect(7);
-		var numericEditor = $('#clearEditor1'),
-			editorInput = $('#clearEditor1').igNumericEditor("field"),
-			clearButton = numericEditor.igNumericEditor("clearButton"),
-			ddButton = numericEditor.igNumericEditor("dropDownButton"),
-			list = $('#clearEditor1').igNumericEditor("dropDownContainer"), item1 = list.children(".ui-igedit-listitem")[0], opening = false, opened = false, closing = false, closed = false,
-			itemselecting = false, itemselected = false, valueChanging = false, valueChanged = false, opened = false;
-		assert.equal($('#clearEditor1').igNumericEditor("value"), "1", "Initial value is not correct");
-		$("#clearEditor1").igNumericEditor("option", "value", "-214");
-		assert.equal($('#clearEditor1').igNumericEditor("value"), "-214", "New value is not correct");
+		var $numericEditor = this.util.appendToFixture(this.divTag),
+			editorInput,
+			clearButton,
+			done = assert.async();
+
+		$numericEditor.igNumericEditor({
+			value: 1,
+			nullValue: 7777,
+			buttonType: "clear",
+			listItems: ["111", "222", "333"],
+			dropDownAttachedToBody: true,
+			allowNullValue: true
+		});
+		editorInput = $numericEditor.igNumericEditor("field"),
+			clearButton = $numericEditor.igNumericEditor("clearButton"),
+
+			assert.equal($numericEditor.igNumericEditor("value"), "1", "Initial value is not correct");
+
+		$numericEditor.igNumericEditor("option", "value", "-214");
+		assert.equal($numericEditor.igNumericEditor("value"), "-214", "New value is not correct");
 		assert.ok($(editorInput).hasClass("ui-igedit-negative"), "The selected item is missing ui-igedit-negative class applied");
-		numericEditor.igNumericEditor("setFocus");
-		stop();
+
+		$numericEditor.igNumericEditor("setFocus");
 		setTimeout(function () {
-			start();
-			assert.ok(!editorInput.hasClass("ui-igedit-negative"), "The selected item has ui-igedit-negative class applied");
+			assert.notOk(editorInput.hasClass("ui-igedit-negative"), "The selected item has ui-igedit-negative class applied");
 			clearButton.click();
 			assert.equal(editorInput.val(), "7777", "Text after cleaning is not correct");
 			editorInput.blur();
-			assert.equal($('#clearEditor1').igNumericEditor("value"), "7777", "Value after cleaning is not correct");
-			$("#clearEditor1").igNumericEditor("option", "width", 230);
-			assert.equal($('#clearEditor1').igNumericEditor("option", "width"), 230, "Value after cleaning is not correct");
+			assert.equal($numericEditor.igNumericEditor("value"), "7777", "Value after cleaning is not correct");
+			$numericEditor.igNumericEditor("option", "width", 230);
+			assert.equal($numericEditor.igNumericEditor("option", "width"), 230, "Value after cleaning is not correct");
+			done();
 		}, 100);
 	});
 
 	QUnit.test("Clear Button", function (assert) {
 		assert.expect(3);
-		var container = $('#clearEditor'),
-			clearButton = container.igNumericEditor("clearButton");
-		assert.equal($('#clearEditor').igNumericEditor("value"), "001", "Initial value is not correct");
-		clearButton.click();
-		assert.equal($('#clearEditor').igNumericEditor("value"), null, "Value after cleaning is not correct");
 
-		$('#clearEditor').igNumericEditor("value", 2);
-		$('#clearEditor').igNumericEditor("option", "allowNullValue", false);
-		$('#clearEditor').igNumericEditor("option", "allowNullValue", false); // Set twice so we ensure that the same value is not set and coverage is fullfilled.
-		$('#clearEditor').igNumericEditor("value", "abc");
+		var $editor = this.util.appendToFixture(this.divTag),
+			clearButton;
+
+		$editor.igNumericEditor({
+			value: "001",
+			buttonType: "clear",
+			allowNullValue: true,
+		});
+
+		clearButton = $editor.igNumericEditor("clearButton");
+		assert.equal($editor.igNumericEditor("value"), "001", "Initial value is not correct");
+
 		clearButton.click();
-		assert.equal($('#clearEditor').igNumericEditor("value"), "", "Value after cleaning is not correct");
+		assert.equal($editor.igNumericEditor("value"), null, "Value after cleaning is not correct");
+
+		$editor.igNumericEditor("value", 2);
+		$editor.igNumericEditor("option", "allowNullValue", false);
+		$editor.igNumericEditor("option", "allowNullValue", false); // Set twice so we ensure that the same value is not set and coverage is fullfilled.
+		$editor.igNumericEditor("value", "abc");
+		clearButton.click();
+		assert.equal($editor.igNumericEditor("value"), "", "Value after cleaning is not correct");
 	});
 
 	QUnit.test('Convert Scientific to Numeric', function (assert) {
 		assert.expect(1);
-		assert.equal($('#convertScientificToNumeric').igNumericEditor("value"), 4, 'The initial value is not as expexted');
+
+		var $editor = this.util.appendToFixture(this.divTag);
+
+		$editor.igNumericEditor({
+			scientificFormat: "e",
+			value: 4
+		});
+
+		assert.equal($editor.igNumericEditor("value"), 4, 'The initial value is not as expexted');
 	});
 
 	QUnit.test("Spin Delta", function (assert) {
 		assert.expect(11);
-		var container = $('#spinDelta'),
-			editorInput = container.igNumericEditor("field"),
-			listUp = container.igNumericEditor("spinUpButton"),
-			integerContainer = $('#spinDeltaInteger'),
-			listUpInteger = integerContainer.igNumericEditor("spinUpButton");
 
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal($('#spinDelta').igNumericEditor("value"), 3, "Value is not correct");
+		var $editor = this.util.appendToFixture(this.divTag),
+			// editorInput = container.igNumericEditor("field"),
+			buttonUp;
 
-		$("#spinDelta").igNumericEditor("option", "spinDelta", 2)
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal($('#spinDelta').igNumericEditor("value"), 5, "Value is not correct");
-		throws(function () {
-			$("#spinDelta").igNumericEditor("option", "spinDelta", -2);
-		}, " Error should be thrown");
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal($('#spinDelta').igNumericEditor("value"), 7, "Value is not correct");
+		$editor.igNumericEditor({
+			buttonType: "spin",
+			spinDelta: 3,
+			value: 0
+		});
 
-		throws(function () {
-			$("#spinDelta").igNumericEditor("option", "spinDelta", "alex");
-		}, " Error should be thrown");
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal($('#spinDelta').igNumericEditor("value"), 9, "Value is not correct");
+		buttonUp = $editor.igNumericEditor("spinUpButton");
 
-		$("#spinDelta").igNumericEditor("option", "maxDecimals", 2);
-		$("#spinDelta").igNumericEditor("option", "spinDelta", 2.123456789);
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal($('#spinDelta').igNumericEditor("value"), 11.12, "Value is not correct");
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 3, "Value is not correct");
 
-		throws(function () {
-			$("#spinDelta").igNumericEditor("option", "maxDecimals", "");
-			$("#spinDelta").igNumericEditor("option", "spinDelta", 2.1294);
-		}, " Error should be thrown");
+		$editor.igNumericEditor("option", "spinDelta", 2)
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 5, "Value is not correct");
+		assert.throws(
+			function () {
+				$editor.igNumericEditor("option", "spinDelta", -2);
+			}, "Error should be thrown");
 
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal($('#spinDelta').igNumericEditor("value"), 13.24, "Value is not correct");
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 7, "Value is not correct");
 
-		throws(function () {
-			$("#spinDeltaInteger").igNumericEditor("option", "spinDelta", 2.127);
-		}, " Error should be thrown");
-		mousedown(listUpInteger[0]);
-		mouseup(listUpInteger[0]);
-		assert.equal($('#spinDeltaInteger').igNumericEditor("value"), 2, "Value is not correct");
+		assert.throws(
+			function () {
+				$editor.igNumericEditor("option", "spinDelta", "alex");
+			}, "Error should be thrown");
+
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 9, "Value is not correct");
+
+		$editor.igNumericEditor("option", "maxDecimals", 2);
+		$editor.igNumericEditor("option", "spinDelta", 2.123456789);
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 11.12, "Value is not correct");
+
+		assert.throws(
+			function () {
+				$editor.igNumericEditor("option", "maxDecimals", "");
+				$editor.igNumericEditor("option", "spinDelta", 2.1294);
+			}, "Error should be thrown");
+
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 13.24, "Value is not correct");
+
+		$editor.remove();
+		$editor = this.util.appendToFixture(this.divTag);
+		$editor.igNumericEditor({
+			dataMode: "int",
+			buttonType: "spin",
+			value: 1
+		});
+
+		buttonUp = $editor.igNumericEditor("spinUpButton");
+
+		assert.throws(
+			function () {
+				$editor.igNumericEditor("option", "spinDelta", 2.127);
+			}, "Error should be thrown");
+
+		this.util.click(buttonUp[0]);
+		assert.equal($editor.igNumericEditor("value"), 2, "Value is not correct");
 	});
 
 	QUnit.test("Spin via keyboard", function (assert) {
 		assert.expect(4);
-		var container = $('#spinDelta'), editorInput = $('#spinDelta').igNumericEditor("field"), flag;
-		$('#spinDelta').on("ignumericeditorkeypress", function () {
+
+		var $editor = this.util.appendToFixture(this.divTag),
+			editorInput,
+			flag;
+
+		$editor.igNumericEditor({
+			buttonType: "spin",
+			spinDelta: 3,
+			value: 0
+		});
+
+		editorInput = $editor.igNumericEditor("field");
+
+		$editor.on("ignumericeditorkeypress", function () {
 			flag = true;
 		});
-		$("#spinDelta").igNumericEditor("option", "value", 0);
-		$("#spinDelta").igNumericEditor("option", "spinDelta", 2);
-		container.click();
-		keyInteraction(38, editorInput);
-		assert.ok(!flag, "up is not send");
-		container.blur();
-		assert.equal($('#spinDelta').igNumericEditor("value"), 2, "The value is not correct");
+
+		$editor.igNumericEditor("option", "value", 0);
+		$editor.igNumericEditor("option", "spinDelta", 2);
+		$editor.click();
+		this.util.keyInteraction(38, editorInput);
+		assert.notOk(flag, "up is not send");
+
+		$editor.blur();
+		assert.equal($editor.igNumericEditor("value"), 2, "The value is not correct");
 		flag = false;
 
-		container.click();
-		keyInteraction(40, editorInput);
-		assert.ok(!flag, "down is not send");
-		container.blur();
-		assert.equal($('#spinDelta').igNumericEditor("value"), 0, "The value is not correct");
+		$editor.click();
+		this.util.keyInteraction(40, editorInput);
+		assert.notOk(flag, "down is not send");
+
+		$editor.blur();
+		assert.equal($editor.igNumericEditor("value"), 0, "The value is not correct");
 	});
 
 	QUnit.test("Keys tests", function (assert) {
 		assert.expect(3);
-		var editorInput = $('#inputEditor1').igNumericEditor("field"),
-			floatEditorInput = $('#floatEditor').igNumericEditor("field"),
-			doubleEditorInput = $('#doubleEditor').igNumericEditor("field"),
-			flag = true, i = 0;
 
-		$('#doubleEditor').one("ignumericeditorkeypress", function (evt, ui) {
+		var $editorInInput = this.util.appendToFixture(this.inputTag).attr("type", "text"),
+			$editorFloat = this.util.appendToFixture(this.divTag),
+			$editorDouble = this.util.appendToFixture(this.divTag),
+			editorInput,
+			i = 0;
+
+		$editorInInput.igNumericEditor({
+			value: 10,
+			numericMaxDecimals: 5,
+			numericMinDecimals: 4
+		});
+
+		$editorFloat.igNumericEditor({
+			value: "123.6548",
+			numericMaxDecimals: 7,
+			dataMode: "float",
+		});
+
+		$editorDouble.igNumericEditor({
+			value: "123.6548",
+			numericMaxDecimals: 15,
+			numericMinDecimals: 3,
+			width: 300,
+			dataMode: "double",
+			numericGroups: [3, 2, 1]
+		});
+
+		$editorDouble.one("ignumericeditorkeypress", function (evt, ui) {
 			if (i == 0) {
 				assert.equal(evt.keyCode, 51, "The keyCode is not equal to 51");
 				i++;
@@ -363,149 +453,228 @@ $(document).ready(function () {
 				i = 0;
 			}
 		});
-		$('#inputEditor1').one("ignumericeditorfocus", function () {
+
+		editorInput = $editorInInput.igNumericEditor("field");
+		$editorInInput.one("ignumericeditorfocus", function () {
 			editorInput.val(12);
 			editorInput.trigger("blur");
 		});
-		$('#inputEditor1').one("ignumericeditorvaluechanged", function () {
-			assert.equal(editorInput = $('#inputEditor1').igNumericEditor("value"), "12", "The value is not as expexted ");
+
+		$editorInInput.one("ignumericeditorvaluechanged", function () {
+			assert.equal(editorInput = $editorInInput.igNumericEditor("value"), "12", "The value is not as expected");
 		});
 		editorInput.trigger("focus");
-		$('#floatEditor').one("ignumericeditorfocus", function () {
-			floatEditorInput.val("12.321654987");
-			floatEditorInput.trigger("blur");
-		});
-		$('#floatEditor').one("ignumericeditorvaluechanged", function () {
-			assert.equal(floatEditorInput = $('#floatEditor').igNumericEditor("value"), "12.321655", "The value is not as expexted ");
-		});
-		floatEditorInput.trigger("focus");
 
-		$('#doubleEditor').one("ignumericeditorfocus", function () {
-			keyPressChar(51, doubleEditorInput);
-			keyPressChar(54, doubleEditorInput);
-			doubleEditorInput.trigger("blur");
+		editorInput = $editorFloat.igNumericEditor("field");
+		$editorFloat.one("ignumericeditorfocus", function () {
+			editorInput.val("12.321654987");
+			editorInput.trigger("blur");
 		});
-		doubleEditorInput.trigger("focus");
+
+		$editorFloat.one("ignumericeditorvaluechanged", function () {
+			assert.equal(editorInput = $editorFloat.igNumericEditor("value"), "12.321655", "The value is not as expected");
+		});
+
+		editorInput.trigger("focus");
+
+		editorInput = $editorDouble.igNumericEditor("field");
+		$editorDouble.one("ignumericeditorfocus", function () {
+			keyPressChar(51, editorInput);
+			keyPressChar(54, editorInput);
+			editorInput.trigger("blur");
+		});
+
+		editorInput.trigger("focus");
 	});
 
 	QUnit.test("Default Data mode", function (assert) {
 		assert.expect(1);
-		assert.equal($('#defaultDataMode').igNumericEditor("option", "dataMode"), "double", "The default data mode is not set");
+
+		var $editor = this.util.appendToFixture(this.divTag);
+		$editor.igNumericEditor({
+			dataMode: "nba",
+		});
+
+		assert.equal($editor.igNumericEditor("option", "dataMode"), "double", "The default data mode is not set");
 	});
 
 	QUnit.test("Default selectionOnFocus", function (assert) {
 		assert.expect(2);
-		var containerInput = $('#defaultDataMode').igNumericEditor("field");
-		assert.equal($('#defaultDataMode').igNumericEditor("option", "selectionOnFocus"), "browserDefault", "The selectionOnFocus is not correct");
-		$("#defaultDataMode").igNumericEditor("option", "value", "905");
-		containerInput.focus();
-		containerInput.blur();
-		assert.equal($('#defaultDataMode').igNumericEditor("value"), "905", "The value is not correct");
+
+		var $editor = this.util.appendToFixture(this.divTag),
+			input;
+
+		$editor.igNumericEditor({
+			selectionOnFocus: "browserDefault"
+		});
+
+		input = $editor.igNumericEditor("field");
+
+		assert.equal($editor.igNumericEditor("option", "selectionOnFocus"), "browserDefault", "The selectionOnFocus is not correct");
+		$editor.igNumericEditor("option", "value", "905");
+		input.focus();
+		input.blur();
+		assert.equal($editor.igNumericEditor("value"), "905", "The value is not correct");
 	});
 
 	QUnit.test("Min/Max value", function (assert) {
 		assert.expect(15);
-		var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field");
 
-		container.igNumericEditor("value", 9);
-		assert.equal($('#minMaxValue').igNumericEditor("value"), 10, "The minValue is not respected");
-		container.igNumericEditor("value", 100);
-		assert.equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
-		container.igNumericEditor("value", "fail");
-		assert.equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
+		var $editor = this.util.appendToFixture(this.inputTag).attr("type", "text"),
+			input;
 
-		container.igNumericEditor("value", null);
-		assert.equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
+		$editor.igNumericEditor({
+			minValue: 10,
+			maxValue: 99,
+			excludeKeys: "ABC",
+			decimalSeparator: ".",
+			selectionOnFocus: "atEnd",
+			revertIfNotValid: true
+		});
+
+		input = $editor.igNumericEditor("field");
+
+		$editor.igNumericEditor("value", 9);
+		assert.equal($editor.igNumericEditor("value"), 10, "The minValue is not respected");
+
+		$editor.igNumericEditor("value", 100);
+		assert.equal($editor.igNumericEditor("value"), 99, "The maxValue is not respected");
+
+		$editor.igNumericEditor("value", "fail");
+		assert.equal($editor.igNumericEditor("value"), 99, "The maxValue is not respected");
+
+		$editor.igNumericEditor("value", null);
+		assert.equal($editor.igNumericEditor("value"), 99, "The maxValue is not respected");
 
 		// runtime changes:
-		var $editor = $('<input />').appendTo("#testBedContainer")
+		$editor.remove();
+		$editor = this.util
+			.appendToFixture(this.inputTag)
+			.attr("type", "text")
 			.igNumericEditor({
 				value: 5
 			});
 
 		$editor.igNumericEditor("option", "minValue", -150);
 		assert.strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+
 		$editor.igNumericEditor("option", "maxValue", 5);
 		assert.strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+
 		$editor.igNumericEditor("option", "maxValue", 4);
 		assert.strictEqual($editor.igNumericEditor("value"), 4, "Value should be set to max");
-		assert.equal($editor.igNumericEditor("field").val(), "4", "Text not updated with max value");
+
+		input = $editor.igNumericEditor("field");
+		assert.equal(input.val(), "4", "Text not updated with max value");
+
 		$editor.igNumericEditor("value", 0);
 		$editor.igNumericEditor("option", "minValue", 1);
 		assert.strictEqual($editor.igNumericEditor("value"), 1, "Value should be set to min");
-		assert.equal($editor.igNumericEditor("field").val(), "1", "Text not updated with min value");
+		assert.equal(input.val(), "1", "Text not updated with min value");
+
 		$editor.focus();
-		$editor.igNumericEditor("field").val("3");
+		input.val("3");
 		$editor.igNumericEditor("option", "minValue", 2);
-		assert.strictEqual($editor.igNumericEditor("value"), 2, "Value not set to min while editng");
-		assert.equal($editor.igNumericEditor("field").val(), "3", "Editing text should remain unchanged");
-		$editor.igNumericEditor("field").blur();
-		assert.strictEqual($editor.igNumericEditor("value"), 3, "Value not updated after chaning min");
+		assert.strictEqual($editor.igNumericEditor("value"), 2, "Value not set to min while editing");
+		assert.equal(input.val(), "3", "Editing text should remain unchanged");
+
+		input.blur();
+		assert.strictEqual($editor.igNumericEditor("value"), 3, "Value not updated after changing min");
 
 		// ensure base dataMode min/max, double:
 		$editor.igNumericEditor("option", "minValue", null);
 		$editor.igNumericEditor("option", "maxValue", null);
 		assert.equal($editor.igNumericEditor("option", "minValue"), -(Number.MAX_VALUE), "minValue not set to null");
 		assert.equal($editor.igNumericEditor("option", "maxValue"), Number.MAX_VALUE, "maxValue not set to null");
-
-		//$editor.remove();
 	});
 
 	QUnit.test("Scientific spin buttons", function (assert) {
 		assert.expect(2);
+
+		var $editorSCI = this.util.appendToFixture(this.divTag),
+			$editorSCIEPlus = this.util.appendToFixture(this.divTag),
+			spinUpButton;
+
+		$editorSCI.igNumericEditor({
+			scientificFormat: "e",
+			buttonType: "spin"
+		});
+
+		$editorSCIEPlus.igNumericEditor({
+			scientificFormat: "e+",
+			buttonType: "spin"
+		});
+
+		spinUpButton = $editorSCI.igNumericEditor("spinUpButton");
+
 		var container = $('#scientificFormat'),
 			containerInput = container.igNumericEditor("field"),
 			listUp = container.igNumericEditor("spinUpButton"),
 			containerEPlus = $('#scientificFormatEPlus'),
 			listUpEPlus = containerEPlus.igNumericEditor("spinUpButton");
 
-		container.igNumericEditor("value", 0);
-		mousedown(listUp[0]);
-		mouseup(listUp[0]);
-		assert.equal(container.igNumericEditor("value"), "1e+0", "Value is not correct");
+		$editorSCI.igNumericEditor("value", 0);
+		this.util.click(spinUpButton[0]);
+		assert.equal($editorSCI.igNumericEditor("value"), "1e+0", "Value is not correct");
 
-		containerEPlus.igNumericEditor("value", 0);
-		mousedown(listUpEPlus[0]);
-		mouseup(listUpEPlus[0]);
-		assert.equal(containerEPlus.igNumericEditor("value"), "1e+0", "Value is not correct");
+		$editorSCIEPlus.igNumericEditor("value", 0);
+		spinUpButton = $editorSCIEPlus.igNumericEditor("spinUpButton");
+		this.util.click(spinUpButton[0]);
+		assert.equal($editorSCIEPlus.igNumericEditor("value"), "1e+0", "Value is not correct");
 	});
 
 	QUnit.test("Scientific format", function (assert) {
 		assert.expect(6);
-		var mainContainer = $('#scientificFormat'),
-			editorInput = $('#scientificFormat').igNumericEditor("field"), container = $('#clearEditor');
-		editorInput.click();
-		$("#scientificFormat").igNumericEditor("option", "value", "94");
-		container.click();
-		assert.equal(editorInput.val(), "9.4e1", "Text is not correct");
+
+		var $editor = this.util.appendToFixture(this.divTag),
+			$editorFocus = this.util.appendToFixture(this.divTag),
+			input;
+
+		$editor.igNumericEditor({
+			scientificFormat: "e",
+			buttonType: "spin"
+		});
+
+		$editorFocus.igNumericEditor();
+
+		input = $editor.igNumericEditor("field");
+
+		input.click();
+		$editor.igNumericEditor("option", "value", "94");
+		$editorFocus.click();
+		assert.equal(input.val(), "9.4e1", "Text is not correct");
 
 		//Change scientificFormat to "E"
-		$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E");
-		$("#scientificFormat").igNumericEditor("option", "value", "6441");
-		assert.equal(editorInput.val(), "6.441E3", "Text is not correct");
+		$editor.igNumericEditor("option", "scientificFormat", "E");
+		$editor.igNumericEditor("option", "value", "6441");
+		assert.equal(input.val(), "6.441E3", "Text is not correct");
 
 		//Change scientificFormat to "E+"
-		$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E+");
-		editorInput.click();
-		$("#scientificFormat").igNumericEditor("option", "value", "22");
-		container.click();
-		assert.equal(editorInput.val(), "2.2E+1", "Text is not correct");
-		assert.strictEqual($("#scientificFormat").igNumericEditor("option", "value"), 22, "Text is not correct");
+		$editor.igNumericEditor("option", "scientificFormat", "E+");
+		input.click();
+		$editor.igNumericEditor("option", "value", "22");
+		$editorFocus.click();
+		assert.equal(input.val(), "2.2E+1", "Text is not correct");
+		assert.strictEqual($editor.igNumericEditor("option", "value"), 22, "Text is not correct");
 
 		//Change scientificFormat to invalid value
-		throws(function () {
-			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
+		assert.throws(function () {
+			$editor.igNumericEditor("option", "scientificFormat", "s");
 		},
 			Error($.ig.Editor.locale.scientificFormatErrMsg),
-			"Acepted value with wrong scientificFormat."
-		);
-		container.click();
-		assert.equal(editorInput.val(), "2.2E+1", "Value is not correct");
+			"Accepted value with wrong scientificFormat.");
+
+		$editorFocus.click();
+		assert.equal(input.val(), "2.2E+1", "Value is not correct");
 	});
 
 	QUnit.test("Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)", function (assert) {
 		assert.expect(76);
-		var $editor, $editorInput,
+
+		var $editor,
+			$editorInput,
+			done = assert.async(),
+			util = this.util,
 			setup = [{
 				//1: #761: Wrong value when setting the value to a number with too many digits
 				options: { dateMode: "double", value: 1e-21 },
@@ -585,25 +754,25 @@ $(document).ready(function () {
 				displayed: "1E-7",
 				editText: "1E-7"
 			}, {
-				//14: Very large sceintific in int mode (caps at maxValue)
+				//14: Very large scientific in int mode (caps at maxValue)
 				options: { value: 1e+45, dataMode: "int" },
 				value: 2147483647, //intMaxValue
 				displayed: "2,147,483,647",
 				editText: "2147483647"
 			}, {
-				//15: Very large sceintific in double (no decimal cut)
+				//15: Very large scientific in double (no decimal cut)
 				options: { value: 1.56547e+55, dataMode: "double", scientificFormat: "E+" },
 				value: 1.56547e+55,
 				displayed: "1.56547E+55",
 				editText: "1.56547E55"
 			}, {
-				//16: Very small sceintific in double (decimal round)
+				//16: Very small scientific in double (decimal round)
 				options: { value: 1.56547e-55, dataMode: "double", scientificFormat: "E+" },
 				value: 1.57e-55,
 				displayed: "1.57E-55",
 				editText: "1.57E-55"
 			}, {
-				//17: Very small sceintific in float (decimal cut)
+				//17: Very small scientific in float (decimal cut)
 				options: { value: "1.5699e-51", dataMode: "float", roundDecimals: false, scientificFormat: "e" },
 				value: 1.56e-51,
 				displayed: "1.56e-51",
@@ -617,13 +786,15 @@ $(document).ready(function () {
 			}];
 
 		for (var i = 0; i < setup.length; i++) {
-			$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor(setup[i].options);
+			$editor = this.util.appendToFixture(this.inputTag).igNumericEditor(setup[i].options);
 			$editorInput = $editor.igNumericEditor("field");
 
 			assert.strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
 			assert.equal($editorInput.val(), setup[i].displayed, "Display text did not match expected for setup:" + (i + 1));
+
 			$editor.trigger("focus");
 			assert.equal($editorInput.val(), setup[i].editText, "Edit Text did not match expected for setup:" + (i + 1));
+
 			$editor.trigger("blur");
 			//re-validate value after edit mode:
 			assert.strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
@@ -631,85 +802,125 @@ $(document).ready(function () {
 		}
 
 		// paste formatting:
-		$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor({
-			value: 2, dataMode: "double", scientificFormat: "E+"
+		$editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+			value: 2,
+			dataMode: "double",
+			scientificFormat: "E+"
 		});
 
 		$editor.trigger("focus")[0].select();
-		$.ig.TestUtil.paste($editor[0], "100");
-		stop();
-		setTimeout(function () {
+		this.util.paste($editor[0], "100");
+		this.util.wait(20).then(function () {
 			assert.equal($editor.val(), "1E2", "Edit Text not as expected on scientific format value paste.");
 			$editor[0].select();
-			$.ig.TestUtil.paste($editor[0], "1e-22");
-			setTimeout(function () {
-				assert.equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
-				$editor.igNumericEditor("option", "scientificFormat", "e+");
-				$editor[0].select();
-				$.ig.TestUtil.paste($editor[0], "23e+1");
-				setTimeout(function () {
-					start();
-					assert.equal($editor.val(), "2.3e2", "Edit Text not as expected on scientific format value paste.");
-					$editor.trigger("blur");
-					assert.equal($editor.val(), "2.3e+2", "Display Text not as expected on scientific format value paste.");
-					$editor.remove();
-				}, 20);
-			}, 20);
-		}, 20);
+			util.paste($editor[0], "1e-22");
+			return util.wait(20);
+		}).then(function () {
+			assert.equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
+			$editor.igNumericEditor("option", "scientificFormat", "e+");
+			$editor[0].select();
+			util.paste($editor[0], "23e+1");
+			return util.wait(20);
+		}).then(function () {
+			assert.equal($editor.val(), "2.3e2", "Edit Text not as expected on scientific format value paste.");
+			$editor.trigger("blur");
+			assert.equal($editor.val(), "2.3e+2", "Display Text not as expected on scientific format value paste.");
+			$editor.remove();
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test("Group and decimal Separators", function (assert) {
 		assert.expect(5);
-		var val = 1264.89;
-		var containerInput = $('#inputEditor1').igNumericEditor("field");
 
-		// TODO: check what the code was on this line!!!!
+		var $editor = this.util.appendToFixture(this.inputTag),
+			input,
+			val = 1264.89;
 
-		// $("#inputEditor1").igNumericEditor("option", "groupSeparator", " "editorditor1").igNumericEditor("option", "decimalSeparator", ", ");
-		$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
-		assert.equal(containerInput.val(), "1 264,8900", "The decimal value is not correct");
+		$editor.igNumericEditor({
+			value: 10,
+			numericMaxDecimals: 5,
+			numericMinDecimals: 4
+		});
+		input = $editor.igNumericEditor("field");
+
+		$editor.igNumericEditor("option", "groupSeparator", " ");
+		$editor.igNumericEditor("option", "decimalSeparator", ",");
+		$editor.igNumericEditor("option", "value", val);
+		assert.equal(input.val(), "1 264,8900", "The decimal value is not correct"); // 1,264.8900
 
 		// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
-		$("#inputEditor1").igNumericEditor("option", "groupSeparator", "");
-		$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
-		assert.equal($("#inputEditor1").igNumericEditor("displayValue"), "1264,8900", "The decimal value is not correct");
+		$editor.igNumericEditor("option", "groupSeparator", "");
+		$editor.igNumericEditor("option", "value", 1264.89);
+		assert.equal($editor.igNumericEditor("displayValue"), "1264,8900", "The decimal value is not correct");
 
 		// For when 208296 gets fixed
-		$("#inputEditor1").igNumericEditor("option", "groupSeparator", ".");
-		$("#inputEditor1").igNumericEditor("option", "value", "1264,89");
-		assert.equal(containerInput.val(), "1.264,8900", "The group separator was not applied is not correct");
-		assert.equal($("#inputEditor1").igNumericEditor("value"), 1264.89, "Decimal value not parsed correctly with decimal ','");
+		$editor.igNumericEditor("option", "groupSeparator", ".");
+		$editor.igNumericEditor("option", "value", "1264,89");
+		assert.equal(input.val(), "1.264,8900", "The group separator was not applied is not correct");
+		assert.equal($editor.igNumericEditor("value"), 1264.89, "Decimal value not parsed correctly with decimal ','");
 
 		// For 207448: exception is thrown when trying to spin the value (with modified decimalSeparator)
-		containerInput.focus();
-		keyInteraction(38, containerInput); //arrow up
-		containerInput.blur();
-		assert.equal($("#inputEditor1").igNumericEditor("value"), val + $("#inputEditor1").igNumericEditor("option", "spinDelta"), "Decimal value is not correct after spin");
+		input.focus();
+		keyInteraction(38, input); //arrow up
+		input.blur();
+		assert.equal($editor.igNumericEditor("value"), val + $editor.igNumericEditor("option", "spinDelta"), "Decimal value is not correct after spin");
 	});
 
 	QUnit.test("Multiple decimalSeparators", function (assert) {
 		assert.expect(5);
-		var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field"), flag = false;
-		$('#minMaxValue').on("ignumericeditorkeypress", function () {
-			flag = true;
-		});
-		containerInput.val("15.11");
-		containerInput.blur();
-		assert.equal($('#minMaxValue').igNumericEditor("value"), "15.11", "The value is not correct");
-		containerInput.click();
-		keyInteraction(190, containerInput);
-		assert.ok(!flag, "'.' char is typed");
-		container.blur();
-		assert.equal($('#minMaxValue').igNumericEditor("value"), "15.11", "The value is not correct");
 
-		$('#longEditor').on("ignumericeditorkeypress", function () {
+		var $editor = this.util.appendToFixture(this.inputTag),
+			$editorInDiv = this.util.appendToFixture(this.divTag),
+			input,
+			flag = false;
+
+		$editor.igNumericEditor({
+			minValue: 10,
+			maxValue: 99,
+			excludeKeys: "ABC",
+			decimalSeparator: ".",
+			selectionOnFocus: "atEnd",
+			revertIfNotValid: true
+		});
+
+		$editorInDiv.igNumericEditor({
+			value: "123.6548",
+			numericMaxDecimals: 15,
+			dataMode: "long",
+		});
+
+		input = $editor.igNumericEditor("field");
+
+		$editor.on("ignumericeditorkeypress", function () {
 			flag = true;
 		});
-		containerInput.click();
-		keyInteraction(190, containerInput);
+
+		input.val("15.11");
+		input.blur();
+		assert.equal($editor.igNumericEditor("value"), "15.11", "The value is not correct");
+		
+		input.click();
+		this.util.keyInteraction(190, input);
+		assert.notOk(flag, "'.' char is typed");
+		
+		$editor.blur();
+		assert.equal($editor.igNumericEditor("value"), "15.11", "The value is not correct");
+
+		$editorInDiv.on("ignumericeditorkeypress", function () {
+			flag = true;
+		});
+
+		input.click();
+		this.util.keyInteraction(190, input);
 		assert.ok(!flag, "'.' char is typed");
-		container.blur();
-		assert.equal($('#longEditor').igNumericEditor("value"), "123", "The value is not correct");
+		
+		$editor.blur();
+		assert.equal($editorInDiv.igNumericEditor("value"), "123", "The value is not correct");
 	});
 
 	QUnit.test("Typing negative signs (multiple prevention, leading, scientific)", function (assert) {
@@ -1801,24 +2012,55 @@ $(document).ready(function () {
 		var $editorRound, $editorTrunc, testData;
 
 		testData = [
-	/*maxDecimals*/
-	/*0*/[{ input: 5.5, round: 6, trunc: 5 }, { input: 5.5784546, round: 6, trunc: 5 },
-			{ input: 0.0001, round: 0, trunc: 0 }, { input: 0.9999999999, round: 1, trunc: 0 }],
-	/*1*/[{ input: 5.55, round: 5.6, trunc: 5.5 }, { input: 5.555, round: 5.6, trunc: 5.5 },
-			{ input: 5.899, round: 5.9, trunc: 5.8 }, { input: 5.999, round: 6, trunc: 5.9 }],
-	/*2*/[{ input: 1.999, round: 2, trunc: 1.99 }, { input: 1.019, round: 1.02, trunc: 1.01 },
-			{ input: 9.999, round: 10, trunc: 9.99 }, { input: "aaaa", round: 10, trunc: 9.99 }],
-	/*3*/[{ input: 123.4567, round: 123.457, trunc: 123.456 }, { input: 123.4561, round: 123.456, trunc: 123.456 },
-			{ input: 123.4597, round: 123.46, trunc: 123.459 }, { input: 123.4509, round: 123.451, trunc: 123.45 }],
-	/*4*/[{ input: 1.999, round: 1.999, trunc: 1.999 }, { input: 99.9999999, round: 100, trunc: 99.9999 },
-			{ input: 34.555555, round: 34.5556, trunc: 34.5555 }, { input: 99.0000000001, round: 99, trunc: 99 }],
-	/*5*/[{ input: 0.9090999, round: 0.9091, trunc: 0.90909 }, { input: 23.555555, round: 23.55556, trunc: 23.55555 },
-			{ input: 23.5555555, round: 23.55556, trunc: 23.55555 }, { input: 0.000009, round: 0.00001, trunc: 0 }],
-	/*6*/[{ input: 99.0000009, round: 99.000001, trunc: 99 }, { input: 5.5555555, round: 5.555556, trunc: 5.555555 },
-			{ input: 99.0000001, round: 99, trunc: 99 }, { input: 1.000000000001, round: 1, trunc: 1 }],
-	/*7*/[{ input: 99.00000001, round: 99, trunc: 99 }, { input: 1.000000000001, round: 1, trunc: 1 },
-			{ input: 5.55555555, round: 5.5555556, trunc: 5.5555555 }, { input: 1.23456789, round: 1.2345679, trunc: 1.2345678 }]
-		];
+			// maxDecimals
+			[
+				{ input: 5.5, round: 6, trunc: 5 },
+				{ input: 5.5784546, round: 6, trunc: 5 },
+				{ input: 0.0001, round: 0, trunc: 0 },
+				{ input: 0.9999999999, round: 1, trunc: 0 }
+			],
+			[
+				{ input: 5.55, round: 5.6, trunc: 5.5 },
+				{ input: 5.555, round: 5.6, trunc: 5.5 },
+				{ input: 5.899, round: 5.9, trunc: 5.8 },
+				{ input: 5.999, round: 6, trunc: 5.9 }
+			],
+			[
+				{ input: 1.999, round: 2, trunc: 1.99 },
+				{ input: 1.019, round: 1.02, trunc: 1.01 },
+				{ input: 9.999, round: 10, trunc: 9.99 },
+				{ input: "aaaa", round: 10, trunc: 9.99 }
+			],
+			[
+				{ input: 123.4567, round: 123.457, trunc: 123.456 },
+				{ input: 123.4561, round: 123.456, trunc: 123.456 },
+				{ input: 123.4597, round: 123.46, trunc: 123.459 },
+				{ input: 123.4509, round: 123.451, trunc: 123.45 }
+			],
+			[
+				{ input: 1.999, round: 1.999, trunc: 1.999 },
+				{ input: 99.9999999, round: 100, trunc: 99.9999 },
+				{ input: 34.555555, round: 34.5556, trunc: 34.5555 },
+				{ input: 99.0000000001, round: 99, trunc: 99 }
+			],
+			[
+				{ input: 0.9090999, round: 0.9091, trunc: 0.90909 },
+				{ input: 23.555555, round: 23.55556, trunc: 23.55555 },
+				{ input: 23.5555555, round: 23.55556, trunc: 23.55555 },
+				{ input: 0.000009, round: 0.00001, trunc: 0 }
+			],
+			[
+				{ input: 99.0000009, round: 99.000001, trunc: 99 },
+				{ input: 5.5555555, round: 5.555556, trunc: 5.555555 },
+				{ input: 99.0000001, round: 99, trunc: 99 },
+				{ input: 1.000000000001, round: 1, trunc: 1 }
+			],
+			[
+				{ input: 99.00000001, round: 99, trunc: 99 },
+				{ input: 1.000000000001, round: 1, trunc: 1 },
+				{ input: 5.55555555, round: 5.5555556, trunc: 5.5555555 },
+				{ input: 1.23456789, round: 1.2345679, trunc: 1.2345678 }
+			]];
 		$editorRound = $('<input/>').appendTo("#testBedContainer").igNumericEditor();
 		$editorTrunc = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ roundDecimals: false });
 
@@ -2322,14 +2564,17 @@ function typeInMaskedInput(characters, element) {
 		element.trigger(keyUp);
 	});
 }
+
 String.prototype.replaceAt = function (index, character) {
 	return this.substr(0, index) + character + this.substr(index + character.length);
 }
+
 function keyInteraction(key, target, special) {
 	keyDownChar(key, target, special);
 	keyPressChar(key, target, special);
 	keyUpChar(key, target, special);
 }
+
 function keyDownChar(key, target, special) {
 	var evt = $.Event("keydown");
 	evt.keyCode = key;
@@ -2339,6 +2584,7 @@ function keyDownChar(key, target, special) {
 	}
 	target.trigger(evt);
 }
+
 function keyPressChar(key, target, special) {
 	var evt = $.Event("keypress");
 	evt.keyCode = key;
@@ -2348,6 +2594,7 @@ function keyPressChar(key, target, special) {
 	}
 	target.trigger(evt);
 }
+
 function keyUpChar(key, target, special) {
 	var evt = $.Event("keyup");
 	evt.keyCode = key;
@@ -2357,6 +2604,7 @@ function keyUpChar(key, target, special) {
 	}
 	target.trigger(evt);
 }
+
 function mouseup(element) {
 	// create a mouse click event
 	var event = document.createEvent('MouseEvents');
@@ -2365,6 +2613,7 @@ function mouseup(element) {
 	// send click to element
 	element.dispatchEvent(event);
 }
+
 function mousedown(element) {
 	// create a mouse click event
 	var event = document.createEvent('MouseEvents');
@@ -2373,6 +2622,7 @@ function mousedown(element) {
 	// send click to element
 	element.dispatchEvent(event);
 }
+
 function mouseover(element) {
 	// create a mouse click event
 	var event = document.createEvent('MouseEvents');
@@ -2381,6 +2631,7 @@ function mouseover(element) {
 	// send click to element
 	element.dispatchEvent(event);
 }
+
 function mouseout(element) {
 	// create a mouse click event
 	var event = document.createEvent('MouseEvents');

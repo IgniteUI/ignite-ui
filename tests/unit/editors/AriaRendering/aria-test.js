@@ -93,7 +93,7 @@ QUnit.test('Aria Rendering', function (assert) {
 	$listitem = $($ddlist.children(".ui-igedit-listitem")[3]);
 	assert.equal($listitem.attr("role"), "option", "The item should have role option");
 	assert.equal($listitem.attr("aria-selected"), "false", "The aria-selected attribute should be false");
-	assert.equal($listitem.attr("aria-posinset"), "4", "The arin-posinset attribute should be 4");
+	assert.equal($listitem.attr("aria-posinset"), "4", "The aria-posinset attribute should be 4");
 	assert.equal($listitem.attr("title"), "item4", "The title of the item should be item4");
 
 	//AriaLabelText for all editors. 
@@ -116,7 +116,7 @@ QUnit.test("Change locale", function (assert) {
 
 	var igDatePickerId = "igDatePickerId",
 		$igDatePicker = this.util.appendToFixture(this.divTag, { id: igDatePickerId }),
-		$buttonCnangeUSLocale = this.util.appendToFixture("<button></button>");
+		$buttonChangeUSLocale = this.util.appendToFixture("<button></button>");
 
 	$igDatePicker.igDatePicker({
 		buttonType: "dropdown,spin,clear",
@@ -124,7 +124,7 @@ QUnit.test("Change locale", function (assert) {
 		width: 400
 	});
 
-	$buttonCnangeUSLocale.click(function () {
+	$buttonChangeUSLocale.click(function () {
 		$igDatePicker.igDatePicker("option", "locale", {
 			datePickerButtonTitle: "New DD Title",
 			spinUpperTitle: "New SU Title",
@@ -132,7 +132,7 @@ QUnit.test("Change locale", function (assert) {
 		});
 	});
 
-	$buttonCnangeUSLocale.click();
+	$buttonChangeUSLocale.click();
 
 	assert.equal($igDatePicker.find("#" + igDatePickerId + "_calendarButton").attr("title"), "New DD Title", "The Drop Down title locale didn't change");
 	assert.equal($igDatePicker.find("#" + igDatePickerId + "_spinUpButton").attr("title"), "New SU Title", "The Spin Up title locale didn't change");
