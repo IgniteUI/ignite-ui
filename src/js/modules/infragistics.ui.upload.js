@@ -2377,7 +2377,7 @@
 				res = this._html5createForm(files[ i ], i, fileId);
 			}
 
-			if (o.autoStartUpload && o.useSingleRequest) {
+			if (o.autostartupload && o.useSingleRequest) {
 				var retVal = this._html5upload();
 
 				if (retVal) {
@@ -4080,7 +4080,7 @@
 		_spbCheckModeButton: function () {
 			var allFilesData = this.fileInfoData;
 
-			if (this.options.autoStartUpload) {
+			if (this.options.autostartupload) {
 				if (allFilesData.pendingQueueIDs.length > 0 || allFilesData.uploadingIDs.length > 0) {
 					this._spbSetCancelButton();
 				} else {
