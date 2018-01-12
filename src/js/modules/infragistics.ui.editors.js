@@ -8845,6 +8845,11 @@
 				if (this._inComposition === true) {
 					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
 					newValue = this._parseValueByMask(newValue);
+
+					// N.A. January 12th, 2018 #1525: When wrong input is entered the value should be reverted, if the option is set.
+					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+						newValue = oldVal;
+					}
 				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
