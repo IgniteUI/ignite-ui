@@ -1968,19 +1968,19 @@
 			```
 			Function takes arguments evt and ui.
 			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
-			eventArgument="ui.source" argType="string" Get the url of the playing video.			
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			ended: "ended",
 			/* cancel="true" Occurs when video gets playing.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerplaying", function (evt, ui) {
-					//return the ellapsed time 
+					//return the ellapsed time
 					ui.currentTime;
 					//return the duration of the video
 					ui.duration;
 					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;			
+					ui.source;
 				});
 
 				//Initialize
@@ -1998,12 +1998,12 @@
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerpaused", function (evt, ui) {
-					//return the ellapsed time 
+					//return the ellapsed time
 					ui.currentTime;
 					//return the duration of the video
 					ui.duration;
 					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;					
+					ui.source;
 				});
 
 				//Initialize
@@ -2014,7 +2014,7 @@
 			Function takes arguments evt and ui.
 			eventArgument="ui.currentTime" argType="number" Get the current time in the video at which the event was fired.
 			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
-			eventArgument="ui.source" argType="string" Get the url of the playing video.			
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			paused: "paused",
 			/* cancel="true" Occurs when a chunk of data is buffered.
@@ -2024,7 +2024,7 @@
 					//return the buffering precentage
 					ui.buffered;
 					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;					
+					ui.source;
 				});
 
 				//Initialize
@@ -2034,7 +2034,7 @@
 			```
 			Function takes arguments evt and ui.
 			eventArgument="ui.buffered" argType="number" Get buffered percentage.
-			eventArgument="ui.source" argType="string" Get the url of the playing video.			
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			buffering: "buffering",
 			/* cancel="true" Occurs when the video has advanced the playback position.
@@ -2046,7 +2046,7 @@
 					//return the duration of the video
 					ui.duration;
 					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;					
+					ui.source;
 				});
 
 				//Initialize
@@ -2069,7 +2069,7 @@
 					//return the duration of the video
 					ui.duration;
 					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;					
+					ui.source;
 				});
 
 				//Initialize
@@ -2092,7 +2092,7 @@
 					//return bookmark html element in the DOM
 					ui.bookmarkElement;
 					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;					
+					ui.source;
 				});
 
 				//Initialize
@@ -2103,7 +2103,7 @@
 			Function takes arguments evt and ui.
 			eventArgument="ui.bookmark" argType="object" Get the bookmark object from the bookmarks array.
 			eventArgument="ui.bookmarkElement" argType="object" Get the html element in the DOM.
-			eventArgument="ui.source" argType="string" Get the url of the playing video.		
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			bookmarkHit: "bookmarkHit",
 			/* cancel="true" Occurs when a bookmark is clicked.
