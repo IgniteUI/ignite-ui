@@ -2691,8 +2691,8 @@
 				self._spbCheckModeButton();
 			}
 			self._trigger(self.events.fileSelected,
-						  null,
-						  { owner: self, fileId: fileId, filePath: self._getOnlyFileName(fileName) });
+						null,
+						{ owner: self, fileId: fileId, filePath: self._getOnlyFileName(fileName) });
 			return true;
 		},
 		_createForm: function (filePicker) {
@@ -2747,8 +2747,8 @@
 					.appendTo($(document.body));
 			filePicker.attr("name", formId + "_if").attr("id", formId + "_if").appendTo(form);
 			self._trigger(self.events.onFormDataSubmit,
-						  null,
-						  { formData: form, fileId: fileId, fileInfo: data.filesInfo[ fileId ], owner: self });
+						null,
+						{ formData: form, fileId: fileId, fileInfo: data.filesInfo[ fileId ], owner: self });
 			self._HTMLSingleUpload(fileId);
 			/*if (o.mode === "single") {
 				self.startUpload(fileId);
@@ -2782,8 +2782,8 @@
 				self._spbCheckModeButton();
 			}
 			self._trigger(self.events.fileSelected,
-						  event,
-						  { owner: self, fileId: fileId, filePath: self._getOnlyFileName(filePicker.val()) });
+						event,
+						{ owner: self, fileId: fileId, filePath: self._getOnlyFileName(filePicker.val()) });
 			return true;
 		},
 		_showSingleUploadStartUpload: function () {
