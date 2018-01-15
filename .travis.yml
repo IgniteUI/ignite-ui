@@ -1,8 +1,15 @@
 language: node_js
 node_js:
 - 'node'
+# https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-356879951
+# sudo: false
+# dist: trusty
+addons:
+  chrome: stable
+
 script:
 - npm run cover
+after_success:
 - cat ./coverage/lcov.info | coveralls
 
 before_deploy:
