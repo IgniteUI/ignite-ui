@@ -7,30 +7,6 @@ $(document).ready(function () {
 		beforeEach: function () { },
 
 		afterEach: function () { },
-
-		typeInMaskedInput: function (characters, element) {
-			var keyDown = jQuery.Event("keydown"),
-				keyPress = jQuery.Event("keypress"),
-				keyUp = jQuery.Event("keyup"),
-				value = element.val(), selectionStart = 0;
-
-			String.prototype.replaceAt = function (index, character) {
-				return this.substr(0, index) + character + this.substr(index + character.length);
-			}
-
-			characters.split('').forEach(function (ch) {
-				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
-				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
-				element.trigger(keyDown);
-				element.trigger(keyPress);
-				// refresh selection EACH time, mask editor moves over literals:
-				selectionStart = element[0].selectionStart;
-				value = value.replaceAt(selectionStart++, ch);
-				element.val(value);
-				element[0].selectionStart = selectionStart;
-				element.trigger(keyUp);
-			});
-		}
 	});
 
 	QUnit.test('Numeric Editor initialization.', function (assert) {
@@ -2245,78 +2221,103 @@ $(document).ready(function () {
 
 		testData = [
 			// maxDecimals
-			[
-				{ input: 5.5, round: 6, trunc: 5 },
-				{ input: 5.5784546, round: 6, trunc: 5 },
-				{ input: 0.0001, round: 0, trunc: 0 },
-				{ input: 0.9999999999, round: 1, trunc: 0 }
-			],
-			[
-				{ input: 5.55, round: 5.6, trunc: 5.5 },
-				{ input: 5.555, round: 5.6, trunc: 5.5 },
-				{ input: 5.899, round: 5.9, trunc: 5.8 },
-				{ input: 5.999, round: 6, trunc: 5.9 }
-			],
-			[
-				{ input: 1.999, round: 2, trunc: 1.99 },
-				{ input: 1.019, round: 1.02, trunc: 1.01 },
-				{ input: 9.999, round: 10, trunc: 9.99 },
-				{ input: "aaaa", round: 10, trunc: 9.99 }
-			],
-			[
-				{ input: 123.4567, round: 123.457, trunc: 123.456 },
-				{ input: 123.4561, round: 123.456, trunc: 123.456 },
-				{ input: 123.4597, round: 123.46, trunc: 123.459 },
-				{ input: 123.4509, round: 123.451, trunc: 123.45 }
-			],
-			[
-				{ input: 1.999, round: 1.999, trunc: 1.999 },
-				{ input: 99.9999999, round: 100, trunc: 99.9999 },
-				{ input: 34.555555, round: 34.5556, trunc: 34.5555 },
-				{ input: 99.0000000001, round: 99, trunc: 99 }
-			],
-			[
-				{ input: 0.9090999, round: 0.9091, trunc: 0.90909 },
-				{ input: 23.555555, round: 23.55556, trunc: 23.55555 },
-				{ input: 23.5555555, round: 23.55556, trunc: 23.55555 },
-				{ input: 0.000009, round: 0.00001, trunc: 0 }
-			],
-			[
-				{ input: 99.0000009, round: 99.000001, trunc: 99 },
-				{ input: 5.5555555, round: 5.555556, trunc: 5.555555 },
-				{ input: 99.0000001, round: 99, trunc: 99 },
-				{ input: 1.000000000001, round: 1, trunc: 1 }
-			],
-			[
-				{ input: 99.00000001, round: 99, trunc: 99 },
-				{ input: 1.000000000001, round: 1, trunc: 1 },
-				{ input: 5.55555555, round: 5.5555556, trunc: 5.5555555 },
-				{ input: 1.23456789, round: 1.2345679, trunc: 1.2345678 }
-			]];
+			{
+				maxDecimals: 0,
+				data: [
+					{ input: 5.5, round: 6, trunc: 5 },
+					{ input: 5.5784546, round: 6, trunc: 5 },
+					{ input: 0.0001, round: 0, trunc: 0 },
+					{ input: 0.9999999999, round: 1, trunc: 0 }
+				]
+			},
+			{
+				maxDecimals: 1,
+				data: [
+					{ input: 5.55, round: 5.6, trunc: 5.5 },
+					{ input: 5.555, round: 5.6, trunc: 5.5 },
+					{ input: 5.899, round: 5.9, trunc: 5.8 },
+					{ input: 5.999, round: 6, trunc: 5.9 }
+				],
+			},
+			{
+				maxDecimals: 2,
+				data: [
+					{ input: 1.999, round: 2, trunc: 1.99 },
+					{ input: 1.019, round: 1.02, trunc: 1.01 },
+					{ input: 9.999, round: 10, trunc: 9.99 },
+					{ input: 9.985, round: 9.99, trunc: 9.98 }
+				],
+			},
+			{
+				maxDecimals: 3,
+				data: [
+					{ input: 123.4567, round: 123.457, trunc: 123.456 },
+					{ input: 123.4561, round: 123.456, trunc: 123.456 },
+					{ input: 123.4597, round: 123.46, trunc: 123.459 },
+					{ input: 123.4509, round: 123.451, trunc: 123.45 }
+				],
+			},
+			{
+				maxDecimals: 4,
+				data: [
+					{ input: 1.999, round: 1.999, trunc: 1.999 },
+					{ input: 99.9999999, round: 100, trunc: 99.9999 },
+					{ input: 34.555555, round: 34.5556, trunc: 34.5555 },
+					{ input: 99.0000000001, round: 99, trunc: 99 }
+				],
+			},
+			{
+				maxDecimals: 5,
+				data: [
+					{ input: 0.9090999, round: 0.9091, trunc: 0.90909 },
+					{ input: 23.555555, round: 23.55556, trunc: 23.55555 },
+					{ input: 23.5555555, round: 23.55556, trunc: 23.55555 },
+					{ input: 0.000009, round: 0.00001, trunc: 0 }
+				],
+			},
+			{
+				maxDecimals: 6,
+				data: [
+					{ input: 99.0000009, round: 99.000001, trunc: 99 },
+					{ input: 5.5555555, round: 5.555556, trunc: 5.555555 },
+					{ input: 99.0000001, round: 99, trunc: 99 },
+					{ input: 1.000000000001, round: 1, trunc: 1 }
+				],
+			},
+			{
+				maxDecimals: 7,
+				data: [
+					{ input: 99.00000001, round: 99, trunc: 99 },
+					{ input: 1.000000000001, round: 1, trunc: 1 },
+					{ input: 5.55555555, round: 5.5555556, trunc: 5.5555555 },
+					{ input: 1.23456789, round: 1.2345679, trunc: 1.2345678 }
+				]
+			},
+		];
 
 		$editorRound = this.util.appendToFixture(this.inputTag).igNumericEditor();
 		$editorTrunc = this.util.appendToFixture(this.inputTag).igNumericEditor({ roundDecimals: false });
 
 		for (maxDecimalIndex = 0; maxDecimalIndex < testData.length; maxDecimalIndex++) {
-			$editorRound.igNumericEditor("option", "maxDecimals", maxDecimalIndex);
-			$editorTrunc.igNumericEditor("option", "maxDecimals", maxDecimalIndex);
-			currTestData = testData[maxDecimalIndex];
+			$editorRound.igNumericEditor("option", "maxDecimals", testData[maxDecimalIndex].maxDecimals);
+			$editorTrunc.igNumericEditor("option", "maxDecimals", testData[maxDecimalIndex].maxDecimals);
+			currTestData = testData[maxDecimalIndex].data;
 
 			for (index = 0; index < currTestData.length; index++) {
 				data = currTestData[index];
 				$editorRound.igNumericEditor("setFocus");
 				$editorRound.igNumericEditor("field").val("");
-				this.typeInMaskedInput(data.input.toString(), $editorRound.igNumericEditor("field"));
+				this.util.type(data.input.toString(), $editorRound.igNumericEditor("field"));
 				$editorRound.trigger("blur");
-				assert.equal($editorRound.igNumericEditor("displayValue"), data.round.toString(), "The display value is not correct");
-				assert.equal($editorRound.igNumericEditor("value"), data.round, "The hidden value sent to server is not correct");
+				assert.equal($editorRound.igNumericEditor("displayValue"), data.round.toString(), "The display value is not correct for round editor");
+				assert.equal($editorRound.igNumericEditor("value"), data.round, "The hidden value sent to server is not correct for round editor");
 
 				$editorTrunc.igNumericEditor("setFocus");
 				$editorTrunc.igNumericEditor("field").val("");
-				this.typeInMaskedInput(data.input.toString(), $editorTrunc.igNumericEditor("field"));
+				this.util.type(data.input.toString(), $editorTrunc.igNumericEditor("field"));
 				$editorTrunc.trigger("blur");
-				assert.equal($editorTrunc.igNumericEditor("displayValue"), data.trunc.toString(), "The display value is not correct");
-				assert.equal($editorTrunc.igNumericEditor("value"), data.trunc, "The hidden value sent to server is not correct");
+				assert.equal($editorTrunc.igNumericEditor("displayValue"), data.trunc.toString(), "The display value is not correct for trunc editor");
+				assert.equal($editorTrunc.igNumericEditor("value"), data.trunc, "The hidden value sent to server is not correct for trunc editor");
 			}
 		}
 
