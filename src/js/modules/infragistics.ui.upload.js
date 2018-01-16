@@ -3017,7 +3017,7 @@
 				file, fileSize,
 				isHTML5 = false;
 
-			if(arguments.length === 0 && o.useSingleRequest) {
+			if (arguments.length === 0 && o.useSingleRequest) {
 				var retVal = this._html5upload();
 
 				if (retVal) {
