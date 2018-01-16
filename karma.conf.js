@@ -14,6 +14,12 @@ module.exports = function(config) {
     reporters.push("coverage");
   }
 
+
+  // When passed as `--widget integration` https://github.com/karma-runner/karma/issues/672#issuecomment-204620473
+  if (config.widget) {
+    console.log(config.widget + "!");
+  }
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -150,15 +156,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    // run without sandbox for now https://github.com/travis-ci/travis-ci/issues/8836
-    browsers: ["ChromeNoSandbox"],
-    customLaunchers: {
-      ChromeNoSandbox: {
-        base: "Chrome",
-        // https://github.com/Googlechrome/puppeteer/issues/290#issuecomment-322852784
-        flags: ["--no-sandbox", "--disable-setuid-sandbox"]
-      }
-    },
+    browsers: ["Chrome"],
 
 
     // Continuous Integration mode
