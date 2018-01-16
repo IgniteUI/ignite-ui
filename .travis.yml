@@ -1,9 +1,16 @@
 language: node_js
 node_js:
-- '4'
+- 'node'
+# https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-356879951
+# sudo: false
+# dist: trusty
+addons:
+  chrome: stable
+
 script:
-- grunt verify
-- grunt coveralls
+- npm run cover
+after_success:
+- cat ./coverage/lcov.info | coveralls
 
 before_deploy:
 # clone bower repo

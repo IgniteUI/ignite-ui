@@ -489,8 +489,8 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets the editor input.
-				eventArgument="ui.newValue" argType="object" Gets the editor's new value.
-				eventArgument="ui.oldValue" argType="object" Gets the editor's old value.
+				eventArgument="ui.newValue" argType="object" Gets the editor's new value. The argument type might differ depending on the editor type.
+				eventArgument="ui.oldValue" argType="object" Gets the editor's old value. The argument type might differ depending on the editor type.
 			*/
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.
@@ -510,8 +510,8 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets the editor input.
-				eventArgument="ui.newValue" argType="object" Gets the value entered from the user after internal formatting.
-				eventArgument="ui.originalValue" argType="object" Gets the value entered from the user before internal formatting.
+				eventArgument="ui.newValue" argType="object" Gets the value entered from the user after internal formatting. The argument type might differ depending on the editor type.
+				eventArgument="ui.originalValue" argType="object" Gets the value entered from the user before internal formatting. The argument type might differ depending on the editor type.
 			*/
 			valueChanged: "valueChanged"
 		},
@@ -1815,8 +1815,8 @@
 				```
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.text" argType="object" Gets a reference to the new text.
-				eventArgument="ui.oldText" argType="object" Gets a reference to the old text.
+				eventArgument="ui.text" argType="string" Gets a reference to the new text.
+				eventArgument="ui.oldText" argType="string" Gets a reference to the old text.
 			*/
 			textChanged: "textChanged"
 		},
@@ -2777,7 +2777,7 @@
 				},
 				"compositionend.editor": function () {
 					setTimeout(function () {
-						var value, pastedValue, widgetName = self.widgetName,
+						var value, widgetName = self.widgetName,
 							cursorPosition = self._getCursorPosition(),
 							selection = { start: cursorPosition, end: cursorPosition };
 
@@ -2788,41 +2788,18 @@
 						switch (widgetName) {
 							case "igMaskEditor":
 								{
-									pastedValue = value = self._replaceStringRange(self._compositionStartValue,
+									value = self._replaceStringRange(self._compositionStartValue,
 										self._currentCompositionValue, self._copositionStartIndex,
 										self._copositionStartIndex + self._currentCompositionValue.length - 1);
 								}
 								break;
-							case "igDateEditor":
-							case "igDatePicker":
-								{
-									value = self._currentCompositionValue;
-									value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-									pastedValue = value = self._parseValueByMask(value);
-									if (value !== self._maskWithPrompts) {
-										value = self._parseDateFromMaskedValue(value);
-									} else if (self.options.revertIfNotValid) {
-										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
-										pastedValue = value = self._maskedValue;
-										selection.start = 0;
-										selection.end = value.length;
-									}
-								}
-								break;
 							default: {
-								pastedValue = value = self._editorInput.val();
+								value = self._editorInput.val();
 							}
 						}
 
-						//T.P. 7th April 2016. Bug 217371 - In case of text/mask editor the full width numbers should not be converted to half width,
-						//because they are valid characters.
-						if (widgetName !== "igTextEditor" && widgetName !== "igMaskEditor") {
-							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
-						}
-
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
-						self._insert(pastedValue, self._compositionStartValue, selection);
+						self._insert(value, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -4873,7 +4850,13 @@
 				}
 			}
 			if (value !== this.value()) {
-				this._updateValue(value);
+
+				// N.A. December 20th, 2017 #665: When new value is empty string we call clearValue(), to properly set new value according to the editor options.
+				if (value === "" && this.options.allowNullValue && this.options.nullValue === null) {
+					this._clearValue();
+				} else {
+					this._updateValue(value);
+				}
 			}
 			this._setSpinButtonsState(value);
 		},
@@ -6536,18 +6519,24 @@
 			this._promptCharsIndices = [];
 
 			if (this._editMode) {
-				newValue = this._parseValueByMask(newValue);
-				this._editorInput.val(newValue);
-				if (selection !== undefined) {
-					// Move the caret
-					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
-				}
+				this._insertEditMode(newValue, selection);
 			} else if (newValue !== previousValue) {
-				newValue = this._parseValueByMask(newValue);
-				this._processInternalValueChanging(newValue);
-				this._exitEditMode();
+				this._insertDisplayMode(newValue);
 			}
 			this._processTextChanged();
+		},
+		_insertEditMode: function(newValue, selection) { // MaskEditor
+			newValue = this._parseValueByMask(newValue);
+			this._editorInput.val(newValue);
+			if (selection !== undefined) {
+				// Move the caret
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			}
+		},
+		_insertDisplayMode: function(newValue) {
+			newValue = this._parseValueByMask(newValue);
+			this._processInternalValueChanging(newValue);
+			this._exitEditMode();
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
 			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
@@ -8851,6 +8840,17 @@
 				newValue = $(event.target).val();
 				oldVal = this._dateObjectValue;
 
+				// N.A. January 8th, 2018 #1417: In some browsers (like IE 11 and Firefox) blur event (therefore _parseDateFromMaskedValue) is fired before compositionend one.
+				// In that case we need to properly parse full width char symblols.
+				if (this._inComposition === true) {
+					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
+					newValue = this._parseValueByMask(newValue);
+
+					// N.A. January 12th, 2018 #1525: When wrong input is entered the value should be reverted, if the option is set.
+					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+						newValue = oldVal;
+					}
+				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
 				// #206308 in case newValiue == maskWithPrompts it's either clear value, or just exiting edit mode without entering value.
@@ -9190,6 +9190,24 @@
 					this._clearValue();
 					value = this._valueInput.val();
 				}
+			}
+		},
+		_insertEditMode: function (newValue, selection) { // igDateEditor
+
+			// N.A. January 8th, 2018 #1417: Move conversion of full width char symbols here from compositionend handler.
+			newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
+			newValue = this._parseValueByMask(newValue);
+			if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+
+				//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+				newValue = this._maskedValue;
+				selection.start = 0;
+				selection.end = newValue.length;
+			}
+			this._editorInput.val(newValue);
+			if (selection !== undefined) {
+				// Move the caret
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 			}
 		},
 		_isValidDate: function (date) {
@@ -11563,10 +11581,10 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor element.
-				eventArgument="ui.oldValue" argType="object" Gets the editor's old value.
-				eventArgument="ui.oldState" argType="object" Gets the editor's old check state.
-				eventArgument="ui.newValue" argType="object" Gets the editor's new value.
-				eventArgument="ui.newState" argType="object" Gets the editor's new check state.
+				eventArgument="ui.oldValue" argType="boolean" Gets the editor's old value.
+				eventArgument="ui.oldState" argType="boolean" Gets the editor's old check state.
+				eventArgument="ui.newValue" argType="boolean" Gets the editor's new value.
+				eventArgument="ui.newState" argType="boolean" Gets the editor's new check state.
 			*/
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor's value has been changed.
@@ -11587,8 +11605,8 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.element" argType="object" Gets a reference to the event target.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor element.
-				eventArgument="ui.newValue" argType="object" Gets the editor's new value.
-				eventArgument="ui.newState" argType="object" Gets the editor's new check state.
+				eventArgument="ui.newValue" argType="boolean" Gets the editor's new value.
+				eventArgument="ui.newState" argType="boolean" Gets the editor's new check state.
 			*/
 			valueChanged: "valueChanged"
 		},

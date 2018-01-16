@@ -48,7 +48,62 @@ function replaceAMDWraps(src) {
     return src;
 }
 
+/**
+ * Returns source files for the core bundle
+ * @param {string} rootPath The root source path, like "./dist"
+ * @param {string} [locale] Locale name to combine in file
+ */
+function coreBundle (rootPath, locale) {
+    var files = [
+        `${rootPath}/js/modules/infragistics.util.js`,
+        `${rootPath}/js/modules/infragistics.util.jquery.js`,
+        `${rootPath}/js/modules/infragistics.datasource.js`,
+        `${rootPath}/js/modules/infragistics.templating.js`,
+        `${rootPath}/js/modules/infragistics.ui.widget.js`,
+        `${rootPath}/js/modules/infragistics.ui.shared.js`,
+        `${rootPath}/js/modules/infragistics.ui.scroll.js`
+    ];
+    if (locale) {
+        files = [`${rootPath}/js/i18n/infragistics-${locale}.js`, ...files];
+    }
+
+    return files;
+}
+
+/**
+ * Returns source files for the LoB bundle
+ * @param {string} rootPath The root source path, like "./dist"
+ */
+function lobBundle (rootPath) {
+    var files = [
+        `${rootPath}/js/modules/infragistics.ui.combo.js`,
+        `${rootPath}/js/modules/infragistics.ui.dialog.js`,
+        `${rootPath}/js/modules/infragistics.ui.popover.js`,
+        `${rootPath}/js/modules/infragistics.ui.notifier.js`,
+        `${rootPath}/js/modules/infragistics.ui.editors.js`,
+        `${rootPath}/js/modules/infragistics.ui.tree.js`,
+        `${rootPath}/js/modules/infragistics.ui.layoutmanager.js`,
+        `${rootPath}/js/modules/infragistics.ui.splitter.js`,
+        `${rootPath}/js/modules/infragistics.ui.splitbutton.js`,
+        `${rootPath}/js/modules/infragistics.ui.rating.js`,
+        `${rootPath}/js/modules/infragistics.ui.toolbarbutton.js`,
+        `${rootPath}/js/modules/infragistics.ui.colorpicker.js`,
+        `${rootPath}/js/modules/infragistics.ui.colorpickersplitbutton.js`,
+        `${rootPath}/js/modules/infragistics.ui.toolbar.js`,
+        `${rootPath}/js/modules/infragistics.ui.tilemanager.js`,
+        `${rootPath}/js/modules/infragistics.ui.upload.js`,
+        `${rootPath}/js/modules/infragistics.ui.validator.js`,
+        `${rootPath}/js/modules/infragistics.ui.htmleditor.js`,
+        `${rootPath}/js/modules/infragistics.ui.videoplayer.js`,
+        `${rootPath}/js/modules/infragistics.ui.zoombar.js`
+    ];
+
+    return files;
+}
+
 module.exports = {
+    coreBundle: coreBundle,
+    lobBundle: lobBundle,
     uglify: {
         source: {
             cwd: 'dist/',
@@ -106,17 +161,7 @@ module.exports = {
                 footer: '});'
             },
             dest: "./dist/js/infragistics.core-lite.js",
-            src: [
-				"./dist/js/i18n/infragistics-en.js",
-				"./dist/js/modules/infragistics.util.js",
-				"./dist/js/modules/infragistics.util.jquery.js",
-				"./dist/js/modules/infragistics.util.jquerydeferred.js",
-				"./dist/js/modules/infragistics.datasource.js",
-				"./dist/js/modules/infragistics.templating.js",
-				"./dist/js/modules/infragistics.ui.widget.js",
-				"./dist/js/modules/infragistics.ui.shared.js",
-				"./dist/js/modules/infragistics.ui.scroll.js"
-			]
+            src: coreBundle("./dist", "en")
         }, 
         lob: { 
             options: {
@@ -149,28 +194,7 @@ module.exports = {
                 footer: '});'
             },
             dest: "./dist/js/infragistics.lob-lite.js",
-            src: [
-                    "./dist/js/modules/infragistics.ui.combo.js",
-                    "./dist/js/modules/infragistics.ui.dialog.js",
-                    "./dist/js/modules/infragistics.ui.popover.js",
-                    "./dist/js/modules/infragistics.ui.notifier.js",
-                    "./dist/js/modules/infragistics.ui.editors.js",
-                    "./dist/js/modules/infragistics.ui.tree.js",
-                    "./dist/js/modules/infragistics.ui.layoutmanager.js",
-                    "./dist/js/modules/infragistics.ui.splitter.js",
-                    "./dist/js/modules/infragistics.ui.splitbutton.js",
-                    "./dist/js/modules/infragistics.ui.rating.js",
-                    "./dist/js/modules/infragistics.ui.toolbarbutton.js",
-                    "./dist/js/modules/infragistics.ui.colorpicker.js",
-                    "./dist/js/modules/infragistics.ui.colorpickersplitbutton.js",
-                    "./dist/js/modules/infragistics.ui.toolbar.js",
-                    "./dist/js/modules/infragistics.ui.tilemanager.js",
-                    "./dist/js/modules/infragistics.ui.upload.js",
-                    "./dist/js/modules/infragistics.ui.validator.js",
-                    "./dist/js/modules/infragistics.ui.htmleditor.js",
-                    "./dist/js/modules/infragistics.ui.videoplayer.js",
-                    "./dist/js/modules/infragistics.ui.zoombar.js"
-                ]
+            src: lobBundle("./dist")
         }
     }
 };

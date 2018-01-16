@@ -1,9 +1,11 @@
 // Karma configuration
 // Generated on Fri Dec 08 2017 16:49:49 GMT+0200 (FLE Standard Time)
 
+const filesConfig = require("./build/packages/combined-files");
+
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ['progress'];
+const reporters = ["progress"];
 
 module.exports = function(config) {
 
@@ -15,37 +17,75 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '.',
+    basePath: ".",
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['qunit'],
+    frameworks: ["qunit"],
 
 
     // list of files / patterns to load in the browser
     files: [
       // http://karma-runner.github.io/1.0/config/files.html
       // serve resources
-      { pattern: "src/js/**/*", included: false, served: true },
-      { pattern: "src/css/**/*", included: false, served: true },
-      // { pattern: "bower_components/qunit/**/*", included: false, served: true },
-      // { pattern: "bower_components/jquery/**/*", included: false, served: true },
-      // { pattern: "bower_components/jquery-tmpl/*", included: false, served: true },
-      // { pattern: "bower_components/jquery-ui/**/*", included: false, served: true },
+      { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
+      // TODO: because.. jquery-ui package has no bundle
+      { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
 
-      "bower_components/jquery/dist/jquery.js",
-      "bower_components/jquery-ui/jquery-ui.js",
-      "tests/test-patch.js",
+      "src/css/themes/infragistics/infragistics.theme.css",
+      "src/css/structure/modules/*.css",
+
+      // Load locale files:
+      "src/js/modules/i18n/*-en.js",
+      "src/js/modules/i18n/*-ja.js",
+      "src/js/modules/i18n/*-bg.js",
+      "src/js/modules/i18n/*-de.js",
+      "src/js/modules/i18n/*-es.js",
+
+      // core and LoB files:
+      ...filesConfig.coreBundle("src"),
+      ...filesConfig.lobBundle("src"),
+
+      "src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js",
+
+      // DV files for zoombar tests:
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/i18n/infragistics.dvcommonwidget-en.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_core.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_collections.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_ui.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.dv_core.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.dv_geometry.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_core.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_categorycore.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.dv_jquerydom.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.dvcommonwidget.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ui.chart.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ui.chartlegend.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_category.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_rangecategory.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_verticalcategory.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_financial.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_extendedfinancial.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_extendedaxes.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_polar.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_radial.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_scatter.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_stacked.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_annotation.js", included: true, watched: false },
+      { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
+
       "tests/unit/common/test-util.js",
 
-      // These get included in the test run file, alternatively https://stackoverflow.com/a/16414357 ?
-      //'tests/unit/**/*test*.htm*'
-      "tests/unit/colorpicker/tests.html",
-      "tests/unit/editors/checkboxEditor/tests.html",
-      "tests/unit/colorpickersplitbutton/tests.html",
-      "tests/unit/zoombar/tests.html"
+      // Test files:
+      //"tests/unit/**/*test*.htm*"
+      // "tests/unit/editors/currencyEditor/tests.html",
+      // "tests/unit/zoombar/tests.html",
+      "tests/**/*-test.js"
     ],
+    // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
+    crossOriginAttribute: false,
     proxies: {
       //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
     },
@@ -70,19 +110,24 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/js/**/*.js": "coverage"
+      "src/**/*.js": "coverage"
     },
 
     // https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
     coverageReporter: {
-      type : 'lcov',
-      dir : 'coverage/',
-      subdir: '.', // default outputs per-browser folders
+      dir : "coverage/",
+      reporters: [
+        {  
+          type : "lcov",
+          subdir: "." // default outputs per-browser folders 
+        },
+        { type: "text-summary" }
+      ],
       includeAllSources: true
     },
 
     // test results reporter to use
-    // possible values: 'dots', 'progress'
+    // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: reporters,
 
@@ -106,7 +151,15 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    // run without sandbox for now https://github.com/travis-ci/travis-ci/issues/8836
+    browsers: ["ChromeNoSandbox"],
+    customLaunchers: {
+      ChromeNoSandbox: {
+        base: "Chrome",
+        // https://github.com/Googlechrome/puppeteer/issues/290#issuecomment-322852784
+        flags: ["--no-sandbox", "--disable-setuid-sandbox"]
+      }
+    },
 
 
     // Continuous Integration mode
