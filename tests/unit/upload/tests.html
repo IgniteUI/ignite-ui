@@ -2,20 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title> Infragistics jQuery - Upload QUnit tests </title>
-    <link type="text/css" href="../../../src/css/structure/jquery.ui.all.css" rel="stylesheet" />
-    <link type="text/css"  href="../../../src/css/structure/modules/infragistics.ui.shared.css"      rel="stylesheet" />
-    <link type="text/css"  href="../../../src/css/structure/modules/infragistics.ui.upload.css"   rel="stylesheet" />
-    <link id="lnkThemeCSS" href="../../../src/css/themes/infragistics/infragistics.theme.css"     rel="stylesheet" type="text/css" />
+	<link type="text/css" href="../../../src/css/structure/jquery.ui.all.css" rel="stylesheet" />
+	<link type="text/css"  href="../../../src/css/structure/modules/infragistics.ui.shared.css"      rel="stylesheet" />
+	<link type="text/css"  href="../../../src/css/structure/modules/infragistics.ui.upload.css"   rel="stylesheet" />
+	<link id="lnkThemeCSS" href="../../../src/css/themes/infragistics/infragistics.theme.css"     rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
-    <script type="text/javascript" src="../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
-    <script type="text/javascript" src="mockServerUpload.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+	<script type="text/javascript" src="mockServerUpload.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.upload.js"></script>
 
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -29,70 +29,70 @@
 	</style>
 	<script type="text/javascript">
 		$.mockjaxSettings.logging = 0;  // only critical error messages
-	    $(function () {
-	        var _serverBytesUploaded = 0,
-                _serverStatus = 0, //$.infragistics.Constants.Upload.Status.NotStarted,
-                _serverTotalSize = 0, id = 0,
-                mockServer = new $.mockServer();
-	            var i = 0,
-                startTestCounter = null,
-                currentTestCounter = 0,
-                fileInfo = [],
-                totalCountUploadedFiles = 0,
-                uploader1Id = 'igUpload1',
-                uploader2Id = 'igUpload2',
+		$(function () {
+			var _serverBytesUploaded = 0,
+				_serverStatus = 0, //$.infragistics.Constants.Upload.Status.NotStarted,
+				_serverTotalSize = 0, id = 0,
+				mockServer = new $.mockServer();
+				var i = 0,
+				startTestCounter = null,
+				currentTestCounter = 0,
+				fileInfo = [],
+				totalCountUploadedFiles = 0,
+				uploader1Id = 'igUpload1',
+				uploader2Id = 'igUpload2',
 				uploader3Id = 'igUpload3',
-                uploader1 = $('#' + uploader1Id),
+				uploader1 = $('#' + uploader1Id),
 				uploader2 = $('#' + uploader2Id),
-                isTest10Started = false;
+				isTest10Started = false;
 				uploader2 = $('#' + uploader3Id);
-	        // Test mockServer
+			// Test mockServer
 
-	        id = $.mockjax({
-	            url: 'http://localhost/asdfasdf*',
-	            contentType: 'text/json',
-	            /*
-	            responseText: {
-	            bytesUploaded: 3785397, status: 2, size: 3785397
-	            }
-	            */
-	            response: function (settings) {
-	                //alert(getParam('command', settings.url)); //settings.url + ' ' +
-	                var key = getParam('key', settings.url),
-                    response = mockServer.processRequest(key);
+			id = $.mockjax({
+				url: 'http://localhost/asdfasdf*',
+				contentType: 'text/json',
+				/*
+				responseText: {
+				bytesUploaded: 3785397, status: 2, size: 3785397
+				}
+				*/
+				response: function (settings) {
+					//alert(getParam('command', settings.url)); //settings.url + ' ' +
+					var key = getParam('key', settings.url),
+					response = mockServer.processRequest(key);
 
-	                this.responseText = response;
-	            }
-	        });
+					this.responseText = response;
+				}
+			});
 
-	        function getParam(p, url) {
-	            var results = new RegExp('[\\?&]' + p + '=([^&#]*)').exec(url);
-	            if (!results) {
-	                return null;
-	            }
+			function getParam(p, url) {
+				var results = new RegExp('[\\?&]' + p + '=([^&#]*)').exec(url);
+				if (!results) {
+					return null;
+				}
 
-	            return results[1] || 0;
-	        }
+				return results[1] || 0;
+			}
 
-	        function loadTestbeds() {
-	            $("#igUpload1").igUpload({
-	                mode: 'single', //Multiple
-	                autostartupload: true,
-	                progressUrl: 'http://localhost/asdfasdf'
-	            });
+			function loadTestbeds() {
+				$("#igUpload1").igUpload({
+					mode: 'single', //Multiple
+					autostartupload: true,
+					progressUrl: 'http://localhost/asdfasdf'
+				});
 
-	            $("#igUpload2").igUpload({
-	                mode: 'multiple', //Multiple
-	                autostartupload: true,
-	                progressUrl: 'http://localhost/asdfasdf'
-	            });
+				$("#igUpload2").igUpload({
+					mode: 'multiple', //Multiple
+					autostartupload: true,
+					progressUrl: 'http://localhost/asdfasdf'
+				});
 
-	            $("#igUpload3").igUpload({
-	                mode: 'multiple', //Multiple
-	                autostartupload: false,
-	                progressUrl: 'http://localhost/asdfasdf'
-	            });
-	        }
+				$("#igUpload3").igUpload({
+					mode: 'multiple', //Multiple
+					autostartupload: false,
+					progressUrl: 'http://localhost/asdfasdf'
+				});
+			}
 
 			initialized = false;
 			module("igUpload", {
@@ -470,7 +470,7 @@
 					mode: 'multiple',
 					controlId:'serverID1',
 					sendDataInOneRequest: true,
-	                progressUrl: 'http://localhost/asdfasdf'
+					progressUrl: 'http://localhost/asdfasdf'
 				});
 
 				uploadNewFileOnInit(upOneRequestid);
@@ -504,166 +504,166 @@
 					}, 2000);
 			});
 
-	        function checkClearAllButton(uploaderId) {
-	            var clearAllButton = $('#' + uploaderId + '_clrabtn'),
-                click = jQuery.Event("click"),
-                innerData = $('#' + uploaderId).data('igUpload').fileInfoData,
-                filesInfo = innerData.filesInfo,
-                i, file;
+			function checkClearAllButton(uploaderId) {
+				var clearAllButton = $('#' + uploaderId + '_clrabtn'),
+				click = jQuery.Event("click"),
+				innerData = $('#' + uploaderId).data('igUpload').fileInfoData,
+				filesInfo = innerData.filesInfo,
+				i, file;
 
-	            click.button = 0;
-	            clearAllButton.trigger(click);
+				click.button = 0;
+				clearAllButton.trigger(click);
 
-	            for (i in filesInfo) {
-	                file = filesInfo[i];
-	                if (file !== undefined &&
-                    (file.status === 4 ||
-                    file.status === 2 ||
-                    file.status === 5 ||
-                    file.status === 3
-                    )
-                ) {
-	                    equal($('#' + uploaderId + '_' + i + '__fus').length, 0, 'The file container should be removed as DOM element.');
-	                }
-	            }
-	        }
+				for (i in filesInfo) {
+					file = filesInfo[i];
+					if (file !== undefined &&
+					(file.status === 4 ||
+					file.status === 2 ||
+					file.status === 5 ||
+					file.status === 3
+					)
+				) {
+						equal($('#' + uploaderId + '_' + i + '__fus').length, 0, 'The file container should be removed as DOM element.');
+					}
+				}
+			}
 
-	        function checkCancelFile(uploaderId, formId) {
-	            var innerData = $('#' + uploaderId).data('igUpload').fileInfoData;
+			function checkCancelFile(uploaderId, formId) {
+				var innerData = $('#' + uploaderId).data('igUpload').fileInfoData;
 
-	            equal($('#' + uploaderId + '_' + formId + '__fus').length, 0, 'Container of the canceled file should be removed.');
-	            equal(innerData.fileSizeTotal, innerData.fileSizeUploaded, 'File size total should be the same as file size uploaded.');
-	            equal(innerData.countUploadingFiles, innerData.countTotalFiles, 'Count uploading files should be the same as count total files in inner data.');
-	        }
+				equal($('#' + uploaderId + '_' + formId + '__fus').length, 0, 'Container of the canceled file should be removed.');
+				equal(innerData.fileSizeTotal, innerData.fileSizeUploaded, 'File size total should be the same as file size uploaded.');
+				equal(innerData.countUploadingFiles, innerData.countTotalFiles, 'Count uploading files should be the same as count total files in inner data.');
+			}
 
-	        function checkFormDestroyed(uploaderId, formId) {
-	            var id = uploaderId + '_' + formId;
-	            equal($('#' + id + '__ifrm').length, 0, 'Iframe should be removed.');
-	            equal($('#' + id + '__frm').length, 0, 'Form should be removed.');
-	            equal($('#' + id + '__frm_if').length, 0, 'Input type file should be removed.');
-	        }
+			function checkFormDestroyed(uploaderId, formId) {
+				var id = uploaderId + '_' + formId;
+				equal($('#' + id + '__ifrm').length, 0, 'Iframe should be removed.');
+				equal($('#' + id + '__frm').length, 0, 'Form should be removed.');
+				equal($('#' + id + '__frm_if').length, 0, 'Input type file should be removed.');
+			}
 
-	        function checkUploading(data, uploaderId) {
-	            var uploader = $('#' + uploaderId),
-                innerData = uploader.data('igUpload').fileInfoData,
-                fileId = data.fileId,
-                filePath = data.filePath,
-                totalSize = data.totalSize,
-                uploadedBytes = data.uploadedBytes
-	            fileStatus = data.fileStatus,
-                maxSimultaneousFiles = uploader.igUpload('option', 'maxSimultaneousFilesUploads');
+			function checkUploading(data, uploaderId) {
+				var uploader = $('#' + uploaderId),
+				innerData = uploader.data('igUpload').fileInfoData,
+				fileId = data.fileId,
+				filePath = data.filePath,
+				totalSize = data.totalSize,
+				uploadedBytes = data.uploadedBytes
+				fileStatus = data.fileStatus,
+				maxSimultaneousFiles = uploader.igUpload('option', 'maxSimultaneousFilesUploads');
 
-	            //fileInfo[fileId] = {fileId: fileId, filePath: filePath, totalSize: totalSize, uploadedBytes: uploadedBytes, fileStatus: fileStatus};
+				//fileInfo[fileId] = {fileId: fileId, filePath: filePath, totalSize: totalSize, uploadedBytes: uploadedBytes, fileStatus: fileStatus};
 
-	            ok((fileStatus === 1 || fileStatus === 2), 'Status should be started or finished.');
-	            ok(totalSize >= uploadedBytes, 'Total size should be greater or equal than uploaded bytes');
-	            if (maxSimultaneousFiles === 1) {
-	                /*
-	                if (fileInfo[fileId + 1] !== undefined) {
-	                ok (fileStatus === 2, 'When maxSimultaneousFiles it is possible to be uploaded only 1 file at the same time - chech next file.');
-	                }
+				ok((fileStatus === 1 || fileStatus === 2), 'Status should be started or finished.');
+				ok(totalSize >= uploadedBytes, 'Total size should be greater or equal than uploaded bytes');
+				if (maxSimultaneousFiles === 1) {
+					/*
+					if (fileInfo[fileId + 1] !== undefined) {
+					ok (fileStatus === 2, 'When maxSimultaneousFiles it is possible to be uploaded only 1 file at the same time - chech next file.');
+					}
 
-	                if (fileInfo[fileId - 1] !== undefined) {
-	                ok ((fileInfo[fileId - 1].fileStatus === 2), 'When maxSimultaneousFiles it is possible to be uploaded only 1 file at the same time - check previous file.'+ fileInfo[fileId - 1].fileStatus +' ' +fileInfo[fileId].fileStatus);
-	                }
-	                */
-	            }
+					if (fileInfo[fileId - 1] !== undefined) {
+					ok ((fileInfo[fileId - 1].fileStatus === 2), 'When maxSimultaneousFiles it is possible to be uploaded only 1 file at the same time - check previous file.'+ fileInfo[fileId - 1].fileStatus +' ' +fileInfo[fileId].fileStatus);
+					}
+					*/
+				}
 
-	            //check whether inner data is properly set
-	            checkFileSizeUploaded(innerData.fileSizeUploaded, innerData.fileSizeTotal, innerData.filesInfo);
+				//check whether inner data is properly set
+				checkFileSizeUploaded(innerData.fileSizeUploaded, innerData.fileSizeTotal, innerData.filesInfo);
 
-	            if (fileStatus === 1) {
-	                ok(uploadedBytes < totalSize, 'Uploaded bytes should be less than total size when status is started.');
-	                equal($('#' + uploaderId + '_' + fileId + '__cbtn').igButton('option', 'disabled'), false, 'Cancel button should be enabled.');
-	                checkUploadingData(uploaderId, fileId);
-	            } else if (fileStatus === 2) {
-	                //totalCountUploadedFiles++;
-	                equal(uploadedBytes, totalSize, 'Uploaded bytes should be equal to total size when status is finished.');
-	                //equal (totalCountUploadedFiles, innerData.countUploadingFiles, 'Count of uploading files should be equal to the inner data.');
-	                $('#' + uploaderId).bind("iguploadfileuploaded", function (event, data) {
-	                    checkUploadedData(uploaderId, fileId);
-	                    $('#' + uploaderId).unbind("iguploadfileuploaded");
-	                });
-	                //equal( $('#' + uploaderId + '_clrabtn').igButton('option', 'disabled'), false, 'When the file is uploaded Clear All button should be enabled.');
-	            }
-	        }
+				if (fileStatus === 1) {
+					ok(uploadedBytes < totalSize, 'Uploaded bytes should be less than total size when status is started.');
+					equal($('#' + uploaderId + '_' + fileId + '__cbtn').igButton('option', 'disabled'), false, 'Cancel button should be enabled.');
+					checkUploadingData(uploaderId, fileId);
+				} else if (fileStatus === 2) {
+					//totalCountUploadedFiles++;
+					equal(uploadedBytes, totalSize, 'Uploaded bytes should be equal to total size when status is finished.');
+					//equal (totalCountUploadedFiles, innerData.countUploadingFiles, 'Count of uploading files should be equal to the inner data.');
+					$('#' + uploaderId).bind("iguploadfileuploaded", function (event, data) {
+						checkUploadedData(uploaderId, fileId);
+						$('#' + uploaderId).unbind("iguploadfileuploaded");
+					});
+					//equal( $('#' + uploaderId + '_clrabtn').igButton('option', 'disabled'), false, 'When the file is uploaded Clear All button should be enabled.');
+				}
+			}
 
-	        function checkStartUploadData(uploaderId, formNumber) {
-	            var fu = uploaderId + '_' + formNumber,
-                uploader = $('#' + uploaderId);
-	            text = $('#' + fu + '__pbrflsz').text().split('/');
+			function checkStartUploadData(uploaderId, formNumber) {
+				var fu = uploaderId + '_' + formNumber,
+				uploader = $('#' + uploaderId);
+				text = $('#' + fu + '__pbrflsz').text().split('/');
 
-	            equal($('#' + fu + '__snglpbar').igProgressBar('option', 'value'), 0, 'Upload completion should be 100%.');
-	            equal($('#' + fu + '__cbtn').igButton('option', 'disabled'), false, 'Cancel button should be disabled.');
-	        }
+				equal($('#' + fu + '__snglpbar').igProgressBar('option', 'value'), 0, 'Upload completion should be 100%.');
+				equal($('#' + fu + '__cbtn').igButton('option', 'disabled'), false, 'Cancel button should be disabled.');
+			}
 
-	        function checkUploadedData(uploaderId, formNumber) {
-	            var fu = uploaderId + '_' + formNumber,
-                uploader = $('#' + uploaderId);
-	            text = $('#' + fu + '__pbrflsz').text().split('/');
-                equal(text[0], text[1], 'In progress bar uploaded file size should be equal to total file size.');
-	            equal($('#' + fu + '__snglpbar').igProgressBar('option', 'value'), 100, 'Upload completion should be 100%.');
-	            equal($('#' + fu + '__cbtn').igButton('option', 'disabled'), true, 'Cancel button should be disabled.');
-	        }
+			function checkUploadedData(uploaderId, formNumber) {
+				var fu = uploaderId + '_' + formNumber,
+				uploader = $('#' + uploaderId);
+				text = $('#' + fu + '__pbrflsz').text().split('/');
+				equal(text[0], text[1], 'In progress bar uploaded file size should be equal to total file size.');
+				equal($('#' + fu + '__snglpbar').igProgressBar('option', 'value'), 100, 'Upload completion should be 100%.');
+				equal($('#' + fu + '__cbtn').igButton('option', 'disabled'), true, 'Cancel button should be disabled.');
+			}
 
-	        function checkUploadingData(uploaderId, formNumber) {
-	            var fu = uploaderId + '_' + formNumber;
-	            equal($('#' + fu + '__ifrm').length, 1, 'Iframe is properly set');
-	            equal($('#' + fu + '__frm').length, 1, 'Iframe is properly set');
-	            equal($('#' + fu + '__frm').attr('target'), fu + '__ifrm', 'Iframe is properly set');
+			function checkUploadingData(uploaderId, formNumber) {
+				var fu = uploaderId + '_' + formNumber;
+				equal($('#' + fu + '__ifrm').length, 1, 'Iframe is properly set');
+				equal($('#' + fu + '__frm').length, 1, 'Iframe is properly set');
+				equal($('#' + fu + '__frm').attr('target'), fu + '__ifrm', 'Iframe is properly set');
 
-	            ok($('#' + fu + '__icn').hasClass(($('#' + uploaderId).igUpload('option', 'fileExtensionIcons'))[0].css), 'Because file is not defined the icon should be default');
-	        }
+				ok($('#' + fu + '__icn').hasClass(($('#' + uploaderId).igUpload('option', 'fileExtensionIcons'))[0].css), 'Because file is not defined the icon should be default');
+			}
 
-	        function checkFileSizeUploaded(uploaded, total, array) {
-	            var t = 0, u = 0, i;
-	            return;
-	            for (i in array) {
-	                if (isNaN(i)) {
-	                    continue;
-	                }
-	                t += array[i].sizeBytes;
-	                u += array[i].uploadedBytes;
-	            }
+			function checkFileSizeUploaded(uploaded, total, array) {
+				var t = 0, u = 0, i;
+				return;
+				for (i in array) {
+					if (isNaN(i)) {
+						continue;
+					}
+					t += array[i].sizeBytes;
+					u += array[i].uploadedBytes;
+				}
 
-	            equal(t, total, 'Total from inner array should be the same as calculated total file size.');
-	            equal(u, uploaded, 'Uploaded size from inner array should be the same as calculated uploaded size.');
-	        }
+				equal(t, total, 'Total from inner array should be the same as calculated total file size.');
+				equal(u, uploaded, 'Uploaded size from inner array should be the same as calculated uploaded size.');
+			}
 
-	        function checkFileCountUploaded(uploaded, array) {
-	            var u = 0;
+			function checkFileCountUploaded(uploaded, array) {
+				var u = 0;
 
-	            for (i in array) {
-	                if (array[i].status === 2) {
-	                    u += 1;
-	                }
-	            }
+				for (i in array) {
+					if (array[i].status === 2) {
+						u += 1;
+					}
+				}
 
-	            equal(u, uploaded, 'Uploaded files from inner array should be the same as calculated count files.');
-	        }
+				equal(u, uploaded, 'Uploaded files from inner array should be the same as calculated count files.');
+			}
 
-	        function uploadNewFileOnInit(uploaderId) {
-	            var filePicker = $('#' + uploaderId + '_ibb_fp'),
-                eventFileChange = jQuery.Event("change");
+			function uploadNewFileOnInit(uploaderId) {
+				var filePicker = $('#' + uploaderId + '_ibb_fp'),
+				eventFileChange = jQuery.Event("change");
 
-	            filePicker.trigger(eventFileChange, { filePath: 'test.xml' });
-	        }
+				filePicker.trigger(eventFileChange, { filePath: 'test.xml' });
+			}
 
-	        function uploadNewFile(uploaderId) {
-	            var filePicker = $('#' + uploaderId + '_bb_fp'),
-                eventFileChange = jQuery.Event("change");
+			function uploadNewFile(uploaderId) {
+				var filePicker = $('#' + uploaderId + '_bb_fp'),
+				eventFileChange = jQuery.Event("change");
 
-	            filePicker.trigger(eventFileChange, { filePath: 'test.xml' });
-	        }
-	    });
+				filePicker.trigger(eventFileChange, { filePath: 'test.xml' });
+			}
+		});
 	</script>
 </head>
 <body>
 <div style="float:right;width:400px;overflow:auto">
-     <h1 id="qunit-header">Test results</h1>
-     <h2 id="qunit-banner"></h2>
-     <h2 id="qunit-userAgent"></h2>
-     <ol id="qunit-tests"></ol>
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
 </div>
 	<div style="width:750px;" id="mainContainer">
 		<h1>igUpload 1 - Single Upload</h1>

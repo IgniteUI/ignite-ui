@@ -3005,7 +3005,7 @@
 		},
 		startUpload: function (formNumber) {
 			/* Start uploading file as submitting form with the specified formNumber.
-			 paramType="number" id of the upload form
+			 paramType="number" id of the upload form. If left undefined and useSingleRequest is true all pending files will be uploaded.
 			 ```
 				$(".selector").igUpload("startUpload", 1);
 			 ```
@@ -3017,6 +3017,15 @@
 				file, fileSize,
 				isHTML5 = false;
 
+			if(arguments.length === 0 && o.useSingleRequest) {
+				var retVal = this._html5upload();
+
+				if (retVal) {
+					this.fileInfoData.batch = [];
+				}
+
+				return;
+			}
 			if (formNumber === null || fileInfo === null || fileInfo === undefined) {
 				self._setError(this._getLocaleValue("errorMessageTryToStartNonExistingFile")
 									.replace("{0}", formNumber),
