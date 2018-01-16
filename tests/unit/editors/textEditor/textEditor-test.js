@@ -437,7 +437,6 @@ QUnit.test("Lists testing", function (assert) {
 	assert.ok(closing, "dropDownListClosing event not fired");
 	assert.ok(closed, "dropDownListClosed event not fired");
 	editor.off();
-	debugger;
 	editor.igTextEditor("setFocus");
 	this.util.wait(100).then(function () {
 		self.util.paste(self.input()[0], "newVal");
@@ -506,7 +505,6 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	
 	// isLimitedToListValues (casing)
 	editor.igTextEditor("option", "isLimitedToListValues", true);
-	debugger;
 	editor.igTextEditor("value", "ITEM1"); //casing
 	assert.equal(editor.igTextEditor("value"), "item1", "Set value should match the list item casing.");
 
