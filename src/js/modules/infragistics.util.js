@@ -5012,20 +5012,21 @@
 			var formatIndexOfDecimalSeparator = format.indexOf('.');
 			var decimalFormat = formatIndexOfDecimalSeparator == -1 ? "" : format.substring(formatIndexOfDecimalSeparator + 1);
 			var numberString = number.toFixed(decimalFormat.length).toString();
-			var numberIndexOfDecimalSeparator = numberString.indexOf('.')
+			var numberIndexOfDecimalSeparator = numberString.indexOf('.');
 			var integralPart = numberIndexOfDecimalSeparator == -1 ? numberString : numberString.substring(0, numberIndexOfDecimalSeparator);
 			var integralFormat = format.substring(0, formatIndexOfDecimalSeparator);
 			while (integralFormat.length < integralPart.length) {
 				integralFormat = "0" + integralFormat;
 			}
 			var formattedIntegralPart = "";
+			var digit;
 			for (var ii = integralFormat.length - 1; ii >= 0; ii--) {
 				if (integralFormat[ii] == '0') {
-					var digit = integralPart.length > ii ? integralPart[ii] : '0';
+					digit = integralPart.length > ii ? integralPart[ii] : '0';
 					formattedIntegralPart = digit + formattedIntegralPart;
 				}
 				else if (integralFormat[ii] == '#') {
-					var digit = integralPart.length > ii ? integralPart[ii] : '';
+					digit = integralPart.length > ii ? integralPart[ii] : '';
 					formattedIntegralPart = digit + formattedIntegralPart;
 				}
 				else {
@@ -5034,12 +5035,12 @@
 			}
 			var decimalPart = numberIndexOfDecimalSeparator == -1 ? "" : numberString.substring(numberIndexOfDecimalSeparator + 1);
 			var formattedDecimalPart = "";
-			for (var ii = 0; ii < decimalFormat.length; ii++) {
-				if (decimalFormat[ii] == '0') {
-					formattedDecimalPart += decimalPart[ii];
+			for (var jj = 0; jj < decimalFormat.length; jj++) {
+				if (decimalFormat[jj] == '0') {
+					formattedDecimalPart += decimalPart[jj];
 				}
-				else if (decimalFormat[ii] == '#') {					
-					var digit = decimalPart.length > ii && (decimalPart[ii] != '0' || decimalPart.substring(ii).match(/[1-9]/)) ? decimalPart[ii] : '';
+				else if (decimalFormat[jj] == '#') {					
+					digit = decimalPart.length > jj && (decimalPart[jj] != '0' || decimalPart.substring(jj).match(/[1-9]/)) ? decimalPart[jj] : '';
 					formattedDecimalPart += digit;
 				}
 				else {
