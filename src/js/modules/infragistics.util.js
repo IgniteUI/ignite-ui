@@ -5026,12 +5026,10 @@
 				if (integralFormat[ ii ] == "0") {
 					digit = integralPart.length > ii ? integralPart[ii] : "0";
 					formattedIntegralPart = digit + formattedIntegralPart;
-				}
-				else if (integralFormat[ ii ] == "#") {
+				} else if (integralFormat[ ii ] == "#") {
 					digit = integralPart.length > ii ? integralPart[ ii ] : "";
 					formattedIntegralPart = digit + formattedIntegralPart;
-				}
-				else {
+				} else {
 					isValid = false;
 				}
 			}
@@ -5041,13 +5039,11 @@
 			for (var jj = 0; jj < decimalFormat.length; jj++) {
 				if (decimalFormat[ jj ] == "0") {
 					formattedDecimalPart += decimalPart[ jj ];
-				}
-				else if (decimalFormat[ jj ] == "#") {					
+				} else if (decimalFormat[ jj ] == "#") {					
 					digit = decimalPart.length > jj && (decimalPart[ jj ] != "0" || decimalPart.substring(jj).match(/[1-9]/)) ? 
 						decimalPart[ jj ] : "";
 					formattedDecimalPart += digit;
-				}
-				else {
+				} else {
 					isValid = false;
 				}
 			}
