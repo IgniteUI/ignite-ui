@@ -5009,11 +5009,13 @@
 
 		if (format.match(/[0\#\.]+/)) {
 			var isValid = true;
-			var formatIndexOfDecimalSeparator = format.indexOf('.');
-			var decimalFormat = formatIndexOfDecimalSeparator == -1 ? "" : format.substring(formatIndexOfDecimalSeparator + 1);
+			var formatIndexOfDecimalSeparator = format.indexOf(".");
+			var decimalFormat = formatIndexOfDecimalSeparator == -1 ? "" : 
+				format.substring(formatIndexOfDecimalSeparator + 1);
 			var numberString = number.toFixed(decimalFormat.length).toString();
-			var numberIndexOfDecimalSeparator = numberString.indexOf('.');
-			var integralPart = numberIndexOfDecimalSeparator == -1 ? numberString : numberString.substring(0, numberIndexOfDecimalSeparator);
+			var numberIndexOfDecimalSeparator = numberString.indexOf(".");
+			var integralPart = numberIndexOfDecimalSeparator == -1 ? numberString : 
+				numberString.substring(0, numberIndexOfDecimalSeparator);
 			var integralFormat = format.substring(0, formatIndexOfDecimalSeparator);
 			while (integralFormat.length < integralPart.length) {
 				integralFormat = "0" + integralFormat;
@@ -5021,26 +5023,28 @@
 			var formattedIntegralPart = "";
 			var digit;
 			for (var ii = integralFormat.length - 1; ii >= 0; ii--) {
-				if (integralFormat[ii] == '0') {
-					digit = integralPart.length > ii ? integralPart[ii] : '0';
+				if (integralFormat[ ii ] == "0") {
+					digit = integralPart.length > ii ? integralPart[ii] : "0";
 					formattedIntegralPart = digit + formattedIntegralPart;
 				}
-				else if (integralFormat[ii] == '#') {
-					digit = integralPart.length > ii ? integralPart[ii] : '';
+				else if (integralFormat[ ii ] == "#") {
+					digit = integralPart.length > ii ? integralPart[ ii ] : "";
 					formattedIntegralPart = digit + formattedIntegralPart;
 				}
 				else {
 					isValid = false;
 				}
 			}
-			var decimalPart = numberIndexOfDecimalSeparator == -1 ? "" : numberString.substring(numberIndexOfDecimalSeparator + 1);
+			var decimalPart = numberIndexOfDecimalSeparator == -1 ? "" : 
+				numberString.substring(numberIndexOfDecimalSeparator + 1);
 			var formattedDecimalPart = "";
 			for (var jj = 0; jj < decimalFormat.length; jj++) {
-				if (decimalFormat[jj] == '0') {
-					formattedDecimalPart += decimalPart[jj];
+				if (decimalFormat[ jj ] == "0") {
+					formattedDecimalPart += decimalPart[ jj ];
 				}
-				else if (decimalFormat[jj] == '#') {					
-					digit = decimalPart.length > jj && (decimalPart[jj] != '0' || decimalPart.substring(jj).match(/[1-9]/)) ? decimalPart[jj] : '';
+				else if (decimalFormat[ jj ] == "#") {					
+					digit = decimalPart.length > jj && (decimalPart[ jj ] != "0" || decimalPart.substring(jj).match(/[1-9]/)) ? 
+						decimalPart[ jj ] : "";
 					formattedDecimalPart += digit;
 				}
 				else {
