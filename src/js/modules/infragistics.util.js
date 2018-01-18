@@ -5025,10 +5025,10 @@
 			for (var ii = integralFormat.length - 1; ii >= 0; ii--) {
 				if (integralFormat[ ii ] == "0") {
 					digit = integralPart.length > ii ? integralPart[ ii ] : "0";
-					formattedIntegralPart = digit + formattedIntegralPart;
+					formattedIntegralPart += digit;
 				} else if (integralFormat[ ii ] == "#") {
 					digit = integralPart.length > ii ? integralPart[ ii ] : "";
-					formattedIntegralPart = digit + formattedIntegralPart;
+					formattedIntegralPart += digit;
 				} else {
 					isValid = false;
 				}
