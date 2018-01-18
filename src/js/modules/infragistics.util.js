@@ -5030,7 +5030,8 @@
 				if (integralFormat[ ii ] == "0") {
 					formattedIntegralPart = integralPart[ ii ] + formattedIntegralPart;
 				} else if (integralFormat[ ii ] == "#") {
-					digit = integralPart.substring(0, ii).match(/[1-9]/) ? integralPart[ ii ] : "";
+					digit = integralPart.substring(0, ii + 1).match(/[1-9]/) ?
+						integralPart[ ii ] : "";
 					formattedIntegralPart = digit + formattedIntegralPart;
 				} else {
 					isValid = false;
