@@ -256,7 +256,7 @@
 			equal($.ig.util.numberToString1(Math.PI, "0.0"), "3.1", "numberToString1 truncates to 1 decimal place when format is 0.0 and 2nd decimal place rounds down");
 			equal($.ig.util.numberToString1(Math.PI, "00"), "03", "numberToString1 truncates all decimals and prepends leading 0 when format is 00 and number integral part has 1 digit");
 			equal($.ig.util.numberToString1(Math.PI, "00.00"), "03.14", "numberToString1 truncates to 2 decimal places and prepends leading 0 when format is 00.00 and number integral part has 1 digit and 3rd decimal place rounds down");
-			equal($.ig.util.numberToString1(Math.PI, "0.000"), "03.142", "numberToString1 rounds up when format is 0.000 and 4th decimal place rounds up");
+			equal($.ig.util.numberToString1(Math.PI, "0.000"), "3.142", "numberToString1 rounds up when format is 0.000 and 4th decimal place rounds up");
 			equal($.ig.util.numberToString1(.1, "00.00"), "00.10", "numberToString1 prepends 2 leading 0s and appends 1 trailing 0 when format is 00.00 and number has 0 integral digits and 1 decimal digit");
 			equal($.ig.util.numberToString1(.1, "00.0#"), "00.1", "numberToString1 prepends 2 leading 0s and includes only significant decimal when format is 00.0# and number has 0 integral digits and 1 decimal digit");
 			equal($.ig.util.numberToString1(.19, "00.0#"), "00.19", "numberToString1 prepends 2 leading 0s and includes all significant decimals when format is 00.0# and number has 0 integral digits and 2 decimal digits");
