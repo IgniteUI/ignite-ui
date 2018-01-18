@@ -5016,7 +5016,8 @@
 			var numberIndexOfDecimalSeparator = numberString.indexOf(".");
 			var integralPart = numberIndexOfDecimalSeparator == -1 ? numberString :
 				numberString.substring(0, numberIndexOfDecimalSeparator);
-			var integralFormat = format.substring(0, formatIndexOfDecimalSeparator);
+			var integralFormat = formatIndexOfDecimalSeparator == -1 ? format :
+				format.substring(0, formatIndexOfDecimalSeparator);
 			while (integralFormat.length < integralPart.length) {
 				integralFormat = "0" + integralFormat;
 			}
