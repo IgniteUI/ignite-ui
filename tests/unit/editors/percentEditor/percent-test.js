@@ -856,10 +856,10 @@ QUnit.test('[ID23] Runtime changes for local and regional options', function (as
 
 	$.ig.TestUtil.wait(100).then(function () {
 		assert.equal(editorInput.igPercentEditor("field").val(), "1234567,12", "Input format should be in German");
-		editorInput.igPercentEditor("option", "regional", "en");
+		editorInput.igPercentEditor("option", "regional", "en-US");
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
-		assert.equal(editorInput.igPercentEditor("field").val(), "1234567.12", "Input format should be in German");
+		assert.equal(editorInput.igPercentEditor("field").val(), "1234567.12", "Input format should be in English");
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });

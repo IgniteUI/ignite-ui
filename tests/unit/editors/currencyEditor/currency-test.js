@@ -437,6 +437,6 @@ QUnit.test('Runtime changes for local and regional options', function (assert) {
 	$currencyEditor.igCurrencyEditor("setFocus");
 	assert.equal($currencyEditor.igCurrencyEditor("field").val(), "1234567,12", "Input Format should be in German");
 	
-	$currencyEditor.igCurrencyEditor("option", "regional", "en");
-	assert.equal($currencyEditor.igCurrencyEditor("field").val(), "1234567.12", "Input Format should be in German");
+	$currencyEditor.igCurrencyEditor("option", "regional", "en-US");
+	assert.equal($currencyEditor.igCurrencyEditor("field").val(), "1234567.12", "Input Format should be in English");
 });
