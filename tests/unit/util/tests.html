@@ -263,6 +263,7 @@
 			equal($.ig.util.numberToString1(.1, "#"), "", "numberToString1 returns an empty string when format is # and number has 0 integral digits");
 			equal($.ig.util.numberToString1(1.1, "#"), "1", "numberToString1 truncates decimal portion when format is #");
 			equal($.ig.util.numberToString1(1.1, "0"), "1", "numberToString1 truncates decimal portion when format is 0");
+			equal($.ig.util.numberToString1(300, "0.#"), "300", "numberToString1 truncates decimal portion when format is 0.# and number has 0 decimal digits");
 		});
 	</script>
 </head>
