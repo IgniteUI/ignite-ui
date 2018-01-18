@@ -1,0 +1,815 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Date Editors </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script> 
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	var logBuffer = [], logOld, 
+		logger = function (msg) { logBuffer.push(msg); };
+
+		$(document).ready(function () {
+
+			function loadTestbeds(){
+				$(function () {
+
+					dataProvider = [
+						{
+							element: $("#div1")
+						},
+						{
+							element: $("#input1")
+						},
+						{
+							element: $("#span1")
+						}
+					]
+
+					var time = (new Date(2018, 07, 02, 23, 30, 15)).getTime();
+					timeFormatDataProvider = [
+						{
+							value: time,
+							format: "HH:mm:ss tt",
+							result: "23:30:15 PM",
+							config:{
+								text: "121212",
+								inp: "12:12:12",
+								disp: "12:12:12 PM"
+							}
+						},
+						{
+							value: time,
+							format: "hh:mm:ss tt",
+							result: "11:30:15 PM",
+							config:{
+								text: "092355",
+								inp: "09:23:55 __",
+								disp: "09:23:55 AM"
+							}
+						},
+						{
+							value: time,
+							format: "HH:mm:ss t",
+							result: "23:30:15 P",
+							config:{
+								text: "190000",
+								inp: "19:00:00 _",
+								disp: "19:00:00 P"
+							}
+						},
+						{
+							value: time,
+							format: "hh:mm:ss t",
+							result: "11:30:15 P",
+							config:{
+								text: "222222",
+								inp: "_2:22:22 _",
+								disp: "02:22:22 A"
+							}
+						},
+						{
+							value: time,
+							format: "tt HH:mm:ss",
+							result: "PM 23:30:15",
+							config:{
+								text: "A083355",
+								inp: "AM 08:33:55",
+								disp: "AM 08:33:55"
+							}
+						},
+						{
+							value: time,
+							format: "tt hh:mm:ss",
+							result: "PM 11:30:15",
+							config:{
+								text: "p101010",
+								inp: "PM 10:10:10",
+								disp: "PM 10:10:10"
+							}
+						},
+						{
+							value: time,
+							format: "t HH:mm:ss",
+							result: "P 23:30:15",
+							config:{
+								text: "a11235",
+								inp: "a 11:23:5_",
+								disp: "??"
+							}
+						},
+						{
+							value: time,
+							format: "t hh:mm:ss",
+							result: "P 11:30:15",
+							config:{
+								text: "am101010",
+								inp: "A 10:10:10",
+								disp: "??"
+							}
+						}
+						// TODO: add more test data
+					]
+
+					dropDownDataProvider = [
+						{
+							value: (new Date(2018, 07, 02, 15, 30, 00)).getTime(),
+							count: 3,
+							format: "HH:mm:ss tt"
+						},
+						{
+							value: (new Date(2018, 07, 02, 7, 30, 00)).getTime(),
+							count: 10,
+							format: "hh:mm:ss tt"
+						}
+						// TODO: add more test data
+					]
+
+					timeDeltaDataProvider = [
+						{
+							time: (new Date(0, 0, 0, 9, 0, 0)).getTime(),
+							format: "HH:mm:ss tt",
+							delta:{
+								hours: 1,
+								minutes: 0,
+								seconds: 0
+							},
+							expRes:[
+								"10:00:00 AM",
+								"11:00:00 AM",
+								"12:00:00 AM",
+								"13:00:00 PM",
+								"14:00:00 PM"
+							]
+						},
+						{
+							time: (new Date(0, 0, 0, 8, 0, 0)).getTime(),
+							format: "hh:mm:ss tt",
+							delta:{
+								hours: 4,
+								minutes: 0,
+								seconds: 0
+							},
+							expRes:[
+								"12:00:00 AM",
+								"4:00:00 PM",
+								"8:00:00 PM",
+								"12:00:00 PM",
+								"4:00:00 AM"
+							]
+						},
+						{
+							time: (new Date(0, 0, 0, 19, 0, 0)).getTime(),
+							format: "hh:mm:ss tt",
+							delta:{
+								hours: 0,
+								minutes: 20,
+								seconds: 0
+							},
+							expRes:[
+								"7:20:00 PM",
+								"7:40:00 PM",
+								"8:00:00 PM",
+								"8:20:00 PM",
+								"8:40:00 PM"
+							]
+						},
+						{
+							time: (new Date(0, 0, 0, 10, 0, 0)).getTime(),
+							format: "HH:mm:ss",
+							delta:{
+								hours: 1,
+								minutes: 30,
+								seconds: 0
+							},
+							expRes:[
+								"11:30:00",
+								"13:00:00",
+								"14:30:00",
+								"16:00:00",
+								"17:30:00"
+							]
+						}
+						// TODO: add more test data
+					]
+
+					spinHoursDataProvider = [
+						{
+							time: (new Date(0, 0, 0, 0, 0, 0)).getTime(),
+							format: "HH:mm:ss tt",
+							delta: 6,
+							iterate: 5,
+							expRes:[
+								"6:00:00 AM",
+								"12:00:00 AM",
+								"18:00:00 PM",
+								"00:00:00 PM",
+								"6:00:00 AM"
+							]
+						}
+						// TODO: add more test data (for all formats)
+					]
+
+					spinMinutesDataProvider = [
+						{
+							time: (new Date(0, 0, 0, 12, 0, 0)).getTime(),
+							format: "HH:mm:ss",
+							delta: 15,
+							iterate: 5,
+							expRes:[
+								"12:15:00",
+								"12:30:00",
+								"12:45:00",
+								"13:00:00",
+								"13:15:00"
+							],
+							expLimitSpinRes:[
+								"12:15:00",
+								"12:30:00",
+								"12:45:00",
+								"12:00:00",
+								"12:15:00"
+							]
+						},
+						{
+							time: (new Date(0, 0, 0, 23, 20, 0)).getTime(),
+							format: "HH:mm:ss",
+							delta: 5,
+							iterate: 5,
+							expRes:[
+								"23:40:00",
+								"00:00:00",
+								"00:20:00",
+								"00:40:00",
+								"1:00:00"
+							],
+							expLimitSpinRes:[
+								"23:40:00",
+								"23:00:00",
+								"23:20:00",
+								"23:40:00",
+								"23:00:00"
+							]
+						},
+						{
+							time: (new Date(0, 0, 0, 11, 0, 0)).getTime(),
+							format: "hh:mm:ss tt",
+							delta: 30,
+							iterate: 5,
+							expRes:[
+								"11:30:00 AM",
+								"12:00:00 AM",
+								"12:30:00 PM",
+								"1:00:00 PM",
+								"1:30:00 PM"
+							],
+							expLimitSpinRes:[
+								"11:30:00 AM",
+								"12:00:00 AM",
+								"11:00:00 AM",
+								"11:30:00 AM",
+								"12:00:00 AM"
+							]
+						}
+						// TODO: add more test data
+					]
+				});
+			}
+			initialized = false;
+			module("igTimePicker", {
+				setup: function () {
+					//pause testing until editors are initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function () {
+				}
+			});
+
+			var testId = 'Correct initialization in div/input/span.';
+			test(testId, function (assert) {
+				assert.expect(6);
+
+				dataProvider.forEach(data => {
+					var timePicker = data.element.igTimePicker({
+						width: 150,
+						height: 50
+					});
+
+					ok(typeof timePicker.igTimePicker === 'function');
+					ok(timePicker.data("igTimePicker") !== undefined);
+					// TODO: verify correct UI state
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Set options on initialization.';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				timeFormatDataProvider.forEach(data => {
+					var timePicker = $("#div1").igTimePicker({
+						width: 150,
+						value: data.value,
+						buttonType: "spin",
+						timeInputFormat: data.format,
+						timeDisplayFormat: data.format
+					});
+					// TODO: add more options
+
+					// TODO: get spin buttons and verify their state
+					var spinDownBtn = timePicker.igTimePicker("spinDownButton");
+					var spinUPBtn = timePicker.igTimePicker("spinUpButton");
+
+					equal("Decrement", spinDownBtn.title);
+					equal("Increment", spinUPBtn.title);
+					ok(spinDownBtn.children(':first').hasClass('ui-igedit-spinlowerimage'));
+					ok(spinUPBtn.children(':first').hasClass('ui-igedit-spinupperimage'));
+
+					equal(timePicker.igTimePicker("displayValue"), data.result);
+					timePicker.igTimePicker("setFocus");
+					equal(timePicker.igTimePicker("field").val(), data.result);
+					// TODO: modify verifications (get DOM elements)
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Apply format options in runtime.';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				var timePicker = $("#div1").igTimePicker({
+					width: 150,
+					buttonType: "clear"
+				});
+
+				timeFormatDataProvider.forEach(data => {
+					
+					timePicker.igTimePicker("option", "value", data.value);
+
+					timePicker.igTimePicker("option", "timeInputFormat", data.format);
+					timePicker.igTimePicker("option", "timeDisplayFormat", data.format);
+
+					// TODO: make all other necessary verifications
+					equal(timePicker.igTimePicker("displayValue"), data.result);
+					clickOnElement($(".ui-igedit-input"));
+					equal(timePicker.igTimePicker("field").val(), data.result);
+
+					typeTextInEditor(data.config.text, $(".ui-igedit-input"));
+					equal(timePicker.igTimePicker("field").val(), data.config.inp);
+					
+					$(".ui-igedit-input").trigger("blur");
+					equal(timePicker.igTimePicker("displayValue"), data.config.disp);
+					
+					clickOnElement($("#div1_clearButton"));
+					// TODO: verify input text is cleared
+				});
+
+				timePicker.remove();
+			});
+
+			var testId = 'Dropdown capability.';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				var time = new Date(2018, 07, 02, 23, 00, 03).getTime();
+
+				var timePicker = $("#div1").igTimePicker({
+					width: 150,
+					height: 50,
+					value: time,
+					buttonType: "dropdown"
+				});
+
+				ok(!timePicker.igTimePicker("dropDownVisible"));
+
+				clickOnElement($("#listEditor_dropDownButton"));
+				ok(timePicker.igTimePicker("dropDownVisible"));
+
+				var listItems = $("#div1_list").children();
+				equal(5, listItems.length);
+
+				listItems.forEach(listItem => {
+					// TODO: verify each list item
+				});
+
+				var item = listItems[0];
+				clickOnElement(item);
+				equal(item, timePicker.igTimePicker("getSelectedListItem"))
+				equal(timePicker.igTimePicker("field").val(), "23:30:03 PM");
+				// TODO: do all necessary verifications
+
+				timePicker.remove();
+			});
+
+			var testId = 'Dropdown configuration.';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				dropDownDataProvider.forEach(data => {
+
+					var time = data.value;
+					var timePicker = $("#div1").igTimePicker({
+						width: 150,
+						height: 50,
+						value: time,
+						timeInputFormat: data.format,
+						buttonType: "dropdown",
+						visibleItemsCount : data.count
+					});
+
+					clickOnElement($("#listEditor_dropDownButton"));
+
+					ok($("#EditingInput").position().top < $("#div1_list").position().top);
+
+					var listItems = $("#div1_list").children();
+					equal(data.count, listItems.length);
+					for (i = 0; i < listItems.length(); i++)
+					{
+						// TODO: verify correct items display - follow input format
+					}
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Dropdown - set time delta.';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				timeDeltaDataProvider.forEach(data => {
+
+					var timePicker = $("#div1").igTimePicker({
+						width: 150,
+						height: 50,
+						value: data.time,
+						timeDelta: {
+							hours: data.delta.hours,
+							minutes: data.delta.mimutes,
+							seconds: data.delta.seconds
+						},
+						buttonType: "dropdown",
+						timeInputFormat: data.format,
+						timeDisplayFormat: data.format
+					});
+
+					clickOnElement($("#listEditor_dropDownButton"));
+
+					var listItems = $("#div1_list").children();
+					equal(5, listItems.length);
+					for (i = 0; i < listItems.length(); i++)
+					{
+						var expItemVal = data.expRes[i];
+						// TODO: verify correct items display
+					}
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Dropdown - keyboard navigation.';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				var timePicker = $("#div1").igTimePicker({
+					width: 150,
+					height: 50,
+					buttonType: "dropdown",
+					dropDownOrientation : "bottom"
+				});
+
+				clickOnElement($("#listEditor_dropDownButton"));
+
+				var items = $("#div1_list").children();
+				equal(5, items.length);
+
+				for(i = 0; i < items.length; i++)
+				{
+					pressKey(40);
+					item[i].hasClass('ui-state-hover');
+				}
+
+				for(i = items.length - 1; i > 0; i--)
+				{
+					pressKey(38);
+					item[i - 1].hasClass('ui-state-hover');
+					if (i == 1)
+					{
+						ok(!timePicker.igTimePicker("dropDownVisible"));
+					}
+				}
+
+				pressKey(40);
+				ok(timePicker.igTimePicker("dropDownVisible"));
+
+				pressKey(40);
+				pressKey(13);
+
+				equal(items[0], timePicker.igTimePicker("getSelectedListItem"))
+				equal(timePicker.igTimePicker("field").val(), items[0].innerText);
+				// TODO: all necessary verifications
+
+				timePicker.remove();
+			});
+
+			var testId = 'Customize dropdown button appearance';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				var time = new Date(2018, 07, 02, 23, 00, 03).getTime();
+
+				var timePicker = $("#div1").igTimePicker({
+					width: 150,
+					height: 50,
+					value: time,
+					buttonType: "dropdown"
+				});
+				// TODO: apply icon instead of dropdown arrow 
+
+				ok(!timePicker.igTimePicker("dropDownVisible"));
+
+				// TODO: verify correct dropdown button customized appearance
+				clickOnElement($("#listEditor_dropDownButton"));
+				ok(timePicker.igTimePicker("dropDownVisible"));
+
+				var listItems = $("#div1_list").children();
+				equal(5, listItems.length);
+
+				clickOnElement($("#listEditor_dropDownButton"));
+				ok(!timePicker.igTimePicker("dropDownVisible"));
+
+				timePicker.remove();
+			});
+
+			var testId = 'Spin buttons - default spin behavior';
+			test(testId, function (assert) {
+				assert.expect(3);
+				// TODO: default spin delta to be clarified
+			});
+
+			var testId = 'Spin delta - hours';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				spinHoursDataProvider.forEach(data => {
+
+					var timePicker = $("#div1").igTimePicker({
+						width: 150,
+						height: 50,
+						value: data.time,
+						spinDelta: {
+							hours: data.delta,
+							minutes: 0,
+							seconds: 0
+						},
+						buttonType: "spin",
+						timeInputFormat: data.format,
+						timeDisplayFormat: data.format
+					});
+
+					var spinDownBtn = timePicker.igTimePicker("spinDownButton");
+					var spinUPBtn = timePicker.igTimePicker("spinUpButton");
+
+					for (i = 0; i < data.iterate; i++)
+					{
+						// TODO: set cursor on hours
+						clickOnElement(spinUPBtn);
+
+						var expVal = data.expRes[i];
+						// TODO: verify correct result
+					}
+
+					for (i = data.iterate; i < 0; i--)
+					{
+						clickOnElement(spinDownBtn);
+
+						var expVal = data.expRes[i - 1];
+						// TODO: verify correct result
+					}
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Spin delta - minutes';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				spinMinutesDataProvider.forEach(data => {
+
+					var timePicker = $("#div1").igTimePicker({
+						width: 150,
+						height: 50,
+						value: data.time,
+						spinDelta: {
+							hours: 0,
+							minutes: data.delta,
+							seconds: 0
+						},
+						buttonType: "spin",
+						timeInputFormat: data.format,
+						timeDisplayFormat: data.format
+					});
+
+					var spinDownBtn = timePicker.igTimePicker("spinDownButton");
+					var spinUPBtn = timePicker.igTimePicker("spinUpButton");
+
+					for (i = 0; i < data.iterate; i++)
+					{
+						// TODO: set cursor on minutes
+						clickOnElement(spinUPBtn);
+
+						var expVal = data.expRes[i];
+						// TODO: verify correct result
+					}
+
+					for (i = data.iterate; i > 0; i--)
+					{
+						clickOnElement(spinDownBtn);
+
+						var expVal = data.expRes[i - 1];
+						// TODO: verify correct result
+					}
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Spin delta - limit spin to current field';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				spinMinutesDataProvider.forEach(data => {
+
+					var timePicker = $("#div1").igTimePicker({
+						width: 150,
+						height: 50,
+						value: data.time,
+						spinDelta: {
+							hours: 0,
+							minutes: data.delta,
+							seconds: 0
+						},
+						buttonType: "spin",
+						limitSpinToCurrentField: true,
+						timeInputFormat: data.format,
+						timeDisplayFormat: data.format
+					});
+
+					var spinDownBtn = timePicker.igTimePicker("spinDownButton");
+					var spinUPBtn = timePicker.igTimePicker("spinUpButton");
+
+					for (i = 0; i < data.iterate; i++)
+					{
+						// TODO: set cursor on minutes
+						clickOnElement(spinUPBtn);
+
+						var expVal = data.expLimitSpinRes[i];
+						// TODO: verify correct result
+					}
+
+					for (i = data.iterate; i > 0; i--)
+					{
+						clickOnElement(spinDownBtn);
+
+						var expVal = data.expLimitSpinRes[i - 1];
+						// TODO: verify correct result
+					}
+
+					timePicker.remove();
+				});
+			});
+
+			var testId = 'Spin delta with time range set';
+			test(testId, function (assert) {
+				assert.expect(3);
+
+				var min = (new Date(0, 0, 0, 8, 30, 00)).getTime();
+				var max = (new Date(0, 0, 0, 17, 30, 00)).getTime();
+
+				var timePicker = $("#div1").igTimePicker({
+					width: 150,
+					height: 50,
+					spinDelta: {
+						hours: 1,
+						minutes: 30,
+						seconds: 0
+					},
+					minValue: min,
+					maxValue: max,
+					buttonType: "spin",
+					timeInputFormat: "HH:mm",
+					timeDisplayFormat: "hh:mm"
+				});
+
+				var spinDownBtn = timePicker.igTimePicker("spinDownButton");
+				var spinUPBtn = timePicker.igTimePicker("spinUpButton");
+
+				typeTextInEditor('0700', $(".ui-igedit-input"));
+				// TODO: verify incorrect input is not accepted or...whatever (spin buttons disabled?)
+
+				typeTextInEditor('1230', $(".ui-igedit-input"));
+				// TODO: verify the input is accepted
+				
+				$(".ui-igedit-input")._setCursorPosition(0);
+				var expRes = ['13.30', '14.30', '15.30', '16.30', '17.30'];
+				for (i = 0; i < 6; i++)
+				{
+					clickOnElement(spinUPBtn);
+					// TODO: verify correct result
+				}
+
+				for (i = data.iterate; i > 0; i--)
+				{
+					clickOnElement(spinDownBtn);
+					// TODO: verify correct result
+				}
+
+				timePicker.remove();
+			});
+
+		});
+
+		function typeTextInEditor(text, element){
+
+			var keyDown = jQuery.Event("keydown"),
+			keyPress = jQuery.Event("keypress"),
+			keyUp = jQuery.Event("keyup"),
+			value = "";
+
+			text.split('').forEach(function (char) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = char.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = char.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				element.trigger(keyUp);
+			});
+		}
+		function clickOnElement(element){
+			var click = jQuery.Event("click");
+			element.trigger(click);
+		}
+		function pressKey(keyCode, element){
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+
+			if (element != undefined)
+			{
+				element.trigger(evt);
+			}
+			
+		}
+
+	</script>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		<input id="input1"/>
+		<div id="div1"/>
+		<span id="span1"/>
+	</div>
+</body>
+</html>
+
