@@ -1,8 +1,6 @@
 QUnit.module("igDatePicker unit tests", {
 	divTag: '<div></div>',
-	spanTag: '<span></span>',
 	inputTag: '<input></input>',
-	textareaTag: '<textarea></textarea>',
 	util: $.ig.TestUtil,
 	editor: null,
 	appendToFixture: function (element, options) {
@@ -38,22 +36,6 @@ QUnit.module("igDatePicker unit tests", {
 	},
 	spinDownButton: function() {
 		return this.editor.igDatePicker("spinDownButton");
-	},
-	flag: false,
-	assert: null,
-	pressOk: function(char) {
-		this.util.keyPressChar(char.charCodeAt(0), this.input());
-		this.assert.assert.ok(this.flag, char + " char SHOULD be typed, because it is included key");
-		this.flag = false;
-	},
-	pressNotOk: function(char) {
-		this.util.keyPressChar(char.charCodeAt(0), this.input());
-		this.assert.notassert.ok(this.flag, char + " char SHOULD NOT be typed, because it is excluded key");
-		this.flag = false;
-	},
-	testSelection: function(input, start, end) {
-		this.assert.equal(input[0].selectionStart, start, "The selection doesn't start from index" + start);
-		this.assert.equal(input[0].selectionEnd, end, "The selection doesn't end at index " + end);
 	},
 	beforeEach: function () { $.fx.off = true; },
 	afterEach: function () { $.fx.off = false; }
@@ -781,14 +763,12 @@ assert.expect(22);
 				[ { minutes: 61 }, errorRange, "minutes", 60 ], [ { seconds: null }, errorType, "seconds", 60 ],
 				[ { milliseconds: -100 }, errorRange, "milliseconds", 1000 ]];
 	for (index = 0; index < spinData.length; index++) {
-		try {
-			this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
+		assert.throws( function () {
+			this.appendToFixture(this.inputTag).igDatePicker({
 				spinDelta: spinData[index][0],
 				buttonType : "spin"
 			});
-		} catch(e) {
-			assert.equal(e.message, $.ig.util.stringFormat(spinData[index][1], spinData[index][2], 0, spinData[index][3]));
-		}
+		}, $.ig.util.stringFormat(spinData[index][1], spinData[index][2], 0, spinData[index][3]));
 	}
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
@@ -1090,10 +1070,7 @@ assert.expect(6);
 		dropDownAnimationDuration: -1
 	});
 
-
 	assert.equal(editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
-	this.dropDownButton().click();
-	this.dropDownButton().click();
 	this.input().blur();
 	assert.equal(editor.igDatePicker("displayValue"), "12/8/2017 12:00 AM", "Display value is not correct");
 	this.dropDownButton().click();
@@ -1117,7 +1094,6 @@ assert.expect(6);
 	this.input().blur();
 	assert.equal(editor.igDatePicker("displayValue"), "12/8/2017 4:00 AM", "Display value is not correct");
 	this.dropDownButton().click();
-	debugger;
 	$(".ui-datepicker-current-day").next().click();
 	this.input().blur();
 	assert.equal(editor.igDatePicker("displayValue"), "12/9/2017 4:00 AM", "Display value is not correct");

@@ -2741,8 +2741,8 @@ $(document).ready(function () {
 		$editor.igNumericEditor("setFocus");
 		assert.equal($editor.igNumericEditor("field").val(), "1234567,12", "Input Format should be in German");
 
-		$editor.igNumericEditor("option", "regional", "en");
-		assert.equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in German");
+		$editor.igNumericEditor("option", "regional", "en-US");
+		assert.equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in English");
 	});
 
 	QUnit.test('Null value set as nullValue and empty string set as value', function (assert) {

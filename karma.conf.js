@@ -55,6 +55,7 @@ module.exports = function(config) {
 
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-en.js",
 
       // DV files for zoombar tests:
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
