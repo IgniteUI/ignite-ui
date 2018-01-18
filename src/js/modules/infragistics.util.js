@@ -5021,15 +5021,17 @@
 			while (integralFormat.length < integralPart.length) {
 				integralFormat = "0" + integralFormat;
 			}
+			while (integralPart.length < integralFormat.length) {
+				integralPart = "0" + integralPart;
+			}
 			var formattedIntegralPart = "";
 			var digit;
 			for (var ii = integralFormat.length - 1; ii >= 0; ii--) {
 				if (integralFormat[ ii ] == "0") {
-					digit = integralPart.length > ii ? integralPart[ ii ] : "0";
-					formattedIntegralPart += digit;
+					formattedIntegralPart = integralPart[ ii ] + formattedIntegralPart;
 				} else if (integralFormat[ ii ] == "#") {
-					digit = integralPart.length > ii ? integralPart[ ii ] : "";
-					formattedIntegralPart += digit;
+					digit = integralPart.substring(0, ii).match(/[1-9]/) ? integralPart[ ii ] : "";
+					formattedIntegralPart = digit + formattedIntegralPart;
 				} else {
 					isValid = false;
 				}
