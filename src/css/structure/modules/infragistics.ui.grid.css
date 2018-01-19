@@ -539,8 +539,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
     /*No need for this anymore since we moved the icon INSIDE the editor container*/
 }
 
-.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-filtereditor,
-.ui-iggrid-filtercell .ui-igeditor-input-container:first-child .ui-iggrid-filtereditor {
+.ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-filtereditor {
     padding    : 0 1.8em 0 0 !important;
     text-align : right !important;
 }
