@@ -119,6 +119,8 @@ QUnit.module("igDatePicker(Bugs) unit tests", {
 
 QUnit.test('Bug 221368', function (assert) {
 	assert.expect(5);
+	
+	var done = assert.async(), self = this;
 
 	this.editor = editor1 = this.appendToFixture(this.inputTag).igDatePicker({
 		readOnly: true,
@@ -127,15 +129,25 @@ QUnit.test('Bug 221368', function (assert) {
 	this.dropDownButton().click();
 	assert.ok(editor1.igDatePicker("dropDownVisible"), "The readOnly calendar is opened.");
 	this.dropDownButton().click();
-	assert.notOk(editor1.igDatePicker("dropDownVisible"), "The readOnly calendar is closed.");
-
-	editor2 = $(this.inputTag).appendTo($('#qunit-fixture')).igDatePicker();
-	editor2.igDatePicker("dropDownButton").click();
-	this.dropDownButton().click();
-	assert.ok(editor1.igDatePicker("dropDownVisible"), "The calendar of the readOnly editor should be visible");
-	this.dropDownButton().click();
-	assert.notOk(editor1.igDatePicker("dropDownVisible"), "The calendar of the readOnly editor should be visible");
-	assert.notOk(editor2.igDatePicker("dropDownVisible"), "The readOnly calendar is closed.");
+	$.ig.TestUtil.wait(400).then(function () {
+		assert.notOk(editor1.igDatePicker("dropDownVisible"), "The readOnly calendar is closed.");
+		editor2 = $(self.inputTag).appendTo($('#qunit-fixture')).igDatePicker();
+		editor2.igDatePicker("dropDownButton").click();
+		return $.ig.TestUtil.wait(400);
+	}).then(function() {
+		self.dropDownButton().click();
+		assert.ok(editor1.igDatePicker("dropDownVisible"), "The calendar of the readOnly editor should be visible");
+		self.dropDownButton().click();
+		return $.ig.TestUtil.wait(400);
+	}).then(function () {
+		assert.notOk(editor1.igDatePicker("dropDownVisible"), "The calendar of the readOnly editor should be visible");
+		assert.notOk(editor2.igDatePicker("dropDownVisible"), "The readOnly calendar is closed.");
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
 });
 
 QUnit.test('Bug 213900', function (assert) {
