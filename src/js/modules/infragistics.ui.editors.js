@@ -12088,7 +12088,7 @@
 				}
 			Time periods that don't have values use 0 as default for hours and 30 for minutes.
 			*/
-			itemsDelta: {hours: 0, minutes: 30},
+			itemsDelta: { hours: 0, minutes: 30 },
 			/* type="number|object" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
 				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
 				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
@@ -12122,7 +12122,7 @@
 				}
 			Default value is {hours: 1, minutes: 30}.
 			*/
-			spinDelta: {hours: 1, minutes: 30},
+			spinDelta: { hours: 1, minutes: 30 },
 			/* type="string"
 				Gets format of time while timepicker has focus.
 				Value of that option can be set to explicit time pattern or to a flag defined by regional settings.
@@ -12373,11 +12373,11 @@
 				clear type="string" A button to clear the value is located on the right side of the editor.
 				spin type="string" Spin buttons are located on the right side of the editor.
 			*/
-			buttonType: "dropdown",	
+			buttonType: "dropdown",
 			/* @Ignored@ Removed from timepicker options*/
 			minValue: null,
 			/* @Ignored@ Removed from timepicker options*/
-			maxValue: null,		
+			maxValue: null,
 			/* @Ignored@ Removed from timepicker options*/
 			dateDisplayFormat: null,
 			/* @Ignored@ Removed from timepicker options*/
@@ -12387,7 +12387,7 @@
 			/* @Ignored@ Removed from timepicker options*/
 			displayTimeOffset: null,
 			/* @Ignored@ Removed from timepicker options*/
-			enableUTCDates: null,
+			enableUTCDates: null
 		},
 		events: {
 			/* cancel="true" Fired when the drop down is opening.
@@ -12515,7 +12515,7 @@
 				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
 			*/
-			dropDownItemSelected: "dropDownItemSelected",
+			dropDownItemSelected: "dropDownItemSelected"
 			/* cancel="false" Fired after the editor's text has been changed. It can be raised when keyUp event occurs,
 				when the clear button is clicked or when an item from a list is selected.
 				```
@@ -12541,32 +12541,35 @@
 			$.ui.igDateEditor.prototype._create.call(this);
 		},
 		_initialize: function () { // igTimePicker
-			if(this.options.timeDisplayFormat){
+			if (this.options.timeDisplayFormat) {
 				this.options.timeDisplayFormat = this._parseMask(this.options.timeDisplayFormat);
 				this.options.dateDisplayFormat = this.options.timeDisplayFormat;
-			}
-			else
+			} else {
 				this.options.dateDisplayFormat = "time";
-
-			if(this.options.timeInputFormat){
-				this.options.timeInputFormat = this._parseMask(this.options.timeInputFormat)
-				this.options.dateInputFormat = this.options.timeInputFormat;
 			}
-			else
+
+			if (this.options.timeInputFormat) {
+				this.options.timeInputFormat = this._parseMask(this.options.timeInputFormat);
+				this.options.dateInputFormat = this.options.timeInputFormat;
+			} else {
 				this.options.dateInputFormat = "time";
-			
+			}
+
 			this._super();
 
-			if(this.options.minTimeValue)
+			if (this.options.minTimeValue) {
 				this.options.minValue = this._parseDateFromMaskedValue(this.options.minTimeValue);
+			}
 
-			if(this.options.maxTimeValue)
+			if (this.options.maxTimeValue) {
 				this.options.maxValue = this._parseDateFromMaskedValue(this.options.maxTimeValue);
-			
+			}
+
 			var buttons = this.options.buttonType.toString().split(/[\s,]+/);
-			
-			if ($.inArray("dropdown", buttons) === 0)
-				this._populateDropDown(this.options.minTimeValue, this.options.maxTimeValue)
+
+			if ($.inArray("dropdown", buttons) === 0) {
+				this._populateDropDown(this.options.minTimeValue, this.options.maxTimeValue);
+			}
 		},
 		getSelectedListItem: function () {
 			/* Gets the selected list item.
@@ -12575,7 +12578,7 @@
 			```
 				returnType="$" Selected list item.*/
 			return $.ui.igTextEditor.prototype.getSelectedListItem.call(this);
-		},		
+		},
 		dropDownVisible: function () {
 			/* Returns the visibility state of the calendar.
 			```
@@ -12624,28 +12627,27 @@
 		_getEditModeValue: function (val) { // igTimePicker
 			if ($.type(val) === "date") {
 				return this._updateMaskedValue(val, true);
-			}
-			else{
+			} else {
 				return this._super();
 			}
 		},
-		_populateDropDown: function(minValue, maxValue){
-			if(minValue){
+		_populateDropDown: function(minValue, maxValue) {
+			if (minValue) {
 				minValue = this._parseDateFromMaskedValue(minValue);
 				minValue = minValue.getHours() * 60 + minValue.getMinutes();
-			}
-			else
+			} else {
 				minValue = 0;
-			if(maxValue){
+			}
+			if (maxValue) {
 				maxValue = this._parseDateFromMaskedValue(maxValue);
 				maxValue = maxValue.getHours() * 60 + maxValue.getMinutes();
-			}
-			else
+			} else {
 				maxValue = 1440;
-			
+			}
+
 			var timeDeltaMinutes = this.options.itemsDelta.hours * 60 + this.options.itemsDelta.minutes;
 			var count = 1440 / timeDeltaMinutes;
-			
+
 			var initDate = new Date();
 			initDate.setHours(0);
 			initDate.setMinutes(0);
@@ -12653,18 +12655,19 @@
 
 			this.options.listItems = [];
 
-			for(var i = 0; i < count; i++){
+			for (var i = 0; i < count; i++) {
 				var date = new Date(initDate);
 				date.setMinutes(timeDeltaMinutes * i);
-				if(timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue)
+				if (timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue) {
 					this.options.listItems.push(date);
+				}
 			}
 		},
-		_parseMask: function(mask){
+		_parseMask: function(mask) {
 			return mask.replace(/M/g, "\\M").replace(/d/g, "\\d").replace(/y/g, "\\y").replace(/s/g, "\\s").replace(/f/g, "\\f");
 		},
 		_validateValue: function (val) { //igTimePicker
-			if	(this._super(val)){
+			if (this._super(val)) {
 				var result;
 				if (val === undefined) {
 					result = false;
@@ -12681,7 +12684,7 @@
 						this._sendNotification("warning", { optName: "allowedValuesMsg" });
 						result = false;
 					}
-				}else {
+				} else {
 					result = true;
 				}
 				return result;
@@ -12716,18 +12719,18 @@
 		_updateValue: function (value) { //igTimePicker
 			if ($.type(value) === "date") {
 				this._super(value);
-			}
-			else if(value === "")
+			} else if (value === "") {
 				this._super(value);
-			else
+			} else {
 				this._super(new Date(value));
+			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTimePicker
 			if ($.type(currentVal) === "date") {
 				this._super(currentVal);
-			}
-			else
+			} else {
 				this._super(this._parseDateFromMaskedValue(currentVal));
+			}
 		},
 		_setBlur: function (event) { //igTimePicker
 			this._super(event);
@@ -12739,7 +12742,7 @@
 		selectDate: function () {
 		/*@Ignored@*/
 			throw new Error(this._getLocaleValue("timePickerNoSuchMethod"));
-		},
+		}
 	});
 	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
