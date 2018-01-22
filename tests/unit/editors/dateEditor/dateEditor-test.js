@@ -7,6 +7,25 @@ $(document).ready(function () {
 
 		afterEach: function () { },
 
+		toLocalISOString: function (date) {
+			var tzo = -date.getTimezoneOffset(),
+				dif = tzo >= 0 ? "+" : "-",
+				pad = function (num) {
+					var norm = Math.abs(Math.floor(num));
+					return (norm < 10 ? "0" : "") + norm;
+				};
+			return date.getFullYear() +
+				"-" + pad(date.getMonth() + 1) +
+				"-" + pad(date.getDate()) +
+				"T" + pad(date.getHours()) +
+				":" + pad(date.getMinutes()) +
+				":" + pad(date.getSeconds()) +
+				dif + pad(tzo / 60) +
+				":" + pad(tzo % 60);
+		},
+		pad: function (n) {
+			return (n < 10) ? ("0" + n) : n.toString();
+		}
 	});
 
 	QUnit.test('Date Editor initialization.', function (assert) {
@@ -27,7 +46,7 @@ $(document).ready(function () {
 		assert.equal($editor.igDateEditor("displayValue"), "10/10/2010 12:00 AM", 'The initial value is not as expected');
 
 		// Bug 208280: igDateEditor hidden/sent date values format review when dataMode is Date object
-		assert.equal($editor.data("igDateEditor")._valueInput.val(), toLocalISOString(new Date("10/10/2010")), 'The internal(submit) value is not in expected ISO format');
+		assert.equal($editor.data("igDateEditor")._valueInput.val(), this.toLocalISOString(new Date("10/10/2010")), 'The internal(submit) value is not in expected ISO format');
 	});
 
 	QUnit.test('Date Editor methods.', function (assert) {
@@ -45,10 +64,10 @@ $(document).ready(function () {
 		var $editor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: "10/10/2010",
 			validatorOptions:
-				{
-					required: true,
-					notificationOptions: { mode: "popover" }
-				}
+			{
+				required: true,
+				notificationOptions: { mode: "popover" }
+			}
 		});
 
 		$editor.igDateEditor("option", "value", "");
@@ -1179,34 +1198,34 @@ $(document).ready(function () {
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.data("igDateEditor")._setCursorPosition(21);
 		this.util.click(spinUpButton, false, false);
-		expectedValue = new Date(2016, 11, 13, 0, 4, 11, 1);
+		expectedValue = new Date(2015, 10, 11, 23, 5, 10, 1);
 		$dtEditor.trigger("blur");
 		value = $dtEditor.igDateEditor("value");
 		assert.equal(value.getTime(), expectedValue.getTime(), '[11] The initial value is not as expected');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:001", '[12] The initial value is not as expected');
+		assert.equal($dtEditor.igDateEditor("displayValue"), "2015/11/11 23:05:10:001", '[12] The initial value is not as expected');
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.data("igDateEditor")._setCursorPosition(21);
 		this.util.click(spinDownButton, false, false);
-		expectedValue = new Date(2016, 11, 13, 0, 4, 11, 0);
+		expectedValue = new Date(2015, 10, 11, 23, 5, 10, 0);
 		$dtEditor.trigger("blur");
 		value = $dtEditor.igDateEditor("value");
 		assert.equal(value.getTime(), expectedValue.getTime(), '[13] The initial value is not as expected');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:000", '[14] The initial value is not as expected');
+		assert.equal($dtEditor.igDateEditor("displayValue"), "2015/11/11 23:05:10:000", '[14] The initial value is not as expected');
 
 		// SpinDown and the value should stay the same, cause limitSpinToCurrentField is true
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.igDateEditor("option", "limitSpinToCurrentField", true);
 		$dtEditor.data("igDateEditor")._setCursorPosition(21);
 		this.util.click(spinDownButton, false, false);
-		expectedValue = new Date(2016, 11, 13, 0, 4, 11, 0);
+		expectedValue = new Date(2015, 10, 11, 23, 5, 10, 0);
 		$dtEditor.trigger("blur");
 		value = $dtEditor.igDateEditor("value");
 		assert.equal(value.getTime(), expectedValue.getTime(), '[15] The initial value is not as expected');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:000", '[16] The initial value is not as expected');
+		assert.equal($dtEditor.igDateEditor("displayValue"), "2015/11/11 23:05:10:000", '[16] The initial value is not as expected');
 	});
 
-	QUnit.test('Testing spin and max and min values set as date object', function (assert) {
-		assert.expect(66);
+	QUnit.test('Testing spin and max and min values set as date object[1]', function (assert) {
+		assert.expect(36);
 
 		var $dtEditor, newDate, spinUpButton, spinDownButton,
 			done = assert.async(),
@@ -1280,232 +1299,266 @@ $(document).ready(function () {
 			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
 			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-	
+
 			$dtEditor.igDateEditor("value", new Date(2016, 11, 12));
 			assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
 			assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
 			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-	
+
 			$dtEditor.igDateEditor("value", new Date(2016, 10, 11));
 			assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
 			assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
 			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
 			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-	
+
 			$dtEditor.remove();
-			return util.wait(100)
-		}).then(function () {
 			done();
 		}).catch(function (er) {
 			assert.pushResult({ result: false, message: er.message });
 			done();
 			throw er;
 		});
+	});
 
-		return;
+	QUnit.test('Testing spin and max and min values set as date object[2]', function (assert) {
+		assert.expect(30);
 
-
-
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2016, 11, 5),
 			maxValue: new Date(2016, 11, 5),
 			minValue: new Date(2016, 11, 1),
 			buttonType: "spin"
-		});
-		spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+		}),
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			done = assert.async(),
+			util = this.util;
+
 		assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
 		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
 		this.util.click(spinDownButton, false, false);
 		assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
 		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2016, 11, 1),
 			maxValue: new Date(2016, 11, 5),
 			minValue: new Date(2016, 11, 1),
 			buttonType: "spin"
 		});
+
 		spinUpButton = $dtEditor.igDateEditor("spinUpButton");
 		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
 		assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
 		assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
 		this.util.click(spinUpButton, false, false);
 		assert.notOk(spinDownButton.prop("disabled"), "The button should be enabled");
 		assert.equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2016, 11, 10),
 			maxValue: new Date(2016, 11, 5),
 			minValue: new Date(2016, 11, 1),
 			buttonType: "spin"
 		});
+
 		spinUpButton = $dtEditor.igDateEditor("spinUpButton");
 		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
 		assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
 		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
 		assert.ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not shown");
 		assert.ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").text().indexOf("Entry exceeded the maximum value of") > -1, "Notification text not correct");
+
 		this.util.click(spinDownButton, false, false);
 		assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
 		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
-		stop();
-		setTimeout(function () {
-			start();
+
+		this.util.wait(500).then(function () {
 			assert.notOk($dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not hidden");
 			$dtEditor.remove();
 
-			$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+			$dtEditor = util.appendToFixture("<input>").igDateEditor({
 				value: new Date(2016, 10, 30),
 				maxValue: new Date(2016, 11, 5),
 				minValue: new Date(2016, 11, 1),
 				buttonType: "spin"
 			});
+
 			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
 			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
 			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
 			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
 			assert.ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not shown");
 			assert.ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text().indexOf("Entry was less than the minimum value of") > -1, "Notification text not correct");
-			this.util.click(spinUpButton, false, false);
+
+			util.click(spinUpButton, false, false);
 			assert.notOk(spinDownButton.prop("disabled"), "The button should be enabled");
 			assert.equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
 			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
-			stop();
-			setTimeout(function () {
-				start();
-				ok(!$dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not hidden");
-				$dtEditor.remove();
-			}, 500);
-		}, 500);
+			return util.wait(500)
+		}).then(function () {
+			assert.notOk($dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not hidden");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
-	return;
 
 	QUnit.test('Testing spin and max and min values set as string', function (assert) {
 		assert.expect(48);
-		var $dtEditor, newDate, spinUpButton, spinDownButton;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateInputFormat: "MM/dd/yyyy",
 			maxValue: "12/05/2016",
 			minValue: "12/01/2016",
 			buttonType: "spin"
+		}),
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			newDate,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag;
+
+		$dtEditor.igDateEditor("setFocus");
+
+		this.util.wait(100).then(function () {
+			util.type("12/12/2016", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+			util.click(spinDownButton, false, false);
+			assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+
+			util.click(spinUpButton, false, false);
+			assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+			$dtEditor.igDateEditor("setFocus");
+			return util.wait(100)
+		}).then(function () {
+			util.type("11/11/2016", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+			util.click(spinUpButton, false, false);
+			assert.notOk(spinDownButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
+
+			util.click(spinDownButton, false, false);
+			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+			$dtEditor.igDateEditor("setFocus");
+			return util.wait(100)
+		}).then(function () {
+			util.type("12/04/2016", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			util.click(spinUpButton, false, false);
+			assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+			$dtEditor.igDateEditor("setFocus");
+			return util.wait(100)
+		}).then(function () {
+			util.type("12/02/2016", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			util.click(spinDownButton, false, false);
+			assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+			$dtEditor.igDateEditor("value", "12/12/2016");
+			assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+			$dtEditor.igDateEditor("value", "11/11/2016");
+			assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				value: "12/05/2016",
+				dateInputFormat: "MM/dd/yyyy",
+				maxValue: "12/05/2016",
+				minValue: "12/01/2016",
+				buttonType: "spin"
+			});
+
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+			assert.ok(spinUpButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+			util.click(spinDownButton, false, false);
+			assert.notOk(spinUpButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				value: "12/01/2016",
+				dateInputFormat: "MM/dd/yyyy",
+				maxValue: "12/05/2016",
+				minValue: "12/01/2016",
+				buttonType: "spin"
+			});
+
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+			assert.ok(spinDownButton.prop("disabled"), "The button should be disabled");
+			assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+			util.click(spinUpButton, false, false);
+			assert.notOk(spinDownButton.prop("disabled"), "The button should be enabled");
+			assert.equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
 		});
-		spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
-
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("12/12/2016", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		ok(spinUpButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-		this.util.click(spinDownButton, false, false);
-		ok(!spinUpButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
-		this.util.click(spinUpButton, false, false);
-		ok(spinUpButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("11/11/2016", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		ok(!spinUpButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
-		ok(spinDownButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-		this.util.click(spinUpButton, false, false);
-		ok(!spinDownButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
-		this.util.click(spinDownButton, false, false);
-		ok(spinDownButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("12/04/2016", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		this.util.click(spinUpButton, false, false);
-		ok(spinUpButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("12/02/2016", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		this.util.click(spinDownButton, false, false);
-		ok(!spinUpButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
-		ok(spinDownButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-
-		$dtEditor.igDateEditor("value", "12/12/2016");
-		ok(spinUpButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-
-		$dtEditor.igDateEditor("value", "11/11/2016");
-		ok(!spinUpButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
-		ok(spinDownButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-		$dtEditor.remove();
-
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			value: "12/05/2016",
-			dateInputFormat: "MM/dd/yyyy",
-			maxValue: "12/05/2016",
-			minValue: "12/01/2016",
-			buttonType: "spin"
-		});
-		spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
-		ok(spinUpButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-		this.util.click(spinDownButton, false, false);
-		ok(!spinUpButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
-		$dtEditor.remove();
-
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			value: "12/01/2016",
-			dateInputFormat: "MM/dd/yyyy",
-			maxValue: "12/05/2016",
-			minValue: "12/01/2016",
-			buttonType: "spin"
-		});
-		spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
-		ok(spinDownButton.prop("disabled"), "The button should be disabled");
-		assert.equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-		this.util.click(spinUpButton, false, false);
-		ok(!spinDownButton.prop("disabled"), "The button should be enabled");
-		assert.equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Setting options on run time', function (assert) {
-		assert.expect(1);
+		assert.expect(0);
 
 		// throws(function () {
 		// 	$("#inputEditor26").igDateEditor("option", "dateInputFormat", "timeLong");
@@ -1515,42 +1568,48 @@ $(document).ready(function () {
 
 	QUnit.test("Dropdown methods", function (assert) {
 		assert.expect(6);
-		throws(function () {
-			$("#inputEditor29").igDateEditor("dropDownButton");
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor();
+
+		assert.throws(function () {
+			$dtEditor.igDateEditor("dropDownButton");
 		}, "The dropDownButton method didn't throws exception.");
 
-
-		throws(function () {
-			$("#inputEditor29").igDateEditor("dropDownContainer");
+		assert.throws(function () {
+			$dtEditor.igDateEditor("dropDownContainer");
 		}, "The dropDownContainer method didn't throws exception.");
-
-		throws(function () {
-			$("#inputEditor29").igDateEditor("dropDownVisible");
+		assert.throws(function () {
+			$dtEditor.igDateEditor("dropDownVisible");
 		}, "The dropDownVisible method didn't throws exception.");
 
-
-		throws(function () {
-			$("#inputEditor29").igDateEditor("findListItemIndex");
+		assert.throws(function () {
+			$dtEditor.igDateEditor("findListItemIndex");
 		}, "The findListItemIndex method didn't throws exception.");
-
-		throws(function () {
-			$("#inputEditor29").igDateEditor("getSelectedListItem");
+		assert.throws(function () {
+			$dtEditor.igDateEditor("getSelectedListItem");
 		}, "The getSelectedListItem method didn't throws exception.");
 
-
-		throws(function () {
-			$("#inputEditor29").igDateEditor("selectedListIndex");
+		assert.throws(function () {
+			$dtEditor.igDateEditor("selectedListIndex");
 		}, "The selectedListIndex method didn't throws exception.");
 	});
 
 	QUnit.test('Testing spin on empty editor', function (assert) {
 		assert.expect(3);
-		var $dtEditor = $('#inputEditor24'), today = new Date();
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			width: 300,
+			buttonType: "spin",
+			dateInputFormat: "dateTime",
+			dateDisplayFormat: "dateTime"
+		}),
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			today = new Date();
+
 		$dtEditor.igDateEditor("setFocus");
 
 		$dtEditor.data("igDateEditor")._setCursorPosition(3);
-		var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
-			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 
 		this.util.click(spinUpButton, false, false);
 		$dtEditor.trigger("blur");
@@ -1562,394 +1621,480 @@ $(document).ready(function () {
 
 	QUnit.test("Getting value from text", function (assert) {
 		assert.expect(3);
-		var value, newDate = new Date(2015, 2, 1, 0, 0, 0);
-		stop();
-		setTimeout(function () {
-			start();
-			//setting wrong value for the dataMode
-			$("#inputEditor28").igDateEditor("option", "dataMode", "data");
-			$("#inputEditor28").data("igDateEditor")._valueFromText("03/01/2015");
-			$("#inputEditor28").blur();
-			$("#inputEditor28").blur();
 
-			$("#inputEditor28").igDateEditor("option", "dataMode", "date");
-			$("#inputEditor28").igDateEditor("setFocus");
-			value = $("#inputEditor28").igDateEditor("value");
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			value: "3/1/2015"
+		}),
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			newDate = new Date(2015, 2, 1, 0, 0, 0),
+			value,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag;
+
+		$dtEditor.igValidator({
+			date: true
+		});
+
+		this.util.wait(100).then(function () {
+			//setting wrong value for the dataMode
+			$dtEditor.igDateEditor("option", "dataMode", "data");
+			$dtEditor.data("igDateEditor")._valueFromText("03/01/2015");
+			$dtEditor.blur();
+
+			$dtEditor.igDateEditor("option", "dataMode", "date");
+			$dtEditor.igDateEditor("setFocus");
+			value = $dtEditor.igDateEditor("value");
 			assert.equal(value.toString(), newDate.toString(), "The date mode didn't return the proper value formatting.");
 
-			stop();
-			setTimeout(function () {
-				start();
-				$("#inputEditor28").igDateEditor("option", "dataMode", "displayModeText");
-				$("#inputEditor28").blur();
-				$("#inputEditor28").blur();
-				$("#inputEditor28").igDateEditor("setFocus");
-				value = $("#inputEditor28").igDateEditor("value");
-				assert.equal(value.toString(), "3/1/2015", "The displayModeText mode didn't return the proper value formatting.");
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("option", "dataMode", "displayModeText");
+			$dtEditor.blur();
+			$dtEditor.blur();
+			$dtEditor.igDateEditor("setFocus");
+			value = $dtEditor.igDateEditor("value");
+			assert.equal(value.toString(), "3/1/2015", "The displayModeText mode didn't return the proper value formatting.");
 
-				stop();
-				setTimeout(function () {
-					start();
-					$("#inputEditor28").igDateEditor("option", "dataMode", "editModeText");
-					$("#inputEditor28").blur();
-					$("#inputEditor28").blur();
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("option", "dataMode", "editModeText");
+			$dtEditor.blur();
+			$dtEditor.blur();
 
-					$("#inputEditor28").igDateEditor("setFocus");
-					value = $("#inputEditor28").igDateEditor("value");
-					assert.equal(value.toString(), "03/01/2015", "The editModeText mode didn't return the proper value formatting.");
-				}, 200);
-			}, 200);
-		}, 200);
+			$dtEditor.igDateEditor("setFocus");
+			value = $dtEditor.igDateEditor("value");
+			assert.equal(value.toString(), "03/01/2015", "The editModeText mode didn't return the proper value formatting.");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
-	test('Trigger key down, key up', 2, function () {
-		var currentValue = $("#inputEditor27").igDateEditor("value"), changedValue,
-			editorInput = $("#inputEditor27").igDateEditor("field");
-		stop();
-		setTimeout(function () {
-			start();
-			$("#inputEditor27").igDateEditor("setFocus");
-			stop();
-			setTimeout(function () {
-				start();
-				keyInteraction(38, editorInput);
+	QUnit.test('Trigger key down, key up', function (assert) {
+		assert.expect(2);
 
-				$("#inputEditor27").blur();
-				changedValue = $("#inputEditor27").igDateEditor("value");
-				ok(currentValue.toString() !== changedValue.toString(), "The spinDownButton doen't change the date.");
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			width: 300,
+			buttonType: "spin",
+			dateInputFormat: "dateTime",
+			dateDisplayFormat: "dateTime",
+			value: new Date(2015, 2, 1, 0, 0, 0)
+		}),
+			editorInput = $dtEditor.igDateEditor("field"),
+			currentValue = $dtEditor.igDateEditor("value"),
+			changedValue,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag;
 
-				$("#inputEditor27").igDateEditor("setFocus");
-				stop();
-				setTimeout(function () {
-					start();
-					keyInteraction(40, editorInput);
-					$("#inputEditor27").blur();
-					changedValue = $("#inputEditor27").igDateEditor("value");
-					ok(currentValue.toString() === changedValue.toString(), "The spinDownButton doen't change the date.");
-				}, 200);
-			}, 200);
-		}, 100);
+		$dtEditor.igDateEditor("setFocus");
+
+		this.util.wait(100).then(function () {
+			util.keyInteraction(38, editorInput);
+			$dtEditor.blur();
+			changedValue = $dtEditor.igDateEditor("value");
+			assert.ok(currentValue.toString() !== changedValue.toString(), "The spinDownButton doen't change the date.");
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.keyInteraction(40, editorInput);
+			$dtEditor.blur();
+			changedValue = $dtEditor.igDateEditor("value");
+			assert.ok(currentValue.toString() === changedValue.toString(), "The spinDownButton doen't change the date.");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Test backspace/delete while editing', function (assert) {
 		assert.expect(17);
-		var $editor = $('<input />')
-			.appendTo("#testBedContainer")
-			.igDateEditor({
-				value: new Date(),
-				dateInputFormat: "M/d/yyyy tt"
-			}),
-			$field = $editor.igDateEditor("field");
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			value: new Date(),
+			dateInputFormat: "M/d/yyyy tt"
+		}),
+			$field = $dtEditor.igDateEditor("field"),
+			done = assert.async(),
+			util = this.util;
 
 		$field.focus();
-		stop();
-		setTimeout(function () {
-			start();
-			//backspace delete:
-			keyDownChar(8, $field);
+
+		this.util.wait(100).then(function () {
+			util.keyDownChar(8, $field);
 			assert.equal($field.val(), "__/__/____ __", "Backspace did not clear the editor input.");
-			ok(($field[0].selectionStart === $field[0].selectionEnd)
-				&& ($field[0].selectionStart === 0), "Cursor not at start after backspace.");
+			assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 0), "Cursor not at start after backspace.");
 
 			$field.val("11/12/1112 AM");
 			$field[0].setSelectionRange(5, 5);
-			keyDownChar(8, $field);
+			util.keyDownChar(8, $field);
 			assert.equal($field.val(), "11/1_/1112 AM", "Backspace did not delete character.");
-			keyDownChar(8, $field);
+
+			util.keyDownChar(8, $field);
 			assert.equal($field.val(), "11/__/1112 AM", "Backspace did not delete character.");
 
 			$field.val("11/12/1112 AM");
 			$field[0].setSelectionRange(13, 13);
-			keyDownChar(8, $field);
+			util.keyDownChar(8, $field);
 			assert.equal($field.val(), "11/12/1112 __", "Backspace after AM/PM did not delete the entire time period.");
-			ok(($field[0].selectionStart === $field[0].selectionEnd)
-				&& ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
+			assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
 
 			$field.val("11/12/2345 AM");
 			$field[0].setSelectionRange(12, 12);
-			keyDownChar(8, $field);
+			util.keyDownChar(8, $field);
 			assert.equal($field.val(), "11/12/2345 __", "Backspace on AM/PM did not delete the entire time period.");
-			ok(($field[0].selectionStart === $field[0].selectionEnd)
-				&& ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
+			assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
 
 			//delete :
 			$field.val("10/10/1010 PM");
 			$field[0].select();
-			keyDownChar(46, $field);
+			util.keyDownChar(46, $field);
 			assert.equal($field.val(), "__/__/____ __", "Delete did not clear the editor input.");
-			ok(($field[0].selectionStart === $field[0].selectionEnd)
-				&& ($field[0].selectionStart === 13), "Cursor not at end after delete.");
+			assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 13), "Cursor not at end after delete.");
 
 			$field.val("11/12/1112 AM");
 			$field[0].setSelectionRange(3, 3);
-			keyDownChar(46, $field);
+			util.keyDownChar(46, $field);
 			assert.equal($field.val(), "11/_2/1112 AM", "Delete did not delete character.");
-			keyDownChar(46, $field);
+
+			util.keyDownChar(46, $field);
 			assert.equal($field.val(), "11/__/1112 AM", "Delete did not delete character.");
 
 			$field.val("11/12/1112 AM");
 			$field[0].setSelectionRange(13, 13);
-			keyDownChar(46, $field);
+			util.keyDownChar(46, $field);
 			assert.equal($field.val(), "11/12/1112 AM", "Delete should not result in action at the end of input.");
 
 			$field[0].setSelectionRange(11, 11);
-			keyDownChar(46, $field);
+			util.keyDownChar(46, $field);
 			assert.equal($field.val(), "11/12/1112 __", "Delete before AM/PM did not delete the entire time period.");
-			ok(($field[0].selectionStart === $field[0].selectionEnd)
-				&& ($field[0].selectionStart === 13), "Cursor not positioned after time period on delete.");
+			assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 13), "Cursor not positioned after time period on delete.");
 
 			$field.val("11/12/2345 AM");
 			$field[0].setSelectionRange(12, 12);
-			keyDownChar(46, $field);
+			util.keyDownChar(46, $field);
 			assert.equal($field.val(), "11/12/2345 __", "Delete on AM/PM did not delete the entire time period.");
-			ok(($field[0].selectionStart === $field[0].selectionEnd)
-				&& ($field[0].selectionStart === 13), "Cursor not positioned before time period after delete.");
-
-			$editor.remove();
-		}, 150);
+			assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 13), "Cursor not positioned before time period after delete.");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Replacing displayed value', function (assert) {
 		assert.expect(1);
-		var currentValue = $("#inputEditor27").igDateEditor("value"), changedValue;
-		stop();
-		setTimeout(function () {
-			start();
-			$("#inputEditor27").igDateEditor("setFocus");
-			$("#inputEditor27").igDateEditor("select", 2, 4);
-			$("#inputEditor27").igDateEditor("insert", "05");
-			stop();
-			setTimeout(function () {
-				start();
-				$("#inputEditor27").blur();
-				changedValue = $("#inputEditor27").igDateEditor("value");
-				ok(currentValue.toString() !== changedValue.toString(), "The new value was not inserted.");
-			}, 200);
-		}, 100);
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			width: 300,
+			buttonType: "spin",
+			dateInputFormat: "dateTime",
+			dateDisplayFormat: "dateTime",
+			value: new Date(2015, 2, 1, 0, 0, 0)
+		}),
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			currentValue = $dtEditor.igDateEditor("value"),
+			changedValue,
+			done = assert.async(),
+			util = this.util;
+
+		$dtEditor.igDateEditor("setFocus");
+
+		this.util.wait(100).then(function () {
+			$dtEditor.igDateEditor("select", 2, 4);
+			$dtEditor.igDateEditor("insert", "05");
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.blur();
+			changedValue = $dtEditor.igDateEditor("value");
+			assert.ok(currentValue.toString() !== changedValue.toString(), "The new value was not inserted.");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	// Bug #215134
 	QUnit.test('Testing empty mask', function (assert) {
 		assert.expect(1);
-		var editor = $("#inputEditor30"),
-			editorInput = editor.igDateEditor("field"),
-			currentValue = editor.igDateEditor("value");
 
-		stop();
-		setTimeout(function () {
-			start();
-			editor.igDateEditor("setFocus");
-			editor.igDateEditor("select", 3, 4);
-			editor.igDateEditor("insert", "2");
-			stop();
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(),
+			editorInput = $dtEditor.igDateEditor("field"),
+			currentValue = $dtEditor.igDateEditor("value"),
+			newValue,
+			checkValue,
+			today = new Date(),
+			zero = (today.getMonth() + 1 > 9) ? "" : "0",
+			done = assert.async(),
+			util = this.util;
 
-			setTimeout(function () {
-				var field = $("#inputEditor30").igDateEditor("field")
-				start();
+		$dtEditor.igDateEditor("setFocus");
 
-				editor.igDateEditor("select", 3, 4);
-				keyInteraction(38, field);
-				newValue = field.val();
-				var today = new Date();
-				zero = (today.getMonth() + 1 > 9) ? "" : "0";
-				checkValue = zero + (today.getMonth() + 1) + "/03/" +
-					today.getFullYear();
-				assert.equal(newValue, checkValue, "Mask doesn't match");
-			}, 300);
-		}, 100);
+		this.util.wait(100).then(function () {
+			$dtEditor.igDateEditor("select", 3, 4);
+			$dtEditor.igDateEditor("insert", "2");
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("select", 3, 4);
+			util.keyInteraction(38, editorInput);
+			newValue = editorInput.val();
+			checkValue = zero + (today.getMonth() + 1) + "/03/" + today.getFullYear();
+			assert.equal(newValue, checkValue, "Mask doesn't match");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	// Bug #215134
 	QUnit.test('Testing empty mask', function (assert) {
 		assert.expect(1);
-		var editor = $("#inputEditor31"),
-			editorInput = editor.igDateEditor("field"),
-			currentValue = editor.igDateEditor("value"), currentDay;
 
-		stop();
-		setTimeout(function () {
-			start();
-			editor.igDateEditor("setFocus");
-			editor.igDateEditor("select", 0, 2);
-			editor.igDateEditor("insert", "10");
-			stop();
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(),
+			editorInput = $dtEditor.igDateEditor("field"),
+			currentDay,
+			today = new Date(),
+			newValue,
+			checkValue,
+			done = assert.async(),
+			util = this.util;
 
-			setTimeout(function () {
-				var field = $("#inputEditor31").igDateEditor("field")
-				start();
+		$dtEditor.igDateEditor("setFocus");
 
-				editor.igDateEditor("select", 0, 2);
-				keyInteraction(40, field);
-				newValue = field.val();
-				var today = new Date();
-				currentDay = today.getDate();
-				if (currentDay < 10) {
-					currentDay = "0" + currentDay;
-				}
-				checkValue = "09/" +
-					currentDay + "/" + today.getFullYear();
-				assert.equal(newValue, checkValue, "Mask doesn't match");
-			}, 200);
-		}, 100);
+		this.util.wait(100).then(function () {
+			$dtEditor.igDateEditor("select", 0, 2);
+			$dtEditor.igDateEditor("insert", "10");
+
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("select", 0, 2);
+			util.keyInteraction(40, editorInput);
+			newValue = editorInput.val();
+			currentDay = today.getDate();
+			if (currentDay < 10) {
+				currentDay = "0" + currentDay;
+			}
+
+			checkValue = "09/" + currentDay + "/" + today.getFullYear();
+			assert.equal(newValue, checkValue, "Mask doesn't match");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	// Bug #215523
 	QUnit.test('Testing canceling of the events.', function (assert) {
 		assert.expect(1);
-		var editor = $("#inputEditor32"),
-			editorInput = editor.igDateEditor("field"),
-			currentValue = editor.igDateEditor("value");
 
-		stop();
-		setTimeout(function () {
-			start();
-			editor.igDateEditor("setFocus");
-			keyInteraction(40, editorInput);
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			allowNullValue: true,
+			dateInputFormat: "HH:mm",
+			tabIndex: 1,
+			keydown: function (e, args) {
+				if (e.keyCode === 38 || e.keyCode === 40) {
+					e.preventDefault();
+					return false;
+				}
+			}
+		}),
+			editorInput = $dtEditor.igDateEditor("field"),
+			newValue,
+			done = assert.async(),
+			util = this.util;
+
+		$dtEditor.igDateEditor("setFocus");
+		this.util.wait(100).then(function () {
+			util.keyInteraction(40, editorInput);
 			newValue = editorInput.val();
 			assert.equal(newValue, "__:__", "Event is not canceled.");
-		}, 100);
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	// Bug #216293
-	QUnit.test('Testing empty mask and year', function (assert) {
+	QUnit.test('Testing empty mask and year[1]', function (assert) {
 		assert.expect(1);
-		var editor = $("#inputEditor33"),
-			editorInput = editor.igDateEditor("field"),
-			currentValue = editor.igDateEditor("value");
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(),
+			editorInput = $dtEditor.igDateEditor("field"),
+			today = new Date(),
+			newValue,
+			zero,
+			zeroDay,
+			checkValue,
+			done = assert.async(),
+			util = this.util;
 
-		stop();
-		setTimeout(function () {
-			start();
-			editor.igDateEditor("setFocus");
-			editor.igDateEditor("select", 7, 8);
-			editor.igDateEditor("insert", "7");
-			stop();
+		$dtEditor.igDateEditor("setFocus");
 
-			setTimeout(function () {
-				var field = $("#inputEditor33").igDateEditor("field")
-				start();
+		this.util.wait(100).then(function () {
+			$dtEditor.igDateEditor("select", 7, 8);
+			$dtEditor.igDateEditor("insert", "7");
 
-				editor.igDateEditor("select", 7, 8);
-				keyInteraction(38, field);
-				newValue = field.val();
-				var today = new Date();
-				zero = (today.getMonth() + 1 > 9) ? "" : "0";
-				zeroDay = (today.getDate() > 9) ? "" : "0";
-				checkValue = zero + (today.getMonth() + 1) + "/" + zeroDay + today.getDate() +
-					"/0008";
-				assert.equal(newValue, checkValue, "Mask doesn't match");
-			}, 300);
-		}, 100);
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("select", 7, 8);
+			util.keyInteraction(38, editorInput);
+			newValue = editorInput.val();
+			zero = (today.getMonth() + 1 > 9) ? "" : "0";
+			zeroDay = (today.getDate() > 9) ? "" : "0";
+			checkValue = zero + (today.getMonth() + 1) + "/" + zeroDay + today.getDate() + "/0008";
+			assert.equal(newValue, checkValue, "Mask doesn't match");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	// Bug #216293
-	QUnit.test('Testing empty mask and year', function (assert) {
+	QUnit.test('Testing empty mask and year[2]', function (assert) {
 		assert.expect(1);
-		var editor = $("#inputEditor34"),
-			editorInput = editor.igDateEditor("field"),
-			currentValue = editor.igDateEditor("value");
 
-		stop();
-		setTimeout(function () {
-			start();
-			editor.igDateEditor("setFocus");
-			editor.igDateEditor("select", 7, 10);
-			editor.igDateEditor("insert", "100");
-			stop();
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(),
+			editorInput = $dtEditor.igDateEditor("field"),
+			currentValue = $dtEditor.igDateEditor("value"),
+			newValue,
+			today = new Date(),
+			zero,
+			zeroDay,
+			checkValue,
+			done = assert.async(),
+			util = this.util;
 
-			setTimeout(function () {
-				var field = $("#inputEditor34").igDateEditor("field")
-				start();
+		$dtEditor.igDateEditor("setFocus");
 
-				editor.igDateEditor("select", 7, 8);
-				keyInteraction(40, field);
-				newValue = field.val();
-				var today = new Date();
-				zero = (today.getMonth() + 1 > 9) ? "" : "0";
-				zeroDay = (today.getDate() > 9) ? "" : "0";
-				checkValue = zero + (today.getMonth() + 1) + "/" + zeroDay + today.getDate() +
-					"/0099";
-				assert.equal(newValue, checkValue, "Mask doesn't match");
-			}, 300);
-		}, 100);
+		this.util.wait(100).then(function () {
+			$dtEditor.igDateEditor("select", 7, 10);
+			$dtEditor.igDateEditor("insert", "100");
+
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("select", 7, 8);
+			util.keyInteraction(40, editorInput);
+			newValue = editorInput.val();
+			zero = (today.getMonth() + 1 > 9) ? "" : "0";
+			zeroDay = (today.getDate() > 9) ? "" : "0";
+			checkValue = zero + (today.getMonth() + 1) + "/" + zeroDay + today.getDate() + "/0099";
+			assert.equal(newValue, checkValue, "Mask doesn't match");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	// #287: Percent/Currency insert method not working with existing value outside edit mode
 	QUnit.test('Insert outside edit mode', function (assert) {
 		assert.expect(4);
-		var editor = $("#insertInput"), checkValue,
-			editorInput = editor.igDateEditor("field");
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(),
+			checkValue,
+			editorInput = $dtEditor.igDateEditor("field"),
+			checkValue = new Date("2/2/2020");
 
-		checkValue = new Date("2/2/2020");
-		editor.igDateEditor("insert", "02022020");
-		assert.equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after intial insert");
+		$dtEditor.igDateEditor("insert", "02022020");
+		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after intial insert");
 		assert.equal(editorInput.val(), "2/2/2020", "Insert value not converted to display text");
 
 		checkValue = new Date("05/11/2016");
-		editor.igDateEditor("insert", "05/11/2016");
-		assert.equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
+		$dtEditor.igDateEditor("insert", "05/11/2016");
+		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
 		assert.equal(editorInput.val(), "5/11/2016", "Insert value not converted to display text");
 	});
 
 	QUnit.test('Clear null value', function (assert) {
 		assert.expect(4);
-		var $editor1 = $('<input id="clearEditor" />')
-			.appendTo("#testBedContainer")
-			.igDateEditor({
-				allowNullValue: true,
-				nullValue: new Date(2009, 7, 8),
-				value: "2010-10-10",
-				buttonType: "clear"
-			});
 
-		var field = $editor1.igDateEditor("field"),
-			clearButton = $editor1.igDateEditor("clearButton"),
-			value = $editor1.igDateEditor("value");
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			allowNullValue: true,
+			nullValue: new Date(2009, 7, 8),
+			value: "2010-10-10",
+			buttonType: "clear"
+		}),
+			field = $dtEditor.igDateEditor("field"),
+			clearButton = $dtEditor.igDateEditor("clearButton"),
+			value = $dtEditor.igDateEditor("value"),
+			done = assert.async(),
+			util = this.util;
 
-		$editor1.igDateEditor("setFocus");
-		stop();
-		setTimeout(function () {
-			start();
+		$dtEditor.igDateEditor("setFocus");
+
+		this.util.wait(100).then(function () {
 			clearButton.click();
 			assert.equal(field.val(), "08/08/2009", 'Text not set to null  value');
-			assert.equal($editor1.igDateEditor("value"), value, 'Value changed on clear while editing');
+			assert.equal($dtEditor.igDateEditor("value"), value, 'Value changed on clear while editing');
+
 			field.blur();
 			assert.equal(field.val(), "8/8/2009", 'Cleared nullValue not set on blur.');
-			$editor1.igDateEditor("value", new Date());
+
+			$dtEditor.igDateEditor("value", new Date());
 			clearButton.click();
-			assert.equal($editor1.igDateEditor("value").getTime(), $editor1.igDateEditor("option", "nullValue").getTime(), 'Clear null value not set without focus');
-			$("#clearEditor").remove();
-		}, 100);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), $dtEditor.igDateEditor("option", "nullValue").getTime(), 'Clear null value not set without focus');
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Pasting/inserting not fully formatted dates', function (assert) {
 		assert.expect(18);
-		var $dtEditor, checkValue, displayValue;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateDisplayFormat: "M/d/yyyy h:m:s:fff",
 			dateInputFormat: "MM/dd/yyyy hh:mm:ss:fff"
-		});
+		}),
+			checkValue,
+			displayValue;
+
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "1/1/215 1:1:1:1");
 		assert.equal($dtEditor.igDateEditor("field").val(), "_1/_1/_215 _1:_1:_1:__1", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "1/1/215 1:1:1:100", "Mask is not correctly formatted after paste");
 
 		$dtEditor.igDateEditor("setFocus");
-		keyInteraction(13, $dtEditor.igDateEditor("field"));
+		this.util.keyInteraction(13, $dtEditor.igDateEditor("field"));
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "10/1/2015 1:1:1:111");
 		assert.equal($dtEditor.igDateEditor("field").val(), "10/_1/2015 _1:_1:_1:111", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "10/1/2015 1:1:1:111", "Mask is not correctly formatted after paste");
 
 		$dtEditor.igDateEditor("setFocus");
-		keyInteraction(13, $dtEditor.igDateEditor("field"));
+		this.util.keyInteraction(13, $dtEditor.igDateEditor("field"));
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "10/10/2015 11:1:1:111");
 		assert.equal($dtEditor.igDateEditor("field").val(), "10/10/2015 11:_1:_1:111", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "10/10/2015 11:1:1:111", "Mask is not correctly formatted after paste");
 
@@ -1957,6 +2102,7 @@ $(document).ready(function () {
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "1/1/215 1:1:1:1");
 		assert.equal($dtEditor.igDateEditor("field").val(), "_1/_1/_215 _1:_1:_1:__1", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "1/1/215 1:1:1:100", "Mask is not correctly formatted after paste");
 
@@ -1964,40 +2110,46 @@ $(document).ready(function () {
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "12/12/2015 12:12:12:111");
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateDisplayFormat: "M/d/yyyy h:m:s:fff",
 			dateInputFormat: "MM/dd/yyyy hh:mm:ss:fff",
 			unfilledCharsPrompt: "x"
 		});
+
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "1/1/215 1:1:1:1");
 		assert.equal($dtEditor.igDateEditor("field").val(), "x1/x1/x215 x1:x1:x1:xx1", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "1/1/215 1:1:1:100", "Mask is not correctly formatted after paste");
 
 		$dtEditor.igDateEditor("setFocus");
-		keyInteraction(13, $dtEditor.igDateEditor("field"));
+		this.util.keyInteraction(13, $dtEditor.igDateEditor("field"));
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "10/1/2015 1:1:1:111");
 		assert.equal($dtEditor.igDateEditor("field").val(), "10/x1/2015 x1:x1:x1:111", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "10/1/2015 1:1:1:111", "Mask is not correctly formatted after paste");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateDisplayFormat: "M/d/yy",
 			dateInputFormat: "MM/dd/yy",
 			unfilledCharsPrompt: "+" // It's a specical RegExp character
 		});
+
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "1/1/5");
 		assert.equal($dtEditor.igDateEditor("field").val(), "+1/+1/+5", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "1/1/05", "Mask is not correctly formatted after paste");
 
@@ -2005,318 +2157,393 @@ $(document).ready(function () {
 		$dtEditor.igDateEditor("select", 0, 23);
 		$dtEditor.igDateEditor("insert", "12/1/65");
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/+1/65", "Mask is not correctly formatted after paste");
+
 		$dtEditor.trigger("blur");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "12/1/65", "Mask is not correctly formatted after paste");
-		$dtEditor.remove();
 	});
 
 	QUnit.test("Test nullValue on initialization", function (assert) {
 		assert.expect(9);
-		var $editor = $("<input id='editor'/>").
-			appendTo("#testBedContainer").igDateEditor({ allowNullValue: false });
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			allowNullValue: false
+		});
+
 		//Get null Value
-		assert.equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+		assert.equal($dtEditor.igDateEditor("value"), "", "The value is not an empty string");
+
 		//Set null Value
-		$editor.igDateEditor("value", null);
-		assert.equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+		$dtEditor.igDateEditor("value", null);
+		assert.equal($dtEditor.igDateEditor("value"), "", "The value is not an empty string");
+
 		//CHange allowNullValue option
-		$editor.igDateEditor("option", "allowNullValue", true);
+		$dtEditor.igDateEditor("option", "allowNullValue", true);
 		// Get Null value
-		assert.equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+		assert.equal($dtEditor.igDateEditor("value"), "", "The value is not an empty string");
+
 		//Set Null value
-		$editor.igDateEditor("value", null);
+		$dtEditor.igDateEditor("value", null);
 		//Get null value
-		assert.equal($editor.igDateEditor("value"), null, "The value is not an empty string");
-		$editor.remove();
+		assert.equal($dtEditor.igDateEditor("value"), null, "The value is not an empty string");
+		$dtEditor.remove();
 
 		// test invalid nullValue
-		$editor = $("<input />").appendTo("#testBedContainer")
-			.igDateEditor({
-				buttonType: "clear",
-				nullValue: new Date("abc"),
-				allowNullValue: true
-			});
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			buttonType: "clear",
+			nullValue: new Date("abc"),
+			allowNullValue: true
+		});
 
-		assert.equal($editor.val(), "", "Display did not initialize correctly");
-		strictEqual($editor.igDateEditor("value"), "", "Null value should be ignored on init");
+		assert.equal($dtEditor.val(), "", "Display did not initialize correctly");
+		assert.strictEqual($dtEditor.igDateEditor("value"), "", "Null value should be ignored on init");
+
 		//check clear also ignores the wrong nullValue:
-		$editor.igDateEditor("value", new Date());
-		$editor.igDateEditor("clearButton").trigger("click");
-		strictEqual($editor.igDateEditor("value"), "", "Null value should be ignored on clear");
-		$editor.igDateEditor("value", new Date(2017, 5, 4));
-		$editor.igDateEditor("value", null);
-		strictEqual($editor.igDateEditor("value"), "", "Null value should be ignored on set");
+		$dtEditor.igDateEditor("value", new Date());
+		$dtEditor.igDateEditor("clearButton").trigger("click");
+		assert.strictEqual($dtEditor.igDateEditor("value"), "", "Null value should be ignored on clear");
+
+		$dtEditor.igDateEditor("value", new Date(2017, 5, 4));
+		$dtEditor.igDateEditor("value", null);
+		assert.strictEqual($dtEditor.igDateEditor("value"), "", "Null value should be ignored on set");
+
 		//verify empty string is still accepted
-		$editor.igDateEditor("value", "");
-		strictEqual($editor.igDateEditor("value"), "", "Empty value should be accepted");
-		$editor.remove();
+		$dtEditor.igDateEditor("value", "");
+		assert.strictEqual($dtEditor.igDateEditor("value"), "", "Empty value should be accepted");
 	});
 
 	// Handling different date formats
 	QUnit.test('Testing default date formats', function (assert) {
 		assert.expect(20);
-		var $dtEditor, checkValue, displayValue;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateInputFormat: "dd/MM/yyyy HH:mm:ss"
-		});
-		displayValue = "30/10/2009 10:25:56";
-		this.util.type(displayValue, $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		checkValue = new Date(2009, 09, 30, 10, 25, 56);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
-		assert.equal($dtEditor.igDateEditor("displayValue"), displayValue, "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		$dtEditor.remove();
+		}),
+			checkValue,
+			displayValue = "30/10/2009 10:25:56",
+			hoursOffset = new Date("2009-06-15T13:45:30.000Z").getTimezoneOffset() / 60,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag,
+			toLocalISOString = this.toLocalISOString;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			value: "2009-06-15T13:45:30.000Z"
-		});
-		hoursOffset = new Date("2009-06-15T13:45:30.000Z").getTimezoneOffset() / 60;
-		checkValue = new Date(2009, 5, 15, 13 - hoursOffset, 45, 30);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 " + (13 - hoursOffset) + ":45:30", 'The display value is not as expected');
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		this.util.type("15/06/2009 18:45:30", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		checkValue = new Date(2009, 5, 15, 18, 45, 30);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 18:45:30", 'The display value is not as expected');
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		$dtEditor.remove();
+		$dtEditor.igDateEditor("setFocus");
 
+		this.util.wait(100).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], displayValue);
+			$dtEditor.trigger("blur");
+			checkValue = new Date(2009, 09, 30, 10, 25, 56);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
+			assert.equal($dtEditor.igDateEditor("displayValue"), displayValue, "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			value: new Date("2009-06-15T13:45:30.0000000Z")
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				value: "2009-06-15T13:45:30.000Z"
+			});
+
+			checkValue = new Date(2009, 5, 15, 13 - hoursOffset, 45, 30);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 " + (13 - hoursOffset) + ":45:30", 'The display value is not as expected');
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+
+			$dtEditor.igDateEditor("setFocus");
+			return util.wait(100);
+		}).then(function () {
+
+			util.paste($dtEditor.igDateEditor("field")[0], "25/01/2017 19:35:28");
+			$dtEditor.trigger("blur");
+			checkValue = new Date(2017, 0, 25, 19, 35, 28);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "25/01/2017 19:35:28", 'The display value is not as expected');
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				value: new Date("2009-06-15T13:45:30.0000000Z")
+			});
+
+			hoursOffset = new Date("2009-06-15T13:45:30.000Z").getTimezoneOffset() / 60;
+			checkValue = new Date(2009, 5, 15, 13 - hoursOffset, 45, 30);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 " + (13 - hoursOffset) + ":45:30", 'The display value is not as expected');
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+
+			$dtEditor.igDateEditor("setFocus");
+			return util.wait(100);
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "15/06/2009 12:45:30");
+			$dtEditor.trigger("blur");
+			checkValue = new Date(2009, 5, 15, 12, 45, 30);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 12:45:30", 'The display value is not as expected');
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
 		});
-		hoursOffset = new Date("2009-06-15T13:45:30.000Z").getTimezoneOffset() / 60;
-		checkValue = new Date(2009, 5, 15, 13 - hoursOffset, 45, 30);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 " + (13 - hoursOffset) + ":45:30", 'The display value is not as expected');
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		this.util.type("15/06/2009 12:45:30", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		checkValue = new Date(2009, 5, 15, 12, 45, 30);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "15/06/2009 12:45:30", 'The display value is not as expected');
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Testing date formats with offset = 0 - UTC time', function (assert) {
 		assert.expect(22);
-		var $dtEditor, utcDate;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		var $dtEditor,
+			utcDate,
+			checkValue,
+			offset,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag,
+			toLocalISOString = this.toLocalISOString,
+			pad = this.pad;
+			
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			displayTimeOffset: 0,
 			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 			allowNullValue: true
 		});
-		this.util.type("30/10/2009 10:25:56", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		checkValue = new Date(2009, 09, 30, 10, 25, 56);
-		offset = checkValue.getTimezoneOffset();
-		checkValue.setMinutes(checkValue.getMinutes() - offset);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2009 10:25:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		$dtEditor.igDateEditor("value", null);
-		assert.equal($dtEditor.igDateEditor("displayValue"), "", 'The value is not empty string');
-		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			value: "2016-10-30T13:25:56.0000000Z",
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			displayTimeOffset: 0
-		});
-		checkValue = new Date(2016, 09, 30, 13, 25, 56);
-		offset = checkValue.getTimezoneOffset();
-		checkValue.setMinutes(checkValue.getMinutes() - offset);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
-		$dtEditor.igDateEditor("value", utcDate);
-		checkValue = new Date(2016, 09, 25, 12, 0, 0);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), utcDate.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(utcDate), "The hidden value sent to server is not correct");
-		$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
-		offsetHours = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset() / 60;
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 " + pad(12 + offsetHours) + ":00:00", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
-		$dtEditor.remove();
+		$dtEditor.igDateEditor("setFocus");
+		this.util.wait(100).then(function () {
+			util.type("30/10/2009 10:25:56", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			checkValue = new Date(2009, 09, 30, 10, 25, 56);
+			offset = checkValue.getTimezoneOffset();
+			checkValue.setMinutes(checkValue.getMinutes() - offset);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2009 10:25:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			value: new Date("2016-10-30T13:25:56.0000000Z"),
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			displayTimeOffset: 0,
-			enableUTCDates: true
+			$dtEditor.igDateEditor("value", null);
+			assert.equal($dtEditor.igDateEditor("displayValue"), "", 'The value is not empty string');
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				value: "2016-10-30T13:25:56.0000000Z",
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				displayTimeOffset: 0
+			});
+
+			checkValue = new Date(2016, 09, 30, 13, 25, 56);
+			offset = checkValue.getTimezoneOffset();
+			checkValue.setMinutes(checkValue.getMinutes() - offset);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+
+			utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
+			$dtEditor.igDateEditor("value", utcDate);
+			checkValue = new Date(2016, 09, 25, 12, 0, 0);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), utcDate.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(utcDate), "The hidden value sent to server is not correct");
+
+			$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
+			offsetHours = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset() / 60;
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 " + pad(12 + offsetHours) + ":00:00", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				value: new Date("2016-10-30T13:25:56.0000000Z"),
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				displayTimeOffset: 0,
+				enableUTCDates: true
+			});
+
+			checkValue = new Date(2016, 09, 30, 13, 25, 56);
+			offset = checkValue.getTimezoneOffset();
+			checkValue.setMinutes(checkValue.getMinutes() - offset);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), checkValue.toISOString(), "The hidden value sent to server is not correct");
+
+			utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
+			$dtEditor.igDateEditor("value", utcDate);
+			checkValue = new Date(2016, 09, 25, 12, 0, 0);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), utcDate.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), utcDate.toISOString(), "The hidden value sent to server is not correct");
+
+			$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
+			offsetHours = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset() / 60;
+			assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 " + pad(12 + offsetHours) + ":00:00", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), checkValue.toISOString(), "The hidden value sent to server is not correct");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
 		});
-		checkValue = new Date(2016, 09, 30, 13, 25, 56);
-		offset = checkValue.getTimezoneOffset();
-		checkValue.setMinutes(checkValue.getMinutes() - offset);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), checkValue.toISOString(), "The hidden value sent to server is not correct");
-		utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
-		$dtEditor.igDateEditor("value", utcDate);
-		checkValue = new Date(2016, 09, 25, 12, 0, 0);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), utcDate.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), utcDate.toISOString(), "The hidden value sent to server is not correct");
-		$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
-		offsetHours = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset() / 60;
-		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 " + pad(12 + offsetHours) + ":00:00", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), checkValue.toISOString(), "The hidden value sent to server is not correct");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Testing date formats with offset defined', function (assert) {
 		assert.expect(24);
-		var $dtEditor;
+		var $dtEditor,
+			hoursOffset,
+			checkValue,
+			spinUpButton,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: "2016-10-30T13:25:56.0000000Z",
 			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 			displayTimeOffset: 420,
 			enableUTCDates: true
 		});
+
 		hoursOffset = new Date("2016-10-30T13:25:56.000Z").getTimezoneOffset() / 60;
 		checkValue = new Date(2016, 09, 30, 20, 25, 56);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 20:25:56", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
-		this.util.type("30/10/2016 22:25:56", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		checkValue = new Date(2016, 09, 30, 22, 25, 56);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 15 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 22:25:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T15:25:56.000Z", "The hidden value sent to server is not correct");
-		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			value: new Date("2016-10-30T13:25:56.0000000Z"),
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			displayTimeOffset: 420,
-			enableUTCDates: true
-		});
-		hoursOffset = new Date("2016-10-30T13:25:56.000Z").getTimezoneOffset() / 60;
-		checkValue = new Date(2016, 09, 30, 20, 25, 56);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
-		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 20:25:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
-		$dtEditor.remove();
+		$dtEditor.igDateEditor("setFocus");
 
-		throws(function () {
-			$('<input/>').igDateEditor({
+		this.util.wait(100).then(function () {
+			util.type("30/10/2016 22:25:56", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			checkValue = new Date(2016, 09, 30, 22, 25, 56);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 15 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 22:25:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T15:25:56.000Z", "The hidden value sent to server is not correct");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
 				value: new Date("2016-10-30T13:25:56.0000000Z"),
 				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-				displayTimeOffset: 1860,
+				displayTimeOffset: 420,
 				enableUTCDates: true
 			});
-		},
-			function (err) {
-				return err.message === $.ig.Editor.locale.dateEditorOffsetRange;
+
+			hoursOffset = new Date("2016-10-30T13:25:56.000Z").getTimezoneOffset() / 60;
+			checkValue = new Date(2016, 09, 30, 20, 25, 56);
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 20:25:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
+			$dtEditor.remove();
+
+			assert.throws(function () {
+				util.appendToFixture(inputTag).igDateEditor({
+					value: new Date("2016-10-30T13:25:56.0000000Z"),
+					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+					displayTimeOffset: 1860,
+					enableUTCDates: true
+				});
 			},
-			'Wrong offset error not thrown');
+				function (err) {
+					return err.message === $.ig.Editor.locale.dateEditorOffsetRange;
+				},
+				'Wrong offset error not thrown');
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			value: new Date("2016-03-26T23:59:56.0000000Z"),
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			displayTimeOffset: 300,
-			enableUTCDates: true
-		});
-		assert.equal($dtEditor.igDateEditor("displayValue"), "27/03/2016 04:59:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-03-26T23:59:56.000Z", "The hidden value sent to server is not correct");
-		$dtEditor.igDateEditor("value", "2016-10-29T23:59:56.0000000Z");
-		$dtEditor.igDateEditor("option", "displayTimeOffset", 240);
-		$dtEditor.trigger("blur"); // force re-parse
-		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:59:56", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T23:59:56.000Z", "The hidden value sent to server is not correct");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				value: new Date("2016-03-26T23:59:56.0000000Z"),
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				displayTimeOffset: 300,
+				enableUTCDates: true
+			});
+			assert.equal($dtEditor.igDateEditor("displayValue"), "27/03/2016 04:59:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-03-26T23:59:56.000Z", "The hidden value sent to server is not correct");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd",
-			minValue: new Date(2015, 6, 1),
-			maxValue: new Date(2020, 11, 31),
-			displayTimeOffset: 240
-		});
-		$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
-		$dtEditor.trigger("blur");
-		hoursOffset = new Date(2021, 11, 31).getTimezoneOffset() / 60;
-		assert.equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The max value is not correctly applied');
-		assert.equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
-		$(".ui-ignotify-warn").hide();
-		$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
-		$dtEditor.trigger("blur");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The display value is not as expected');
-		$dtEditor.igDateEditor("value", "2015/05/01");
-		$dtEditor.trigger("blur");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2015, 6, 1).getTime(), 'The value is not set to min');
-		assert.equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expected');
-		$dtEditor.remove();
+			$dtEditor.igDateEditor("value", "2016-10-29T23:59:56.0000000Z");
+			$dtEditor.igDateEditor("option", "displayTimeOffset", 240);
+			$dtEditor.trigger("blur"); // force re-parse
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:59:56", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T23:59:56.000Z", "The hidden value sent to server is not correct");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			value: new Date("2009-09-07T21:00:00.000Z"),
-			minValue: "2009-09-07T21:00:00.000Z",
-			displayTimeOffset: 360,
-			enableUTCDates: true
-		});
-		this.util.type("08/08/2009 03:00:00", $dtEditor.igDateEditor("field"));
-		assert.equal($dtEditor.igDateEditor("displayValue"), "08/09/2009 03:00:00", "The display value is not correct");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2009-09-07T21:00:00.000Z", "The hidden value sent to server is not correct");
-		$dtEditor.trigger("blur");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd",
+				minValue: new Date(2015, 6, 1),
+				maxValue: new Date(2020, 11, 31),
+				displayTimeOffset: 240
+			});
+			$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
+			$dtEditor.trigger("blur");
+			hoursOffset = new Date(2021, 11, 31).getTimezoneOffset() / 60;
+			assert.equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The max value is not correctly applied');
+			assert.equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			value: new Date("2016-10-29T22:59:56.0000000Z"),
-			displayTimeOffset: 240,
-			buttonType: "spin"
-		});
-		$dtEditor.igDateEditor("setFocus");
-		stop();
-		setTimeout(function () {
-			start();
+			$(".ui-ignotify-warn").hide();
+			$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
+			$dtEditor.trigger("blur");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The display value is not as expected');
+
+			$dtEditor.igDateEditor("value", "2015/05/01");
+			$dtEditor.trigger("blur");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2015, 6, 1).getTime(), 'The value is not set to min');
+			assert.equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expected');
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				value: new Date("2009-09-07T21:00:00.000Z"),
+				minValue: "2009-09-07T21:00:00.000Z",
+				displayTimeOffset: 360,
+				enableUTCDates: true
+			});
+			util.type("08/08/2009 03:00:00", $dtEditor.igDateEditor("field"));
+			assert.equal($dtEditor.igDateEditor("displayValue"), "08/09/2009 03:00:00", "The display value is not correct");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2009-09-07T21:00:00.000Z", "The hidden value sent to server is not correct");
+
+			$dtEditor.trigger("blur");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				value: new Date("2016-10-29T22:59:56.0000000Z"),
+				displayTimeOffset: 240,
+				buttonType: "spin"
+			});
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
 			$dtEditor.data("igDateEditor")._setCursorPosition(15);
-			var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-			this.util.click(spinUpButton, false, false);
-			stop();
-			setTimeout(function () {
-				start();
-				this.util.click(spinUpButton, false, false);
-				$dtEditor.trigger("blur");
-				assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:01:56", 'The initial value is not as expected');
-				stop();
-				setTimeout(function () {
-					start();
-					$dtEditor.igDateEditor("option", "displayTimeOffset", 180);
-					assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 02:01:56", 'The initial value is not as expected');
-					$dtEditor.igDateEditor("setFocus");
-					$dtEditor.igDateEditor("option", "displayTimeOffset", 240);
-					assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:01:56", 'The initial value is not as expected');
-					$dtEditor.remove();
-				}, 300);
-			}, 300);
-		}, 300);
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			util.click(spinUpButton, false, false);
+
+			return util.wait(100);
+		}).then(function () {
+			util.click(spinUpButton, false, false);
+			$dtEditor.trigger("blur");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:01:56", 'The initial value is not as expected');
+
+			return util.wait(100);
+		}).then(function () {
+			$dtEditor.igDateEditor("option", "displayTimeOffset", 180);
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 02:01:56", 'The initial value is not as expected');
+
+			$dtEditor.igDateEditor("setFocus");
+			$dtEditor.igDateEditor("option", "displayTimeOffset", 240);
+			assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:01:56", 'The initial value is not as expected');
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Testing different dataMode formats', function (assert) {
 		assert.expect(28);
 		var $dtEditor;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateInputFormat: "MM/dd/yyyy", // date
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2327,7 +2554,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "MM/dd/yyyy", // date
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2338,7 +2565,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30/2016", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateInputFormat: "time", // time
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2349,7 +2576,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "time", // time
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2360,7 +2587,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "4:59 AM", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateInputFormat: "timeLong", // timeLong
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2371,7 +2598,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "timeLong", // timeLong
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2382,7 +2609,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "4:59:56 AM", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2393,7 +2620,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2404,7 +2631,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30/2016 4:59", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateInputFormat: "MM/dd",
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2415,7 +2642,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "MM/dd",
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2426,7 +2653,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateInputFormat: "H",
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2437,7 +2664,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "H",
 			value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -2448,7 +2675,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "4", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "date",
 			dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
 			value: new Date("2016-10-29T22:59:56.599Z"),
@@ -2459,7 +2686,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.599Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
 			value: new Date("2016-10-29T22:59:56.599Z"),
@@ -2468,14 +2695,15 @@ $(document).ready(function () {
 		});
 		assert.equal($dtEditor.igDateEditor("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016/10/30 04:59:56:599", "The hidden value sent to server is not correct");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Testing date formats with dispaly and edit modes text defined', function (assert) {
 		assert.expect(8);
-		var $dtEditor, dateString = "10/15/2016", date = new Date(dateString);
+		var $dtEditor,
+			dateString = "10/15/2016",
+			date = new Date(dateString);
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "displayModeText",
 			dateInputFormat: "dateTime",
 			dateDisplayFormat: "date",
@@ -2487,7 +2715,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), dateString, "The hidden value sent to server is not correct");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dataMode: "editModeText",
 			dateInputFormat: "dateTime",
 			dateDisplayFormat: "date",
@@ -2497,299 +2725,403 @@ $(document).ready(function () {
 		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), date.getTime(), "The internal date object is not correct");
 		assert.equal($dtEditor.igDateEditor("displayValue"), dateString, "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), dateString + " 12:00 AM", "The hidden value sent to server is not correct");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Testing new Date with different dataMode formats', function (assert) {
 		assert.expect(57);
-		var $dtEditor, newDate;
+		var $dtEditor,
+			newDate,
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateInputFormat: "MM/dd/yyyy" // date
 		});
 		$dtEditor.igDateEditor("setFocus");
-		this.util.type("06/15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
-		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "MM/dd/yyyy", // date
-			value: new Date("2016-10-29T22:59:56.000Z"),
-			enableUTCDates: true
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("06/15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = new Date(Date.UTC(2016, 5, 20, 22, 59, 56));
-		newDate.setDate(15);
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), newDate.toISOString(), "The date is not updated");
-		$dtEditor.remove();
+		this.util.wait(100).then(function () {
+			util.type("06/15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "time" // time
-		});
-		this.util.type("06:15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
-		assert.equal(newDate.getSeconds() + newDate.getMilliseconds(), 0, "The seconds and milliseconds are not 0");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "MM/dd/yyyy", // date
+				value: new Date("2016-10-29T22:59:56.000Z"),
+				enableUTCDates: true
+			});
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "time", // time
-			value: new Date("2016-10-29T22:59:56.000Z")
-		});
-		this.util.type("06:15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
-		assert.equal(newDate.getSeconds(), 56, "The seconds are not updated");
-		assert.equal(newDate.getMilliseconds(), 0, "The milliseconds are not 0");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			util.type("06/15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "timeLong" // timeLong
-		});
-		this.util.type("06:15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
-		assert.equal(newDate.getSeconds() + newDate.getMilliseconds(), 0, "The seconds and milliseconds are not 0");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			newDate = new Date(Date.UTC(2016, 5, 20, 22, 59, 56));
+			newDate.setDate(15);
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), newDate.toISOString(), "The date is not updated");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "timeLong", // timeLong
-			value: new Date("2016-10-29T22:59:56.000Z")
-		});
-		this.util.type("06:15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
-		assert.equal(newDate.getSeconds(), 56, "The seconds are not updated");
-		assert.equal(newDate.getMilliseconds(), 0, "The milliseconds are not 0");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "time" // time
+			});
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateDisplayFormat: "MM/dd/yyyy h:m" // dateTime
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("06/15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
-		$dtEditor.remove();
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
-			value: new Date("2016-10-29T22:59:56.000Z"),
-			enableUTCDates: true
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("06/15", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = new Date(Date.UTC(2016, 5, 20, 22, 59, 56));
-		newDate.setDate(15);
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), newDate.toISOString(), "The date is not updated");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			util.type("06:15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
+			assert.equal(newDate.getSeconds() + newDate.getMilliseconds(), 0, "The seconds and milliseconds are not 0");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "MM/dd"
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("06", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "time", // time
+				value: new Date("2016-10-29T22:59:56.000Z")
+			});
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "MM/dd",
-			value: new Date("2016-10-29T22:59:56.000Z"),
-			enableUTCDates: true
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("06", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-29T22:59:56.000Z", "The date is not updated");
-		$dtEditor.remove();
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "H"
-		});
-		this.util.type("07", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
-		assert.equal(newDate.getHours(), 7, "The hours are not updated");
-		assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not 0");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			util.type("06:15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
+			assert.equal(newDate.getSeconds(), 56, "The seconds are not updated");
+			assert.equal(newDate.getMilliseconds(), 0, "The milliseconds are not 0");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "H",
-			value: new Date("2016-10-29T22:59:56.000Z")
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("07", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getHours(), 7, "The hours are not updated");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "timeLong" // timeLong
+			});
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "hh:mm"
-		});
-		this.util.type("07", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
-		assert.equal(newDate.getHours(), 7, "The hours are not updated");
-		assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not 0");
-		$dtEditor.remove();
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "hh:mm",
-			value: new Date("2016-10-29T22:59:56.000Z")
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("07", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getHours(), 7, "The hours are not updated");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			util.type("06:15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
+			assert.equal(newDate.getSeconds() + newDate.getMilliseconds(), 0, "The seconds and milliseconds are not 0");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff"
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("2010", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2010, "The year is not updated");
-		assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "timeLong", // timeLong
+				value: new Date("2016-10-29T22:59:56.000Z")
+			});
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-			value: new Date("2016-10-29T22:59:56.599Z"),
-			enableUTCDates: true
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("2010", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2010-10-29T22:59:56.599Z", "The date is not updated");
-		$dtEditor.remove();
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH:mm:ss"
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("____/06/__ 06:__:__", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), newDate.getFullYear(), "The year is not updated");
-		assert.equal(newDate.getMonth(), 5, "The hours are not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			util.type("06:15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes(), 15, "The minutes are not updated");
+			assert.equal(newDate.getSeconds(), 56, "The seconds are not updated");
+			assert.equal(newDate.getMilliseconds(), 0, "The milliseconds are not 0");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH:mm:ss",
-			value: new Date("2016-10-29T22:59:56.599Z")
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("____/06/__ 06:__:__", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
-		assert.equal(newDate.getMonth(), 5, "The hours are not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateDisplayFormat: "MM/dd/yyyy h:m" // dateTime
+			});
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH:mm"
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("2016/__/__ 06:__", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
-		$dtEditor.remove();
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH:mm",
-			value: new Date("2016-10-29T22:59:56.599Z")
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("2010/__/__ 06:__", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2010, "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getSeconds(), 56, "The hours are not updated");
-		assert.equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
-		$dtEditor.remove();
+			return util.wait(100);
+		}).then(function () {
+			util.type("06/15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+			$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH"
-		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("____/__/__ 06", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), newDate.getFullYear(), "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
-		$dtEditor.remove();
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+				value: new Date("2016-10-29T22:59:56.000Z"),
+				enableUTCDates: true
+			});
+			$dtEditor.igDateEditor("setFocus");
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
-			dateInputFormat: "yyyy/MM/dd HH",
-			value: new Date("2016-10-29T22:59:56.599Z")
+			return util.wait(100);
+		}).then(function () {
+			util.type("06/15", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = new Date(Date.UTC(2016, 5, 20, 22, 59, 56));
+			newDate.setDate(15);
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), newDate.toISOString(), "The date is not updated");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "MM/dd"
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("06", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "MM/dd",
+				value: new Date("2016-10-29T22:59:56.000Z"),
+				enableUTCDates: true
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("06", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-29T22:59:56.000Z", "The date is not updated");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "H"
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("07", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+			assert.equal(newDate.getHours(), 7, "The hours are not updated");
+			assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "H",
+				value: new Date("2016-10-29T22:59:56.000Z")
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("07", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getHours(), 7, "The hours are not updated");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "hh:mm"
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("07", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+			assert.equal(newDate.getHours(), 7, "The hours are not updated");
+			assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "hh:mm",
+				value: new Date("2016-10-29T22:59:56.000Z")
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("07", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getHours(), 7, "The hours are not updated");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff"
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("2010", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2010, "The year is not updated");
+			assert.equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+				value: new Date("2016-10-29T22:59:56.599Z"),
+				enableUTCDates: true
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.type("2010", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2010-10-29T22:59:56.599Z", "The date is not updated");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH:mm:ss"
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "____/06/__ 06:__:__");
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), newDate.getFullYear(), "The year is not updated");
+			assert.equal(newDate.getMonth(), 5, "The hours are not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH:mm:ss",
+				value: new Date("2016-10-29T22:59:56.599Z")
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "____/06/__ 06:__:__");
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
+			assert.equal(newDate.getMonth(), 5, "The hours are not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH:mm"
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "2016/__/__ 06:__");
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH:mm",
+				value: new Date("2016-10-29T22:59:56.599Z")
+			});
+
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "2010/__/__ 06:__");
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2010, "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getSeconds(), 56, "The hours are not updated");
+			assert.equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH"
+			});
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "____/__/__ 06");
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), newDate.getFullYear(), "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
+			$dtEditor.remove();
+
+			$dtEditor = util.appendToFixture(inputTag).igDateEditor({
+				dateInputFormat: "yyyy/MM/dd HH",
+				value: new Date("2016-10-29T22:59:56.599Z")
+			});
+			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+
+		}).then(function () {
+			util.paste($dtEditor.igDateEditor("field")[0], "____/__/__ 06");
+			$dtEditor.trigger("blur");
+			newDate = $dtEditor.igDateEditor("value");
+			assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
+			assert.equal(newDate.getHours(), 6, "The hours are not updated");
+			assert.equal(newDate.getSeconds(), 56, "The hours are not updated");
+			assert.equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
 		});
-		$dtEditor.igDateEditor("setFocus");
-		this.util.type("____/__/__ 06", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		newDate = $dtEditor.igDateEditor("value");
-		assert.equal(newDate.getFullYear(), 2016, "The year is not updated");
-		assert.equal(newDate.getHours(), 6, "The hours are not updated");
-		assert.equal(newDate.getSeconds(), 56, "The hours are not updated");
-		assert.equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Clear button state', function (assert) {
 		assert.expect(2);
 		var $editor;
 
-		$editor = $('<input/>').appendTo("#testBedContainer").igDateEditor({ buttonType: "clear" });
-		ok(!$editor.igDateEditor("clearButton").is(":visible"), "Clear button is not hidden");
+		$editor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			buttonType: "clear"
+		});
+		assert.notOk($editor.igDateEditor("clearButton").is(":visible"), "Clear button is not hidden");
+
 		$editor.igDateEditor("value", new Date());
-		ok($editor.igDateEditor("clearButton").is(":visible"), "Clear button is not visible");
-		$editor.remove();
+		assert.ok($editor.igDateEditor("clearButton").is(":visible"), "Clear button is not visible");
 	});
 
 	QUnit.test('Spin delta', function (assert) {
 		assert.expect(85);
-		var $editor, spinUpButton, spinDownButton, editorInput,
+
+		var $dtEitor, spinUpButton, spinDownButton, editorInput, today,
 			testDate = new Date("2017-01-10T15:18:56.001Z"),
 			eventBuffer = [],
 			logger = function (msg) { eventBuffer.push(msg); };
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			spinDelta: 2,
 			value: new Date("2017-01-10T15:18:56.001Z"),
 			displayTimeOffset: 120,
@@ -2812,6 +3144,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.igDateEditor("displayValue"), "01/12/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired after textChanged
 		assert.equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired first
+
 		this.util.click(spinDownButton, false, false);
 		testDate.setDate(testDate.getDate() - 2);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
@@ -2824,6 +3157,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "01/12/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Events should NOT fire"); // The logBuffer should be empty$dtEditor.igDateEditor("spinUp");
+
 		$dtEditor.igDateEditor("spinDown");
 		testDate.setDate(testDate.getDate() - 2);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
@@ -2834,6 +3168,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value should not be updated after spin with 0.");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Events should NOT fire"); // The logBuffer should be empty$dtEditor.igDateEditor("spinUp");
+
 		$dtEditor.igDateEditor("spinDown", 0);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value should not be updated after spin with 0.");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
@@ -2848,16 +3183,19 @@ $(document).ready(function () {
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "03/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(0);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call month
 		$dtEditor.data("igDateEditor")._setCursorPosition(0);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "03/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(0);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
@@ -2868,16 +3206,19 @@ $(document).ready(function () {
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "01/12/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(3);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call date
 		$dtEditor.data("igDateEditor")._setCursorPosition(3);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "01/12/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(3);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
@@ -2888,37 +3229,42 @@ $(document).ready(function () {
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "01/10/2019 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(8);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call year
 		$dtEditor.data("igDateEditor")._setCursorPosition(8);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "01/10/2019 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(8);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
-
 
 		// User interaction hours
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "01/10/2017 19:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call hours
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "01/10/2017 19:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
@@ -2929,16 +3275,19 @@ $(document).ready(function () {
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "01/10/2017 17:20:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(15);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call minutes
 		$dtEditor.data("igDateEditor")._setCursorPosition(15);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "01/10/2017 17:20:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(15);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
@@ -2949,16 +3298,19 @@ $(document).ready(function () {
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:58:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(18);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call seconds
 		$dtEditor.data("igDateEditor")._setCursorPosition(18);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:58:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(18);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
@@ -2969,23 +3321,26 @@ $(document).ready(function () {
 		this.util.click(spinUpButton, false, false);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:003");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(21);
 		this.util.click(spinDownButton, false, false);
 		testDate.setMonth(testDate.getMonth() - 2);
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+
 		// API call milliseconds
 		$dtEditor.data("igDateEditor")._setCursorPosition(21);
 		$dtEditor.igDateEditor("spinUp");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:003");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(21);
 		$dtEditor.igDateEditor("spinDown");
 		assert.equal(editorInput.val(), "01/10/2017 17:18:56:001");
 		assert.equal(eventBuffer.pop(), undefined, "Event should NOT fire");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			spinDelta: 2,
 			buttonType: "spin",
 			dateInputFormat: "MM/dd/yyyy"
@@ -2997,6 +3352,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.igDateEditor("value").getFullYear(), today.getFullYear(), "Editor year is not updated after spin.");
 		assert.equal($dtEditor.igDateEditor("value").getMonth(), today.getMonth(), "Editor month is not updated after spin.");
 		assert.equal($dtEditor.igDateEditor("value").getDate(), today.getDate(), "Editor date is not updated after spin.");
+
 		this.util.click(spinUpButton, false, false);
 		today.setDate(today.getDate() + 2);
 		assert.equal($dtEditor.igDateEditor("value").getFullYear(), today.getFullYear(), "Editor year is not updated after spin.");
@@ -3004,7 +3360,7 @@ $(document).ready(function () {
 		assert.equal($dtEditor.igDateEditor("value").getDate(), today.getDate(), "Editor date is not updated after spin.");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer");
+		$dtEditor = this.util.appendToFixture(this.inputTag);
 		try {
 			$dtEditor.igDateEditor({
 				spinDelta: "two",
@@ -3015,7 +3371,7 @@ $(document).ready(function () {
 		}
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer");
+		$dtEditor = this.util.appendToFixture(this.inputTag);
 		try {
 			$dtEditor.igDateEditor({
 				spinDelta: -5,
@@ -3026,25 +3382,33 @@ $(document).ready(function () {
 		}
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			spinDelta: 5.765,
 			buttonType: "spin"
 		});
 		assert.equal($dtEditor.igDateEditor("option", "spinDelta"), 5, "Spin delta should be converted to 1");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Spin delta as an object', function (assert) {
 		assert.expect(36);
+
 		// Test when spinDelta is an object and has invalid values.
-		var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
-			errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
-		spinData = [[{ year: -5 }, errorRange, "year", 10], [{ month: "two" }, errorType, "month", 12],
-		[{ day: 31 }, errorRange, "day", 28], [{ hours: "five o'clock" }, errorType, "hours", 12],
-		[{ minutes: 61 }, errorRange, "minutes", 60], [{ seconds: null }, errorType, "seconds", 60],
-		[{ milliseconds: -100 }, errorRange, "milliseconds", 1000]];
+		var dtEditor,
+			oldDate,
+			newDate,
+			errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
+			errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange,
+			spinData = [
+				[{ year: -5 }, errorRange, "year", 10],
+				[{ month: "two" }, errorType, "month", 12],
+				[{ day: 31 }, errorRange, "day", 28],
+				[{ hours: "five o'clock" }, errorType, "hours", 12],
+				[{ minutes: 61 }, errorRange, "minutes", 60],
+				[{ seconds: null }, errorType, "seconds", 60],
+				[{ milliseconds: -100 }, errorRange, "milliseconds", 1000]
+			];
 		for (index = 0; index < spinData.length; index++) {
-			$dtEditor = $('<input/>').appendTo("#testBedContainer");
+			$dtEditor = this.util.appendToFixture(this.inputTag);
 			try {
 				$dtEditor.igDateEditor({
 					spinDelta: spinData[index][0],
@@ -3056,7 +3420,7 @@ $(document).ready(function () {
 			$dtEditor.remove();
 		}
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			spinDelta: {
 				year: 4,
 				month: 3,
@@ -3076,16 +3440,19 @@ $(document).ready(function () {
 		spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 
 		// Spin display mode
-		var oldDate = $dtEditor.igDateEditor("value").getDate();
+		oldDate = $dtEditor.igDateEditor("value").getDate();
 		this.util.click(spinUpButton, false, false);
 		var newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate + 10, newDate, "Day is updated with 10");
+
 		this.util.click(spinDownButton, false, false);
 		newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate, newDate, "Day is updated with 10");
+
 		this.util.click(spinDownButton, false, false);
 		var newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate - 10, newDate, "Day is updated with 10");
+
 		this.util.click(spinUpButton, false, false);
 		var newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate, newDate, "Day is updated with 10");
@@ -3110,7 +3477,7 @@ $(document).ready(function () {
 
 		expDate = new Date("2021-04-21T13:16:11.101Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
 		actDate = $dtEditor.igDateEditor("value"); //Actual date after spin
-		ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+		assert.ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
 
 		// Spin down edit mode
 		$dtEditor.igDateEditor("setFocus");
@@ -3132,33 +3499,37 @@ $(document).ready(function () {
 
 		expDate = new Date("2017-01-11T01:01:01.001Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
 		actDate = $dtEditor.igDateEditor("value"); //Actual date after spin
-		ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+		assert.ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
 
 		// Setting runtime spinDelta as object
-		throws(function () {
+		assert.throws(function () {
 			$dtEditor.igDateEditor("option", "spinDelta", { day: -3 });
 		}, 'Wrong spinDelta value is not thrown');
+
 		assert.equal($dtEditor.igDateEditor("option", "spinDelta").day, 10, "Spin delta should be reverted.");
 		assert.equal($dtEditor.igDateEditor("option", "spinDelta").month, 3, "Spin delta should be reverted.");
 
 		$dtEditor.igDateEditor("option", "spinDelta", { day: 3 });
 		// Spin display mode
-		var oldDate = $dtEditor.igDateEditor("value").getDate();
+		oldDate = $dtEditor.igDateEditor("value").getDate();
 		this.util.click(spinUpButton, false, false);
-		var newDate = $dtEditor.igDateEditor("value").getDate();
+		newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate + 3, newDate, "Day is updated with 3");
+
 		this.util.click(spinDownButton, false, false);
 		newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate, newDate, "Day is updated with 3");
+
 		this.util.click(spinDownButton, false, false);
-		var newDate = $dtEditor.igDateEditor("value").getDate();
+		newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate - 3, newDate, "Day is updated with 3");
+
 		this.util.click(spinUpButton, false, false);
-		var newDate = $dtEditor.igDateEditor("value").getDate();
+		newDate = $dtEditor.igDateEditor("value").getDate();
 		assert.equal(oldDate, newDate, "Day is updated with 3");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			spinDelta: {
 				minutes: 15
 			},
@@ -3190,7 +3561,7 @@ $(document).ready(function () {
 
 		expDate = new Date("2018-02-12T02:16:02.002Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
 		actDate = $dtEditor.igDateEditor("value"); //Actual date after spin
-		ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+		assert.ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
 
 		// Spin down edit mode
 		$dtEditor.igDateEditor("setFocus");
@@ -3212,10 +3583,10 @@ $(document).ready(function () {
 
 		expDate = new Date("2017-01-11T01:01:01.001Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
 		actDate = $dtEditor.igDateEditor("value"); //Actual date after spin
-		ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+		assert.ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
 		$dtEditor.remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2017, 11, 8),
 			dataMode: "date",
 			dateInputFormat: "dateTime",
@@ -3238,11 +3609,12 @@ $(document).ready(function () {
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		this.util.click(spinUpButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 PM", "Display is properly updated after spinining");
+
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
 		$dtEditor.trigger("blur").remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2017, 11, 8, 1),
 			dataMode: "date",
 			dateInputFormat: "dateTime",
@@ -3265,32 +3637,39 @@ $(document).ready(function () {
 		$dtEditor.data("igDateEditor")._setCursorPosition(15);
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:45 AM", "Display is properly updated after spinining");
+
 		this.util.click(spinDownButton, false, false);
 		this.util.click(spinDownButton, false, false);
 		this.util.click(spinDownButton, false, false);
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/07/2017 11:45 PM", "Display is properly updated after spinining");
+
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/07/2017 11:30 PM", "Display is properly updated after spinining");
+
 		this.util.click(spinUpButton, false, false);
 		this.util.click(spinUpButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+
 		this.util.click(spinUpButton, false, false);
 		this.util.click(spinUpButton, false, false);
 		this.util.click(spinUpButton, false, false);
 		this.util.click(spinUpButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00 AM", "Display is properly updated after spinining");
+
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/07/2017 01:00 PM", "Display is properly updated after spinining");
+
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/07/2017 01:00 AM", "Display is properly updated after spinining");
+
 		this.util.click(spinUpButton, false, false);
 		this.util.click(spinUpButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00 AM", "Display is properly updated after spinining");
 		$dtEditor.trigger("blur").remove();
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2017, 11, 8, 1),
 			dataMode: "date",
 			dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
@@ -3313,18 +3692,21 @@ $(document).ready(function () {
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/07/2017 01:00:00:000", "Display is properly updated after spinining");
+
 		this.util.click(spinUpButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00:00:000", "Display is properly updated after spinining");
+
 		this.util.click(spinUpButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/09/2017 01:00:00:000", "Display is properly updated after spinining");
+
 		this.util.click(spinDownButton, false, false);
 		assert.equal($dtEditor.igDateEditor("field").val(), "12/08/2017 01:00:00:000", "Display is properly updated after spinining");
-		$dtEditor.trigger("blur").remove();
 	});
 
 	QUnit.test('Spin delta as an object in edit mode with different masks', function (assert) {
 		assert.expect(28);
-		var $dtEditor, testDate, ind, today;
+
+		var $dtEditor, testDate, ind, today, currConfig, currData, spinUpButton, spinDownButton;
 
 		today = new Date();
 		testData = [{
@@ -3410,9 +3792,9 @@ $(document).ready(function () {
 			currConfig = { buttonType: "spin", value: new Date("2017-01-11T01:01:01.001Z") };
 			currData = testData[ind];
 			$.extend(currConfig, currData.config);
-			$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
-			var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-			var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+			$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(currConfig);
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 
 			// Edit Mode
 			$dtEditor.igDateEditor("setFocus");
@@ -3438,7 +3820,7 @@ $(document).ready(function () {
 		var $dtEditor;
 
 		// Set the same time through the option - date object
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-01-10T15:18:56.001Z")
 		});
 		$dtEditor.igDateEditor("option", "value", new Date("2017-01-10T15:18:56.001Z"));
@@ -3446,7 +3828,7 @@ $(document).ready(function () {
 		$dtEditor.remove();
 
 		// Set the same time through the option - string
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateInputFormat: "MM/dd/yyyy",
 			value: "01/10/2017",
 			dataMode: "displayModeText"
@@ -3456,7 +3838,7 @@ $(document).ready(function () {
 		$dtEditor.remove();
 
 		// Set invalid date - initialization
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: "day//month//year"
 		});
 		assert.equal($dtEditor.igDateEditor("value"), "", "Value should be empty");
@@ -3464,16 +3846,17 @@ $(document).ready(function () {
 		$dtEditor.remove();
 
 		// Set invalid date - method
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor();
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor();
 		$dtEditor.igDateEditor("value", "month/day/year");
 		assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
 		assert.equal($dtEditor.igDateEditor("value"), "", "Display value is not correct");
 		$dtEditor.remove();
 
 		// Set null in value method, when value is empty
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor();
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor();
 		assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
 		assert.equal($dtEditor.igDateEditor("value"), "", "Display value is not correct");
+
 		$dtEditor.igDateEditor("value", null);
 		assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
 		assert.equal($dtEditor.igDateEditor("value"), "", "Display value is not correct");
@@ -3482,7 +3865,7 @@ $(document).ready(function () {
 		$dtEditor.remove();
 
 		// Setting wrong dateMode
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			revertIfNotValid: false,
 			value: "3/1/2015"
 		});
@@ -3490,13 +3873,14 @@ $(document).ready(function () {
 		$dtEditor.blur();
 		assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
 		assert.equal($dtEditor.igDateEditor("value"), "", "Display value is not correct");
+
 		$dtEditor.igDateEditor("value", null);
 		assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
 		assert.equal($dtEditor.igDateEditor("value"), "", "Display value is not correct");
 		$dtEditor.remove();
 
 		// Setting wrong not-allowed null value
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			allowNullValue: false,
 			value: null
 		});
@@ -3505,61 +3889,77 @@ $(document).ready(function () {
 		$dtEditor.remove();
 
 		// Using some cool masks for input format
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-01-10T15:18:56.001Z"),
 			dateInputFormat: "MMMM/dd/yyyy hh:mm:s:f t ddd(dddd)",
 			displayTimeOffset: 0
 		});
 		assert.equal($dtEditor.igDateEditor("displayValue"), "January/10/2017 03:18:56:0 P Tue(Tuesday)", "Display value is not correct");
 		$dtEditor.remove()
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-01-10T02:18:56.001Z"),
 			dateInputFormat: "MMM/d/yy h:m:ss:ff t ddd(dddd)",
 			displayTimeOffset: 0
 		});
 		assert.equal($dtEditor.igDateEditor("displayValue"), "Jan/10/17 2:18:56:00 A Tue(Tuesday)", "Display value is not correct");
 		$dtEditor.remove();
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			dateInputFormat: "",
 			displayTimeOffset: 0
 		});
 		assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
 		$dtEditor.remove();
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-10-10T15:18:56.001Z"),
 			dateInputFormat: "99/00/99",
 			displayTimeOffset: 0
 		});
 		assert.equal($dtEditor.igDateEditor("displayValue"), "99/00/99", "Display value is not correct");
 		$dtEditor.remove();
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-10-10T05:18:56.001Z"),
 			dateInputFormat: "M/M/MMM/MMM/d/d/ddd/ddd/yy/yy HH:HH:H:H:m:m:s:s:f:f:ff:ff:fff:fff tt tt MM/MM/dd/dd/yyyy/yyyy hh:hh:mm:mm:ss:ss:ff:ff t t tt tt ddd ddd(dddd dddd)",
 			displayTimeOffset: 0
 		});
 		assert.equal($dtEditor.igDateEditor("displayValue"), "10/10/Oct/Oct/10/10/Tue/Tue/17/17 05:05:5:5:18:18:56:56:0:0:00:00:001:001 AM AM 10/10/10/10/2017/2017 05:05:18:18:56:56:00:00 A A AM AM Tue Tue(Tuesday Tuesday)", "Display value is not correct");
-		$dtEditor.remove();
 	});
 
 	QUnit.test('Year shift option', function (assert) {
 		assert.expect(3);
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-01-10T15:18:56.001Z"),
 			dateInputFormat: "MM/dd/yyyy",
 			yearShift: 33
-		});
+		}),
+			done = assert.async(),
+			util = this.util;
+
 		assert.equal($dtEditor.igDateEditor("displayValue"), "01/10/2050", "Display value is not correct");
+
 		$dtEditor.igDateEditor("setFocus");
-		this.util.type("01/10/2040", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "01/10/2040", "Display value is not correct");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("2007-01-10T15:18:56.001Z").getTime(), "Value should be empty");
-		$dtEditor.remove();
+
+		this.util.wait(100).then(function () {
+			util.type("01/10/2040", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "01/10/2040", "Display value is not correct");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("2007-01-10T15:18:56.001Z").getTime(), "Value should be empty");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Testing milliseconds spin up', function (assert) {
 		assert.expect(84);
-		var $dtEditor, testDate, ind, delta;
+		var $dtEditor, testDate, ind, delta, currConfig, currData, testDate, spinUpButton, spinDownButton;
 
 		testData = [{ // limitSpinToCurrentField: false. Testing spin up boundary value and then spin down to previous one.
 			config: {
@@ -3651,15 +4051,15 @@ $(document).ready(function () {
 			currConfig = { buttonType: "spin" };
 			currData = testData[ind];
 			$.extend(currConfig, currData.config);
-			$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+			$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(currConfig);
 			switch ($dtEditor.data("igDateEditor")._dateIndices.ffLength) {
 				case 1: delta = 100; break;
 				case 2: delta = 10; break;
 				case 3: delta = 1; break;
 			}
-			var testDate = new Date($dtEditor.igDateEditor("value").getTime());
-			var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-			var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+			testDate = new Date($dtEditor.igDateEditor("value").getTime());
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 
 			// Test display mode
 			currData.spinDown ? this.util.click(spinDownButton, false, false) : this.util.click(spinUpButton, false, false);
@@ -3695,7 +4095,7 @@ $(document).ready(function () {
 
 	QUnit.test('Testing spin up on empty mask', function (assert) {
 		assert.expect(14);
-		var $dtEditor, testDate, ind;
+		var $dtEditor, testDate, ind, currConfig, currData, spinUpButton, spinDownButton;
 
 		testData = [{
 			config: {
@@ -3773,9 +4173,9 @@ $(document).ready(function () {
 			currConfig = { buttonType: "spin" };
 			currData = testData[ind];
 			$.extend(currConfig, currData.config);
-			$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
-			var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-			var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+			$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(currConfig);
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 
 			$dtEditor.igDateEditor("setFocus");
 			$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
@@ -3790,89 +4190,102 @@ $(document).ready(function () {
 
 	QUnit.test('Test typing up - empty mask, initial value', function (assert) {
 		assert.expect(28);
-		var dtEditor;
 
-		$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date("2017-01-10T15:18:56.001Z"),
 			dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
 			displayTimeOffset: 0
-		});
+		}),
+			done = assert.async(),
+			util = this.util,
+			inputTag = this.inputTag,
+			currData, values, results;
+
 		assert.equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 15:18:56:001", "Display value is not correct");
+
 		$dtEditor.igDateEditor("setFocus");
-		$dtEditor.data("igDateEditor")._setCursorPosition(0);
-		typeInMaskedInput("12/09/2006 14:25:44:112", $dtEditor.igDateEditor("field"));
-		$dtEditor.trigger("blur");
-		assert.equal($dtEditor.igDateEditor("displayValue"), "12/09/2006 14:25:44:112", "Display value is not correct");
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("2006-12-09T14:25:44.112Z").getTime(), "Value should be empty");
-		$dtEditor.igDateEditor("setFocus");
-		$dtEditor.remove();
 
-		testData = [{
-			dateInputFormat: "HH",
-			inputValues: ["9", "a", "12"],
-			expRes: ["09", "09", "12"]
-		}, {
-			dateInputFormat: "hh",
-			inputValues: ["9", "a", "01"],
-			expRes: ["09", "09", "01"]
-		}, {
-			dateInputFormat: "tt",
-			inputValues: ["1", "P", "A"],
-			expRes: ["AM", "AM", "AM"]
-		}, {
-			dateInputFormat: "mm",
-			inputValues: ["9", "a", "12"],
-			expRes: ["09", "09", "12"]
-		}, {
-			dateInputFormat: "ss",
-			inputValues: ["9", "a", "12"],
-			expRes: ["09", "09", "12"]
-		}, {
-			dateInputFormat: "ff",
-			inputValues: ["r", "9", "12"],
-			expRes: ["", "90", "12"]
-		}, {
-			dateInputFormat: "MM/dd/yyyy",
-			inputValues: ["999"],
-			expRes: ["09/09/2009"]
-		}, {
-			dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
-			inputValues: ["999999999999"],
-			expRes: ["09/09/9999 09:09:09:999"]
-		}, {
-			dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt",
-			inputValues: ["30,10,2016 10:25:56 12 PM", "30,10,2016 10:25:56 10"],
-			expRes: ["30,10,2016 10:25:56 12 PM", "30,10,2016 10:25:56 10 PM"]
-		}, {
-			dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
-			inputValues: ["30,10,2016 10:25:56 12", "30,10,2016 10:25:56 112 PM"],
-			expRes: ["30,10,2016 10:25:56 120 AM", "30,10,2016 10:25:56 112 PM"]
-		}, {
-			dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
-			inputValues: ["432016 17:17:17 999 S"],
-			expRes: ["04,03,2016 05:17:17 999 PM"]
-		}];
-
-		for (ind = 0; ind < testData.length; ind++) {
-			currData = testData[ind];
-			values = currData.inputValues;
-			results = currData.expRes;
-			$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({ dateInputFormat: currData.dateInputFormat });
-
-			$dtEditor.igDateEditor("setFocus");
-			for (indV = 0; indV < values.length; indV++) {
-				$dtEditor.data("igDateEditor")._setCursorPosition(0);
-				typeInMaskedInput(values[indV], $dtEditor.igDateEditor("field"));
-				$dtEditor.trigger("blur");
-				assert.equal($dtEditor.igDateEditor("displayValue"), results[indV], "Display value is not correct");
-			}
+		this.util.wait(100).then(function () {
+			debugger;
+			$dtEditor.data("igDateEditor")._setCursorPosition(0);
+			util.type("12/09/2006 14:25:44:112", $dtEditor.igDateEditor("field"));
+			$dtEditor.trigger("blur");
+			assert.equal($dtEditor.igDateEditor("displayValue"), "12/09/2006 14:25:44:112", "Display value is not correct");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("2006-12-09T14:25:44.112Z").getTime(), "Value should be empty");
 			$dtEditor.remove();
-		}
+
+			testData = [{
+				dateInputFormat: "HH",
+				inputValues: ["9", "a", "12"],
+				expRes: ["09", "09", "12"]
+			}, {
+				dateInputFormat: "hh",
+				inputValues: ["9", "a", "01"],
+				expRes: ["09", "09", "01"]
+			}, {
+				dateInputFormat: "tt",
+				inputValues: ["1", "P", "A"],
+				expRes: ["AM", "AM", "AM"]
+			}, {
+				dateInputFormat: "mm",
+				inputValues: ["9", "a", "12"],
+				expRes: ["09", "09", "12"]
+			}, {
+				dateInputFormat: "ss",
+				inputValues: ["9", "a", "12"],
+				expRes: ["09", "09", "12"]
+			}, {
+				dateInputFormat: "ff",
+				inputValues: ["r", "9", "12"],
+				expRes: ["", "90", "12"]
+			}, {
+				dateInputFormat: "MM/dd/yyyy",
+				inputValues: ["999"],
+				expRes: ["09/09/2009"]
+			}, {
+				dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+				inputValues: ["999999999999"],
+				expRes: ["09/09/9999 09:09:09:999"]
+			}, {
+				dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt",
+				inputValues: ["30,10,2016 10:25:56 12 PM", "30,10,2016 10:25:56 10"],
+				expRes: ["30,10,2016 10:25:56 12 PM", "30,10,2016 10:25:56 10 PM"]
+			}, {
+				dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
+				inputValues: ["30,10,2016 10:25:56 12", "30,10,2016 10:25:56 112 PM"],
+				expRes: ["30,10,2016 10:25:56 120 AM", "30,10,2016 10:25:56 112 PM"]
+			}, {
+				dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
+				inputValues: ["432016 17:17:17 999 S"],
+				expRes: ["04,03,2016 05:17:17 999 PM"]
+			}];
+
+			for (ind = 0; ind < testData.length; ind++) {
+				currData = testData[ind];
+				values = currData.inputValues;
+				results = currData.expRes;
+				$dtEditor = util.appendToFixture(inputTag).igDateEditor({ dateInputFormat: currData.dateInputFormat });
+
+				$dtEditor.igDateEditor("setFocus");
+				for (indV = 0; indV < values.length; indV++) {
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					util.type(values[indV], $dtEditor.igDateEditor("field"));
+					$dtEditor.trigger("blur");
+					assert.equal($dtEditor.igDateEditor("displayValue"), results[indV], "Display value is not correct");
+				}
+				$dtEditor.remove();
+			}
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Spin boundary values and update date object parts that are missing in the mask', function (assert) {
 		assert.expect(16);
-		var $dtEditor, testDate, ind, today;
+		var $dtEditor, testDate, ind, today, currConfig, currData, spinUpButton, spinDownButton;
 
 		today = new Date();
 		testData = [{
@@ -3916,18 +4329,18 @@ $(document).ready(function () {
 				dateInputFormat: "dd"
 			},
 			expRes: [{
-				display: pad(new Date().getDate())
+				display: this.pad(new Date().getDate())
 			}, {
-				display: pad(new Date(new Date().setDate(new Date().getDate() - 1)).getDate())
+				display: this.pad(new Date(new Date().setDate(new Date().getDate() - 1)).getDate())
 			}]
 		}, {
 			config: {
 				dateInputFormat: "MM"
 			},
 			expRes: [{
-				display: pad(new Date().getMonth() + 1)
+				display: this.pad(new Date().getMonth() + 1)
 			}, {
-				display: new Date().getMonth() === 0 ? "12" : pad(new Date().getMonth())
+				display: new Date().getMonth() === 0 ? "12" : this.pad(new Date().getMonth())
 			}]
 		}, {
 			config: {
@@ -3953,14 +4366,15 @@ $(document).ready(function () {
 			currConfig = { buttonType: "spin" };
 			currData = testData[ind];
 			$.extend(currConfig, currData.config);
-			$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
-			var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-			var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+			$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor(currConfig);
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 
 			$dtEditor.igDateEditor("setFocus");
 			$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
 			this.util.click(spinDownButton, false, false);
 			assert.equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The display is not as expected');
+
 			$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
 			this.util.click(spinDownButton, false, false);
 			assert.equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The display is not as expected');
@@ -3970,82 +4384,43 @@ $(document).ready(function () {
 
 	QUnit.test('Test invalid composition value', function (assert) {
 		assert.expect(3);
-		var $editor = $("<input/>").appendTo("#testBedContainer")
-			.igDateEditor({
-				value: new Date(2015, 04, 01)
-			});
-		$field = $editor.igDateEditor("field");
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			value: new Date(2015, 04, 01)
+		}),
+			$field = $dtEditor.igDateEditor("field"),
+			done = assert.async(),
+			util = this.util,
+			composition, compositionupdate, compositionend;
 
 		$field.focus();
 		$field[0].setSelectionRange(0, 5);
-		var composition = jQuery.Event("compositionstart");
+		composition = jQuery.Event("compositionstart");
 		$field.trigger(composition);
-		var compositionupdate = jQuery.Event("compositionupdate");
+		compositionupdate = jQuery.Event("compositionupdate");
 		$field.val("あいうえお");
 		$field[0].setSelectionRange(5, 5);
 		$field.trigger(compositionupdate);
-		var compositionend = jQuery.Event("compositionend");
+		compositionend = jQuery.Event("compositionend");
 		$field.trigger(compositionend);
-		stop();
-		setTimeout(function () {
-			start();
+
+		this.util.wait(100).then(function () {
 			assert.equal($field.val(), "05/01/2015", "Text should remain on invalid composition value.");
-			ok($field[0].selectionStart === 0 && $field[0].selectionEnd === 10, "Entire value should be selected.");
+			assert.ok($field[0].selectionStart === 0 && $field[0].selectionEnd === 10, "Entire value should be selected.");
 			$field.blur();
-			assert.equal($editor.igDateEditor("value") && $editor.igDateEditor("value").getTime(), new Date(2015, 04, 01).getTime(), "value did not stay the same");
-			$editor.remove();
-		}, 0);
-	});
+			assert.equal($dtEditor.igDateEditor("value") && $dtEditor.igDateEditor("value").getTime(), new Date(2015, 04, 01).getTime(), "value did not stay the same");
 
-	QUnit.test('Runtime changes for local and regional options', function (assert) {
-		assert.expect(13);
-		var $editor = $("<input/>").appendTo("#testBedContainer").igDateEditor({ buttonType: "spin", dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
-
-		assert.equal($editor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
-		assert.equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
-		$editor.igDateEditor("option", "language", "ja");
-		assert.equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.ja.Editor.spinUpperTitle, "Title of the button should be in Japanese");
-		$editor.igDateEditor("option", "regional", "ja");
-		assert.equal($editor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
-		$editor.igDateEditor("setFocus");
-		assert.equal($editor.igDateEditor("field").val(), "2017/08/18 18:06", "Display Format should be in German");
-		$editor.igDateEditor("option", "regional", "en-US");
-		assert.equal($editor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
-		$editor.trigger("blur").remove();
-
-		// Init dateeditor without dateInputFormat or dateDisplayFormat defined
-		var $editor = $("<input/>").appendTo("#testBedContainer").igDateEditor({ value: new Date(2017, 7, 18, 18, 6) });
-		assert.equal($editor.igDateEditor("displayValue"), "8/18/2017", "Format should be in English");
-		$editor.igDateEditor("option", "regional", "ja");
-		assert.equal($editor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in Japanese");
-		$editor.igDateEditor("setFocus");
-		assert.equal($editor.igDateEditor("field").val(), "2017/08/18", "Input Format should be in Japanese");
-		$editor.igDateEditor("option", "regional", "en-US");
-		assert.equal($editor.igDateEditor("field").val(), "08/18/2017", "Format should be in English");
-		$editor.trigger("blur").remove();
-
-		//regional with display format change in between:
-		$editor = $("<input/>").appendTo("#testBedContainer")
-			.igDateEditor({
-				regional: "en-US",
-				dateInputFormat: "dateTime",
-				value: new Date(2017, 3, 13, 10, 12, 43)
-			});
-		$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
-		$editor.igDateEditor("option", "regional", "ja");
-		assert.equal($editor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
-		$editor.focus();
-		assert.equal($editor.val(), "2017/04/13 10:12", "Edit text not correct");
-		$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
-		$editor.igDateEditor("option", "regional", "de");
-		$editor.blur();
-		assert.equal($editor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
-		$editor.remove();
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Testing spin minutes in 12 hours format', function (assert) {
 		assert.expect(4);
-		var $dtEditor = $("<input/>").appendTo("#testBedContainer").igDateEditor({
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2017, 11, 8, 12, 45),
 			dataMode: "date",
 			dateInputFormat: "dateTime",
@@ -4059,23 +4434,29 @@ $(document).ready(function () {
 				seconds: 10,
 				milliseconds: 100
 			}
-		});
+		}),
+			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			value, expectedValue;
+
 		$dtEditor.igDateEditor("setFocus");
 		$dtEditor.data("igDateEditor")._setCursorPosition(15);
 
-		var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
-		var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
 		this.util.click(spinUpButton, false, false);
 		$dtEditor.trigger("blur");
-		stop();
-		setTimeout(function () {
-			start();
+
+		this.util.wait(100).then(function () {
+			debugger;
 			value = $dtEditor.igDateEditor("value");
 			expectedValue = new Date(2017, 11, 8, 13);
 			assert.equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
 			assert.equal($dtEditor.igDateEditor("displayValue"), "12/8/2017 1:00 PM", 'The initial value is not as expected');
 
 			$dtEditor.igDateEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			debugger;
 			$dtEditor.data("igDateEditor")._setCursorPosition(15);
 			this.util.click(spinDownButton, false, false);
 			$dtEditor.data("igDateEditor")._setCursorPosition(12);
@@ -4085,107 +4466,72 @@ $(document).ready(function () {
 			value = $dtEditor.igDateEditor("value");
 			assert.equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
 			assert.equal($dtEditor.igDateEditor("displayValue"), "12/9/2017 12:45 AM", 'The initial value is not as expected');
-			$dtEditor.remove();
-		}, 300);
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
+	});
+
+	QUnit.test('Runtime changes for local and regional options', function (assert) {
+		assert.expect(13);
+
+		var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			buttonType: "spin",
+			dateInputFormat: "dateTime",
+			value: new Date(2017, 7, 18, 18, 6)
+		});
+
+		assert.equal($editor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+		assert.equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+		$editor.igDateEditor("option", "language", "ja");
+
+		assert.equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.ja.Editor.spinUpperTitle, "Title of the button should be in Japanese");
+		$editor.igDateEditor("option", "regional", "ja");
+
+		assert.equal($editor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
+		$editor.igDateEditor("setFocus");
+
+		assert.equal($editor.igDateEditor("field").val(), "2017/08/18 18:06", "Display Format should be in German");
+		$editor.igDateEditor("option", "regional", "en-US");
+
+		assert.equal($editor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
+		$editor.trigger("blur").remove();
+
+		// Init dateeditor without dateInputFormat or dateDisplayFormat defined
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			value: new Date(2017, 7, 18, 18, 6)
+		});
+
+		assert.equal($editor.igDateEditor("displayValue"), "8/18/2017", "Format should be in English");
+
+		$editor.igDateEditor("option", "regional", "ja");
+		assert.equal($editor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in Japanese");
+
+		$editor.igDateEditor("setFocus");
+		assert.equal($editor.igDateEditor("field").val(), "2017/08/18", "Input Format should be in Japanese");
+
+		$editor.igDateEditor("option", "regional", "en-US");
+		assert.equal($editor.igDateEditor("field").val(), "08/18/2017", "Format should be in English");
+		$editor.trigger("blur").remove();
+
+		//regional with display format change in between:
+		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+			regional: "en-US",
+			dateInputFormat: "dateTime",
+			value: new Date(2017, 3, 13, 10, 12, 43)
+		});
+		$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
+		$editor.igDateEditor("option", "regional", "ja");
+		assert.equal($editor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
+
+		$editor.focus();
+		assert.equal($editor.val(), "2017/04/13 10:12", "Edit text not correct");
+
+		$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
+		$editor.igDateEditor("option", "regional", "de");
+		$editor.blur();
+		assert.equal($editor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
 	});
 });
-
-// function emulateKeyBoard(key, ctrl, shift, alt, element) {
-//     var keyDown = jQuery.Event("keydown"),
-//               keyUp = jQuery.Event("keyup");
-
-//     keyDown.ctrlKey = keyUp.ctrlKey = ctrl;
-//     keyDown.altKey = keyUp.altKey = alt;
-//     keyDown.shiftKey = keyUp.shiftKey = shift;
-
-//     switch (key) {
-//         case "up": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.UP; break;
-//         case "left": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.LEFT; break;
-//         case "right": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.RIGHT; break;
-//         case "down": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.DOWN; break;
-//         default: keyDown.keyCode = keyUp.keyCode = key; break;
-//     }
-
-//     element.trigger(keyDown);
-//     element.trigger(keyUp);
-// }
-function toLocalISOString(date) {
-	var tzo = -date.getTimezoneOffset(),
-		dif = tzo >= 0 ? "+" : "-",
-		pad = function (num) {
-			var norm = Math.abs(Math.floor(num));
-			return (norm < 10 ? "0" : "") + norm;
-		};
-	return date.getFullYear() +
-		"-" + pad(date.getMonth() + 1) +
-		"-" + pad(date.getDate()) +
-		"T" + pad(date.getHours()) +
-		":" + pad(date.getMinutes()) +
-		":" + pad(date.getSeconds()) +
-		dif + pad(tzo / 60) +
-		":" + pad(tzo % 60);
-}
-function pad(n) {
-	return (n < 10) ? ("0" + n) : n.toString();
-}
-
-function keyInteraction(key, target, special) {
-	keyDownChar(key, target, special);
-	keyPressChar(key, target, special);
-	keyUpChar(key, target, special);
-}
-function keyDownChar(key, target, special) {
-	var evt = $.Event("keydown");
-	evt.keyCode = key;
-	evt.charCode = key;
-	if (special) {
-		evt[special] = true;
-	}
-	target.trigger(evt);
-}
-function keyPressChar(key, target, special) {
-	var evt = $.Event("keypress");
-	evt.keyCode = key;
-	evt.charCode = key;
-	if (special) {
-		evt[special] = true;
-	}
-	target.trigger(evt);
-}
-function keyUpChar(key, target, special) {
-	var evt = $.Event("keyup");
-	evt.keyCode = key;
-	evt.charCode = key;
-	if (special) {
-		evt[special] = true;
-	}
-	target.trigger(evt);
-}
-
-
-String.prototype.replaceAt = function (index, character) {
-	return this.substr(0, index) + character + this.substr(index + character.length);
-}
-function mouseup(element, ctrl, shift) {
-	// create a mouse click event
-	var event = document.createEvent('MouseEvents');
-	event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
-	// send click to element
-	element.dispatchEvent(event);
-}
-function mousedown(element, ctrl, shift) {
-	// create a mouse click event
-	var event = document.createEvent('MouseEvents');
-	event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
-	// send click to element
-	element.dispatchEvent(event);
-}
-function keyPressChar(key, target, special) {
-	var evt = $.Event("keypress");
-	evt.keyCode = key;
-	evt.charCode = key;
-	if (special) {
-		evt[special] = true;
-	}
-	target.trigger(evt);
-}
