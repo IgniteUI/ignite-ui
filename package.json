@@ -17,8 +17,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "karma start",
-    "cover": "grunt hint && grunt jscs && npm test -- --single-run",
-    "postinstall": "npm install -g grunt-cli"
+    "cover": "grunt hint && grunt jscs && npm test -- --single-run"
   },
   "dependencies": {
     "coveralls": "^3.0.0"
@@ -40,6 +39,7 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-qunit": "^1.2.1",
+    "jquery-mockjax": "^2.1.0",
     "qunitjs": "^2.4.1"
   }
 }
