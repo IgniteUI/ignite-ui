@@ -48,6 +48,7 @@ module.exports = function(config) {
       "src/js/modules/i18n/*-bg.js",
       "src/js/modules/i18n/*-de.js",
       "src/js/modules/i18n/*-es.js",
+      "src/js/modules/i18n/*-fr.js",
 
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
@@ -56,6 +57,7 @@ module.exports = function(config) {
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-en.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-fr.js",
 
       // DV files for zoombar tests:
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
@@ -84,8 +86,11 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_annotation.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
 
+      "bower_components/knockout/dist/knockout.js",
       "tests/unit/common/test-util.js",
       "tests/test-patch.js",
+      "src/js/infragistics.loader.js",
+      "src/js/extensions/*.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
@@ -124,9 +129,9 @@ module.exports = function(config) {
     coverageReporter: {
       dir : "coverage/",
       reporters: [
-        {  
+        {
           type : "lcov",
-          subdir: "." // default outputs per-browser folders 
+          subdir: "." // default outputs per-browser folders
         },
         { type: "text-summary" }
       ],
