@@ -12,9 +12,9 @@
 }(jQuery));
 
 function createFixtureDiv(divId){
-	$.ig.TestUtil.appendToFixture('<div id=' + divId + '/>');
+	$.ig.TestUtil.appendToFixture('<div id=' + divId + '/>');		
 }
-// #Player1 and #Player2 with isAutoPlay and isMuted set to true
+// #player1 and #player2 with isAutoPlay and isMuted set to true
 function createBasicPlayer(divId, isAutoPlay = false, isMuted = false){	
 
 	createFixtureDiv(divId)
@@ -36,7 +36,7 @@ function createBasicPlayer(divId, isAutoPlay = false, isMuted = false){
 	});
 }
 
-// #Player3
+// #player3
 function createBookmarksPlayer(divId){	
 	
 	createFixtureDiv(divId)
@@ -55,7 +55,6 @@ function createBookmarksPlayer(divId){
 			autoplay: false,
 			muted: true,
 			autohide: false,
-			allowbookmarks: true,
 			bookmarks: [
 				{
 					title: 'mark1',
@@ -77,7 +76,7 @@ function createBookmarksPlayer(divId){
 		});
 }
 
-// #Player4
+// #player4
 function createBannersPlayer(divId){	
 	
 	createFixtureDiv(divId)
@@ -95,11 +94,11 @@ function createBannersPlayer(divId){
 		browserControls:false,
 		autoplay: false,
 		title: 'Welcome to Green Field video...',
-		muted: true,
+		//muted: true,
 		autohide: true,
 		banners: [{
 			imageUrl: 'http://www.portabellasgrille.com/menu/img/pizza.gif',
-			link: 'http://mrpizza.bg/',
+			link: 'javascript:void(0)',
 			times: [5, 20, 60],
 			visible: false,
 			closeBanner: true,
@@ -111,7 +110,7 @@ function createBannersPlayer(divId){
 	});
 }
 
-// #Player5
+// #player5 and #player10
 function createCommercialsPlayer(divId){	
 	
 	createFixtureDiv(divId)
@@ -148,13 +147,162 @@ function createCommercialsPlayer(divId){
 				animate: false, // Get or set whether to animate the showing of the ad message.
 				autoHide: false, // Get or set whether the ad message will auto hide.
 				hideDelay: 20000 // Get or set the ad message hide delay.
-			}
+			},
+			linkedCommercials: [
+				{					
+					sources: [
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				],
+					startTime: 150,
+					title: "Quince Presentation p3",
+					link: "http://quince.infragistics.com/"
+				}]
 		}
 	});
 }
 
+// #player6 and #Player7
+function createUnsupporterPlayer(divId){	
+	
+	createFixtureDiv(divId)
 
-// #Player13
+	document.mockOptions = {};
+	document.mockOptions.oldBrowser = true;
+
+	if(divId == 'player6'){
+		$("#player6_video").css('display', 'none');
+	}else if(divId == 'player7'){
+		document.mockOptions = {};
+	}else{
+		throw ('\n--set the correct player--\n');	
+	}
+
+	$('#' + divId).igVideoPlayerUnitTesting({
+		sources: [],
+		width: 800,
+		height: 340,
+		browserControls:false,
+		autoplay: false,
+		autohide: false
+	});
+}
+
+// #player8
+function createAllIncludedPlayer(divId){	
+	
+	createFixtureDiv(divId)
+
+	$('#' + divId).igVideoPlayerUnitTesting({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+		],
+		width: 800,
+		height: 340,
+		posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+		fullscreen: false,
+		browserControls:false,
+		autoplay: false,
+		title: 'Welcome to Green Field video...',
+		muted: true,
+		autohide: true,
+		banners: [{
+			imageUrl: 'http://www.portabellasgrille.com/menu/img/pizza.gif',
+			link: 'javascript:void(0)',
+			times: [5, 20, 60],
+			visible: false,
+			closeBanner: true,
+			animate: false,
+			autohide: false,
+			width: "350px",
+			height: "40px"
+		}],
+		commercials: {
+			embeddedCommercials: [
+			{
+				startTime: 20,
+				endTime: 30,
+				title: 'Some nice commercial.',
+				link: 'http://www.neowin.net'
+			},
+			{
+				startTime: 50,
+				endTime: 60,
+				link: 'http://www.winbeta.org'
+			}],
+			alwaysPlayCommercials: true, // Get or set whether the commercials will always play or not.
+			showBookmarks: true, // Get or set whether to show commercial locations or not.
+			adMessage: {
+				animate: false, // Get or set whether to animate the showing of the ad message.
+				autoHide: false, // Get or set whether the ad message will auto hide.
+				hideDelay: 20000 // Get or set the ad message hide delay.
+			}
+		},
+		bookmarks: [
+			{
+				title: 'mark1',
+				description: 'Here we see a nice green field.',
+				time: 120
+			},
+			{
+				title: 'mark2',
+				description: 'Here we see a nice green field.',
+				time: 20,
+				disabled: true
+			},
+			{
+				title: 'mark3',
+				description: 'Here we see a nice green field.',
+				time: 60
+			}
+		]
+	});
+}
+
+// #player9
+function createMultipleRelatedVideosPlayer(divId){	
+	
+	createFixtureDiv(divId)
+
+	// create several relatedvideos
+	var videoModel = {
+		imageUrl: "https://www.igniteui.com/images/samples/video-player/quince-intro-2.png",
+		title: "Quince Presentation Part 1",
+		css: "relatedVideosBanner",
+		sources: [
+			"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+			"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+			"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+		]
+	};
+	var videosModel = [];
+	for (i=0; i<10; i++){
+		videosModel.push(videoModel);
+	}
+
+	$('#' + divId).igVideoPlayerUnitTesting({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+		],
+		width: 800,
+		height: 340,
+		posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+		fullscreen: false,
+		browserControls:false,
+		autoplay: false,
+		muted: false,
+		autohide: false,
+		relatedVideos: videosModel
+	});
+}
+
+
+// #player13
 function createBannersBookmarksPlayer(divId,){	
 
 	createFixtureDiv(divId)
@@ -169,7 +317,7 @@ function createBannersBookmarksPlayer(divId,){
 		height: 200,
 		banners: [{
 			imageUrl: 'http://www.portabellasgrille.com/menu/img/pizza.gif',
-			link: 'http://mrpizza.bg/',
+			link: 'https://www.infragistics.com/products/ignite-ui',
 			times: [0, 5, 10],
 			visible: true,
 			closeBanner: true,
@@ -190,12 +338,12 @@ function createBannersBookmarksPlayer(divId,){
 }
 
 QUnit.module("igVideoPlayer", {
-	before: function () {setTimeout( 3000); },
+	before: function () {setTimeout(3000); },
 	after: function () {},
-	beforeEach: function () { },
+	beforeEach: function () {setTimeout(100);  },
 	afterEach: function () {},		
-	checkClass: function (button, classs) {
-		this.assert.ok(button.hasClass(classs), 'The button with id: ' + button[0].id + ' does not contain the class: ' + classs)
+	checkClass: function (button, classs, assert = this.assert) {
+		assert.ok(button.hasClass(classs), 'The button with id: ' + button[0].id + ' does not contain the class: ' + classs)
 	},
 	checkButton: function (button) {
 		this.checkClass(button, 'ui-widget');
@@ -205,8 +353,11 @@ QUnit.module("igVideoPlayer", {
 		this.assert.ok(button.attr('role') === 'button', 'The button with id: ' + button[0].id + ' does not contain the attr role: button');
 		this.assert.ok(button.attr('href') === '#', 'The button with id: ' + button[0].id + ' does not contain the attr href: #');
 	},
-	checkElementClass(element,classs) {
-		this.assert.ok(element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does not contain the class:' + classs)		
+	checkElementClass(element,classs, assert = this.assert) {
+		assert.ok(element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does not contain the class:' + classs)		
+	},
+	checkElementNotClass: function(element,classs, assert = this.assert) {
+		assert.ok(!element.hasClass(classs), 'The element \"' + element[0].tagName + '\" does contain the class:' + classs)		
 	}
 });
 
@@ -473,62 +624,76 @@ QUnit.test('play/pause on video element click test 15', function(assert) {
 	this.checkClass(playIcon, 'ui-icon-play');
 });
 
-// QUnit.test('bookmarks rendering test 18', function(assert) {
-// 	assert.expect(3);
-// 	this.assert = assert;
-// 	var done = assert.async();
-// 	createBookmarksPlayer('player3');
+QUnit.test('bookmarks rendering test 18', function(assert) {
+	assert.expect(26);
+	this.assert = assert;
+	var done = assert.async();
+	let checkClass = this.checkClass;
+	
+	createBookmarksPlayer('player3');
 
-// 	var playButton = $('#player3_title_ctrls_play'),
-// 		video = $('#player3_video'),
-// 		click = jQuery.Event("click"),
-// 		slider = $('#player3_ctrls_s');
-// 	click.button = 0;
-// 	// setup third player to start playing so that bookmarks are rendered
-// 	playButton.trigger(click); // should play.
-// 	video.trigger(click); // should pause.
-// 	// start bookmarks test
+	var playButton = $('#player3_title_ctrls_play'),
+		video = $('#player3_video'),
+		click = jQuery.Event("click"),
+		slider = $('#player3_ctrls_s');
+	click.button = 0;
+	// setup third player to start playing so that bookmarks are rendered
+	playButton.trigger(click); // should play.
+	video.trigger(click); // should pause.
+	// start bookmarks test
+	
+	setTimeout(function () {
+		var bookmarksObjects = $('#player3').igVideoPlayerUnitTesting('option', 'bookmarks');
+		var bookmarkElems = $('.ui-igslider-bookmark', slider);
+		var disabledBookmarkElems = $('.ui-igslider-bookmark-disabled', slider);
+		assert.equal(bookmarkElems.length + disabledBookmarkElems.length, bookmarksObjects.length, 'The number of bookmarks rendered should be equal to the json array number.');
 
-// 	var bookmarksObjects = $('#player3').igVideoPlayerUnitTesting('option', 'bookmarks');
-// 	var bookmarkElems = $('.ui-igslider-bookmark', slider);
-// 	var disabledBookmarkElems = $('.ui-igslider-bookmark-disabled', slider);
-// 	assert.equal(bookmarkElems.length + disabledBookmarkElems.length, bookmarksObjects.length, 'The number of bookmarks rendered should be equal to the json array number.');
+		var bookmarksObjects = $('#player3').igVideoPlayerUnitTesting('option', 'bookmarks');
+		var bookmarkElems = $('.ui-igslider-bookmark', slider);
+		var disabledBookmarkElems = $('.ui-igslider-bookmark-disabled', slider);
+		assert.equal(bookmarkElems.length + disabledBookmarkElems.length, bookmarksObjects.length, 'The number of bookmarks rendered should be equal to the json array number.');
+	
+		bookmarkElems.each(function (i) {
+			checkClass($(this), 'ui-igslider-bookmark', assert);
+			checkClass($(this), 'ui-state-default', assert);
+	
+			var bkElem = $(bookmarkElems[i]);
+			var bk = bookmarksObjects[bkElem.data('index.ui-igslider-bookmark')];
+			assert.equal(bkElem[0].style.left, ((bk.time / video[0].duration).toFixed(2) * 100) + '%', 'Bookmark is not properly positioned.');
+		});
+	
+		disabledBookmarkElems.each(function (i) {
+			checkClass($(this), 'ui-igslider-bookmark-disabled', assert);
+	
+			var bkElem = $(bookmarkElems[i]);
+			var bk = bookmarksObjects[bkElem.data('index.ui-igslider-bookmark')];
+			assert.equal(bkElem[0].style.left, ((bk.time / video[0].duration).toFixed(2) * 100) + '%', 'Bookmark is not properly positioned.');
+		});
+	
+		var bookmarkArea = $('#player3_bookmarks');
+		assert.ok(bookmarkArea.length > 0, 'Bookmarks area should be rendered!');
+		checkClass(bookmarkArea, 'ui-igplayer-bookmark-container', assert);
+		checkClass(bookmarkArea.children().first(), 'ui-igplayer-bookmark-header', assert);
+		checkClass(bookmarkArea.children().first().next(), 'ui-igplayer-bookmark-list', assert);
+	
+		var bookmarkAreaLis = $('li', bookmarkArea.children().first().next());
+		bookmarkAreaLis.each(function (i) {
+			var li = $(this),
+				timeSpan = li.children().first(),
+				titleSpan = li.children().first().next();
+			checkClass(timeSpan, 'ui-igplayer-bookmark-item-time', assert);
+			assert.equal(titleSpan.attr('title'), titleSpan.html());
+			assert.equal(titleSpan.html(), bookmarksObjects[li.data('bookmark-index')].title);
+			/* equal(timeSpan.html(),  $('#player3').data("igVideoPlayerUnitTesting").prototype._toTimeString(bookmarksObjects[li.data('bookmark-index')].value)); */
+			checkClass(titleSpan, 'ui-igplayer-bookmark-item-title', assert);
+		});
 
-// 	bookmarkElems.each(function (i) {
-// 		this.checkClass($(this), 'ui-igslider-bookmark');
-// 		this.checkClass($(this), 'ui-state-default');
+		done();
+	}, 300);
 
-// 		var bkElem = $(bookmarkElems[i]);
-// 		var bk = bookmarksObjects[bkElem.data('index.ui-igslider-bookmark')];
-// 		assert.equal(bkElem[0].style.left, ((bk.time / video[0].duration).toFixed(2) * 100) + '%', 'Bookmark is not properly positioned.');
-// 	});
 
-// 	disabledBookmarkElems.each(function (i) {
-// 		this.checkClass($(this), 'ui-igslider-bookmark-disabled');
 
-// 		var bkElem = $(bookmarkElems[i]);
-// 		var bk = bookmarksObjects[bkElem.data('index.ui-igslider-bookmark')];
-// 		assert.equal(bkElem[0].style.left, ((bk.time / video[0].duration).toFixed(2) * 100) + '%', 'Bookmark is not properly positioned.');
-// 	});
-
-// 	var bookmarkArea = $('#player3_bookmarks');
-// 	assert.ok(bookmarkArea.length > 0, 'Bookmarks area should be rendered!');
-// 	this.checkClass(bookmarkArea, 'ui-igplayer-bookmark-container');
-// 	this.checkClass(bookmarkArea.children().first(), 'ui-igplayer-bookmark-header');
-// 	this.checkClass(bookmarkArea.children().first().next(), 'ui-igplayer-bookmark-list');
-
-// 	var bookmarkAreaLis = $('li', bookmarkArea.children().first().next());
-// 	bookmarkAreaLis.each(function (i) {
-// 		var li = $(this),
-// 			timeSpan = li.children().first(),
-// 			titleSpan = li.children().first().next();
-// 		this.checkClass(timeSpan, 'ui-igplayer-bookmark-item-time');
-// 		assert.equal(titleSpan.attr('title'), titleSpan.html());
-// 		assert.equal(titleSpan.html(), bookmarksObjects[li.data('bookmark-index')].title);
-// 		/* equal(timeSpan.html(),  $('#player3').data("igVideoPlayerUnitTesting").prototype._toTimeString(bookmarksObjects[li.data('bookmark-index')].value)); */
-// 		this.checkClass(titleSpan, 'ui-igplayer-bookmark-item-title');
-// 	});
-// });
+});
 
 QUnit.test('poster url test 19', function(assert) {
 	assert.expect(1);
@@ -601,8 +766,8 @@ QUnit.test('is seek tooltip rendering test 24', function(assert) {
 });
 
 QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', function(assert) {
-	assert.expect(11);
-	createBannersPlayer('player13');
+	assert.expect(12);
+	createBannersBookmarksPlayer('player13');
 	this.assert =  assert;
 
 	var done = assert.async();
@@ -691,28 +856,26 @@ QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', 
 
 				var vs = $("#player13_ctrls_vs").children(':first'),
 					vsPos = vs.position().top;
-
 				ev = jQuery.Event('keydown');
 				ev.keyCode = $.ui.keyCode.HOME;
 				vs.trigger(ev);
 
 				setTimeout(function(){
 				
-					//TO DO:
-					// vsPosNew = vs.position().top;
+					vsPosNew = vs.position().top;
 
-					// assert.ok(vsPosNew > vsPos);
+					assert.ok(vsPosNew > vsPos);
 
-					// vs.focus();
-					// ev = jQuery.Event('keydown');
-					// ev.keyCode = $.ui.keyCode.TAB;
-					// vs.trigger(ev);
+					vs.focus();
+					ev = jQuery.Event('keydown');
+					ev.keyCode = $.ui.keyCode.TAB;
+					vs.trigger(ev);
 
 					done();
 				}, 500);
 			}, 500);
-		}, 900);
-	},900);
+		}, 500);
+	},500);
 
 });
 
@@ -855,21 +1018,745 @@ QUnit.test('No Compatible video source test 34', function(assert) {
 	assert.expect(3);
 	this.assert = assert;
 
-	createFixtureDiv('player7')
-
-	$("#player7").igVideoPlayerUnitTesting({
-		sources: [],
-		width: 800,
-		height: 340,
-		browserControls:false,
-		autoplay: false,
-		autohide: false
-	});
-
+	createUnsupporterPlayer('player7');
 	var noCompatibleVideoSource = $('#player7_detectError');
 	assert.equal(noCompatibleVideoSource.attr('title'), $.ig.VideoPlayer.locale.unsupportedVideoSource, 'The title should match the locale text.');
 	this.checkClass(noCompatibleVideoSource, 'ui-igplayer-not-supported-video-source');
 	assert.ok(noCompatibleVideoSource.is(':visible'), 'No compatible video source msg should be visible!');
 });
 
+QUnit.test('Not Supported Video test 33', function(assert) {
+	assert.expect(5);
+	this.assert = assert;
+	createUnsupporterPlayer('player6');
+
+	var messageDiv = $('#player6').children().last(),
+		currentBrowserLabel = messageDiv.children().first(),
+		nonHtml5Msg = messageDiv.children().first().next(),
+		browserList = $('ul', messageDiv);
+	this.checkClass(messageDiv, 'ui-html5-non-html5-supported-message');
+	this.checkClass(messageDiv, 'ui-helper-clearfix');
+	this.checkClass(currentBrowserLabel, 'ui-html5-current-browser-label');
+	assert.ok(currentBrowserLabel.html().indexOf('Current browser:') !== -1);
+	this.checkClass(nonHtml5Msg, 'ui-html5-non-html5-text');
+	equal(nonHtml5Msg.html(), $.ig.VideoPlayer.locale.unsupportedBrowser.replace('<br/>','<br>'), 'Browser message is not rendered!');
+	this.checkClass(browserList, 'ui-html5-browsers-list');
+	assert.ok(browserList.children().length === 5, 'Five browser icons should be shown!');
+	$('#player6').igVideoPlayerUnitTesting('destroy');
+	assert.ok($('#player6').empty(), 'Player DIV should be empty!');
+});
+
+QUnit.test('Instantiate on HTML video tag test 35', function(assert) {
+	assert.expect(2);
+	this.assert = assert;
+
+	createFixtureDiv('custDiv');
+	$('#custDiv').append('<video id="video1"/>')
+
+	var $video = $("#video1").igVideoPlayer({
+			sources: [
+				"http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+			],
+			width: 800,
+			height: 340,
+			posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+			fullscreen: false,
+			browserControls:false,
+			autoplay: false,
+			muted: false,
+			autohide: false			
+	});		
+	this.checkElementClass($video,"ui-igplayer-video")		
+	assert.ok($video.attr("src").indexOf("http://medias.jilion.com/sublimevideo/dartmoor") > -1, "The video source is incorrect");
+});
+
+QUnit.test('Related Videos test 36', function(assert) {		
+	assert.expect(3);
+	this.assert = assert;
+
+	createFixtureDiv('custDiv');
+	$('#custDiv').append('<video id="video1"/>')
+
+	var $video1 = $("#video1").igVideoPlayer({
+			sources: [
+				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.h264.mp4",
+				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.webmvp8.webm",
+				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.theora.ogv"
+			],
+			width: 720,
+			height: 560,
+			posterUrl: "https://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
+			fullscreen: false,
+			browserControls: false,
+			autohide: true,
+			autoplay: true,
+			title: "Quince Presentation Part 1",				
+			bookmarks: [
+				{
+					title: 'mark1',
+					description: 'Here we see a nice green field.',
+					time: 120
+				}
+			],				
+			relatedVideos: [{
+				imageUrl: "https://www.igniteui.com/images/samples/video-player/quince-intro-2.png",
+				title: "Quince Presentation Part 1",
+				css: "relatedVideosBanner",
+				sources: [
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				]
+			}]
+		});			
+	$video1.data("igVideoPlayer").currentTime(10);
+	var elements = $video1.data("igVideoPlayer").relatedVideoElements;
+	this.checkElementClass(elements,"ui-igplayer-related-video")
+	this.checkElementClass(elements.children(),"relatedVideosBanner")
+	assert.ok(elements.children()[0].src === "https://www.igniteui.com/images/samples/video-player/quince-intro-2.png", "Related image is missing");		
+});
+
+QUnit.test('Destroy video tag test 37"', function(assert) {	
+	assert.expect(3);
+	this.assert = assert;
+
+	createFixtureDiv('custDiv');
+	$('#custDiv').append('<video id="video2"/>')
+		
+	var $video2 = $("#video2").igVideoPlayer({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+		],
+		width: 800,
+		height: 340,
+		posterUrl: "https://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
+		fullscreen: false,
+		browserControls:false,
+		autoplay: false,
+		muted: false,
+		autohide: false,	
+		commercials: {
+				embeddedCommercials: [
+				{
+					startTime: 20,
+					endTime: 30,
+					title: 'Some nice commercial.',
+					link: 'http://www.neowin.net'
+				},
+				{
+					startTime: 50,
+					endTime: 60,
+					link: 'http://www.winbeta.org'
+				}],
+				alwaysPlayCommercials: false, // Get or set whether the commercials will always play or not.
+				showBookmarks: true, // Get or set whether to show commercial locations or not.
+				adMessage: {
+					animate: false, // Get or set whether to animate the showing of the ad message.
+					autoHide: false, // Get or set whether the ad message will auto hide.
+					hideDelay: 20000 // Get or set the ad message hide delay.
+				}
+			},					
+		relatedVideos: [{
+				imageUrl: "https://www.igniteui.com/images/samples/video-player/quince-intro-2.png",
+				title: "Quince Presentation Part 1",
+				css: "relatedVideosBanner",
+				sources: [
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				]
+			}]				
+	});	
+	$video2.igVideoPlayer("destroy");
+	assert.ok($video2.empty(), 'Player DIV should be empty!');		
+	assert.ok($video2.height() !== 340, "Height should be reset");
+	assert.ok($video2.width() !== 800, "Width should be reset");		
+});
+QUnit.test('Test fullscreen test 38', function(assert) {
+	assert.expect(9);
+	this.assert = assert;
+	var done = assert.async();
+	let checkElementClass = this.checkElementClass;
+	let checkElementNotClass = this.checkElementNotClass;
+	createAllIncludedPlayer('player8');
+
+	$("#player8").data('igVideoPlayerUnitTesting').togglePlay();		
+	$("#player8").igVideoPlayerUnitTesting('option', 'fullscreen', true);
+	var videoElem = $('#player8_video')[0],
+		adMessage = $('#player8_ad_msg_c'),
+		span = $('#player8_ad_msg');
+	//check add message
+	assert.ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+	videoElem.playTo(19);
+	assert.ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+	videoElem.playTo(20);
+	assert.ok(adMessage.is(':visible'), 'Ad message should be visible.');
+	assert.equal(span.html(), 'Ad: Video will resume in 10 seconds.', 'Message mismatch:');
+	videoElem.playTo(31);
+	assert.ok(!adMessage.is(':visible'), 'Ad message should not be visible.');			
+	$("#player8").data('igVideoPlayerUnitTesting').pause();
+	
+	setTimeout(function(){		
+		//check bookmarks
+		var slider = $('#player8_ctrls_s');
+		var bookmarksObjects = $('#player8').igVideoPlayerUnitTesting('option', 'bookmarks');
+		var bookmarkElems = $('.ui-igslider-bookmark', slider);
+		var disabledBookmarkElems = $('.ui-igslider-bookmark-disabled', slider);
+		assert.ok(bookmarkElems.length + disabledBookmarkElems.length > 0, 'There should be bookmarks available.');
+
+		//check position after clicking bookmark
+		$('#player8 ul.ui-igplayer-bookmark-list li').eq(0).click();
+		$("#player8").data('igVideoPlayerUnitTesting').togglePlay();		
+		$("#player8").data('igVideoPlayerUnitTesting').pause();		
+		$("#player8").igVideoPlayerUnitTesting('option', 'fullscreen', false);		
+		assert.ok($('#player8').igVideoPlayerUnitTesting('currentTime') > 40,"The bookmark is not set")
+		//check volume hover
+		$('#player8_ctrls_vc_btn').trigger('mouseover');
+		$('#player8_ctrls_vs').trigger('mouseover');		
+		checkElementClass($('#player8_ctrls_vc_btn'), 'ui-state-hover', assert)
+		$('#player8_ctrls_vc_btn').click();
+		$('#player8_ctrls_vc_btn').mouseup();
+		$('#player8_ctrls_vs').trigger('mouseout');
+		$('#player8_ctrls_vc_btn').trigger('mouseout');
+		checkElementNotClass($('#player8_ctrls_vc_btn'), 'ui-state-hover', assert)	
+		
+		done();
+	},500);
+
+	
+});
+QUnit.test('Test disabled option test 39', function(assert) {
+	assert.expect(2);
+	this.assert = assert;
+	createMultipleRelatedVideosPlayer('player9')
+
+	$("#player9").igVideoPlayerUnitTesting('option', 'disabled', true);	
+	this.checkElementClass($("#player9"),"ui-state-disabled");
+	$("#player9").igVideoPlayerUnitTesting('option', 'disabled', false);	
+	this.checkElementNotClass($("#player9"),"ui-state-disabled");			
+});
+QUnit.test('Test relatedvideos scrolling 40', function(assert) {
+	assert.expect(5);
+	this.assert = assert;
+	createMultipleRelatedVideosPlayer('player9')
+
+	//Check related videos hover
+	$('#player9_video')[0].playTo(260);
+	$("#player9").igVideoPlayerUnitTesting("togglePlay");	
+	var elements = $("#player9").data("igVideoPlayerUnitTesting").relatedVideoElements;
+	elements.trigger('mouseover');
+	this.checkElementClass($("#player9_rvc > ul > li"),"ui-igplayer-related-video-hover");
+	elements.trigger('mouseout');
+	this.checkElementNotClass($("#player9_rvc > ul > li"),"ui-igplayer-related-video-hover");
+	//Check related videos scroll		
+	$('#player9_rv_right').trigger('mouseover');
+	this.checkElementClass($('#player9_rv_right'), 'ui-state-hover');
+	$('#player9_rv_right').trigger('mouseout');
+	this.checkElementNotClass($('#player9_rv_right'), 'ui-state-hover');
+	//Check related videos click		
+	elements.trigger('mouseover');
+	elements.trigger('click');
+	assert.ok(!$('#player9_video')[0].paused, 'Video should be playing.');
+		
+});
+QUnit.test('Test loop option test 41', function(assert) {
+	assert.expect(2);
+	this.assert = assert;
+	createCommercialsPlayer('player10');
+	$("#player10").igVideoPlayerUnitTesting('option', 'loop', true);	
+	$('#player10_video')[0].playTo(259);
+	assert.ok(!$('#player10_video').paused, 'Video should be playing.');		
+	$('#player10_com_video')[0].playTo(259);
+	$("#player10").data('igVideoPlayerUnitTesting').togglePlay();
+	assert.ok(!$('#player10_com_video').paused, 'Commersial Video should be playing.');										
+});
+QUnit.test('slider test 42', function(assert) {
+	assert.expect(1);
+	this.assert = assert;
+	createBasicPlayer('player11');
+	$("#player11").data('igVideoPlayerUnitTesting').togglePlay();								
+	$("#player11").data('igVideoPlayerUnitTesting').togglePlay();	
+	$("#player11").mouseover();		
+	$("#player11_ctrls_s > a").click();
+
+	var handle = $('.ui-igslider-handle', $('#player11_ctrls_s')),
+		videoElem = $('#player11_video')[0],
+		currentTime = videoElem.currentTime,
+		mousedown = jQuery.Event("mousedown"),
+		mousemove = jQuery.Event("mousemove");
+	mousedown.which = 1;
+	mousemove.pageX = handle.offset().left - 20;
+	mousemove.button = 0;
+	handle.trigger(mousedown);
+	handle.trigger(mousemove);
+	handle.trigger('mouseup');
+	
+	handle.trigger(mousedown);
+	handle.trigger(mousemove);
+	handle.trigger('mouseup');
+
+	handle.trigger(mousedown);
+	handle.trigger(mousemove);
+	handle.trigger('mouseup');
+
+	assert.ok($('#player11_video')[0].paused, 'Video should be paused.');	
+});
+QUnit.test('Test disable option on initiation test 45', function(assert)	{
+	assert.expect(3);
+	this.assert = assert;
+	createFixtureDiv('custDiv');
+	$('#custDiv').append('<video id="video2"/>') 
+
+	var video = $("#video2").igVideoPlayer({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		width: 800,
+		height: 200,
+		disabled: true,
+		fullscreen: true,
+		preload: true,
+		loop: true
+	});
+
+
+	this.checkElementClass($("#video2_container"), 'ui-state-disabled');
+
+	video.igVideoPlayer("option", "disabled", false);
+	this.checkElementNotClass($("#video2_container"), 'ui-state-disabled');
+
+	var counter = 0, 
+	dblclick = jQuery.Event("dblclick");
+	dblclick.button = 0;
+	video.one( "dblclick", function() {
+		counter++;
+	});
+
+	video.trigger(dblclick);
+	assert.equal(counter, 1);
+});
+QUnit.test('Instantiate on an invalid tag like input test 46', function(assert){
+	assert.expect(0);
+	try 
+	{
+		$("#input").igVideoPlayer({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		width: 800,
+		height: 340
+	});
+	} catch (ex) {
+		equal(ex.message, 'The Infragistics HTML5 Video Player can be instantiated only on a DIV tag.');
+	}
+});
+QUnit.test('Test screenshot of the current vidio frame test 47', function(assert) 
+{
+	assert.expect(2);
+	this.assert = assert;
+	createFixtureDiv('custDiv');
+	$('#custDiv').append('<video id="video2"/>') 
+	var done = assert.async();
+
+	$("#video2").igVideoPlayerUnitTesting({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		width: 800,
+		height: 340,
+		muted:false,
+		disabled: false,
+		playing: function (event, ui) {
+			event.preventDefault();
+
+			var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
+			// assert.equal(screen.tagName, 'CANVAS');
+			$("#video2").igVideoPlayerUnitTesting("pause");
+		}
+	});
+
+	var paused = $("#video2").igVideoPlayerUnitTesting("paused");
+
+	if (paused)
+	{
+		assert.ok(paused, true)
+		$("#video2").igVideoPlayerUnitTesting("play");
+		setTimeout(function(){
+			var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
+			assert.equal(screen.tagName, 'CANVAS');
+			done();
+		},500);
+	}
+});
+
+QUnit.test('Test seeking, ended and duration methods return correct values test 48', function(assert){
+	assert.expect(9);
+	this.assert = assert;
+	var done = assert.async();
+	createFixtureDiv('player11');
+	let checkElementClass = this.checkElementClass;
+	let checkElementNotClass = this.checkElementNotClass;
+
+	var video = $("#player11").igVideoPlayerUnitTesting({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		width: 800,
+		muted: false,
+		height: 340,
+		language: "ja",
+		commercials: {
+			linkedCommercials: [
+			{
+				sources: [
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+			],
+				startTime: 0,
+				endTime: 5,
+				title: "Quince Presentation p1",
+				link: "http://quince.infragistics.com/"
+			},
+			{
+				sources: [
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+			],
+				startTime: 10,
+				title: "Quince Presentation p3",
+				link: "http://quince.infragistics.com/"
+			}]
+		}
+	});
+
+	var counter = 0,
+	click = jQuery.Event("click");
+	click.button = 0;
+	$("#player11").one("click", function() {
+		counter++;
+	});
+
+	video.data('igVideoPlayerUnitTesting').togglePlay();
+
+	assert.equal(video.igVideoPlayerUnitTesting("seeking"), false);
+	assert.equal(video.igVideoPlayerUnitTesting("duration"), 260);
+
+	var ended = video.igVideoPlayerUnitTesting("ended");
+	if (!ended)
+	{
+		setTimeout(function(){
+			video.igVideoPlayerUnitTesting("changeLocale");
+			assert.ok($('#player11_ad_msg_c').is(':visible'));
+			checkElementClass($('#player11_ad_msg_c'), 'ui-igplayer-ad-msg-container', assert);
+			
+			var close = $('#player11_ad_msg_close_picn').is(':visible');
+			if (close)
+			{
+				$('#player11_play').trigger(click);
+				assert.equal(counter, 1);
+
+				$('#player11_ad_msg_c').trigger('mouseover');
+				checkElementClass($('#player11_ad_msg_c'), 'ui-state-hover', assert);
+				
+				$('#player11_ad_msg_c').trigger('mouseout');
+				checkElementNotClass($('#player11_ad_msg_c'), 'ui-state-hover', assert);
+
+				$('#player11_ad_msg_close_picn').trigger(click);
+
+				setTimeout(function(){
+					assert.equal(video.igVideoPlayerUnitTesting("paused"), true);
+					
+					assert.ok($('#player11_ad_msg_c').is(':visible'));
+
+					$("#player11").igVideoPlayerUnitTesting("resetCommercialsShow");
+					done();
+				}, 500);
+			}
+		}, 300);
+	}
+});
+
+QUnit.test('Test changing currentTime on a paused video test 49', function(assert){
+	assert.expect(2);
+	this.assert = assert;
+	var done = assert.async();
+	createFixtureDiv('player11');
+	
+
+	var video = $("#player11").igVideoPlayerUnitTesting({
+		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		width: 800,
+		muted: false,
+		height: 340
+	});
+
+	setTimeout(function(){
+
+		video.igVideoPlayerUnitTesting("togglePlay");			
+		var ended = video.igVideoPlayerUnitTesting("ended");
+	
+		if (!ended)
+		{
+			setTimeout(function(){	
+				video.igVideoPlayerUnitTesting("togglePlay");		
+	
+				assert.equal(video.igVideoPlayerUnitTesting("paused"), true);
+	
+				var val = video.igVideoPlayerUnitTesting("duration") / 3;
+				if (val > 0)
+				{
+					video.igVideoPlayerUnitTesting("currentTime", val);
+				}
+	
+				video.igVideoPlayerUnitTesting("togglePlay");
+	
+				setTimeout(function(){
+	
+					var currentTime = video.igVideoPlayerUnitTesting("currentTime");
+					assert.ok(currentTime > val);
+					done();
+				}, 900);
+			}, 900);
+		}
+	},300)
+});
+
+QUnit.test('igVidioPlayer Test related videos fullscreen and replay test 50', function (assert) {
+		assert.expect(4);
+		this.assert = assert;
+		createFixtureDiv('player12');
+		let checkElementClass = this.checkElementClass;
+		var done = assert.async();
+		
+		var video = $("#player12").igVideoPlayerUnitTesting({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+			width: 800,
+			height: 200,
+			relatedVideos: [
+				{
+					imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
+					title: "Some cool skype video.",
+					width: "55px",
+					height: "55px",
+					sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+						"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+					]
+				},
+				{
+					imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
+					title: "Bick buck bunny.",
+					width: "80px",
+					height: "30px",
+					sources: ["http://snapshot.opera.com/resources/BigBuckBunny.ogv",
+						"http://snapshot.opera.com/resources/BigBuckBunny.mp4",
+						"http://snapshot.opera.com/resources/BigBuckBunny.webm"
+					]
+				}
+			]
+		});
+
+		var d = video.igVideoPlayerUnitTesting("duration");
+
+		setTimeout(function () {
+
+			$('#player12_video')[0].playTo(d);
+
+			setTimeout(function () {
+
+				checkElementClass($('#player12_rv_bar_fs_lbl'), 'ui-icon-arrow-4-diag', assert);
+				$('#player12_rv_bar_fs').trigger('click');
+
+				setTimeout(function () {
+
+					checkElementClass($('#player12_rv_bar_fs_lbl'), 'ui-icon-closethick', assert);
+
+					$('#player12_rv_bar_fs').trigger('click');
+
+					setTimeout(function () {
+
+						var firstRV = $("ul.ui-igplayer-related-list").children(':first');
+
+						firstRV.trigger('mouseover');
+						assert.ok($('.ui-igplayer-related-video-hover-x48').css('display') !== 'none');
+
+						firstRV.trigger('mouseout');
+						assert.ok($('.ui-igplayer-related-video-hover-x48').css('display') == 'none');
+
+						setTimeout(function () {
+
+							$('#player12_rv_bar_replay_lbl').trigger('click');
+							done();
+						}, 600);
+					}, 900);
+				}, 800);
+			}, 800);
+		}, 500);
+	});
+
+QUnit.test('Dummy Test test 51', function (assert) {
+		assert.expect(2);
+		this.assert = assert;
+		createFixtureDiv('player14');
+		var done = assert.async();
+
+		var video = $("#player14").igVideoPlayerUnitTesting({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+				"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+				"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+				"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+			width: 800,
+			height: 200,
+			commercials: {
+				embeddedCommercials: [
+					{
+						sources: [
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+						],
+						startTime: 1,
+						endTime: 30,
+						title: "Quince Presentation p1",
+						link: "http://quince.infragistics.com/"
+					}],
+				alwaysPlayCommercials: true
+			}
+		});
+
+		video.igVideoPlayerUnitTesting("option", "alwaysPlayCommercials", false);
+		video.igVideoPlayerUnitTesting("option", "progressLabelFormat", "Time=${currentTime} / Total=${duration}");
+
+		video.igVideoPlayerUnitTesting("currentTime", 10);
+		video.igVideoPlayerUnitTesting("play");
+
+		assert.equal(video.igVideoPlayerUnitTesting("paused"), false);
+
+		video.igVideoPlayerUnitTesting("option", "alwaysPlayCommercials", true);
+
+		var pbCounter = 0,
+			ev = jQuery.Event('click');
+		ev.button = 0;
+
+		$("#player14_video").on("click", function () {
+			pbCounter++;
+		});
+
+		setTimeout(function () {
+			$("#player14_video").trigger(ev);
+			assert.equal(pbCounter, 1);
+			video.igVideoPlayerUnitTesting("destroy");
+			done();
+		}, 800);
+	});
+	
+QUnit.test('Test entering fullscrren via double click test 52', function (assert) {
+		assert.expect(4);
+		this.assert = assert;
+		createBannersBookmarksPlayer('player13');
+		var done = assert.async();
+		let checkElementClass = this.checkElementClass;
+
+		$('#player13').data('igVideoPlayerUnitTesting').togglePlay();
+
+		var counter = 0,
+				dblclick = jQuery.Event("dblclick");
+			dblclick.button = 0;
+
+		$("#player13_video").one("dblclick", function () {
+				counter++;
+		});
+
+		$("#player13_video").trigger(dblclick);
+
+		var fullScreen = $("#player13").igVideoPlayerUnitTesting("option", "fullscreen");
+		assert.equal(1, counter);
+		assert.equal(fullScreen, true);
+
+			setTimeout(function () {
+
+				var mark = $("#player13_ctrls_pb").next();
+				checkElementClass(mark, 'ui-igslider-bookmark', assert);
+		
+				var paused = $("#player13").igVideoPlayerUnitTesting("paused");
+
+				if (!paused) {
+					$("#player13").igVideoPlayerUnitTesting("pause");
+				checkElementClass(mark, 'ui-igslider-bookmark', assert);
+
+				var bmOffset = mark.offset(),
+					bmWidth = mark.width(),
+					bmHeight = mark.height(),
+					x = bmOffset.left + bmWidth / 2,
+					y = bmOffset.top + bmHeight / 2;
+
+				var ev = jQuery.Event('click');
+				ev.button = 0;
+				ev.clientX = x;
+				ev.clientY = y;
+
+				$(document.elementFromPoint(x, y)).trigger(ev);
+
+				setTimeout(function () {
+
+					$("#player13").igVideoPlayerUnitTesting("option", "fullscreen", false);
+					done();
+				}, 500);
+			}
+			}, 500);
+		
+	});
+
+QUnit.test('Test setting sources after initiation test 53', function (assert) {
+		assert.expect(2);
+		this.assert = assert;
+		createFixtureDiv('player14');
+		var done = assert.async();
+		let checkElementClass = this.checkElementClass;
+
+		$("#player14").igVideoPlayerUnitTesting({
+			width: 800,
+			height: 200,
+			browserControls: true
+		});
+
+		var counter = 0,
+			click = jQuery.Event("click");
+		$("#player14_detectError").one("click", function () {
+			counter++;
+		});
+
+		$("#player14_detectError").trigger(click);
+
+		assert.equal(1, counter);
+
+		$("#player14").igVideoPlayerUnitTesting("option", "sources", ["http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+			"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+			"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"]);
+
+		$("#player14").igVideoPlayerUnitTesting("play");
+
+		setTimeout(function () {
+			assert.equal(false, $("#player14").igVideoPlayerUnitTesting("paused"));
+			done();
+		}, 600);
+});
 
