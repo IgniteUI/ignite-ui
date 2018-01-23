@@ -32,7 +32,7 @@
 		ariaMaskEditorFieldLabel: 'Mask Editor',
 		ariaDateEditorFieldLabel: 'Date Editor',
 		ariaDatePickerFieldLabel: 'Date Picker',
-		ariaTimePickerFieldLabel: 'Time Picker',
+		ariaTimePickerFieldLabel: "Time Picker",
 		ariaSpinUpButton: 'Spin up',
 		ariaSpinDownButton: 'Spin down',
 		ariaDropDownButton: 'Drop down',
