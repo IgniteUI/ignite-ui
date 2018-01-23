@@ -2304,7 +2304,7 @@ $(document).ready(function () {
 			inputTag = this.inputTag,
 			toLocalISOString = this.toLocalISOString,
 			pad = this.pad;
-			
+
 		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			displayTimeOffset: 0,
 			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
@@ -4206,12 +4206,11 @@ $(document).ready(function () {
 		$dtEditor.igDateEditor("setFocus");
 
 		this.util.wait(100).then(function () {
-			debugger;
 			$dtEditor.data("igDateEditor")._setCursorPosition(0);
 			util.type("12/09/2006 14:25:44:112", $dtEditor.igDateEditor("field"));
 			$dtEditor.trigger("blur");
 			assert.equal($dtEditor.igDateEditor("displayValue"), "12/09/2006 14:25:44:112", "Display value is not correct");
-			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("2006-12-09T14:25:44.112Z").getTime(), "Value should be empty");
+			assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("2006-12-09T14:25:44.112Z").getTime(), "Display value is not correct");
 			$dtEditor.remove();
 
 			testData = [{
@@ -4225,7 +4224,7 @@ $(document).ready(function () {
 			}, {
 				dateInputFormat: "tt",
 				inputValues: ["1", "P", "A"],
-				expRes: ["AM", "AM", "AM"]
+				expRes: ["", "AM", "AM"]
 			}, {
 				dateInputFormat: "mm",
 				inputValues: ["9", "a", "12"],
@@ -4257,9 +4256,10 @@ $(document).ready(function () {
 			}, {
 				dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
 				inputValues: ["432016 17:17:17 999 S"],
-				expRes: ["04,03,2016 05:17:17 999 PM"]
+				expRes: ["04,03,2016 07:17:17 999 AM"]
 			}];
 
+			var a = 2;
 			for (ind = 0; ind < testData.length; ind++) {
 				currData = testData[ind];
 				values = currData.inputValues;
@@ -4437,16 +4437,16 @@ $(document).ready(function () {
 		}),
 			spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
 			spinDownButton = $dtEditor.igDateEditor("spinDownButton"),
+			done = assert.async(),
+			util = this.util,
 			value, expectedValue;
 
 		$dtEditor.igDateEditor("setFocus");
-		$dtEditor.data("igDateEditor")._setCursorPosition(15);
-
-		this.util.click(spinUpButton, false, false);
-		$dtEditor.trigger("blur");
 
 		this.util.wait(100).then(function () {
-			debugger;
+			$dtEditor.data("igDateEditor")._setCursorPosition(15);
+			util.click(spinUpButton, false, false);
+			$dtEditor.trigger("blur");
 			value = $dtEditor.igDateEditor("value");
 			expectedValue = new Date(2017, 11, 8, 13);
 			assert.equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
@@ -4456,16 +4456,13 @@ $(document).ready(function () {
 
 			return util.wait(100);
 		}).then(function () {
-			debugger;
-			$dtEditor.data("igDateEditor")._setCursorPosition(15);
-			this.util.click(spinDownButton, false, false);
 			$dtEditor.data("igDateEditor")._setCursorPosition(12);
-			this.util.click(spinUpButton, false, false);
+			util.click(spinUpButton, false, false);
 			$dtEditor.trigger("blur");
-			expectedValue = new Date(2017, 11, 9, 0, 45);
+			expectedValue = new Date(2017, 11, 9, 1, 00);
 			value = $dtEditor.igDateEditor("value");
 			assert.equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
-			assert.equal($dtEditor.igDateEditor("displayValue"), "12/9/2017 12:45 AM", 'The initial value is not as expected');
+			assert.equal($dtEditor.igDateEditor("displayValue"), "12/9/2017 1:00 AM", 'The initial value is not as expected');
 			done();
 		}).catch(function (er) {
 			assert.pushResult({ result: false, message: er.message });
@@ -4483,55 +4480,56 @@ $(document).ready(function () {
 			value: new Date(2017, 7, 18, 18, 6)
 		});
 
-		assert.equal($editor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
-		assert.equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
-		$editor.igDateEditor("option", "language", "ja");
+		assert.equal($dtEditor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+		assert.equal($dtEditor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
 
-		assert.equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.ja.Editor.spinUpperTitle, "Title of the button should be in Japanese");
-		$editor.igDateEditor("option", "regional", "ja");
+		$dtEditor.igDateEditor("option", "language", "ja");
+		assert.equal($dtEditor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.ja.Editor.spinUpperTitle, "Title of the button should be in Japanese");
 
-		assert.equal($editor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
-		$editor.igDateEditor("setFocus");
+		$dtEditor.igDateEditor("option", "regional", "ja");
+		assert.equal($dtEditor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
 
-		assert.equal($editor.igDateEditor("field").val(), "2017/08/18 18:06", "Display Format should be in German");
-		$editor.igDateEditor("option", "regional", "en-US");
+		$dtEditor.igDateEditor("setFocus");
+		assert.equal($dtEditor.igDateEditor("field").val(), "2017/08/18 18:06", "Display Format should be in German");
 
-		assert.equal($editor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
-		$editor.trigger("blur").remove();
+		$dtEditor.igDateEditor("option", "regional", "en-US");
+		assert.equal($dtEditor.igDateEditor("field").val(), "08/18/2017 06:06 PM", "Format should be in English");
+
+		$dtEditor.trigger("blur").remove();
 
 		// Init dateeditor without dateInputFormat or dateDisplayFormat defined
 		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			value: new Date(2017, 7, 18, 18, 6)
 		});
 
-		assert.equal($editor.igDateEditor("displayValue"), "8/18/2017", "Format should be in English");
+		assert.equal($dtEditor.igDateEditor("displayValue"), "8/18/2017", "Format should be in English");
 
-		$editor.igDateEditor("option", "regional", "ja");
-		assert.equal($editor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in Japanese");
+		$dtEditor.igDateEditor("option", "regional", "ja");
+		assert.equal($dtEditor.igDateEditor("displayValue"), "2017/08/18", "Display Format should be in Japanese");
 
-		$editor.igDateEditor("setFocus");
-		assert.equal($editor.igDateEditor("field").val(), "2017/08/18", "Input Format should be in Japanese");
+		$dtEditor.igDateEditor("setFocus");
+		assert.equal($dtEditor.igDateEditor("field").val(), "2017/08/18", "Input Format should be in Japanese");
 
-		$editor.igDateEditor("option", "regional", "en-US");
-		assert.equal($editor.igDateEditor("field").val(), "08/18/2017", "Format should be in English");
-		$editor.trigger("blur").remove();
+		$dtEditor.igDateEditor("option", "regional", "en-US");
+		assert.equal($dtEditor.igDateEditor("field").val(), "08/18/2017", "Format should be in English");
 
+		$dtEditor.trigger("blur").remove();
 		//regional with display format change in between:
 		$dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
 			regional: "en-US",
 			dateInputFormat: "dateTime",
 			value: new Date(2017, 3, 13, 10, 12, 43)
 		});
-		$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
-		$editor.igDateEditor("option", "regional", "ja");
-		assert.equal($editor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
+		$dtEditor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
+		$dtEditor.igDateEditor("option", "regional", "ja");
+		assert.equal($dtEditor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
 
-		$editor.focus();
-		assert.equal($editor.val(), "2017/04/13 10:12", "Edit text not correct");
+		$dtEditor.focus();
+		assert.equal($dtEditor.val(), "2017/04/13 10:12", "Edit text not correct");
 
-		$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
-		$editor.igDateEditor("option", "regional", "de");
-		$editor.blur();
-		assert.equal($editor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
+		$dtEditor.igDateEditor("option", "dateDisplayFormat", "dateLong");
+		$dtEditor.igDateEditor("option", "regional", "de");
+		$dtEditor.blur();
+		assert.equal($dtEditor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
 	});
 });
