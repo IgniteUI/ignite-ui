@@ -4,30 +4,38 @@
     border-width: 0px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-.financialChartRangeSelector
-{
-	text-align:center;
+.ui-financialchart-mainChart {
+	margin-left: 15px;
 }
-.financialChartRangeSelector input
-{
-	display:none;
+.ui-financialchart-volumeChart {
+	margin-left: 15px;
 }
-.financialChartRangeSelector label
-{
-	border-right:1px solid #758696;
-	padding:0 10px;
+.financialChartToolbar {
+	display: grid;
 }
-.financialChartRangeSelector label:last-child
-{
-	border:none;
-	padding-right:0;
+.financialChartRangeSelector {
+	text-align: center;
+	grid-column: 1;
 }
-.financialChartRangeSelector label:hover
-{
-	color:#0090ff;
-	cursor:pointer;
+.financialChartRangeSelector input {
+	display: none;
+}
+.financialChartRangeSelector label {
+	border-right: 1px solid #758696;
+	padding: 0 10px;
+}
+.financialChartRangeSelector label:last-child {
+	border: none;
+	padding-right: 0;
+}
+.financialChartRangeSelector label:hover {
+	color: #0090ff;
+	cursor: pointer;
 }
 .financialChartRangeSelector input:checked + span
 {
-	color:#0090ff;
+	color: #0090ff;
+}
+.financialChartTypePicker {
+	grid-column: 2;
 }
