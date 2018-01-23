@@ -17,7 +17,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "karma start",
-    "cover": "grunt hint && grunt jscs && npm test -- --single-run"
+    "cover": "grunt hint && grunt jscs && npm test -- --single-run",
+    "postinstall": "npm install -g grunt-cli"
   },
   "dependencies": {
     "jquery": "^3.2.1",
