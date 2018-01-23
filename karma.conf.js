@@ -38,6 +38,7 @@ module.exports = function(config) {
       { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
+      "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
 
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
@@ -48,6 +49,9 @@ module.exports = function(config) {
       "src/js/modules/i18n/*-bg.js",
       "src/js/modules/i18n/*-de.js",
       "src/js/modules/i18n/*-es.js",
+
+      // Data files
+      "tests/unit/templating/DB3.js",
 
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
