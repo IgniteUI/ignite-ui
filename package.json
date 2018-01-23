@@ -20,9 +20,11 @@
     "cover": "grunt hint && grunt jscs && npm test -- --single-run"
   },
   "dependencies": {
-    "coveralls": "^3.0.0"
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -33,8 +35,6 @@
     "grunt-coveralls": "^1.0.1",
     "grunt-jscs": "^2.8.0",
     "grunt-qunit-istanbul": "^0.6.0",
-    "jquery": "^3.2.1",
-    "jquery-ui": "^1.12.1",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
