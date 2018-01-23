@@ -39,9 +39,9 @@ module.exports = function(config) {
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
       "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
-
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
+      { pattern: "src/css/**/*", included: false, served: true },
 
       // Load locale files:
       "src/js/modules/i18n/*-en.js",
@@ -90,11 +90,10 @@ module.exports = function(config) {
 
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
+      "tests/test-patch.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      // "tests/unit/editors/currencyEditor/tests.html",
-      // "tests/unit/zoombar/tests.html",
       "tests/**/*-test.js"
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
@@ -111,7 +110,7 @@ module.exports = function(config) {
         //reorder: false,
         showUI: true,
         testTimeout: 5000,
-        fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
+        //fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
       }
     },
 
