@@ -86,6 +86,7 @@ module.exports = function(config) {
 
       "tests/unit/common/test-util.js",
       "tests/test-patch.js",
+      "tests/unit/splitter/jquery.simulate.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
@@ -124,9 +125,9 @@ module.exports = function(config) {
     coverageReporter: {
       dir : "coverage/",
       reporters: [
-        {  
+        {
           type : "lcov",
-          subdir: "." // default outputs per-browser folders 
+          subdir: "." // default outputs per-browser folders
         },
         { type: "text-summary" }
       ],
