@@ -155,8 +155,8 @@
 				i;
 
             if (dataSource) {
-                for (i = 0; i < $comboList.length; i++) {
-                    if (ko.isObservable($comboList[ i ])) {
+                for (i = 0; i < dataSource.length; i++) {
+                    if (ko.isObservable(dataSource[ i ])) {
                         ko.applyBindingsToNode($comboList[ i ], {
                             igComboItem: {
                                 combo: combo,
@@ -182,8 +182,8 @@
                 combo.one("igcomboitemsrendered", function () {
                     $comboList = combo.igCombo("listItems");
                     if (dataSource) {
-                        for (i = 0; i < $comboList.length; i++) {
-                            if (ko.isObservable($comboList[ i ])) {
+                        for (i = 0; i < dataSource.length; i++) {
+                            if (ko.isObservable(dataSource[ i ])) {
                                 ko.applyBindingsToNode($comboList[ i ], {
                                     igComboItem: {
                                         combo: combo,
@@ -225,7 +225,7 @@
             }
             index = valueAccessor().index;
             dsItem = valueAccessor().value;
-            item = combo.igCombo("itemsFromIndex", index).element;
+            item = $(combo.igCombo("dropDown").find("li").eq(index));
             combo.data("igCombo")._updateItem(item, dsItem);
             combo.data("igCombo")._updateInputValues();
         }
@@ -238,7 +238,7 @@
             if (!ko.isObservable(visible)) {
                 return;
             }
-            combo.css("display", visible() ? "inline-block" : "none");
+            combo.igCombo("comboWrapper").css("display", visible() ? "inline-block" : "none");
         }
     };
 

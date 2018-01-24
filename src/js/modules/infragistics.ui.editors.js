@@ -217,11 +217,10 @@
 		},
 		events: {
 			/* igWidget events go here */
-			/* cancel="false" Event which is raised before rendering of the editor completes.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the editor performing rendering.
-				Use ui.element to get a reference to the editor element.
+			/* cancel="true" Fired before rendering of the editor has finished.
+
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%rendering", function (evt, ui) {
 					...
 				});
@@ -233,13 +232,15 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor performing rendering.
+				eventArgument="ui.element" argType="object" Gets a reference to the editor element.
 			*/
 			rendering: "rendering",
-			/* cancel="false" Event which is raised after rendering of the editor completes.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the editor performing rendering.
-				Use ui.element to get a reference to the editor element.
+			/* cancel="false" Fired after rendering of the editor has finished.
+
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%rendered", function (evt, ui) {
 					...
 				});
@@ -251,14 +252,15 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor performing rendering.
+				eventArgument="ui.element" argType="object" Gets a reference to the editor element.
 			*/
 			rendered: "rendered",
-			/* Event which is raised on mousedown event.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="true" Fired on mousedown event.
+
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mousedown", function (evt, ui) {
 					...
 				});
@@ -270,14 +272,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			mousedown: "mousedown",
-			/* Event which is raised on mouseup event.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="false" Fired on mouseup event.
+
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mouseup", function (evt, ui) {
 					...
 				});
@@ -289,14 +293,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			mouseup: "mouseup",
-			/* Event which is raised on mousemove at any part of editor including drop-down list.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="false" Fired on mousemove at any part of editor including the drop-down list.
+
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mousemove", function (evt, ui) {
 					...
 				});
@@ -308,14 +314,15 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			mousemove: "mousemove",
-			/* Event which is raised on mouseover at any part of editor including drop-down list.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="false" Fired on mouseover at any part of editor including the drop-down list.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mouseover", function (evt, ui) {
 					...
 				});
@@ -327,14 +334,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
+				eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			mouseover: "mouseover",
-			/* Event which is raised on mouseleave at any part of editor including drop-down list.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="false" Fired on mouseleave at any part of editor including the drop-down list.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%mouseout", function (evt, ui) {
 					...
 				});
@@ -346,14 +355,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
+				eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			mouseout: "mouseout",
-			/* Event which is raised when input field of editor loses focus.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="false" Fired when the input field of the editor loses focus.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%blur", function (evt, ui) {
 					...
 				});
@@ -365,14 +376,15 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
 			*/
 			blur: "blur",
-			/* Event which is raised when input field of editor gets focus.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput to get a reference to the editor field.
+			/* cancel="false" Fired when the input field of the editor gets focus.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%focus", function (evt, ui) {
 					...
 				});
@@ -384,15 +396,17 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
+				eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			focus: "focus",
-			/* cancel="true" Event which is raised on keydown event.
+			/* cancel="true" Fired on keydown event.
 				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%keydown", function (evt, ui) {
 					...
 				});
@@ -404,15 +418,17 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object. Use evt.originalEvent to obtain reference to event of the browser.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
+				eventArgument="ui.key" argType="object" Gets the value of the keyCode.
 			*/
 			keydown: "keydown",
-			/* cancel="true" Event which is raised on keypress event.
+			/* cancel="true" Fired on keypress event.
 				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%keypress", function (evt, ui) {
 					...
 				});
@@ -424,14 +440,17 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object. Use evt.originalEvent to obtain reference to event of the browser.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
+				eventArgument="ui.key" argType="object" Gets the value of the keyCode.
+				eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			keypress: "keypress",
-			/* Event which is raised on keyup event.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
+			/* cancel="false" Fired on keyup event.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%keyup", function (evt, ui) {
 					...
 				});
@@ -443,17 +462,19 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object. Use evt.originalEvent to obtain reference to event of the browser.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor input field.
+				eventArgument="ui.key" argType="object" Gets the value of the keyCode.
+                eventArgument="ui.originalEvent" argType="object" Gets a reference to the event object of the browser.
 			*/
 			keyup: "keyup",
-			/* cancel="true" Event which is raised before the editor value is changed.
+			/* cancel="true" Fired before changing the editor's value.
 				Return false in order to cancel change.
 				It can be raised after loosing focus or on spin events.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.oldValue to obtain the old value.
-				Use ui.editorInput to obtain reference to the editor input.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%valuechanging", function (evt, ui) {
 					...
 				});
@@ -465,15 +486,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets the editor input.
+				eventArgument="ui.newValue" argType="object" Gets the editor's new value. The argument type might differ depending on the editor type.
+				eventArgument="ui.oldValue" argType="object" Gets the editor's old value. The argument type might differ depending on the editor type.
 			*/
 			valueChanging: "valueChanging",
-			/* Event which is raised after the editor value is changed. It can be raised after loosing focus or on spin events.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the value entered from the user after internal formatting.
-				Use ui.originalValue to obtain the value entered from the user before internal formatting.
-				Use ui.editorInput to obtain reference to the editor input.
+			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
 					...
 				});
@@ -485,6 +507,11 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets the editor input.
+				eventArgument="ui.newValue" argType="object" Gets the value entered from the user after internal formatting. The argument type might differ depending on the editor type.
+				eventArgument="ui.originalValue" argType="object" Gets the value entered from the user before internal formatting. The argument type might differ depending on the editor type.
 			*/
 			valueChanged: "valueChanged"
 		},
@@ -1645,12 +1672,9 @@
 			textArea: "ui-igedit-textarea"
 		},
 		events: {
-			/* cancel="true" Event which is raised when the drop down is opening.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
+			/* cancel="true" Fired when the drop down is opening.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
 					...
 				});
@@ -1662,14 +1686,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
 			dropDownListOpening: "dropDownListOpening",
-			/* Event which is raised after the drop down is opened.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
+			/* cancel="true" Fired after the drop down is opened.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
 					...
 				});
@@ -1681,14 +1707,15 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
 			dropDownListOpened: "dropDownListOpened",
-			/* cancel="true" Event which is raised when the drop down is closing.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
+			/* cancel="true" Fired when the drop down is closing.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosing", function (evt, ui) {
 					...
 				});
@@ -1700,14 +1727,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
 			dropDownListClosing: "dropDownListClosing",
-			/* Event which is raised after the drop down is closed.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
+			/* cancel="false" Fired after the drop down is closed.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
 					...
 				});
@@ -1719,15 +1748,16 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
 			*/
 			dropDownListClosed: "dropDownListClosed",
-			/* cancel="true" Event which is raised when an item in the drop down list is being selected.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is about to be selected.
+			/* cancel="true" Fired when an item in the drop down list is being selected.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownitemselecting", function (evt, ui) {
 					...
 				});
@@ -1739,15 +1769,17 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.item" argType="object" Gets a reference to the list item which is about to be selected.
 			*/
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* Event which is raised after an item in the drop down list is selected.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is selected.
+			/* cancel="false" Fired after an item in the drop down list is selected.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownitemselected", function (evt, ui) {
 					...
 				});
@@ -1759,15 +1791,17 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
 			*/
 			dropDownItemSelected: "dropDownItemSelected",
-			/* Event which is raised after text in the editor was changed. It can be raised when keyUp event occurs,
+			/* cancel="false" Fired after the editor's text has been changed. It can be raised when keyUp event occurs,
 				when the clear button is clicked or when an item from a list is selected.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.text to obtain new text
-				Use ui.oldText to obtain the old text.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%textchanged", function (evt, ui) {
 					...
 				});
@@ -1779,6 +1813,10 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.text" argType="string" Gets a reference to the new text.
+				eventArgument="ui.oldText" argType="string" Gets a reference to the old text.
 			*/
 			textChanged: "textChanged"
 		},
@@ -2739,7 +2777,7 @@
 				},
 				"compositionend.editor": function () {
 					setTimeout(function () {
-						var value, pastedValue, widgetName = self.widgetName,
+						var value, widgetName = self.widgetName,
 							cursorPosition = self._getCursorPosition(),
 							selection = { start: cursorPosition, end: cursorPosition };
 
@@ -2750,41 +2788,18 @@
 						switch (widgetName) {
 							case "igMaskEditor":
 								{
-									pastedValue = value = self._replaceStringRange(self._compositionStartValue,
+									value = self._replaceStringRange(self._compositionStartValue,
 										self._currentCompositionValue, self._copositionStartIndex,
 										self._copositionStartIndex + self._currentCompositionValue.length - 1);
 								}
 								break;
-							case "igDateEditor":
-							case "igDatePicker":
-								{
-									value = self._currentCompositionValue;
-									value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-									pastedValue = value = self._parseValueByMask(value);
-									if (value !== self._maskWithPrompts) {
-										value = self._parseDateFromMaskedValue(value);
-									} else if (self.options.revertIfNotValid) {
-										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
-										pastedValue = value = self._maskedValue;
-										selection.start = 0;
-										selection.end = value.length;
-									}
-								}
-								break;
 							default: {
-								pastedValue = value = self._editorInput.val();
+								value = self._editorInput.val();
 							}
 						}
 
-						//T.P. 7th April 2016. Bug 217371 - In case of text/mask editor the full width numbers should not be converted to half width,
-						//because they are valid characters.
-						if (widgetName !== "igTextEditor" && widgetName !== "igMaskEditor") {
-							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
-						}
-
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
-						self._insert(pastedValue, self._compositionStartValue, selection);
+						self._insert(value, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -4835,7 +4850,13 @@
 				}
 			}
 			if (value !== this.value()) {
-				this._updateValue(value);
+
+				// N.A. December 20th, 2017 #665: When new value is empty string we call clearValue(), to properly set new value according to the editor options.
+				if (value === "" && this.options.allowNullValue && this.options.nullValue === null) {
+					this._clearValue();
+				} else {
+					this._updateValue(value);
+				}
 			}
 			this._setSpinButtonsState(value);
 		},
@@ -6498,18 +6519,24 @@
 			this._promptCharsIndices = [];
 
 			if (this._editMode) {
-				newValue = this._parseValueByMask(newValue);
-				this._editorInput.val(newValue);
-				if (selection !== undefined) {
-					// Move the caret
-					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
-				}
+				this._insertEditMode(newValue, selection);
 			} else if (newValue !== previousValue) {
-				newValue = this._parseValueByMask(newValue);
-				this._processInternalValueChanging(newValue);
-				this._exitEditMode();
+				this._insertDisplayMode(newValue);
 			}
 			this._processTextChanged();
+		},
+		_insertEditMode: function(newValue, selection) { // MaskEditor
+			newValue = this._parseValueByMask(newValue);
+			this._editorInput.val(newValue);
+			if (selection !== undefined) {
+				// Move the caret
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			}
+		},
+		_insertDisplayMode: function(newValue) {
+			newValue = this._parseValueByMask(newValue);
+			this._processInternalValueChanging(newValue);
+			this._exitEditMode();
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
 			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
@@ -8813,6 +8840,17 @@
 				newValue = $(event.target).val();
 				oldVal = this._dateObjectValue;
 
+				// N.A. January 8th, 2018 #1417: In some browsers (like IE 11 and Firefox) blur event (therefore _parseDateFromMaskedValue) is fired before compositionend one.
+				// In that case we need to properly parse full width char symblols.
+				if (this._inComposition === true) {
+					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
+					newValue = this._parseValueByMask(newValue);
+
+					// N.A. January 12th, 2018 #1525: When wrong input is entered the value should be reverted, if the option is set.
+					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+						newValue = oldVal;
+					}
+				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
 				// #206308 in case newValiue == maskWithPrompts it's either clear value, or just exiting edit mode without entering value.
@@ -9152,6 +9190,24 @@
 					this._clearValue();
 					value = this._valueInput.val();
 				}
+			}
+		},
+		_insertEditMode: function (newValue, selection) { // igDateEditor
+
+			// N.A. January 8th, 2018 #1417: Move conversion of full width char symbols here from compositionend handler.
+			newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
+			newValue = this._parseValueByMask(newValue);
+			if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+
+				//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+				newValue = this._maskedValue;
+				selection.start = 0;
+				selection.end = newValue.length;
+			}
+			this._editorInput.val(newValue);
+			if (selection !== undefined) {
+				// Move the caret
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 			}
 		},
 		_isValidDate: function (date) {
@@ -10719,12 +10775,9 @@
 			suppressKeyboard: false
 		},
 		events: {
-			/* cancel="true" Event which is raised when the drop down is opening.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
+			/* cancel="true" Fired when the drop down is opening.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
 					...
 				});
@@ -10736,14 +10789,15 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.calendar" argType="object" Gets a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
 			*/
 			dropDownListOpening: "dropDownListOpening",
-			/* Event which is raised after the drop down is opened.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
+			/* cancel="false" Fired after the drop down is opened.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
 					...
 				});
@@ -10755,18 +10809,19 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.calendar" argType="object" Gets a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
 			*/
 			dropDownListOpened: "dropDownListOpened",
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownListClosing: "dropDownListClosing",
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* Event which is raised after the drop down (calendar) is closed.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
+			/* cancel="true" Fired after the drop down (calendar) is closed.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
 					...
 				});
@@ -10778,17 +10833,17 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.calendar" argType="object" Gets a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
 			*/
 			dropDownListClosed: "dropDownListClosed",
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownItemSelected: "dropDownItemSelected",
-			/* cancel="false" Event which is raised after a date selection in the calendar.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.dateFromPicker to obtain reference to the date object which is selected.
-				Use ui.item to obtain a referece to the selected html element from the calendar.
-				Use ui.calendar to obtain a reference to jQuery UI date picker, used as a calendar from the igDatePicker.
+			/* cancel="false" Fired after a date selection in the calendar.
 				```
+				//Delegate
 				$(".selector").on("%%WidgetNameLowered%%itemselected", function (evt, ui) {
 					...
 				});
@@ -10800,6 +10855,11 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.dateFromPicker" argType="object" Gets a reference to the selected date object.
+				eventArgument="ui.item" argType="object" Gets a reference to the selected html element from the calendar.
+				eventArgument="ui.calendar" argType="object" Gets a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
 			*/
 			itemSelected: "itemSelected"
 		},
@@ -11502,17 +11562,10 @@
 			checkboxInput: "ui-helper-hidden"
 		},
 		events: {
-			/* cancel="true" Event which is raised before value in editor was changed.
+			/* cancel="true" Fired before changing the editor's value.
 				Return false in order to cancel change.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.newState to obtain the new state.
-				Use ui.oldValue to obtain the old value.
-				Use ui.oldState to obtain the old state.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput obtain reference to the editor element.
 				```
+				//Delegate
 				$(".selector").on("igcheckboxeditorvaluechanging", function (evt, ui) {
 					...
 				});
@@ -11524,16 +11577,19 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor element.
+				eventArgument="ui.oldValue" argType="boolean" Gets the editor's old value.
+				eventArgument="ui.oldState" argType="boolean" Gets the editor's old check state.
+				eventArgument="ui.newValue" argType="boolean" Gets the editor's new value.
+				eventArgument="ui.newState" argType="boolean" Gets the editor's new check state.
 			*/
 			valueChanging: "valueChanging",
-			/* Event which is raised after value in editor was changed.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.newState to obtain the new state.
-				Use ui.element to obtain a reference to the event target.
-				Use ui.editorInput obtain reference to the editor element.
+			/* cancel="false" Fired after the editor's value has been changed.
 				```
+				//Delegate
 				$(".selector").on("igcheckboxeditorvaluechanged", function (evt, ui) {
 					...
 				});
@@ -11545,6 +11601,12 @@
 					}
 				});
 				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.element" argType="object" Gets a reference to the event target.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editor element.
+				eventArgument="ui.newValue" argType="boolean" Gets the editor's new value.
+				eventArgument="ui.newState" argType="boolean" Gets the editor's new check state.
 			*/
 			valueChanged: "valueChanged"
 		},

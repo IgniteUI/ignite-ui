@@ -1951,14 +1951,14 @@
 		},
 
 		events: {
-			/* Occurs when video has ended.
+			/* cancel="true" Occurs when the video has ended.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerended", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
 					//return the duration of the video in seconds
 					ui.duration;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -1967,18 +1967,20 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.duration to get the video duration in seconds.
+			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			ended: "ended",
-			/* cancel="false" Occurs when video gets playing.
+			/* cancel="true" Occurs when video gets playing.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerplaying", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
+					//return the ellapsed time
+					ui.currentTime;
 					//return the duration of the video
 					ui.duration;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -1987,18 +1989,21 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.duration to get the video duration in seconds.
+			eventArgument="ui.currentTime" argType="number" Get the current time in the video at which the event was fired.
+			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			playing: "playing",
-			/* Occurs when video is paused.
+			/* cancel="true" Occurs when the video is paused.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerpaused", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
+					//return the ellapsed time
+					ui.currentTime;
 					//return the duration of the video
 					ui.duration;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -2007,18 +2012,19 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.duration to get the video duration in seconds.
+			eventArgument="ui.currentTime" argType="number" Get the current time in the video at which the event was fired.
+			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			paused: "paused",
-			/* cancel="false" Occurs when a chunk of data is buffered.
+			/* cancel="true" Occurs when a chunk of data is buffered.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerbuffering", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
 					//return the buffering precentage
 					ui.buffered;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -2027,20 +2033,20 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.buffered to get buffered percentage.
+			eventArgument="ui.buffered" argType="number" Get buffered percentage.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			buffering: "buffering",
-			/* Occurs when video has advanced the playback position.
+			/* cancel="true" Occurs when the video has advanced the playback position.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerprogress", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
 					//return the current time(current position) in the video at which the event was fired
 					ui.currentTime;
 					//return the duration of the video
 					ui.duration;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -2049,21 +2055,21 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.currentTime to get current position in the video at which the event was fired.
-			Use ui.duration to get the video duration in seconds.
+			eventArgument="ui.currentTime" argType="number" Get the current time in the video at which the event was fired.
+			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			progress: "progress",
-			/* cancel="false" Occurs when igVideoPlayer is waiting for data from the server.
+			/* cancel="true" Occurs when igVideoPlayer is waiting for data from the server.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerwaiting", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
 					//return the current time(current position) in the video at which the event was fired
 					ui.currentTime;
 					//return the duration of the video
 					ui.duration;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -2072,21 +2078,21 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.currentTime to get current position in the video at which the event was fired.
-			Use ui.duration to get the video duration in seconds.
+			eventArgument="ui.currentTime" argType="number" Get the current time in the video at which the event was fired.
+			eventArgument="ui.duration" argType="number" Get the video duration in seconds.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			waiting: "waiting",
-			/* Occurs when the bookmark is hit.
+			/* cancel="true" Occurs when a bookmark is hit.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerbookmarkhit", function (evt, ui) {
-					//return the url of the playing video (the one that is used from the sources array)
-					ui.source;
 					//return the bookmark object from the bookmarks array
 					ui.bookmark;
 					//return bookmark html element in the DOM
 					ui.bookmarkElement;
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
 				});
 
 				//Initialize
@@ -2095,18 +2101,18 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
-			Use ui.bookmark to get the bookmark object from the bookmarks array.
-			Use ui.bookmarkElement to get the html element in the DOM.
+			eventArgument="ui.bookmark" argType="object" Get the bookmark object from the bookmarks array.
+			eventArgument="ui.bookmarkElement" argType="object" Get the html element in the DOM.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			bookmarkHit: "bookmarkHit",
-			/* Occurs when the bookmark is clicked.
+			/* cancel="true" Occurs when a bookmark is clicked.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerbookmarkclick", function (evt, ui) {
-					//return the bookmark object from the bookmarks array
+					//return a bookmark object from the bookmarks array
 					ui.bookmark;
-					//return bookmark html element in the DOM
+					//return the bookmark html element in the DOM
 					ui.bookmarkElement;
 				});
 
@@ -2116,8 +2122,8 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.bookmark to get the bookmark object from the bookmarks array.
-			Use ui.bookmarkElement to get the html element in the DOM.
+			eventArgument="ui.bookmark" argType="object" Get a bookmark object from the bookmarks array.
+			eventArgument="ui.bookmarkElement" argType="object" Get the html element in the DOM.
 			*/
 			bookmarkClick: "bookmarkClick",
 			/* cancel="true" Occurs when igVideoPlayer enters full screen mode.
@@ -2134,7 +2140,7 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			enterFullScreen: "enterFullScreen",
 			/* cancel="true" Occurs when igVideoPlayer exits full screen mode.
@@ -2151,10 +2157,10 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.source to get the url of the playing video.
+			eventArgument="ui.source" argType="string" Get the url of the playing video.
 			*/
 			exitFullScreen: "exitFullScreen",
-			/* cancel="true" Occurs when related video is clicked.
+			/* cancel="true" Occurs when a related video is clicked.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerrelatedvideoclick", function (evt, ui) {
@@ -2170,20 +2176,20 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.relatedVideo to get the relatedVideo object from the relatedVideos array.
-			Use ui.relatedVideoElement to get the relatedVideo html element in the DOM.
+			eventArgument="ui.relatedVideo" argType="object" Get the relatedVideo object from the relatedVideos array.
+			eventArgument="ui.relatedVideoElement" argType="object" Get the relatedVideo html element in the DOM.
 			*/
 			relatedVideoClick: "relatedVideoClick",
-			/* Defines the name of the player banner visible event. Fired when the banner has been displayed.
+			/* cancel="true" Defines the name of the player banner visible event. Fired when the banner has been displayed.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerbannervisible", function (evt, ui) {
-					//return the banner index in the banners array
-					ui.index;
 					//return the banner object from the banners array
 					ui.banner;
 					//return the banner html element in the DOM
 					ui.bannerElement;
+					//return the banner index in the banners array
+					ui.index;
 				});
 
 				//Initialize
@@ -2192,21 +2198,21 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.index to get the banner index in the banners array.
-			Use ui.banner to get the banner object from the banners array.
-			Use ui.bannerElement to get the banner html element in the DOM.
+			eventArgument="ui.banner" argType="object" Get the banner object from the banners array.
+			eventArgument="ui.bannerElement" argType="object" Get the banner html element in the DOM.
+			eventArgument="ui.index" argType="number" Get the banner index in the banners array.
 			*/
 			bannerVisible: "bannerVisible",
-			/* Occurs when the banner is hidden.
+			/* cancel="true" Occurs when the banner is hidden.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerbannerhidden", function (evt, ui) {
-					//return the banner index in the banners array
-					ui.index;
 					//return the banner object from the banners array
 					ui.banner;
 					//return the banner html element in the DOM
 					ui.bannerElement;
+					//return the banner index in the banners array
+					ui.index;
 				});
 
 				//Initialize
@@ -2215,12 +2221,12 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.index to get the banner index in the banners array.
-			Use ui.banner to get the banner object from the banners array.
-			Use ui.bannerElement to get the banner html element in the DOM.
+			eventArgument="ui.banner" argType="object" Get the banner object from the banners array.
+			eventArgument="ui.bannerElement" argType="object" Get the banner html element in the DOM.
+			eventArgument="ui.index" argType="number" Get the banner index in the banners array.
 			*/
 			bannerHidden: "bannerHidden",
-			/* Occurs when the banner is clicked.
+			/* cancel="false" Occurs when the banner is clicked.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igvideoplayerbannerclick", function (evt, ui) {
@@ -2234,10 +2240,10 @@
 				});
 			```
 			Function takes arguments evt and ui.
-			Use ui.bannerElement to get the banner html element in the DOM.
+			eventArgument="ui.bannerElement" argType="object" Get the banner html element in the DOM.
 			*/
 			bannerClick: "bannerClick",
-			/* Occurs when browser does not support HTML 5 video.
+			/* cancel="false" Occurs when browser does not support HTML 5 video.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -5194,10 +5200,13 @@
 				rawDuration = videoElem.duration;
 			if (val !== null && val !== undefined) {
 				try {
-					// A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
-					if ($.ig.util.isIE) {
-						$("video").bind("canplay", function () { this.currentTime = val; });
-					}
+						// M.V. Dec 21, 2017 #1461 this was introduced with the fix for #218835.
+						// I've removed the fix for #218835 and added a new one which fixes both #1461 and #218835.
+						if ($.ig.util.isIE) {
+							$(videoElem).on("loadedmetadata", function() {
+								this.currentTime = val;
+							});
+						}
 						videoElem.currentTime = val;
 						$("#" + this._id("_ctrls_pb"))
 							.igProgressBar("option", "value", (val / rawDuration).toFixed(2) * 100);

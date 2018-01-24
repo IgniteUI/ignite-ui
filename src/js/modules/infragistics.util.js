@@ -2833,11 +2833,14 @@
 			g: 0,
 			b: 0
 		};
-
+		var transparent = { a: 0, r: 0, g: 0, b: 0 };
+		if (!str) {
+			return transparent;
+		}
 		var asColorName = str.replace(" ", "").toLowerCase();
 
 		if (asColorName === "transparent") {
-			return { a: 0, r: 0, g: 0, b: 0 };
+			return transparent;
 		}
 
 		if ($.ig.util.wellKnownColors[ asColorName ] !== undefined) {
@@ -5004,29 +5007,55 @@
 					.replace(".", provider.numberFormat().numberDecimalSeparator());
 		}
 
-		if (format.startsWith("0")) {
-			var integerDigitsRequired = 0;
+		if (format.match(/[0\#\.]+/)) {
 			var isValid = true;
-			for (var i = 0; i < format.length; i++) {
-				if (format[ i ] === "0") {
-					integerDigitsRequired++;
+			var formatIndexOfDecimalSeparator = format.indexOf(".");
+			var decimalFormat = formatIndexOfDecimalSeparator == -1 ? "" :
+				format.substring(formatIndexOfDecimalSeparator + 1);
+			var numberString = number.toFixed(decimalFormat.length).toString();
+			var numberIndexOfDecimalSeparator = numberString.indexOf(".");
+			var integralPart = numberIndexOfDecimalSeparator == -1 ? numberString :
+				numberString.substring(0, numberIndexOfDecimalSeparator);
+			var integralFormat = formatIndexOfDecimalSeparator == -1 ? format :
+				format.substring(0, formatIndexOfDecimalSeparator);
+			while (integralFormat.length < integralPart.length) {
+				integralFormat = "0" + integralFormat;
+			}
+			while (integralPart.length < integralFormat.length) {
+				integralPart = "0" + integralPart;
+			}
+			var formattedIntegralPart = "";
+			var digit;
+			for (var ii = integralFormat.length - 1; ii >= 0; ii--) {
+				if (integralFormat[ ii ] == "0") {
+					formattedIntegralPart = integralPart[ ii ] + formattedIntegralPart;
+				} else if (integralFormat[ ii ] == "#") {
+					digit = integralPart.substring(0, ii + 1).match(/[1-9]/) ?
+						integralPart[ ii ] : "";
+					formattedIntegralPart = digit + formattedIntegralPart;
 				} else {
 					isValid = false;
-					break;
 				}
 			}
-
-			if (isValid) {
-				var result = number.toLocaleString(provider.name(), zeroFormatOptions);
-				while (result.length < integerDigitsRequired) {
-					result = "0" + result;
+			var decimalPart = numberIndexOfDecimalSeparator == -1 ? "" :
+				numberString.substring(numberIndexOfDecimalSeparator + 1);
+			var formattedDecimalPart = "";
+			for (var jj = 0; jj < decimalFormat.length; jj++) {
+				if (decimalFormat[ jj ] == "0") {
+					formattedDecimalPart += decimalPart[ jj ];
+				} else if (decimalFormat[ jj ] == "#") {
+					digit = decimalPart.length > jj && (decimalPart[ jj ] != "0" || decimalPart.substring(jj).match(/[1-9]/)) ?
+						decimalPart[ jj ] : "";
+					formattedDecimalPart += digit;
+				} else {
+					isValid = false;
 				}
-
-				return result;
+			}
+			if (isValid) {
+				return formattedIntegralPart +
+					(formattedDecimalPart.length > 0 ? "." + formattedDecimalPart : "");
 			}
 		}
-
-		// TODO: Add fraction support as well
 		throw new $.ig.FormatException(1, "Unsupported format code: " + format);
 	};
 
