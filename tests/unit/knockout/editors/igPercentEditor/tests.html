@@ -82,22 +82,24 @@
 		});
 				
 		testID = "Initializing igPercentEditor" ;
-		test(testID, 8, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(8);
 			//
-			ok(typeof(ko.bindingHandlers.igPercentEditor) !== 'undefined', 'igPercentEditor knockoutJS extention script is not loaded');
-			ok(typeof(ko.bindingHandlers.igPercentEditor) === 'object', 'igPercentEditor knockoutJS extention is of a wrong type');
-			ok($('#inputEditor1').data("igPercentEditor") !== undefined, 'Creating igPercentEditor in an input');
-			ok($('#divEditor1').data("igPercentEditor") !== undefined, 'Creating igPercentEditor in a div');
-			ok($('#tdEditor1').data("igPercentEditor") !== undefined, 'Creating igPercentEditor in a td');
+			assert.ok(typeof(ko.bindingHandlers.igPercentEditor) !== 'undefined', 'igPercentEditor knockoutJS extention script is not loaded');
+			assert.ok(typeof(ko.bindingHandlers.igPercentEditor) === 'object', 'igPercentEditor knockoutJS extention is of a wrong type');
+			assert.ok($('#inputEditor1').data("igPercentEditor") !== undefined, 'Creating igPercentEditor in an input');
+			assert.ok($('#divEditor1').data("igPercentEditor") !== undefined, 'Creating igPercentEditor in a div');
+			assert.ok($('#tdEditor1').data("igPercentEditor") !== undefined, 'Creating igPercentEditor in a td');
 			
 			//Check Initial expected value
-			equal($('#inputEditor1').igPercentEditor("value"), 32, 'The initial value is as expexted');
-			equal($('#divEditor1').igPercentEditor("value"), 32, 'The initial value is as expexted');
-			equal($('#tdEditor1').igPercentEditor("value"), 32, 'The initial value is as expexted');
+			assert.equal($('#inputEditor1').igPercentEditor("value"), 32, 'The initial value is as expexted');
+			assert.equal($('#divEditor1').igPercentEditor("value"), 32, 'The initial value is as expexted');
+			assert.equal($('#tdEditor1').igPercentEditor("value"), 32, 'The initial value is as expexted');
 		});
 		
 		testID = "Update model -> editor (input)" ;
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			$('#inputEditor1').igPercentEditor("setFocus");
 			$('#inputEditor1').focus().val(52);
 			$("#outerInput").focus();
@@ -106,7 +108,8 @@
 		
 
 		testID = "Update model -> editor (div)";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			stop();
 			setTimeout(function () {
 				//Update div Editor and check
@@ -125,7 +128,8 @@
 		});
 	
 		testID = "Update model -> editor (span)";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			stop();
 			setTimeout(function () {
 				//Update td Editor and check
@@ -145,13 +149,15 @@
 		});
 		
 		testID = "Update Model, check editors";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			$("#resetButton").click();
 			checkAllValues(32, "Values are as expected");
 		});
 		
 		testID = "updateMode set to not allowed value";
-			test(testID, 1, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(1);
 			var err;
 			QUnit.throws(function () {
 				$("#tempContainer").empty();
@@ -163,38 +169,40 @@
 		});
 	
 		testID = "Value set to nonObservable value";
-			test(testID, 6, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(6);
 				var evt;			
 				$("#tempContainer").empty();
 				// Default Update Mode
 				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igPercentEditor: { value: nonObservable, width: 160 }'></input>");
 				ko.applyBindings(model, document.getElementById("tempEditor"));
-				equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
+				assert.equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
 
 				$("#tempEditor").igPercentEditor("select");
 				$.ig.TestUtil.keyInteraction(49, $("#tempEditor"));
 				$("#tempEditor").trigger("blur");
-				equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should be updated");
+				assert.equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should be updated");
 				model.nonObservable = 42;
 				// The value of the checkbox editor shouldn't be updated
-				notEqual($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should not be updated");
+				notassert.equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should not be updated");
 				$("#tempContainer").empty();
 				
 				// Immediate update mode
 				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igPercentEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }'></input>");
 				ko.applyBindings(model, document.getElementById("tempEditor"));
-				equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
+				assert.equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
 				$("#tempEditor").igPercentEditor("select");
 				$.ig.TestUtil.keyInteraction(49, $("#tempEditor"));
-				equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should be updated");
+				assert.equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should be updated");
 				
 				model.nonObservable = 42;
-				notEqual($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should not be updated");
+				notassert.equal($("#tempEditor").igPercentEditor("value"), model.nonObservable, "The value should not be updated");
 				$("#tempContainer").empty();
 		});
 	
 		testID = "ListItem change -> immediate";
-		test(testID, 19, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(19);
 			$("#tempContainer").empty();
 				//immediate Update Mode
 			$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igPercentEditor: { value: percentNumber, displayFactor: 1, width: 160, updateMode:\"immediate\" , listItems : [\"25\", \"15\", \"263\", \"0.5\"],button: \"dropdown\"}'></input>");
@@ -212,7 +220,7 @@
 			checkAllValues(25, "The value is updated on on list selection changed");
 			$("#resetButton").click();
 			//Check if this editor defaults the value
-			equal($("#tempEditor").igPercentEditor("value"), 32, "The default text is correct");
+			assert.equal($("#tempEditor").igPercentEditor("value"), 32, "The default text is correct");
 			ko.cleanNode(document.getElementById("tempEditor"));
 			$("#tempContainer").empty();
 
@@ -228,7 +236,8 @@
 		});
 			
 		testID = "updateMode -> immediate";
-		test(testID, 24, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(24);
 			//reinitialize all the 3 editors editors
 
 
@@ -267,7 +276,8 @@
 		});
 
 		testID = "updateMode -> onChange";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			ko.cleanNode(document.getElementById("inputEditor1"));
 			elementParent = $("#inputEditor1").parent()
 			elementParent.empty();
@@ -283,23 +293,27 @@
 		});
 		
 		testID = "update from outside input";		
-		test(testID, 6, function () {		
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);		
 			$('#inputValue').val(236).change();
 			checkAllValues(236, "Values are as expected");
 		});
 		testID = "update from outside s input";		
-		test(testID, 6, function () {		
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);		
 			$('#inputValue').val(23.6).change();
 			checkAllValues(23.6, "Values are as expected");
 		});
 		testID = "update from outside input negative";		
-		test(testID, 6, function () {		
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);		
 			$('#inputValue').val(-26).change();
 			checkAllValues(-26, "Values are as expected");
 		});
 
 		var testId = 'Test valueChanged event';
-		test(testId, 3, function () {
+		QUnit.test(testId, function (assert) {
+			assert.expect(3);
 			var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
 			
 			eventTriggered = false; // global parameter
@@ -309,7 +323,7 @@
 			stop();
 			setTimeout(function() {
 				start();
-				ok(eventTriggered, "valueChanged is thrown");
+				assert.ok(eventTriggered, "valueChanged is thrown");
 				eventTriggered = false;
 				$editor.remove();
 				$editor = $("#edChangeEvtImmOff");
@@ -319,12 +333,12 @@
 				stop();
 				setTimeout(function() {
 					start();
-					ok(eventTriggered, "valueChanged is thrown");
+					assert.ok(eventTriggered, "valueChanged is thrown");
 					eventTriggered = false;
 					$editor.igPercentEditor("setFocus");
 					$editor.igPercentEditor("clearButton").click();
 					$editor.trigger("blur");
-					ok(eventTriggered, "valueChanged is thrown");
+					assert.ok(eventTriggered, "valueChanged is thrown");
 					eventTriggered = false;
 					$editor.remove();
 					$input.remove();
@@ -333,56 +347,59 @@
 		});
 
 		testID = "Test regional with reversed decimal(,) and group(.) separators like 'de' .Update from outside input.";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			$("#tempContainer").empty();
 				//Init with regional 'de'
 				var $editor = $("#Issue695_Editor"), $input = $("#Issue695_Input");
 				$('#Issue695_Input').val(0.123).change();
-				equal($editor.igPercentEditor("value"), 0.123, "Value is as expected");
-				equal($editor.igPercentEditor("displayValue"), "12,30%", "displayValue is correct");
+				assert.equal($editor.igPercentEditor("value"), 0.123, "Value is as expected");
+				assert.equal($editor.igPercentEditor("displayValue"), "12,30%", "displayValue is correct");
 				$("#resetButton").click();
-				equal($editor.igPercentEditor("value"), 32.00, "Value is as expected");
-				equal($editor.igPercentEditor("displayValue"), "3.200,00%", "displayValue is correct");
+				assert.equal($editor.igPercentEditor("value"), 32.00, "Value is as expected");
+				assert.equal($editor.igPercentEditor("displayValue"), "3.200,00%", "displayValue is correct");
 				$('#Issue695_Input').val("").change();
-				equal($editor.igPercentEditor("value"), "", "Value is as expected");
-				equal($editor.igPercentEditor("displayValue"), "", "displayValue is correct");
+				assert.equal($editor.igPercentEditor("value"), "", "Value is as expected");
+				assert.equal($editor.igPercentEditor("displayValue"), "", "displayValue is correct");
 				$editor.remove();
 				$input.remove();
 		});
 		
 		var testId = 'Test disabled binding';
-		test(testId, 12, function () {
+		QUnit.test(testId, function (assert) {
+			assert.expect(12);
 			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
 
-			ok(!$editor.igPercentEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igPercentEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igPercentEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-			ok(!$editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be enabled");
+			assert.notOk($editor.igPercentEditor("option", "disabled"), "Editor should be enabled");
+			assert.notOk($editor.igPercentEditor("field").prop("disabled"), "Editor should be enabled");
+			assert.equal($editor.igPercentEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			assert.notOk($editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be enabled");
 			$chk.click();
-			ok($editor.igPercentEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igPercentEditor("field").prop("disabled"), "Editor should be disabled");
-			equal($editor.igPercentEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-			ok($editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be disabled");
+			assert.ok($editor.igPercentEditor("option", "disabled"), "Editor should be disabled");
+			assert.ok($editor.igPercentEditor("field").prop("disabled"), "Editor should be disabled");
+			assert.equal($editor.igPercentEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			assert.ok($editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be disabled");
 			$chk.click();
 			$chk.click();
 			$chk.click();
-			ok(!$editor.igPercentEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igPercentEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igPercentEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-			ok(!$editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be enabled");
+			assert.notOk($editor.igPercentEditor("option", "disabled"), "Editor should be enabled");
+			assert.notOk($editor.igPercentEditor("field").prop("disabled"), "Editor should be enabled");
+			assert.equal($editor.igPercentEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			assert.notOk($editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be enabled");
 			$editor.remove();
 			$chk.remove();
 		});
 
 		var testId = 'Test null binding';
-		test(testId, 3, function () {
+		QUnit.test(testId, function (assert) {
+			assert.expect(3);
 			var $editor = $("#nullBoundEditor");
 
-			equal($editor.igPercentEditor("value"), null, "Editor should have null as a value");
+			assert.equal($editor.igPercentEditor("value"), null, "Editor should have null as a value");
 			model.nullValue(23);
-			equal($editor.igPercentEditor("value"), 23, "Editor should have 23 as a value");
+			assert.equal($editor.igPercentEditor("value"), 23, "Editor should have 23 as a value");
 			model.nullValue(null);
-			equal($editor.igPercentEditor("value"), null, "Editor should have null as a value");
+			assert.equal($editor.igPercentEditor("value"), null, "Editor should have null as a value");
 			$editor.remove();
 		});
 	});//document ready
@@ -446,12 +463,12 @@
 	}
 	/** Checks all editor types and bound elements. Total of 6 evaluations. */
 	function checkAllValues(val, message) {
-		equal($('#inputEditor1').igPercentEditor("value"), val, message + " (inputEditor)");
-		equal($('#divEditor1').igPercentEditor("value"), val, message + " (divEditor1)");
-		equal($('#tdEditor1').igPercentEditor("value"), val, message + " (tdEditor1)");
-		equal($("#spanValue").html(), val, message + " (spanValue)");
-		equal($("#inputValue").val(), val, message + " (inputValue)");
-		equal($("#divValue").html(), val, message + " (divValue)");
+		assert.equal($('#inputEditor1').igPercentEditor("value"), val, message + " (inputEditor)");
+		assert.equal($('#divEditor1').igPercentEditor("value"), val, message + " (divEditor1)");
+		assert.equal($('#tdEditor1').igPercentEditor("value"), val, message + " (tdEditor1)");
+		assert.equal($("#spanValue").html(), val, message + " (spanValue)");
+		assert.equal($("#inputValue").val(), val, message + " (inputValue)");
+		assert.equal($("#divValue").html(), val, message + " (divValue)");
 	}
 	function typeInInput(characters, element) {
 		var keyDown = jQuery.Event("keydown"),

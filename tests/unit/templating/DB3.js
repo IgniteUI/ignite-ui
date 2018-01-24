@@ -1,4 +1,4 @@
-var DB2 = [{Text: "Text 0",Value: 0,ImageUrl: "http://someurl.com/image0.jpg",NavigateUrl: "http://someurl.com/?item=0"},
+window.DB2 = [{Text: "Text 0",Value: 0,ImageUrl: "http://someurl.com/image0.jpg",NavigateUrl: "http://someurl.com/?item=0"},
 {Text: "Text 1",Value: 1,ImageUrl: "http://someurl.com/image1.jpg",NavigateUrl: "http://someurl.com/?item=1"},
 {Text: "Text 2",Value: 2,ImageUrl: "http://someurl.com/image2.jpg",NavigateUrl: "http://someurl.com/?item=2"},
 {Text: "Text 3",Value: 3,ImageUrl: "http://someurl.com/image3.jpg",NavigateUrl: "http://someurl.com/?item=3"},

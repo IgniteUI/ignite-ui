@@ -89,22 +89,24 @@
 		});
 		
 		testID = "Initializing igMaskEditor" ;
-		test(testID, 8, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(8);
 			//
-			ok(typeof(ko.bindingHandlers.igMaskEditor) !== 'undefined', 'igMaskEditor knockoutJS extention script is not loaded');
-			ok(typeof(ko.bindingHandlers.igMaskEditor) === 'object', 'igMaskEditor knockoutJS extention is of a wrong type');
-			ok($('#inputEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in an input');
-			ok($('#divEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in a div');
-			ok($('#tdEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in a td');
+			assert.ok(typeof(ko.bindingHandlers.igMaskEditor) !== 'undefined', 'igMaskEditor knockoutJS extention script is not loaded');
+			assert.ok(typeof(ko.bindingHandlers.igMaskEditor) === 'object', 'igMaskEditor knockoutJS extention is of a wrong type');
+			assert.ok($('#inputEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in an input');
+			assert.ok($('#divEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in a div');
+			assert.ok($('#tdEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in a td');
 			
 			//Check Initial expected value
-			equal($('#inputEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
-			equal($('#divEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
-			equal($('#tdEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
+			assert.equal($('#inputEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
+			assert.equal($('#divEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
+			assert.equal($('#tdEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
 		});
 		
 		testID = "Update model -> editor (input)" ;
-		test(testID, 0, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(0);
 			$('#inputEditor1').on("igmaskeditorvaluechanged", function (evt, ui) {
 				expect(6);
 				checkAllValues("5g7s", "Values are as expected");
@@ -132,7 +134,8 @@
 		
 
 		testID = "Update model -> editor (div)";
-		test(testID, 0, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(0);
 			stop();
 			setTimeout(function () {
 				//Update div Editor and check
@@ -151,7 +154,8 @@
 		});
 		
 		testID = "Update model -> editor (td)";
-		test(testID, 0, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(0);
 			stop();
 			setTimeout(function () {
 				//Update td Editor and check
@@ -169,13 +173,15 @@
 		});
 		
 		testID = "Update Model, check editors";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			$("#resetButton").click();
 			checkAllValues("9f2s", "Values are as expected");
 		});
 
 		testID = "updateMode set to not allowed value";
-			test(testID, 1, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(1);
 			var err;
 			QUnit.throws(function () {
 				$("#tempContainer").empty();
@@ -189,21 +195,22 @@
 		});
 		
 		testID = "Value set to nonObservable value";
-			test(testID, 4, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(4);
 				var evt, err;			
 				$("#tempContainer").empty();
 				// Default Update Mode
 				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, width: 160 }'></input>");
 				ko.applyBindings(model, document.getElementById("tempEditor"));
-				equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
+				assert.equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "NonObservable value is assigned correctly");
 
 				$("#tempEditor").igMaskEditor("select");
 				$.ig.TestUtil.keyInteraction(49, $("#tempEditor"));
 				$("#tempEditor").trigger("blur");
-				equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "The value should be updated");
+				assert.equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "The value should be updated");
 				model.nonObservable = 42;
 				// The value of the checkbox editor shouldn't be updated
-				notEqual($("#tempEditor").igMaskEditor("value"), model.nonObservable, "The value should not be updated");
+				notassert.equal($("#tempEditor").igMaskEditor("value"), model.nonObservable, "The value should not be updated");
 				$("#tempContainer").empty();
 
 				QUnit.throws(function () {
@@ -216,7 +223,8 @@
 		});
 
 			testID = "updateMode -> onChange";
-			test(testID, 6, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(6);
 
 				ko.cleanNode(document.getElementById("inputEditor1"));
 				elementParent = $("#inputEditor1").parent()
@@ -238,31 +246,33 @@
 
 
 			testID = "update from outside input";
-			test(testID, 6, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(6);
 				$("#GoshoEditor1").focus().val("9f2s").change();
 				checkAllValues("9f2s", "Values are as expected");
 			});
 			
 			var testId = 'Test disabled binding';
-			test(testId, 12, function () {
+			QUnit.test(testId, function (assert) {
+			assert.expect(12);
 				var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
 
-				ok(!$editor.igMaskEditor("option", "disabled"), "Editor should be enabled");
-				ok(!$editor.igMaskEditor("field").prop("disabled"), "Editor should be enabled");
-				equal($editor.igMaskEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-				ok(!$editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be enabled");
+				assert.notOk($editor.igMaskEditor("option", "disabled"), "Editor should be enabled");
+				assert.notOk($editor.igMaskEditor("field").prop("disabled"), "Editor should be enabled");
+				assert.equal($editor.igMaskEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+				assert.notOk($editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be enabled");
 				$chk.click();
-				ok($editor.igMaskEditor("option", "disabled"), "Editor should be disabled");
-				ok($editor.igMaskEditor("field").prop("disabled"), "Editor should be disabled");
-				equal($editor.igMaskEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-				ok($editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be disabled");
+				assert.ok($editor.igMaskEditor("option", "disabled"), "Editor should be disabled");
+				assert.ok($editor.igMaskEditor("field").prop("disabled"), "Editor should be disabled");
+				assert.equal($editor.igMaskEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+				assert.ok($editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be disabled");
 				$chk.click();
 				$chk.click();
 				$chk.click();
-				ok(!$editor.igMaskEditor("option", "disabled"), "Editor should be enabled");
-				ok(!$editor.igMaskEditor("field").prop("disabled"), "Editor should be enabled");
-				equal($editor.igMaskEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-				ok(!$editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be enabled");
+				assert.notOk($editor.igMaskEditor("option", "disabled"), "Editor should be enabled");
+				assert.notOk($editor.igMaskEditor("field").prop("disabled"), "Editor should be enabled");
+				assert.equal($editor.igMaskEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+				assert.notOk($editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be enabled");
 				$editor.remove();
 				$chk.remove();
 			});
@@ -330,20 +340,20 @@
 			checkFields(val, message);
 		}
 		function checkEditors(val, message) {
-			equal($('#inputEditor1').igMaskEditor("value"), val, message + " (inputEditor)");
-			equal($('#divEditor1').igMaskEditor("value"), val, message + " (divEditor1)");
-			equal($('#tdEditor1').igMaskEditor("value"), val, message + " (tdEditor1)");			
+			assert.equal($('#inputEditor1').igMaskEditor("value"), val, message + " (inputEditor)");
+			assert.equal($('#divEditor1').igMaskEditor("value"), val, message + " (divEditor1)");
+			assert.equal($('#tdEditor1').igMaskEditor("value"), val, message + " (tdEditor1)");			
 		}
 		function checkFields(val, message) {
-			equal($("#inputValue").val(), val, message + " (inputValue)");
+			assert.equal($("#inputValue").val(), val, message + " (inputValue)");
 			
 			if (typeof(val) === 'string') {
 				
-				equal($("#spanValue").html().replace(/&nbsp;/g, " "), val, message + " (spanValue)");
-				equal($("#divValue").html().replace(/&nbsp;/g, " "), val, message + " (divValue)");
+				assert.equal($("#spanValue").html().replace(/&nbsp;/g, " "), val, message + " (spanValue)");
+				assert.equal($("#divValue").html().replace(/&nbsp;/g, " "), val, message + " (divValue)");
 			} else {
-				equal($("#spanValue").html(), val, message + " (spanValue)");
-				equal($("#divValue").html(), val, message + " (divValue)");			
+				assert.equal($("#spanValue").html(), val, message + " (spanValue)");
+				assert.equal($("#divValue").html(), val, message + " (divValue)");			
 			}
 		}
 		function replaceCharAt(stringValue, index, char) {

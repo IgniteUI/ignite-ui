@@ -96,26 +96,28 @@
 		});
 		
 		testID = "Initializing igDatePicker" ;
-		test(testID, 8, function () { //Passing
+		QUnit.test(testID, function (assert) {
+			assert.expect(8); //Passing
 			//
-			ok(typeof(ko.bindingHandlers.igDatePicker) !== 'undefined', 'igDatePicker knockoutJS extention script is not loaded');
-			ok(typeof(ko.bindingHandlers.igDatePicker) === 'object', 'igDatePicker knockoutJS extention is of a wrong type');
-			ok($('#inputEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in an input');
-			ok($('#divEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in a div');
-			ok($('#tdEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in a td');
+			assert.ok(typeof(ko.bindingHandlers.igDatePicker) !== 'undefined', 'igDatePicker knockoutJS extention script is not loaded');
+			assert.ok(typeof(ko.bindingHandlers.igDatePicker) === 'object', 'igDatePicker knockoutJS extention is of a wrong type');
+			assert.ok($('#inputEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in an input');
+			assert.ok($('#divEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in a div');
+			assert.ok($('#tdEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in a td');
 			var date;
 			//Check Initial expected value
 			date = new Date("12/12/2012");
-			equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
+			assert.equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
 			
-			equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
+			assert.equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
 			
-			equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
+			assert.equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
 			
 		});
 
 		testID = "Update model -> editor (input)" ;
-		test(testID, 6, function () { //Passing
+		QUnit.test(testID, function (assert) {
+			assert.expect(6); //Passing
 			var editor = $('#inputEditor1');
 			editor.igDatePicker("showDropDown");
 
@@ -126,7 +128,8 @@
 		});
 		
 		testID = "Update Model, check editors";
-		test(testID, 36, function () { //Partially Passing (Chrome fail)
+		QUnit.test(testID, function (assert) {
+			assert.expect(36); //Partially Passing (Chrome fail)
 			var date;
 
 			$("#resetButton5").click();
@@ -162,7 +165,8 @@
 		});
 
 		testID = "updateMode set to not allowed value";
-			test(testID, 1, function () { //Passing
+			QUnit.test(testID, function (assert) {
+			assert.expect(1); //Passing
 			var err;
 			QUnit.throws(function () {
 				$("#tempContainer").empty();
@@ -173,7 +177,8 @@
 		});
 			
 		testID = "update from outside input";		
-			test(testID, 24, function () {	//Passing	
+			QUnit.test(testID, function (assert) {
+			assert.expect(24);	//Passing	
 				var date;
 				
 				date = new Date();
@@ -210,42 +215,45 @@
 			});
 
 			var testId = 'Test disabled binding';
-			test(testId, 12, function () {
+			QUnit.test(testId, function (assert) {
+			assert.expect(12);
 				var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
 
-				ok(!$editor.igDatePicker("option", "disabled"), "Editor should be enabled");
-				ok(!$editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
-				equal($editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
-				ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
+				assert.notOk($editor.igDatePicker("option", "disabled"), "Editor should be enabled");
+				assert.notOk($editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
+				assert.equal($editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
+				assert.notOk($editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
 				$chk.click();
-				ok($editor.igDatePicker("option", "disabled"), "Editor should be disabled");
-				ok($editor.igDatePicker("field").prop("disabled"), "Editor should be disabled");
-				equal($editor.igDatePicker("field").attr("disabled"), "disabled", "Editor should be disabled");
-				ok($editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be disabled");
+				assert.ok($editor.igDatePicker("option", "disabled"), "Editor should be disabled");
+				assert.ok($editor.igDatePicker("field").prop("disabled"), "Editor should be disabled");
+				assert.equal($editor.igDatePicker("field").attr("disabled"), "disabled", "Editor should be disabled");
+				assert.ok($editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be disabled");
 				$chk.click();
 				$chk.click();
 				$chk.click();
-				ok(!$editor.igDatePicker("option", "disabled"), "Editor should be enabled");
-				ok(!$editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
-				equal($editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
-				ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
+				assert.notOk($editor.igDatePicker("option", "disabled"), "Editor should be enabled");
+				assert.notOk($editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
+				assert.equal($editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
+				assert.notOk($editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
 				$editor.remove();
 				$chk.remove();
 			});
 			
 			var testId = 'Test invalid dates binding';
-			test(testId, 2, function () {
+			QUnit.test(testId, function (assert) {
+			assert.expect(2);
 				var editor = $("#invalidValuesEditor");
 
 				model.invalidDate("/Date(-1)");
-				equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
+				assert.equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
 
 				model.invalidDate(NaN);
-				equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
+				assert.equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
 			});
 
 			testID = "updateMode set to not allowed value";
-			test(testID, 2, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(2);
 				var err;
 				throws(function () {
 					$("#tempContainer").empty();
@@ -265,16 +273,17 @@
 			});
 
 			testID = "datePicker bound to non-observable value";
-			test(testID, 2 , function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(2);
 				var date = new Date("12/15/2017");
 				var editor = $("#nonObservableEditor");
 
 				selectDateFromDropdown(editor, "12/15/2017");
 
-				ok(date.toString() === model.nonObservable.toString(), "Changes in the date picker should be reflected in the view model");
+				assert.ok(date.toString() === model.nonObservable.toString(), "Changes in the date picker should be reflected in the view model");
 
 				model.nonObservable = new Date("12/31/2017");
-				ok(editor.igDatePicker("value").toString() !== model.nonObservable.toString() , "Changes in the view model shouldn't be reflected in the editor");
+				assert.ok(editor.igDatePicker("value").toString() !== model.nonObservable.toString() , "Changes in the view model shouldn't be reflected in the editor");
 			});
 
 		}); // Document Ready handler
@@ -284,29 +293,29 @@
 				var date = new Date("10/10/2009"), val;	
 				val = "10/10/2009";
 				
-				equal($('#divEditor1').igDatePicker("text"), val, "Text Updated" + " (divEditor1)");
-				equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), "Text Updated" + " (divEditor1) date");
-				equal($('#tdEditor1').igDatePicker("text"), val, "Text Updated" + " (tdEditor1)");
-				equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), "Text Updated" + " (tdEditor1) date");				
+				assert.equal($('#divEditor1').igDatePicker("text"), val, "Text Updated" + " (divEditor1)");
+				assert.equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), "Text Updated" + " (divEditor1) date");
+				assert.equal($('#tdEditor1').igDatePicker("text"), val, "Text Updated" + " (tdEditor1)");
+				assert.equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), "Text Updated" + " (tdEditor1) date");				
 			}
 			function divCheckImmediate() {
 				var message = "Text Updated", val;
 				var date = new Date("10/10/2009");	
 					val = "10/10/2009";
-				equal($('#inputEditor1').igDatePicker("text"), val, message + " (inputEditor) text");
-				equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), message + " (inputEditor) date");
-				equal($('#tdEditor1').igDatePicker("text"), val, message + " (tdEditor1)");
-				equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), message + " (tdEditor1) date");			
+				assert.equal($('#inputEditor1').igDatePicker("text"), val, message + " (inputEditor) text");
+				assert.equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), message + " (inputEditor) date");
+				assert.equal($('#tdEditor1').igDatePicker("text"), val, message + " (tdEditor1)");
+				assert.equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), message + " (tdEditor1) date");			
 			}
 			function tdCheckImmediate() {
 				var message = "Text Updated", val;
 				var date = new Date("10/10/2009");
 				val = "10/10/2009";
 
-				equal($('#inputEditor1').igDatePicker("text"), val, message + " (inputEditor) text");
-				equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), message + " (inputEditor) date");
-				equal($('#divEditor1').igDatePicker("text"), val, message + " (divEditor1)");
-				equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), message + " (divEditor1) date");		
+				assert.equal($('#inputEditor1').igDatePicker("text"), val, message + " (inputEditor) text");
+				assert.equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), message + " (inputEditor) date");
+				assert.equal($('#divEditor1').igDatePicker("text"), val, message + " (divEditor1)");
+				assert.equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), message + " (divEditor1) date");		
 			}
 		
 		function checkEditorsValues(val, message, fullDate) {
@@ -318,17 +327,17 @@
 			}
 			
 			
-			equal($('#inputEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (inputEditor) date");
+			assert.equal($('#inputEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (inputEditor) date");
 			
-			equal($('#divEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (divEditor1) date");
+			assert.equal($('#divEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (divEditor1) date");
 			
-			equal($('#tdEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (tdEditor1) date");
+			assert.equal($('#tdEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (tdEditor1) date");
 		}
 		
 		function checkFieldsValues(val, message) {
-			equal($("#spanValue").html(), val, message + " (spanValue)");
-			equal($("#inputValue").val(), val, message + " (inputValue)");
-			equal($("#divValue").html(), val, message + " (divValue)");			
+			assert.equal($("#spanValue").html(), val, message + " (spanValue)");
+			assert.equal($("#inputValue").val(), val, message + " (inputValue)");
+			assert.equal($("#divValue").html(), val, message + " (divValue)");			
 		}
 		function getShortDateAsString(date) {
 			//TODO check if the date val is date or not

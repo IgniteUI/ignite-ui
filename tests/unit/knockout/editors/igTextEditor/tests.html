@@ -88,21 +88,23 @@
 		});
 		
 		testID = "Initializing igTextEditors" ;
-		test(testID, 8, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(8);
 			//
-			ok(typeof(ko.bindingHandlers.igTextEditor) !== 'undefined', 'igTextEditor knockoutJS extention script is not loaded');
-			ok(typeof(ko.bindingHandlers.igTextEditor) === 'object', 'igTextEditor knockoutJS extention is of a wrong type');
-			ok($('#inputEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in an input');
-			ok($('#divEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in a div');
-			ok($('#tdEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in a td');
+			assert.ok(typeof(ko.bindingHandlers.igTextEditor) !== 'undefined', 'igTextEditor knockoutJS extention script is not loaded');
+			assert.ok(typeof(ko.bindingHandlers.igTextEditor) === 'object', 'igTextEditor knockoutJS extention is of a wrong type');
+			assert.ok($('#inputEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in an input');
+			assert.ok($('#divEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in a div');
+			assert.ok($('#tdEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in a td');
 			
 			//Check Initial expected value
-			equal($('#inputEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
-			equal($('#divEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
-			equal($('#tdEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
+			assert.equal($('#inputEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
+			assert.equal($('#divEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
+			assert.equal($('#tdEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
 		});
 		testID = "Update model -> editor (input) -> Parent" ;
-		test(testID, 0, function () {	
+		QUnit.test(testID, function (assert) {
+			assert.expect(0);	
 			$('#inputEditor1').on("igtexteditorvaluechanged", function (evt, ui) {
 				expect(6);
 				checkAllValues("New IV", "Values are as expected");	
@@ -170,12 +172,14 @@
 		});
 		
 		testID = "Update Model, check editors";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 			$("#resetButton").click();
 			checkAllValues("Default Text", "Values are as expected");
 		});
 		testID = "updateMode set to not allowed value";
-			test(testID, 1, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(1);
 			var err;
 			QUnit.throws(function () {
 				$("#tempContainer").empty();
@@ -186,7 +190,8 @@
 			$("#tempContainer").empty();
 		});
 		testID = "Value set to nonObservable value";
-			test(testID, 5, function () {
+			QUnit.test(testID, function (assert) {
+			assert.expect(5);
 			stop();
 			setTimeout(function () {
 				start();
@@ -195,21 +200,21 @@
 					//Default Update Mode
 					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: nonObservable, width: 160 }'></input>");
 					ko.applyBindings(model, document.getElementById("tempEditor"));
-					equal($("#tempEditor").igTextEditor("value"), nonObservable, "NonObservable value is assigned correctly");
+					assert.equal($("#tempEditor").igTextEditor("value"), nonObservable, "NonObservable value is assigned correctly");
 					$("#tempEditor").igTextEditor("value", "New non Observable");
 					evt = $.Event("keypress");
 					evt.keyCode = 88;
 					$("#outerInput").trigger(evt);
-					notEqual($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
+					notassert.equal($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
 					//Set Defaul value from the model
 					$("#resetButton").click();
 					//The value of the nonObservable should not be updated
-					notEqual($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
+					notassert.equal($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
 					$("#tempContainer").empty();
 					//immediate update mode
 					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }'></input>");
 					ko.applyBindings(model, document.getElementById("tempEditor"));
-					equal($("#tempEditor").igTextEditor("value"), nonObservable, "NonObservable value is assigned correctly");
+					assert.equal($("#tempEditor").igTextEditor("value"), nonObservable, "NonObservable value is assigned correctly");
 					evt = $.Event("keydown");
 					evt.keyCode = 65;
 					$("#tempEditor").trigger(evt);
@@ -229,12 +234,13 @@
 					evt = $.Event("keyup");
 					evt.keyCode = 56;
 					$("#tempEditor").trigger(evt);
-					notEqual($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
+					notassert.equal($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
 					$("#tempContainer").empty();
 				}, 200);
 		});
 		testID = "ListItem change -> immediate";
-		test(testID, 13, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(13);
 			$("#tempContainer").empty();
 				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: textValue, width: 160, updateMode:\"immediate\" , listItems : [\"red\", \"blue\", \"yellow\" ],button: \"dropdown\"}'></input>");
 				ko.applyBindings(model, document.getElementById("tempEditor"));
@@ -255,7 +261,7 @@
 				checkAllValues("red", "The value is updated on on list selection changed");
 				$("#resetButton").click();
 				//Check if this editor defaults the value
-				equal($("#tempEditor").igTextEditor("value"), "Default Text", "The default text is correct");
+				assert.equal($("#tempEditor").igTextEditor("value"), "Default Text", "The default text is correct");
 				$("#tempContainer").empty();
 				}, 100);
 			}, 100);
@@ -264,7 +270,8 @@
 
 
 		testID = "updateMode -> onChange";
-		test(testID, 6, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);
 
 			var elementParent = $("#inputEditor1").parent();
 			ko.cleanNode(document.getElementById("inputEditor1"));
@@ -278,7 +285,8 @@
 			testChange("input");
 		});
 		testID = "updateMode -> immediate";
-		test(testID, 18, function () {
+		QUnit.test(testID, function (assert) {
+			assert.expect(18);
 			var elementParent;
 		//reinitialize all the 3 editors editors
 			
@@ -299,13 +307,15 @@
 						
 		});
 		testID = "update from outside input";		
-		test(testID, 6, function () {		
+		QUnit.test(testID, function (assert) {
+			assert.expect(6);		
 			$('#inputValue').val("New Pesho").change();
 			checkAllValues("New Pesho", "Values are as expected");
 		});
 
 		var testId = 'Test valueChanged event';
-		test(testId, 3, function () {
+		QUnit.test(testId, function (assert) {
+			assert.expect(3);
 			var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
 			
 			eventTriggered = false; // global parameter
@@ -315,7 +325,7 @@
 			stop();
 			setTimeout(function() {
 				start();
-				ok(eventTriggered, "valueChanged is thrown");
+				assert.ok(eventTriggered, "valueChanged is thrown");
 				eventTriggered = false;
 				$editor.remove();
 				$editor = $("#edChangeEvtImmOff");
@@ -325,12 +335,12 @@
 				stop();
 				setTimeout(function() {
 					start();
-					ok(eventTriggered, "valueChanged is thrown");
+					assert.ok(eventTriggered, "valueChanged is thrown");
 					eventTriggered = false;
 					$editor.igTextEditor("setFocus");
 					$editor.igTextEditor("clearButton").click();
 					$editor.trigger("blur");
-					ok(eventTriggered, "valueChanged is thrown");
+					assert.ok(eventTriggered, "valueChanged is thrown");
 					eventTriggered = false;
 					$editor.remove();
 					$input.remove();
@@ -338,98 +348,103 @@
 			}, 200);
 		});
 		testId = 'Test valueChanged event with non-observable value';
-		test(testId, 3, function () {
+		QUnit.test(testId, function (assert) {
+			assert.expect(3);
 			var $editor = $("#edOnChange");
 			
 			eventTriggered = false; // global parameter
 			$editor.igTextEditor("setFocus");
 			typeInInput("Peter", $editor.igTextEditor("field"));
-			notEqual(model.text, $editor.igTextEditor("field").val(), "Unexpected underlying property value!");
+			notassert.equal(model.text, $editor.igTextEditor("field").val(), "Unexpected underlying property value!");
 			$editor.trigger("blur");
 			stop();
 			setTimeout(function() {
 				start();
-				ok(eventTriggered, "valueChanged is thrown");
+				assert.ok(eventTriggered, "valueChanged is thrown");
 				eventTriggered = false;
 			}, 200);
 			
-			equal(model.text, $editor.igTextEditor("value"), "Unexpected underlying property value!");
+			assert.equal(model.text, $editor.igTextEditor("value"), "Unexpected underlying property value!");
 		});
 		testId = 'Test disabled binding';
-		test(testId, 28, function () {
+		QUnit.test(testId, function (assert) {
+			assert.expect(28);
 			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
-			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-			ok(!$editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("option", "disabled"), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
 			$chk.click();
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
+			assert.ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
+			assert.ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 			$chk.click();
 			$chk.click();
 			$chk.click();
-			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-			ok(!$editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("option", "disabled"), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
 			$editor.remove();
 			$chk.remove();
 
 			$editor = $("#edDisabledNotObs"), $chk = $("#edDisabledNotObs");
-			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-			ok(!$editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("option", "disabled"), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
 			$chk.click();
-			ok(!$editor.igTextEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
-			equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
-			ok(!$editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("option", "disabled"), "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("field").prop("disabled"), "Editor should be enabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			assert.notOk($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be enabled");
 			$editor.remove();
 			$chk.remove();
 
 			$editor = $("#edDisabledNotObs1"), $chk = $("#edDisabledNotObs1");
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
+			assert.ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
+			assert.ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 			$chk.click();
-			ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-			equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
-			ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
+			assert.ok($editor.igTextEditor("option", "disabled"), "Editor should be disabled");
+			assert.ok($editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
+			assert.equal($editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 			$editor.remove();
 			$chk.remove();
 		});
 
 		testId = 'Verify non-observable value change is not reflected in the UI';
-		test(testId, 2, function() {
+		QUnit.test(testId, function (assert) {
+			assert.expect(2);
 			var $editor = $("#edOnChange");
-			equal($editor.igTextEditor("value"), model.text, "Unexpected editor value!");
+			assert.equal($editor.igTextEditor("value"), model.text, "Unexpected editor value!");
 			
 			model.text = "new";
 
-			notEqual($editor.igTextEditor("value"), model.text, "Editor's value updated unexpectedly!");
+			notassert.equal($editor.igTextEditor("value"), model.text, "Editor's value updated unexpectedly!");
 
 		});
 
 		testId = 'Verify non-observable value changed via typing does not update the UI (updateMode: immediate)';
-		test(testId, 3, function() {	
+		QUnit.test(testId, function (assert) {
+			assert.expect(3);	
 			var $editor = $("#edImmediate");
-			equal($editor.igTextEditor("value"), "Just text", "Unexpected editor value initially!");
+			assert.equal($editor.igTextEditor("value"), "Just text", "Unexpected editor value initially!");
 			
 			$editor.igTextEditor("setFocus");
 			var util = $.ig.TestUtil;
 			util.keyInteraction(83, $editor);
 
-			equal($editor.igTextEditor("field").val(), model.text, "Underlying property value not changed!");
-			notEqual($("#edOnChange").igTextEditor("value"), model.text, "Non-observable value's change reflected in the UI!");		
+			assert.equal($editor.igTextEditor("field").val(), model.text, "Underlying property value not changed!");
+			notassert.equal($("#edOnChange").igTextEditor("value"), model.text, "Non-observable value's change reflected in the UI!");		
 		});
 
 		testId = 'Verify non-observable value changed via selection does not update the UI (updateMode: immediate)';
-		test(testId, 3, function() {
+		QUnit.test(testId, function (assert) {
+			assert.expect(3);
 			var $editor = $("#edListItems");
 			$editor.igTextEditor("dropDownButton").click();
 			stop();
@@ -440,9 +455,9 @@
 				stop();
 				setTimeout(function () {
 					start();
-					equal($editor.igTextEditor("value"), "item 1", "Editor's value was not updated!");
-					equal(model.text, $editor.igTextEditor("value"), "Underlying value was not updated!");
-					notEqual($("#edOnChange").igTextEditor("value"), "item 1", "Non-observable value's change reflected in the UI!");
+					assert.equal($editor.igTextEditor("value"), "item 1", "Editor's value was not updated!");
+					assert.equal(model.text, $editor.igTextEditor("value"), "Underlying value was not updated!");
+					notassert.equal($("#edOnChange").igTextEditor("value"), "item 1", "Non-observable value's change reflected in the UI!");
 				}, 100)
 			},100);
 			
@@ -489,20 +504,20 @@
 		}
 
 		function checkAllTextValues(val, message) { //used in editMode
-			equal($('#inputEditor1').igTextEditor("field").val(), val, message + " (inputEditor)");
-			equal($('#divEditor1').igTextEditor("field").val(), val, message + " (divEditor1)");
-			equal($('#tdEditor1').igTextEditor("field").val(), val, message + " (tdEditor1)");
-			equal($("#spanValue").html(), val, message + " (spanValue)");
-			equal($("#inputValue").val(), val, message + " (inputValue)");
-			equal($("#divValue").html(), val, message + " (divValue)");
+			assert.equal($('#inputEditor1').igTextEditor("field").val(), val, message + " (inputEditor)");
+			assert.equal($('#divEditor1').igTextEditor("field").val(), val, message + " (divEditor1)");
+			assert.equal($('#tdEditor1').igTextEditor("field").val(), val, message + " (tdEditor1)");
+			assert.equal($("#spanValue").html(), val, message + " (spanValue)");
+			assert.equal($("#inputValue").val(), val, message + " (inputValue)");
+			assert.equal($("#divValue").html(), val, message + " (divValue)");
 		}
 		function checkAllValues(val, message) {
-			equal($('#inputEditor1').igTextEditor("value"), val, message + " (inputEditor)");
-			equal($('#divEditor1').igTextEditor("value"), val, message + " (divEditor1)");
-			equal($('#tdEditor1').igTextEditor("value"), val, message + " (tdEditor1)");
-			equal($("#spanValue").html(), val, message + " (spanValue)");
-			equal($("#inputValue").val(), val, message + " (inputValue)");
-			equal($("#divValue").html(), val, message + " (divValue)");
+			assert.equal($('#inputEditor1').igTextEditor("value"), val, message + " (inputEditor)");
+			assert.equal($('#divEditor1').igTextEditor("value"), val, message + " (divEditor1)");
+			assert.equal($('#tdEditor1').igTextEditor("value"), val, message + " (tdEditor1)");
+			assert.equal($("#spanValue").html(), val, message + " (spanValue)");
+			assert.equal($("#inputValue").val(), val, message + " (inputValue)");
+			assert.equal($("#divValue").html(), val, message + " (divValue)");
 		}
 		function mouseInteraction(type, element) {
 		  // create a mouse click event
