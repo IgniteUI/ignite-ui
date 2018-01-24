@@ -2716,7 +2716,7 @@
 				},
 				"compositionend.editor": function () {
 					setTimeout(function () {
-						var value, pastedValue, widgetName = self.widgetName,
+						var value, widgetName = self.widgetName,
 							cursorPosition = self._getCursorPosition(),
 							selection = { start: cursorPosition, end: cursorPosition };
 
@@ -2727,41 +2727,18 @@
 						switch (widgetName) {
 							case "igMaskEditor":
 								{
-									pastedValue = value = self._replaceStringRange(self._compositionStartValue,
+									value = self._replaceStringRange(self._compositionStartValue,
 										self._currentCompositionValue, self._copositionStartIndex,
 										self._copositionStartIndex + self._currentCompositionValue.length - 1);
 								}
 								break;
-							case "igDateEditor":
-							case "igDatePicker":
-								{
-									value = self._currentCompositionValue;
-									value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-									pastedValue = value = self._parseValueByMask(value);
-									if (value !== self._maskWithPrompts) {
-										value = self._parseDateFromMaskedValue(value);
-									} else if (self.options.revertIfNotValid) {
-										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
-										pastedValue = value = self._maskedValue;
-										selection.start = 0;
-										selection.end = value.length;
-									}
-								}
-								break;
 							default: {
-								pastedValue = value = self._editorInput.val();
+								value = self._editorInput.val();
 							}
 						}
 
-						//T.P. 7th April 2016. Bug 217371 - In case of text/mask editor the full width numbers should not be converted to half width,
-						//because they are valid characters.
-						if (widgetName !== "igTextEditor" && widgetName !== "igMaskEditor") {
-							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
-							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
-						}
-
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
-						self._insert(pastedValue, self._compositionStartValue, selection);
+						self._insert(value, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -6549,18 +6526,24 @@
 			this._promptCharsIndices = [];
 
 			if (this._editMode) {
-				newValue = this._parseValueByMask(newValue);
-				this._editorInput.val(newValue);
-				if (selection !== undefined) {
-					// Move the caret
-					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
-				}
+				this._insertEditMode(newValue, selection);
 			} else if (newValue !== previousValue) {
-				newValue = this._parseValueByMask(newValue);
-				this._processInternalValueChanging(newValue);
-				this._exitEditMode();
+				this._insertDisplayMode(newValue);
 			}
 			this._processTextChanged();
+		},
+		_insertEditMode: function(newValue, selection) { // MaskEditor
+			newValue = this._parseValueByMask(newValue);
+			this._editorInput.val(newValue);
+			if (selection !== undefined) {
+				// Move the caret
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			}
+		},
+		_insertDisplayMode: function(newValue) {
+			newValue = this._parseValueByMask(newValue);
+			this._processInternalValueChanging(newValue);
+			this._exitEditMode();
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
 			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
@@ -8493,7 +8476,7 @@
 				} else if (flag === 22) {
 					txt += "0";
 				} else {
-					txt += "00";
+					txt += "90";
 					if (flag === 3) {
 						txt += "00";
 					}
@@ -8784,6 +8767,17 @@
 				newValue = $(event.target).val();
 				oldVal = this._dateObjectValue;
 
+				// N.A. January 8th, 2018 #1417: In some browsers (like IE 11 and Firefox) blur event (therefore _parseDateFromMaskedValue) is fired before compositionend one.
+				// In that case we need to properly parse full width char symblols.
+				if (this._inComposition === true) {
+					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
+					newValue = this._parseValueByMask(newValue);
+
+					// N.A. January 12th, 2018 #1525 When wrong input is entered the value should be reverted, if the option is set.
+					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+						newValue = oldVal;
+					}
+				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
 				// #206308 in case newValiue == maskWithPrompts it's either clear value, or just exiting edit mode without entering value.
@@ -9123,6 +9117,24 @@
 					this._clearValue();
 					value = this._valueInput.val();
 				}
+			}
+		},
+		_insertEditMode: function (newValue, selection) { // igDateEditor
+
+			// N.A. January 8th, 2018 #1417: Move conversion of full width char symbols here from compositionend handler.
+			newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
+			newValue = this._parseValueByMask(newValue);
+			if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+
+				//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+				newValue = this._maskedValue;
+				selection.start = 0;
+				selection.end = newValue.length;
+			}
+			this._editorInput.val(newValue);
+			if (selection !== undefined) {
+				// Move the caret
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 			}
 		},
 		_isValidDate: function (date) {
@@ -10999,6 +11011,22 @@
 		_listMouseDownHandler: function () { // igDatePicker
 		},
 		_updateDropdownSelection: function () { //igDatePicker
+			var pickerInst, cursorPosition,
+				val = this._editorInput.val();
+
+			// D.P. 19th Dec 2017 #1453 Update the `datepicker` selection if the input mask if fulfilled
+			if (this._pickerOpen && this._validateRequiredPrompts(val)) {
+				cursorPosition = this._getCursorPosition();
+				pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
+				this._editorInput.datepicker("setDate", this._valueFromText(val));
+
+				// restore input after picker updates input:
+				this._editorInput.val(val);
+				if (pickerInst) {
+					pickerInst.lastVal = val;
+				}
+				this._setCursorPosition(cursorPosition);
+			}
 		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010
@@ -11085,6 +11113,10 @@
 					}
 
 					self._processValueChanging(date);
+
+					// D.P. 19th Dec 2017 #1453 - Entered date is converted to today's date when pressing the Enter key
+					// Double onSelect bug + getDate cause a parse on the text we already formatted, setting lastVal skips that:
+					inst.lastVal = self._getEditModeValue();
 					self._triggerItemSelected.call(self,
 						inst.dpDiv.find(".ui-datepicker-calendar>tbody>tr>td .ui-state-hover"),
 							dateFromPicker);
@@ -11393,7 +11425,7 @@
 			this._dropDownOpened = true;
 
 			// Open Dropdown
-			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
+			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue, pickerInst;
 			this._cancelBlurDatePickerOpen = true;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
@@ -11414,7 +11446,10 @@
 				}
 
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
-				this._enterEditMode();
+				if (!this._editMode) {
+					// D.P. Don't enter edit mode if already editing to avoid resetting entered text
+					this._enterEditMode();
+				}
 				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
@@ -11422,6 +11457,8 @@
 			if (currentInputValue === undefined) {
 				currentInputValue = this._editorInput.val();
 			}
+
+			pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
 			try {
 				if (this.options.suppressKeyboard) {
 					if (this._focused) {
@@ -11439,6 +11476,10 @@
 				this._editorInput.datepicker("show");
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
+					if (pickerInst) {
+						// D.P. 19th Dec 2017 #1453 Prevent further parsing from messing with selection
+						pickerInst.lastVal = currentInputValue;
+					}
 				}
 			} catch (ex) {
 
