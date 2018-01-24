@@ -605,18 +605,21 @@ $(document).ready(function () {
 			.igDatePicker().on("igdatepickervaluechanged", function (evt, ui) {
 				flag = false;
 			}),
+			$button = this.util.appendToFixture(this.buttonTag).text("Click Me"),
 			flag = true,
 			done = assert.async(),
-			waidDuration = 2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/),
-			$div = this.util.appendToFixture(this.divTag).height(100).width(400).css({ display: "inline-block", background: "red" });
+			util = this.util,
+			waidDuration = 2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/);
 
 		$editor.igDatePicker("dropDownButton").click();
-		// datepicker handles mousedown for external click detection:
-		// $editor.mousedown().mouseup().click();
-		$div.click();
-
-		// wait for animation (show + hide...) :
 		this.util.wait(waidDuration + 100).then(function () {
+			// datepicker handles mousedown for external click detection:
+			$button.mousedown().mouseup().click();
+
+			return util.wait(waidDuration);
+		}).then(function () {
+
+			// wait for animation (show + hide...) :
 			assert.notOk($editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 			assert.ok(flag, "Value changed should not be fired.");
 
@@ -858,9 +861,8 @@ $(document).ready(function () {
 
 		input[0].setSelectionRange(6, 6);
 		$editor.igTextEditor("field").click().focus();
-		debugger;
+
 		this.util.wait(100).then(function () {
-			debugger;
 			util.keyInteraction(13, input);
 			$editor.igTextEditor("field").blur();
 			value = $editor.igTextEditor("value");
@@ -957,44 +959,69 @@ $(document).ready(function () {
 				minValue: 0.3
 			}),
 			input,
-			value;
-
+			value,
+			util = this.util,
+			done = assert.async();
 
 		$percentEditor1.igPercentEditor("setFocus");
-		$percentEditor1.data("igPercentEditor")._insert("");
-		this.util.keyInteraction(13, $percentEditor1);
-		value = $percentEditor1.igPercentEditor("value");
-		assert.equal(value, "", "igPercentEditor is not set to empty string value when allwNullValue : true");
 
-		$percentEditor2.igPercentEditor("setFocus");
-		$percentEditor2.data("igPercentEditor")._insert("");
-		this.util.keyInteraction(13, $percentEditor2);
-		value = $percentEditor2.igPercentEditor("value");
-		assert.equal(value, 0, "igPercentEditor is not set to 0 value when allwNullValue : false");
+		this.util.wait(100).then(function () {
+			$percentEditor1.data("igPercentEditor")._insert("");
+			util.keyInteraction(13, $percentEditor1);
+			value = $percentEditor1.igPercentEditor("value");
+			assert.equal(value, "", "igPercentEditor is not set to empty string value when allwNullValue : true");
 
-		$percentEditor3.igPercentEditor("setFocus");
-		this.util.type("20", $percentEditor3.igPercentEditor("field"));
-		this.util.keyInteraction(13, $percentEditor3);
-		value = percentEditor3.igPercentEditor("value");
-		assert.equal(value, 0.3, "igPercentEditor is not set to minValue");
+			$percentEditor2.igPercentEditor("setFocus");
 
-		$numericEditor1.igNumericEditor("setFocus");
-		$numericEditor1.igNumericEditor("value", "");
-		this.util.keyInteraction(13, $numericEditor1);
-		value = $numericEditor1.igNumericEditor("value");
-		assert.equal(value, "", "igNumericEditor is not set to empty string value when allwNullValue : true");
+			return util.wait(100);
+		}).then(function () {
+			$percentEditor2.data("igPercentEditor")._insert("");
+			util.keyInteraction(13, $percentEditor2);
+			value = $percentEditor2.igPercentEditor("value");
+			assert.equal(value, 0, "igPercentEditor is not set to 0 value when allwNullValue : false");
 
-		numericEditor2.igNumericEditor("setFocus");
-		numericEditor2.data("igNumericEditor")._insert("");
-		this.util.keyInteraction(13, numericEditor2);
-		value = numericEditor2.igNumericEditor("value");
-		assert.equal(value, 5, "igNumericEditor is not set to minValue when allwNullValue : false");
+			$percentEditor3.igPercentEditor("setFocus");
 
-		numericEditor3.igNumericEditor("setFocus");
-		numericEditor3.data("igNumericEditor")._insert(3);
-		this.util.keyInteraction(13, numericEditor3);
-		value = numericEditor3.igNumericEditor("value");
-		assert.equal(value, 5, "igNumericEditor is not set to minValue");
+			return util.wait(100);
+		}).then(function () {
+			util.type("20", $percentEditor3.igPercentEditor("field"));
+			util.keyInteraction(13, $percentEditor3);
+			value = $percentEditor3.igPercentEditor("value");
+			assert.equal(value, 0.3, "igPercentEditor is not set to minValue");
+
+			$numericEditor1.igNumericEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			$numericEditor1.igNumericEditor("value", "");
+			util.keyInteraction(13, $numericEditor1);
+			value = $numericEditor1.igNumericEditor("value");
+			assert.equal(value, "", "igNumericEditor is not set to empty string value when allwNullValue : true");
+
+			$numericEditor2.igNumericEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			$numericEditor2.data("igNumericEditor")._insert("");
+			util.keyInteraction(13, $numericEditor2);
+			value = $numericEditor2.igNumericEditor("value");
+			assert.equal(value, 5, "igNumericEditor is not set to minValue when allwNullValue : false");
+
+			$numericEditor3.igNumericEditor("setFocus");
+
+			return util.wait(100);
+		}).then(function () {
+			$numericEditor3.data("igNumericEditor")._insert(3);
+			util.keyInteraction(13, $numericEditor3);
+			value = $numericEditor3.igNumericEditor("value");
+			assert.equal(value, 5, "igNumericEditor is not set to minValue");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Bug 264', function (assert) {
@@ -1178,138 +1205,192 @@ $(document).ready(function () {
 			throw er;
 		});
 	});
-	return;
 
 	QUnit.test('Bug 646 - Set null value using setOption', function (assert) {
 		assert.expect(2);
-		var editor = $("#646Editor"),
-			field = editor.igNumericEditor("field");
-		assert.equal(editor.igNumericEditor("value"), 20, "value should be 20");
-		editor.igNumericEditor("option", 'value', null);
-		assert.equal(editor.igNumericEditor("value"), 20, "value should be 20");
+
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igNumericEditor({
+					allowNullValue: false,
+					value: 20
+				});
+
+		assert.equal($editor.igNumericEditor("value"), 20, "value should be 20");
+
+		$editor.igNumericEditor("option", 'value', null);
+		assert.equal($editor.igNumericEditor("value"), 20, "value should be 20");
 		$("#646Editor").remove();
 	});
 
 	QUnit.test('Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null', function (assert) {
 		assert.expect(6);
-		var editor = $("#655Editor"),
-			field = editor.igMaskEditor("field"),
-			clearButton = editor.igMaskEditor("clearButton");
+
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igMaskEditor({
+					buttonType: "clear",
+					allowNullValue: true
+				}),
+			field = $editor.igMaskEditor("field"),
+			clearButton = $editor.igMaskEditor("clearButton"),
+			textChanged = 0,
+			valueChanged = 0,
+			util = this.util,
+			done = assert.async();
 
 		//test input interaction
-		editor.igMaskEditor("setFocus");
+		$editor.igMaskEditor("setFocus");
 
-		stop();
-		setTimeout(function () {
-			start();
-
-			typeInMaskedInput("test", field);
+		this.util.wait(100).then(function () {
+			util.type("test", field);
 			field.blur();
-			assert.equal(editor.igMaskEditor("value"), "test", "Value did not update");
-			editor.igMaskEditor("value", null);
-			assert.strictEqual(editor.igMaskEditor("value"), null, "Value did not set to null");
+			assert.equal($editor.igMaskEditor("value"), "test", "Value did not update");
+
+			$editor.igMaskEditor("value", null);
+			assert.strictEqual($editor.igMaskEditor("value"), null, "Value did not set to null");
 			assert.equal(field.val(), "", "Displayed text is not empty after setting null value");
 
-			editor.igMaskEditor("value", "text2");
+			$editor.igMaskEditor("value", "text2");
 			assert.equal(field.val(), "text2", "Displayed text is not set");
+
 			clearButton.click();
-			assert.strictEqual(editor.igMaskEditor("value"), null, "Value did not set to null");
+			assert.strictEqual($editor.igMaskEditor("value"), null, "Value did not set to null");
 			assert.equal(field.val(), "", "Displayed text is not empty after clearing value");
 
-			editor.remove();
-		}, 100);
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Bug 695 - Check ', function (assert) {
 		assert.expect(2);
-		var editor = $("#695Editor");
-		field = editor.igPercentEditor("field");
-		assert.equal(editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%");//fails prior fix with 2.900,00%
-		assert.equal(editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
-		$("#695Editor").remove();
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igPercentEditor({
+					allowNullValue: true,
+					nullValue: "",
+					regional: 'de',
+					value: 0.029
+				});
+
+		assert.equal($editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%"); //fails prior fix with 2.900,00%
+		assert.equal($editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
 	});
 
 	QUnit.test('Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false', function (assert) {
 		assert.expect(5);
-		var editor = $("#809Editor");
-		input = editor.igNumericEditor("field"),
-			editor.focus();
-		keyInteraction(38, input); //Arrow Up
+
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igNumericEditor({
+					buttonType: "dropdown",
+					listItems: [3, 4, 5],
+					isLimitedToListValues: true,
+					revertIfNotValid: false,
+					allowNullValue: false
+				}),
+			input = $editor.igNumericEditor("field");
+
+		$editor.focus();
+		this.util.keyInteraction(38, input); //Arrow Up
 		input.val("");
-		editor.blur();
-		assert.equal(editor.igNumericEditor("value"), "", "Value should be empty string");
+		$editor.blur();
+		assert.equal($editor.igNumericEditor("value"), "", "Value should be empty string");
 
-		editor.igNumericEditor("option", "allowNullValue", "true");
-		editor.focus();
-		keyInteraction(38, input); //Arrow Up
-		keyInteraction(13, input);
+		$editor.igNumericEditor("option", "allowNullValue", "true");
+		$editor.focus();
+		this.util.keyInteraction(38, input); //Arrow Up
+		this.util.keyInteraction(13, input);
+
 		//input.val(null);
-		editor.igNumericEditor("value", null),
-			editor.blur();
-		assert.equal(editor.igNumericEditor("value"), null, "Value should be null when allowNullValue=true");
+		$editor.igNumericEditor("value", null), $editor.blur();
+		assert.equal($editor.igNumericEditor("value"), null, "Value should be null when allowNullValue=true");
 
-		editor.igNumericEditor("option", "allowNullValue", "false");
-		editor.igNumericEditor("option", "revertIfNotValid", "true");
-		editor.focus();
-		keyInteraction(38, input); //Arrow Up
-		editor.blur();
-		assert.equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
-		editor.focus().val(55);
-		editor.blur();
-		assert.equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
-		assert.ok(editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
-		$("#809Editor").remove();
+		$editor.igNumericEditor("option", "allowNullValue", "false");
+		$editor.igNumericEditor("option", "revertIfNotValid", "true");
+		$editor.focus();
+		this.util.keyInteraction(38, input); //Arrow Up
+		$editor.blur();
+		assert.equal($editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+
+		$editor.focus().val(55);
+		$editor.blur();
+		assert.equal($editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+		assert.ok($editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
 	});
 
 	QUnit.test('Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ', function (assert) {
 		assert.expect(4);
-		var editor = $("#942Editor");
-		field = editor.igNumericEditor("field");
-		clearButton = editor.igNumericEditor("clearButton"),
-			editor.igNumericEditor("setFocus");
 
-		stop();
-		setTimeout(function () {
-			start();
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igNumericEditor({
+					buttonType: "clear",
+					listItems: [3, 4, 5],
+					isLimitedToListValues: true,
+					revertIfNotValid: false,
+					value: 3
+				}),
+			field = $editor.igNumericEditor("field"),
+			clearButton = $editor.igNumericEditor("clearButton"),
+			done = assert.async();
+
+		$editor.igNumericEditor("setFocus");
+
+
+		this.util.wait(100).then(function () {
 			assert.equal(field.val(), 3, 'input value should init with value of 3');
+
 			clearButton.click();
 			assert.equal(field.val(), "", 'input value is not set to ""');//Prior the fix- the value was set to 0 even if zero is not in the list of items.
+
 			// test clear without focusing
-			editor.igNumericEditor("value", 4);
+			$editor.igNumericEditor("value", 4);
 			clearButton.click();
 			assert.equal(field.val(), "", 'input value is not set to ""');
+
 			// test clear with invalid list item value
-			editor.igNumericEditor("value", 666);
+			$editor.igNumericEditor("value", 666);
 			clearButton.click();
 			assert.equal(field.val(), "", 'input value is not set to ""');
-			$("#942Editor").remove();
-		}, 100);
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Bug 1027 Exception is thrown when typing due to incorrect value/nullValue on init', function (assert) {
 		assert.expect(7);
-		var $editor;
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igMaskEditor({
+					inputMask: "9900",
+					value: "abc" //should be numerics
+				});
 
 		// value not matching mask (fails validation)
-		$editor = $('<input/>').appendTo("#testBedContainer")
-			.igMaskEditor({
-				inputMask: "9900",
-				value: "abc" //should be numerics
-			});
 		$editor.trigger("focus").select();
 		try {
-			$.ig.TestUtil.keyInteraction(49, $editor);
-			$.ig.TestUtil.keyInteraction(50, $editor);
-			$.ig.TestUtil.keyInteraction(51, $editor);
+			this.util.keyInteraction(49, $editor);
+			this.util.keyInteraction(50, $editor);
+			this.util.keyInteraction(51, $editor);
 			assert.ok(true);
 		} catch (error) {
 			assert.ok(false, "(wrong value) Typing caused an exception: " + error.message);
 		}
+
 		assert.equal($editor.val(), "123_", "(wrong value) Typing did not update Edit text.");
 		$editor.remove();
 
 		// nullValue not matching mask (fails validation)
-		$editor = $('<input/>').appendTo("#testBedContainer")
+		$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
 			.igMaskEditor({
 				inputMask: "AA??",
 				allowNullValue: true,
@@ -1317,9 +1398,9 @@ $(document).ready(function () {
 			});
 		$editor.trigger("focus").select();
 		try {
-			$.ig.TestUtil.keyInteraction(97, $editor);
-			$.ig.TestUtil.keyInteraction(98, $editor);
-			$.ig.TestUtil.keyInteraction(99, $editor);
+			this.util.keyInteraction(97, $editor);
+			this.util.keyInteraction(98, $editor);
+			this.util.keyInteraction(99, $editor);
 			assert.ok(true);
 		} catch (error) {
 			assert.ok(false, "(wrong nullValue) Typing caused an exception: " + error.message);
@@ -1328,7 +1409,7 @@ $(document).ready(function () {
 		$editor.remove();
 
 		// nullValue not a string
-		$editor = $('<input/>').appendTo("#testBedContainer")
+		$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
 			.igMaskEditor({
 				allowNullValue: true,
 				nullValue: 0
@@ -1336,60 +1417,76 @@ $(document).ready(function () {
 		assert.equal($editor.val(), "0", "Null value not applied on Display text.")
 		$editor.trigger("focus").select();
 		try {
-			$.ig.TestUtil.keyInteraction(49, $editor);
-			$.ig.TestUtil.keyInteraction(50, $editor);
-			$.ig.TestUtil.keyInteraction(51, $editor);
+			this.util.keyInteraction(49, $editor);
+			this.util.keyInteraction(50, $editor);
+			this.util.keyInteraction(51, $editor);
 			assert.ok(true);
 		} catch (error) {
 			assert.ok(false, "(numeric nullValue) Typing caused an exception: " + error.message);
 		}
 		assert.equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text.");
-		$editor.remove();
 	});
 
 	QUnit.test('Bug 1090', function (assert) {
 		assert.expect(3);
-		var editor = $("#1090Editor"),
-			field = editor.igTextEditor("field"),
-			text = "add some text";
-		typeInInput(text, field);
-		keyInteraction(13, field);
 
-		stop();
-		setTimeout(function () {
-			start();
-			var inputSelection = editor.igTextEditor("getSelectedText"),
-				selectionStart = editor.igTextEditor("getSelectionStart"),
-				selectionEnd = editor.igTextEditor("getSelectionEnd");
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igTextEditor({
+					textMode: "multiline",
+					height: "100px"
+				}),
+			field = $editor.igTextEditor("field"),
+			text = "add some text",
+			done = assert.async();
+
+		this.util.type(text, field);
+		this.util.keyInteraction(13, field);
+
+		this.util.wait(100).then(function () {
+			var inputSelection = $editor.igTextEditor("getSelectedText"),
+				selectionStart = $editor.igTextEditor("getSelectionStart"),
+				selectionEnd = $editor.igTextEditor("getSelectionEnd");
 
 			assert.equal(field.val(), text, 'the text is not set');
 			assert.equal(selectionStart, selectionEnd, 'there is selection but should not be');
 			assert.equal("", inputSelection, 'there is selected text but should not be');
-			$("#1090Editor").remove();
-		}, 100);
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Bug 1043 - maxLength not respected on Android', function (assert) {
 		assert.expect(6);
-		var $editor = $("<input/>").appendTo("#testBedContainer")
-			.igTextEditor({
-				maxLength: 5
-			});
-		$field = $editor.igTextEditor("field");
+
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igTextEditor({
+					maxLength: 5
+				}),
+			$field = $editor.igTextEditor("field"),
+			composition,
+			compositionend,
+			util = this.util,
+			done = assert.async();
 
 		$field.focus();
-		var composition = jQuery.Event("compositionstart");
+		composition = jQuery.Event("compositionstart");
 		$field.trigger(composition);
 		$field.val("12345678");
-		var compositionend = jQuery.Event("compositionend");
+		compositionend = jQuery.Event("compositionend");
 		$field.trigger(compositionend);
-		stop();
-		setTimeout(function () {
-			start();
+
+		this.util.wait(0).then(function () {
 			assert.equal($field.val(), "12345", "Text was not trimmed");
 			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
 			assert.equal($editor.igTextEditor("editorContainer").igNotifier("container").text(),
 				$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+
 			$field.blur();
 			// test case without start (Chrome Android)
 			$field.focus();
@@ -1402,34 +1499,36 @@ $(document).ready(function () {
 			$field.val("12345678");
 			var compositionend = jQuery.Event("compositionend");
 			$field.trigger(compositionend);
-			stop();
-			setTimeout(function () {
-				start();
-				assert.equal($field.val(), "12345", "Text was not trimmed with update only");
-				assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
-				assert.equal($editor.igTextEditor("editorContainer").igNotifier("container").text(),
-					$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
-				$editor.remove();
-			}, 0);
-		}, 0);
+
+			return util.wait(0);
+		}).then(function () {
+			assert.equal($field.val(), "12345", "Text was not trimmed with update only");
+			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+			assert.equal($editor.igTextEditor("editorContainer").igNotifier("container").text(),
+				$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+
+			done();
+		}).catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 	});
 
 	QUnit.test('Bug 1205 Decimal numbers are rounded when the editor is blurred', function (assert) {
 		assert.expect(1);
-		var $editor;
 
 		// value not matching mask (fails validation)
-		$editor = $('<input/>').appendTo("#testBedContainer")
-			.igNumericEditor({
-				minDecimals: 10,
-				maxDecimals: 10
-			});
+		var editorId = "EditorId",
+			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+				.igNumericEditor({
+					minDecimals: 10,
+					maxDecimals: 10
+				});
+
 		$editor.trigger("focus").val("0.0000005880").blur();
-
-
-
 		assert.equal($editor.val(), "0.0000005880", "(wrong value) Numeric editor display value is not: 0.0000005880.");
-		$editor.remove();
+
 		/* 
 		// nullValue not matching mask (fails validation)
 		$editor = $('<input/>').appendTo("#testBedContainer")
@@ -1467,6 +1566,5 @@ $(document).ready(function () {
 			assert.ok(false, "(numeric nullValue) Typing caused an exception: " + error.message );
 		}
 		assert.equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text."); */
-		$editor.remove();
 	});
 });
