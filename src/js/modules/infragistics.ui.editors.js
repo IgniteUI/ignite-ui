@@ -12552,7 +12552,7 @@
 
 			var buttons = this.options.buttonType.toString().split(/[\s,]+/);
 
-			if ($.inArray("dropdown", buttons) === 0) {
+			if ($.inArray("dropdown", buttons) !== -1) {
 				this._populateDropDown(this.options.minTimeValue, this.options.maxTimeValue);
 			}
 		},
