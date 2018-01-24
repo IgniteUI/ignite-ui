@@ -31,7 +31,7 @@ QUnit.module("Knockout unit tests for igDateEditor", {
 		};
 		this.setDefaultDate3 = function() {
 			//Update set it using the other way -> setDate(getYear(), getDay()....
-			var d = new Date("05/15/2008")
+			var d = new Date("05/15/2008");
 			var date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 13, 45, 29, 10);
 
 			self.dateValue(date);
