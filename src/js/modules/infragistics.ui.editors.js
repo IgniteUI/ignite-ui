@@ -12631,6 +12631,7 @@
 			}
 
 			var timeDeltaMinutes = this.options.itemsDelta.hours * 60 + this.options.itemsDelta.minutes;
+			var startMinutes = minValue / timeDeltaMinutes;
 			var dropDownItemsCount = 0;
 
 			if (timeDeltaMinutes > 0 && timeDeltaMinutes <= 1440) {
@@ -12644,7 +12645,7 @@
 
 			this.options.listItems = [];
 
-			for (var i = 0; i < dropDownItemsCount; i++) {
+			for (var i = startMinutes; i < dropDownItemsCount; i++) {
 				var date = new Date(initDate);
 				date.setMinutes(timeDeltaMinutes * i);
 				if (timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue) {
@@ -12689,7 +12690,7 @@
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
 				case "timeDisplayFormat":
-					this._super("dateDisplayFormat", value);
+					this._super("dateDisplayFormat", this._parseTimeMask(value));
 					break;
 				case "timeInputFormat":
 				case "dropDownItemsDelta":
@@ -12708,7 +12709,9 @@
 		_updateValue: function (value) { //igTimePicker
 			if (value === null || $.type(value) === "date" || value === "") {
 				this._super(value);
-				this._updateDropdownSelection(value);
+				if ($.type(value) === "date") {
+					this._updateDropdownSelection(value);
+				}
 			} else {
 				this._super(new Date(value));
 				this._updateDropdownSelection(new Date(value));
@@ -12728,7 +12731,7 @@
 			}
 		},
 		_applyOptions: function () { // igTimePicker
-			if ($.type(this.options.value) !== "date") {
+			if ($.type(this.options.value) !== "date" && this.options.value !== null) {
 				this.options.value = this._parseDateFromMaskedValue(this.options.value);
 			}
 			this._super();
