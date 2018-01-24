@@ -12069,20 +12069,20 @@
 			```
 				//Initialize with object
 				$(".selector").%%WidgetName%%({
-					timeDelta: {
+					itemsDelta: {
 						hours: 0,
 						minutes: 30,
 					}
 				});
 
 				//Get
-				var timeDelta= $(".selector").%%WidgetName%%("option", "timeDelta");
+				var itemsDelta= $(".selector").%%WidgetName%%("option", "itemsDelta");
 
 				//Set with object
-				$(".selector").%%WidgetName%%("option", "timeDelta", { minutes: 30 });
+				$(".selector").%%WidgetName%%("option", "itemsDelta", { minutes: 30 });
 			```
 			object type="object" A configuration object, which defines specific values for each time period. The option can accept the following format:
-				timeDelta: {
+				itemsDelta: {
 					hours: 0,
 					minutes: 30,
 				}
@@ -12195,21 +12195,6 @@
 				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
 			```*/
 			isLimitedToListValues: true,
-			/* type="bool" Disables/Enables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					suppressNotifications : true
-				});
-
-				//Get
-				var suppressNotifications = $(".selector").%%WidgetName%%("option", "suppressNotifications");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
-			```
-			*/
-			suppressNotifications: false,
 			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
 				Note: The option does not perform device detection so its behavior is always active if enabled.
 				Note: When drop down is opened the only way to close it will be using the drop down button.
@@ -12542,14 +12527,14 @@
 		},
 		_initialize: function () { // igTimePicker
 			if (this.options.timeDisplayFormat) {
-				this.options.timeDisplayFormat = this._parseMask(this.options.timeDisplayFormat);
+				this.options.timeDisplayFormat = this._parseTimeMask(this.options.timeDisplayFormat);
 				this.options.dateDisplayFormat = this.options.timeDisplayFormat;
 			} else {
 				this.options.dateDisplayFormat = "time";
 			}
 
 			if (this.options.timeInputFormat) {
-				this.options.timeInputFormat = this._parseMask(this.options.timeInputFormat);
+				this.options.timeInputFormat = this._parseTimeMask(this.options.timeInputFormat);
 				this.options.dateInputFormat = this.options.timeInputFormat;
 			} else {
 				this.options.dateInputFormat = "time";
@@ -12567,7 +12552,7 @@
 
 			var buttons = this.options.buttonType.toString().split(/[\s,]+/);
 
-			if ($.inArray("dropdown", buttons) === 0) {
+			if ($.inArray("dropdown", buttons) !== -1) {
 				this._populateDropDown(this.options.minTimeValue, this.options.maxTimeValue);
 			}
 		},
@@ -12646,7 +12631,12 @@
 			}
 
 			var timeDeltaMinutes = this.options.itemsDelta.hours * 60 + this.options.itemsDelta.minutes;
-			var count = 1440 / timeDeltaMinutes;
+			var startMinutes = minValue / timeDeltaMinutes;
+			var dropDownItemsCount = 0;
+
+			if (timeDeltaMinutes > 0 && timeDeltaMinutes <= 1440) {
+				dropDownItemsCount = 1440 / timeDeltaMinutes;
+			}
 
 			var initDate = new Date();
 			initDate.setHours(0);
@@ -12655,7 +12645,7 @@
 
 			this.options.listItems = [];
 
-			for (var i = 0; i < count; i++) {
+			for (var i = startMinutes; i < dropDownItemsCount; i++) {
 				var date = new Date(initDate);
 				date.setMinutes(timeDeltaMinutes * i);
 				if (timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue) {
@@ -12663,7 +12653,7 @@
 				}
 			}
 		},
-		_parseMask: function(mask) {
+		_parseTimeMask: function(mask) {
 			return mask.replace(/M/g, "\\M").replace(/d/g, "\\d").replace(/y/g, "\\y").replace(/s/g, "\\s").replace(/f/g, "\\f");
 		},
 		_validateValue: function (val) { //igTimePicker
@@ -12700,7 +12690,7 @@
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
 				case "timeDisplayFormat":
-					this._super("dateDisplayFormat", value);
+					this._super("dateDisplayFormat", this._parseTimeMask(value));
 					break;
 				case "timeInputFormat":
 				case "dropDownItemsDelta":
@@ -12717,12 +12707,16 @@
 			}
 		},
 		_updateValue: function (value) { //igTimePicker
-			if ($.type(value) === "date") {
+			if (value === null || $.type(value) === "date" || value === "") {
 				this._super(value);
-			} else if (value === "") {
-				this._super(value);
+				if ($.type(value) === "date" && this._dropDownList !== undefined) {
+					this._updateDropdownSelection(value);
+				}
 			} else {
 				this._super(new Date(value));
+				if (this._dropDownList !== undefined) {
+					this._updateDropdownSelection(new Date(value));
+				}
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTimePicker
@@ -12737,6 +12731,12 @@
 			if (this._dropDownList && this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
 				this._hideDropDownList();
 			}
+		},
+		_applyOptions: function () { // igTimePicker
+			if ($.type(this.options.value) !== "date" && this.options.value !== null) {
+				this.options.value = this._parseDateFromMaskedValue(this.options.value);
+			}
+			this._super();
 		},
 		/* This method is inherited from a parent widget and it's not supported in igTimePicker */
 		selectDate: function () {
