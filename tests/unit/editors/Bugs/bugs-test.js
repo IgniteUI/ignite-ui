@@ -77,9 +77,10 @@ $(document).ready(function () {
 	QUnit.test('Bug 208808', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag, { value: "2015/05/01" }).igDateEditor({
-			dateInputFormat: "yyyy/MM/dd"
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag, { value: "2015/05/01" })
+			.igDateEditor({
+				dateInputFormat: "yyyy/MM/dd"
+			}),
 			dd = new Date("2000/05/01"),
 			util = this.util,
 			done = assert.async();
@@ -103,10 +104,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 208036', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDatePicker({
-			dataMode: 'date',
-			dateInputFormat: "dd/MM/yyyy"
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDatePicker({
+				dataMode: 'date',
+				dateInputFormat: "dd/MM/yyyy"
+			}),
 			calendar = $editor.igDatePicker("getCalendar"),
 			getDDmmYYYY = this.getDDmmYYYY;
 
@@ -122,12 +124,14 @@ $(document).ready(function () {
 	QUnit.test('Bug 209067', function (assert) {
 		assert.expect(4);
 
-		var $textEditorUpper = this.util.appendToFixture(this.inputTag).igTextEditor({
-			toUpper: true
-		}),
-			$textEditorLower = this.util.appendToFixture(this.inputTag).igTextEditor({
-				toLower: true
+		var $textEditorUpper = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				toUpper: true
 			}),
+			$textEditorLower = this.util.appendToFixture(this.inputTag)
+				.igTextEditor({
+					toLower: true
+				}),
 			$button = this.util.appendToFixture(this.buttonTag).text("click me").click(function () {
 				$textEditorUpper.igTextEditor("value", "nwsfsd");
 				$textEditorLower.igTextEditor("value", "NWSFSD");
@@ -142,13 +146,15 @@ $(document).ready(function () {
 
 	QUnit.test('Bug 209174', function (assert) {
 		assert.expect(4);
-		var $textEditor = this.util.appendToFixture(this.inputTag).igTextEditor({
-			value: 'Stamen'
-		}),
-			$textEditorNullable = this.util.appendToFixture(this.inputTag).igTextEditor({
-				value: 'Stamen',
-				allowNullValue: true
+		var $textEditor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				value: 'Stamen'
 			}),
+			$textEditorNullable = this.util.appendToFixture(this.inputTag)
+				.igTextEditor({
+					value: 'Stamen',
+					allowNullValue: true
+				}),
 			$button = this.util.appendToFixture(this.buttonTag).text("click me").click(function () {
 				$textEditor.igTextEditor("value", null);
 				$textEditorNullable.igTextEditor("value", null);
@@ -166,11 +172,12 @@ $(document).ready(function () {
 	QUnit.test('Bug 209912', function (assert) {
 		assert.expect(1);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
-			scientificFormat: "E",
-			spinDelta: 10,
-			buttonType: "spin"
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				scientificFormat: "E",
+				spinDelta: 10,
+				buttonType: "spin"
+			}),
 			spinDownButton = $editor.igNumericEditor("spinDownButton");
 
 		this.util.click(spinDownButton);
@@ -180,10 +187,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 209641', function (assert) {
 		assert.expect(8);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
-			negativeSign: "$",
-			value: -34
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				negativeSign: "$",
+				value: -34
+			}),
 			$button = this.util.appendToFixture(this.buttonTag).text("Click me").click(function () {
 				$editor.igNumericEditor("value", -30);
 			});
@@ -207,12 +215,14 @@ $(document).ready(function () {
 	QUnit.test('Bug 209696', function (assert) {
 		assert.expect(4);
 
-		var $editor1 = this.util.appendToFixture(this.divTag).igDateEditor({
-			dateInputFormat: "dd,MM,yyyy hh:m tt",
-		}),
-			$editor2 = this.util.appendToFixture(this.divTag).igDateEditor({
+		var $editor1 = this.util.appendToFixture(this.divTag)
+			.igDateEditor({
 				dateInputFormat: "dd,MM,yyyy hh:m tt",
 			}),
+			$editor2 = this.util.appendToFixture(this.divTag)
+				.igDateEditor({
+					dateInputFormat: "dd,MM,yyyy hh:m tt",
+				}),
 			date1 = new Date(2015, 10, 13, 00, 34),
 			date2 = new Date(2015, 10, 13, 12, 34);
 
@@ -223,113 +233,127 @@ $(document).ready(function () {
 		$editor2.igDateEditor("field").focus().val("13,11,2015 12:34 PM").blur();
 		assert.equal($editor2.igDateEditor("field").val(), "13,11,2015 12:34 PM", "The display value is changed to 13,11,2015 12:34 PM");
 		assert.equal($editor2.igDateEditor("value").getTime(), date2.getTime(), "The value is changed to " + date2);
-
 	});
 
 	QUnit.test('Bug 208809', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igPercentEditor();
+		var $editor = this.util.appendToFixture(this.inputTag).igPercentEditor(),
+			field = $editor.igPercentEditor("field");
 
-		$editor.igPercentEditor("field").focus().val("123456789").blur();
-		assert.equal($editor.igPercentEditor("field").val(), "123,456,789.00%", "The value is changed to 123,456,789.00%");
+		field.focus().val("123456789").blur();
+		assert.equal(field.val(), "123,456,789.00%", "The value is changed to 123,456,789.00%");
 
-		$editor.igPercentEditor("field").focus();
-		assert.equal($editor.igPercentEditor("field").val(), "123456789", "The value is changed to 123456789");
+		field.focus();
+		assert.equal(field.val(), "123456789", "The value is changed to 123456789");
 	});
 
 	QUnit.test('Bug 208887, 216017', function (assert) {
 		assert.expect(7);
 
-		var $editor1 = this.util.appendToFixture(this.inputTag).igDateEditor({
-			dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt",
-			//dateDispalyFormat: "dd,MM,yyyy hh:m:ss fff tt"
-			width: 400
-		}),
-			$editor2 = this.util.appendToFixture(this.inputTag).igDateEditor({
-				dateInputFormat: "dd,MM,yyyy hh:m:ss fff tt",
+		var $editor1 = this.util.appendToFixture(this.inputTag)
+			.igDateEditor({
+				dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt",
 				//dateDispalyFormat: "dd,MM,yyyy hh:m:ss fff tt"
 				width: 400
-			});
+			}),
+			$editor2 = this.util.appendToFixture(this.inputTag)
+				.igDateEditor({
+					dateInputFormat: "dd,MM,yyyy hh:m:ss fff tt",
+					//dateDispalyFormat: "dd,MM,yyyy hh:m:ss fff tt"
+					width: 400
+				}),
+			field = $editor1.igDateEditor("field");
 
-		$editor1.igDateEditor("field").focus().val("30,10,2016 10:25:56 12 AM");
-		assert.equal($editor1.igDateEditor("field").val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field.focus().val("30,10,2016 10:25:56 12 AM");
+		assert.equal(field.val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-		$editor1.igDateEditor("field").blur();
-		assert.equal($editor1.igDateEditor("field").val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field.blur();
+		assert.equal(field.val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-		$editor1.igDateEditor("field").focus();
-		assert.equal($editor1.igDateEditor("field").val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field.focus();
+		assert.equal(field.val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-		$editor2.igDateEditor("field").focus().val("30,10,2016 10:25:56 12_ AM");
-		assert.equal($editor2.igDateEditor("field").val(), "30,10,2016 10:25:56 12_ AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field = $editor2.igDateEditor("field")
+		field.focus().val("30,10,2016 10:25:56 12_ AM");
+		assert.equal(field.val(), "30,10,2016 10:25:56 12_ AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-		$editor2.igDateEditor("field").blur();
-		assert.equal($editor2.igDateEditor("field").val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field.blur();
+		assert.equal(field.val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-		$editor2.igDateEditor("field").focus();
-		assert.equal($editor2.igDateEditor("field").val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field.focus();
+		assert.equal(field.val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
 		// Bug #216017
-		$editor1.igDateEditor("field").focus().val("00,00,0000 00:00:00 00 AM");
-		$editor1.igDateEditor("field").blur();
-		assert.equal($editor1.igDateEditor("field").val(), "30,10,2000 12:0:00 00 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+		field = $editor1.igDateEditor("field");
+		field.focus().val("00,00,0000 00:00:00 00 AM");
+		field.blur();
+		assert.equal(field.val(), "30,10,2000 12:0:00 00 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 	});
 
 	QUnit.test('Bug 209012', function (assert) {
 		assert.expect(4);
 
-		var $textEditorUpper = this.util.appendToFixture(this.inputTag).igTextEditor({
-			toUpper: true
-		}),
-			$textEditorLower = this.util.appendToFixture(this.inputTag).igTextEditor({
-				toLower: true
-			});
+		var $textEditorUpper = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				toUpper: true
+			}),
+			$textEditorLower = this.util.appendToFixture(this.inputTag)
+				.igTextEditor({
+					toLower: true
+				}),
+			field = $textEditorUpper.igTextEditor("field");
 
-		$textEditorUpper.igTextEditor("field").focus();
+		field.focus();
 		$textEditorUpper.data("igTextEditor")._insert("NewVal1", "");
-		assert.equal($textEditorUpper.igTextEditor("field").val(), "NEWVAL1", "The value is changed to NEWVAL1");
+		assert.equal(field.val(), "NEWVAL1", "The value is changed to NEWVAL1");
 
-		$textEditorUpper.igTextEditor("field").blur();
-		assert.equal($textEditorUpper.igTextEditor("field").val(), "NEWVAL1", "The value is changed to NEWVAL1");
+		field.blur();
+		assert.equal(field.val(), "NEWVAL1", "The value is changed to NEWVAL1");
 
-		$textEditorLower.igTextEditor("field").focus();
+		field = $textEditorLower.igTextEditor("field")
+		field.focus();
 		$textEditorLower.data("igTextEditor")._insert("NewVal1", "");
-		assert.equal($textEditorLower.igTextEditor("field").val(), "newval1", "The value is changed to newval1");
+		assert.equal(field.val(), "newval1", "The value is changed to newval1");
 
-		$textEditorLower.igTextEditor("field").blur();
-		assert.equal($textEditorLower.igTextEditor("field").val(), "newval1", "The value is changed to newval1");
+		field.blur();
+		assert.equal(field.val(), "newval1", "The value is changed to newval1");
 	});
 
 	QUnit.test('Bug 208350', function (assert) {
 		assert.expect(7);
 
-		var $dateEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
-			dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-			enableUTCDates: true
-		}),
-			$datePickerEditor = this.util.appendToFixture(this.inputTag).igDatePicker({
-				enableUTCDates: true,
-				dateInputFormat: "dd/MM/yyyy HH:mm:ss"
-			});
+		var $dateEditor = this.util.appendToFixture(this.inputTag)
+			.igDateEditor({
+				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+				enableUTCDates: true
+			}),
+			$datePickerEditor = this.util.appendToFixture(this.inputTag)
+				.igDatePicker({
+					enableUTCDates: true,
+					dateInputFormat: "dd/MM/yyyy HH:mm:ss"
+				}),
+			field;
 
-		$dateEditor.igDateEditor("field").focus().val("15/10/2016 10:25:56");
-		assert.equal($dateEditor.igDateEditor("field").val(), "15/10/2016 10:25:56", "The text is changed to 15/10/2016 10:25:56");
+		field = $dateEditor.igDateEditor("field");
+		field.focus().val("15/10/2016 10:25:56");
+		assert.equal(field.val(), "15/10/2016 10:25:56", "The text is changed to 15/10/2016 10:25:56");
 
-		$dateEditor.igDateEditor("field").blur();
-		assert.equal($dateEditor.igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+		field.blur();
+		assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
-		$dateEditor.igDateEditor("field").focus();
+		field.focus();
 		assert.equal($dateEditor.igDateEditor("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 15/10/2016 10:25:56");
-		assert.equal($dateEditor.igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+		assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
-		$datePickerEditor.igDatePicker("field").focus().val("15/10/2016 10:25:56");
-		assert.equal($datePickerEditor.igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+		field = $datePickerEditor.igDatePicker("field");
+		field.focus().val("15/10/2016 10:25:56");
+		assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
-		$datePickerEditor.igDatePicker("field").blur();
-		assert.equal($datePickerEditor.igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+		field.blur();
+		assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
-		$datePickerEditor.igDatePicker("field").focus();
+		field.focus();
 		assert.equal($datePickerEditor.igDatePicker("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 1476527156000");
 	});
 
@@ -346,52 +370,58 @@ $(document).ready(function () {
 	QUnit.test('Bug 208448', function (assert) {
 		assert.expect(3);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDatePicker({
-			dateInputFormat: "dd/MM/yyyy",
-			value: new Date("05/25/2012")
-		});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDatePicker({
+				dateInputFormat: "dd/MM/yyyy",
+				value: new Date("05/25/2012")
+			}),
+			field = $editor.igDatePicker("field");
 
-		$editor.igDatePicker("field").focus();
-		assert.equal($editor.igDatePicker("field").val(), "25/05/2012", "The text is changed to 25/05/2012");
+		field.focus();
+		assert.equal(field.val(), "25/05/2012", "The text is changed to 25/05/2012");
 
 		$editor.igDatePicker("dropDownButton").click();
-		assert.equal($editor.igDatePicker("field").val(), "25/05/2012", "The value is changed to 25/05/2012");
+		assert.equal(field.val(), "25/05/2012", "The value is changed to 25/05/2012");
 
 		$editor.igDatePicker("dropDownButton").click();
-		assert.equal($editor.igDatePicker("field").val(), "25/05/2012", "The value is changed to 25/05/2012");
+		assert.equal(field.val(), "25/05/2012", "The value is changed to 25/05/2012");
 	});
 
 	QUnit.test('Bug 208264', function (assert) {
 		assert.expect(3);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDateEditor({
-			dateInputFormat: "H:m:s",
-			dateDisplayFormat: "H:m:ss"
-		});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDateEditor({
+				dateInputFormat: "H:m:s",
+				dateDisplayFormat: "H:m:ss"
+			}),
+			field = $editor.igDateEditor("field");
 
-		$editor.igDateEditor("field").focus();
+		field.focus();
 		$editor.data("igDateEditor")._insert("10:10:_9");
-		assert.equal($editor.igDateEditor("field").val(), "10:10:_9", "The text is changed to 10:10:9");
+		assert.equal(field.val(), "10:10:_9", "The text is changed to 10:10:9");
 
-		$editor.igDateEditor("field").blur()
-		assert.equal($editor.igDateEditor("field").val(), "10:10:09", "The value is changed to 10:10:9");
+		field.blur()
+		assert.equal(field.val(), "10:10:09", "The value is changed to 10:10:9");
 
-		$editor.igDateEditor("field").focus();
-		assert.equal($editor.igDateEditor("field").val(), "10:10:09", "The value is changed to 25/05/2012");
+		field.focus();
+		assert.equal(field.val(), "10:10:09", "The value is changed to 25/05/2012");
 	});
 
 	QUnit.test('Bug 210971', function (assert) {
 		assert.expect(5);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igTextEditor({
-			listItems: ["1", "2", "3", "4", "5", "6"],
-			width: 200
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				listItems: ["1", "2", "3", "4", "5", "6"],
+				width: 200
+			}),
 			ddList = $editor.igTextEditor("dropDownContainer"),
+			field = $editor.igTextEditor("field"),
 			item;
 
 		$editor.igTextEditor("dropDownButton").click();
-		assert.equal($editor.igTextEditor("field").val(), "", "The text is changed to empty string");
+		assert.equal(field.val(), "", "The text is changed to empty string");
 
 		assert.ok(ddList.is(":visible"), "The dropdown should be visible");
 
@@ -399,7 +429,7 @@ $(document).ready(function () {
 		assert.ok(items.length == 6, "exist 6");
 
 		$(items[3]).click();
-		assert.equal($editor.igTextEditor("field").val(), "4", "The text is changed to 4");
+		assert.equal(field.val(), "4", "The text is changed to 4");
 		assert.equal($editor.igTextEditor("value"), "4", "The text is changed to 4");
 	});
 
@@ -408,18 +438,19 @@ $(document).ready(function () {
 
 		var $percentEditorvar = this.util.appendToFixture(this.inputTag).igPercentEditor(),
 			$currencyEditor1 = this.util.appendToFixture(this.inputTag).igCurrencyEditor(),
-			$currencyEditor2 = this.util.appendToFixture(this.inputTag).igCurrencyEditor();
+			$currencyEditor2 = this.util.appendToFixture(this.inputTag).igCurrencyEditor(),
+			field = $currencyEditor1.igCurrencyEditor("field");
 
 		$percentEditorvar.igPercentEditor("insert", "20");
 		assert.equal($percentEditorvar.igPercentEditor("field").val(), "20.00%", "The value in the field should be 20.00%");
 		assert.equal($percentEditorvar.igPercentEditor("value"), "0.2", "The value in the field should be 0.2");
 
-		$currencyEditor1.igCurrencyEditor("field").focus();
+		field.focus();
 		$currencyEditor1.igCurrencyEditor("insert", "20");
-		assert.equal($currencyEditor1.igCurrencyEditor("field").val(), "20", "The value in the field should be 20");
+		assert.equal(field.val(), "20", "The value in the field should be 20");
 
-		$currencyEditor1.igCurrencyEditor("field").blur();
-		assert.equal($currencyEditor1.igCurrencyEditor("field").val(), "$20.00", "The value in the field should be $20.00");
+		field.blur();
+		assert.equal(field.val(), "$20.00", "The value in the field should be $20.00");
 		assert.equal($currencyEditor1.igCurrencyEditor("value"), "20", "The value in the field should be 20");
 
 		$currencyEditor2.igCurrencyEditor("insert", "20");
@@ -433,21 +464,22 @@ $(document).ready(function () {
 		assert.expect(5);
 
 		var $percentEditorvar = this.util.appendToFixture(this.inputTag).igPercentEditor(),
+			field = $percentEditorvar.igPercentEditor("field"),
 			util = this.util,
 			done = assert.async();
 
 		$percentEditorvar.igPercentEditor("value", "1");
 		$percentEditorvar.igPercentEditor("insert", "23");
-		assert.equal($percentEditorvar.igPercentEditor("field").val(), "23.00%", "The text after insert should be 23.00%");
+		assert.equal(field.val(), "23.00%", "The text after insert should be 23.00%");
 		assert.strictEqual($percentEditorvar.igPercentEditor("value"), 0.23, "The value after insert should be 0.23");
 
-		$percentEditorvar.igPercentEditor("field").click().focus();
+		field.click().focus();
 		this.util.wait(100).then(function () {
 			$percentEditorvar.igPercentEditor("insert", "20");
-			assert.equal($percentEditorvar.igPercentEditor("field").val(), "20", "The value in the field should be 20. Actual - " + $percentEditorvar.igPercentEditor("field").val());
+			assert.equal(field.val(), "20", "The value in the field should be 20. Actual - " + field.val());
 
-			$percentEditorvar.igPercentEditor("field").blur();
-			assert.equal($percentEditorvar.igPercentEditor("field").val(), "20.00%", "The value in the field should be 20.00%. Actual - " + $percentEditorvar.igPercentEditor("field").val());
+			field.blur();
+			assert.equal(field.val(), "20.00%", "The value in the field should be 20.00%. Actual - " + field.val());
 			assert.equal($percentEditorvar.igPercentEditor("value"), "0.2", "The value in the field should be 0.2. Actual: " + $percentEditorvar.igPercentEditor("value"));
 			done();
 		}).catch(function (er) {
@@ -460,21 +492,24 @@ $(document).ready(function () {
 	QUnit.test('Bug 211010', function (assert) {
 		assert.expect(12);
 
-		var $textEditor1 = this.util.appendToFixture(this.inputTag).igTextEditor({
-			placeHolder: "Company name",
-			readOnly: true
-		}),
-			$textEditor2 = this.util.appendToFixture(this.inputTag).igTextEditor({
+		var $textEditor1 = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
 				placeHolder: "Company name",
-				readOnly: true,
-				dropDownOnReadOnly: true,
-				listItems: [1, 2, 3]
+				readOnly: true
 			}),
-			$numericEditor = this.util.appendToFixture(this.inputTag).igNumericEditor({
-				placeHolder: "Company name",
-				readOnly: true,
-				buttonType: 'clear,spin'
-			});
+			$textEditor2 = this.util.appendToFixture(this.inputTag)
+				.igTextEditor({
+					placeHolder: "Company name",
+					readOnly: true,
+					dropDownOnReadOnly: true,
+					listItems: [1, 2, 3]
+				}),
+			$numericEditor = this.util.appendToFixture(this.inputTag)
+				.igNumericEditor({
+					placeHolder: "Company name",
+					readOnly: true,
+					buttonType: 'clear,spin'
+				});
 
 		assert.notOk($textEditor1.igTextEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied");
 		assert.ok($textEditor1.igTextEditor("field").attr("readonly") !== undefined, "The readonly attribute should  be applied");
@@ -498,12 +533,13 @@ $(document).ready(function () {
 	QUnit.test('Bug 211062', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDatePicker({
-			width: "200px",
-			dataMode: "date",
-			dateInputFormat: "dd/MM/yyyy HH:mm",
-			minValue: new Date(2015, 6, 1)
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDatePicker({
+				width: "200px",
+				dataMode: "date",
+				dateInputFormat: "dd/MM/yyyy HH:mm",
+				minValue: new Date(2015, 6, 1)
+			}),
 			calendar,
 			targetDate,
 			getDDmmYYYYHHSS = this.getDDmmYYYYHHSS;
@@ -532,10 +568,11 @@ $(document).ready(function () {
 		todayDate.setSeconds(0);
 		todayDate.setMilliseconds(0);
 
-		$editor = this.util.appendToFixture(this.inputTag).igDatePicker({
-			maxValue: todayDate,
-			dateDisplayFormat: "yy/MM/dd dddd"
-		});
+		$editor = this.util.appendToFixture(this.inputTag)
+			.igDatePicker({
+				maxValue: todayDate,
+				dateDisplayFormat: "yy/MM/dd dddd"
+			});
 
 		$editor.igDatePicker("dropDownButton").click();
 
@@ -555,10 +592,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 210990', function (assert) {
 		assert.expect(3);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igMaskEditor({
-			inputMask: '000-000-0000',
-			width: 300
-		});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igMaskEditor({
+				inputMask: '000-000-0000',
+				width: 300
+			});
 
 		$editor.igMaskEditor("value", "");
 		assert.equal($editor.igMaskEditor("field").val(), "", "The text is changed to an empty string");
@@ -572,10 +610,11 @@ $(document).ready(function () {
 		assert.expect(1);
 
 		assert.throws(function () {
-			this.util.appendToFixture(this.inputTag).igPercentEditor({
-				displayFactor: 100,
-				dataMode: "int"
-			});
+			this.util.appendToFixture(this.inputTag)
+				.igPercentEditor({
+					displayFactor: 100,
+					dataMode: "int"
+				});
 		}, function (err) {
 			return err.message.indexOf($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint) > -1;
 		}, $.ig.Editor.locale.spinDeltaIncorrectFloatingPoint + "not shown");
@@ -584,18 +623,20 @@ $(document).ready(function () {
 	QUnit.test('Bug 208274', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDateEditor({
-			buttonType: "spin",
-			dateInputFormat: "HH:mm:ss",
-		});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDateEditor({
+				buttonType: "spin",
+				dateInputFormat: "HH:mm:ss",
+			}),
+			field = $editor.igDateEditor("field");
 
-		$editor.igDateEditor("field").focus();
+		field.focus();
 		$editor.data("igDateEditor")._insert("20:01:05");
-		$editor.igDateEditor("field").blur();
-		assert.equal($editor.igDateEditor("field").val(), "20:01:05", "The text is changed to 20:01:05");
+		field.blur();
+		assert.equal(field.val(), "20:01:05", "The text is changed to 20:01:05");
 
-		$editor.igDateEditor("field").focus();
-		assert.equal($editor.igDateEditor("field").val(), "20:01:05", "The value is changed to 20:01:05");
+		field.focus();
+		assert.equal(field.val(), "20:01:05", "The value is changed to 20:01:05");
 	});
 
 	QUnit.test('Bug 207546', function (assert) {
@@ -609,7 +650,7 @@ $(document).ready(function () {
 			flag = true,
 			done = assert.async(),
 			util = this.util,
-			waidDuration = 2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/);
+			waidDuration = 20 + ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/);
 
 		$editor.igDatePicker("dropDownButton").click();
 		this.util.wait(waidDuration + 100).then(function () {
@@ -634,7 +675,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 207321', function (assert) {
 		assert.expect(1);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igMaskEditor({ value: "value1" });
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igMaskEditor(
+			{
+				value: "value1"
+			});
 
 		$editor.igMaskEditor("field").focus();
 		$editor.data("igMaskEditor")._handleDeleteKey();
@@ -644,11 +689,12 @@ $(document).ready(function () {
 	QUnit.test('Bug 211575', function (assert) {
 		assert.expect(1);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDateEditor({
-			dataMode: 'editModeText',
-			dateDisplayFormat: 'yyyy/MM/dd',
-			dateInputFormat: 'yyyy/MM/dd'
-		});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDateEditor({
+				dataMode: 'editModeText',
+				dateDisplayFormat: 'yyyy/MM/dd',
+				dateInputFormat: 'yyyy/MM/dd'
+			});
 
 		$editor.igDateEditor("field").focus();
 		$editor.data("igDateEditor")._insert("2015/10/10");
@@ -660,17 +706,21 @@ $(document).ready(function () {
 		assert.expect(3);
 
 		var $numericEditor = this.util.appendToFixture(this.inputTag).igNumericEditor(),
-			$maskEditor = this.util.appendToFixture(this.inputTag).igMaskEditor({
-				inputMask: "CC//CC"
-			}),
-			$dateEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
-				value: new Date()
-			});
+			$maskEditor = this.util.appendToFixture(this.inputTag)
+				.igMaskEditor({
+					inputMask: "CC//CC"
+				}),
+			$dateEditor = this.util.appendToFixture(this.inputTag)
+				.igDateEditor({
+					value: new Date()
+				}),
+			field;
 
-		$numericEditor.igNumericEditor("field").focus();
+		field = $numericEditor.igNumericEditor("field");
+		field.focus();
 		$numericEditor.data("igNumericEditor")._enterEditMode();
 		$numericEditor.igNumericEditor("value", "1234");
-		assert.equal($numericEditor.igNumericEditor("field").val(), "1234", "The value in edit mode should be 1234. It's: " + $numericEditor.igNumericEditor("field").val());
+		assert.equal(field.val(), "1234", "The value in edit mode should be 1234. It's: " + field.val());
 
 		$maskEditor.data("igMaskEditor")._enterEditMode();
 		$maskEditor.igMaskEditor("value", "abcd");
@@ -684,14 +734,15 @@ $(document).ready(function () {
 	QUnit.test('Bug 212374', function (assert) {
 		assert.expect(3);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igTextEditor({
-			buttonType: "dropdown",
-			listItems: [
-				"item 1",
-				"item 2",
-				"item 3"
-			]
-		}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				buttonType: "dropdown",
+				listItems: [
+					"item 1",
+					"item 2",
+					"item 3"
+				]
+			}),
 			list;
 
 		$editor.igTextEditor("selectedListIndex", 0);
@@ -704,16 +755,18 @@ $(document).ready(function () {
 
 	QUnit.test('Bug 212642', function (assert) {
 		assert.expect(2);
-		var $editor = this.util.appendToFixture(this.inputTag, { value: "2015/05/01" }).igDateEditor({
-			dateInputFormat: "yyyy/MM/dd"
-		});
+		var $editor = this.util.appendToFixture(this.inputTag, { value: "2015/05/01" })
+			.igDateEditor({
+				dateInputFormat: "yyyy/MM/dd"
+			}),
+			field = $editor.igDateEditor("field");
 
 		$editor.data("igDateEditor")._enterEditMode();
-		$editor.igDateEditor("field").val("_111/10/10");
-		$editor.igDateEditor("field").blur();
-		assert.equal($editor.igDateEditor("field").val(), "111/10/10", "The value should be \"111/10/10\"");
+		field.val("_111/10/10");
+		field.blur();
+		assert.equal(field.val(), "111/10/10", "The value should be \"111/10/10\"");
 		$editor.data("igDateEditor")._enterEditMode();
-		assert.equal($editor.igDateEditor("field").val(), "0111/10/10", "The value should be \"111/10/10\"");
+		assert.equal(field.val(), "0111/10/10", "The value should be \"111/10/10\"");
 	});
 
 	QUnit.test('Bug 217214', function (assert) {
@@ -730,16 +783,19 @@ $(document).ready(function () {
 	QUnit.test('Bug 216789', function (assert) {
 		assert.expect(3);
 
-		var $editor1 = this.util.appendToFixture(this.inputTag).igTextEditor({
-			includeKeys: '12345'
-		}),
-			$editor2 = this.util.appendToFixture(this.inputTag).igTextEditor({
-				excludeKeys: '12345'
+		var $editor1 = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				includeKeys: '12345'
 			}),
-			$editor3 = this.util.appendToFixture(this.inputTag).igTextEditor({
-				includeKeys: '12345',
-				excludeKeys: '23'
-			});
+			$editor2 = this.util.appendToFixture(this.inputTag)
+				.igTextEditor({
+					excludeKeys: '12345'
+				}),
+			$editor3 = this.util.appendToFixture(this.inputTag)
+				.igTextEditor({
+					includeKeys: '12345',
+					excludeKeys: '23'
+				});
 
 		$editor1.igTextEditor("field").focus();
 		$editor1.data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
@@ -758,40 +814,45 @@ $(document).ready(function () {
 	QUnit.test('Bug 218836', function (assert) {
 		assert.expect(3);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igMaskEditor({
-			inputMask: '(000) 000-0000',
-			dataMode: 'rawTextWithRequiredPromptsAndLiterals',
-			keypress: function (evt, ui) {
-				if (ui.originalEvent.keyCode == 13) {
-					$('#work_nbr').igMaskEditor("value", "1111111111");
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igMaskEditor({
+				inputMask: '(000) 000-0000',
+				dataMode: 'rawTextWithRequiredPromptsAndLiterals',
+				keypress: function (evt, ui) {
+					if (ui.originalEvent.keyCode == 13) {
+						$('#work_nbr').igMaskEditor("value", "1111111111");
+					}
+					return false;
 				}
-				return false;
-			}
-		});
+			}),
+			field;
 
-		$editor.igMaskEditor("field").focus();
+		field = $editor.igMaskEditor("field");
+		field.focus();
 		$editor.igMaskEditor("value", "1111111111");
-		assert.equal($editor.igMaskEditor("field").val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
+		assert.equal(field.val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
 
-		$editor.igMaskEditor("field").blur();
-		assert.equal($editor.igMaskEditor("field").val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
+		field.blur();
+		assert.equal(field.val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
 		assert.equal($editor.igMaskEditor("value"), "(111) 111-1111", "The value in the field should be (111) 111-1111");
 	});
 
 	QUnit.test('Bug 218752', function (assert) {
 		assert.expect(4);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igDateEditor({
-			width: 120,
-			dateInputFormat: 'yyyy/MM/dd',
-			value: "2016/01/30",
-		}),
-			valueDate;
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igDateEditor({
+				width: 120,
+				dateInputFormat: 'yyyy/MM/dd',
+				value: "2016/01/30",
+			}),
+			valueDate,
+			field = $editor.igDateEditor("field");
 
-		$editor.igDateEditor("field").focus();
-		$editor.igDateEditor("field").val("2016/02/10");
-		$editor.igDateEditor("field").blur();
-		assert.equal($editor.igDateEditor("field").val(), "2016/02/10", "The value in the field should be 2016/02/10");
+		field.focus();
+		field.val("2016/02/10");
+		field.blur();
+		assert.equal(field.val(), "2016/02/10", "The value in the field should be 2016/02/10");
 		valueDate = $editor.igDateEditor("value");
 
 		assert.equal(valueDate.getFullYear(), 2016, "The year in the field should be 2016");
@@ -802,35 +863,38 @@ $(document).ready(function () {
 	QUnit.test('Bug 220712 - typed text is reverted to previous value in case the drop down is opened', function (assert) {
 		assert.expect(1);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igTextEditor({
-			listItems: [1, 2, 3, 4]
-		});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				listItems: [1, 2, 3, 4]
+			}),
+			field = $editor.igTextEditor("field");
 
 		// focus editor and set value
-		$editor.igTextEditor("field").click().focus();
-		$editor.igTextEditor("field").val("text");
+		field.click().focus();
+		field.val("text");
 
 		//open dropdown
 		$editor.igTextEditor("dropDownButton").click();
-		assert.equal($editor.igTextEditor("field").val(), "text", "Opening dropdown caused the entered text to be reverted");
+		assert.equal(field.val(), "text", "Opening dropdown caused the entered text to be reverted");
 	});
 
 	QUnit.test('Bug 221118', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
-			listItems: [1, 2, 3, 4],
-			value: 2
-		}),
-			input = $editor.igNumericEditor("field"),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				listItems: [1, 2, 3, 4],
+				value: 2
+			}),
+			field = $editor.igNumericEditor("field"),
 			ddBtn = $editor.igNumericEditor("dropDownButton"),
 			item = $editor.data("igNumericEditor")._getListItemByIndex(0);
 
 		ddBtn.click();
-		this.util.keyInteraction(40, input); //down
+		this.util.keyInteraction(40, field); //down
 		assert.equal($editor.igNumericEditor("value"), 2, "The value should stay unchanged");
 
-		this.util.keyInteraction(13, input);
+		this.util.keyInteraction(13, field);
 		assert.equal($editor.igNumericEditor("value"), 3, "The value 1 should be selected");
 	});
 
@@ -838,9 +902,10 @@ $(document).ready(function () {
 		assert.expect(1);
 
 		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.textAreaTag, { id: editorId }).igTextEditor({
-				textMode: "multiline"
-			});
+			$editor = this.util.appendToFixture(this.textAreaTag, { id: editorId })
+				.igTextEditor({
+					textMode: "multiline"
+				});
 
 		assert.equal($editor.igTextEditor("field").attr("id"), editorId, "The input id should be the defined one");
 	});
@@ -848,54 +913,43 @@ $(document).ready(function () {
 	QUnit.test('Bug 221300', function (assert) {
 		assert.expect(4);
 
-		var $editor = this.util.appendToFixture(this.textAreaTag).igTextEditor({
-			width: "145px",
-			height: "54px",
-			value: "John Smith, with long test",
-			textMode: "multiline"
-		}),
-			input = $editor.igTextEditor("field"),
-			value,
-			util = this.util,
-			done = assert.async();
+		var $editor = this.util.appendToFixture(this.textAreaTag)
+			.igTextEditor({
+				width: "145px",
+				height: "54px",
+				value: "John Smith, with long test",
+				textMode: "multiline"
+			}),
+			field = $editor.igTextEditor("field"),
+			value;
 
-		input[0].setSelectionRange(6, 6);
-		$editor.igTextEditor("field").click().focus();
+		field.click().focus();
+		field[0].setSelectionRange(6, 6);
+		this.util.keyInteraction(13, field);
+		field.blur();
+		value = $editor.igTextEditor("value");
+		assert.equal(value, "John S\nmith, with long test", "Word is not carried over the new line");
+		assert.equal($editor.igTextEditor("getSelectionStart"), 7, "Cursor position is wrong");
 
-		this.util.wait(100).then(function () {
-			util.keyInteraction(13, input);
-			$editor.igTextEditor("field").blur();
-			value = $editor.igTextEditor("value");
-			assert.equal(value, "John S\nmith, with long test", "Word is not carried over the new line");
-			assert.equal($editor.igTextEditor("getSelectionStart"), 7, "Cursor position is wrong");
+		field.click().focus();
 
-			input[0].setSelectionRange(10, 10);
-			$editor.igTextEditor("field").click().focus();
-
-			return util.wait(100);
-		}).then(function () {
-			util.keyInteraction(13, input);
-			$editor.igTextEditor("field").blur();
-			value = $editor.igTextEditor("value");
-			assert.equal(value, "John S\nmit\nh, with long test", "Word is not carried over the new line");
-			assert.equal($editor.igTextEditor("getSelectionStart"), 11, "Cursor position is wrong");
-
-			done();
-		}).catch(function (er) {
-			assert.pushResult({ result: false, message: er.message });
-			done();
-			throw er;
-		});
+		field[0].setSelectionRange(10, 10);
+		this.util.keyInteraction(13, field);
+		field.blur();
+		value = $editor.igTextEditor("value");
+		assert.equal(value, "John S\nmit\nh, with long test", "Word is not carried over the new line");
+		assert.equal($editor.igTextEditor("getSelectionStart"), 11, "Cursor position is wrong");
 	});
 
 	QUnit.test('Bug 98', function (assert) {
 		assert.expect(2);
 
-		var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
-			maxValue: 5,
-			minValue: 3
-		}),
-			input = $editor.igNumericEditor("field"),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				maxValue: 5,
+				minValue: 3
+			}),
+			field = $editor.igNumericEditor("field"),
 			text,
 			util = this.util,
 			done = assert.async();
@@ -903,15 +957,15 @@ $(document).ready(function () {
 		$editor.igNumericEditor("setFocus");
 
 		this.util.wait(100).then(function () {
-			util.type("26", input);
-			util.keyInteraction(13, input);
-			text = input.val();
+			util.type("26", field);
+			util.keyInteraction(13, field);
+			text = field.val();
 			assert.equal(text, 5, "Text in editor is not set to the maxValue");
 
 			$editor.select();
-			util.type("1", input);
-			util.keyInteraction(13, input);
-			text = input.val();
+			util.type("1", field);
+			util.keyInteraction(13, field);
+			text = field.val();
 			assert.equal(text, 3, "Text in editor is not set to the minValue");
 			done();
 		}).catch(function (er) {
@@ -924,41 +978,46 @@ $(document).ready(function () {
 	QUnit.test('Bug 223245', function (assert) {
 		assert.expect(6);
 
-		var $numericEditor1 = this.util.appendToFixture(this.inputTag).igNumericEditor({
-			dataMode: "int",
-			value: 60,
-			allowNullValue: true,
-			nullValue: ""
-		}),
-			$numericEditor2 = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		var $numericEditor1 = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
 				dataMode: "int",
-				value: 10,
-				allowNullValue: false, //expected to set to minValue
-				minValue: 5
-			}),
-			$numericEditor3 = this.util.appendToFixture(this.inputTag).igNumericEditor({
-				dataMode: "int",
-				value: 70,
-				allowNullValue: true, //expected to set to minValue if input between 1-4
-				minValue: 5
-			}),
-			$percentEditor1 = this.util.appendToFixture(this.inputTag).igPercentEditor({
-				value: 0.60,
+				value: 60,
 				allowNullValue: true,
 				nullValue: ""
 			}),
-			$percentEditor2 = this.util.appendToFixture(this.inputTag).igPercentEditor({
-				value: 0.10,
-				allowNullValue: false, //expected to set to 
-				nullValue: ""
-			}),
-			$percentEditor3 = this.util.appendToFixture(this.inputTag).igPercentEditor({
-				value: 0.70,
-				allowNullValue: true, //expected to set to minValue if input if less than 30
-				nullValue: "",
-				minValue: 0.3
-			}),
-			input,
+			$numericEditor2 = this.util.appendToFixture(this.inputTag)
+				.igNumericEditor({
+					dataMode: "int",
+					value: 10,
+					allowNullValue: false, //expected to set to minValue
+					minValue: 5
+				}),
+			$numericEditor3 = this.util.appendToFixture(this.inputTag)
+				.igNumericEditor({
+					dataMode: "int",
+					value: 70,
+					allowNullValue: true, //expected to set to minValue if input between 1-4
+					minValue: 5
+				}),
+			$percentEditor1 = this.util.appendToFixture(this.inputTag)
+				.igPercentEditor({
+					value: 0.60,
+					allowNullValue: true,
+					nullValue: ""
+				}),
+			$percentEditor2 = this.util.appendToFixture(this.inputTag)
+				.igPercentEditor({
+					value: 0.10,
+					allowNullValue: false, //expected to set to 
+					nullValue: ""
+				}),
+			$percentEditor3 = this.util.appendToFixture(this.inputTag)
+				.igPercentEditor({
+					value: 0.70,
+					allowNullValue: true, //expected to set to minValue if input if less than 30
+					nullValue: "",
+					minValue: 0.3
+				}),
 			value,
 			util = this.util,
 			done = assert.async();
@@ -1027,12 +1086,14 @@ $(document).ready(function () {
 	QUnit.test('Bug 264', function (assert) {
 		assert.expect(2);
 
-		var $editor1 = this.util.appendToFixture(this.inputTag).igMaskEditor({
-			inputMask: "00-0L/>aa(test)"
-		}),
-			$editor2 = this.util.appendToFixture(this.inputTag).igMaskEditor({
-				inputMask: 'Aaa\\>L/>aa'
+		var $editor1 = this.util.appendToFixture(this.inputTag)
+			.igMaskEditor({
+				inputMask: "00-0L/>aa(test)"
 			}),
+			$editor2 = this.util.appendToFixture(this.inputTag)
+				.igMaskEditor({
+					inputMask: 'Aaa\\>L/>aa'
+				}),
 			util = this.util,
 			done = assert.async(),
 			text;
@@ -1064,7 +1125,8 @@ $(document).ready(function () {
 
 	QUnit.test('Bug 226', function (assert) {
 		assert.expect(2);
-		var $editor = this.util.appendToFixture(this.inputTag).igTextEditor(),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor(),
 			field = $editor.igTextEditor("field"),
 			util = this.util,
 			done = assert.async();
@@ -1093,8 +1155,9 @@ $(document).ready(function () {
 		assert.expect(2);
 
 		var editorId = "EditorId",
+			initialValue = "myInputValue",
 			$editor = this.util.appendToFixture(this.inputTag, {
-				value: "myInputValue",
+				value: initialValue,
 				id: editorId
 			}).igTextEditor({
 				value: "newInputValue"
@@ -1103,26 +1166,24 @@ $(document).ready(function () {
 		$editor.igTextEditor("destroy");
 
 		//check the value prop and see if it is restored
-		assert.equal(document.getElementById(editorId).value, "myInputValue", 'Input value is not the same as before Editor init');
+		assert.equal(document.getElementById(editorId).value, initialValue, 'Input value is not the same as before Editor init');
 
 		//check the value attribute and see if it is restored
-		assert.equal(document.getElementById(editorId).getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+		assert.equal(document.getElementById(editorId).getAttribute("value"), initialValue, 'Input value attr is not the same as before Editor init');
 	});
 
 	QUnit.test('Bug 446 - TextEditor doesnt trigger valueChange after clearing', function (assert) {
 		assert.expect(6);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igTextEditor({
-					buttonType: "clear",
-					value: "has value"
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				buttonType: "clear",
+				value: "has value"
+			}),
 			field = $editor.igTextEditor("field"),
 			clearButton = $editor.igTextEditor("clearButton"),
 			textChanged = 0,
 			valueChanged = 0,
-			util = this.util,
 			done = assert.async();
 
 		$editor.on("igtexteditortextchanged", function () {
@@ -1159,12 +1220,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 539 - If min/max value is set to 0 and the entered value is invalid, the editors value is not reverted', function (assert) {
 		assert.expect(4);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igNumericEditor({
-					minValue: 0,
-					maxValue: 10
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				minValue: 0,
+				maxValue: 10
+			}),
 			field = $editor.igNumericEditor("field"),
 			value,
 			util = this.util,
@@ -1209,12 +1269,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 646 - Set null value using setOption', function (assert) {
 		assert.expect(2);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igNumericEditor({
-					allowNullValue: false,
-					value: 20
-				});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				allowNullValue: false,
+				value: 20
+			});
 
 		assert.equal($editor.igNumericEditor("value"), 20, "value should be 20");
 
@@ -1226,16 +1285,13 @@ $(document).ready(function () {
 	QUnit.test('Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null', function (assert) {
 		assert.expect(6);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igMaskEditor({
-					buttonType: "clear",
-					allowNullValue: true
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igMaskEditor({
+				buttonType: "clear",
+				allowNullValue: true
+			}),
 			field = $editor.igMaskEditor("field"),
 			clearButton = $editor.igMaskEditor("clearButton"),
-			textChanged = 0,
-			valueChanged = 0,
 			util = this.util,
 			done = assert.async();
 
@@ -1268,14 +1324,13 @@ $(document).ready(function () {
 
 	QUnit.test('Bug 695 - Check ', function (assert) {
 		assert.expect(2);
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igPercentEditor({
-					allowNullValue: true,
-					nullValue: "",
-					regional: 'de',
-					value: 0.029
-				});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igPercentEditor({
+				allowNullValue: true,
+				nullValue: "",
+				regional: 'de',
+				value: 0.029
+			});
 
 		assert.equal($editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%"); //fails prior fix with 2.900,00%
 		assert.equal($editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
@@ -1284,15 +1339,14 @@ $(document).ready(function () {
 	QUnit.test('Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false', function (assert) {
 		assert.expect(5);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igNumericEditor({
-					buttonType: "dropdown",
-					listItems: [3, 4, 5],
-					isLimitedToListValues: true,
-					revertIfNotValid: false,
-					allowNullValue: false
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				buttonType: "dropdown",
+				listItems: [3, 4, 5],
+				isLimitedToListValues: true,
+				revertIfNotValid: false,
+				allowNullValue: false
+			}),
 			input = $editor.igNumericEditor("field");
 
 		$editor.focus();
@@ -1326,15 +1380,14 @@ $(document).ready(function () {
 	QUnit.test('Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ', function (assert) {
 		assert.expect(4);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igNumericEditor({
-					buttonType: "clear",
-					listItems: [3, 4, 5],
-					isLimitedToListValues: true,
-					revertIfNotValid: false,
-					value: 3
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igNumericEditor({
+				buttonType: "clear",
+				listItems: [3, 4, 5],
+				isLimitedToListValues: true,
+				revertIfNotValid: false,
+				value: 3
+			}),
 			field = $editor.igNumericEditor("field"),
 			clearButton = $editor.igNumericEditor("clearButton"),
 			done = assert.async();
@@ -1368,12 +1421,11 @@ $(document).ready(function () {
 
 	QUnit.test('Bug 1027 Exception is thrown when typing due to incorrect value/nullValue on init', function (assert) {
 		assert.expect(7);
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igMaskEditor({
-					inputMask: "9900",
-					value: "abc" //should be numerics
-				});
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igMaskEditor({
+				inputMask: "9900",
+				value: "abc" //should be numerics
+			});
 
 		// value not matching mask (fails validation)
 		$editor.trigger("focus").select();
@@ -1390,7 +1442,7 @@ $(document).ready(function () {
 		$editor.remove();
 
 		// nullValue not matching mask (fails validation)
-		$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+		$editor = this.util.appendToFixture(this.inputTag)
 			.igMaskEditor({
 				inputMask: "AA??",
 				allowNullValue: true,
@@ -1409,7 +1461,7 @@ $(document).ready(function () {
 		$editor.remove();
 
 		// nullValue not a string
-		$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+		$editor = this.util.appendToFixture(this.inputTag)
 			.igMaskEditor({
 				allowNullValue: true,
 				nullValue: 0
@@ -1430,12 +1482,11 @@ $(document).ready(function () {
 	QUnit.test('Bug 1090', function (assert) {
 		assert.expect(3);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igTextEditor({
-					textMode: "multiline",
-					height: "100px"
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				textMode: "multiline",
+				height: "100px"
+			}),
 			field = $editor.igTextEditor("field"),
 			text = "add some text",
 			done = assert.async();
@@ -1463,12 +1514,12 @@ $(document).ready(function () {
 	QUnit.test('Bug 1043 - maxLength not respected on Android', function (assert) {
 		assert.expect(6);
 
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
-				.igTextEditor({
-					maxLength: 5
-				}),
+		var $editor = this.util.appendToFixture(this.inputTag)
+			.igTextEditor({
+				maxLength: 5
+			}),
 			$field = $editor.igTextEditor("field"),
+			$container = $editor.igTextEditor("editorContainer"),
 			composition,
 			compositionend,
 			util = this.util,
@@ -1483,8 +1534,8 @@ $(document).ready(function () {
 
 		this.util.wait(0).then(function () {
 			assert.equal($field.val(), "12345", "Text was not trimmed");
-			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
-			assert.equal($editor.igTextEditor("editorContainer").igNotifier("container").text(),
+			assert.ok($container.hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+			assert.equal($container.igNotifier("container").text(),
 				$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
 
 			$field.blur();
@@ -1503,8 +1554,8 @@ $(document).ready(function () {
 			return util.wait(0);
 		}).then(function () {
 			assert.equal($field.val(), "12345", "Text was not trimmed with update only");
-			assert.ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
-			assert.equal($editor.igTextEditor("editorContainer").igNotifier("container").text(),
+			assert.ok($container.hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+			assert.equal($container.igNotifier("container").text(),
 				$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
 
 			done();
@@ -1519,8 +1570,7 @@ $(document).ready(function () {
 		assert.expect(1);
 
 		// value not matching mask (fails validation)
-		var editorId = "EditorId",
-			$editor = this.util.appendToFixture(this.inputTag, { id: editorId })
+		var $editor = this.util.appendToFixture(this.inputTag)
 				.igNumericEditor({
 					minDecimals: 10,
 					maxDecimals: 10

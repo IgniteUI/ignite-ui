@@ -162,6 +162,8 @@
 				key = char.charCodeAt(0);
 			}
 
+			char = (key === 13 && target.is("textarea")) ? "\n" : char;
+
 			// Cancelling down/press should skip their default actions only without breaking the event chain.
 			if (this.keyDownChar(key, target, special)) {
 				prevented = true;
@@ -175,7 +177,7 @@
 				/* Phantom throws when trying to check for selectionEnd instead of returning null on checkbox */
 				textInput = false;
 			}
-			if (!prevented && textInput && char) {
+			if (!prevented && textInput && char ) {
 				endPos = target[0].selectionEnd;
 				startPos = target[0].selectionStart;
 				target[0].value =
