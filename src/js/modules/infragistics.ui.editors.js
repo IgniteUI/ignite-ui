@@ -12709,12 +12709,14 @@
 		_updateValue: function (value) { //igTimePicker
 			if (value === null || $.type(value) === "date" || value === "") {
 				this._super(value);
-				if ($.type(value) === "date") {
+				if ($.type(value) === "date" && this._dropDownList !== undefined) {
 					this._updateDropdownSelection(value);
 				}
 			} else {
 				this._super(new Date(value));
-				this._updateDropdownSelection(new Date(value));
+				if (this._dropDownList !== undefined) {
+					this._updateDropdownSelection(new Date(value));
+				}
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTimePicker
