@@ -1,20 +1,20 @@
 $(function () {
 	QUnit.module("igDialog", {
 		dialog1: "<div id='dialog1' title='Title of DIV' style='background-color:orange;'>" +
-		"<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Content for Dialog1</p>" +
-		"</div>",
+			"<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Content for Dialog1</p>" +
+			"</div>",
 
 		dialog2: "<div id='dialog2' title='Title of DIV' style='background-color:orange;'>" +
-		"<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Content for Dialog2</p>" +
-		"</div>",
+			"<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Content for Dialog2</p>" +
+			"</div>",
 
 		dialog3: "<div id='dialog3' title='Title of DIV' style='background-color:orange;'>" +
-		"<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Content for Dialog3</p>" +
-		"</div>",
+			"<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Content for Dialog3</p>" +
+			"</div>",
 
 		dialog4: "<div id='dialog4' title='Focus tracking' style='background-color:orange;'>" +
-		"<iframe id='testFrame'></iframe>" +
-		"</div>",
+			"<iframe id='testFrame'></iframe>" +
+			"</div>",
 
 		dialog5: "<div id=.dialog5.></div>",
 		divTag: "<div>",
@@ -26,28 +26,28 @@ $(function () {
 
 		afterEach: function () { },
 
-		createDialog: function (dialogHtml, options) {
+		createDialog: function createDialog(dialogHtml, options) {
 			return this.util.appendToFixture(dialogHtml)
 				.igDialog(options);
 		},
+
+		simulateEvent: function simulateEvent(target, name, options) {
+			var event = jQuery.Event(name);
+			event.target = target;
+			$.extend(event, options);
+			$(target).trigger(event);
+		},
+
+		getElementDimensions: function getElementDimensions(element) {
+			var offset = element.offset(),
+				top = offset.top,
+				bottom = top + element[0].offsetHeight,
+				left = offset.left,
+				right = left + element[0].offsetWidth;
+
+			return { top: top, bottom: bottom, left: left, right: right };
+		},
 	});
-
-	function simulateEvent(target, name, options) {
-		var event = jQuery.Event(name);
-		event.target = target;
-		$.extend(event, options);
-		$(target).trigger(event);
-	}
-
-	function getElementDimensions(element) {
-		var offset = element.offset(),
-			top = offset.top,
-			bottom = top + element[0].offsetHeight,
-			left = offset.left,
-			right = left + element[0].offsetWidth;
-
-		return { top: top, bottom: bottom, left: left, right: right };
-	}
 
 	QUnit.test('[ID1] dialog structure and layout', function (assert) {
 		assert.expect(45);
@@ -419,8 +419,7 @@ $(function () {
 			}),
 			done = assert.async();
 
-		this.util.wait(300).then(function () {
-			debugger;
+		this.util.wait(1000).then(function () {
 			var zIndexDialog = $dialog.css("z-index"),
 				zIndex = $(".ui-igdialog-overlay").css("z-index");
 
@@ -434,16 +433,6 @@ $(function () {
 			done();
 			throw er;
 		});
-
-
-		stop();
-		setTimeout(function () {
-			start();
-
-
-			$dialog.remove();
-		}, 1000);
-
 	});
 
 	QUnit.test("[ID9] press tab and Esc", function (assert) {
@@ -554,51 +543,51 @@ $(function () {
 			}),
 			dialog = $dialog.data().igDialog,
 			header = $dialog.find('.ui-igdialog-header'),
-			dim = getElementDimensions(header),
+			dim = this.getElementDimensions(header),
 			vCenter = (dim.top + dim.bottom) / 2,
 			resultDim;
 
-		simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
-		simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
-		simulateEvent(header, "mousemove", { which: 1, pageX: dim.right - 10, pageY: vCenter });
-		simulateEvent(header, "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+		this.simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "mousemove", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+		this.simulateEvent(header, "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
 
-		resultDim = getElementDimensions(header);
+		resultDim = this.getElementDimensions(header);
 		assert.equal(resultDim.right, dim.right - 10, "The dialog is positioned correctly");
 
 		$dialog.igDialog("option", "state", "maximized");
 
-		dim = getElementDimensions(header);
+		dim = this.getElementDimensions(header);
 		vCenter = (dim.top + dim.bottom) / 2;
 
-		simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
-		simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
-		simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
-		simulateEvent(header, "mouseup", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+		this.simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+		this.simulateEvent(header, "mouseup", { which: 1, pageX: dim.right + 10, pageY: vCenter });
 
-		resultDim = getElementDimensions($dialog);
+		resultDim = this.getElementDimensions($dialog);
 		assert.equal(resultDim.right - 1, dim.right, "The dialog is not moved");
 
 		$dialog.igDialog("option", "state", "opened");
 
-		simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
 		assert.equal(dialog.options.state, "opened", "The dialog is opened");
 
 		$dialog.igDialog("option", "enableDblclick", true);
-		simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
 		assert.equal(dialog.options.state, "maximized", "The dialog is maximized");
 
 		$dialog.igDialog("option", "state", "minimized");
-		simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+		this.simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
 		assert.equal(dialog.options.state, "opened", "The dialog is not opened after being minimized");
 
-		simulateEvent(header, "touchstart", { which: 1, pageX: dim.right, pageY: vCenter, originalEvent: { touches: "1" } });
-		simulateEvent(header, "touchmove", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent: { touches: "1" } });
-		simulateEvent(header, "touchend", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent: { touches: "1" } });
+		this.simulateEvent(header, "touchstart", { which: 1, pageX: dim.right, pageY: vCenter, originalEvent: { touches: "1" } });
+		this.simulateEvent(header, "touchmove", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent: { touches: "1" } });
+		this.simulateEvent(header, "touchend", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent: { touches: "1" } });
 
 		$dialog.igDialog("option", "showHeader", false);
 
-		resultDim = getElementDimensions(header);
+		resultDim = this.getElementDimensions(header);
 		assert.equal(resultDim.left, 0, "The dialog doesn't have header");
 		assert.equal(resultDim.top, 0, "The dialog doesn't have header");
 	});
@@ -611,24 +600,25 @@ $(function () {
 				position: [100, 100]
 			}),
 			dialog = $dialog.data().igDialog,
-			seResizer, dialogWidth, resultDim;
+			seResizer, dialogWidth, resultDim,
+			dim, vPoint, xPoint;
 
 		$dialog.igDialog("option", "modal", false);
 		dialog.moveToTop();
 
 		seResizer = $dialog.find('.ui-resizable-se'),
-			dim = getElementDimensions($dialog),
+			dim = this.getElementDimensions($dialog),
 			vPoint = dim.bottom - 3,
 			xPoint = dim.right - 3;
 
 		dialogWidth = dialog.options.width;
 
-		simulateEvent(seResizer[0], "mouseover", { which: 1, pageX: xPoint, pageY: vPoint });
-		simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: xPoint, pageY: vPoint });
-		simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: xPoint - 10, pageY: vPoint });
-		simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: xPoint, pageY: vPoint });
+		this.simulateEvent(seResizer[0], "mouseover", { which: 1, pageX: xPoint, pageY: vPoint });
+		this.simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: xPoint, pageY: vPoint });
+		this.simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: xPoint - 10, pageY: vPoint });
+		this.simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: xPoint, pageY: vPoint });
 
-		resultDim = getElementDimensions($dialog);
+		resultDim = this.getElementDimensions($dialog);
 		assert.equal(dialog.options.width, dialogWidth - 10, "The dialog is resized correctly");
 	});
 
