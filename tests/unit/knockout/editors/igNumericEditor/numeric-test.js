@@ -69,9 +69,9 @@ QUnit.test("Initializing igNumericEditor", function (assert) {
 	this.assert = assert;
 	var done = assert.async(), self = this;
 
-	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igNumericEditor: { value: numberValue, inputMask: '9&9&', width: '160px' }").appendTo(this.qunitFixture);
-	$(this.divTag).attr("id", "divEditor1").attr("data-bind", "igNumericEditor: { value: numberValue, inputMask: '9&9&',width: '160px' }").appendTo(this.qunitFixture);
-	$(this.spanTag).attr("id", "spanEditor1").attr("data-bind", "igNumericEditor: { value: numberValue, inputMask: '9&9&', width: '160px' }").appendTo(this.qunitFixture);
+	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igNumericEditor: { value: numberValue, width: '160px' }").appendTo(this.qunitFixture);
+	$(this.divTag).attr("id", "divEditor1").attr("data-bind", "igNumericEditor: { value: numberValue, width: '160px' }").appendTo(this.qunitFixture);
+	$(this.spanTag).attr("id", "spanEditor1").attr("data-bind", "igNumericEditor: { value: numberValue, width: '160px' }").appendTo(this.qunitFixture);
 	$(this.inputTag).attr("id", "inputValue").attr("data-bind", "value: numberValue").appendTo(this.qunitFixture);
 	$(this.divTag).attr("id", "divValue").attr("data-bind", "text: numberValue").appendTo(this.qunitFixture);
 	$(this.spanTag).attr("id", "spanValue").attr("data-bind", "text: numberValue").appendTo(this.qunitFixture);
