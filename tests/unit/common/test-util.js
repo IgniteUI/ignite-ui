@@ -5,9 +5,9 @@
 	$.extend($.ig.TestUtil, {
 
 		// Use: $.ig.TestUtil.checkClass(elementToCheck, classToCheckFor)
-		checkClass: function (element, cls) {
-			if (QUnit && typeof (QUnit.ok) === 'function') {
-				QUnit.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
+		checkClass: function (element, cls, assert) {
+			if (assert && typeof (assert.ok) === 'function') {
+				assert.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
 			} else {
 				return element.hasClass(cls);
 			}
