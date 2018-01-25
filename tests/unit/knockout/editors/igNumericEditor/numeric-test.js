@@ -6,10 +6,10 @@ QUnit.module("Knockout unit tests for igNumericEditor", {
 	editor: null,
 	model: null,
 	input: function() {
-		return this.editor.igCheckboxEditor("field");
+		return this.editor.igNumericEditor("field");
 	},
 	container: function() {
-		return this.editor.igCheckboxEditor("editorContainer");
+		return this.editor.igNumericEditor("editorContainer");
 	},
 	viewModel: function() {
 		var self = this;
@@ -49,9 +49,9 @@ QUnit.module("Knockout unit tests for igNumericEditor", {
 		ko.cleanNode(this.qunitFixture[0]);
 	},
 	checkEditorsValues: function (val, message) {
-		this.assert.equal($('#inputEditor1').igNumericEditor("value").toString(), val, message + " (inputEditor) date");
-		this.assert.equal($('#divEditor1').igNumericEditor("value").toString(), val, message + " (divEditor1) date");
-		this.assert.equal($('#spanEditor1').igNumericEditor("value").toString(), val, message + " (tdEditor1) date");
+		this.assert.equal($('#inputEditor1').igNumericEditor("value").toString(), val, message + " (inputEditor)");
+		this.assert.equal($('#divEditor1').igNumericEditor("value").toString(), val, message + " (divEditor1)");
+		this.assert.equal($('#spanEditor1').igNumericEditor("value").toString(), val, message + " (tdEditor1)");
 	},
 	checkFieldsValues: function (val, message) {
 		this.assert.equal($("#inputValue").val(), val, message + " (inputValue)");

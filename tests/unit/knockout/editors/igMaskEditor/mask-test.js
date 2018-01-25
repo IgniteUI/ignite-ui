@@ -6,10 +6,10 @@ QUnit.module("Knockout unit tests for igMaskEditor", {
 	editor: null,
 	model: null,
 	input: function() {
-		return this.editor.igCheckboxEditor("field");
+		return this.editor.igMaskEditor("field");
 	},
 	container: function() {
-		return this.editor.igCheckboxEditor("editorContainer");
+		return this.editor.igMaskEditor("editorContainer");
 	},
 	viewModel: function() {
 		var self = this;

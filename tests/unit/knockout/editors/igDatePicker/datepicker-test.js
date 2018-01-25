@@ -6,10 +6,10 @@ QUnit.module("Knockout unit tests for igDatePicker", {
 	editor: null,
 	model: null,
 	input: function() {
-		return this.editor.igCheckboxEditor("field");
+		return this.editor.igDatePicker("field");
 	},
 	container: function() {
-		return this.editor.igCheckboxEditor("editorContainer");
+		return this.editor.igDatePicker("editorContainer");
 	},
 	viewModel: function() {
 		var self = this;
