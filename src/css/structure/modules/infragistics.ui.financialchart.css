@@ -15,7 +15,7 @@
 }
 .financialChartRangeSelector {
 	text-align: center;
-	grid-column: 1;
+	grid-column: 2;
 }
 .financialChartRangeSelector input {
 	display: none;
@@ -37,5 +37,15 @@
 	color: #0090ff;
 }
 .financialChartTypePicker {
-	grid-column: 2;
+	grid-column: 3;
+}
+.financialChartIndicatorPicker {
+	grid-column: 1;
+	position: relative; 
+	display: inline-block;
+}
+.financialChartIndicatorPickerDropDownList {
+	position: relative; 
+	display: inline-block;
+	z-index: 1;
 }
