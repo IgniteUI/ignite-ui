@@ -43,6 +43,7 @@ module.exports = function(config) {
 
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
+      { pattern: "src/css/**/*", included: false, served: true },
 
       // Load locale files:
       "src/js/modules/i18n/*-en.js",
@@ -91,6 +92,7 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
 
       "tests/unit/common/test-util.js",
+      "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
 
       // Test files:
