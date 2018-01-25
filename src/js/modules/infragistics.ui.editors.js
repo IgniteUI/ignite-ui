@@ -12705,6 +12705,7 @@
 					else{
 						value = this._parseDateFromMaskedValue(value);
 					}
+					break;
 				default:
 
 				// In case no propery matches, we call the super. Into the base widget default statement breaks
