@@ -12700,10 +12700,11 @@
 					throw new Error(this._getLocaleValue("setOptionError") + option);
 				case "value":
 					if($.type(value) === "date"){
-						value = value;
+						this.options[ option ] = prevValue;
+						this._super(option, value);
 					}
 					else{
-						value = this._parseDateFromMaskedValue(value);
+						this._super(option, this._parseDateFromMaskedValue(value));
 					}
 					break;
 				default:
