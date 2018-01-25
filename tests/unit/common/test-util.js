@@ -105,33 +105,87 @@
 				$input[0].selectionEnd = startPos + newVal.length;
 			}
 		},
+
+		/**
+		 * Returns a new Promise that resoles after a set period of time
+		 * @param {number} ms Amount of ms to wait
+		 */
+		wait: function (ms) {
+			if (typeof Promise !== "undefined") {
+				return new Promise(function(resolve) { 
+					setTimeout(resolve, ms)
+				});
+			} else {
+				// TODO: Only for Phantom, remove
+				var dfd = jQuery.Deferred();
+				dfd["catch"] = dfd.fail;
+				setTimeout(function() {
+					dfd.resolve();
+				}, ms);
+				return dfd;
+			}
+		},
+
+		/**
+		 * Performs a series of `keyInteraction` for each character in a string. No delay(!) between events.
+		 * @param {string} characters 
+		 * @param {object} target jQuery object target
+		 */
+		type: function (characters, target) {
+			if (characters) {
+				var char, chars = characters.split('');
+				for (var i = 0; i < chars.length; i++) {
+					char = chars[i];
+					this.keyInteraction(char.charCodeAt(0), target);
+				}
+			}
+		},
+
 		/**
 		 * Triggers key interaction sequence on an element. If the key can produce a char it will replace the current selection.
-		 * @param key Key/Char code to use for the events (TODO - update)
-		 * @param target jQuery object target
-		 * @param special Used for combinations to set true on the event - "altKey", "ctrlKey", "shiftKey"
+		 * @param {string} key Key/Char code to use for the events (TODO - update)
+		 * @param {object} target jQuery object target
+		 * @param {string} special Used for combinations to set true on the event - "altKey", "ctrlKey", "shiftKey"
 		 */
 		keyInteraction: function (key, target, special) {
 			// could use an update in the future - https://www.w3.org/TR/DOM-Level-3-Events/#keypress-event-order
-			var char, endPos;
-			char = (key > 31) ? String.fromCharCode(key) : "";
+			var char, startPos, endPos, newPos, textInput, prevented = false;
+			char = ( key > 31 &&
+				(key < 37) || key > 40) //arrows
+				? String.fromCharCode(key) : "";
 			if (special && char) {
 				char = special === "shiftKey" ? char.toUpperCase() : "";
 				key = char.charCodeAt(0);
 			}
+
+			// Cancelling down/press should skip their default actions only without breaking the event chain.
 			if (this.keyDownChar(key, target, special)) {
-				return;
+				prevented = true;
 			}
 			if (this.keyPressChar(key, target, special)) {
-				return;
+				prevented = true;
 			}
-			if (char && target[0].selectionEnd !== undefined) {
+			try {
+				textInput = target[0]["selectionEnd"] !== undefined && target[0]["selectionEnd"] !== null;
+			} catch (error) {
+				/* Phantom throws when trying to check for selectionEnd instead of returning null on checkbox */
+				textInput = false;
+			}
+			if (!prevented && textInput && char) {
 				endPos = target[0].selectionEnd;
+				startPos = target[0].selectionStart;
 				target[0].value =
-					target[0].value.substring(0, target[0].selectionStart) +
+					target[0].value.substring(0, startPos) +
 					char +
 					target[0].value.substring(endPos);
-				target[0].selectionStart = target[0].selectionEnd = endPos + 1;
+				if (startPos !== endPos) {
+					// replaced selection, cursor goes to start + char
+					newPos = startPos + 1;
+				} else {
+					//typing move the cursor +1
+					newPos = endPos + 1;
+				}
+				target[0].selectionStart = target[0].selectionEnd = newPos;
 			}
 			this.keyUpChar(key, target, special);
 		},
@@ -139,8 +193,10 @@
 			var evt = $.Event("keydown");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.originalEvent = { preventDefault: $.noop, stopPropagation: $.noop };
 			if (special) {
 				evt[special] = true;
+				evt.originalEvent[special] = true;
 			}
 			target.trigger(evt);
 			return evt.isDefaultPrevented();
