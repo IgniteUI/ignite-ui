@@ -300,11 +300,9 @@ QUnit.test('Test valueChanged event', function (assert) {
 	var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
 	
 	$editor.igCurrencyEditor("setFocus");
-	debugger;
 	this.util.type("120", $editor.igCurrencyEditor("field"));
 	$editor.trigger("blur");
 	this.util.wait(100).then(function () {
-		debugger;
 		assert.ok(self.model.eventTriggered, "valueChanged is thrown");
 		self.model.eventTriggered = false;
 		$editor.remove();

@@ -2027,7 +2027,6 @@ $(document).ready(function () {
 			$editorInput = $("#" + editorId + " input"),
 			item1;
 
-		debugger;
 		console.dir($editorInput);
 		ddButton.click();
 
