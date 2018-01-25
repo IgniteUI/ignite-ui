@@ -2762,7 +2762,8 @@
 			this._bMouseDownV = false; //Used to track if mouse is holded on any of the vertical scrollbar elements
 			this._bUseArrowUp = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowDown = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._mouseLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._dragLastY = 0; //Used to save the last position of the vertical drag. This is needed because getting the position during scroll on Edge/Firefox is not reliable
 			this._bUseVDrag = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseVTrack = false; //Determines if the vertical track area is being used
 			this._lastBigIncDirV = 0; //Used to determine the last direction of the scroll when using the scrollbar track area
@@ -2968,7 +2969,7 @@
 
 		_onMouseDownVDrag: function (event) {
 			this._bMouseDownV = true;
-			this._dragLastY = event.pageY;
+			this._mouseLastY = event.pageY;
 			this._bUseVDrag = true;
 			this._bUseHDrag = false;
 
@@ -3080,14 +3081,16 @@
 
 			if (this._bUseVDrag) {
 				var curPosY = this._getContentPositionY(),
-					offset = event.pageY - this._dragLastY,
-					dragbPosY = this._getTransform3dValueY(this._vBarDrag),
+					offset = event.pageY - this._mouseLastY,
+					dragbPosY = this._dragLastY,
 					nextPosY;
 
 				/**	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
 				  *	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0. */
 				nextPosY = ((dragbPosY + offset) / (this._vBarTrack.height() - this._vBarDrag.height())) *
 							(this._getContentHeight() - this.element.height());
+				nextPosY = this._clampAxisCoords(nextPosY, 0,
+							Math.max(this._getContentHeight() - this._container.height(), 0));
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: false,
@@ -3101,7 +3104,8 @@
 				if (bNoCancel) {
 					//Move custom vertical scrollbar thumb drag
 					this._scrollToY(nextPosY, true);
-					this._dragLastY = event.pageY;
+					this._mouseLastY = event.pageY;
+					this._dragLastY = dragbPosY + offset;
 				}
 			}
 		},
@@ -3256,7 +3260,8 @@
 			this._bUseArrowLeft = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowRight = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseHDrag = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._mouseLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._dragLastX = 0; //Used to save the last position of the horizontal drag. This is needed because getting the position during scroll on Edge/Firefox is not reliable
 			this._bUseHTrack = false; //Determines if the horizontal track area is being used
 			this._lastBigIncDirH = 0; //Used to determine the last direction of the scroll when using the horizontal track area
 			this._mTrackLastPosH = 0; //Last know position of the mouse when interacting with the horizontal track area
@@ -3481,7 +3486,7 @@
 
 		_onMouseDownHDrag: function (event) {
 			this._bMouseDownH = true;
-			this._dragLastX = event.pageX;
+			this._mouseLastX = event.pageX;
 			this._bUseVDrag = false;
 			this._bUseHDrag = true;
 
@@ -3593,14 +3598,16 @@
 
 			if (this._bUseHDrag) {
 				var curPosX = this._getContentPositionX(),
-					offset = evt.pageX - this._dragLastX,
-					dragbPosX = this._getTransform3dValueX(this._hBarDrag),
+					offset = evt.pageX - this._mouseLastX,
+					dragbPosX = this._dragLastX,
 					nextPostX;
 
 				//	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
 				//	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0.
 				nextPostX = ((dragbPosX + offset) / (this._hBarTrack.width() - this._hBarDrag.width())) *
 							(this._getContentWidth() - this.element.width());
+				nextPostX = this._clampAxisCoords(nextPostX, 0,
+							Math.max(this._getContentWidth() - this._container.width(), 0));
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: true,
@@ -3611,7 +3618,8 @@
 				if (bNoCancel) {
 					//Move custom horizondal scrollbar thumb drag
 					this._scrollToX(nextPostX, true);
-					this._dragLastX = evt.pageX;
+					this._mouseLastX = evt.pageX;
+					this._dragLastX = dragbPosX + offset;
 				}
 			}
 		},
