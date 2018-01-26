@@ -12701,6 +12701,14 @@
 				case "maxTimeValue":
 					this.options[ option ] = prevValue;
 					throw new Error(this._getLocaleValue("setOptionError") + option);
+				case "value":
+					if ($.type(value) === "date") {
+						this.options[ option ] = prevValue;
+						this._super(option, value);
+					} else {
+						this._super(option, this._parseDateFromMaskedValue(value));
+					}
+					break;
 				default:
 
 				// In case no propery matches, we call the super. Into the base widget default statement breaks
