@@ -8,6 +8,8 @@
 		checkClass: function (element, cls) {
 			if (QUnit && typeof (QUnit.ok) === 'function') {
 				QUnit.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
+			} else if (QUnit && QUnit.assert && typeof(QUnit.assert.ok) === 'function') {
+				QUnit.assert.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
 			} else {
 				return element.hasClass(cls);
 			}
@@ -131,7 +133,7 @@
 
 		/**
 		 * Performs a series of `keyInteraction` for each character in a string. No delay(!) between events.
-		 * @param {string} characters 
+		 * @param {string} characters
 		 * @param {object} target jQuery object target
 		 */
 		type: function (characters, target) {
@@ -276,7 +278,7 @@
 		}
 	});
 
-	// patch ":focus" pseudo for PhantomJS 
+	// patch ":focus" pseudo for PhantomJS
 	$.expr[':'].focus = function (elem) {
 		return elem === document.activeElement;
 	};
