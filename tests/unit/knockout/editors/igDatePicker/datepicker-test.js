@@ -91,12 +91,6 @@ QUnit.module("Knockout unit tests for igDatePicker", {
 		result += "/";
 		result += date.getFullYear();
 		return result;
-	},
-	selectDateFromDropdown: function (editor, date) {
-		editor.igDatePicker("showDropDown");
-		editor.igDatePicker("field").val(date).blur();
-		editor.datepicker("hide");
-		editor.blur();
 	}
 });
 
@@ -246,15 +240,16 @@ QUnit.test('Test invalid dates binding', function (assert) {
 
 QUnit.test("datePicker bound to non-observable value", function (assert) {
 	assert.expect(2);
+
 	var date = new Date("12/15/2017"), done = assert.async(), self = this;
 	var editor = $(this.inputTag).attr("data-bind", "igDatePicker: { value: nonObservable, width: '160px'}").appendTo(this.qunitFixture);
 	this.applyBindings();
 
-	this.selectDateFromDropdown(editor, "12/15/2017");
-	this.util.wait(100).then(function () {
-		assert.ok(date.toString() === self.model.nonObservable.toString(), "Changes in the date picker should be reflected in the view model");
+	editor.igDatePicker("field").val("12/15/2017").blur();
+	this.util.wait(300).then(function () {
+		assert.equal(date.toString(), self.model.nonObservable.toString(), "Changes in the date picker should be reflected in the view model");
 		self.model.nonObservable = new Date("12/31/2017");
-		assert.ok(editor.igDatePicker("value").toString() !== self.model.nonObservable.toString(), "Changes in the view model shouldn't be reflected in the editor");
+		assert.notEqual(editor.igDatePicker("value").toString(), self.model.nonObservable.toString(), "Changes in the view model shouldn't be reflected in the editor");
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
@@ -277,8 +272,8 @@ QUnit.test("updateMode set to immediate", function (assert) {
 	assert.expect(1);
 	var self = this;
 
-	assert.throws(function () {
-		$(self.inputTag).attr("data-bind", "igDatePicker: { value: dateValue, width: \"160px\", updateMode: \"immediate\" }").appendTo(self.qunitFixture);
-		self.applyBindings();
-	}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+	$(this.inputTag).attr("data-bind", "igDatePicker: { value: dateValue, width: \"160px\", updateMode: \"immediate\" }").appendTo(this.qunitFixture);
+	assert.throws(function () { self.applyBindings(); },
+		//function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
+		'An error was correctly thrown when updateMode option is not correctly changed');
 });

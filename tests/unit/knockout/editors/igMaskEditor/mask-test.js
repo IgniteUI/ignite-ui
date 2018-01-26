@@ -14,21 +14,21 @@ QUnit.module("Knockout unit tests for igMaskEditor", {
 	viewModel: function() {
 		var self = this;
 		this.nonObservable = "8a6d";
-			this.number = ko.observable(25);
-			this.currencyNumber = ko.observable(32);
-			this.maskValue = ko.observable("8a6d");
-			this.textValue = ko.observable("Some Val");
-			this.maskValue1 = ko.observable("9f2s");
-			setDefaultNumber = function() {
-				self.number(27);   
-			};
-			setDefaultText = function() {
-				self.textValue("Default Text");
-			}
-			setDefaultMaskValue = function () {
-				self.maskValue("9f2s");
-			};
-			this.isDisabled =  ko.observable(false);
+		this.number = ko.observable(25);
+		this.currencyNumber = ko.observable(32);
+		this.maskValue = ko.observable("8a6d");
+		this.textValue = ko.observable("Some Val");
+		this.maskValue1 = ko.observable("9f2s");
+		this.setDefaultNumber = function() {
+			self.number(27);   
+		};
+		this.setDefaultText = function() {
+			self.textValue("Default Text");
+		}
+		this.setDefaultMaskValue = function () {
+			self.maskValue("9f2s");
+		};
+		this.isDisabled =  ko.observable(false);
 	},
 	applyBindings: function() {
 		ko.applyBindings(this.model, this.qunitFixture[0]);
@@ -166,6 +166,7 @@ QUnit.test("Value set to nonObservable value", function (assert) {
 	// The value of the checkbox editor shouldn't be updated
 	assert.notEqual(editor.igMaskEditor("value"), this.model.nonObservable, "The value should not be updated");
 	
+	ko.cleanNode(this.qunitFixture[0]);
 	assert.throws(function () {
 		$(self.inputTag).attr("data-bind", "igMaskEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }").appendTo(self.qunitFixture);
 		self.applyBindings();
@@ -178,8 +179,8 @@ QUnit.test("updateMode set to not allowed value", function (assert) {
 	assert.expect(1);
 	var self = this;
 
-	assert.throws(function () {
-		$(self.inputTag).attr("data-bind", "igMaskEditor: { value: maskValue, width: \"160px\", updateMode: \"none\" }").appendTo(self.qunitFixture);
-		self.applyBindings();
-	}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+	$(this.inputTag).attr("data-bind", "igMaskEditor: { value: maskValue, width: \"160px\", updateMode: \"none\" }").appendTo(this.qunitFixture);
+	assert.throws(function () { self.applyBindings(); }, 
+		function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
+		'An error was correctly thrown when updateMode option is not correctly changed');
 });

@@ -321,16 +321,6 @@ QUnit.test('Test disabled binding', function (assert) {
 	assert.ok(editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 });
 
-QUnit.test("updateMode set to not allowed value", function (assert) {
-	assert.expect(1);
-	var self = this;
-
-	assert.throws(function () {
-		$(self.inputTag).attr("data-bind", "igTextEditor: { value: textValue, width: \"160px\", updateMode: \"none\" }").appendTo(self.qunitFixture);
-		self.applyBindings();
-	}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
-});
-
 QUnit.test('Verify non-observable value change is not reflected in the UI', function (assert) {
 	assert.expect(2);
 
@@ -347,7 +337,7 @@ QUnit.test('Verify non-observable value changed via typing does not update the U
 	editorSimple = $(this.inputTag).attr("data-bind", "igTextEditor: { value: text }").appendTo(this.qunitFixture);
 	this.applyBindings();
 
-	assert.equal(this.editor.igTextEditor("value"), "Just text", "Unexpected editor value initially!");
+	assert.equal(this.editor.igTextEditor("value"), this.model.text, "Unexpected editor value initially!");
 	
 	this.editor.igTextEditor("setFocus");
 	this.util.keyInteraction(83, this.input());
@@ -378,4 +368,14 @@ QUnit.test('Verify non-observable value changed via selection does not update th
 		done();
 		throw er;
 	});	
+});
+
+QUnit.test("updateMode set to not allowed value", function (assert) {
+	assert.expect(1);
+	var self = this;
+
+	$(this.inputTag).attr("data-bind", "igTextEditor: { value: textValue, width: \"160px\", updateMode: \"none\" }").appendTo(this.qunitFixture);
+	assert.throws(function () { self.applyBindings(); },
+		function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; },
+		'An error was correctly thrown when updateMode option is not correctly changed');
 });

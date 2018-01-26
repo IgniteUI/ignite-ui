@@ -292,8 +292,8 @@ QUnit.test("updateMode set to immediate", function (assert) {
 	assert.expect(1);
 	var self = this;
 
-	assert.throws(function () {
-		$(self.inputTag).attr("data-bind", "igDateEditor: { value: dateValue, width: \"160px\", updateMode: \"immediate\" }").appendTo(self.qunitFixture);
-		self.applyBindings();
-	}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+	$(this.inputTag).attr("data-bind", "igDateEditor: { value: dateValue, width: \"160px\", updateMode: \"immediate\" }").appendTo(this.qunitFixture);
+	assert.throws(function () { self.applyBindings(); },
+		//function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
+		'An error was correctly thrown when updateMode option is not correctly changed');
 });
