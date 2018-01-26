@@ -3769,6 +3769,10 @@
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
 						.css("-moz-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Firefox */
 						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
+					/* We don't update the lastX here when using the thumb drag because there may be delay when this is executed. We forward calculate it instead in _onMouseMoveHDrag */
+					if (!self._bUseHDrag) {
+						self._dragLastX = calculatedDest;
+					}
 				}
 				if (self._vBarDrag) {
 					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
@@ -3779,6 +3783,10 @@
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-moz-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-ms-transform", "translate3d(0px, " + calculatedDest + "px, 0px)");
+					/* We don't update the lastY here when using the thumb drag because there may be delay when this is executed. We forward calculate it instead in _onMouseMoveVDrag */
+					if (!self._bUseVDrag) {
+						self._dragLastY = calculatedDest;
+					}
 				}
 			}
 
