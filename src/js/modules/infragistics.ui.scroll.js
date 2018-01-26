@@ -2152,7 +2152,7 @@
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
 				minWheelStep = 1 / this.options.wheelStep,
-				scrolledX, scrolledY, scrolledYDir;
+				scrolledY, scrolledYDir;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
@@ -2206,7 +2206,7 @@
 			}
 
 			if (scrollDeltaX) {
-				scrolledX = this._scrollToX(this._startX + scrollDeltaX * scrollStep, true);
+				this._scrollToX(this._startX + scrollDeltaX * scrollStep, true);
 			} else {
 				if (this.options.smoothing) {
 					//Scroll with small inertia
