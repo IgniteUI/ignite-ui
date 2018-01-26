@@ -12529,6 +12529,9 @@
 			if (this.options.timeDisplayFormat) {
 				this.options.timeDisplayFormat = this._parseTimeMask(this.options.timeDisplayFormat);
 				this.options.dateDisplayFormat = this.options.timeDisplayFormat;
+			} else if (this.options.timeInputFormat) {
+				this.options.timeDisplayFormat = this._parseTimeMask(this.options.timeInputFormat);
+				this.options.dateDisplayFormat = this.options.timeInputFormat;
 			} else {
 				this.options.dateDisplayFormat = "time";
 			}
