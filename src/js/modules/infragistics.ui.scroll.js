@@ -2150,6 +2150,7 @@
 			var evt = event.originalEvent,
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
+				minWheelStep = 1 / this.options.wheelStep,
 				scrolledY, scrolledYDir;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
@@ -2165,9 +2166,14 @@
 				/* Option supported on Chrome, Safari, Opera.
 				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
 				scrollDeltaY = -evt.wheelDeltaY / 120;
+
+				/** S.K. Fix for Issue #1438 When using trackpad the scroll amount could be less than 1 px, but scrollTop receives only integers, so we need to have it scroll minimum 1 px */
+				if (-minWheelStep < scrollDeltaY && scrollDeltaY < minWheelStep) {
+					scrollDeltaY = Math.sign(scrollDeltaY) * minWheelStep;
+				}
 			} else if (evt.deltaY) {
 				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
-				scrollDeltaY = evt.deltaY > 0 ? 1 : -1;
+				scrollDeltaY = this._clampAxisCoords(evt.deltaY, -1, 1);
 			}
 
 			if (this.options.smoothing) {
