@@ -38,9 +38,10 @@ module.exports = function(config) {
       { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
-
+      "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
+      { pattern: "src/css/**/*", included: false, served: true },
 
       // Load locale files:
       "src/js/modules/i18n/*-en.js",
@@ -49,6 +50,9 @@ module.exports = function(config) {
       "src/js/modules/i18n/*-de.js",
       "src/js/modules/i18n/*-es.js",
       "src/js/modules/i18n/*-fr.js",
+
+      // Data files
+      "tests/unit/templating/DB3.js",
 
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
@@ -88,9 +92,13 @@ module.exports = function(config) {
 
       "bower_components/knockout/dist/knockout.js",
       "tests/unit/common/test-util.js",
+      "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
+
       "src/js/infragistics.loader.js",
       "src/js/extensions/*.js",
+      "tests/unit/splitter/jquery.simulate.js",
+
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
