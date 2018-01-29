@@ -39,9 +39,9 @@ module.exports = function(config) {
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
       "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
-
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
+      { pattern: "src/css/**/*", included: false, served: true },
 
       // Load locale files:
       "src/js/modules/i18n/*-en.js",
@@ -89,7 +89,9 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
 
       "tests/unit/common/test-util.js",
+      "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
+      "tests/unit/splitter/jquery.simulate.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
@@ -128,9 +130,9 @@ module.exports = function(config) {
     coverageReporter: {
       dir : "coverage/",
       reporters: [
-        {  
+        {
           type : "lcov",
-          subdir: "." // default outputs per-browser folders 
+          subdir: "." // default outputs per-browser folders
         },
         { type: "text-summary" }
       ],

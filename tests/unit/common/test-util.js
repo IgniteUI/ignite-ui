@@ -5,9 +5,11 @@
 	$.extend($.ig.TestUtil, {
 
 		// Use: $.ig.TestUtil.checkClass(elementToCheck, classToCheckFor)
-		checkClass: function (element, cls, assert) {
-			if (assert && typeof (assert.ok) === 'function') {
-				assert.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
+		checkClass: function (element, cls) {
+			if (QUnit && typeof (QUnit.ok) === 'function') {
+				QUnit.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
+			} else if (QUnit && QUnit.assert && typeof(QUnit.assert.ok) === 'function') {
+				QUnit.assert.ok(element.hasClass(cls), 'The control with id: ' + element[0].id + ' does not contain the class: ' + cls);
 			} else {
 				return element.hasClass(cls);
 			}
@@ -131,7 +133,7 @@
 
 		/**
 		 * Performs a series of `keyInteraction` for each character in a string. No delay(!) between events.
-		 * @param {string} characters 
+		 * @param {string} characters
 		 * @param {object} target jQuery object target
 		 */
 		type: function (characters, target) {
@@ -162,6 +164,8 @@
 				key = char.charCodeAt(0);
 			}
 
+			char = (key === 13 && target.is("textarea")) ? "\n" : char;
+
 			// Cancelling down/press should skip their default actions only without breaking the event chain.
 			if (this.keyDownChar(key, target, special)) {
 				prevented = true;
@@ -175,7 +179,7 @@
 				/* Phantom throws when trying to check for selectionEnd instead of returning null on checkbox */
 				textInput = false;
 			}
-			if (!prevented && textInput && char) {
+			if (!prevented && textInput && char ) {
 				endPos = target[0].selectionEnd;
 				startPos = target[0].selectionStart;
 				target[0].value =
@@ -274,7 +278,7 @@
 		}
 	});
 
-	// patch ":focus" pseudo for PhantomJS 
+	// patch ":focus" pseudo for PhantomJS
 	$.expr[':'].focus = function (elem) {
 		return elem === document.activeElement;
 	};
