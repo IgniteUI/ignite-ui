@@ -52,14 +52,12 @@ QUnit.module("Knockout unit tests for igCurrencyEditor", {
 		this.eventTriggered = false;
 	},
 	before: function () {
-		QUnit.config.reorder = false;
 		this.appendToFixture();
 		this.model = new this.viewModel();
 		ko.applyBindings(this.model);
 	},
 	after: function () {
 		$('#permanent-qunit-fixture').remove();
-		QUnit.config.reorder = true;
 	},
 	input: function() {
 		return this.editor.igCurrencyEditor("field");

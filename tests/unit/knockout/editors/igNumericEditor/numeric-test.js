@@ -34,12 +34,8 @@ QUnit.module("Knockout unit tests for igNumericEditor", {
 		ko.applyBindings(this.model, this.qunitFixture[0]);
 	},
 	before: function () {
-		QUnit.config.reorder = false;
 		this.qunitFixture = $('#qunit-fixture');
 		this.model = new this.viewModel();
-	},
-	after: function () {
-		QUnit.config.reorder = true;
 	},
 	beforeEach: function () {
 		$.fx.off = true;
