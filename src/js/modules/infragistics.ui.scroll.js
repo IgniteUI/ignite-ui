@@ -71,6 +71,21 @@
 				native type="string" Native scrollbars
 				none type="string" No scrollbars should be visible */
 			scrollbarType: "custom",
+			/* type="number|string" Sets or gets the minimum size of the thumb drag in pixels. For the vertical thumb it means its minimum height, for the horizontal thumb it means its minimum width. This affects only the custom scrollblar when scrollbarType is set to "custom".
+			```
+				//Initialize
+				$(".selector").igScroll({
+					minThumbSize: 20
+				});
+
+				//Get
+					var minThumbSize = $(".selector").igScroll("option", "minThumbSize");
+
+				//Set
+				$(".selector").igScroll("option", "minThumbSize", 20);
+			```
+			*/
+			minThumbSize: 15,
 			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable.
 			```
 				//Initialize
@@ -754,8 +769,6 @@
 			this._linkedVBar = null;
 			this._elemWidth = elem.width();
 			this._elemHeight = elem.height();
-			this._minVDragHeightPx = 15; // in px
-			this._minHDragWidthPx = 15; // in px
 
 			//IDs of the timeouts used for waiting until hiding, switching to simple scrollbars, touch inertia
 			this._showScrollbarsAnimId = 0;
@@ -930,6 +943,10 @@
 					this._updateScrollBarsVisibility();
 					this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 				}
+			}
+			if (key === "minThumbSize" &&
+				this.options.scrollbarType === "custom") {
+				this._refreshScrollbars();
 			}
 			if (key === "scrollTop") {
 				this._scrollTop(value, true);
@@ -2747,11 +2764,12 @@
 
 		/** Calculates the vertical drag height and returns it in percents based on the vertical track height*/
 		_calculateVDragHeight: function () {
-			var dragHeightPx;
+			var dragHeightPx,
+				minSize = parseInt(this.options.minThumbSize, 10);
 
 			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
 			dragHeightPx = (this._vBarTrack.height() / this._contentHeight) * this._vBarTrack.height();
-			dragHeightPx = (dragHeightPx < this._minVDragHeightPx ? this._minVDragHeightPx : dragHeightPx);
+			dragHeightPx = (dragHeightPx < minSize ? minSize : dragHeightPx);
 
 			//Turn it into percents.
 			return (dragHeightPx / this._vBarTrack.height()) * 100;
@@ -3168,6 +3186,9 @@
 			this._bMouseDownV = false;
 
 			if (this._bUseVDrag) {
+				/** Get the actual position on mouseup because we may have moved too much out and using the thumb right after will have offset */
+				this._dragLastY = this._getTransform3dValueY(this._vBarDrag);
+
 				if (!this._cancelThumbDrag) {
 
 					this._trigger("thumbDragEnd", null, {
@@ -3245,11 +3266,12 @@
 		/** Calculates the horizontal drag width and returns it in percents based on the horizontal track width */
 		_calculateHDragWidth: function ()
 		{
-			var dragWidthPx;
+			var dragWidthPx,
+				minSize = parseInt(this.options.minThumbSize, 10);
 
 			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
 			dragWidthPx = (this._hBarTrack.width() / this._contentWidth) * this._hBarTrack.width();
-			dragWidthPx = (dragWidthPx < this._minHDragWidthPx ? this._minHDragWidthPx : dragWidthPx);
+			dragWidthPx = (dragWidthPx < minSize ? minSize : dragWidthPx);
 
 			//Turn it into percents.
 			return (dragWidthPx / this._hBarTrack.width()) * 100;
@@ -3682,6 +3704,9 @@
 			this._bMouseDownH = false;
 
 			if (this._bUseHDrag) {
+				/** Get the actual position on mouseup because we may have moved too much out and using the thumb right after will have offset */
+				this._dragLastX = this._getTransform3dValueX(this._hBarDrag);
+
 				if (!this._cancelThumbDrag) {
 					this._trigger("thumbDragEnd", null, {
 						owner: this,
