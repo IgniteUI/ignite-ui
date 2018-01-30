@@ -93,7 +93,6 @@ QUnit.module("Knockout unit tests for igDatePicker", {
 QUnit.test("Initializing igDatePicker", function (assert) {
 	assert.expect(86); //Passing
 	this.assert = assert;
-	//var done = assert.async(), self = this;
 
 	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igDatePicker: { value: dateValue, width: '160px' }").appendTo(this.qunitFixture);
 	$(this.divTag).attr("id", "divEditor1").attr("data-bind", "igDatePicker: { value: dateValue, width: '160px' }").appendTo(this.qunitFixture);

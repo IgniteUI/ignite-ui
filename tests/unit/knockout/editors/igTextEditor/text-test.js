@@ -68,9 +68,9 @@ QUnit.module("Knockout unit tests for igTextEditor", {
 	}
 });
 QUnit.test("Initializing igTextEditor", function (assert) {
-	assert.expect(57);
+	assert.expect(81);
 	this.assert = assert;
-	//var done = assert.async(), self = this;
+	var done = assert.async(), self = this;
 
 	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igTextEditor: { value: textValue, width: '160px' }").appendTo(this.qunitFixture);
 	$(this.divTag).attr("id", "divEditor1").attr("data-bind", "igTextEditor: { value: textValue,width: '160px' }").appendTo(this.qunitFixture);
@@ -150,11 +150,11 @@ QUnit.test("Initializing igTextEditor", function (assert) {
 	editorInput = $('#inputEditor1').igTextEditor("field");
 	this.util.wait(100).then(function () {
 		self.util.keyInteraction(69, editorInput);
-		self.checkAllValues("E", "The value is updated on keyUp");
+		self.checkAllTextValues("E", "The value is updated on keyUp");
 		self.util.keyInteraction(54, editorInput);
-		self.checkAllValues("E6", "The value is updated on keyUp");
+		self.checkAllTextValues("E6", "The value is updated on keyUp");
 		self.util.keyInteraction(88, editorInput);
-		self.checkAllValues("E6X", "The value is updated on keyUp");
+		self.checkAllTextValues("E6X", "The value is updated on keyUp");
 		editorInput.blur();
 		self.checkAllValues("E6X", "The value is changed on blur");
 		done();

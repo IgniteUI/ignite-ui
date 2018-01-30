@@ -90,7 +90,6 @@ QUnit.module("Knockout unit tests for igDateEditor", {
 QUnit.test("Initializing igDateEditor", function (assert) {
 	assert.expect(62); //Passing
 	this.assert = assert;
-	//var done = assert.async(), self = this;
 
 	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igDateEditor: { value: dateValue, width: '160px' }").appendTo(this.qunitFixture);
 	$(this.divTag).attr("id", "divEditor1").attr("data-bind", "igDateEditor: { value: dateValue, width: '160px' }").appendTo(this.qunitFixture);
