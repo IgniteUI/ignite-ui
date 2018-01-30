@@ -12089,7 +12089,7 @@
 			Time periods that don't have values use 0 as default for hours and 30 for minutes.
 			*/
 			itemsDelta: { hours: 0, minutes: 30 },
-			/* type="number|object" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+			/* type="number|object" Gets/Sets delta-value which is used to increment or decrement the editor time on spin actions.
 				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
 				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
 				Accepted values for deltas are positive integer numbers, and the fractional portion of floating point numbers is ignored.
@@ -12306,40 +12306,9 @@
 			```
 			*/
 			dropDownAnimationDuration: 300,
-			/* type="string" Gets/Sets the maximum value for the dropdown items. The format should be the same as the inputTimeFormat
+			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown, clear' or 'spin, clear' are supported too.
 				Note! This option can not be set runtime.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-				  maxTimeValue: "18:00"
-				});
-
-				//Get
-				var maxTimeValue= $(".selector").%%WidgetName%%("option", "maxTimeValue");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "maxTimeValue", "18:00");
-			```
-			*/
-			maxTimeValue: null,
-			/* type="string" Gets/Sets the minimum value for the dropdown items. The format should be the same as the inputTimeFormat
-				Note! This option can not be set runtime.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-				  minTimeValue: "09:00"
-				});
-
-				//Get
-				var minTimeValue= $(".selector").%%WidgetName%%("option", "minTimeValue");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "minTimeValue", "09:00");
-			```
-			*/
-			minTimeValue: null,
-			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
-				Note! This option can not be set runtime.
+				Note! A combination like 'dropdown, spin' is not allowed.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -12359,10 +12328,22 @@
 				spin type="string" Spin buttons are located on the right side of the editor.
 			*/
 			buttonType: "dropdown",
-			/* @Ignored@ Removed from timepicker options*/
-			minValue: null,
-			/* @Ignored@ Removed from timepicker options*/
-			maxValue: null,
+			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
+				This applies to [minValue](ui.%%WidgetNameLowered%%#options:minValue) and [maxValue](ui.%%WidgetNameLowered%%#options:maxValue) or cycling through list items if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinWrapAround : true
+				});
+
+				//Get
+				var spinAround = $(".selector").%%WidgetName%%("option", "spinWrapAround");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinWrapAround", true);
+			```
+			*/
+			spinWrapAround: true,
 			/* @Ignored@ Removed from timepicker options*/
 			dateDisplayFormat: null,
 			/* @Ignored@ Removed from timepicker options*/
@@ -12370,9 +12351,7 @@
 			/* @Ignored@ Removed from timepicker options*/
 			yearShift: null,
 			/* @Ignored@ Removed from timepicker options*/
-			displayTimeOffset: null,
-			/* @Ignored@ Removed from timepicker options*/
-			enableUTCDates: null
+			displayTimeOffset: null
 		},
 		events: {
 			/* cancel="true" Fired when the drop down is opening.
@@ -12501,29 +12480,6 @@
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
 			*/
 			dropDownItemSelected: "dropDownItemSelected"
-			/* cancel="false" Fired after the editor's text has been changed. It can be raised when keyUp event occurs,
-				when the clear button is clicked or when an item from a list is selected.
-				```
-				//Delegate
-				$(".selector").on("%%WidgetNameLowered%%textchanged", function (evt, ui) {
-					...
-				});
-
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					textChanged: function (evt, ui) {
-					...
-					}
-				});
-				```
-				eventArgument="evt" argType="event" jQuery event object.
-				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
-				eventArgument="ui.text" argType="string" Gets a reference to the new text.
-				eventArgument="ui.oldText" argType="string" Gets a reference to the old text.
-			*/
-		},
-		_create: function () { // igTimePicker
-			$.ui.igDateEditor.prototype._create.call(this);
 		},
 		_initialize: function () { // igTimePicker
 			if (this.options.timeDisplayFormat) {
@@ -12545,18 +12501,18 @@
 
 			this._super();
 
-			if (this.options.minTimeValue) {
-				this.options.minValue = this._parseDateFromMaskedValue(this.options.minTimeValue);
+			if (this.options.minValue) {
+				this.options.minValue = this._parseDateFromMaskedValue(this.options.minValue);
 			}
 
-			if (this.options.maxTimeValue) {
-				this.options.maxValue = this._parseDateFromMaskedValue(this.options.maxTimeValue);
+			if (this.options.maxValue) {
+				this.options.maxValue = this._parseDateFromMaskedValue(this.options.maxValue);
 			}
 
 			var buttons = this.options.buttonType.toString().split(/[\s,]+/);
 
-			if ($.inArray("dropdown", buttons) !== -1) {
-				this._populateDropDown(this.options.minTimeValue, this.options.maxTimeValue);
+			if ($.inArray("dropdown", buttons) !== -1 && $.inArray("spin", buttons) === -1) {
+				this._populateDropDown(this.options.minValue, this.options.maxValue);
 			}
 		},
 		getSelectedListItem: function () {
@@ -12621,13 +12577,11 @@
 		},
 		_populateDropDown: function(minValue, maxValue) {
 			if (minValue) {
-				minValue = this._parseDateFromMaskedValue(minValue);
 				minValue = minValue.getHours() * 60 + minValue.getMinutes();
 			} else {
 				minValue = 0;
 			}
 			if (maxValue) {
-				maxValue = this._parseDateFromMaskedValue(maxValue);
 				maxValue = maxValue.getHours() * 60 + maxValue.getMinutes();
 			} else {
 				maxValue = 1440;
@@ -12696,9 +12650,9 @@
 					this._super("dateDisplayFormat", this._parseTimeMask(value));
 					break;
 				case "timeInputFormat":
-				case "dropDownItemsDelta":
-				case "minTimeValue":
-				case "maxTimeValue":
+				case "itemsDelta":
+				case "minValue":
+				case "maxValue":
 					this.options[ option ] = prevValue;
 					throw new Error(this._getLocaleValue("setOptionError") + option);
 				case "value":
@@ -12748,6 +12702,20 @@
 				this.options.value = this._parseDateFromMaskedValue(this.options.value);
 			}
 			this._super();
+		},
+		_triggerKeyDown: function (event) { // igTimePicker
+			if (this._dropDownList) {
+				$.ui.igNumericEditor.prototype._triggerKeyDown.call(this, event);
+			} else {
+				this._super(event);
+			}
+		},
+		_spin: function (type, fireEvent) { // igTimePicker
+			if (this.options.isLimitedToListValues) {
+				$.ui.igNumericEditor.prototype._spin.call(this, type, fireEvent);
+			} else {
+				this._super(type, fireEvent);
+			}
 		},
 		/* This method is inherited from a parent widget and it's not supported in igTimePicker */
 		selectDate: function () {

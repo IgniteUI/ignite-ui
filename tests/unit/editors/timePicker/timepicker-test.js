@@ -335,8 +335,8 @@ QUnit.test('Dropdown - default state', function (assert) {
 	assert.equal(0, itemsDelta.hours);
 	assert.equal(30, itemsDelta.minutes);
 
-	assert.equal(null, timePicker.igTimePicker("option", "minTimeValue"));
-	assert.equal(null, timePicker.igTimePicker("option", "minTimeValue"));
+	assert.equal(null, timePicker.igTimePicker("option", "minValue"));
+	assert.equal(null, timePicker.igTimePicker("option", "maxValue"));
 
 	var dropDownItems = dropDownList().children();
 	assert.equal(48, dropDownItems.length);
@@ -476,8 +476,8 @@ QUnit.test('Dropdown - min/max values', function (assert) {
 			},
 			timeInputFormat: "hh:mm tt",
 			buttonType: "dropdown",
-			minTimeValue: data.min,
-			maxTimeValue: data.max_hh
+			minValue: data.min,
+			maxValue: data.max_hh
 		});
 
 		dropDownBtn().trigger("click");
@@ -622,79 +622,6 @@ QUnit.test('Spin - limit to current field', function (assert) {
 		clickOn(spinDownBtn()[0]);
 	}
 	assert.equal("00:15", timePicker.igTimePicker("field").val());
-
-	timePicker.remove();
-});
-
-QUnit.test('Spin + dropdown', function (assert) {
-	assert.expect(20);
-
-	var timePicker = createInDiv().igTimePicker({
-		width: 200,
-		value: "22:00 PM",
-		spinDelta: {hours: 1, minutes: 30},
-		itemsDelta: {hours: 2, minutes: 0},
-		timeInputFormat: "HH:mm tt",
-		timeDisplayFormat: "HH:mm tt",
-		buttonType: "spin, dropdown, clear"
-	});
-
-	assert.ok(spinUpBtn().is(':visible'));
-	assert.ok(spinDownBtn().is(':visible'));
-	assert.ok(dropDownBtn().is(':visible'));
-
-	assert.equal("22:00 PM", timePicker.igTimePicker("field").val());
-
-	dropDownBtn().trigger("click");
-	assert.ok(timePicker.igTimePicker("dropDownVisible"));
-	assert.equal("22:00 PM", dropDownList().children().filter(".ui-igedit-listitemselected").prop("innerText"));
-
-	dropDownList().children().first().next().trigger("click");
-	assert.equal("02:00 AM", timePicker.igTimePicker("field").val());
-
-	setCursorAt(1);
-	clickOn(spinUpBtn()[0]);
-	assert.equal("03:00 AM", timePicker.igTimePicker("field").val());
-
-	timePicker.igTimePicker("field").trigger("blur");
-	assert.ok(timePicker.hasClass('ui-ignotify-warn'));
-	assert.equal("02:00 AM", timePicker.igTimePicker("field").val());
-	
-	setCursorAt(1);
-	clickOn(spinUpBtn()[0]);
-	clickOn(spinUpBtn()[0]);
-
-	timePicker.igTimePicker("field").trigger("blur");
-	assert.notOk(timePicker.hasClass('ui-ignotify-warn'));
-	assert.equal("04:00 AM", timePicker.igTimePicker("field").val());
-
-	dropDownBtn().trigger("click");
-	assert.equal("04:00 AM", dropDownList().children().filter(".ui-igedit-listitemselected").prop("innerText"));
-
-	setCursorAt(5);
-	clickOn(spinUpBtn()[0]);
-
-	assert.equal("04:30 AM", timePicker.igTimePicker("field").val());
-
-	timePicker.igTimePicker("field").trigger("blur");
-	assert.ok(timePicker.hasClass('ui-ignotify-warn'));
-	assert.equal("04:00 AM", timePicker.igTimePicker("field").val());
-
-	setCursorAt(5);
-	for(i = 0; i < 4; i++){
-		clickOn(spinUpBtn()[0]);
-	}
-
-	assert.equal("06:00 AM", timePicker.igTimePicker("field").val());
-
-	dropDownBtn().trigger("click");
-	assert.equal("06:00 AM", dropDownList().children().filter(".ui-igedit-listitemselected").prop("innerText"));
-
-	clearBtn().trigger("click");
-	assert.equal("__:__ __", timePicker.igTimePicker("field").val());
-
-	timePicker.igTimePicker("field").trigger("blur");
-	assert.equal("", timePicker.igTimePicker("field").val());
 
 	timePicker.remove();
 });
