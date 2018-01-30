@@ -1341,6 +1341,30 @@ QUnit.module("igTree", {
 
 	afterEach: function () { },
 
+	simulateDragStart: function (node) {
+		var e = $.Event("mousedown");
+		e.target = node[0];
+		node.data("draggable")._mouseStart(e);
+	},
+
+	simulateDrag: function (node, target) {
+		var e = $.Event("mousemove");
+		e.target = target[0];
+		node.data("draggable")._mouseDrag(e);
+	},
+
+	simulateDrop: function (tree, target) {
+		var e = $.Event("mouseup");
+		e.target = target[0];
+		tree.data("droppable")._drop(e);
+	},
+
+	simulateDragStop: function (node) {
+		var e = $.Event("mouseup");
+		e.target = node[0];
+		node.data("draggable")._mouseStop(e);
+	},
+
 	loadXMLDoc: function loadXMLDoc(dname) {
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", dname, false);
@@ -1348,129 +1372,6 @@ QUnit.module("igTree", {
 		xhttp.send("");
 		return xhttp.responseXML;
 	},
-
-	loadTestbeds: function loadTestbeds() {
-		$("#tree2").igTree({
-			dataSource: this.results,
-			checkboxMode: "triState",
-			hotTracking: false
-		});
-		$("#tree3").igTree({
-			dataSource: this.results2,
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
-				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
-					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
-						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
-						}
-					}
-				}
-			}
-		});
-		$("#tree4").igTree({
-			dataSource: this.results2,
-			loadOnDemand: true,
-			checkboxMode: "triState",
-			dragAndDrop: true,
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
-				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
-					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
-						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
-						}
-					}
-				}
-			}
-		});
-		$("#tree5").igTree({
-			dataSource: this.results2,
-			checkboxMode: "biState",
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
-				targetKey: "Target",
-				nodeContentTemplate: "<span>${Text}: </span>${Value}",
-				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
-					nodeContentTemplate:
-						'<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
-					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
-						nodeContentTemplate:
-							'<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
-						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
-						}
-					}
-				}
-			}
-		});
-		$("#tree12").igTree();
-		$("#tree13").igTree();
-		$("#tree14").igTree({
-			checkboxMode: "biState",
-			parentNodeImageUrl: "images/folder.gif",
-			parentNodeImageTooltip: "folder",
-			leafNodeImageUrl: "images/folder_images.gif",
-			leafNodeImageTooltip: "folder_image"
-		});
-		$("#tree15").igTree({
-			parentNodeImageClass: "css-sprite ui-icon-carat-1-n",
-			parentNodeImageTooltip: "folder",
-			leafNodeImageClass: "css-sprite ui-icon-carat-1-ne",
-			leafNodeImageTooltip: "folder_image"
-		});
-		$("#tree16").igTree({
-			pathSeparator: "."
-		});
-		$("#tree17").igTree({
-			pathSeparator: "//"
-		});
-	}
 });
 /* ***************** igTree Rendering ***************** */
 QUnit.test("[Rendering 01] igTree script loaded test.", function (assert) {
@@ -2787,12 +2688,13 @@ QUnit.test("[Rendering 19] igTree binding to an object", function (assert) {
 QUnit.test("[Databindings 01] igTree binding to JSON", function (assert) {
 	assert.expect(16);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results,
-			checkboxMode: "triState",
-			hotTracking: false
-		}),
+	var dataSource = $.extend(true, [], this.results),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: dataSource,
+				checkboxMode: "triState",
+				hotTracking: false
+			}),
 		nodeCount = $container.find("li[data-role=node]").length,
 		binding,
 		data,
@@ -2803,17 +2705,17 @@ QUnit.test("[Databindings 01] igTree binding to JSON", function (assert) {
 
 	assert.equal(nodeCount, 32, "Tree did not render as many nodes as there are items in the data source");
 
-	(binding = $container.igTree("option", "bindings")), (dataEntry = this.results[0]);
+	(binding = $container.igTree("option", "bindings")), (dataEntry = dataSource[0]);
 	assert.ok(binding.hasOwnProperty("textKey"), "Binding does not contain a text key");
 	assert.ok(binding.hasOwnProperty("childDataProperty"), "Binding does not contain a child data property");
 	assert.ok(dataEntry.hasOwnProperty(binding.textKey), "The data does not contain property: " + binding.textKey);
 	assert.ok(dataEntry.hasOwnProperty(binding.childDataProperty), "The data does not contain property: " + binding.childDataProperty);
 
 	data = $container.igTree("option", "dataSource").root().data();
-	assert.equal(data.length, this.results.length, "The root level item length does not match");
+	assert.equal(data.length, dataSource.length, "The root level item length does not match");
 
 	for (var i = 0; i < data.length; i++) {
-		assert.equal(data[i][binding.textKey], this.results[i][binding.textKey], "Data does not match the original data");
+		assert.equal(data[i][binding.textKey], dataSource[i][binding.textKey], "Data does not match the original data");
 	}
 
 	node = $container.igTree("nodeByPath", "0");
@@ -2830,35 +2732,36 @@ QUnit.test("[Databindings 01] igTree binding to JSON", function (assert) {
 QUnit.test("[Databindings 02] igTree hierarchical bindings", function (assert) {
 	assert.expect(39);
 
-	var $container = this.util.appendToFixture(this.ulTag)
-		.igTree({
-			dataSource: this.results2,
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.ulTag)
+			.igTree({
+				dataSource: datasource,
 				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
+					textKey: "Text",
+					valueKey: "Value",
+					imageUrlKey: "ImageUrl",
+					navigateUrlKey: "URL",
+					childDataProperty: "Children",
 					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
+						textKey: "Text1",
+						valueKey: "Value1",
+						imageUrlKey: "ImageUrl1",
+						navigateUrlKey: "URL1",
+						childDataProperty: "Children1",
 						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
+							textKey: "Text2",
+							valueKey: "Value2",
+							imageUrlKey: "ImageUrl2",
+							navigateUrlKey: "URL2",
+							childDataProperty: "Children2",
+							bindings: {
+								textKey: "Text3",
+								valueKey: "Value3"
+							}
 						}
 					}
 				}
-			}
-		}),
+			}),
 		nodeCount = $container.find("li[data-role=node]").length,
 		bindings,
 		toCheck;
@@ -2910,35 +2813,36 @@ QUnit.test("[Databindings 02] igTree hierarchical bindings", function (assert) {
 QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function (assert) {
 	assert.expect(40);
 
-	var $container = this.util.appendToFixture(this.ulTag)
-		.igTree({
-			dataSource: this.results2,
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.ulTag)
+			.igTree({
+				dataSource: datasource,
 				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
+					textKey: "Text",
+					valueKey: "Value",
+					imageUrlKey: "ImageUrl",
+					navigateUrlKey: "URL",
+					childDataProperty: "Children",
 					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
+						textKey: "Text1",
+						valueKey: "Value1",
+						imageUrlKey: "ImageUrl1",
+						navigateUrlKey: "URL1",
+						childDataProperty: "Children1",
 						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
+							textKey: "Text2",
+							valueKey: "Value2",
+							imageUrlKey: "ImageUrl2",
+							navigateUrlKey: "URL2",
+							childDataProperty: "Children2",
+							bindings: {
+								textKey: "Text3",
+								valueKey: "Value3"
+							}
 						}
 					}
 				}
-			}
-		}),
+			}),
 		data = $container.igTree("nodeDataFor", "0"),
 		binding = $container.igTree("option", "bindings"),
 		node;
@@ -3001,38 +2905,39 @@ QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function
 QUnit.test("[Databindings 04] igTree hierarchical JSON load on demand with all content on client", function (assert) {
 	assert.expect(56);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results2,
-			loadOnDemand: true,
-			checkboxMode: "triState",
-			dragAndDrop: true,
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
+				loadOnDemand: true,
+				checkboxMode: "triState",
+				dragAndDrop: true,
 				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
+					textKey: "Text",
+					valueKey: "Value",
+					imageUrlKey: "ImageUrl",
+					navigateUrlKey: "URL",
+					childDataProperty: "Children",
 					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
+						textKey: "Text1",
+						valueKey: "Value1",
+						imageUrlKey: "ImageUrl1",
+						navigateUrlKey: "URL1",
+						childDataProperty: "Children1",
 						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
+							textKey: "Text2",
+							valueKey: "Value2",
+							imageUrlKey: "ImageUrl2",
+							navigateUrlKey: "URL2",
+							childDataProperty: "Children2",
+							bindings: {
+								textKey: "Text3",
+								valueKey: "Value3"
+							}
 						}
 					}
 				}
-			}
-		}),
+			}),
 		nodeCount = $container.find("li[data-role=node]").length,
 		node;
 
@@ -3231,42 +3136,43 @@ QUnit.test("[Databindings 04] igTree hierarchical JSON load on demand with all c
 QUnit.test("[Databindings 05] igTree and nodeContentTemplates in hierarchical bindings", function (assert) {
 	assert.expect(27);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results2,
-			checkboxMode: "biState",
-			bindings: {
-				textKey: "Text",
-				valueKey: "Value",
-				imageUrlKey: "ImageUrl",
-				navigateUrlKey: "URL",
-				childDataProperty: "Children",
-				targetKey: "Target",
-				nodeContentTemplate: "<span>${Text}: </span>${Value}",
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
+				checkboxMode: "biState",
 				bindings: {
-					textKey: "Text1",
-					valueKey: "Value1",
-					imageUrlKey: "ImageUrl1",
-					navigateUrlKey: "URL1",
-					childDataProperty: "Children1",
-					nodeContentTemplate:
-						'<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
+					textKey: "Text",
+					valueKey: "Value",
+					imageUrlKey: "ImageUrl",
+					navigateUrlKey: "URL",
+					childDataProperty: "Children",
+					targetKey: "Target",
+					nodeContentTemplate: "<span>${Text}: </span>${Value}",
 					bindings: {
-						textKey: "Text2",
-						valueKey: "Value2",
-						imageUrlKey: "ImageUrl2",
-						navigateUrlKey: "URL2",
-						childDataProperty: "Children2",
+						textKey: "Text1",
+						valueKey: "Value1",
+						imageUrlKey: "ImageUrl1",
+						navigateUrlKey: "URL1",
+						childDataProperty: "Children1",
 						nodeContentTemplate:
-							'<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
+							'<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
 						bindings: {
-							textKey: "Text3",
-							valueKey: "Value3"
+							textKey: "Text2",
+							valueKey: "Value2",
+							imageUrlKey: "ImageUrl2",
+							navigateUrlKey: "URL2",
+							childDataProperty: "Children2",
+							nodeContentTemplate:
+								'<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
+							bindings: {
+								textKey: "Text3",
+								valueKey: "Value3"
+							}
 						}
 					}
 				}
-			}
-		}),
+			}),
 		node = $container.igTree("nodeByPath", "0"),
 		anchor = node.children("a");
 
@@ -3335,15 +3241,17 @@ QUnit.test("[Databindings 06] igTree node retrieval API methods", function (asse
 	// parentNode method
 	assert.expect(60);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results,
-			checkboxMode: "triState",
-			hotTracking: false
-		}),
+	var datasource = dataSource = $.extend(true, [], this.results),
+		datasource2 = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
+				checkboxMode: "triState",
+				hotTracking: false
+			}),
 		$otherContainer = this.util.appendToFixture(this.ulTag)
 			.igTree({
-				dataSource: this.results2,
+				dataSource: datasource2,
 				bindings: {
 					textKey: "Text",
 					valueKey: "Value",
@@ -3502,42 +3410,43 @@ QUnit.test("[Databindings 07] igTree bug #203489 applyChangesToNode does not pes
 	function (assert) {
 		assert.expect(5);
 
-		var $container = this.util.appendToFixture(this.divTag)
-			.igTree({
-				dataSource: this.results2,
-				checkboxMode: "biState",
-				bindings: {
-					textKey: "Text",
-					valueKey: "Value",
-					imageUrlKey: "ImageUrl",
-					navigateUrlKey: "URL",
-					childDataProperty: "Children",
-					targetKey: "Target",
-					nodeContentTemplate: "<span>${Text}: </span>${Value}",
+		var datasource = dataSource = $.extend(true, [], this.results),
+			$container = this.util.appendToFixture(this.divTag)
+				.igTree({
+					dataSource: datasource,
+					checkboxMode: "biState",
 					bindings: {
-						textKey: "Text1",
-						valueKey: "Value1",
-						imageUrlKey: "ImageUrl1",
-						navigateUrlKey: "URL1",
-						childDataProperty: "Children1",
-						nodeContentTemplate:
-							'<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
+						textKey: "Text",
+						valueKey: "Value",
+						imageUrlKey: "ImageUrl",
+						navigateUrlKey: "URL",
+						childDataProperty: "Children",
+						targetKey: "Target",
+						nodeContentTemplate: "<span>${Text}: </span>${Value}",
 						bindings: {
-							textKey: "Text2",
-							valueKey: "Value2",
-							imageUrlKey: "ImageUrl2",
-							navigateUrlKey: "URL2",
-							childDataProperty: "Children2",
+							textKey: "Text1",
+							valueKey: "Value1",
+							imageUrlKey: "ImageUrl1",
+							navigateUrlKey: "URL1",
+							childDataProperty: "Children1",
 							nodeContentTemplate:
-								'<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
+								'<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
 							bindings: {
-								textKey: "Text3",
-								valueKey: "Value3"
+								textKey: "Text2",
+								valueKey: "Value2",
+								imageUrlKey: "ImageUrl2",
+								navigateUrlKey: "URL2",
+								childDataProperty: "Children2",
+								nodeContentTemplate:
+									'<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
+								bindings: {
+									textKey: "Text3",
+									valueKey: "Value3"
+								}
 							}
 						}
 					}
-				}
-			}),
+				}),
 			node = $container.find("li[data-role=node]:first"),
 			anchor = node.children("a");
 
@@ -3574,52 +3483,45 @@ QUnit.test("[Databindings 08] igTree hierarchical JSON remote load on demand (Bu
 				}
 			}),
 			node,
-			tree = this.util.appendToFixture(this.divTag).igTree({
-				dataSourceUrl: "/api/jsonpitems",
-				dataSourceType: "remoteUrl",
-				loadOnDemand: true,
-				dragAndDrop: true,
-				checkboxMode: "triState",
-				responseDataKey: "Items",
-				//nodePopulating: function (event, ui) {
-				//	$remoteLOD.igTree('option', 'dataSourceUrl', '/api/items?id=' + ui.data.id);
-				//	return true;
-				//},
-				bindings: {
-					textKey: "Name",
-					valueKey: "Id",
-					childDataProperty: "Children"
-				}
-			}),
+			tree = this.util.appendToFixture(this.divTag)
+				.igTree({
+					dataSourceUrl: "/api/jsonpitems",
+					dataSourceType: "remoteUrl",
+					loadOnDemand: true,
+					dragAndDrop: true,
+					checkboxMode: "triState",
+					responseDataKey: "Items",
+					//nodePopulating: function (event, ui) {
+					//	$remoteLOD.igTree('option', 'dataSourceUrl', '/api/items?id=' + ui.data.id);
+					//	return true;
+					//},
+					bindings: {
+						textKey: "Name",
+						valueKey: "Id",
+						childDataProperty: "Children"
+					}
+				}),
 			done = assert.async(),
 			notWorkingResponse1 = this.notWorkingResponse1,
 			notWorkingResponse2 = this.notWorkingResponse2;
 
-		this.util.wait(1000).then(function () {
-			debugger;
-			tree.one("igtreenodepopulated", function (evt, ui) {
-				assert.ok(ui.data.Children.length > 0);
-			});
-			tree.one("igtreerendered", function () {
-				tree.igTree("toggleCheckstate", tree.find("li[data-role=node]:first"));
-				tree.igTree("expand", tree.find("li[data-role=node]:first"));
-			});
-
-			$remoteLOD.one("igtreerendered", function (evt, ui) {
-				node = $remoteLOD.find("li[data-role=node]:first");
-				assert.ok(node.text() === notWorkingResponse1.Items[0].Name, "Initial data not loaded correctly.");
-
-				$remoteLOD.igTree("toggle", node);
-			});
-			$remoteLOD.one("igtreenodepopulated", function (evt, ui) {
-				assert.ok(ui.data.Children.length === notWorkingResponse2.Items.length && ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name, "Child nodes were not populated successfully.");
-			});
-
+		tree.one("igtreenodepopulated", function (evt, ui) {
+			assert.ok(ui.data.Children.length > 0);
 			done();
-		}).catch(function (er) {
-			assert.pushResult({ result: false, message: er.message });
-			done();
-			throw er;
+		});
+		tree.one("igtreerendered", function () {
+			tree.igTree("toggleCheckstate", tree.find("li[data-role=node]:first"));
+			tree.igTree("expand", tree.find("li[data-role=node]:first"));
+		});
+
+		$remoteLOD.one("igtreerendered", function (evt, ui) {
+			node = $remoteLOD.find("li[data-role=node]:first");
+			assert.ok(node.text() === notWorkingResponse1.Items[0].Name, "Initial data not loaded correctly.");
+
+			$remoteLOD.igTree("toggle", node);
+		});
+		$remoteLOD.one("igtreenodepopulated", function (evt, ui) {
+			assert.ok(ui.data.Children.length === notWorkingResponse2.Items.length && ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name, "Child nodes were not populated successfully.");
 		});
 	}
 );
@@ -4050,15 +3952,25 @@ QUnit.test("[Add/Remove nodes 01] igTree add node without specifying a parent.",
 QUnit.test("[Add/Remove nodes 02] igTree add node on a parent.", function (assert) {
 	assert.expect(19);
 
-	var $container = this.util.appendToFixture(this.divTag).igTree(),
+	var $container = this.util.appendToFixture(this.divTag)
+		.igTree({
+			checkboxMode: "triState",
+			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageTooltip: "folder",
+			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageTooltip: "folder_image"
+		}),
 		path = "0",
-		node = $container.igTree("nodeByPath", path),
-		childCount = node.find("li[data-role=node]").length,
+		parentNode = $container.igTree("nodeByPath", path),
+		childNode,
+		childCount = parentNode.find("li[data-role=node]").length,
 		data;
 
 	assert.equal(childCount, 0, "The node has children initially");
-	$container.igTree("addNode", { Text: "New Node" }, node);
-	childCount = node.find("li[data-role=node]").length;
+	$container.igTree("addNode", { Text: "New Node", Value: 1 });
+	parentNode = $container.igTree("nodeByPath", path);
+	$container.igTree("addNode", { Text: "New Node" }, parentNode);
+	childCount = parentNode.find("li[data-role=node]").length;
 	data = $container.igTree("nodeDataFor", path);
 	assert.ok(data.hasOwnProperty("Nodes"), "Child data has not been properly populated.");
 
@@ -4068,45 +3980,78 @@ QUnit.test("[Add/Remove nodes 02] igTree add node on a parent.", function (asser
 	assert.ok(data[0].hasOwnProperty("Text"), "The data source does not contain a text property for the first added node");
 	assert.equal(data[0].Text, "New Node", "The text property in the data source did not contain the correct text.");
 
-	this.util.checkClass(node, "ui-igtree-noderoot", assert);
-	assert.equal(node.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
-	assert.equal(node.children("img[data-role=leaf-node-image]").length, 0, "The leaf node image did not render after adding a node.");
-	assert.equal(node.children("img[data-role=parent-node-image]").length, 1, "The leaf node image did not render after adding a node.");
-	assert.equal(node.children("img[data-role=parent-node-image]").attr("src"), "images/folder.gif", "The leaf node image has incorrect src after adding a node.");
-	assert.equal(node.children("img[data-role=parent-node-image]").attr("title"), "folder", "The leaf node image has incorrect src after adding a node.");
+	this.util.checkClass(parentNode, "ui-igtree-noderoot", assert);
+	assert.equal(parentNode.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
+	assert.equal(parentNode.children("img[data-role=leaf-node-image]").length, 0, "The leaf node image did not render after adding a node.");
+	assert.equal(parentNode.children("img[data-role=parent-node-image]").length, 1, "The leaf node image did not render after adding a node.");
+	assert.equal(parentNode.children("img[data-role=parent-node-image]").attr("src"), "images/folder.gif", "The leaf node image has incorrect src after adding a node.");
+	assert.equal(parentNode.children("img[data-role=parent-node-image]").attr("title"), "folder", "The leaf node image has incorrect src after adding a node.");
 
 	$container.igTree("addNode", [
 		{ Text: "New Node" },
 		{ Text: "New Node" },
 		{ Text: "New Node", Value: 1 }
-	], node);
-	childCount = node.find("li[data-role=node]").length;
+	], parentNode);
+	childCount = parentNode.find("li[data-role=node]").length;
 	data = $container.igTree("nodeDataFor", path);
 	data = data.Nodes;
 	assert.equal(childCount, 4, "The first node was not correctly added to the DOM.");
 	assert.equal(data.length, 4, "The data source did not update correctly after adding the first node.");
 
 	path = "0_0";
-	node = $container.igTree("nodeByPath", path);
-	assert.equal(node.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
-	assert.equal(node.children("img[data-role=leaf-node-image]").length, 1, "The leaf node image did not render after adding a node.");
-	assert.equal(node.children("img[data-role=leaf-node-image]").attr("src"), "images/folder_images.gif", "The leaf node image has incorrect src after adding a node.");
-	assert.equal(node.children("img[data-role=leaf-node-image]").attr("title"), "folder_image", "The leaf node image has incorrect src after adding a node.");
+	childNode = $container.igTree("nodeByPath", path);
+	assert.equal(childNode.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
+	assert.equal(childNode.children("img[data-role=leaf-node-image]").length, 1, "The leaf node image did not render after adding a node.");
+	assert.equal(childNode.children("img[data-role=leaf-node-image]").attr("src"), "images/folder_images.gif", "The leaf node image has incorrect src after adding a node.");
+	assert.equal(childNode.children("img[data-role=leaf-node-image]").attr("title"), "folder_image", "The leaf node image has incorrect src after adding a node.");
 
-	$container.igTree("toggleCheckstate", node);
-	$container.igTree("addNode", { Text: "New Node" }, node);
+	$container.igTree("toggleCheckstate", childNode);
+	$container.igTree("addNode", { Text: "New Node" }, childNode);
 	path = "0_0_0";
-	node = $container.igTree("nodeByPath", path);
-	assert.ok($container.igTree("isChecked", node), "The checkbox of the new node did not render as checked");
+	childNode = $container.igTree("nodeByPath", path);
+	assert.ok($container.igTree("isChecked", childNode), "The checkbox of the new node did not render as checked");
 });
 QUnit.test("[Add/Remove nodes 03] igTree remove node", function (assert) {
 	assert.expect(12);
-	var $container = this.util.appendToFixture(this.divTag).igTree(),
+	var $container = this.util.appendToFixture(this.divTag)
+		.igTree({
+			checkboxMode: "triState",
+			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageTooltip: "folder",
+			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageTooltip: "folder_image"
+		}),
 		path = "0_0",
-		node = $container.igTree("nodeByPath", path),
-		nodeCount = $container.find("li[data-role=node]").length,
-		data = $container.igTree("option", "dataSource").root().data(),
+		node,
+		nodeCount,
+		data,
 		children, i;
+
+	//	Add four root nodes
+	$container.igTree("addNode", [
+		{ Text: "New Node", Value: 1 },
+		{ Text: "New Node" },
+		{ Text: "New Node" },
+		{ Text: "New Node", Value: 1 }
+	]);
+
+	//	Add four second level nodes
+	path = "0";
+	node = $container.igTree("nodeByPath", path);
+	$container.igTree("addNode", [
+		{ Text: "New Node" },
+		{ Text: "New Node" },
+		{ Text: "New Node" },
+		{ Text: "New Node", Value: 1 }
+	], node);
+
+	//	Add one third level node
+	path = "0_0";
+	node = $container.igTree("nodeByPath", path);
+	$container.igTree("addNode", { Text: "New Node" }, node);
+
+	nodeCount = $container.find("li[data-role=node]").length;
+	data = $container.igTree("option", "dataSource").root().data();
 
 	assert.equal(nodeCount, 9, "Node count did not initially match.");
 	assert.equal(data.length, 4, "There are less than 4 data members at root level.");
@@ -4134,46 +4079,45 @@ QUnit.test("[Add/Remove nodes 03] igTree remove node", function (assert) {
 QUnit.test("[Add/Remove nodes 04] igTree full path recalculation upon remove", function (assert) {
 	assert.expect(8);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results2,
-			loadOnDemand: true,
-			checkboxMode: 'triState',
-			dragAndDrop: true,
-			bindings: {
-				textKey: 'Text',
-				valueKey: 'Value',
-				imageUrlKey: 'ImageUrl',
-				navigateUrlKey: 'URL',
-				childDataProperty: 'Children',
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
 				bindings: {
-					textKey: 'Text1',
-					valueKey: 'Value1',
-					imageUrlKey: 'ImageUrl1',
-					navigateUrlKey: 'URL1',
-					childDataProperty: 'Children1',
+					textKey: 'Text',
+					valueKey: 'Value',
+					imageUrlKey: 'ImageUrl',
+					navigateUrlKey: 'URL',
+					childDataProperty: 'Children',
 					bindings: {
-						textKey: 'Text2',
-						valueKey: 'Value2',
-						imageUrlKey: 'ImageUrl2',
-						navigateUrlKey: 'URL2',
-						childDataProperty: 'Children2',
+						textKey: 'Text1',
+						valueKey: 'Value1',
+						imageUrlKey: 'ImageUrl1',
+						navigateUrlKey: 'URL1',
+						childDataProperty: 'Children1',
 						bindings: {
-							textKey: 'Text3',
-							valueKey: 'Value3'
+							textKey: 'Text2',
+							valueKey: 'Value2',
+							imageUrlKey: 'ImageUrl2',
+							navigateUrlKey: 'URL2',
+							childDataProperty: 'Children2',
+							bindings: {
+								textKey: 'Text3',
+								valueKey: 'Value3'
+							}
 						}
 					}
 				}
-			}
-		}),
-		node = $container.igTree("nodeByPath", "4"),
+			}),
+		node,
 		children, subchildren;
 
 	$container.igTree("removeAt", "0");
+	node = $container.igTree("nodeByPath", "4");
 	assert.equal(node.length, 0, "A node with path 4 still exists");
 
 	node = $container.igTree("nodeByPath", "1");
-	assert.equal(node.length, 1, "A node with path 4 still exists");
+	assert.equal(node.length, 1, "A node with path 1 does not exists");
 
 	children = $container.igTree("children", node);
 	for (var i = 0; i < children.length; i++) {
@@ -4190,11 +4134,30 @@ QUnit.test("[Add/Remove nodes 05] igTree insert at index", function (assert) {
 
 	// Insert at root first
 	var $container = this.util.appendToFixture(this.divTag).igTree(),
-		node = $container.igTree("nodeByPath", 1),
-		nodeCount = $container.find("li[data-role=node]").length,
+		node,
+		nodeCount,
 		data;
 
+	//	Add four root nodes
+	$container.igTree("addNode", [
+		{ Text: "New Node", Value: 1 },
+		{ Text: "New Node" },
+		{ Text: "New Node" },
+		{ Text: "New Node", Value: 1 }
+	]);
+
+	//	Add four second level nodes
+	path = "0";
+	node = $container.igTree("nodeByPath", path);
+	$container.igTree("addNode", [
+		{ Text: "New Node" },
+		{ Text: "New Node" },
+		{ Text: "New Node", Value: 1 }
+	], node);
+
 	$container.igTree("addNode", { Text: "Node 1", Value: "0x0000" }, 1);
+	node = $container.igTree("nodeByPath", 1);
+	nodeCount = $container.find("li[data-role=node]").length;
 	assert.equal(nodeCount, 8, "The added node at index 1 of the root is not correctly rendered.");
 	assert.equal(node.attr("data-value"), "0x0000", "The value of the node was not rendered correctly.");
 	assert.equal($container.igTree("nodesByValue", "0x0000").length, 1, "The added node with value 0x0000 was not correctly retrieved.");
@@ -4225,7 +4188,7 @@ QUnit.test("[Add/Remove nodes 05] igTree insert at index", function (assert) {
 	$container.igTree("addNode", { Text: "Node 3", Value: "0x0002" }, node, 0);
 	node = $container.igTree("nodeByPath", "0_0");
 	nodeCount = $container.find("li[data-role=node]").length;
-	ssert.equal(nodeCount, 10, "The added node at index 0 of the root node 0 is not correctly rendered.");
+	assert.equal(nodeCount, 10, "The added node at index 0 of the root node 0 is not correctly rendered.");
 	assert.equal(node.attr("data-value"), "0x0002", "The value of the node was not rendered correctly.");
 	assert.equal($container.igTree("nodesByValue", "0x0002").length, 1, "The added node with value 0x0000 was not correctly retrieved.");
 
@@ -4238,68 +4201,80 @@ QUnit.test("[Add/Remove nodes 05] igTree insert at index", function (assert) {
 QUnit.test("[Add/Remove nodes 06] igTree add/remove using diverse hierarchical bindings", function (assert) {
 	assert.expect(8);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results2,
-			bindings: {
-				textKey: 'Text',
-				valueKey: 'Value',
-				imageUrlKey: 'ImageUrl',
-				navigateUrlKey: 'URL',
-				childDataProperty: 'Children',
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
 				bindings: {
-					textKey: 'Text1',
-					valueKey: 'Value1',
-					imageUrlKey: 'ImageUrl1',
-					navigateUrlKey: 'URL1',
-					childDataProperty: 'Children1',
+					textKey: 'Text',
+					valueKey: 'Value',
+					imageUrlKey: 'ImageUrl',
+					navigateUrlKey: 'URL',
+					childDataProperty: 'Children',
 					bindings: {
-						textKey: 'Text2',
-						valueKey: 'Value2',
-						imageUrlKey: 'ImageUrl2',
-						navigateUrlKey: 'URL2',
-						childDataProperty: 'Children2',
+						textKey: 'Text1',
+						valueKey: 'Value1',
+						imageUrlKey: 'ImageUrl1',
+						navigateUrlKey: 'URL1',
+						childDataProperty: 'Children1',
 						bindings: {
-							textKey: 'Text3',
-							valueKey: 'Value3'
+							textKey: 'Text2',
+							valueKey: 'Value2',
+							imageUrlKey: 'ImageUrl2',
+							navigateUrlKey: 'URL2',
+							childDataProperty: 'Children2',
+							bindings: {
+								textKey: 'Text3',
+								valueKey: 'Value3'
+							}
 						}
 					}
 				}
-			}
-		}),
-		node = $container.igTree("nodeByPath", "0"),
-		nodeCount = $container.find("li[data-role=node]").length,
-		childCount = node.find("li[data-role=node]").length,
-		binding = $container.igTree("option", "bindings").bindings,
-		obj;
+			}),
+		node, nodeCount, childCount, binding, obj,
+		done = assert.async();
 
-	assert.equal(nodeCount, 36, "The innitial node count is not correct.");
-	assert.equal(childCount, 7, "The innitial child node count for root node 0 is not correct.");
-	obj = {};
-	obj[binding.textKey] = "New Node 1";
-	obj[binding.valueKey] = "0x00000000";
-	obj[binding.imageUrlKey] = "images/coins.png";
-	obj[binding.navigateUrlKey] = "http://infragistics.com";
-	$container.igTree("addNode", obj, node);
-	childCount = node.find("li[data-role=node]").length;
-	assert.equal(childCount, 8, "The innitial child node count for root node 0 is not correct.");
+	this.util.wait(100).then(function () {
+		node = $container.igTree("nodeByPath", "0");
+		nodeCount = $container.find("li[data-role=node]").length;
+		childCount = node.find("li[data-role=node]").length;
+		binding = $container.igTree("option", "bindings").bindings;
 
-	node = $container.igTree("nodeByPath", "0_2");
-	assert.equal(node.children("a").attr("href"), "http://infragistics.com", "The anchor did not render properly from the data object");
-	assert.equal(node.children("img").attr("src"), "images/coins.png", "The image did not render properly from the data object");
-	assert.equal(node.attr("data-value"), "0x00000000", "The node value did not render properly.");
-	assert.equal(node.children("a").text(), "New Node 1", "The node value did not render properly.");
+		assert.equal(nodeCount, 36, "The innitial node count is not correct.");
+		assert.equal(childCount, 7, "The innitial child node count for root node 0 is not correct.");
+		obj = {};
+		obj[binding.textKey] = "New Node 1";
+		obj[binding.valueKey] = "0x00000000";
+		obj[binding.imageUrlKey] = "images/coins.png";
+		obj[binding.navigateUrlKey] = "http://infragistics.com";
+		$container.igTree("addNode", obj, node);
+		childCount = node.find("li[data-role=node]").length;
+		assert.equal(childCount, 8, "The innitial child node count for root node 0 is not correct.");
 
-	node.children("a").click();
-	assert.ok($container.igTree("isSelected", node));
+		node = $container.igTree("nodeByPath", "0_2");
+		assert.equal(node.children("a").attr("href"), "http://infragistics.com", "The anchor did not render properly from the data object");
+		assert.equal(node.children("img").attr("src"), "images/coins.png", "The image did not render properly from the data object");
+		assert.equal(node.attr("data-value"), "0x00000000", "The node value did not render properly.");
+		assert.equal(node.children("a").text(), "New Node 1", "The node value did not render properly.");
+
+		node.children("a").click();
+		assert.ok($container.igTree("isSelected", node));
+
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
 });
 QUnit.test("[Add/Remove nodes 07] igTree init drag and drop", function (assert) {
 	assert.expect(4);
 
-	var $container = this.util.appendToFixture(this.divTag).igTree(),
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag).igTree(),
 		$otherContainer = this.util.appendToFixture(this.divTag)
 			.igTree({
-				dataSource: this.results2,
+				dataSource: datasource,
 				checkboxMode: "biState",
 				bindings: {
 					textKey: 'Text',
@@ -4354,7 +4329,7 @@ QUnit.test("[Add/Remove nodes 07] igTree init drag and drop", function (assert) 
 	$otherContainer
 		.igTree("destroy")
 		.igTree({
-			dataSource: this.results2,
+			dataSource: datasource,
 			dragAndDrop: true,
 			bindings: {
 				textKey: "Text",
@@ -4392,39 +4367,39 @@ QUnit.test("[Add/Remove nodes 07] igTree init drag and drop", function (assert) 
 	assert.notEqual(node.data("draggable"), undefined, "The draggable was not initialized correctly on the added node.");
 });
 QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert) {
-	assert.expect(54);
-	var bindings = {
-		textKey: "Text",
-		valueKey: "Value",
-		imageUrlKey: "ImageUrl",
-		navigateUrlKey: "URL",
-		childDataProperty: "Children",
-		nodeContentTemplate: "<span>${Text}: </span>${Value}",
-		bindings: {
-			textKey: "Text1",
-			valueKey: "Value1",
-			imageUrlKey: "ImageUrl1",
-			navigateUrlKey: "URL1",
-			childDataProperty: "Children1",
-			nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
+	assert.expect(56);
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		bindings = {
+			textKey: "Text",
+			valueKey: "Value",
+			imageUrlKey: "ImageUrl",
+			navigateUrlKey: "URL",
+			childDataProperty: "Children",
+			nodeContentTemplate: "<span>${Text}: </span>${Value}",
 			bindings: {
-				textKey: "Text2",
-				valueKey: "Value2",
-				imageUrlKey: "ImageUrl2",
-				navigateUrlKey: "URL2",
-				childDataProperty: "Children2",
-				nodeContentTemplate:
-					'<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
+				textKey: "Text1",
+				valueKey: "Value1",
+				imageUrlKey: "ImageUrl1",
+				navigateUrlKey: "URL1",
+				childDataProperty: "Children1",
+				nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
 				bindings: {
-					textKey: "Text3",
-					valueKey: "Value3"
+					textKey: "Text2",
+					valueKey: "Value2",
+					imageUrlKey: "ImageUrl2",
+					navigateUrlKey: "URL2",
+					childDataProperty: "Children2",
+					nodeContentTemplate: '<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
+					bindings: {
+						textKey: "Text3",
+						valueKey: "Value3"
+					}
 				}
 			}
-		}
-	},
+		},
 		tree1 = this.util.appendToFixture(this.divTag)
 			.igTree({
-				dataSource: this.results2,
+				dataSource: datasource,
 				dragAndDrop: true,
 				dragAndDropSettings: {
 					revertDuration: 0
@@ -4434,21 +4409,13 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 					if (ui.element.attr("data-path") === "2") {
 						return;
 					}
-					assert.equal(
-						ui.element[0],
-						tree1.find("li[data-role=node]:first")[0],
-						"The element event argument for drag start was incorrect."
-					);
+					assert.equal(ui.element[0], tree1.find("li[data-role=node]:first")[0], "The element event argument for drag start was incorrect.");
 				},
 				drag: function (event, ui) {
 					if (ui.element.attr("data-path") === "2") {
 						return false;
 					}
-					assert.equal(
-						ui.element[0],
-						tree1.find("li[data-role=node]:first")[0],
-						"The element event argument for drag was incorrect."
-					);
+					assert.equal(ui.element[0], tree1.find("li[data-role=node]:first")[0], "The element event argument for drag was incorrect.");
 				},
 				nodeDropping: function (event, ui) {
 					assert.equal(ui.originalIndex, 0, "Original index was wrong.");
@@ -4466,25 +4433,25 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		node = tree1.find("li[data-role=node]:first"),
 		x, y;
 
-	this.util.simulateDragStart(node);
-	assert.equal(treeobj._sourceNode.data.Value, this.results2[0].Value, "Data Value was not correctly populated.");
-	assert.equal(treeobj._sourceNode.data.Text, this.results2[0].Text, "Data Text was not correctly populated.");
+	this.simulateDragStart(node);
+	assert.equal(treeobj._sourceNode.data.Value, datasource[0].Value, "Data Value was not correctly populated.");
+	assert.equal(treeobj._sourceNode.data.Text, datasource[0].Text, "Data Text was not correctly populated.");
 	assert.equal(treeobj._sourceNode.owner, treeobj, "Owner was not correctly populated.");
 	assert.equal(treeobj._sourceNode.element[0], node[0], "Element was not correctly populated.");
 	assert.notEqual(treeobj._originalHelper.html, null, "The original helper was not instantiated.");
 
-	this.util.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1)"));
+	this.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1)"));
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 	assert.equal(treeobj._validationObject.target, null, "The validation object target was incorrect.");
 
-	this.util.simulateDrop(tree, tree1.find("ul:first > li[data-role=node]:eq(1)"));
+	this.simulateDrop(tree1, tree1.find("ul:first > li[data-role=node]:eq(1)"));
 	node = tree1.find("li[data-role=node]:first");
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
 	assert.equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
 	assert.equal(treeobj._validationObject.target[0], tree1.find("ul:first > li[data-role=node]:eq(1)")[0], "The validation object target was incorrect.");
 
-	this.util.simulateDragStop(node);
+	this.simulateDragStop(node);
 	assert.equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
 	assert.equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
 	assert.equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
@@ -4493,8 +4460,8 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 	assert.equal(treeobj._validationObject.target, null, "target was not correctly populated.");
 
 	node = tree1.find("li[data-path='2']");
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
 	assert.equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
 	assert.equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
 	assert.equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
@@ -4506,12 +4473,12 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 	x = tree1.igTree("children", tree1.find("li[data-path=0]")).length;
 	y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
 	node = tree1.find("li[data-path=0]");
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree1.find("li[data-path=1] > a"));
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree1.find("li[data-path=1] > a"));
 	assert.equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
 	assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	this.util.simulateDrop(tree, tree1.find("li[data-path=1] > a"));
+	this.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
 	assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
 	assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y, "Target node in tree didn't update correctly.");
 
@@ -4519,7 +4486,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 
 	tree1 = this.util.appendToFixture(this.divTag)
 		.igTree({
-			dataSource: this.results2,
+			dataSource: datasource,
 			dragAndDrop: true,
 			dragAndDropSettings: {
 				revertDuration: 0,
@@ -4532,14 +4499,14 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 	x = tree1.igTree("children", tree1.find("li[data-path=0]")).length;
 	y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
 	node = tree1.find("li[data-path=0_0]");
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree1.find("li[data-path=1] > a"));
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree1.find("li[data-path=1] > a"));
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 	assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	this.util.simulateDrop(tree, tree1.find("li[data-path=1] > a"));
+	this.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
 	assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
-	assert.equal(tree1.igTree("children", tree.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
+	assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 
 	tree2 = this.util.appendToFixture(this.divTag)
 		.igTree({
@@ -4560,29 +4527,29 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		return true;
 	}
 
-	node = tree.find("li[data-path=0_0]");
+	node = tree1.find("li[data-path=0_0]");
 	y = tree2.igTree("children", tree2.find("li[data-path=1]")).length;
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree2.find("li[data-path=1] > a"));
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree2.find("li[data-path=1] > a"));
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 	assert.equal(treeobj._validationObject.target[0], tree2.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	this.util.simulateDrop(tree2, tree2.find("li[data-path=1] > a"));
-	assert.equal(tree.igTree("children", tree.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+	this.simulateDrop(tree2, tree2.find("li[data-path=1] > a"));
+	assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
 	assert.equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, y + 1, "Target node in tree2 didn't update correctly.");
 
 	treeobj = tree2.data("igTree");
 	node = tree2.find("li[data-path=0_0]");
 	x = tree2.igTree("children", tree2.find("li[data-path=0]")).length;
-	y = tree.igTree("children", tree.find("li[data-path=1]")).length;
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree.find("li[data-path=1] > a"));
+	y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree1.find("li[data-path=1] > a"));
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
-	assert.equal(treeobj._validationObject.target[0], tree.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+	assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	this.util.simulateDrop(tree, tree.find("li[data-path=1] > a"));
+	this.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
 	assert.equal(tree2.igTree("children", tree2.find("li[data-path=0]")).length, x - 1, "Source node in otherTree didn't update correctly.");
-	assert.equal(tree.igTree("children", tree.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
+	assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 
 	tree3 = this.util.appendToFixture(this.divTag)
 		.igTree({
@@ -4595,13 +4562,13 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 			bindings: bindings
 		});
 
-	node = tree.find("li[data-path=0]");
-	y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree3);
+	node = tree1.find("li[data-path=0]");
+	y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree3);
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
-	this.util.simulateDrop(tree3, tree3);
+	this.simulateDrop(tree3, tree3);
 	assert.equal(tree3.igTree("children", tree3.find("li[data-role=node]")).length, y, "Target node in tree3 didn't update correctly.");
 
 	tree4 = this.util.appendToFixture(this.divTag)
@@ -4615,12 +4582,13 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 			bindings: bindings
 		});
 
-	node = tree.find("li[data-path=0]");
-	y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree4);
+	node = tree1.find("li[data-path=0]");
+	y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree4);
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
-	this.util.simulateDrop(tree4, tree4); assert.equal(tree4.igTree("children", tree4.find("li[data-role=node]")).length, y, "Target node in tree4 didn't update correctly.");
+	this.simulateDrop(tree4, tree4);
+	assert.equal(tree4.igTree("children", tree4.find("li[data-role=node]")).length, y, "Target node in tree4 didn't update correctly.");
 
 	tree5 = this.util.appendToFixture(this.divTag)
 		.igTree({
@@ -4632,30 +4600,34 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 			bindings: bindings
 		});
 
-	node = tree.find("li[data-path=0]");
-	settings = tree.igTree("option", "dragAndDropSettings");
+	node = tree1.find("li[data-path=0]");
+	settings = tree1.igTree("option", "dragAndDropSettings");
 	settings.dragAndDropMode = "move";
-	y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree5);
+	y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree5);
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
-	this.util.simulateDrop(tree5, tree5);
+	this.simulateDrop(tree5, tree5);
 	assert.equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, y, "Target node in tree5 didn't update correctly.");
 
-	node = tree.find("li[data-path=0]");
+	node = tree1.find("li[data-path=0]");
 	settings.dragAndDropMode = "";
-	this.util.simulateDragStart(node);
-	this.util.simulateDrag(node, tree5);
+	this.simulateDragStart(node);
+	this.simulateDrag(node, tree5);
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
-	this.util.simulateDrop(tree5, tree5);
-	assert.equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, 9, "Target node in tree5 didn't update correctly.");
+	this.simulateDrop(tree5, tree5);
+	debugger;
+	assert.equal(tree5.igTree().find(".ui-igtree-noderoot").length, 2, "Root nodes in tree5 are not 2");
+	assert.equal(tree5.igTree().find(".ui-igtree-node-nochildren").length, 12, "Leaf nodes in tree5 are not 12");
+	assert.equal(tree5.igTree().find(".ui-igtree-parentnode").length, 11, "Parent nodes in tree5 are not 11");
 });
 QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	assert.expect(39);
 
-	var $container = this.util.appendToFixture(this.divTag).igTree();
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag).igTree();
 
 	// _setOption unit tests
 	assert.throws(function () {
@@ -4721,7 +4693,7 @@ QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	$container.igTree("option", "checkboxMode", "biState");
 	assert.equal($container.find("span[data-role=checkbox]").length, 6, "The checkboxes were not correctly rendered again.");
 
-	$container.igTree("option", "dataSource", this.results);
+	$container.igTree("option", "dataSource", datasource);
 	assert.equal($container.find("li[data-role=node]").length, 32, "The tree was not correctly rerendered after changing the data source");
 
 	$container.igTree("option", "dragAndDrop", true);
@@ -4826,40 +4798,41 @@ QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 QUnit.test("[Add/Remove nodes 10] igTree transaction log", function (assert) {
 	assert.expect(14);
 
-	var $container = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: this.results2,
-			checkboxMode: "biState",
-			bindings: {
-				textKey: 'Text',
-				valueKey: 'Value',
-				imageUrlKey: 'ImageUrl',
-				navigateUrlKey: 'URL',
-				childDataProperty: 'Children',
-				targetKey: 'Target',
-				nodeContentTemplate: '<span>${Text}: </span>${Value}',
+	var datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
+				checkboxMode: "biState",
 				bindings: {
-					textKey: 'Text1',
-					valueKey: 'Value1',
-					imageUrlKey: 'ImageUrl1',
-					navigateUrlKey: 'URL1',
-					childDataProperty: 'Children1',
-					nodeContentTemplate: '<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
+					textKey: 'Text',
+					valueKey: 'Value',
+					imageUrlKey: 'ImageUrl',
+					navigateUrlKey: 'URL',
+					childDataProperty: 'Children',
+					targetKey: 'Target',
+					nodeContentTemplate: '<span>${Text}: </span>${Value}',
 					bindings: {
-						textKey: 'Text2',
-						valueKey: 'Value2',
-						imageUrlKey: 'ImageUrl2',
-						navigateUrlKey: 'URL2',
-						childDataProperty: 'Children2',
-						nodeContentTemplate: '<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
+						textKey: 'Text1',
+						valueKey: 'Value1',
+						imageUrlKey: 'ImageUrl1',
+						navigateUrlKey: 'URL1',
+						childDataProperty: 'Children1',
+						nodeContentTemplate: '<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
 						bindings: {
-							textKey: 'Text3',
-							valueKey: 'Value3'
+							textKey: 'Text2',
+							valueKey: 'Value2',
+							imageUrlKey: 'ImageUrl2',
+							navigateUrlKey: 'URL2',
+							childDataProperty: 'Children2',
+							nodeContentTemplate: '<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
+							bindings: {
+								textKey: 'Text3',
+								valueKey: 'Value3'
+							}
 						}
 					}
 				}
-			}
-		}),
+			}),
 		log = $container.igTree("transactionLog");
 
 	assert.equal(log.length, 0, "The transaction log is not initially empty.");
@@ -4882,12 +4855,12 @@ QUnit.test("[Add/Remove nodes 10] igTree transaction log", function (assert) {
 	log = $container.igTree("transactionLog");
 	assert.equal(log.length, 2, "The transaction was not recorded in the transaction log.");
 	assert.equal(log[1].type, "removenode", "The transaction type is incorrect.");
-	assert.equal(log[1].tdata.data.Text, "Unit testing", "The transaction data is incorrect.");
+	assert.equal(log[1].tdata.data.Text1, "Unit testing1", "The transaction data is incorrect.");
 
 	log = $container.igTree("option", "dataSource").root().allTransactions();
 	assert.equal(log.length, 2, "The transaction was not recorded in the transaction log.");
 	assert.equal(log[1].type, "removenode", "The transaction type is incorrect.");
-	assert.equal(log[1].tdata.data.Text, "Unit testing", "The transaction data is incorrect.");
+	assert.equal(log[1].tdata.data.Text1, "Unit testing1", "The transaction data is incorrect.");
 });
 QUnit.test("[Add/Remove nodes 11] igTree add/remove with render on demand", function (assert) {
 	assert.expect(13);
@@ -4954,40 +4927,27 @@ QUnit.test("[Add/Remove nodes 11] igTree add/remove with render on demand", func
 	assert.ok($container.igTree("isChecked", node), "The node is not checked after all remaining children are checked");
 });
 QUnit.test("[Add/Remove nodes 12] igTree remove nodes by value", function (assert) {
-	var path = "0_0",
-		node = $("#tree1").igTree("nodeByPath", path),
-		nodeCount = $("#tree1").find("li[data-role=node]").length,
-		data = $("#tree1")
-			.igTree("option", "dataSource")
-			.root()
-			.data();
-	assert.expect(4);
+	var $container = this.util.appendToFixture(this.divTag).igTree(),
+		path = "0_0",
+		node = $container.igTree("nodeByPath", path),
+		nodeCount = $container.find("li[data-role=node]").length,
+		data = $container.igTree("option", "dataSource").root().data(); assert.expect(4);
 	assert.equal(nodeCount, 10, "Node count did not match initially.");
-	assert.equal(
-		data.length,
-		5,
-		"There are less than 5 data members at root level intially."
-	);
-	$("#tree1").igTree("removeNodesByValue", 1);
-	node = $("#tree1").igTree("nodeByPath", path);
-	nodeCount = $("#tree1").find("li[data-role=node]").length;
-	data = $("#tree1")
-		.igTree("option", "dataSource")
-		.root()
-		.data();
+	assert.equal(data.length, 5, "There are less than 5 data members at root level intially.");
+	$container.igTree("removeNodesByValue", 1);
+	node = $container.igTree("nodeByPath", path);
+	nodeCount = $container.find("li[data-role=node]").length;
+	data = $container.igTree("option", "dataSource").root().data();
 	assert.equal(nodeCount, 3, "Node count did not match after remove.");
-	assert.equal(
-		data.length,
-		3,
-		"There are less than 3 data members at root level."
-	);
+	assert.equal(data.length, 3, "There are less than 3 data members at root level.");
 });
 QUnit.test("[Add/Remove nodes 13] removeAt until all children are gone", function (assert) {
 	assert.expect(1);
 	var path = "0_0",
-		$conteiner = this.util.appendToFixture(this.divTag)
+		datasource = dataSource = $.extend(true, [], this.results2),
+		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
-				dataSource: results2,
+				dataSource: datasource,
 				loadOnDemand: true,
 				checkboxMode: 'triState',
 				dragAndDrop: true,
