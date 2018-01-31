@@ -59,6 +59,8 @@ module.exports = function(config) {
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
       "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
+      { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
+
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
       { pattern: "src/css/**/*", included: false, served: true },
@@ -77,6 +79,7 @@ module.exports = function(config) {
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
       ...filesConfig.lobBundle("src"),
+      "src/js/extensions/infragistics.ui.*.knockout-extensions.js",
 
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
