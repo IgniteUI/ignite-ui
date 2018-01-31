@@ -2,10 +2,30 @@
 // Generated on Fri Dec 08 2017 16:49:49 GMT+0200 (FLE Standard Time)
 
 const filesConfig = require("./build/packages/combined-files");
+const glob = require("glob");
+
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
 const reporters = ["progress"];
+
+// proxy entries need to be full file paths (no glob support)
+let proxies = glob.sync("src/js/**/*.js")
+  .map(x => "/base/mock/" + x)
+  .reduce((obj, val) => {
+      obj[val] = "/base/tests/unit/loader/empty.js";
+      return obj;
+  }, {});
+
+const cssProxies = glob.sync("src/css/**/*.css")
+  .map(x => "/base/mock/" + x)
+  .reduce((obj, val) => {
+      obj[val] = "/base/tests/unit/loader/empty.css";
+      return obj;
+  }, {});
+
+proxies = Object.assign(proxies, cssProxies);
+
 
 module.exports = function(config) {
 
@@ -94,6 +114,7 @@ module.exports = function(config) {
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
+      { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
 
       "src/js/infragistics.loader.js",
       "src/js/extensions/*.js",
@@ -106,9 +127,7 @@ module.exports = function(config) {
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,
-    proxies: {
-      //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
-    },
+    proxies: proxies,
 
     client: {
       clearContext: false,

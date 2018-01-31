@@ -1,7 +1,7 @@
 QUnit.module("igLoader Common", {
 	errors: [],
-	jsPath: "base/src/js/",
-	cssPath: "base/src/css/",
+	jsPath: "base/mock/src/js/",
+	cssPath: "base/mock/src/css/",
 
 	beforeEach: function(){
 		this.cleanScripts();
