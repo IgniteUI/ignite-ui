@@ -495,6 +495,61 @@ QUnit.test('Dropdown - min/max values', function (assert) {
 	});
 });
 
+QUnit.test('Dropdown - Keyboard navigation', function (assert) {
+	assert.expect(15);
+
+	var timePicker = createInDiv().igTimePicker({
+		width: 150,
+		value: "10:10",
+		height: 50,
+		itemsDelta: {hours: 1, minutes: 0},
+		visibleItemsCount: 10,
+		timeInputFormat: "HH:mm",
+		buttonType: "dropdown"
+	});
+
+	assert.ok(timePicker.hasClass('ui-ignotify-warn'));
+
+	timePicker.igTimePicker("setFocus");
+	assert.equal("__:__", timePicker.igTimePicker("field").val());
+
+	pressArrowUpKey();
+	assert.notOk(timePicker.hasClass('ui-ignotify-warn'));
+	assert.equal("23:00", timePicker.igTimePicker("field").val());
+
+	pressArrowDownKey();
+	assert.equal("00:00", timePicker.igTimePicker("field").val());
+
+	dropDownBtn().trigger("click");
+	assert.ok(timePicker.igTimePicker("dropDownVisible"));
+
+	var dropDownItems = dropDownList().children();
+	assert.equal(24, dropDownItems.length);
+
+	pressArrowDownKey();
+	var child = dropDownList().children().first().next();
+	assert.ok(child.hasClass('ui-igedit-listitemactive'));	
+	assert.equal("00:00", timePicker.igTimePicker("field").val());
+
+	pressArrowDownKey();
+	child = child.next();
+	assert.ok(child.hasClass('ui-igedit-listitemactive'));
+	assert.equal("00:00", timePicker.igTimePicker("field").val());
+
+	pressArrowUpKey();
+	child = dropDownList().children().first().next();
+	assert.equal("00:00", timePicker.igTimePicker("field").val());
+	assert.ok(child.hasClass('ui-igedit-listitemactive'));
+
+	pressEnterKey();
+	assert.equal("01:00", timePicker.igTimePicker("field").val());
+
+	timePicker.igTimePicker("field").trigger("blur");
+	assert.equal("01:00", timePicker.igTimePicker("field").val());
+
+	timePicker.remove();
+});
+
 QUnit.test('Spin - default state', function (assert) {
 	assert.expect(105);
 
@@ -534,10 +589,10 @@ QUnit.test('Spin - default state', function (assert) {
 	assert.equal("11:30 PM", timePicker.igTimePicker("field").val());
 
 	setCursorAt(5);
-	clickOn(spinUpBtn()[0]);
+	pressArrowUpKey();
 	assert.equal("12:00 AM", timePicker.igTimePicker("field").val());
 
-	clickOn(spinDownBtn()[0]);
+	pressArrowDownKey();
 	assert.equal("11:30 PM", timePicker.igTimePicker("field").val());
 
 	timePicker.remove();
@@ -660,6 +715,18 @@ function clickOn(element){
 	event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
 	element.dispatchEvent(event);
 };
+function pressArrowDownKey()
+{
+	input().trigger($.Event('keydown', {which: 40, keyCode: 40}));
+}
+function pressArrowUpKey()
+{
+	input().trigger($.Event('keydown', {which: 38, keyCode: 38}));
+}
+function pressEnterKey()
+{
+	input().trigger($.Event('keydown', {which: 13, keyCode: 13}));
+}
 function setCursorAt(pos){
 	input()[0].focus();
 	input()[0].setSelectionRange(pos, pos);
