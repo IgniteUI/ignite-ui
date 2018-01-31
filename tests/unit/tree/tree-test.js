@@ -2635,25 +2635,26 @@ QUnit.test("[Rendering 18] igTree keyboard checkboxes browser events.", function
 		node = $container.igTree("nodeByPath", "0"),
 		ev = jQuery.Event("keydown");
 
+	debugger;
 	ev.keyCode = $.ui.keyCode.SPACE;
 	$container.igTree("option", "checkboxMode", "triState");
 	node.children("a").trigger(ev);
-	assert.notOk($container.igTree("isChecked", node), "The checkbox did not uncheck");
+	assert.ok($container.igTree("isChecked", node), "The checkbox did not uncheck");
 
 	node = $container.igTree("nodeByPath", "0_0");
 	ev = jQuery.Event("keydown");
 	ev.keyCode = $.ui.keyCode.SPACE;
 	node.children("a").trigger(ev);
-	assert.ok($container.igTree("isChecked", node), "The checkbox did not get checked");
-	assert.ok($container.igTree("isChecked", $container.igTree("nodeByPath", "0_0_0")), "The checkbox did not cascade down");
-	assert.ok($container.igTree("isChecked", $container.igTree("nodeByPath", "0_0_1")), "The checkbox did not fully cascade down");
+	assert.notOk($container.igTree("isChecked", node), "The checkbox did not get checked");
+	assert.notOk($container.igTree("isChecked", $container.igTree("nodeByPath", "0_0_0")), "The checkbox did not cascade down");
+	assert.notOk($container.igTree("isChecked", $container.igTree("nodeByPath", "0_0_1")), "The checkbox did not fully cascade down");
 	assert.ok($container.igTree("partiallyCheckedNodes").length === 1, "The checkbox did not fully cascade down");
 
 	node = $container.igTree("nodeByPath", "0_0_0");
 	ev = jQuery.Event("keydown");
 	ev.keyCode = $.ui.keyCode.SPACE;
 	node.children("a").trigger(ev);
-	assert.notOk($container.igTree("isChecked", node), "The checkbox did not get unchecked");
+	assert.ok($container.igTree("isChecked", node), "The checkbox did not get unchecked");
 	assert.notOk($container.igTree("isChecked", $container.igTree("nodeByPath", "0_0")), "The checkbox did not cascade up");
 	assert.ok($container.igTree("partiallyCheckedNodes").length === 2, "The checkbox did not fully cascade down");
 });
@@ -4510,7 +4511,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 
 	tree2 = this.util.appendToFixture(this.divTag)
 		.igTree({
-			dataSource: $.extend(true, [], this.results2),
+			dataSource: $.extend(true, [], datasource),
 			dragAndDrop: true,
 			dragAndDropSettings: {
 				revertDuration: 0,
@@ -4618,7 +4619,6 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
 	this.simulateDrop(tree5, tree5);
-	debugger;
 	assert.equal(tree5.igTree().find(".ui-igtree-noderoot").length, 2, "Root nodes in tree5 are not 2");
 	assert.equal(tree5.igTree().find(".ui-igtree-node-nochildren").length, 12, "Leaf nodes in tree5 are not 12");
 	assert.equal(tree5.igTree().find(".ui-igtree-parentnode").length, 11, "Parent nodes in tree5 are not 11");
@@ -4626,7 +4626,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	assert.expect(39);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = dataSource = $.extend(true, [], this.results),
 		$container = this.util.appendToFixture(this.divTag).igTree();
 
 	// _setOption unit tests
@@ -4927,19 +4927,46 @@ QUnit.test("[Add/Remove nodes 11] igTree add/remove with render on demand", func
 	assert.ok($container.igTree("isChecked", node), "The node is not checked after all remaining children are checked");
 });
 QUnit.test("[Add/Remove nodes 12] igTree remove nodes by value", function (assert) {
+	assert.expect(4);
+
 	var $container = this.util.appendToFixture(this.divTag).igTree(),
-		path = "0_0",
-		node = $container.igTree("nodeByPath", path),
-		nodeCount = $container.find("li[data-role=node]").length,
-		data = $container.igTree("option", "dataSource").root().data(); assert.expect(4);
-	assert.equal(nodeCount, 10, "Node count did not match initially.");
-	assert.equal(data.length, 5, "There are less than 5 data members at root level intially.");
-	$container.igTree("removeNodesByValue", 1);
+		path,
+		node,
+		nodeCount,
+		data;
+
+	//	Add four root nodes
+	$container.igTree("addNode", [
+		{ Text: "Root Node 0" },
+		{ Text: "Root Node 1" },
+		{ Text: "Root Node 2", Value: 1 },
+		{ Text: "Root Node 3", Value: 1 },
+	]);
+
+	//	Add four second level nodes
+	path = "0";
+	node = $container.igTree("nodeByPath", path);
+	$container.igTree("addNode", [
+		{ Text: "Node 1.1" },
+		{ Text: "Node 1.2" },
+		{ Text: "Node 1.3", Value: 1 },
+		{ Text: "Node 1.4", Value: "0x0000" },
+		{ Text: "Node 1.5", Value: "0x0001" },
+		{ Text: "Node 1.6", Value: "0x0002" },
+	], node);
+
+	path = "0_0";
 	node = $container.igTree("nodeByPath", path);
 	nodeCount = $container.find("li[data-role=node]").length;
 	data = $container.igTree("option", "dataSource").root().data();
-	assert.equal(nodeCount, 3, "Node count did not match after remove.");
-	assert.equal(data.length, 3, "There are less than 3 data members at root level.");
+
+	assert.equal(nodeCount, 10, "Node count did not match initially.");
+	assert.equal(data.length, 4, "There are less than 5 data members at root level intially.");
+	$container.igTree("removeNodesByValue", 1);
+	nodeCount = $container.find("li[data-role=node]").length;
+	data = $container.igTree("option", "dataSource").root().data();
+	assert.equal(nodeCount, 7, "Node count did not match after remove.");
+	assert.equal(data.length, 2, "There are less than 2 data members at root level.");
 });
 QUnit.test("[Add/Remove nodes 13] removeAt until all children are gone", function (assert) {
 	assert.expect(1);
