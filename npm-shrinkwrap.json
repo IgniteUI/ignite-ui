@@ -5530,6 +5530,12 @@
         }
       }
     },
+    "knockout": {
+      "version": "3.4.2",
+      "resolved": "https://registry.npmjs.org/knockout/-/knockout-3.4.2.tgz",
+      "integrity": "sha1-6HlY3netHpNvfOZFuri118RW2Tc=",
+      "dev": true
+    },
     "labeled-stream-splicer": {
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/labeled-stream-splicer/-/labeled-stream-splicer-2.0.0.tgz",
