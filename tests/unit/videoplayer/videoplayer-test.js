@@ -336,10 +336,17 @@ function createBannersBookmarksPlayer(divId,){
 		]
 	});
 }
-
+var originalUtilIsTouchDevice;
 QUnit.module("igVideoPlayer", {
-	before: function () {setTimeout(3000); },
-	after: function () {},
+	before: function () {
+		originalUtilIsTouchDevice = $.ig.util.isTouchDevice;
+		$.ig.util.isTouchDevice = function () {
+			return false;
+		}
+	 },
+	after: function () {
+		$.ig.util.isTouchDevice = originalUtilIsTouchDevice;
+	},
 	beforeEach: function () {setTimeout(100);  },
 	afterEach: function () {},
 	checkClass: function (button, classs, assert = this.assert) {

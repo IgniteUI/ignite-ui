@@ -2,10 +2,30 @@
 // Generated on Fri Dec 08 2017 16:49:49 GMT+0200 (FLE Standard Time)
 
 const filesConfig = require("./build/packages/combined-files");
+const glob = require("glob");
+
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
 const reporters = ["progress"];
+
+// proxy entries need to be full file paths (no glob support)
+let proxies = glob.sync("src/js/**/*.js")
+  .map(x => "/base/mock/" + x)
+  .reduce((obj, val) => {
+      obj[val] = "/base/tests/unit/loader/empty.js";
+      return obj;
+  }, {});
+
+const cssProxies = glob.sync("src/css/**/*.css")
+  .map(x => "/base/mock/" + x)
+  .reduce((obj, val) => {
+      obj[val] = "/base/tests/unit/loader/empty.css";
+      return obj;
+  }, {});
+
+proxies = Object.assign(proxies, cssProxies);
+
 
 module.exports = function(config) {
 
@@ -38,7 +58,9 @@ module.exports = function(config) {
       { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
-      "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
+      { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
+      { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
+
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
       { pattern: "src/css/**/*", included: false, served: true },
@@ -49,6 +71,7 @@ module.exports = function(config) {
       "src/js/modules/i18n/*-bg.js",
       "src/js/modules/i18n/*-de.js",
       "src/js/modules/i18n/*-es.js",
+      "src/js/modules/i18n/*-fr.js",
 
       // Data files
       "tests/unit/templating/DB3.js",
@@ -56,10 +79,12 @@ module.exports = function(config) {
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
       ...filesConfig.lobBundle("src"),
+      "src/js/extensions/infragistics.ui.*.knockout-extensions.js",
 
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-en.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-fr.js",
 
       // DV files for zoombar tests:
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
@@ -91,7 +116,12 @@ module.exports = function(config) {
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
+      { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
+
+      "src/js/infragistics.loader.js",
+      "src/js/extensions/*.js",
       "tests/unit/splitter/jquery.simulate.js",
+
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
@@ -99,9 +129,7 @@ module.exports = function(config) {
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,
-    proxies: {
-      //"bower_components/qunit/**/*.js": "/node_modules/qunitjs/qunit/qunit.js"
-    },
+    proxies: proxies,
 
     client: {
       clearContext: false,
