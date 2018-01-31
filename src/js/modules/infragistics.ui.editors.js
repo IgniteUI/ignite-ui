@@ -12711,7 +12711,7 @@
 			}
 		},
 		_spin: function (type, fireEvent) { // igTimePicker
-			if (this.options.isLimitedToListValues) {
+			if (this.options.isLimitedToListValues && this._dropDownList) {
 				$.ui.igNumericEditor.prototype._spin.call(this, type, fireEvent);
 			} else {
 				this._super(type, fireEvent);
