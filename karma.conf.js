@@ -72,20 +72,19 @@ module.exports = function(config) {
       "src/js/modules/i18n/*-de.js",
       "src/js/modules/i18n/*-es.js",
       "src/js/modules/i18n/*-fr.js",
-
-      // Data files
-      "tests/unit/templating/DB3.js",
-
+	  
+	  
+      "src/js/infragistics.loader.js",
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
       ...filesConfig.lobBundle("src"),
       "src/js/extensions/infragistics.ui.*.knockout-extensions.js",
-
+	  
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-en.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-fr.js",
-
+	  
       // DV files for zoombar tests:
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/i18n/infragistics.dvcommonwidget-en.js", included: true, watched: false },
@@ -112,16 +111,18 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_stacked.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_annotation.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
-
+	  
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
-      { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
-
-      "src/js/infragistics.loader.js",
-      "src/js/extensions/*.js",
       "tests/unit/splitter/jquery.simulate.js",
-
+	  
+      { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
+	  { pattern: "tests/unit/tree/data/*", included: false, served: true, watched: false },
+	  { pattern: "tests/unit/tree/images/*", included: false, served: true, watched: false },
+	  
+	  // Data files
+      "tests/unit/templating/DB3.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"

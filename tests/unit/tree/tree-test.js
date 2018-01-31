@@ -38,9 +38,9 @@ QUnit.module("igTree", {
 	tree8Html: `
 	<div id="tree8">
 		<ul>
-			<li><img src="images/folder.gif" />node 1
+			<li><img src="/base/tests/unit/tree/images/folder.gif" />node 1
 				<ul>
-					<li><img src="images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
+					<li><img src="/base/tests/unit/tree/images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
 					<li><a href="http://yahoo.com">child 2</a></li>
 					<li>child 3</li>
 					<li>
@@ -292,9 +292,9 @@ QUnit.module("igTree", {
 	`,
 	tree9Html: `
 	<ul id="tree9">
-		<li><img src="images/folder.gif" />node 1
+		<li><img src="/base/tests/unit/tree/images/folder.gif" />node 1
 			<ul>
-				<li><img src="images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
+				<li><img src="/base/tests/unit/tree/images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
 				<li><a href="http://yahoo.com">child 2</a></li>
 				<li>child 3</li>
 				<li>
@@ -546,9 +546,9 @@ QUnit.module("igTree", {
 	tree12Html: `
 	<div id="tree12">
 		<ul>
-			<li><img src="images/folder.gif" />node 1
+			<li><img src="/base/tests/unit/tree/images/folder.gif" />node 1
 				<ul>
-					<li><img src="images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
+					<li><img src="/base/tests/unit/tree/images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
 					<li><a href="http://yahoo.com">child 2</a></li>
 					<li>child 3</li>
 					<li>
@@ -800,9 +800,9 @@ QUnit.module("igTree", {
 	`,
 	tree13Html: `
 	<ul id="tree13">
-		<li><img src="images/folder.gif" />node 1
+		<li><img src="/base/tests/unit/tree/images/folder.gif" />node 1
 			<ul>
-				<li><img src="images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
+				<li><img src="/base/tests/unit/tree/images/folder_images.gif" /><a href="http://google.com">child 1</a></li>
 				<li><a href="http://yahoo.com">child 2</a></li>
 				<li>child 3</li>
 				<li>
@@ -1191,20 +1191,20 @@ QUnit.module("igTree", {
 		{
 			Text: "Unit testing",
 			Value: 0,
-			ImageUrl: "images/book.png",
+			ImageUrl: "/base/tests/unit/tree/images/book.png",
 			URL: "http://google.com",
 			Target: "_blank",
 			Children: [
 				{
 					Text1: "Unit testing1",
 					Value1: 1,
-					ImageUrl1: "images/book_add.png",
+					ImageUrl1: "/base/tests/unit/tree/images/book_add.png",
 					URL1: "http://infragistics.com",
 					Children1: [
 						{
 							Text2: "Unit testing2",
 							Value2: 2,
-							ImageUrl2: "images/coins.png",
+							ImageUrl2: "/base/tests/unit/tree/images/coins.png",
 							URL2: "",
 							Children2: [{ Text3: "Unit testing3", Value3: 3 }]
 						},
@@ -1337,7 +1337,48 @@ QUnit.module("igTree", {
 		}
 	],
 
-	beforeEach: function () { },
+	before: function () {
+		var that = this;
+
+		window["jsonpcallback"] = $.noop;
+
+		$.mockjaxSettings.logging = 0;  // only critical error messages
+		$.ajaxSettings.jsonpCallback = function () {
+			return "jsonpcallback";
+		};
+		$.mockjax({
+			url: '/api/items',
+			contentType: 'text/json',
+			responseTime: 0,
+			response: function () {
+				this.responseText = that.notWorkingResponse1;
+			}
+		});
+		$.mockjax({
+			url: '/api/items?*',
+			contentType: 'text/json',
+			responseTime: 0,
+			response: function () {
+				this.responseText = that.notWorkingResponse2;
+			}
+		});
+		$.mockjax({
+			url: '/api/jsonpitems',
+			contentType: 'text/json',
+			responseTime: 0,
+			response: function () {
+				this.responseText = that.notWorkingResponse3;
+			}
+		});
+		$.mockjax({
+			url: '/api/jsonpitems?*',
+			contentType: "application/json",
+			responseTime: 0,
+			response: function (settings) {
+				jsonpcallback(that.notWorkingResponse3);
+			}
+		});
+	},
 
 	afterEach: function () { },
 
@@ -1423,11 +1464,11 @@ QUnit.test("[Rendering 03] igTree node and contents rendering test.", function (
 	this.util.checkClass(expander, "ui-icon-triangle-1-e", assert);
 	this.util.checkClass(anchor, "ui-corner-all", assert);
 	assert.equal(this.util.boolParse(expander.attr("data-exp")), false, "Data-exp attrubute did not populate properly.");
-	assert.equal(img.attr("src"), "images/folder.gif", "Image URL did not render properly");
+	assert.equal(img.attr("src"), "/base/tests/unit/tree/images/folder.gif", "Image URL did not render properly");
 	assert.equal(img.attr("alt"), "error", "The alt attribute of the parent node image did not render properly");
 
 	img = children.children("li").first().children("img");
-	assert.equal(img.attr("src"), "images/folder_images.gif", "Image URL did not render properly");
+	assert.equal(img.attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "Image URL did not render properly");
 	assert.equal(img.attr("alt"), "error", "The alt attribute of the parent node image did not render properly");
 	assert.equal(anchor.attr("href"), "#", 'The empty href "#" did not render properly');
 	assert.equal(anchor.text(), "node 1", "Node text did not populate correctly");
@@ -1460,11 +1501,11 @@ QUnit.test("[Rendering 03] igTree node and contents rendering test.", function (
 	this.util.checkClass(expander, "ui-icon-triangle-1-e", assert);
 	assert.equal(this.util.boolParse(expander.attr("data-exp")), false, "Data-exp attrubute did not populate properly.");
 	assert.equal(expander.attr("data-role"), "expander", "Data-exp attrubute did not populate properly.");
-	assert.equal(img.attr("src"), "images/folder.gif", "Image URL did not render properly");
+	assert.equal(img.attr("src"), "/base/tests/unit/tree/images/folder.gif", "Image URL did not render properly");
 	assert.equal(img.attr("alt"), "error", "The alt attribute of the parent node image did not render properly");
 
 	img = children.children("li").first().children("img");
-	assert.equal(img.attr("src"), "images/folder_images.gif", "Image URL did not render properly");
+	assert.equal(img.attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "Image URL did not render properly");
 	assert.equal(img.attr("alt"), "error", "The alt attribute of the parent node image did not render properly");
 	assert.equal(anchor.attr("href"), "#", 'The empty href "#" did not render properly');
 	assert.equal(anchor.text(), "node 1", "Node text did not populate correctly");
@@ -1942,7 +1983,7 @@ QUnit.test("[Rendering 08] igTree selection.", function (assert) {
 	assert.equal(selected.binding.childDataProperty, bindings.childDataProperty, "Binding value key does not match");
 	assert.ok(typeof selected.data[bindings.childDataProperty] === "object", "Child data is not retrieved properly");
 	assert.equal(selected.data[bindings.textKey], "node 1", "Text in the data is wrong");
-	assert.equal(selected.data[bindings.imageUrlKey], "images/folder.gif", "Text in the data is wrong");
+	assert.equal(selected.data[bindings.imageUrlKey], "/base/tests/unit/tree/images/folder.gif", "Text in the data is wrong");
 
 	nodePath = "1";
 	node2 = $container.igTree("nodeByPath", nodePath);
@@ -2013,9 +2054,9 @@ QUnit.test("[Rendering 09] igTree parent and leaf node images and tooltips.", fu
 
 	var $container = this.util.appendToFixture(this.tree14Html)
 		.igTree({
-			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageUrl: "/base/tests/unit/tree/images/folder.gif",
 			parentNodeImageTooltip: "folder",
-			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageUrl: "/base/tests/unit/tree/images/folder_images.gif",
 			leafNodeImageTooltip: "folder_image"
 		}),
 		nodePath = "0",
@@ -2023,32 +2064,32 @@ QUnit.test("[Rendering 09] igTree parent and leaf node images and tooltips.", fu
 		image = node.children("img");
 
 	assert.ok(image.length > 0, "Image is not returned properly");
-	assert.equal(image.attr("src"), "images/folder.gif", "Parent node image is not applied correctly");
+	assert.equal(image.attr("src"), "/base/tests/unit/tree/images/folder.gif", "Parent node image is not applied correctly");
 	assert.equal(image.attr("title"), "folder", "Parent node image tooltip is not applied correctly");
 
 	node = $container.igTree("nodeByPath", "0_0");
 	image = node.children("img");
-	assert.equal(image.attr("src"), "images/folder.gif", "Parent node image is not applied correctly");
+	assert.equal(image.attr("src"), "/base/tests/unit/tree/images/folder.gif", "Parent node image is not applied correctly");
 	assert.equal(image.attr("title"), "folder", "Parent node image tooltip is not applied correctly");
 
 	node = $container.igTree("nodeByPath", "0_1");
 	image = node.children("img");
-	assert.equal(image.attr("src"), "images/folder_images.gif", "Leaf node image is not applied correctly");
+	assert.equal(image.attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "Leaf node image is not applied correctly");
 	assert.equal(image.attr("title"), "folder_image", "Leaf node image tooltip is not applied correctly");
 
 	node = $container.igTree("nodeByPath", "0_2");
 	image = node.children("img");
-	assert.equal(image.attr("src"), "images/folder_images.gif", "Leaf node image is not applied correctly");
+	assert.equal(image.attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "Leaf node image is not applied correctly");
 	assert.equal(image.attr("title"), "folder_image", "Leaf node image tooltip is not applied correctly");
 
 	node = $container.igTree("nodeByPath", "0_0_0");
 	image = node.children("img");
-	assert.equal(image.attr("src"), "images/folder_images.gif", "Leaf node image is not applied correctly");
+	assert.equal(image.attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "Leaf node image is not applied correctly");
 	assert.equal(image.attr("title"), "folder_image", "Leaf node image tooltip is not applied correctly");
 
 	node = $container.igTree("nodeByPath", "0_0_1");
 	image = node.children("img");
-	assert.equal(image.attr("src"), "images/folder_images.gif", "Leaf node image is not applied correctly");
+	assert.equal(image.attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "Leaf node image is not applied correctly");
 	assert.equal(image.attr("title"), "folder_image", "Leaf node image tooltip is not applied correctly");
 });
 QUnit.test("[Rendering 10] igTree parent and leaf node css classes and tooltips.", function (assert) {
@@ -2314,7 +2355,7 @@ QUnit.test("[Rendering 15] igTree selection browser event.", function (assert) {
 	assert.equal(selected.binding.childDataProperty, bindings.childDataProperty, "Binding value key does not match");
 	assert.ok(typeof selected.data[bindings.childDataProperty] === "object", "Child data is not retrieved properly");
 	assert.equal(selected.data[bindings.textKey], "node 1", "Text in the data is wrong");
-	assert.equal(selected.data[bindings.imageUrlKey], "images/folder.gif", "Text in the data is wrong");
+	assert.equal(selected.data[bindings.imageUrlKey], "/base/tests/unit/tree/images/folder.gif", "Text in the data is wrong");
 
 	nodePath = "1";
 	node2 = $container.igTree("nodeByPath", nodePath);
@@ -2635,7 +2676,6 @@ QUnit.test("[Rendering 18] igTree keyboard checkboxes browser events.", function
 		node = $container.igTree("nodeByPath", "0"),
 		ev = jQuery.Event("keydown");
 
-	debugger;
 	ev.keyCode = $.ui.keyCode.SPACE;
 	$container.igTree("option", "checkboxMode", "triState");
 	node.children("a").trigger(ev);
@@ -2855,7 +2895,7 @@ QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function
 	assert.ok(data.hasOwnProperty(binding.childDataProperty), "Child data property is missing in the data");
 	assert.equal(data[binding.textKey], "Unit testing", "Text in the data does not match");
 	assert.equal(data[binding.valueKey], "0", "Value in the data does not match");
-	assert.equal(data[binding.imageUrlKey], "images/book.png", "Image url in the data does not match");
+	assert.equal(data[binding.imageUrlKey], "/base/tests/unit/tree/images/book.png", "Image url in the data does not match");
 	assert.equal(data[binding.navigateUrlKey], "http://google.com", "Navigate url in the data does not match");
 	assert.ok(typeof data[binding.childDataProperty] === "object", "Child data is not an object.");
 
@@ -2868,7 +2908,7 @@ QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function
 	assert.ok(data.hasOwnProperty(binding.childDataProperty), "Child data property is missing in the data");
 	assert.equal(data[binding.textKey], "Unit testing1", "Text in the data does not match");
 	assert.equal(data[binding.valueKey], "1", "Value in the data does not match");
-	assert.equal(data[binding.imageUrlKey], "images/book_add.png", "Image url in the data does not match");
+	assert.equal(data[binding.imageUrlKey], "/base/tests/unit/tree/images/book_add.png", "Image url in the data does not match");
 	assert.equal(data[binding.navigateUrlKey], "http://infragistics.com", "Navigate url in the data does not match");
 	assert.ok(typeof data[binding.childDataProperty] === "object", "Child data is not an object.");
 
@@ -2881,7 +2921,7 @@ QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function
 	assert.ok(data.hasOwnProperty(binding.childDataProperty), "Child data property is missing in the data");
 	assert.equal(data[binding.textKey], "Unit testing2", "Text in the data does not match");
 	assert.equal(data[binding.valueKey], "2", "Value in the data does not match");
-	assert.equal(data[binding.imageUrlKey], "images/coins.png", "Image url in the data does not match");
+	assert.equal(data[binding.imageUrlKey], "/base/tests/unit/tree/images/coins.png", "Image url in the data does not match");
 	assert.equal(data[binding.navigateUrlKey], "", "Navigate url in the data does not match");
 
 	node = $container.igTree("nodeByPath", "0_0_0");
@@ -3522,7 +3562,10 @@ QUnit.test("[Databindings 08] igTree hierarchical JSON remote load on demand (Bu
 			$remoteLOD.igTree("toggle", node);
 		});
 		$remoteLOD.one("igtreenodepopulated", function (evt, ui) {
-			assert.ok(ui.data.Children.length === notWorkingResponse2.Items.length && ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name, "Child nodes were not populated successfully.");
+			assert.ok(
+				ui.data.Children.length === notWorkingResponse2.Items.length &&
+				ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name,
+				"Child nodes were not populated successfully.");
 		});
 	}
 );
@@ -3532,7 +3575,7 @@ QUnit.test("[Databindings 09] igTree binding to XML", function (assert) {
 		.igTree({
 			checkboxMode: "triState",
 			singleBranchExpand: true,
-			dataSource: this.loadXMLDoc("data/TreeSampleData.xml"),
+			dataSource: this.loadXMLDoc("/base/tests/unit/tree/data/TreeSampleData.xml"),
 			dataSourceType: "xml",
 			initialExpandDepth: 1,
 			pathSeparator: ".",
@@ -3912,9 +3955,9 @@ QUnit.test("[Add/Remove nodes 01] igTree add node without specifying a parent.",
 	var $container = this.util.appendToFixture(this.divTag)
 		.igTree({
 			checkboxMode: "triState",
-			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageUrl: "/base/tests/unit/tree/images/folder.gif",
 			parentNodeImageTooltip: "folder",
-			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageUrl: "/base/tests/unit/tree/images/folder_images.gif",
 			leafNodeImageTooltip: "folder_image"
 		}),
 		nodeCount = $container.find("li[data-role=node]").length,
@@ -3938,7 +3981,7 @@ QUnit.test("[Add/Remove nodes 01] igTree add node without specifying a parent.",
 	this.util.checkClass(node, "ui-igtree-node-nochildren", assert);
 	assert.equal(node.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
 	assert.equal(node.children("img[data-role=leaf-node-image]").length, 1, "The leaf node image did not render after adding a node.");
-	assert.equal(node.children("img[data-role=leaf-node-image]").attr("src"), "images/folder_images.gif", "The leaf node image has incorrect src after adding a node.");
+	assert.equal(node.children("img[data-role=leaf-node-image]").attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "The leaf node image has incorrect src after adding a node.");
 	assert.equal(node.children("img[data-role=leaf-node-image]").attr("title"), "folder_image", "The leaf node image has incorrect src after adding a node.");
 	$container.igTree("addNode", [
 		{ Text: "New Node" },
@@ -3956,9 +3999,9 @@ QUnit.test("[Add/Remove nodes 02] igTree add node on a parent.", function (asser
 	var $container = this.util.appendToFixture(this.divTag)
 		.igTree({
 			checkboxMode: "triState",
-			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageUrl: "/base/tests/unit/tree/images/folder.gif",
 			parentNodeImageTooltip: "folder",
-			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageUrl: "/base/tests/unit/tree/images/folder_images.gif",
 			leafNodeImageTooltip: "folder_image"
 		}),
 		path = "0",
@@ -3985,7 +4028,7 @@ QUnit.test("[Add/Remove nodes 02] igTree add node on a parent.", function (asser
 	assert.equal(parentNode.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
 	assert.equal(parentNode.children("img[data-role=leaf-node-image]").length, 0, "The leaf node image did not render after adding a node.");
 	assert.equal(parentNode.children("img[data-role=parent-node-image]").length, 1, "The leaf node image did not render after adding a node.");
-	assert.equal(parentNode.children("img[data-role=parent-node-image]").attr("src"), "images/folder.gif", "The leaf node image has incorrect src after adding a node.");
+	assert.equal(parentNode.children("img[data-role=parent-node-image]").attr("src"), "/base/tests/unit/tree/images/folder.gif", "The leaf node image has incorrect src after adding a node.");
 	assert.equal(parentNode.children("img[data-role=parent-node-image]").attr("title"), "folder", "The leaf node image has incorrect src after adding a node.");
 
 	$container.igTree("addNode", [
@@ -4003,7 +4046,7 @@ QUnit.test("[Add/Remove nodes 02] igTree add node on a parent.", function (asser
 	childNode = $container.igTree("nodeByPath", path);
 	assert.equal(childNode.children("span[data-role=checkbox]").length, 1, "The checkbox did not render after adding a node.");
 	assert.equal(childNode.children("img[data-role=leaf-node-image]").length, 1, "The leaf node image did not render after adding a node.");
-	assert.equal(childNode.children("img[data-role=leaf-node-image]").attr("src"), "images/folder_images.gif", "The leaf node image has incorrect src after adding a node.");
+	assert.equal(childNode.children("img[data-role=leaf-node-image]").attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "The leaf node image has incorrect src after adding a node.");
 	assert.equal(childNode.children("img[data-role=leaf-node-image]").attr("title"), "folder_image", "The leaf node image has incorrect src after adding a node.");
 
 	$container.igTree("toggleCheckstate", childNode);
@@ -4017,9 +4060,9 @@ QUnit.test("[Add/Remove nodes 03] igTree remove node", function (assert) {
 	var $container = this.util.appendToFixture(this.divTag)
 		.igTree({
 			checkboxMode: "triState",
-			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageUrl: "/base/tests/unit/tree/images/folder.gif",
 			parentNodeImageTooltip: "folder",
-			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageUrl: "/base/tests/unit/tree/images/folder_images.gif",
 			leafNodeImageTooltip: "folder_image"
 		}),
 		path = "0_0",
@@ -4246,7 +4289,7 @@ QUnit.test("[Add/Remove nodes 06] igTree add/remove using diverse hierarchical b
 		obj = {};
 		obj[binding.textKey] = "New Node 1";
 		obj[binding.valueKey] = "0x00000000";
-		obj[binding.imageUrlKey] = "images/coins.png";
+		obj[binding.imageUrlKey] = "/base/tests/unit/tree/images/coins.png";
 		obj[binding.navigateUrlKey] = "http://infragistics.com";
 		$container.igTree("addNode", obj, node);
 		childCount = node.find("li[data-role=node]").length;
@@ -4254,7 +4297,7 @@ QUnit.test("[Add/Remove nodes 06] igTree add/remove using diverse hierarchical b
 
 		node = $container.igTree("nodeByPath", "0_2");
 		assert.equal(node.children("a").attr("href"), "http://infragistics.com", "The anchor did not render properly from the data object");
-		assert.equal(node.children("img").attr("src"), "images/coins.png", "The image did not render properly from the data object");
+		assert.equal(node.children("img").attr("src"), "/base/tests/unit/tree/images/coins.png", "The image did not render properly from the data object");
 		assert.equal(node.attr("data-value"), "0x00000000", "The node value did not render properly.");
 		assert.equal(node.children("a").text(), "New Node 1", "The node value did not render properly.");
 
@@ -4314,9 +4357,9 @@ QUnit.test("[Add/Remove nodes 07] igTree init drag and drop", function (assert) 
 		.igTree("destroy")
 		.igTree({
 			checkboxMode: "triState",
-			parentNodeImageUrl: "images/folder.gif",
+			parentNodeImageUrl: "/base/tests/unit/tree/images/folder.gif",
 			parentNodeImageTooltip: "folder",
-			leafNodeImageUrl: "images/folder_images.gif",
+			leafNodeImageUrl: "/base/tests/unit/tree/images/folder_images.gif",
 			leafNodeImageTooltip: "folder_image",
 			dragAndDrop: true
 		});
@@ -4432,7 +4475,9 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		tree5,
 		treeobj = tree1.data("igTree"),
 		node = tree1.find("li[data-role=node]:first"),
-		x, y;
+		x, y, validateCustom,
+		done = assert.async(),
+		that = this;
 
 	this.simulateDragStart(node);
 	assert.equal(treeobj._sourceNode.data.Value, datasource[0].Value, "Data Value was not correctly populated.");
@@ -4453,175 +4498,235 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 	assert.equal(treeobj._validationObject.target[0], tree1.find("ul:first > li[data-role=node]:eq(1)")[0], "The validation object target was incorrect.");
 
 	this.simulateDragStop(node);
-	assert.equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
-	assert.equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
-	assert.equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
-	assert.equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
-	assert.equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
-	assert.equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+	
+	this.util.wait(10).then(function () {
+		assert.equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
+		assert.equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
+		assert.equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
+		assert.equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
+		assert.equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
+		assert.equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+	
+		node = tree1.find("li[data-path='2']");
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
 
-	node = tree1.find("li[data-path='2']");
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
-	assert.equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
-	assert.equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
-	assert.equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
-	assert.equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
-	assert.equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
-	assert.equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+		return that.util.wait(10);
+	}).then(function () {
+		assert.equal(treeobj._sourceNode.data, null, "01. Data was not correctly populated.");
+		assert.equal(treeobj._sourceNode.owner, null, "02. Owner was not correctly populated.");
+		assert.equal(treeobj._sourceNode.element, null, "03. Element was not correctly populated.");
+		assert.equal(treeobj._helperDirty, false, "04. helper dirty was not correctly populated.");
+		assert.equal(treeobj._validationObject.expandTimeout, null, "05. expandTimeout was not correctly populated.");
+		assert.equal(treeobj._validationObject.target, null, "06. target was not correctly populated.");
 
-	treeobj = tree1.data("igTree");
-	x = tree1.igTree("children", tree1.find("li[data-path=0]")).length;
-	y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
-	node = tree1.find("li[data-path=0]");
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree1.find("li[data-path=1] > a"));
-	assert.equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
-	assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+		treeobj = tree1.data("igTree");
+		x = tree1.igTree("children", tree1.find("li[data-path=0]")).length;
+		y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
+		node = tree1.find("li[data-path=0]");
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree1.find("li[data-path=1] > a"));
 
-	this.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
-	assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
-	assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y, "Target node in tree didn't update correctly.");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
+		assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	tree1.igTree("destroy").remove();
+		that.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
 
-	tree1 = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: datasource,
-			dragAndDrop: true,
-			dragAndDropSettings: {
-				revertDuration: 0,
-				dragAndDropMode: "copy",
-				allowDrop: true
-			},
-			bindings: bindings
-		});
-	treeobj = tree1.data("igTree");
-	x = tree1.igTree("children", tree1.find("li[data-path=0]")).length;
-	y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
-	node = tree1.find("li[data-path=0_0]");
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree1.find("li[data-path=1] > a"));
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
-	assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+		assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y, "Target node in tree didn't update correctly.");
 
-	this.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
-	assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
-	assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
+		tree1.igTree("destroy").remove();
 
-	tree2 = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dataSource: $.extend(true, [], datasource),
-			dragAndDrop: true,
-			dragAndDropSettings: {
-				revertDuration: 0,
-				dragAndDropMode: "move",
-				allowDrop: true,
-				customDropValidation: "validateCustom"
-			},
-			bindings: bindings
-		});
+		tree1 = that.util.appendToFixture(that.divTag)
+			.igTree({
+				dataSource: datasource,
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0,
+					dragAndDropMode: "copy",
+					allowDrop: true
+				},
+				bindings: bindings
+			});
+		treeobj = tree1.data("igTree");
+		x = tree1.igTree("children", tree1.find("li[data-path=0]")).length;
+		y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
+		node = tree1.find("li[data-path=0_0]");
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree1.find("li[data-path=1] > a"));
 
-	function validateCustom(target) {
-		assert.equal(this, tree.find("li[data-path=0_0]")[0], "Context of the custom validation is wrong");
-		assert.equal(target, tree2.find("li[data-path=1]")[0], "Target of the custom validation is wrong");
-		return true;
-	}
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+		assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	node = tree1.find("li[data-path=0_0]");
-	y = tree2.igTree("children", tree2.find("li[data-path=1]")).length;
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree2.find("li[data-path=1] > a"));
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
-	assert.equal(treeobj._validationObject.target[0], tree2.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+		that.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
 
-	this.simulateDrop(tree2, tree2.find("li[data-path=1] > a"));
-	assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
-	assert.equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, y + 1, "Target node in tree2 didn't update correctly.");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+		assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 
-	treeobj = tree2.data("igTree");
-	node = tree2.find("li[data-path=0_0]");
-	x = tree2.igTree("children", tree2.find("li[data-path=0]")).length;
-	y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree1.find("li[data-path=1] > a"));
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
-	assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+		tree2 = that.util.appendToFixture(that.divTag)
+			.igTree({
+				dataSource: $.extend(true, [], datasource),
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0,
+					dragAndDropMode: "move",
+					allowDrop: true,
+					customDropValidation: "validateCustom"
+				},
+				bindings: bindings
+			});
 
-	this.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
-	assert.equal(tree2.igTree("children", tree2.find("li[data-path=0]")).length, x - 1, "Source node in otherTree didn't update correctly.");
-	assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
+		validateCustom = function validateCustom(target) {
+			assert.equal(this, tree.find("li[data-path=0_0]")[0], "Context of the custom validation is wrong");
+			assert.equal(target, tree2.find("li[data-path=1]")[0], "Target of the custom validation is wrong");
+			return true;
+		}
+		node = tree1.find("li[data-path=0_0]");
+		y = tree2.igTree("children", tree2.find("li[data-path=1]")).length;
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree2.find("li[data-path=1] > a"));
 
-	tree3 = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dragAndDrop: true,
-			dragAndDropSettings: {
-				revertDuration: 0,
-				dragAndDropMode: "copy",
-				allowDrop: true
-			},
-			bindings: bindings
-		});
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+		assert.equal(treeobj._validationObject.target[0], tree2.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	node = tree1.find("li[data-path=0]");
-	y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree3);
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+		that.simulateDrop(tree2, tree2.find("li[data-path=1] > a"));
 
-	this.simulateDrop(tree3, tree3);
-	assert.equal(tree3.igTree("children", tree3.find("li[data-role=node]")).length, y, "Target node in tree3 didn't update correctly.");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+		assert.equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, y + 1, "Target node in tree2 didn't update correctly.");
 
-	tree4 = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dragAndDrop: true,
-			dragAndDropSettings: {
-				revertDuration: 0,
-				dragAndDropMode: "move",
-				allowDrop: true
-			},
-			bindings: bindings
-		});
+		treeobj = tree2.data("igTree");
+		node = tree2.find("li[data-path=0_0]");
+		x = tree2.igTree("children", tree2.find("li[data-path=0]")).length;
+		y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree1.find("li[data-path=1] > a"));
 
-	node = tree1.find("li[data-path=0]");
-	y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree4);
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
-	this.simulateDrop(tree4, tree4);
-	assert.equal(tree4.igTree("children", tree4.find("li[data-role=node]")).length, y, "Target node in tree4 didn't update correctly.");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+		assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
-	tree5 = this.util.appendToFixture(this.divTag)
-		.igTree({
-			dragAndDrop: true,
-			dragAndDropSettings: {
-				revertDuration: 0,
-				allowDrop: true
-			},
-			bindings: bindings
-		});
+		that.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
 
-	node = tree1.find("li[data-path=0]");
-	settings = tree1.igTree("option", "dragAndDropSettings");
-	settings.dragAndDropMode = "move";
-	y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree5);
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree2.igTree("children", tree2.find("li[data-path=0]")).length, x - 1, "Source node in otherTree didn't update correctly.");
+		assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 
-	this.simulateDrop(tree5, tree5);
-	assert.equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, y, "Target node in tree5 didn't update correctly.");
+		tree3 = that.util.appendToFixture(that.divTag)
+			.igTree({
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0,
+					dragAndDropMode: "copy",
+					allowDrop: true
+				},
+				bindings: bindings
+			});
 
-	node = tree1.find("li[data-path=0]");
-	settings.dragAndDropMode = "";
-	this.simulateDragStart(node);
-	this.simulateDrag(node, tree5);
-	assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+		node = tree1.find("li[data-path=0]");
+		y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree3);
 
-	this.simulateDrop(tree5, tree5);
-	assert.equal(tree5.igTree().find(".ui-igtree-noderoot").length, 2, "Root nodes in tree5 are not 2");
-	assert.equal(tree5.igTree().find(".ui-igtree-node-nochildren").length, 12, "Leaf nodes in tree5 are not 12");
-	assert.equal(tree5.igTree().find(".ui-igtree-parentnode").length, 11, "Parent nodes in tree5 are not 11");
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+
+		that.simulateDrop(tree3, tree3);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree3.igTree("children", tree3.find("li[data-role=node]")).length, y, "Target node in tree3 didn't update correctly.");
+
+		tree4 = that.util.appendToFixture(that.divTag)
+			.igTree({
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0,
+					dragAndDropMode: "move",
+					allowDrop: true
+				},
+				bindings: bindings
+			});
+
+		node = tree1.find("li[data-path=0]");
+		y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree4);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+
+		that.simulateDrop(tree4, tree4);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree4.igTree("children", tree4.find("li[data-role=node]")).length, y, "Target node in tree4 didn't update correctly.");
+
+		tree5 = that.util.appendToFixture(that.divTag)
+			.igTree({
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0,
+					allowDrop: true
+				},
+				bindings: bindings
+			});
+
+		node = tree1.find("li[data-path=0]");
+		settings = tree1.igTree("option", "dragAndDropSettings");
+		settings.dragAndDropMode = "move";
+		y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree5);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+
+		that.simulateDrop(tree5, tree5);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, y, "Target node in tree5 didn't update correctly.");
+
+		node = tree1.find("li[data-path=0]");
+		settings.dragAndDropMode = "";
+		that.simulateDragStart(node);
+		that.simulateDrag(node, tree5);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+
+		that.simulateDrop(tree5, tree5);
+
+		return that.util.wait(100);
+	}).then(function () {
+		assert.equal(tree5.igTree().find(".ui-igtree-noderoot").length, 2, "Root nodes in tree5 are not 2");
+		assert.equal(tree5.igTree().find(".ui-igtree-node-nochildren").length, 12, "Leaf nodes in tree5 are not 12");
+		assert.equal(tree5.igTree().find(".ui-igtree-parentnode").length, 11, "Parent nodes in tree5 are not 11");
+
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
 });
 QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	assert.expect(39);
@@ -4670,16 +4775,16 @@ QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	$container = this.util.appendToFixture(this.tree14Html)
 		.igTree({
 			checkboxMode: 'biState',
-			parentNodeImageUrl: 'images/folder.gif',
+			parentNodeImageUrl: '/base/tests/unit/tree/images/folder.gif',
 			parentNodeImageTooltip: 'folder',
-			leafNodeImageUrl: 'images/folder_images.gif',
+			leafNodeImageUrl: '/base/tests/unit/tree/images/folder_images.gif',
 			leafNodeImageTooltip: 'folder_image'
 		});
-	$container.igTree("option", "parentNodeImageUrl", "images/folder_images.gif");
-	assert.equal($container.find("li[data-path=0]").children("img[data-role=parent-node-image]").attr("src"), "images/folder_images.gif", "The parentNodeImageUrl was not correctly set.");
+	$container.igTree("option", "parentNodeImageUrl", "/base/tests/unit/tree/images/folder_images.gif");
+	assert.equal($container.find("li[data-path=0]").children("img[data-role=parent-node-image]").attr("src"), "/base/tests/unit/tree/images/folder_images.gif", "The parentNodeImageUrl was not correctly set.");
 
-	$container.igTree("option", "leafNodeImageUrl", "images/folder.gif");
-	assert.equal($container.find("li[data-path=0_1]").children("img[data-role=leaf-node-image]").attr("src"), "images/folder.gif", "The leafNodeImageUrl was not correctly set.");
+	$container.igTree("option", "leafNodeImageUrl", "/base/tests/unit/tree/images/folder.gif");
+	assert.equal($container.find("li[data-path=0_1]").children("img[data-role=leaf-node-image]").attr("src"), "/base/tests/unit/tree/images/folder.gif", "The leafNodeImageUrl was not correctly set.");
 
 	$container.igTree("option", "parentNodeImageTooltip", "HACKED!");
 	assert.equal($container.find("li[data-path=0]").children("img[data-role=parent-node-image]").attr("title"), "HACKED!", "The parentNodeImageTooltip was not correctly set.");
