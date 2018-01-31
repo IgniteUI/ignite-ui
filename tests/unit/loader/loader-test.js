@@ -2,17 +2,26 @@ QUnit.module("igLoader Common", {
 	errors: [],
 	jsPath: "base/mock/src/js/",
 	cssPath: "base/mock/src/css/",
+	originalTimeout: 0,
+	before: function() {
+		this.originalTimeout = QUnit.config.testTimeout;
+		QUnit.config.testTimeout = 7000;
+	},
+	after: function() {
+		QUnit.config.testTimeout = this.originalTimeout;
+	},
 
-	beforeEach: function(){
+	afterEach: function(){
 		this.cleanScripts();
 	},
 
 	resourcesLoaded: function(expectedResources, assert) {
 		//check if expected resources are loaded
 		var scripts = $(document).find("head > script"), actualPaths = [];
+		var self = this;
 		scripts.each(function () {
 			//console.log("script.src: " + this.src)
-			if (this.src.indexOf("ignite-ui/src/js/") || this.src.indexOf("igniteui/src/js/") > 0) {
+			if (this.src.indexOf(self.jsPath) !== -1) {
 				var array = this.src.split("/");
 				actualPaths.push(array[array.length - 1]);
 			}
@@ -21,7 +30,7 @@ QUnit.module("igLoader Common", {
 		links = $(document).find("head > link");
 		links.each(function () {
 			//console.log("link.href: " + this.href)
-			if (this.href.indexOf("ignite-ui/src/css/") || this.src.indexOf("igniteui/src/js/") > 0) {
+			if (this.href.indexOf(self.cssPath) !== -1) {
 				var array = this.href.split("/");
 				actualPaths.push(array[array.length - 1]);
 			}
@@ -32,8 +41,9 @@ QUnit.module("igLoader Common", {
 		}
 	},
 	cleanScripts: function() {
+		var self = this;
 		$(document).find("head > script").each(function () {
-			if (this.src.indexOf("ignite-ui/src/js/") > 0 && this.src.indexOf("src/js/infragistics.loader.js") === -1) {
+			if (this.src.indexOf(self.jsPath) !== 0 && this.src.indexOf("infragistics.loader.js") === -1) {
 				$(this).remove();
 			}
 		});
