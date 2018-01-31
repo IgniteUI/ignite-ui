@@ -12717,6 +12717,20 @@
 				this._super(type, fireEvent);
 			}
 		},
+		_handleSpinUpEvent: function() {
+			if (this.options.isLimitedToListValues && this._dropDownList) {
+				$.ui.igNumericEditor.prototype._handleSpinUpEvent.call(this);
+			} else {
+				this._super();
+			}
+		},
+		_handleSpinDownEvent: function() {
+			if (this.options.isLimitedToListValues && this._dropDownList) {
+				$.ui.igNumericEditor.prototype._handleSpinDownEvent.call(this);
+			} else {
+				this._super();
+			}
+		},
 		/* This method is inherited from a parent widget and it's not supported in igTimePicker */
 		selectDate: function () {
 		/*@Ignored@*/
