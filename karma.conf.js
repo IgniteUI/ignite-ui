@@ -58,7 +58,7 @@ module.exports = function(config) {
       { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
-      "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js",
+      { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
       { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
 
       "src/css/themes/infragistics/infragistics.theme.css",
@@ -113,7 +113,6 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_annotation.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
 
-      "bower_components/knockout/dist/knockout.js",
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
       "tests/test-patch.js",
