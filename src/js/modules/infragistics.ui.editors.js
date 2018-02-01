@@ -12148,7 +12148,7 @@
 					var timeInputFormat = $(".selector").%%WidgetName%%("option", "timeInputFormat");
 				```
 			*/
-			timeInputFormat: null,
+			timeInputFormat: "time",
 			/* type="string"
 				Gets/Sets format of time while timepicker has no focus.
 				Value of that option can be set to a specific time pattern or to a flag defined by regional settings.
@@ -12483,21 +12483,10 @@
 		},
 		_initialize: function () { // igTimePicker
 			if (this.options.timeDisplayFormat) {
-				this.options.timeDisplayFormat = this._parseTimeMask(this.options.timeDisplayFormat);
-				this.options.dateDisplayFormat = this.options.timeDisplayFormat;
-			} else if (this.options.timeInputFormat) {
-				this.options.timeDisplayFormat = this._parseTimeMask(this.options.timeInputFormat);
-				this.options.dateDisplayFormat = this.options.timeInputFormat;
-			} else {
-				this.options.dateDisplayFormat = "time";
+				this.options.dateDisplayFormat = this._parseTimeMask(this.options.timeDisplayFormat);
 			}
 
-			if (this.options.timeInputFormat) {
-				this.options.timeInputFormat = this._parseTimeMask(this.options.timeInputFormat);
-				this.options.dateInputFormat = this.options.timeInputFormat;
-			} else {
-				this.options.dateInputFormat = "time";
-			}
+			this.options.dateInputFormat = this._parseTimeMask(this.options.timeInputFormat);
 
 			this._super();
 
@@ -12615,28 +12604,10 @@
 		},
 		_validateValue: function (val) { //igTimePicker
 			if (this._super(val)) {
-				var result;
-				if (val === undefined) {
-					result = false;
-				} else if (val === null) {
-					if (this.options.allowNullValue) {
-						result = val === this.options.nullValue ? true : false;
-					} else {
-						result = false;
-					}
-				} else if (this.options.isLimitedToListValues && this._dropDownList) {
-					if (this._valueIndexInList(val) !== -1) {
-						result = true;
-					} else {
-						this._sendNotification("warning", { optName: "allowedValuesMsg" });
-						result = false;
-					}
-				} else {
-					result = true;
-				}
-				return result;
+				return $.ui.igTextEditor.prototype._validateValue.call(this, val);
+			} else {
+				return false;
 			}
-			return false;
 		},
 		_setOption: function (option, value) { //igTimePicker
 			var prevValue = this.options[ option ];
@@ -12655,14 +12626,6 @@
 				case "maxValue":
 					this.options[ option ] = prevValue;
 					throw new Error(this._getLocaleValue("setOptionError") + option);
-				case "value":
-					if ($.type(value) === "date") {
-						this.options[ option ] = prevValue;
-						this._super(option, value);
-					} else {
-						this._super(option, this._parseDateFromMaskedValue(value));
-					}
-					break;
 				default:
 
 				// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -12671,23 +12634,26 @@
 				break;
 			}
 		},
-		_updateValue: function (value) { //igTimePicker
-			if (value === null || $.type(value) === "date" || value === "") {
-				this._super(value);
-				if ($.type(value) === "date" && this._dropDownList !== undefined) {
-					this._updateDropdownSelection(value);
-				}
+		value: function (newValue) { //igTimePicker
+			if (newValue === undefined || $.type(newValue) === "date") {
+				return this._super(newValue);
 			} else {
-				this._super(new Date(value));
-				if (this._dropDownList !== undefined) {
-					this._updateDropdownSelection(new Date(value));
-				}
+				return this._super(this._parseDateFromMaskedValue(newValue));
+			}
+		},
+		_updateValue: function (value) { //igTimePicker
+			this._super(value);
+			if (this._dropDownList !== undefined) {
+				this._updateDropdownSelection(value);
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTimePicker
 			if ($.type(currentVal) === "date") {
 				this._super(currentVal);
 			} else {
+				if (this.options.dataMode === "displayModeText") {
+					currentVal = this._parseValueByMask(currentVal);
+				}
 				this._super(this._parseDateFromMaskedValue(currentVal));
 			}
 		},
@@ -12717,14 +12683,14 @@
 				this._super(type, fireEvent);
 			}
 		},
-		_handleSpinUpEvent: function() {
+		_handleSpinUpEvent: function() { //igTimePicker
 			if (this.options.isLimitedToListValues && this._dropDownList) {
 				$.ui.igNumericEditor.prototype._handleSpinUpEvent.call(this);
 			} else {
 				this._super();
 			}
 		},
-		_handleSpinDownEvent: function() {
+		_handleSpinDownEvent: function() { //igTimePicker
 			if (this.options.isLimitedToListValues && this._dropDownList) {
 				$.ui.igNumericEditor.prototype._handleSpinDownEvent.call(this);
 			} else {
