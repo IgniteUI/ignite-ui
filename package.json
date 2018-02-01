@@ -37,7 +37,7 @@
     "grunt-coveralls": "^1.0.1",
     "grunt-jscs": "^2.8.0",
     "grunt-qunit-istanbul": "^0.6.0",
-    "jquery-mockjax": "^2.1.0",
+    "jquery-mockjax": "^2.2.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",

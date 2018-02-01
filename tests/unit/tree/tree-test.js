@@ -4498,7 +4498,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 	assert.equal(treeobj._validationObject.target[0], tree1.find("ul:first > li[data-role=node]:eq(1)")[0], "The validation object target was incorrect.");
 
 	this.simulateDragStop(node);
-	
+
 	this.util.wait(10).then(function () {
 		assert.equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
 		assert.equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
@@ -4506,7 +4506,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		assert.equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
 		assert.equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
 		assert.equal(treeobj._validationObject.target, null, "target was not correctly populated.");
-	
+
 		node = tree1.find("li[data-path='2']");
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree1.find("ul:first > li[data-role=node]:eq(1) > a"));
@@ -4526,19 +4526,12 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		node = tree1.find("li[data-path=0]");
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree1.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
 		assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
 		that.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
 		assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y, "Target node in tree didn't update correctly.");
-
 		tree1.igTree("destroy").remove();
 
 		tree1 = that.util.appendToFixture(that.divTag)
@@ -4558,16 +4551,10 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		node = tree1.find("li[data-path=0_0]");
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree1.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 		assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
 		that.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
 		assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 
@@ -4593,16 +4580,10 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		y = tree2.igTree("children", tree2.find("li[data-path=1]")).length;
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree2.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 		assert.equal(treeobj._validationObject.target[0], tree2.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
 		that.simulateDrop(tree2, tree2.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree1.igTree("children", tree1.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
 		assert.equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, y + 1, "Target node in tree2 didn't update correctly.");
 
@@ -4612,16 +4593,10 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		y = tree1.igTree("children", tree1.find("li[data-path=1]")).length;
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree1.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 		assert.equal(treeobj._validationObject.target[0], tree1.find("li[data-path=1]")[0], "The validation object target was incorrect.");
 
 		that.simulateDrop(tree1, tree1.find("li[data-path=1] > a"));
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree2.igTree("children", tree2.find("li[data-path=0]")).length, x - 1, "Source node in otherTree didn't update correctly.");
 		assert.equal(tree1.igTree("children", tree1.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 
@@ -4635,20 +4610,13 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 				},
 				bindings: bindings
 			});
-
 		node = tree1.find("li[data-path=0]");
 		y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree3);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
 		that.simulateDrop(tree3, tree3);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree3.igTree("children", tree3.find("li[data-role=node]")).length, y, "Target node in tree3 didn't update correctly.");
 
 		tree4 = that.util.appendToFixture(that.divTag)
@@ -4666,15 +4634,9 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree4);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
 		that.simulateDrop(tree4, tree4);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree4.igTree("children", tree4.find("li[data-role=node]")).length, y, "Target node in tree4 didn't update correctly.");
 
 		tree5 = that.util.appendToFixture(that.divTag)
@@ -4686,37 +4648,24 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 				},
 				bindings: bindings
 			});
-
 		node = tree1.find("li[data-path=0]");
 		settings = tree1.igTree("option", "dragAndDropSettings");
 		settings.dragAndDropMode = "move";
 		y = tree1.find("li[data-path=0]").find("li[data-role=node]").length;
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree5);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
 		that.simulateDrop(tree5, tree5);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, y, "Target node in tree5 didn't update correctly.");
 
 		node = tree1.find("li[data-path=0]");
 		settings.dragAndDropMode = "";
 		that.simulateDragStart(node);
 		that.simulateDrag(node, tree5);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 
 		that.simulateDrop(tree5, tree5);
-
-		return that.util.wait(100);
-	}).then(function () {
 		assert.equal(tree5.igTree().find(".ui-igtree-noderoot").length, 2, "Root nodes in tree5 are not 2");
 		assert.equal(tree5.igTree().find(".ui-igtree-node-nochildren").length, 12, "Leaf nodes in tree5 are not 12");
 		assert.equal(tree5.igTree().find(".ui-igtree-parentnode").length, 11, "Parent nodes in tree5 are not 11");
