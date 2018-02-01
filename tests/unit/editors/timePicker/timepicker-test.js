@@ -232,6 +232,24 @@ QUnit.module("igTimePicker", {
 				spinMinutes: ["09:10 AM", "09:20 AM", "09:30 AM", "09:40 AM", "09:50 AM", "10:00 AM"]
 			}
 		}
+	],
+	optionsDataProvider: [
+		{
+			name: "timeInputFormat",
+			value: "hh:mm"
+		},
+		{
+			name: "itemsDelta",
+			value: {hours: 0, minutes: 0}
+		},
+		{
+			name: "minValue",
+			value: "06:00 PM"
+		},
+		{
+			name: "maxValue",
+			value: "06:00 PM"
+		}
 	]
 });
 
@@ -290,6 +308,8 @@ QUnit.test('Apply mask in runtime', function (assert) {
 		buttonType: "clear"
 	});
 
+	timePicker.igTimePicker("option", "value", "");
+
 	//this.timeFormatDataProvider.forEach(data => {
 	this.timeFormatDataProvider.forEach(function(data){
 
@@ -312,7 +332,7 @@ QUnit.test('Apply mask in runtime', function (assert) {
 });
 
 QUnit.test('Dropdown - default state', function (assert) {
-	assert.expect(58);
+	assert.expect(60);
 
 	var timePicker = createInDiv().igTimePicker({
 		width: 150,
@@ -321,6 +341,9 @@ QUnit.test('Dropdown - default state', function (assert) {
 		buttonType: "dropdown"
 	});
 
+	var button = timePicker.igTimePicker("dropDownButton");
+	assert.ok(button.length > 0);
+
 	assert.equal("Show list", dropDownBtn().prop("title"));
 	assert.ok(dropDownBtn().children(':first').hasClass('ui-icon-triangle-1-s'));
 
@@ -328,6 +351,9 @@ QUnit.test('Dropdown - default state', function (assert) {
 
 	dropDownBtn().trigger("click");
 	assert.ok(timePicker.igTimePicker("dropDownVisible"));
+
+	var container = timePicker.igTimePicker("dropDownContainer");
+	assert.ok(container.length > 0);
 
 	assert.equal(5, timePicker.igTimePicker("option", "visibleItemsCount"));
 
@@ -496,7 +522,7 @@ QUnit.test('Dropdown - min/max values', function (assert) {
 });
 
 QUnit.test('Dropdown - Keyboard navigation', function (assert) {
-	assert.expect(15);
+	assert.expect(17);
 
 	var timePicker = createInDiv().igTimePicker({
 		width: 150,
@@ -543,6 +569,12 @@ QUnit.test('Dropdown - Keyboard navigation', function (assert) {
 
 	pressEnterKey();
 	assert.equal("01:00", timePicker.igTimePicker("field").val());
+
+	var index = timePicker.igTimePicker("selectedListIndex");
+	assert.equal(1, index);
+
+	var item = timePicker.igTimePicker("findListItemIndex", "01:00");
+	assert.equal(1, item);
 
 	timePicker.igTimePicker("field").trigger("blur");
 	assert.equal("01:00", timePicker.igTimePicker("field").val());
@@ -681,6 +713,29 @@ QUnit.test('Spin - limit to current field', function (assert) {
 	timePicker.remove();
 });
 
+QUnit.test('Set forbidden options in runtime', function (assert) {
+	assert.expect(4);
+
+	//this.mixedDataProvider.forEach(data => {
+	this.optionsDataProvider.forEach(function(data){
+		var timePicker = createInDiv().igTimePicker({
+			width: 150,
+			height: 50
+		});
+
+		try{
+			timePicker.igTimePicker("option", data.name, data.value);
+
+		}
+		catch (err){
+			assert.equal(err.message, 
+				"Runtime changes are not allowed for the following option: " + data.name.toString());
+		}
+
+		timePicker.remove();
+	});
+});
+
 const id = "time-picker";
 function createInDiv(){
 	return $("<div/>").attr("id", id).appendTo("#qunit-fixture");
@@ -715,16 +770,13 @@ function clickOn(element){
 	event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
 	element.dispatchEvent(event);
 };
-function pressArrowDownKey()
-{
+function pressArrowDownKey(){
 	input().trigger($.Event('keydown', {which: 40, keyCode: 40}));
 }
-function pressArrowUpKey()
-{
+function pressArrowUpKey(){
 	input().trigger($.Event('keydown', {which: 38, keyCode: 38}));
 }
-function pressEnterKey()
-{
+function pressEnterKey(){
 	input().trigger($.Event('keydown', {which: 13, keyCode: 13}));
 }
 function setCursorAt(pos){
