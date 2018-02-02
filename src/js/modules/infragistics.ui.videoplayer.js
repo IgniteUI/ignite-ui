@@ -5365,6 +5365,7 @@
 			```
 			*/
 			var css = this.css;
+			var isFullscreen = this.options.fullscreen;
 			/* Clear any player specific settings from the element. */
 			clearTimeout(this._scrollingTimoutId);
 			clearTimeout(this._volumeSliderTimeoutId);
@@ -5416,6 +5417,12 @@
 				this.element.unwrap();
 			} else {
 				this.container.children().remove();
+			}
+
+			// A.M. February 2nd, 2018 Issue #1565
+			//Remove the fullscreen class from the <body> in case the player is destroyed while in fullscreen
+			if (isFullscreen) {
+				$(".ui-igplayer-full-screen-mode").removeClass("ui-igplayer-full-screen-mode");
 			}
 			this._superApply(arguments);
 		},
