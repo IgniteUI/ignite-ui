@@ -145,6 +145,23 @@
 					"Children": []
 				}]
 			},
+			notWorkingResponse3 = {
+				"Items": [{
+					"Id": "1",
+					"Name": "PARENT",
+					"Description": "",
+					"Links": {
+						"Self": "https://test",
+						"Databases": "https://test",
+						"UnitClasses": "https://test"
+					},
+					"Children": {
+						"__deferred": {
+							"uri": "/api/jsonpitems"
+						}
+					}
+				}]
+			},
 			notWorkingResponse2 = {
 				"Items": [{
 					"Id": "1",
@@ -176,6 +193,9 @@
 
 		$(document).ready(function () {
 			$.mockjaxSettings.logging = 0;  // only critical error messages
+			$.ajaxSettings.jsonpCallback = function() {
+				return "jsonpcallback";
+			};
 			$.mockjax({
 				url: '/api/items',
 				contentType: 'text/json',
@@ -190,6 +210,24 @@
 				contentType: 'text/json',
 				response: function () {
 					this.responseText = notWorkingResponse2;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems',
+				contentType: 'text/json',
+				responseTime: 0,
+				response: function () {
+					this.responseText = notWorkingResponse3;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems?*',
+				contentType: "application/json",
+				responseTime: 0,
+				response: function (settings) {
+					jsonpcallback(notWorkingResponse3);
 				}
 			});
 
