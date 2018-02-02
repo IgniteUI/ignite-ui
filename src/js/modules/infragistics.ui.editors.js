@@ -12064,7 +12064,7 @@
 	});
 	$.widget("ui.igTimePicker", $.ui.igDateEditor, {
 		options: {
-			/* type="object" Gets/Sets delta-value which is used to generate the drop-down items for the time picker.
+			/* type="object" Gets delta-value which is used to generate the drop-down items for the time picker.
 				Accepted values for deltas are positive integer numbers, and the fractional portion of floating point numbers is ignored.
 			```
 				//Initialize with object
@@ -12078,8 +12078,6 @@
 				//Get
 				var itemsDelta= $(".selector").%%WidgetName%%("option", "itemsDelta");
 
-				//Set with object
-				$(".selector").%%WidgetName%%("option", "itemsDelta", { minutes: 30 });
 			```
 			object type="object" A configuration object, which defines specific values for each time period. The option can accept the following format:
 				itemsDelta: {
