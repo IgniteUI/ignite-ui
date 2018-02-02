@@ -1186,7 +1186,7 @@ QUnit.test('Destroy video tag test 37"', function(assert) {
 });
 
 QUnit.test('Test fullscreen test 38', function(assert) {
-	assert.expect(9);
+	assert.expect(10);
 	this.assert = assert;
 	var done = assert.async();
 	let checkElementClass = this.checkElementClass;
@@ -1232,6 +1232,8 @@ QUnit.test('Test fullscreen test 38', function(assert) {
 		// $('#player8_ctrls_vs').trigger('mouseout');
 		$('#player8_ctrls_vc_btn').trigger('mouseout');
 		checkElementNotClass($('#player8_ctrls_vc_btn'), 'ui-state-hover', assert)
+
+		assert.ok($('body').children('#player8_ctrls_s_tooltip').length === 0, 'The div player8_ctrls_s_tooltip is not destroyed')
 
 		done();
 	},500);
@@ -1315,7 +1317,7 @@ QUnit.test('slider test 42', function(assert) {
 	assert.ok($('#player11_video')[0].paused, 'Video should be paused.');
 });
 QUnit.test('Test disable option on initiation test 45', function(assert)	{
-	assert.expect(3);
+	assert.expect(4);
 	this.assert = assert;
 	createFixtureDiv('custDiv');
 	$('#custDiv').append('<video id="video2"/>')
@@ -1348,7 +1350,8 @@ QUnit.test('Test disable option on initiation test 45', function(assert)	{
 	
 	video.trigger(dblclick);
 	assert.equal(counter, 1);
-	video.trigger(dblclick);
+
+	this.checkElementNotClass($('body'), 'ui-igplayer-full-screen-mode');
 	
 });
 QUnit.test('Instantiate on an invalid tag like input test 46', function(assert){
