@@ -3093,7 +3093,7 @@
 				originalData = this.nodeDataFor(path),
 
 				// I.G. January 31st, 2018 #1564 igTree does not load nodes after lv3 when using loadOnDemand
-				depth = parseInt(ul.attr("data-depth")),
+				depth = parseInt(ul.attr("data-depth"), 10),
 				binding = this._retrieveCurrentDepthBinding(depth - 1),
 				newData = data.data();
 
