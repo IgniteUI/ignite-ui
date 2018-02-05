@@ -373,11 +373,11 @@ QUnit.test("[ID10] Combo editor test igComboDisable binding", function (assert) 
 QUnit.test("[ID11] Combo editor test igComboVisible binding", function (assert) {
 	assert.expect(7);
 
-	var comboInput = $(this.inputTag).attr("id", "myInput").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
-	var comboSpan = $(this.divTag).attr("id", "mydiv1").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
-	var comboDiv = $(this.divTag).attr("id", "mydiv2").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
-	var comboInvalidVis = $(this.divTag).attr("id", "mydiv3").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisibleInvalid").appendTo(this.qunitFixture);
-	var checkbox = $(this.inputTag).attr("id", "myCheckbox").attr("type", "checkbox").attr("data-bind", "checked: isVisible").appendTo(this.qunitFixture);
+	var comboInput = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
+	var comboSpan = $(this.divTag).attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
+	var comboDiv = $(this.divTag).attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
+	var comboInvalidVis = $(this.divTag).attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisibleInvalid").appendTo(this.qunitFixture);
+	var checkbox = $(this.inputTag).attr("type", "checkbox").attr("data-bind", "checked: isVisible").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	// Input placeholder
