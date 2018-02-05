@@ -53,6 +53,7 @@ QUnit.module("Knockout unit tests for igDateEditor", {
 	},
 	beforeEach: function () {
 		$.fx.off = true;
+		this.qunitFixture = $('#qunit-fixture'); 
 	},
 	afterEach: function () {
 		$.fx.off = false;
