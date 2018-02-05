@@ -297,7 +297,7 @@ $(function () {
 	});
 
 	QUnit.test("[ID3] igDialog API", function (assert) {
-		assert.expect(3);
+		assert.expect(6);
 
 		var $dialog = this.createDialog(this.dialog1),
 			content = $dialog.igDialog("content");

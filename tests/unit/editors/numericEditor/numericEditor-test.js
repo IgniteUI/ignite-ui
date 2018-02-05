@@ -3,10 +3,8 @@ $(document).ready(function () {
 		divTag: '<div></div>',
 		inputTag: '<input />',
 		util: $.ig.TestUtil,
-
-		beforeEach: function () { },
-
-		afterEach: function () { },
+		beforeEach: function () { $.fx.off = true; },
+		afterEach: function () { $.fx.off = false; }
 	});
 
 	QUnit.test('Numeric Editor initialization.', function (assert) {
