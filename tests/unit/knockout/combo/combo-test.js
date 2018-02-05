@@ -7,7 +7,7 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 		this.isDisabled = ko.observable(false);
 		this.isDisabledInvalid = true;
 		this.isVisible = ko.observable(true);
-		this.isVisibleInvalid = true;
+		this.isVisibleInvalid = false;
 
 		this.item = { name: "name5", value: 5 };
 
@@ -67,11 +67,9 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 	applyBindings: function () {
 		ko.applyBindings(this.model, this.qunitFixture[0]);
 	},
-	before: function () {
-		this.qunitFixture = $('#qunit-fixture');
-		this.model = new this.viewModel();
-	},
 	beforeEach: function () {
+		this.model = new this.viewModel();
+		this.qunitFixture = $('#qunit-fixture');
 		$.fx.off = true;
 	},
 	afterEach: function () {
@@ -111,7 +109,7 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 
 		this.assert.ok(combo2.igCombo('text') === newText, 'The igCombo text should be updated properly from the knockout extension');
 		this.assert.ok(combo2.igCombo('valueInput').val() === newValue, 'The igCombo value should be updated properly from the knockout extension');
-		
+
 		if (input === undefined || input) {
 			this.assert.ok(textInput.val() === newText, 'The exteranl INPUT should be updated properly from the knockout extension');
 		}
@@ -122,7 +120,7 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 QUnit.test("[ID1] Combo editor Initialization", function (assert) {
 	assert.expect(3);
 
-	var editor = $(this.inputTag).attr("type", "text").attr("id", "comboBasic").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
+	var editor = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
 	this.applyBindings();
 	assert.ok(typeof (ko.bindingHandlers.igCombo) !== 'undefined', 'igCombo extension for KnockoutJS should be loaded.');
 	assert.ok(typeof (ko.bindingHandlers.igCombo) === 'object', 'igCombo extension for KnockoutJS should be an object.');
@@ -133,13 +131,13 @@ QUnit.test("[ID2] Changing combo editor UI affect ViewModel and vice versa", fun
 	assert.expect(23);
 	this.assert = assert;
 
-	var textInput = $(this.inputTag).attr("type", "text").attr("id", "textInput").appendTo(this.qunitFixture);
-	var textSelect = $(this.selectTag).attr("id", "textSelect").attr("data-bind", "{options: data, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItems}").appendTo(this.qunitFixture);
-	var editor = $(this.inputTag).attr("type", "text").attr("id", "comboBasic").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
-	var selectedItemsCombo = $(this.inputTag).attr("type", "text").attr("id", "comboSelectedItems").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled:true, addWithKeyModifier: true}}").appendTo(this.qunitFixture);
+	var textInput = $(this.inputTag).attr("type", "text").appendTo(this.qunitFixture);
+	var textSelect = $(this.selectTag).attr("data-bind", "{options: data, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItems}").appendTo(this.qunitFixture);
+	var editor = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
+	var selectedItemsCombo = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled:true, addWithKeyModifier: true}}").appendTo(this.qunitFixture);
 	this.applyBindings();
-	var itemList = editor.data("igCombo")._options.$dropDownCont.find("li");
 
+	var itemList = editor.data("igCombo")._options.$dropDownCont.find("li");
 	editor.igCombo({
 		selectionChanged: function (evt, ui) {
 			textInput.val(ui.owner.text());
@@ -160,10 +158,10 @@ QUnit.test("[ID3] Combo editor adding and deleting items", function (assert) {
 	assert.expect(24);
 	this.assert = assert;
 
-	var textInput = $(this.inputTag).attr("type", "text").attr("id", "textInput1").appendTo(this.qunitFixture);
-	var textSelect = $(this.selectTag).attr("id", "textSelect1").attr("data-bind", "{options: data, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItems}").appendTo(this.qunitFixture);
-	var editor = $(this.inputTag).attr("type", "text").attr("id", "comboBasic1").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
-	var selectedItemsCombo = $(this.inputTag).attr("type", "text").attr("id", "comboSelectedItems1").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled:true, addWithKeyModifier: true}}").appendTo(this.qunitFixture);
+	var textInput = $(this.inputTag).attr("type", "text").appendTo(this.qunitFixture);
+	var textSelect = $(this.selectTag).attr("data-bind", "{options: data, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItems}").appendTo(this.qunitFixture);
+	var editor = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
+	var selectedItemsCombo = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled:true, addWithKeyModifier: true}}").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	editor.igCombo({
@@ -204,8 +202,8 @@ QUnit.test("[ID3] Combo editor adding and deleting items", function (assert) {
 QUnit.test("[ID4] Combo editor editing dropdown item", function (assert) {
 	assert.expect(2);
 
-	var editor = $(this.inputTag).attr("type", "text").attr("id", "comboBasic").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
-	var selectedItemsCombo = $(this.inputTag).attr("type", "text").attr("id", "comboSelectedItems").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled:true, addWithKeyModifier: true}}").appendTo(this.qunitFixture);
+	var editor = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
+	var selectedItemsCombo = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled:true, addWithKeyModifier: true}}").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	this.editItem();
@@ -220,8 +218,8 @@ QUnit.test("[ID4] Combo editor editing dropdown item", function (assert) {
 QUnit.test("[ID5] Combo editor test value as observable", function (assert) {
 	assert.expect(4);
 
-	var combo1 = $(this.inputTag).attr("id", "combo1").attr("data-bind", "igCombo: {dataSource: data2, textKey: 'name', valueKey: 'value', selectedItems: selectedItemsValue, multiSelection: {enabled: true,	addWithKeyModifier: true}}").appendTo(this.qunitFixture);
-	var combo2 = $(this.divTag).attr("id", "combo2").attr("data-bind", "igCombo: {dataSource: data2, textKey: 'name', valueKey: 'value', selectedItems: selectedItemsWhole, multiSelection: {enabled: true,	addWithKeyModifier: true}, autoComplete: true}").appendTo(this.qunitFixture);
+	var combo1 = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: data2, textKey: 'name', valueKey: 'value', selectedItems: selectedItemsValue, multiSelection: {enabled: true,	addWithKeyModifier: true}}").appendTo(this.qunitFixture);
+	var combo2 = $(this.divTag).attr("data-bind", "igCombo: {dataSource: data2, textKey: 'name', valueKey: 'value', selectedItems: selectedItemsWhole, multiSelection: {enabled: true,	addWithKeyModifier: true}, autoComplete: true}").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	var itemList1 = combo1.data("igCombo")._options.$dropDownCont.find("li");
@@ -242,8 +240,8 @@ QUnit.test("[ID5] Combo editor test value as observable", function (assert) {
 QUnit.test("[ID6] Combo editor test empty data", function (assert) {
 	assert.expect(4);
 
-	var combo1 = $(this.inputTag).attr("type", "text").attr("id", "comboBasic").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
-	var combo2 = $(this.inputTag).attr("type", "text").attr("id", "comboVirtualization").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', virtualization : true}").appendTo(this.qunitFixture);
+	var combo1 = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems}").appendTo(this.qunitFixture);
+	var combo2 = $(this.inputTag).attr("type", "text").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', virtualization : true}").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	this.model.data.removeAll();
@@ -263,7 +261,7 @@ QUnit.test("[ID6] Combo editor test empty data", function (assert) {
 QUnit.test("[ID7] Combo editor custom values in combo input", function (assert) {
 	assert.expect(2);
 
-	var combo = $(this.inputTag).attr("id", "comboCustomVal").attr("data-bind", "igCombo: {dataSource: colorList, textKey: 'Color', valueKey: 'Color', allowCustomValue: true}").appendTo(this.qunitFixture);
+	var combo = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: colorList, textKey: 'Color', valueKey: 'Color', allowCustomValue: true}").appendTo(this.qunitFixture);
 	this.applyBindings();
 	var comboInput = combo.data('igCombo')._options.$input;
 
@@ -284,7 +282,7 @@ QUnit.test("[ID7] Combo editor custom values in combo input", function (assert) 
 QUnit.test("[ID8] Combo editor test selected items list", function (assert) {
 	assert.expect(4);
 
-	var combo = $(this.inputTag).attr("id", "comboClearSelectedVal").attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled: true}}").appendTo(this.qunitFixture);
+	var combo = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, multiSelection: {enabled: true}}").appendTo(this.qunitFixture);
 	this.applyBindings();
 	var comboInput = combo.data('igCombo')._options.$input;
 	var itemList = combo.data("igCombo")._options.$dropDownCont.find("li");
@@ -292,19 +290,18 @@ QUnit.test("[ID8] Combo editor test selected items list", function (assert) {
 	this.emulateClick($(itemList[3]));
 	var comboSelectedItems = combo.igCombo("selectedItems");
 	assert.ok(comboSelectedItems.length > 0, "Combo editor selected items list should not be empty");
-	assert.ok(comboInput.val() !== "", "Combo editor input value should not be empty")
+	assert.ok(comboInput.val() !== "", "Combo editor input value should not be empty");
 
 	this.model.data.removeAll();
 
 	assert.ok(combo.igCombo("selectedItems") === null, "Combo editor selected items list should be empty");
-	assert.ok(comboInput.val() === "", "There should not be any values that persist into the input")
+	assert.ok(comboInput.val() === "", "There should not be any values that persist into the input");
 });
-
 
 QUnit.test("[ID9] Combo editor selecting an item in a virtualized combo should preserve position in dropdown list", function (assert) {
 	assert.expect(2);
 
-	var combo = $(this.inputTag).attr("id", "virtualizationWithSelection").attr("data-bind", "igCombo: {animationShowDuration: 0,animationHideDuration: 0,selectedItems: selectedItems,dataSource: nameList,textKey: 'Name',valueKey: 'Name', multiSelection: {enabled: true, showCheckboxes: true},virtualization: true}").appendTo(this.qunitFixture);
+	var combo = $(this.inputTag).attr("data-bind", "igCombo: {animationShowDuration: 0,animationHideDuration: 0,selectedItems: selectedItems,dataSource: nameList,textKey: 'Name',valueKey: 'Name', multiSelection: {enabled: true, showCheckboxes: true},virtualization: true}").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	var listCont = combo.data("igCombo")._options.$dropDownListCont;
@@ -345,9 +342,9 @@ QUnit.test("[ID9] Combo editor selecting an item in a virtualized combo should p
 QUnit.test("[ID10] Combo editor test igComboDisable binding", function (assert) {
 	assert.expect(16);
 
-	var combo1 = $(this.inputTag).attr("id", "comboDisabled").attr("data-bind", "igCombo: {dataSource: data2, width: '200'}, igComboDisable: isDisabled").appendTo(this.qunitFixture);
-	var combo2 = $(this.inputTag).attr("id", "comboDisabledInvalid").attr("data-bind", "igCombo: {dataSource: data2, width: '200'}, igComboDisable: isDisabledInvalid").appendTo(this.qunitFixture);
-	var chk = $(this.inputTag).attr("type", "checkbox").attr("id", "chkDisabled").attr("data-bind", "checked: isDisabled").appendTo(this.qunitFixture);
+	var combo1 = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: data2, width: '200'}, igComboDisable: isDisabled").appendTo(this.qunitFixture);
+	var combo2 = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: data2, width: '200'}, igComboDisable: isDisabledInvalid").appendTo(this.qunitFixture);
+	var chk = $(this.inputTag).attr("type", "checkbox").attr("data-bind", "checked: isDisabled").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	assert.notOk(combo1.igCombo("option", "disabled"), "Combo editor disabled option should be equal to false");
@@ -376,11 +373,11 @@ QUnit.test("[ID10] Combo editor test igComboDisable binding", function (assert) 
 QUnit.test("[ID11] Combo editor test igComboVisible binding", function (assert) {
 	assert.expect(7);
 
-	var comboInput = $(this.inputTag).attr("id", "comboInvisibleInput").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
-	var comboSpan = $(this.divTag).attr("id", "comboInvisibleSpan").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
-	var comboDiv = $(this.divTag).attr("id", "comboInvisibleDiv").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
-	var comboInvalidVis = $(this.divTag).attr("id", "comboInvalidVis").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisibleInvalid").appendTo(this.qunitFixture);
-	var chk = $(this.inputTag).attr("type", "checkbox").attr("data-bind", "checked: isVisible").appendTo(this.qunitFixture);
+	var comboInput = $(this.inputTag).attr("id", "myInput").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
+	var comboSpan = $(this.divTag).attr("id", "mydiv1").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
+	var comboDiv = $(this.divTag).attr("id", "mydiv2").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisible").appendTo(this.qunitFixture);
+	var comboInvalidVis = $(this.divTag).attr("id", "mydiv3").attr("data-bind", "igCombo: {dataSource: data3, width: '150'}, igComboVisible: isVisibleInvalid").appendTo(this.qunitFixture);
+	var checkbox = $(this.inputTag).attr("id", "myCheckbox").attr("type", "checkbox").attr("data-bind", "checked: isVisible").appendTo(this.qunitFixture);
 	this.applyBindings();
 
 	// Input placeholder
@@ -390,20 +387,19 @@ QUnit.test("[ID11] Combo editor test igComboVisible binding", function (assert) 
 	// Span placeholder
 	assert.equal(comboSpan.igCombo("comboWrapper").css("display"), "inline-block", "Editor in span should be visible");
 
-	chk.click();
-
+	checkbox.click();
 	assert.equal(comboDiv.igCombo("comboWrapper").css("display"), "none", "Editor in div should not be invisible");
 	assert.equal(comboInput.igCombo("comboWrapper").css("display"), "none", "Editor in input should not be invisible");
 	assert.equal(comboSpan.igCombo("comboWrapper").css("display"), "none", "Editor in span should not be invisible");
 
-	chk.click();
-	assert.equal(comboInvalidVis.css("display"), "inline-block", "Editor should be visible when a non-observable invalid value is set to igComboVisible.");
+	checkbox.click();
+	assert.equal(comboInvalidVis.igCombo("comboWrapper").css("display"), "inline-block", "Editor should be visible when a non-observable invalid value is set to igComboVisible.");
 });
 
 QUnit.test("[ID12] Combo editor binding", function (assert) {
 	assert.expect(7);
 
-	var combo = $(this.inputTag).attr("id", "comboItemTest").attr("data-bind", "igCombo: {dataSource: data4, width: '150', valueKey: 'value', textKey: 'text'}").appendTo(this.qunitFixture);
+	var combo = $(this.inputTag).attr("data-bind", "igCombo: {dataSource: data4, width: '150', valueKey: 'value', textKey: 'text'}").appendTo(this.qunitFixture);
 	this.applyBindings();
 	var index = 1,
 		baseText = "item2",
@@ -437,12 +433,14 @@ QUnit.test("[ID12] Combo editor binding", function (assert) {
 QUnit.test("[ID13] Combo editor test big data", function (assert) {
 	assert.expect(1);
 
-	var comboCont = $(this.divTag).attr("id", "bigDataContainer").appendTo(this.qunitFixture);
+	var comboCont = $(this.divTag).appendTo(this.qunitFixture);
 	comboCont.append($("<span id='comboBigData'></span>").attr("data-bind", "igCombo: { dataSource: bigData, textKey: 'name', valueKey: 'id', width: '200', mode: 'dropdown', enableClearButton: false }"));
 	var start = (new Date()).getTime();
 	ko.applyBindings(this.model, comboCont[0]);
 	var end = (new Date()).getTime();
 	assert.ok(end - start < 5000, "Binding big data should take less than 5 seconds");
 });
+
+
 
 
