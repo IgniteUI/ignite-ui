@@ -773,7 +773,7 @@ QUnit.test('is seek tooltip rendering test 24', function(assert) {
 });
 
 QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', function(assert) {
-	assert.expect(11);
+	assert.expect(12);
 	createBannersBookmarksPlayer('player13');
 	this.assert =  assert;
 
@@ -846,12 +846,14 @@ QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', 
 
 				var counter = 0,
 				bannerClick = jQuery.Event("click");
-				$("#player13").one("click", function() {
-					counter++;
-				});
 
+				var windowOpen = window.open;
+				window.open = function(link, target) {
+					assert.equal(link, "https://www.infragistics.com/products/ignite-ui", "Correct URL should be used");
+					assert.equal(target, "_blank", "Correct target should be used");
+				}
 				$("#player13_banner_grid0").trigger('click');
-				assert.equal(counter, 1);
+				window.open = windowOpen;
 
 				$("#player13_ctrls_vc_btn").focus();
 
@@ -1621,7 +1623,7 @@ QUnit.test('igVidioPlayer Test related videos fullscreen and replay test 50', fu
 	});
 
 QUnit.test('Dummy Test test 51', function (assert) {
-		assert.expect(2);
+		assert.expect(3);
 		this.assert = assert;
 		createFixtureDiv('player14');
 		var done = assert.async();
@@ -1664,13 +1666,14 @@ QUnit.test('Dummy Test test 51', function (assert) {
 			ev = jQuery.Event('click');
 		ev.button = 0;
 
-		$("#player14_video").on("click", function () {
-			pbCounter++;
-		});
-
 		setTimeout(function () {
+			var windowOpen = window.open;
+			window.open = function(link, target) {
+				assert.equal(link, "http://quince.infragistics.com/", "Correct URL should be used");
+				assert.equal(target, "_blank", "Correct target should be used");
+			}
 			$("#player14_video").trigger(ev);
-			assert.equal(pbCounter, 1);
+			window.open = windowOpen;
 			video.igVideoPlayerUnitTesting("destroy");
 			done();
 		}, 800);

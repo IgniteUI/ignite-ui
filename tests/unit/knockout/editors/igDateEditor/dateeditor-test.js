@@ -53,6 +53,7 @@ QUnit.module("Knockout unit tests for igDateEditor", {
 	},
 	beforeEach: function () {
 		$.fx.off = true;
+		this.qunitFixture = $('#qunit-fixture'); 
 	},
 	afterEach: function () {
 		$.fx.off = false;
@@ -289,6 +290,6 @@ QUnit.test("updateMode set to immediate", function (assert) {
 
 	$(this.inputTag).attr("data-bind", "igDateEditor: { value: dateValue, width: \"160px\", updateMode: \"immediate\" }").appendTo(this.qunitFixture);
 	assert.throws(function () { self.applyBindings(); },
-		//function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
+		function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
 		'An error was correctly thrown when updateMode option is not correctly changed');
 });

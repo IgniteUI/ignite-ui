@@ -23,7 +23,7 @@ QUnit.module("Knockout unit tests for igCheckboxEditor", {
 		this.qunitFixture = $('#qunit-fixture');
 		this.model = new this.viewModel();
 	},
-	beforeEach: function () { $.fx.off = true; },
+	beforeEach: function () { $.fx.off = true; this.qunitFixture = $('#qunit-fixture'); },
 	afterEach: function () { $.fx.off = false; ko.cleanNode(this.qunitFixture[0]); }
 });
 

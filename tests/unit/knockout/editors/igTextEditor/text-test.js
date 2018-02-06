@@ -45,6 +45,7 @@ QUnit.module("Knockout unit tests for igTextEditor", {
 	},
 	beforeEach: function () {
 		$.fx.off = true;
+		this.qunitFixture = $('#qunit-fixture');
 	},
 	afterEach: function () {
 		$.fx.off = false;
