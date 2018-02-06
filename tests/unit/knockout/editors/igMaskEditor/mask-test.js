@@ -177,7 +177,8 @@ QUnit.test("updateMode set to not allowed value", function (assert) {
 	var self = this;
 
 	$(this.inputTag).attr("data-bind", "igMaskEditor: { value: maskValue, width: \"160px\", updateMode: \"none\" }").appendTo(this.qunitFixture);
-	assert.throws(function () { self.applyBindings(); }, 
-		function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
+	assert.throws(
+		function () { self.applyBindings(); }, 
+		function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; },
 		'An error was correctly thrown when updateMode option is not correctly changed');
 });
