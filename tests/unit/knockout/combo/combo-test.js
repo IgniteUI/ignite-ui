@@ -11,13 +11,6 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 
 		this.item = { name: "name5", value: 5 };
 
-		this.data = ko.observableArray([
-			{ value: 0, name: 'name0' },
-			{ value: 1, name: 'name1' },
-			{ value: 2, name: 'name2' },
-			{ value: 3, name: 'name3' },
-			{ value: 4, name: 'name4' }]);
-
 		this.data2 = ko.observableArray([
 			{ name: "name1", value: "value1" },
 			{ name: "name2", value: "value2" },
@@ -59,16 +52,24 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 			tmp.push({ Name: j + 1 });
 		}
 
-		this.nameList = ko.observableArray(tmp);
-		this.selectedItems = ko.observableArray();
+		this.nameList = ko.observableArray(tmp);		
 		this.selectedItemsValue = ko.observableArray(["value2"]);
 		this.selectedItemsWhole = ko.observableArray([{ name: "name2", value: "value2" }]);
 	},
 	applyBindings: function () {
 		ko.applyBindings(this.model, this.qunitFixture[0]);
 	},
-	beforeEach: function () {
+	before: function(){
 		this.model = new this.viewModel();
+	},
+	beforeEach: function () {		
+		this.model.data = ko.observableArray([
+			{ value: 0, name: 'name0' },
+			{ value: 1, name: 'name1' },
+			{ value: 2, name: 'name2' },
+			{ value: 3, name: 'name3' },
+			{ value: 4, name: 'name4' }]);
+		this.model.selectedItems = ko.observableArray();
 		this.qunitFixture = $('#qunit-fixture');
 		$.fx.off = true;
 	},
