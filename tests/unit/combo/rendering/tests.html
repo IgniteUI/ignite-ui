@@ -77,6 +77,9 @@
     <div class="cont">
         <div id='combo-ddclose'></div>
     </div>
+    <div class="cont">
+        <div id='combo-disabled'/></div>
+    </div>
 
     <script>
         $(function() {
@@ -90,7 +93,7 @@
 				testId_8 = 'Vitualization',
                 testId_9 = 'Drop down opening',
 				testId_10 = 'Drop down closing';
-
+                testId_11 = 'Rendering disabled combo';
 
             // // classes - array of strings (classes) that the element should have
             // // attributes - array of objects with key/value attribute pairs that the element should have
@@ -693,6 +696,51 @@
                 $combo.igCombo('closeDropDown');
 
                 strictEqual($dropDown.outerHeight(), 0, 'Drop down height is incorrect');
+            });
+
+            // Disabled rendering
+            test(testId_11, function () {
+                var $comboElement = $('#combo-disabled'),
+                    $hiddenInput,
+                    $comboButton,
+                    $combo,
+                    $input,
+					comboElem = 'div',
+					itemsText = ['Tom', 'Jerry', 'Spiky', 'Bendji'];
+
+                $comboElement
+					.igCombo({
+					    valueKey: 'id',
+                        textKey: 'name',
+                        disabled: true,
+					    dataSource: [{
+					        id: '1',
+					        name: 'Tom'
+					    }, {
+					        id: '2',
+					        name: 'Jerry'
+					    }, {
+					        id: '3',
+					        name: 'Spiky'
+					    }, {
+					        id: '4',
+					        name: 'Bendji'
+					    }]
+					})
+
+                $comboWrapper = $('.ui-igcombo-wrapper');
+                $hiddenInput = $('.ui-igcombo-hidden-field');
+                $input = $comboElement.igCombo('textInput');
+
+                equal($comboWrapper.hasClass("ui-igCombo-disabled ui-state-disabled"), true, "The combo wrapper element does not have the disabled css classes applied.");
+                equal($hiddenInput.attr("disabled"), "disabled", "The disabled attribute is not applied to the hidden input.");
+                equal($input.attr("disabled"), "disabled", "The disabled attribute is not applied to the input.");
+
+                $comboElement.igCombo("option", "disabled", false);
+
+                equal($comboWrapper.hasClass("ui-igCombo-disabled ui-state-disabled"), false, "The combo wrapper element has the disabled css classes applied.");
+                equal($hiddenInput.attr("disabled"), undefined, "The disabled attribute is applied to the hidden input.");
+                equal($input.attr("disabled"), undefined, "The disabled attribute is applied to the input.");
             });
         });
     </script>
