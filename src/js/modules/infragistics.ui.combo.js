@@ -4949,6 +4949,7 @@
 
 			if (value) {
 				this._options.$input.attr("readonly", true);
+				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
 
@@ -4956,6 +4957,7 @@
 				if (this.options.mode !== "dropdown") {
 					this._options.$input.removeAttr("readonly");
 				}
+				this._options.$input.removeAttr("disabled");
 				this._options.$hiddenInput.removeAttr("disabled");
 			}
 		},
