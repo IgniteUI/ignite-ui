@@ -4948,6 +4948,8 @@
 			this.focusable.removeClass("ui-state-focus");
 
 			if (value) {
+
+				// H.A. 8th Feb 2018, https://github.com/IgniteUI/ignite-ui/issues/1585
 				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
