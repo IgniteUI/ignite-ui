@@ -701,11 +701,7 @@
             // Disabled rendering
             test(testId_11, function () {
                 var $comboElement = $('#combo-disabled'),
-                    $hiddenInput,
-                    $comboButton,
-                    $combo,
                     $input,
-					comboElem = 'div',
 					itemsText = ['Tom', 'Jerry', 'Spiky', 'Bendji'];
 
                 $comboElement
@@ -729,7 +725,6 @@
 					})
 
                 $comboWrapper = $('.ui-igcombo-wrapper');
-                $hiddenInput = $('.ui-igcombo-hidden-field');
                 $input = $comboElement.igCombo('textInput');
 
                 equal($comboWrapper.hasClass("ui-igCombo-disabled ui-state-disabled"), true, "The combo wrapper element does not have the disabled css classes applied.");
