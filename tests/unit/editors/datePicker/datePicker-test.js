@@ -186,13 +186,13 @@ QUnit.test('Date Picker onSelect event.', function (assert) {
 
 	this.dropDownButton().click();
 	this.util.wait(100).then(function () {
-		selectedDate = $("a.ui-state-default:eq(14)")[0];
+		selectedDate = $(".ui-datepicker-calendar a.ui-state-default:eq(14)")[0];
 		self.util.mouseEvent(selectedDate, "click");
 		return self.util.wait(100);
 	}).then(function () {
 		value = editor.igDatePicker("value"),
 		date = new Date(2015, 11, 15);
-		assert.ok(value.toString() === date.toString(), "The selected date is not the same.");
+		assert.equal(value.toString(), date.toString(), "The selected date is not the same.");
 		editor.igDatePicker("value","");
 		self.dropDownButton().click();
 		return self.util.wait(100);
