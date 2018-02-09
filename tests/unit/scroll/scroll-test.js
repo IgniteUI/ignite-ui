@@ -504,7 +504,7 @@ QUnit.test(testId_2, function (assert) {
 
 QUnit.test(testId_3, function (assert) {
     $("body").append($('<div id="elemV" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollV));
-    assert.expect(3);
+    assert.expect(4);
     this.vScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.vScroll().data("igScroll") === "object", "igScroll did not initialize");
     assert.ok(this.vScrollBar(this.vScroll().get(0).id).length > 0, "igScrollbar did not render vertical scrollbar");
@@ -516,7 +516,7 @@ QUnit.test(testId_3, function (assert) {
 
 QUnit.test(testId_4, function (assert) {
     $("body").append($('<div id="elemH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollH));
-    assert.expect(3);
+    assert.expect(4);
     this.hScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.hScroll().data("igScroll") === "object", "igScroll did not initialize");
     assert.ok(this.vScrollBar(this.hScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
@@ -528,7 +528,7 @@ QUnit.test(testId_4, function (assert) {
 
 QUnit.test(testId_5, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    assert.expect(3);
+    assert.expect(5);
     this.vhScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.vhScroll().data("igScroll") === "object", "igScroll did not initialize");
     assert.ok(this.vScrollBar(this.vhScroll().get(0).id).length > 0, "igScrollbar did not render vertical scrollbar");
@@ -554,7 +554,7 @@ QUnit.test(testId_6, function (assert) {
 
 QUnit.test(testId_7, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    assert.expect(3);
+    assert.expect(5);
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollbarType: "native"
@@ -879,26 +879,33 @@ QUnit.test(testId_26, function (assert) {
     var vTrack = this.vTrack(this.vhScroll().get(0).id),
         hTrack = this.hTrack(this.vhScroll().get(0).id);
 
+    var vDragHeightOld = parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10);
+    var hDragWidthOld = parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10);
     //Make it smaller
     this.vhScroll().css("height", "300px");
     this.vhScroll().css("width", "500px");
     this.vhScroll().igScroll("refresh");
 
-    var vDragHeight = Math.floor((this.vhScroll().height() - 3 * 15) * ((this.vhScroll().height() / this.elemContent(this.vhScroll().get(0).id).height())));
-    var hDragWidth = Math.floor((this.vhScroll().width() - 3 * 15) * (this.vhScroll().width() / this.elemContent(this.vhScroll().get(0).id).width()));
+    var vDragHeightNew = parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10);
+    var hDragWidthNew = parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10);
     assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "300px", "igScroll container did not update it's height");
     assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "500px", "igScroll container did not update it's width");
     assert.equal(this.vScrollBar(this.vhScroll().get(0).id).height(), 300, "igScroll did not update vertical scrollbar container height");
     assert.equal(this.hScrollBar(this.vhScroll().get(0).id).width(), 500, "igScroll did not update horizontal scrollbar container width");
     assert.ok(300 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 300 - 3 * 15 + 1, "igScroll did not update vertical track height");
     assert.ok(500 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update horizontal track width");
-    assert.ok(vDragHeight - 1 <= parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10) && parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
-    assert.ok(hDragWidth - 1 <= parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10) && parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10) <= hDragWidth + 1, "igScroll did not update horizontal thumb drag width");
-
+    assert.ok(vDragHeightOld > vDragHeightNew, "igScroll did not update vertical thumb drag height");
+    assert.ok(hDragWidthOld > hDragWidthNew, "igScroll did not update horizontal thumb drag width");
+    
+    vDragHeightOld = vDragHeightNew;
+    hDragWidthOld = hDragWidthNew;
     //Make it bigger
     this.vhScroll().css("height", "500px");
     this.vhScroll().css("width", "700px");
     this.vhScroll().igScroll("refresh");
+
+    vDragHeightNew = parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10);
+    hDragWidthNew = parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10);
 
     vDragHeight = Math.floor((this.vhScroll().height() - 3 * 15) * ((this.vhScroll().height() / this.elemContent(this.vhScroll().get(0).id).height())));
     hDragWidth = Math.floor((this.vhScroll().width() - 3 * 15) * (this.vhScroll().width() / this.elemContent(this.vhScroll().get(0).id).width()));
@@ -908,8 +915,8 @@ QUnit.test(testId_26, function (assert) {
     assert.equal(this.hScrollBar(this.vhScroll().get(0).id).width(), 700, "igScroll did not update horizontal scrollbar container width");
     assert.ok(500 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update vertical track height");
     assert.ok(700 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 700 - 3 * 15 + 1, "igScroll did not update horizontal track width");
-    assert.ok(vDragHeight - 1 <= parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10) && parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
-    assert.ok(hDragWidth - 1 <= parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10) && parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10) <= hDragWidth + 1, "igScroll did not update horizontal thumb drag width");
+    assert.ok(vDragHeightOld < vDragHeightNew, "igScroll did not update vertical thumb drag height");
+    assert.ok(hDragWidthOld < hDragWidthNew, "igScroll did not update horizontal thumb drag width");    
     this.vhScroll().remove();
 });
 
@@ -1144,20 +1151,21 @@ QUnit.test(testId_35, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-    assert.equal(this.arrowUp(this.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-    assert.equal(this.arrowDown(this.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-    assert.equal(this.arrowLeft(this.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-    assert.equal(this.arrowRight(this.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-    assert.ok(this.vDrag(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
-    assert.ok(this.hDrag(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
-
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.vScrollBar(this.vhScroll().get(0).id).mouseleave();
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-
     done = assert.async();
+    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
     this.testUtil.wait(2200).then(function () {
+    assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+    assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+    assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+    assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+    assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+    assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+
+    self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
+    self.vScrollBar(self.vhScroll().get(0).id).mouseleave();
+    self.scrollContainer(self.vhScroll().get(0).id).mouseenter();
+
+    self.testUtil.wait(2200).then(function () {
         assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
         assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
         assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
@@ -1168,6 +1176,7 @@ QUnit.test(testId_35, function (assert) {
         assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
         self.vhScroll().remove();
         done();
+    })
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1224,8 +1233,9 @@ QUnit.test(testId_37, function (assert) {
 
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        var scrollbarPixelContentRatio = (self.vhScroll().height() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).height();
-        assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollbarPixelContentRatio =  (40 / (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height())) * 
+        (self.vTrack(self.vhScroll().get(0).id).height() - self.vDrag(self.vhScroll().get(0).id).height());
+ +		assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1356,8 +1366,9 @@ QUnit.test(testId_42, function (assert) {
 
     done = assert.async();
     this.testUtil.wait(500).then(function () {
-        var scrollbarPixelContentRatio = (self.vhScroll().height() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).height();
-        assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollbarPixelContentRatio = (40 / (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height())) * 
+            (self.vTrack(self.vhScroll().get(0).id).height() - self.vDrag(self.vhScroll().get(0).id).height());
+        assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1509,8 +1520,9 @@ QUnit.test(testId_48, function (assert) {
 
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).width();
-        assert.equal((self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id))).toFixed(4), (60 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollbarPixelContentRatio = (60 / (self.elemContent(self.vhScroll().get(0).id).width() - self.scrollContainer(self.vhScroll().get(0).id).width())) * 
+        (self.hTrack(self.vhScroll().get(0).id).width() - self.hDrag(self.vhScroll().get(0).id).width());
+        assert.equal((self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1617,8 +1629,14 @@ QUnit.test(testId_53, function (assert) {
     assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 40, "igScroll did not scroll properly");
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).width();
-        assert.equal((self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id))).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollContainerWidth = self.scrollContainer(self.vhScroll().get(0).id).width(),
+            contentWidth = self.elemContent(self.vhScroll().get(0).id).width(),
+            hTrackWidth = self.hTrack(self.vhScroll().get(0).id).width(),
+            hDragWidth = self.hDrag(self.vhScroll().get(0).id).width(),
+            scrollbarPixelContentRatio = (40 / (contentWidth - scrollContainerWidth)) * (hTrackWidth - hDragWidth),
+            expectedPosY = self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id));
+
+        assert.equal(expectedPosY.toFixed(3), scrollbarPixelContentRatio.toFixed(3), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1710,8 +1728,14 @@ QUnit.test(testId_57, function (assert) {
     done = assert.async();
     this.testUtil.wait(25).then(function () {
         assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), self.vhScroll().height(), "igScroll did not scroll properly");
-        var scrollbarPixelContentRatio = (self.vhScroll().height() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).height();
-        assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (self.vhScroll().height() * scrollbarPixelContentRatio).toFixed(4), "igScroll did not scroll properly");
+        var scrollContainerHeight = self.scrollContainer(self.vhScroll().get(0).id).height(),
+            contentHeight = self.elemContent(self.vhScroll().get(0).id).height(),
+            vTrackHeight = self.vTrack(self.vhScroll().get(0).id).height(),
+            vDragHeight = self.vDrag(self.vhScroll().get(0).id).height(),
+            scrollbarPixelContentRatio = (self.vhScroll().height() / (contentHeight - scrollContainerHeight)) * (vTrackHeight - vDragHeight),
+            expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id));
+
+        assert.equal(expectedPosY.toFixed(4), scrollbarPixelContentRatio.toFixed(4), "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1738,8 +1762,14 @@ QUnit.test(testId_58, function (assert) {
         assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), bottomPos - self.scrollContainer(self.vhScroll().get(0).id).height(), "igScroll did not scroll properly");
 
         self.testUtil.wait(100).then(function () {
-            var scrollbarPixelContentRatio = (self.vhScroll().height() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).height();
-            assert.equal(self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id)).toFixed(3), ((bottomPos - self.scrollContainer(self.vhScroll().get(0).id).height()) * scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
+            var scrollContainerHeight = self.scrollContainer(self.vhScroll().get(0).id).height(),
+                contentHeight = self.elemContent(self.vhScroll().get(0).id).height(),
+                vTrackHeight = self.vTrack(self.vhScroll().get(0).id).height(),
+                vDragHeight = self.vDrag(self.vhScroll().get(0).id).height(),
+                scrollbarPixelContentRatio = (bottomPos - scrollContainerHeight) / (contentHeight - scrollContainerHeight) * (vTrackHeight - vDragHeight),
+                expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id));
+
+            assert.equal(expectedPosY.toFixed(3), scrollbarPixelContentRatio.toFixed(3), "igScroll did not scroll properly");
             self.vhScroll().remove();
             done();
         });
@@ -1880,11 +1910,15 @@ QUnit.test(testId_63, function (assert) {
     this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScroll().get(0).id), 0, 50, 200);
     this.testUtil.wait(2500).then(function () {
         //Pixel per move is taken from the igScroll source
-        var pixelsPerMove = (self.elemContent(self.vhScroll().get(0).id).outerHeight() / (self.scrollContainer(self.vhScroll().get(0).id).outerHeight() - 3 * 17)).toFixed(0),
-            pixelsMoved = 50 * pixelsPerMove;
+        var vDragX = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id),
+            vTrackWidth = self.vTrack(self.vhScroll().get(0).id).height(),
+            vDragWidth = self.vDrag(self.vhScroll().get(0).id).height()),
+            contentHeight = self.elemContent(self.vhScroll().get(0).id).height(),
+            containerHeight = self.scrollContainer(self.vhScroll().get(0).id).height(),
+            pixelsMoved = (vDragX / (vTrackWidth -vDragWidth)) * (contentHeight - containerHeight);
 
         //We can have 2px error in the calculation due to rounding
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), pixelsMoved, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
         //equal(getTransform3dValueY(vDrag), 50, "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
@@ -1909,8 +1943,10 @@ QUnit.test(testId_64, function (assert) {
         //200 because the width of the content is actually 800 and the width of the container is 600.
         assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 200, "igScroll did not scroll properly");
         //Check horizontal thumb drag position
-        var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).width();
-        assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id)), (200 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not scroll properly");
+        var scrollbarPixelContentRatio = (200 / (self.elemContent(self.vhScroll().get(0).id).width() - self.vhScroll().width())) *
+              (self.hTrack(self.vhScroll().get(0).id).width() - self.hDrag(self.vhScroll().get(0).id).width());
+
+        assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id)), (scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -2045,10 +2081,14 @@ QUnit.test(testId_69, function (assert) {
     this.testUtil.simulateClickDragRelese(this.hDrag(this.vhScroll().get(0).id), 50, 0, 200);
     this.testUtil.wait(2500).then(function () {
         //Pixel per move is taken from the igScroll source
-        var pixelsPerMove = (self.elemContent(self.vhScroll().get(0).id).outerWidth() / self.scrollContainer(self.vhScroll().get(0).id).outerWidth()).toFixed(0),
-            pixelsMoved = 50 * pixelsPerMove;
+        var hDragX = self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id),
+            hTrackWidth = self.hTrack(self.vhScroll().get(0).id).width(),
+            hDragWidth = self.hDrag(self.vhScroll().get(0).id).width()),
+            contentWidth = self.elemContent(self.vhScroll().get(0).id).width(),
+            containerWidth = self.scrollContainer(self.vhScroll().get(0).id).width(),
+            pixelsMoved = (hDragX / (hTrackWidth -hDragWidth)) * (contentWidth - containerWidth);
 
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), pixelsMoved, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
         //equal(getTransform3dValueX(hDrag), 50, "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
@@ -3434,15 +3474,15 @@ QUnit.test(testId_126, function (assert) {
     this.vhScroll().igScroll();
 
     // Claclulating the drag width and height is based on the formula used in the igScroll implementation
-    var hDragWidthPercentage = (600 / this.elemContent(this.vhScroll().get(0).id).width()) * 100,
-        vDragHeightPercentage = (400 / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    var hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100,
+        vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
 
     assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
     assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
 
     this.vhScroll().igScroll("option", "scrollWidth", 700);
-    hDragWidthPercentage = (600 / this.elemContent(this.vhScroll().get(0).id).width()) * 100;
-    vDragHeightPercentage = (400 / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100;
+    vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
 
     assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
     assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
@@ -3460,15 +3500,15 @@ QUnit.test(testId_127, function (assert) {
     this.vhScroll().igScroll();
 
     // Claclulating the drag width and height is based on the formula used in the igScroll implementation
-    var hDragWidthPercentage = (600 / this.elemContent(this.vhScroll().get(0).id).width()) * 100,
-        vDragHeightPercentage = (400 / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    var hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100,
+        vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
 
     assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
     assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
 
     this.vhScroll().igScroll("option", "scrollHeight", 1000);
-    hDragWidthPercentage = (600 / this.elemContent(this.vhScroll().get(0).id).width()) * 100;
-    vDragHeightPercentage = (400 / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100;
+    vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
 
     assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
     assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
