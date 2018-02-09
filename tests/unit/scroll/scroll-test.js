@@ -3961,6 +3961,7 @@ QUnit.test(testId_141, function (assert) {
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    done = assert.async();
     this.testUtil.wait(500).then(function () {
         self.vhScroll().igScroll("option", "scrollLeft", 20);
         self.testUtil.wait(500).then(function () {
