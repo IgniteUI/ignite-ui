@@ -89,6 +89,7 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
 
       "tests/unit/common/test-util.js",
+      "tests/unit/common/simInteractions.js",
       "tests/test-patch.js",
 
       // Test files:
