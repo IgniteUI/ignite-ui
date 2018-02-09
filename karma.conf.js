@@ -87,7 +87,7 @@ module.exports = function(config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_stacked.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_annotation.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
-
+      "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js",
       "tests/unit/common/test-util.js",
       "tests/test-patch.js",
 
