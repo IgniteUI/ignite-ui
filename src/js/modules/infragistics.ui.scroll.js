@@ -71,6 +71,21 @@
 				native type="string" Native scrollbars
 				none type="string" No scrollbars should be visible */
 			scrollbarType: "custom",
+			/* type="number|string" Sets or gets the minimum size of the thumb drag in pixels. For the vertical thumb it means its minimum height, for the horizontal thumb it means its minimum width. This affects only the custom scrollblar when scrollbarType is set to "custom".
+			```
+				//Initialize
+				$(".selector").igScroll({
+					minThumbSize: 20
+				});
+
+				//Get
+					var minThumbSize = $(".selector").igScroll("option", "minThumbSize");
+
+				//Set
+				$(".selector").igScroll("option", "minThumbSize", 20);
+			```
+			*/
+			minThumbSize: 15,
 			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable.
 			```
 				//Initialize
@@ -768,6 +783,7 @@
 			//Determines if the scroll event for the content is triggered when trying to sync it on a specific axis
 			this._scrollFromSyncContentH = false;
 			this._scrollFromSyncContentV = false;
+			this._bInternalScroll = false;
 
 			//Track if events should not be triggered
 			this._cancelScrolling = false;
@@ -927,6 +943,10 @@
 					this._updateScrollBarsVisibility();
 					this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 				}
+			}
+			if (key === "minThumbSize" &&
+				this.options.scrollbarType === "custom") {
+				this._refreshScrollbars();
 			}
 			if (key === "scrollTop") {
 				this._scrollTop(value, true);
@@ -1181,7 +1201,7 @@
 			this._elemWidth = this.element.width();
 
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				this._vDragHeight = this._percentInViewV * 100;
+				this._vDragHeight = this._calculateVDragHeight();
 				this._vBarDrag.css("height", this._vDragHeight + "%");
 				/* Update classes if only vertical scrollbar will be visible */
 				if (this._percentInViewH >= 1) {
@@ -1207,7 +1227,7 @@
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				this._hDragWidth = this._percentInViewH * 100;
+				this._hDragWidth = this._calculateHDragWidth();
 				this._hBarDrag.css("width", this._hDragWidth + "%");
 				/* Update classes if only vertical scrollbar will be visible */
 				if (this._percentInViewV >= 1) {
@@ -1444,6 +1464,7 @@
 				}
 			}
 
+			this._bInternalScroll = true;
 			if (this.options.scrollOnlyHBar) {
 				this._moveHBarX(destX);
 			} else {
@@ -1499,7 +1520,7 @@
 				}
 
 			}
-
+			this._bInternalScroll = true;
 			if (this.options.scrollOnlyVBar) {
 				this._moveVBarY(destY);
 			} else {
@@ -2125,19 +2146,24 @@
 				this._scrollFromSyncContentH = false;
 			}
 
-			var posX, posY;
-			if (this.options.scrollOnlyHBar) {
-				posX = this._getScrollbarHPosition();
-			} else {
-				posX = this._getContentPositionX();
-			}
-			if (this.options.scrollOnlyVBar) {
-				posY = this._getScrollbarVPosition();
-			} else {
-				posY = this._getContentPositionY();
-			}
+			if (!this._bInternalScroll)
+			{
+				var posX, posY;
+				if (this.options.scrollOnlyHBar) {
+					posX = this._getScrollbarHPosition();
+				} else {
+					posX = this._getContentPositionX();
+				}
+				if (this.options.scrollOnlyVBar) {
+					posY = this._getScrollbarVPosition();
+				} else {
+					posY = this._getContentPositionY();
+				}
 
-			this._updateScrollbarsPos(posX, posY);
+				this._updateScrollbarsPos(posX, posY);
+			} else {
+				this._bInternalScroll = false;
+			}
 
 			return false;
 		},
@@ -2735,13 +2761,6 @@
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
-			// jscs:disable
-			this._vDragHeight = this._percentInViewV * 100;
-			// jscs:enable
-			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
-				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
-				.css("height", this._vDragHeight + "%");
-
 			if (!bRenderScrollbarH) {
 				this._vBarTrack.addClass(css.verticalScrollTrackSingleScrollbar);
 				this._vBarArrowDown.addClass(css.verticalScrollArrowDownSingleScrollbar);
@@ -2761,7 +2780,31 @@
 					.appendTo(this._container[ 0 ].parentElement);
 			}
 
+			this._vDragHeight = this._calculateVDragHeight();
+			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
+				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
+				.css("height", this._vDragHeight + "%");
+
+			if (this.options.scrollbarVParent) {
+				this._vBarTrack.append(this._vBarDrag);
+			} else {
+				this._vBarTrack.append(this._vBarDrag);
+			}
+
 			this._bindCustomScrollBarV();
+		},
+
+		/** Calculates the vertical drag height and returns it in percents based on the vertical track height*/
+		_calculateVDragHeight: function () {
+			var dragHeightPx,
+				minSize = parseInt(this.options.minThumbSize, 10);
+
+			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
+			dragHeightPx = (this._vBarTrack.height() / this._contentHeight) * this._vBarTrack.height();
+			dragHeightPx = (dragHeightPx < minSize ? minSize : dragHeightPx);
+
+			//Turn it into percents.
+			return (dragHeightPx / this._vBarTrack.height()) * 100;
 		},
 
 		_bindCustomScrollBarV: function() {
@@ -2769,7 +2812,8 @@
 			this._bMouseDownV = false; //Used to track if mouse is holded on any of the vertical scrollbar elements
 			this._bUseArrowUp = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowDown = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._mouseLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._dragLastY = 0; //Used to save the last position of the vertical drag. This is needed because getting the position during scroll on Edge/Firefox is not reliable
 			this._bUseVDrag = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseVTrack = false; //Determines if the vertical track area is being used
 			this._lastBigIncDirV = 0; //Used to determine the last direction of the scroll when using the scrollbar track area
@@ -2975,7 +3019,7 @@
 
 		_onMouseDownVDrag: function (event) {
 			this._bMouseDownV = true;
-			this._dragLastY = event.pageY;
+			this._mouseLastY = event.pageY;
 			this._bUseVDrag = true;
 			this._bUseHDrag = false;
 
@@ -3087,9 +3131,16 @@
 
 			if (this._bUseVDrag) {
 				var curPosY = this._getContentPositionY(),
-					offset = event.pageY - this._dragLastY,
-					nextPosY = curPosY + (offset * (this._getContentHeight() / (this._elemHeight - 3 * 17)));
+					offset = event.pageY - this._mouseLastY,
+					dragbPosY = this._dragLastY,
+					nextPosY;
 
+				/**	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
+				  *	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0. */
+				nextPosY = ((dragbPosY + offset) / (this._vBarTrack.height() - this._vBarDrag.height())) *
+							(this._getContentHeight() - this.element.height());
+				nextPosY = this._clampAxisCoords(nextPosY, 0,
+							Math.max(this._getContentHeight() - this._container.height(), 0));
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: false,
@@ -3103,7 +3154,8 @@
 				if (bNoCancel) {
 					//Move custom vertical scrollbar thumb drag
 					this._scrollToY(nextPosY, true);
-					this._dragLastY = event.pageY;
+					this._mouseLastY = event.pageY;
+					this._dragLastY = dragbPosY + offset;
 				}
 			}
 		},
@@ -3166,6 +3218,9 @@
 			this._bMouseDownV = false;
 
 			if (this._bUseVDrag) {
+				/** Get the actual position on mouseup because we may have moved too much out and using the thumb right after will have offset */
+				this._dragLastY = this._getTransform3dValueY(this._vBarDrag);
+
 				if (!this._cancelThumbDrag) {
 
 					this._trigger("thumbDragEnd", null, {
@@ -3207,13 +3262,6 @@
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
-			// jscs:disable
-			this._hDragWidth = this._percentInViewH * 100;
-			// jscs:enable
-			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
-				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
-				.css("width", this._hDragWidth + "%");
-
 			if (!bRenderScrollbarV) {
 				this._hBarTrack.addClass(css.horizontalScrollTrackSingleScrollbar);
 				this._hBarArrowRight.addClass(css.horizontalScrollArrowRightSingleScrollbar);
@@ -3233,16 +3281,41 @@
 					.appendTo(this._container[ 0 ].parentElement);
 			}
 
+			this._hDragWidth = this._calculateHDragWidth();
+			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
+				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
+				.css("width", this._hDragWidth + "%");
+
+			if (this.options.scrollbarHParent) {
+				this._hBarTrack.append(this._hBarDrag);
+			} else {
+				this._hBarTrack.append(this._hBarDrag);
+			}
+
 			this._bindCustomScrollBarH();
 		},
 
+		/** Calculates the horizontal drag width and returns it in percents based on the horizontal track width */
+		_calculateHDragWidth: function ()
+		{
+			var dragWidthPx,
+				minSize = parseInt(this.options.minThumbSize, 10);
+
+			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
+			dragWidthPx = (this._hBarTrack.width() / this._contentWidth) * this._hBarTrack.width();
+			dragWidthPx = (dragWidthPx < minSize ? minSize : dragWidthPx);
+
+			//Turn it into percents.
+			return (dragWidthPx / this._hBarTrack.width()) * 100;
+		},
 		_bindCustomScrollBarH: function () {
 			this._holdTimeoutID = 0;
 			this._bMouseDownH = false;
 			this._bUseArrowLeft = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowRight = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseHDrag = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._mouseLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._dragLastX = 0; //Used to save the last position of the horizontal drag. This is needed because getting the position during scroll on Edge/Firefox is not reliable
 			this._bUseHTrack = false; //Determines if the horizontal track area is being used
 			this._lastBigIncDirH = 0; //Used to determine the last direction of the scroll when using the horizontal track area
 			this._mTrackLastPosH = 0; //Last know position of the mouse when interacting with the horizontal track area
@@ -3467,7 +3540,7 @@
 
 		_onMouseDownHDrag: function (event) {
 			this._bMouseDownH = true;
-			this._dragLastX = event.pageX;
+			this._mouseLastX = event.pageX;
 			this._bUseVDrag = false;
 			this._bUseHDrag = true;
 
@@ -3579,9 +3652,16 @@
 
 			if (this._bUseHDrag) {
 				var curPosX = this._getContentPositionX(),
-					offset = evt.pageX - this._dragLastX,
-					nextPostX = curPosX + (offset * (this._getContentWidth() / this._elemWidth));
+					offset = evt.pageX - this._mouseLastX,
+					dragbPosX = this._dragLastX,
+					nextPostX;
 
+				//	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
+				//	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0.
+				nextPostX = ((dragbPosX + offset) / (this._hBarTrack.width() - this._hBarDrag.width())) *
+							(this._getContentWidth() - this.element.width());
+				nextPostX = this._clampAxisCoords(nextPostX, 0,
+							Math.max(this._getContentWidth() - this._container.width(), 0));
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: true,
@@ -3592,7 +3672,8 @@
 				if (bNoCancel) {
 					//Move custom horizondal scrollbar thumb drag
 					this._scrollToX(nextPostX, true);
-					this._dragLastX = evt.pageX;
+					this._mouseLastX = evt.pageX;
+					this._dragLastX = dragbPosX + offset;
 				}
 			}
 		},
@@ -3655,6 +3736,9 @@
 			this._bMouseDownH = false;
 
 			if (this._bUseHDrag) {
+				/** Get the actual position on mouseup because we may have moved too much out and using the thumb right after will have offset */
+				this._dragLastX = this._getTransform3dValueX(this._hBarDrag);
+
 				if (!this._cancelThumbDrag) {
 					this._trigger("thumbDragEnd", null, {
 						owner: this,
@@ -3734,26 +3818,32 @@
 
 			function updateCSS() {
 				if (self._hBarDrag) {
-					// jscs:disable
-					/**	destX * self._percentInViewH - the translated position of the thumb based on the scroll position
-						(self._hBarTrack.width() / self.element.width() - multiple with it since the track is not 100% the width of the container and the thumb will go out of it otherwise */
-					calculatedDest = destX * self._percentInViewH * (self._hBarTrack.width() / self.element.width());
-					// jscs:enable
+					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
+					  * Drag pos c in (a,b),  scroll pos z in (x, y) => c = (z - x) / (y - x) * (b - a) + a = (z / y) * b , because a = 0 and x = 0. */
+					calculatedDest = (destX / (self._contentWidth - self.element.width())) *
+										(self._hBarTrack.width() - self._hBarDrag.width());
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
 						.css("-moz-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Firefox */
 						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
+					/* We don't update the lastX here when using the thumb drag because there may be delay when this is executed. We forward calculate it instead in _onMouseMoveHDrag */
+					if (!self._bUseHDrag) {
+						self._dragLastX = calculatedDest;
+					}
 				}
 				if (self._vBarDrag) {
-					// jscs:disable
-					/**	destY * self._percentInViewV - the translated position of the thumb based on the scroll position
-						(self._vBarTrack.height() / self.element.height()) - multiple with it since the track is not 100% the height of the container and the thumb will go out of it otherwise */
-					calculatedDest = destY * self._percentInViewV * (self._vBarTrack.height() / self.element.height());
-					// jscs:enable
+					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
+					  * Drag pos c in (a,b),  scroll pos z in (x, y) => c = (z - x) / (y - x) * (b - a) + a = (z / y) * b , because a = 0 and x = 0. */
+					calculatedDest = (destY / (self._contentHeight - self.element.height())) *
+										(self._vBarTrack.height() - self._vBarDrag.height());
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-moz-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-ms-transform", "translate3d(0px, " + calculatedDest + "px, 0px)");
+					/* We don't update the lastY here when using the thumb drag because there may be delay when this is executed. We forward calculate it instead in _onMouseMoveVDrag */
+					if (!self._bUseVDrag) {
+						self._dragLastY = calculatedDest;
+					}
 				}
 			}
 
