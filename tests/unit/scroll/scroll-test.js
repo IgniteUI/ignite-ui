@@ -497,8 +497,8 @@ QUnit.test(testId_2, function (assert) {
     assert.expect(3);
     this.noScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length === 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length === 0, "igScrollbar did not render horizontal scrollbar");
     this.noScroll().remove();
 });
 
@@ -507,10 +507,10 @@ QUnit.test(testId_3, function (assert) {
     assert.expect(4);
     this.vScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.vScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.vScroll().get(0).id).length > 0, "igScrollbar did not render vertical scrollbar");
-    assert.ok(this.hScrollBar(this.vScroll().get(0).id).length === 0, "igScrollbar rendered horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.vScrollId).length > 0, "igScrollbar did not render vertical scrollbar");
+    assert.ok(this.hScrollBar(this.vScrollId).length === 0, "igScrollbar rendered horizontal scrollbar");
 
-    this.testUtil.checkClass(this.vScrollBar(this.vScroll().get(0).id), 'igscroll-vcontainer');
+    this.testUtil.checkClass(this.vScrollBar(this.vScrollId), 'igscroll-vcontainer');
     this.vScroll().remove();
 });
 
@@ -519,10 +519,10 @@ QUnit.test(testId_4, function (assert) {
     assert.expect(4);
     this.hScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.hScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.hScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.hScroll().get(0).id).length > 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.hScrollId).length === 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.hScrollId).length > 0, "igScrollbar did not render horizontal scrollbar");
 
-    this.testUtil.checkClass(this.hScrollBar(this.hScroll().get(0).id), 'igscroll-hcontainer');
+    this.testUtil.checkClass(this.hScrollBar(this.hScrollId), 'igscroll-hcontainer');
     this.hScroll().remove();
 });
 
@@ -531,11 +531,11 @@ QUnit.test(testId_5, function (assert) {
     assert.expect(5);
     this.vhScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.vhScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.vhScroll().get(0).id).length > 0, "igScrollbar did not render vertical scrollbar");
-    assert.ok(this.hScrollBar(this.vhScroll().get(0).id).length > 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.vhScrollId).length > 0, "igScrollbar did not render vertical scrollbar");
+    assert.ok(this.hScrollBar(this.vhScrollId).length > 0, "igScrollbar did not render horizontal scrollbar");
 
-    this.testUtil.checkClass(this.vScrollBar(this.vhScroll().get(0).id), 'igscroll-vcontainer');
-    this.testUtil.checkClass(this.hScrollBar(this.vhScroll().get(0).id), 'igscroll-hcontainer');
+    this.testUtil.checkClass(this.vScrollBar(this.vhScrollId), 'igscroll-vcontainer');
+    this.testUtil.checkClass(this.hScrollBar(this.vhScrollId), 'igscroll-hcontainer');
     this.vhScroll().remove();
 });
 
@@ -547,8 +547,8 @@ QUnit.test(testId_6, function (assert) {
         scrollbarType: "none"
     });
     assert.ok(typeof this.vhScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.vhScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.vhScroll().get(0).id).length === 0, "igScrollbar rendered horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.vhScrollId).length === 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.vhScrollId).length === 0, "igScrollbar rendered horizontal scrollbar");
     this.vhScroll().remove();
 });
 
@@ -560,11 +560,11 @@ QUnit.test(testId_7, function (assert) {
         scrollbarType: "native"
     });
     assert.ok(typeof this.vhScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.vhScroll().get(0).id).length > 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.vhScroll().get(0).id).length > 0, "igScrollbar rendered horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.vhScrollId).length > 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.vhScrollId).length > 0, "igScrollbar rendered horizontal scrollbar");
 
-    this.testUtil.checkClass(this.vScrollBar(this.vhScroll().get(0).id), 'igscroll-vnative-outer');
-    this.testUtil.checkClass(this.hScrollBar(this.vhScroll().get(0).id), 'igscroll-hnative-outer');
+    this.testUtil.checkClass(this.vScrollBar(this.vhScrollId), 'igscroll-vnative-outer');
+    this.testUtil.checkClass(this.hScrollBar(this.vhScrollId), 'igscroll-hnative-outer');
     this.vhScroll().remove();
 });
 
@@ -692,8 +692,8 @@ QUnit.test(testId_15, function (assert) {
         scrollHeight: 1000
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length > 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length === 0, "igScrollbar did not render horizontal scrollbar");
     this.noScroll().remove();
 });
 
@@ -705,8 +705,8 @@ QUnit.test(testId_16, function (assert) {
         scrollHeight: 1000
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length > 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length === 0, "igScrollbar did not render horizontal scrollbar");
 
     this.noScroll().igScroll("option", "scrollTop", 500);
     assert.equal(this.noScroll().data("igScroll")._getContentPositionY(), 500, "igScroll did not scroll vertically");
@@ -721,8 +721,8 @@ QUnit.test(testId_17, function (assert) {
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
     this.noScroll().igScroll("option", "scrollHeight", 1000);
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length > 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length === 0, "igScrollbar did not render horizontal scrollbar");
     this.noScroll().remove();
 });
 
@@ -734,8 +734,8 @@ QUnit.test(testId_18, function (assert) {
         scrollWidth: 1000
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length === 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length > 0, "igScrollbar did not render horizontal scrollbar");
     this.noScroll().remove();
 });
 
@@ -747,8 +747,8 @@ QUnit.test(testId_19, function (assert) {
         scrollWidth: 1000
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length === 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length > 0, "igScrollbar did not render horizontal scrollbar");
 
     this.noScroll().igScroll("option", "scrollLeft", 200);
     assert.equal(this.noScroll().data("igScroll")._getContentPositionX(), 200, "igScroll is not scrolled horizontally initially");
@@ -763,8 +763,8 @@ QUnit.test(testId_20, function (assert) {
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
     this.noScroll().igScroll("option", "scrollWidth", 1000);
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length === 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length === 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length > 0, "igScrollbar did not render horizontal scrollbar");
     this.noScroll().remove();
 });
 
@@ -777,8 +777,8 @@ QUnit.test(testId_21, function (assert) {
         scrollWidth: 1000
     });
     assert.ok(typeof this.noScroll().data("igScroll") === "object", "igScroll did not initialize");
-    assert.ok(this.vScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar rendered vertical scrollbar");
-    assert.ok(this.hScrollBar(this.noScroll().get(0).id).length > 0, "igScrollbar did not render horizontal scrollbar");
+    assert.ok(this.vScrollBar(this.noScrollId).length > 0, "igScrollbar rendered vertical scrollbar");
+    assert.ok(this.hScrollBar(this.noScrollId).length > 0, "igScrollbar did not render horizontal scrollbar");
     this.noScroll().remove();
 });
 
@@ -790,10 +790,10 @@ QUnit.test(testId_22, function (assert) {
         smoothing: false
     });
     var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvt);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvt);
 
     //50 because the default scroll step is 50
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 50, "");
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 50, "");
     this.vhScroll().remove();
 });
 
@@ -807,14 +807,14 @@ QUnit.test(testId_23, function (assert) {
     var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } }),
         wheelEvtUp = jQuery.Event("wheel", { originalEvent: { deltaY: -100 }, preventDefault: function () { }, stopPropagation: function () { } });
 
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtUp);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtUp);
 
     //Default scroll step is 50
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 150, "");
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 150, "");
     this.vhScroll().remove();
 });
 
@@ -827,13 +827,13 @@ QUnit.test(testId_24, function (assert) {
         smoothing: true
     });
     var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).mouseenter();
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
     done = assert.async();
     this.testUtil.wait(2000).then(function () {
         //Using the mouse wheel once is approximately 99 pixels by default
         //On non touch environment scrollTop can be used to determine the scroll position
-        assert.ok(self.scrollContainer(self.vhScroll().get(0).id).scrollTop() > 80, "igScroll did not scroll properly with smoothing on");
+        assert.ok(self.scrollContainer(self.vhScrollId).scrollTop() > 80, "igScroll did not scroll properly with smoothing on");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -855,11 +855,11 @@ QUnit.test(testId_25, function (assert) {
     var wheelEvtUp = jQuery.Event("wheel", { originalEvent: { deltaY: -100 }, preventDefault: function () { }, stopPropagation: function () { } });
 
     //On non touch environment scrollTop can be used to determine the scroll position
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 80, "igScroll did not scroll properly with smoothing on");
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtUp);
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 80, "igScroll did not scroll properly with smoothing on");
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtUp);
     done = assert.async();
     this.testUtil.wait(2000).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 0, "igScroll did not scroll properly with smoothing on");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 0, "igScroll did not scroll properly with smoothing on");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -876,22 +876,22 @@ QUnit.test(testId_26, function (assert) {
         modifyDOM: true,
     });
 
-    var vTrack = this.vTrack(this.vhScroll().get(0).id),
-        hTrack = this.hTrack(this.vhScroll().get(0).id);
+    var vTrack = this.vTrack(this.vhScrollId),
+        hTrack = this.hTrack(this.vhScrollId);
 
-    var vDragHeightOld = parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10);
-    var hDragWidthOld = parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10);
+    var vDragHeightOld = parseInt(this.vDrag(this.vhScrollId).css("height"), 10);
+    var hDragWidthOld = parseInt(this.hDrag(this.vhScrollId).css("width"), 10);
     //Make it smaller
     this.vhScroll().css("height", "300px");
     this.vhScroll().css("width", "500px");
     this.vhScroll().igScroll("refresh");
 
-    var vDragHeightNew = parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10);
-    var hDragWidthNew = parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10);
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "300px", "igScroll container did not update it's height");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "500px", "igScroll container did not update it's width");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).height(), 300, "igScroll did not update vertical scrollbar container height");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).width(), 500, "igScroll did not update horizontal scrollbar container width");
+    var vDragHeightNew = parseInt(this.vDrag(this.vhScrollId).css("height"), 10);
+    var hDragWidthNew = parseInt(this.hDrag(this.vhScrollId).css("width"), 10);
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "300px", "igScroll container did not update it's height");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "500px", "igScroll container did not update it's width");
+    assert.equal(this.vScrollBar(this.vhScrollId).height(), 300, "igScroll did not update vertical scrollbar container height");
+    assert.equal(this.hScrollBar(this.vhScrollId).width(), 500, "igScroll did not update horizontal scrollbar container width");
     assert.ok(300 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 300 - 3 * 15 + 1, "igScroll did not update vertical track height");
     assert.ok(500 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update horizontal track width");
     assert.ok(vDragHeightOld > vDragHeightNew, "igScroll did not update vertical thumb drag height");
@@ -904,15 +904,15 @@ QUnit.test(testId_26, function (assert) {
     this.vhScroll().css("width", "700px");
     this.vhScroll().igScroll("refresh");
 
-    vDragHeightNew = parseInt(this.vDrag(this.vhScroll().get(0).id).css("height"), 10);
-    hDragWidthNew = parseInt(this.hDrag(this.vhScroll().get(0).id).css("width"), 10);
+    vDragHeightNew = parseInt(this.vDrag(this.vhScrollId).css("height"), 10);
+    hDragWidthNew = parseInt(this.hDrag(this.vhScrollId).css("width"), 10);
 
-    vDragHeight = Math.floor((this.vhScroll().height() - 3 * 15) * ((this.vhScroll().height() / this.elemContent(this.vhScroll().get(0).id).height())));
-    hDragWidth = Math.floor((this.vhScroll().width() - 3 * 15) * (this.vhScroll().width() / this.elemContent(this.vhScroll().get(0).id).width()));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "500px", "igScroll container did not update it's height");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "700px", "igScroll container did not update it's width");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).height(), 500, "igScroll did not update vertical scrollbar container height");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).width(), 700, "igScroll did not update horizontal scrollbar container width");
+    vDragHeight = Math.floor((this.vhScroll().height() - 3 * 15) * ((this.vhScroll().height() / this.elemContent(this.vhScrollId).height())));
+    hDragWidth = Math.floor((this.vhScroll().width() - 3 * 15) * (this.vhScroll().width() / this.elemContent(this.vhScrollId).width()));
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "500px", "igScroll container did not update it's height");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "700px", "igScroll container did not update it's width");
+    assert.equal(this.vScrollBar(this.vhScrollId).height(), 500, "igScroll did not update vertical scrollbar container height");
+    assert.equal(this.hScrollBar(this.vhScrollId).width(), 700, "igScroll did not update horizontal scrollbar container width");
     assert.ok(500 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update vertical track height");
     assert.ok(700 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 700 - 3 * 15 + 1, "igScroll did not update horizontal track width");
     assert.ok(vDragHeightOld < vDragHeightNew, "igScroll did not update vertical thumb drag height");
@@ -935,20 +935,20 @@ QUnit.test(testId_27, function (assert) {
     this.vhScroll().css("width", "500px");
     this.vhScroll().igScroll("refresh");
 
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "300px", "igScroll container did not update it's height");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "500px", "igScroll container did not update it's width");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).height(), 300 - nativeScrollSize, "igScroll did not update vertical scrollbar container height");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).width(), 500 - nativeScrollSize, "igScroll did not update horizontal scrollbar container width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "300px", "igScroll container did not update it's height");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "500px", "igScroll container did not update it's width");
+    assert.equal(this.vScrollBar(this.vhScrollId).height(), 300 - nativeScrollSize, "igScroll did not update vertical scrollbar container height");
+    assert.equal(this.hScrollBar(this.vhScrollId).width(), 500 - nativeScrollSize, "igScroll did not update horizontal scrollbar container width");
 
     //Make it bigger
     this.vhScroll().css("height", "500px");
     this.vhScroll().css("width", "700px");
     this.vhScroll().igScroll("refresh");
 
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "500px", "igScroll container did not update it's height");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "700px", "igScroll container did not update it's width");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).height(), 500 - nativeScrollSize, "igScroll did not update vertical scrollbar container height");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).width(), 700 - nativeScrollSize, "igScroll did not update horizontal scrollbar container width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "500px", "igScroll container did not update it's height");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "700px", "igScroll container did not update it's width");
+    assert.equal(this.vScrollBar(this.vhScrollId).height(), 500 - nativeScrollSize, "igScroll did not update vertical scrollbar container height");
+    assert.equal(this.hScrollBar(this.vhScrollId).width(), 700 - nativeScrollSize, "igScroll did not update horizontal scrollbar container width");
     this.vhScroll().remove();
 });
 
@@ -962,17 +962,17 @@ QUnit.test(testId_28, function (assert) {
 
     var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
 
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
 
 
     var posX = this.vhScroll().igScroll("option", "scrollLeft");
     var posY = this.vhScroll().igScroll("option", "scrollTop");
 
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), posX, "igScroll container did not update it's height");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), posY, "igScroll container did not update it's width");
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), posX, "igScroll container did not update it's height");
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), posY, "igScroll container did not update it's width");
     this.vhScroll().remove();
 });
 
@@ -989,7 +989,7 @@ QUnit.test(testId_29, function (assert) {
     //Make sure that we are testing mobile way of scrolling despite being hybrid, because that way we use 3d transformations
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }]
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2000).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 52, "igScroll did not scroll properly vertically");
@@ -997,8 +997,8 @@ QUnit.test(testId_29, function (assert) {
         var posX = self.vhScroll().igScroll("option", "scrollLeft");
         var posY = self.vhScroll().igScroll("option", "scrollTop");
 
-        assert.equal(-(self.getTransform3dValueX(self.elemContent(self.vhScroll().get(0).id))), posX, "igScroll container did not update it's height");
-        assert.equal(-(self.getTransform3dValueY(self.elemContent(self.vhScroll().get(0).id))), posY, "igScroll container did not update it's width");
+        assert.equal(-(self.getTransform3dValueX(self.elemContent(self.vhScrollId))), posX, "igScroll container did not update it's height");
+        assert.equal(-(self.getTransform3dValueY(self.elemContent(self.vhScrollId))), posY, "igScroll container did not update it's width");
         self.util.isTouchDevice = function () { return false; };
         self.vhScroll().remove();
         done();
@@ -1018,22 +1018,22 @@ QUnit.test(testId_30, function (assert) {
     });
     done = assert.async();
     this.testUtil.wait(650).then(function () {
-        assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-        assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-        assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-        assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0.7, "igScroll vertical scrollbar thumb drag is not visible");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0.7, "igScroll horizontal scrollbar thumb drag is not visible");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is big");
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0.7, "igScroll vertical scrollbar thumb drag is not visible");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0.7, "igScroll horizontal scrollbar thumb drag is not visible");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is big");
         return self.testUtil.wait(2100);
     }).then(function () {
-        assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-        assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-        assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-        assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll vertical scrollbar thumb drag is visible");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll horizontal scrollbar thumb drag is visible");
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+        assert.equal(self.vDrag(self.vhScrollId).css("opacity"), 0, "igScroll vertical scrollbar thumb drag is visible");
+        assert.equal(self.hDrag(self.vhScrollId).css("opacity"), 0, "igScroll horizontal scrollbar thumb drag is visible");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1050,17 +1050,17 @@ QUnit.test(testId_31, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
+    this.scrollContainer(this.vhScrollId).mouseenter();
     done = assert.async();
     this.testUtil.wait(200).then(function () {
-        assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-        assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-        assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-        assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0.89, "igScroll vertical scrollbar thumb drag is not visible");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0.89, "igScroll horizontal scrollbar thumb drag is not visible");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is big");
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0.89, "igScroll vertical scrollbar thumb drag is not visible");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0.89, "igScroll horizontal scrollbar thumb drag is not visible");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is big");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1077,11 +1077,11 @@ QUnit.test(testId_32, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseleave();
+    this.scrollContainer(this.vhScrollId).mouseleave();
     done = assert.async();
     this.testUtil.wait(2100).then(function () {
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+        assert.equal(self.vDrag(self.vhScrollId).css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
+        assert.equal(self.hDrag(self.vhScrollId).css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1098,15 +1098,15 @@ QUnit.test(testId_33, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseleave();
+    this.scrollContainer(this.vhScrollId).mouseleave();
     done = assert.async();
     this.testUtil.wait(2100).then(function () {
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
+        assert.ok(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
+        assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
 
-        self.scrollContainer(self.vhScroll().get(0).id).mouseenter();
-        assert.notOk(self.vDrag(self.vhScroll().get(0).id).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-        assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+        self.scrollContainer(self.vhScrollId).mouseenter();
+        assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1122,25 +1122,25 @@ QUnit.test(testId_34, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-    assert.ok(this.arrowRight(this.vhScroll().get(0).id).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-    assert.notOk(this.vDrag(this.vhScroll().get(0).id).hasClass(this.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-    assert.notOk(this.hDrag(this.vhScroll().get(0).id).hasClass(this.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+    this.scrollContainer(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowUp(this.vhScrollId).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+    assert.ok(this.arrowDown(this.vhScrollId).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+    assert.ok(this.arrowLeft(this.vhScrollId).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+    assert.ok(this.arrowRight(this.vhScrollId).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+    assert.notOk(this.vDrag(this.vhScrollId).hasClass(this.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+    assert.notOk(this.hDrag(this.vhScrollId).hasClass(this.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
 
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.notOk(this.arrowUp(this.vhScroll().get(0).id).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-    assert.notOk(this.arrowDown(this.vhScroll().get(0).id).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-    assert.notOk(this.arrowLeft(this.vhScroll().get(0).id).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-    assert.notOk(this.arrowRight(this.vhScroll().get(0).id).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-    assert.notOk(this.vDrag(this.vhScroll().get(0).id).hasClass(this.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-    assert.notOk(this.hDrag(this.vhScroll().get(0).id).hasClass(this.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
-    assert.ok(this.vDrag(this.vhScroll().get(0).id).hasClass(this.vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
-    assert.notOk(this.vDrag(this.vhScroll().get(0).id).hasClass(this.vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
-    assert.ok(this.hDrag(this.vhScroll().get(0).id).hasClass(this.hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
-    assert.notOk(this.hDrag(this.vhScroll().get(0).id).hasClass(this.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.notOk(this.arrowUp(this.vhScrollId).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+    assert.notOk(this.arrowDown(this.vhScrollId).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+    assert.notOk(this.arrowLeft(this.vhScrollId).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+    assert.notOk(this.arrowRight(this.vhScrollId).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+    assert.notOk(this.vDrag(this.vhScrollId).hasClass(this.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+    assert.notOk(this.hDrag(this.vhScrollId).hasClass(this.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+    assert.ok(this.vDrag(this.vhScrollId).hasClass(this.vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
+    assert.notOk(this.vDrag(this.vhScrollId).hasClass(this.vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
+    assert.ok(this.hDrag(this.vhScrollId).hasClass(this.hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
+    assert.notOk(this.hDrag(this.vhScrollId).hasClass(this.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
     this.vhScroll().remove();
 });
 
@@ -1152,28 +1152,28 @@ QUnit.test(testId_35, function (assert) {
         modifyDOM: true
     });
     done = assert.async();
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
+    this.scrollContainer(this.vhScrollId).mouseenter();
     this.testUtil.wait(2200).then(function () {
-    assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-    assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-    assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-    assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-    assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
-    assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+    assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+    assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+    assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+    assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+    assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+    assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
 
-    self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
-    self.vScrollBar(self.vhScroll().get(0).id).mouseleave();
-    self.scrollContainer(self.vhScroll().get(0).id).mouseenter();
+    self.vScrollBar(self.vhScrollId).mouseenter();
+    self.vScrollBar(self.vhScrollId).mouseleave();
+    self.scrollContainer(self.vhScrollId).mouseenter();
 
     self.testUtil.wait(2200).then(function () {
-        assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-        assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-        assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-        assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
         self.vhScroll().remove();
         done();
     })
@@ -1191,23 +1191,23 @@ QUnit.test(testId_36, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseleave();
+    this.scrollContainer(this.vhScrollId).mouseleave();
     done = assert.async();
     this.testUtil.wait(2100).then(function () {
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
+        assert.ok(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
+        assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
 
-        self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
-        assert.notOk(self.arrowUp(self.vhScroll().get(0).id).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-        assert.notOk(self.arrowDown(self.vhScroll().get(0).id).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-        assert.notOk(self.arrowLeft(self.vhScroll().get(0).id).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-        assert.notOk(self.arrowRight(self.vhScroll().get(0).id).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-        assert.notOk(self.vDrag(self.vhScroll().get(0).id).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
-        assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).hasClass(self.vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
-        assert.notOk(self.vDrag(self.vhScroll().get(0).id).hasClass(self.vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
-        assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+        self.vScrollBar(self.vhScrollId).mouseenter();
+        assert.notOk(self.arrowUp(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+        assert.notOk(self.arrowDown(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+        assert.notOk(self.arrowLeft(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+        assert.notOk(self.arrowRight(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+        assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+        assert.ok(self.vDrag(self.vhScrollId).hasClass(self.vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
+        assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
+        assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1225,17 +1225,17 @@ QUnit.test(testId_37, function (assert) {
         modifyDOM: true
     });
 
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 40, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 40, "igScroll did not scroll properly");
 
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        var scrollbarPixelContentRatio =  (40 / (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height())) * 
-        (self.vTrack(self.vhScroll().get(0).id).height() - self.vDrag(self.vhScroll().get(0).id).height());
- +		assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollbarPixelContentRatio =  (40 / (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height())) * 
+        (self.vTrack(self.vhScrollId).height() - self.vDrag(self.vhScrollId).height());
+ +		assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScrollId))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1250,12 +1250,12 @@ QUnit.test(testId_38, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScroll().get(0).id).height() - this.scrollContainer(this.vhScroll().get(0).id).height());
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.notOk(this.arrowDown(this.vhScroll().get(0).id).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+    this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height());
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.notOk(this.arrowDown(this.vhScrollId).hasClass(this.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), this.elemContent(this.vhScroll().get(0).id).height() - this.scrollContainer(this.vhScroll().get(0).id).height(), "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height(), "igScroll did not scroll properly");
     this.vhScroll().remove();
 });
 
@@ -1266,14 +1266,14 @@ QUnit.test(testId_39, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScroll().get(0).id), 325);
+    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 325);
 
     done = assert.async();
     this.testUtil.wait(400).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 120, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1290,19 +1290,19 @@ QUnit.test(testId_40, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScroll().get(0).id), 375);
+    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 375);
 
     done = assert.async();
     this.testUtil.wait(325).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 120, "igScroll did not scroll properly");
-        self.arrowDown(self.vhScroll().get(0).id).mouseout();
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
+        self.arrowDown(self.vhScrollId).mouseout();
         $(window).mouseup();
-        self.arrowDown(self.vhScroll().get(0).id).mouseover();
+        self.arrowDown(self.vhScrollId).mouseover();
         self.testUtil.wait(50).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 120, "igScroll did not scroll properly");
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
             self.vhScroll().remove();
             done();
         });
@@ -1320,20 +1320,20 @@ QUnit.test(testId_41, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScroll().get(0).id), 500);
+    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 500);
 
     done = assert.async();
     this.testUtil.wait(325).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 120, "igScroll did not scroll properly");
-        self.arrowDown(self.vhScroll().get(0).id).mouseout();
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
+        self.arrowDown(self.vhScrollId).mouseout();
         self.testUtil.wait(100).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 120, "igScroll did not scroll properly");
-            self.arrowDown(self.vhScroll().get(0).id).mouseover();
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
+            self.arrowDown(self.vhScrollId).mouseover();
             self.testUtil.wait(100).then(function () {
-                assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 200, "igScroll did not scroll properly");
+                assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 200, "igScroll did not scroll properly");
                 self.vhScroll().remove();
                 done();
             });
@@ -1353,22 +1353,22 @@ QUnit.test(testId_42, function (assert) {
         modifyDOM: true
     });
 
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScroll().get(0).id));
-    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 80, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScrollId));
+    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 80, "igScroll did not scroll properly");
 
-    this.testUtil.simulateSingleClick(this.arrowUp(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 40, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowUp(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 40, "igScroll did not scroll properly");
 
     done = assert.async();
     this.testUtil.wait(500).then(function () {
-        var scrollbarPixelContentRatio = (40 / (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height())) * 
-            (self.vTrack(self.vhScroll().get(0).id).height() - self.vDrag(self.vhScroll().get(0).id).height());
-        assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollbarPixelContentRatio = (40 / (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height())) * 
+            (self.vTrack(self.vhScrollId).height() - self.vDrag(self.vhScrollId).height());
+        assert.equal((self.getTransform3dValueY(self.vDrag(self.vhScrollId))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1385,15 +1385,15 @@ QUnit.test(testId_43, function (assert) {
         modifyDOM: true
     });
 
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowDown(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 40, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowDown(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 40, "igScroll did not scroll properly");
 
-    this.testUtil.simulateSingleClick(this.arrowUp(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 0, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowUp(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 0, "igScroll did not scroll properly");
     this.vhScroll().remove();
 });
 
@@ -1403,11 +1403,11 @@ QUnit.test(testId_44, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowUp(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 0, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowUp(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 0, "igScroll did not scroll properly");
     this.vhScroll().remove();
 });
 
@@ -1418,15 +1418,15 @@ QUnit.test(testId_45, function (assert) {
         modifyDOM: true,
         scrollTop: 500
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScroll().get(0).id), 325);
+    this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 325);
 
     done = assert.async();
     this.testUtil.wait(400).then(function () {
         //500 minus 120
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 380, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1444,22 +1444,22 @@ QUnit.test(testId_46, function (assert) {
         modifyDOM: true,
         scrollTop: 500
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScroll().get(0).id), 375);
+    this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 375);
     done = assert.async();
     this.testUtil.wait(325).then(function () {
         //500 minus 120
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 380, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
 
-        self.arrowUp(self.vhScroll().get(0).id).mouseout();
+        self.arrowUp(self.vhScrollId).mouseout();
         $(window).mouseup();
-        self.arrowUp(self.vhScroll().get(0).id).mouseover();
+        self.arrowUp(self.vhScrollId).mouseover();
 
         self.testUtil.wait(50).then(function () {
             //500 minus 160
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 380, "igScroll did not scroll properly");
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
             self.vhScroll().remove();
             done();
         });
@@ -1478,21 +1478,21 @@ QUnit.test(testId_47, function (assert) {
         modifyDOM: true,
         scrollTop: 500
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowUp(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
-    this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScroll().get(0).id), 500);
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+    this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 500);
     done = assert.async();
     this.testUtil.wait(325).then(function () {
         //500 minus 120
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 380, "igScroll did not scroll properly");
-        self.arrowUp(self.vhScroll().get(0).id).mouseout();
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
+        self.arrowUp(self.vhScrollId).mouseout();
         self.testUtil.wait(100).then(function () {
             //500 minus 160
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 380, "igScroll did not scroll properly");
-            self.arrowUp(self.vhScroll().get(0).id).mouseover();
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
+            self.arrowUp(self.vhScrollId).mouseover();
             self.testUtil.wait(100).then(function () {
                 //500 minus 160
-                assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 300, "igScroll did not scroll properly");
+                assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 300, "igScroll did not scroll properly");
                 self.vhScroll().remove();
                 done();
             });
@@ -1512,17 +1512,17 @@ QUnit.test(testId_48, function (assert) {
         modifyDOM: true,
         scrollLeft: 100
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 60, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 60, "igScroll did not scroll properly");
 
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        var scrollbarPixelContentRatio = (60 / (self.elemContent(self.vhScroll().get(0).id).width() - self.scrollContainer(self.vhScroll().get(0).id).width())) * 
-        (self.hTrack(self.vhScroll().get(0).id).width() - self.hDrag(self.vhScroll().get(0).id).width());
-        assert.equal((self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+        var scrollbarPixelContentRatio = (60 / (self.elemContent(self.vhScrollId).width() - self.scrollContainer(self.vhScrollId).width())) * 
+        (self.hTrack(self.vhScrollId).width() - self.hDrag(self.vhScrollId).width());
+        assert.equal((self.getTransform3dValueX(self.hDrag(self.vhScrollId))).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1539,11 +1539,11 @@ QUnit.test(testId_49, function (assert) {
         modifyDOM: true,
         scrollLeft: 40
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 0, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 0, "igScroll did not scroll properly");
     this.vhScroll().remove();
 });
 
@@ -1553,11 +1553,11 @@ QUnit.test(testId_50, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 0, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 0, "igScroll did not scroll properly");
     this.vhScroll().remove();
 });
 
@@ -1569,14 +1569,14 @@ QUnit.test(testId_51, function (assert) {
         modifyDOM: true,
         scrollLeft: 180
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScroll().get(0).id), 325);
+    this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScrollId), 325);
 
     done = assert.async();
     this.testUtil.wait(400).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 60, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }, 400);
@@ -1591,20 +1591,20 @@ QUnit.test(testId_52, function (assert) {
         scrollLeft: 180
     });
 
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScroll().get(0).id), 375);
+    this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScrollId), 375);
     done = assert.async();
     this.testUtil.wait(325).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 60, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll did not scroll properly");
 
-        self.arrowLeft(self.vhScroll().get(0).id).mouseout();
+        self.arrowLeft(self.vhScrollId).mouseout();
         $(window).mouseup();
-        self.arrowLeft(self.vhScroll().get(0).id).mouseover();
+        self.arrowLeft(self.vhScrollId).mouseover();
 
         self.testUtil.wait(50).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 60, "igScroll continued scrolling left after hovering left arrow again");
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll continued scrolling left after hovering left arrow again");
             self.vhScroll().remove();
             done();
         });
@@ -1622,19 +1622,19 @@ QUnit.test(testId_53, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowRight(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowRight(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 40, "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowRight(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 40, "igScroll did not scroll properly");
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        var scrollContainerWidth = self.scrollContainer(self.vhScroll().get(0).id).width(),
-            contentWidth = self.elemContent(self.vhScroll().get(0).id).width(),
-            hTrackWidth = self.hTrack(self.vhScroll().get(0).id).width(),
-            hDragWidth = self.hDrag(self.vhScroll().get(0).id).width(),
+        var scrollContainerWidth = self.scrollContainer(self.vhScrollId).width(),
+            contentWidth = self.elemContent(self.vhScrollId).width(),
+            hTrackWidth = self.hTrack(self.vhScrollId).width(),
+            hDragWidth = self.hDrag(self.vhScrollId).width(),
             scrollbarPixelContentRatio = (40 / (contentWidth - scrollContainerWidth)) * (hTrackWidth - hDragWidth),
-            expectedPosY = self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id));
+            expectedPosY = self.getTransform3dValueX(self.hDrag(self.vhScrollId));
 
         assert.equal(expectedPosY.toFixed(3), scrollbarPixelContentRatio.toFixed(3), "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
@@ -1653,13 +1653,13 @@ QUnit.test(testId_54, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScroll().get(0).id).width() - this.scrollContainer(this.vhScroll().get(0).id).width());
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.notOk(this.arrowRight(this.vhScroll().get(0).id).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Down is not visible");
+    this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScrollId).width() - this.scrollContainer(this.vhScrollId).width());
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.notOk(this.arrowRight(this.vhScrollId).hasClass(this.hiddenHArrowClass), "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateSingleClick(this.arrowRight(this.vhScroll().get(0).id));
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), this.elemContent(this.vhScroll().get(0).id).width() -
-        this.scrollContainer(this.vhScroll().get(0).id).width(), "igScroll did not scroll properly");
+    this.testUtil.simulateSingleClick(this.arrowRight(this.vhScrollId));
+    assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), this.elemContent(this.vhScrollId).width() -
+        this.scrollContainer(this.vhScrollId).width(), "igScroll did not scroll properly");
     this.vhScroll().remove();
 });
 
@@ -1670,13 +1670,13 @@ QUnit.test(testId_55, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowRight(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScroll().get(0).id), 325);
+    this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScrollId), 325);
     done = assert.async();
     this.testUtil.wait(400).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 120, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1693,19 +1693,19 @@ QUnit.test(testId_56, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowRight(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScroll().get(0).id), 375);
+    this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScrollId), 375);
     done = assert.async();
     this.testUtil.wait(325).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 120, "igScroll did not scroll properly");
-        self.arrowRight(self.vhScroll().get(0).id).mouseout();
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
+        self.arrowRight(self.vhScrollId).mouseout();
         $(window).mouseup();
-        self.arrowRight(self.vhScroll().get(0).id).mouseover();
+        self.arrowRight(self.vhScrollId).mouseover();
 
         self.testUtil.wait(50).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 120, "igScroll continued scrolling right after hovering right arrow again");
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll continued scrolling right after hovering right arrow again");
             self.vhScroll().remove();
             done();
         });
@@ -1723,17 +1723,17 @@ QUnit.test(testId_57, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.testUtil.simulateSingleClick(this.vTrack(this.vhScroll().get(0).id), { offsetY: 300 });
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    this.testUtil.simulateSingleClick(this.vTrack(this.vhScrollId), { offsetY: 300 });
     done = assert.async();
     this.testUtil.wait(25).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), self.vhScroll().height(), "igScroll did not scroll properly");
-        var scrollContainerHeight = self.scrollContainer(self.vhScroll().get(0).id).height(),
-            contentHeight = self.elemContent(self.vhScroll().get(0).id).height(),
-            vTrackHeight = self.vTrack(self.vhScroll().get(0).id).height(),
-            vDragHeight = self.vDrag(self.vhScroll().get(0).id).height(),
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), self.vhScroll().height(), "igScroll did not scroll properly");
+        var scrollContainerHeight = self.scrollContainer(self.vhScrollId).height(),
+            contentHeight = self.elemContent(self.vhScrollId).height(),
+            vTrackHeight = self.vTrack(self.vhScrollId).height(),
+            vDragHeight = self.vDrag(self.vhScrollId).height(),
             scrollbarPixelContentRatio = (self.vhScroll().height() / (contentHeight - scrollContainerHeight)) * (vTrackHeight - vDragHeight),
-            expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id));
+            expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
 
         assert.equal(expectedPosY.toFixed(4), scrollbarPixelContentRatio.toFixed(4), "igScroll did not scroll properly");
         self.vhScroll().remove();
@@ -1753,21 +1753,21 @@ QUnit.test(testId_58, function (assert) {
         modifyDOM: true
     });
     //scroll to the bottom first
-    var bottomPos = this.elemContent(this.vhScroll().get(0).id).height() - this.scrollContainer(this.vhScroll().get(0).id).height();
+    var bottomPos = this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height();
     this.vhScroll().igScroll("option", "scrollTop", bottomPos);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateSingleClick(self.vTrack(self.vhScroll().get(0).id), { offsetY: 150 });
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), bottomPos - self.scrollContainer(self.vhScroll().get(0).id).height(), "igScroll did not scroll properly");
+        self.vScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateSingleClick(self.vTrack(self.vhScrollId), { offsetY: 150 });
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), bottomPos - self.scrollContainer(self.vhScrollId).height(), "igScroll did not scroll properly");
 
         self.testUtil.wait(100).then(function () {
-            var scrollContainerHeight = self.scrollContainer(self.vhScroll().get(0).id).height(),
-                contentHeight = self.elemContent(self.vhScroll().get(0).id).height(),
-                vTrackHeight = self.vTrack(self.vhScroll().get(0).id).height(),
-                vDragHeight = self.vDrag(self.vhScroll().get(0).id).height(),
+            var scrollContainerHeight = self.scrollContainer(self.vhScrollId).height(),
+                contentHeight = self.elemContent(self.vhScrollId).height(),
+                vTrackHeight = self.vTrack(self.vhScrollId).height(),
+                vDragHeight = self.vDrag(self.vhScrollId).height(),
                 scrollbarPixelContentRatio = (bottomPos - scrollContainerHeight) / (contentHeight - scrollContainerHeight) * (vTrackHeight - vDragHeight),
-                expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id));
+                expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
 
             assert.equal(expectedPosY.toFixed(3), scrollbarPixelContentRatio.toFixed(3), "igScroll did not scroll properly");
             self.vhScroll().remove();
@@ -1788,11 +1788,11 @@ QUnit.test(testId_59, function (assert) {
         modifyDOM: true,
         scrollHeight: 5000
     });
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.testUtil.simulateClickAndHold(this.vTrack(this.vhScroll().get(0).id), 325, { offsetY: 250 });
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    this.testUtil.simulateClickAndHold(this.vTrack(this.vhScrollId), 325, { offsetY: 250 });
     done = assert.async();
     this.testUtil.wait(400).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 3 * self.scrollContainer(self.vhScroll().get(0).id).height(), "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 3 * self.scrollContainer(self.vhScrollId).height(), "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1811,13 +1811,13 @@ QUnit.test(testId_60, function (assert) {
         scrollHeight: 5000
     });
     //scroll to the bottom first
-    this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScroll().get(0).id).height() - this.scrollContainer(this.vhScroll().get(0).id).height());
+    this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height());
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateClickAndHold(self.vTrack(self.vhScroll().get(0).id), 325, { offsetY: 150 });
+        self.vScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 325, { offsetY: 150 });
         self.testUtil.wait(400).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height()) - 3 * self.scrollContainer(self.vhScroll().get(0).id).height(),
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
                 "igScroll did not scroll properly");
             self.vhScroll().remove();
             done();
@@ -1839,16 +1839,16 @@ QUnit.test(testId_61, function (assert) {
     });
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateClickAndHold(self.vTrack(self.vhScroll().get(0).id), 400, { offsetY: 350 });
+        self.vScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 400, { offsetY: 350 });
         //Wait a while to move out of the track area
         self.testUtil.wait(200).then(function () {
-            self.vTrack(self.vhScroll().get(0).id).mouseout();
-            assert.ok(self.scrollContainer(self.vhScroll().get(0).id).scrollTop() < 4 * self.scrollContainer(self.vhScroll().get(0).id).height(), "igScroll should not scroll fully");
+            self.vTrack(self.vhScrollId).mouseout();
+            assert.ok(self.scrollContainer(self.vhScrollId).scrollTop() < 4 * self.scrollContainer(self.vhScrollId).height(), "igScroll should not scroll fully");
 
             //Verify that it donesn't continue to scroll
             self.testUtil.wait(500).then(function () {
-                assert.notEqual(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 4 * self.scrollContainer(self.vhScroll().get(0).id).height(), "igScroll scrolled after moving the mouse out of the track while holding");
+                assert.notEqual(self.scrollContainer(self.vhScrollId).scrollTop(), 4 * self.scrollContainer(self.vhScrollId).height(), "igScroll scrolled after moving the mouse out of the track while holding");
                 self.vhScroll().remove();
                 done();
             });
@@ -1869,21 +1869,21 @@ QUnit.test(testId_62, function (assert) {
         scrollHeight: 5000
     });
     //scroll to the bottom first
-    this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScroll().get(0).id).height() - this.scrollContainer(this.vhScroll().get(0).id).height());
+    this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height());
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        self.vScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateClickAndHold(self.vTrack(self.vhScroll().get(0).id), 400, { offsetY: 150 });
+        self.vScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 400, { offsetY: 150 });
         //Wait 100ms and then move out of the track area before the hold is finished
         self.testUtil.wait(350).then(function () {
-            self.vTrack(self.vhScroll().get(0).id).mouseout();
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(),
-                (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height()) - 3 * self.scrollContainer(self.vhScroll().get(0).id).height(),
+            self.vTrack(self.vhScrollId).mouseout();
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(),
+                (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
                 "igScroll did not scroll properly");
             //Verify that it donesn't continue to scroll
             self.testUtil.wait(200).then(function () {
-                assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(),
-                    (self.elemContent(self.vhScroll().get(0).id).height() - self.scrollContainer(self.vhScroll().get(0).id).height()) - 3 * self.scrollContainer(self.vhScroll().get(0).id).height(),
+                assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(),
+                    (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
                     "igScroll scrolled after moving the mouse out of the track while holding");
                 self.vhScroll().remove();
                 done();
@@ -1905,20 +1905,20 @@ QUnit.test(testId_63, function (assert) {
         scrollHeight: 5000
     });
     done = assert.async();
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-    this.vScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScroll().get(0).id), 0, 50, 200);
+    this.scrollContainer(this.vhScrollId).mouseenter();
+    this.vScrollBar(this.vhScrollId).mouseenter();
+    this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScrollId), 0, 50, 200);
     this.testUtil.wait(2500).then(function () {
         //Pixel per move is taken from the igScroll source
-        var vDragX = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id),
-            vTrackWidth = self.vTrack(self.vhScroll().get(0).id).height(),
-            vDragWidth = self.vDrag(self.vhScroll().get(0).id).height()),
-            contentHeight = self.elemContent(self.vhScroll().get(0).id).height(),
-            containerHeight = self.scrollContainer(self.vhScroll().get(0).id).height(),
+        var vDragX = self.getTransform3dValueY(self.vDrag(self.vhScrollId),
+            vTrackWidth = self.vTrack(self.vhScrollId).height(),
+            vDragWidth = self.vDrag(self.vhScrollId).height()),
+            contentHeight = self.elemContent(self.vhScrollId).height(),
+            containerHeight = self.scrollContainer(self.vhScrollId).height(),
             pixelsMoved = (vDragX / (vTrackWidth -vDragWidth)) * (contentHeight - containerHeight);
 
         //We can have 2px error in the calculation due to rounding
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
         //equal(getTransform3dValueY(vDrag), 50, "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
@@ -1936,17 +1936,17 @@ QUnit.test(testId_64, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.testUtil.simulateSingleClick(this.hTrack(this.vhScroll().get(0).id), { offsetX: 500 });
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    this.testUtil.simulateSingleClick(this.hTrack(this.vhScrollId), { offsetX: 500 });
     done = assert.async();
     this.testUtil.wait(25).then(function () {
         //200 because the width of the content is actually 800 and the width of the container is 600.
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 200, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
         //Check horizontal thumb drag position
-        var scrollbarPixelContentRatio = (200 / (self.elemContent(self.vhScroll().get(0).id).width() - self.vhScroll().width())) *
-              (self.hTrack(self.vhScroll().get(0).id).width() - self.hDrag(self.vhScroll().get(0).id).width());
+        var scrollbarPixelContentRatio = (200 / (self.elemContent(self.vhScrollId).width() - self.vhScroll().width())) *
+              (self.hTrack(self.vhScrollId).width() - self.hDrag(self.vhScrollId).width());
 
-        assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id)), (scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
+        assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScrollId)), (scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1965,17 +1965,17 @@ QUnit.test(testId_65, function (assert) {
         modifyDOM: true
     });
     //scroll to the bottom first
-    this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScroll().get(0).id).width() - this.scrollContainer(this.vhScroll().get(0).id).width());
+    this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScrollId).width() - this.scrollContainer(this.vhScrollId).width());
     done = assert.async();
     this.testUtil.wait(500).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 200, "igScroll did not scroll properly");
-        self.hScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateSingleClick(self.hTrack(self.vhScroll().get(0).id), { offsetX: 50 });
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 0, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
+        self.hScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateSingleClick(self.hTrack(self.vhScrollId), { offsetX: 50 });
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 0, "igScroll did not scroll properly");
         self.testUtil.wait(100).then(function () {
             //Check horizontal thumb drag position
-            var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScroll().get(0).id).width();
-            assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id)), 0, "igScroll did not scroll properly");
+            var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScrollId).width();
+            assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScrollId)), 0, "igScroll did not scroll properly");
             self.vhScroll().remove();
             done();
         });
@@ -1994,11 +1994,11 @@ QUnit.test(testId_66, function (assert) {
         modifyDOM: true,
         scrollWidth: 5000
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.testUtil.simulateClickAndHold(this.hTrack(this.vhScroll().get(0).id), 325, { offsetX: 250 });
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    this.testUtil.simulateClickAndHold(this.hTrack(this.vhScrollId), 325, { offsetX: 250 });
     done = assert.async();
     this.testUtil.wait(400).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 3 * self.scrollContainer(self.vhScroll().get(0).id).width(), "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(), "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -2017,14 +2017,14 @@ QUnit.test(testId_67, function (assert) {
         scrollWidth: 5000
     });
     //scroll to the bottom first
-    this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScroll().get(0).id).width() - this.scrollContainer(this.vhScroll().get(0).id).width());
+    this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScrollId).width() - this.scrollContainer(this.vhScrollId).width());
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        self.hScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateClickAndHold(self.hTrack(self.vhScroll().get(0).id), 325, { offsetX: 150 });
+        self.hScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateClickAndHold(self.hTrack(self.vhScrollId), 325, { offsetX: 150 });
         self.testUtil.wait(400).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(),
-                (self.elemContent(self.vhScroll().get(0).id).width() - self.scrollContainer(self.vhScroll().get(0).id).width()) - 3 * self.scrollContainer(self.vhScroll().get(0).id).width(),
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(),
+                (self.elemContent(self.vhScrollId).width() - self.scrollContainer(self.vhScrollId).width()) - 3 * self.scrollContainer(self.vhScrollId).width(),
                 "igScroll did not scroll properly");
             self.vhScroll().remove();
             done();
@@ -2046,15 +2046,15 @@ QUnit.test(testId_68, function (assert) {
     });
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        self.hScrollBar(self.vhScroll().get(0).id).mouseenter();
-        self.testUtil.simulateClickAndHold(self.hTrack(self.vhScroll().get(0).id), 400, { offsetX: 300 });
+        self.hScrollBar(self.vhScrollId).mouseenter();
+        self.testUtil.simulateClickAndHold(self.hTrack(self.vhScrollId), 400, { offsetX: 300 });
         //Wait a while to move out of the track area
         self.testUtil.wait(350).then(function () {
-            self.hTrack(self.vhScroll().get(0).id).mouseout();
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 3 * self.scrollContainer(self.vhScroll().get(0).id).width(), "igScroll did not scroll properly");
+            self.hTrack(self.vhScrollId).mouseout();
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(), "igScroll did not scroll properly");
             //Verify that it donesn't continue to scroll
             self.testUtil.wait(200).then(function () {
-                assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 3 * self.scrollContainer(self.vhScroll().get(0).id).width(),
+                assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(),
                     "igScroll scrolled after moving the mouse out of the track while holding");
                 self.vhScroll().remove();
                 done();
@@ -2076,19 +2076,19 @@ QUnit.test(testId_69, function (assert) {
         scrollWidth: 5000
     });
     done = assert.async();
-    this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    this.testUtil.simulateClickDragRelese(this.hDrag(this.vhScroll().get(0).id), 50, 0, 200);
+    this.scrollContainer(this.vhScrollId).mouseenter();
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    this.testUtil.simulateClickDragRelese(this.hDrag(this.vhScrollId), 50, 0, 200);
     this.testUtil.wait(2500).then(function () {
         //Pixel per move is taken from the igScroll source
-        var hDragX = self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id),
-            hTrackWidth = self.hTrack(self.vhScroll().get(0).id).width(),
-            hDragWidth = self.hDrag(self.vhScroll().get(0).id).width()),
-            contentWidth = self.elemContent(self.vhScroll().get(0).id).width(),
-            containerWidth = self.scrollContainer(self.vhScroll().get(0).id).width(),
+        var hDragX = self.getTransform3dValueX(self.hDrag(self.vhScrollId),
+            hTrackWidth = self.hTrack(self.vhScrollId).width(),
+            hDragWidth = self.hDrag(self.vhScrollId).width()),
+            contentWidth = self.elemContent(self.vhScrollId).width(),
+            containerWidth = self.scrollContainer(self.vhScrollId).width(),
             pixelsMoved = (hDragX / (hTrackWidth -hDragWidth)) * (contentWidth - containerWidth);
 
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
         //equal(getTransform3dValueX(hDrag), 50, "igScroll did not update scrollbar position properly");
         self.vhScroll().remove();
         done();
@@ -2107,10 +2107,10 @@ QUnit.test(testId_70, function (assert) {
         modifyDOM: true,
         scrollbarType: "native"
     });
-    this.vScrollBar(this.vhScroll().get(0).id).scrollTop(100);
+    this.vScrollBar(this.vhScrollId).scrollTop(100);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 100, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 100, "igScroll did not scroll properly with native vertical scrollbar");
         self.vhScroll().remove();
         done();
@@ -2129,10 +2129,10 @@ QUnit.test(testId_71, function (assert) {
         modifyDOM: true,
         scrollbarType: "native"
     });
-    this.hScrollBar(this.vhScroll().get(0).id).scrollLeft(100);
+    this.hScrollBar(this.vhScrollId).scrollLeft(100);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 100, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 100, "igScroll did not scroll properly with native horizontal scrollbar");
         self.vhScroll().remove();
         done();
@@ -2151,10 +2151,10 @@ QUnit.test(testId_72, function (assert) {
         modifyDOM: true,
         scrollbarType: "native"
     });
-    this.scrollContainer(this.vhScroll().get(0).id).scrollTop(100);
+    this.scrollContainer(this.vhScrollId).scrollTop(100);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.vScrollBar(self.vhScroll().get(0).id).scrollTop(), 100, "igScroll did not scroll properly");
+        assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 100, "igScroll did not scroll properly with native horizontal scrollbar");
         self.vhScroll().remove();
         done();
@@ -2173,10 +2173,10 @@ QUnit.test(testId_73, function (assert) {
         modifyDOM: true,
         scrollbarType: "native"
     });
-    this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(100);
+    this.scrollContainer(this.vhScrollId).scrollLeft(100);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.hScrollBar(self.vhScroll().get(0).id).scrollLeft(), 100, "igScroll did not scroll properly");
+        assert.equal(self.hScrollBar(self.vhScrollId).scrollLeft(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 100, "igScroll did not scroll properly with native horizontal scrollbar");
         self.vhScroll().remove();
         done();
@@ -2241,7 +2241,7 @@ QUnit.test(testId_80, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 52, "igScroll did not scroll properly vertically");
@@ -2266,7 +2266,7 @@ QUnit.test(testId_81, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 15, y: 0 }, { x: 15, y: 0 }, { x: 6, y: 0 }, { x: 5, y: 0 }, { x: 1, y: 0 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         //22 because there is compensation for horizontal scroll of 30 pixels by default
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 22, "igScroll scrolled horizontally by the swipe");
@@ -2292,7 +2292,7 @@ QUnit.test(testId_82, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 1);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
     this.testUtil.wait(1500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
@@ -2324,7 +2324,7 @@ QUnit.test(testId_83, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
@@ -2349,7 +2349,7 @@ QUnit.test(testId_84, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 1);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
     this.testUtil.wait(500).then(function () {
         //Check if we have scrolled more than if we didn't have inertia
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -2362,7 +2362,7 @@ QUnit.test(testId_84, function (assert) {
             assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously");
 
             //Should interrupt inertia
-            self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScroll().get(0).id), 50, 50);
+            self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScrollId), 50, 50);
 
             lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
             self.testUtil.wait(500).then(function () {
@@ -2391,10 +2391,10 @@ QUnit.test(testId_85, function (assert) {
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     done = assert.async();
     this.testUtil.wait(1500).then(function () {
-        self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScroll().get(0).id), 50, 50);
+        self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScrollId), 50, 50);
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
         self.util.isTouchDevice = function () { return false; };
@@ -2419,7 +2419,7 @@ QUnit.test(testId_86, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }];
-    this.testUtil.simulateTouchSwipeFromCenterIE(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenterIE(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(1500).then(function () {
         //igScroll does not use custom inertia in IE. It is handled inside the borwser and given as MSGestureChange by the browser
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -2445,7 +2445,7 @@ QUnit.test(testId_87, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 15, y: 0 }, { x: 15, y: 0 }, { x: 6, y: 0 }, { x: 5, y: 0 }, { x: 1, y: 0 }];
-    this.testUtil.simulateTouchSwipeFromCenterIE(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenterIE(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         //22 because there is compensation for horizontal scroll of 30 pixels by default
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 22, "igScroll scrolled horizontally by the swipe");
@@ -2471,12 +2471,12 @@ QUnit.test(testId_88, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 52, "igScroll did not scroll properly vertically");
         var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-        self.scrollContainer(self.vhScroll().get(0).id).trigger(wheelEvt);
+        self.scrollContainer(self.vhScrollId).trigger(wheelEvt);
 
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 102, "igScroll did not scroll properly vertically");
         self.util.isTouchDevice = function () { return false; };
@@ -2560,13 +2560,13 @@ QUnit.test(testId_94, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 1);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
     this.testUtil.wait(1500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
 
         self.testUtil.wait(1000).then(function () {
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), -self.getTransform3dValueY(self.vSyncElemContent(self.vSyncScroll().get(0).id)), "igScroll content and linked element did not sync vertically on touch");
+            assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), -self.getTransform3dValueY(self.vSyncElemContent(self.vSyncScrollId)), "igScroll content and linked element did not sync vertically on touch");
             self.util.isTouchDevice = function () { return false; };
             self.vhScroll().remove();
             self.vSyncScroll().remove();
@@ -2592,14 +2592,14 @@ QUnit.test(testId_95, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), -self.getTransform3dValueX($('#elemHSync_content')), "igScroll content and linked element did not sync horizontally on touch");
         self.util.isTouchDevice = function () { return false; };
-        self.vhScroll();
-        self.hSyncScroll();
+        self.vhScroll().remove();
+        self.hSyncScroll().remove();
         done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -2618,14 +2618,14 @@ QUnit.test(testId_96, function (assert) {
     });
     done = assert.async();
     this.testUtil.wait(1500).then(function () {
-        assert.ok(self.arrowUp(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
-        assert.ok(self.arrowDown(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-        assert.ok(self.arrowLeft(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
-        assert.ok(self.arrowRight(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+        assert.ok(self.arrowUp(self.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+        assert.ok(self.arrowDown(self.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+        assert.ok(self.arrowLeft(self.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+        assert.ok(self.arrowRight(self.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -2647,14 +2647,14 @@ QUnit.test(testId_97, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     this.testUtil.wait(1500).then(function () {
-        assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is not visible");
-        assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is not visible");
-        assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is not visible");
-        assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is not visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is not visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is not visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is not visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is not visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
         self.util.isTouchDevice = function () { return false; };
         self.vhScroll().remove();
         done();
@@ -2672,33 +2672,33 @@ QUnit.test(testId_98, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.scrollContainer(this.vhScroll().get(0).id).mouseleave();
+    this.scrollContainer(this.vhScrollId).mouseleave();
     done = assert.async();
     this.testUtil.wait(2100).then(function () {
         self.vhScroll().igScroll("option", "alwaysVisible", true);
 
-        assert.notOk(self.arrowUp(self.vhScroll().get(0).id).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-        assert.notOk(self.arrowDown(self.vhScroll().get(0).id).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-        assert.notOk(self.arrowLeft(self.vhScroll().get(0).id).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-        assert.notOk(self.arrowRight(self.vhScroll().get(0).id).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-        assert.notOk(self.vDrag(self.vhScroll().get(0).id).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
-        assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).hasClass(self.vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
-        assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
-        assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+        assert.notOk(self.arrowUp(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+        assert.notOk(self.arrowDown(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+        assert.notOk(self.arrowLeft(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+        assert.notOk(self.arrowRight(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+        assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
+        assert.ok(self.vDrag(self.vhScrollId).hasClass(self.vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+        assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
 
         self.testUtil.wait(200).then(function () {
-            assert.notOk(self.arrowUp(self.vhScroll().get(0).id).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-            assert.notOk(self.arrowDown(self.vhScroll().get(0).id).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-            assert.notOk(self.arrowLeft(self.vhScroll().get(0).id).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-            assert.notOk(self.arrowRight(self.vhScroll().get(0).id).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-            assert.notOk(self.vDrag(self.vhScroll().get(0).id).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
-            assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
-            assert.ok(self.vDrag(self.vhScroll().get(0).id).hasClass(self.vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
-            assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
-            assert.ok(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
-            assert.notOk(self.hDrag(self.vhScroll().get(0).id).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+            assert.notOk(self.arrowUp(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+            assert.notOk(self.arrowDown(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+            assert.notOk(self.arrowLeft(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+            assert.notOk(self.arrowRight(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+            assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
+            assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
+            assert.ok(self.vDrag(self.vhScrollId).hasClass(self.vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
+            assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+            assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+            assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
             self.vhScroll().remove();
             done();
         });
@@ -2717,29 +2717,29 @@ QUnit.test(testId_99, function (assert) {
         modifyDOM: true
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
-    this.scrollContainer(this.vhScroll().get(0).id).mouseleave();
+    this.scrollContainer(this.vhScrollId).mouseleave();
     done = assert.async();
     this.testUtil.wait(1500).then(function () {
         self.vhScroll().igScroll("option", "alwaysVisible", true);
 
-        assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-        assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-        assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-        assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-        assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
-        assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
-        assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
-        assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
 
         self.testUtil.wait(200).then(function () {
-            assert.equal(self.arrowUp(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-            assert.equal(self.arrowDown(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-            assert.equal(self.arrowLeft(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-            assert.equal(self.arrowRight(self.vhScroll().get(0).id).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-            assert.ok(self.vDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
-            assert.ok(self.hDrag(self.vhScroll().get(0).id).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
-            assert.equal(self.vDrag(self.vhScroll().get(0).id).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
-            assert.equal(self.hDrag(self.vhScroll().get(0).id).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is  big");
+            assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+            assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+            assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+            assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+            assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
+            assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
+            assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
+            assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is  big");
 
             self.util.isTouchDevice = function () { return false; };
             self.vhScroll().remove();
@@ -2777,6 +2777,7 @@ QUnit.test(testId_100, function (assert) {
         err = e.message;
     }
     assert.equal(err, "Element that is being linked does not exists.", "No error is thrown");
+    this.vhScroll().remove();
 });
 
 QUnit.test(testId_101, function (assert) {
@@ -2816,24 +2817,24 @@ QUnit.test(testId_102, function (assert) {
         scrollWidth: 5000,
         scrollLeft: 500,
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowLeft(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScroll().get(0).id), 500);
+    this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScrollId), 500);
     done = assert.async();
     this.testUtil.wait(325).then(function () {
         //500 minus 120
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 380, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 380, "igScroll did not scroll properly");
 
-        self.arrowLeft(self.vhScroll().get(0).id).mouseout();
+        self.arrowLeft(self.vhScrollId).mouseout();
         self.testUtil.wait(100).then(function () {
             //500 minus 160
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 380, "igScroll did not scroll properly");
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 380, "igScroll did not scroll properly");
 
-            self.arrowLeft(self.vhScroll().get(0).id).mouseover();
+            self.arrowLeft(self.vhScrollId).mouseover();
             self.testUtil.wait(100).then(function () {
                 //500 minus 160
-                assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 300, "igScroll did not scroll properly");
+                assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 300, "igScroll did not scroll properly");
                 self.vhScroll().remove();
                 done();
             });
@@ -2852,20 +2853,20 @@ QUnit.test(testId_103, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    this.hScrollBar(this.vhScroll().get(0).id).mouseenter();
-    assert.ok(this.arrowRight(this.vhScroll().get(0).id).css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+    this.hScrollBar(this.vhScrollId).mouseenter();
+    assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
     done = assert.async();
-    this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScroll().get(0).id), 500);
+    this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScrollId), 500);
     this.testUtil.wait(325).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 120, "igScroll did not scroll properly");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
 
-        self.arrowRight(self.vhScroll().get(0).id).mouseout();
+        self.arrowRight(self.vhScrollId).mouseout();
         self.testUtil.wait(100).then(function () {
-            assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 120, "igScroll did not scroll properly");
+            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
 
-            self.arrowRight(self.vhScroll().get(0).id).mouseover();
+            self.arrowRight(self.vhScrollId).mouseover();
             self.testUtil.wait(100).then(function () {
-                assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 200, "igScroll did not scroll properly");
+                assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
                 self.vhScroll().remove();
                 done();
             });
@@ -2980,8 +2981,8 @@ QUnit.test(testId_108, function (assert) {
     $("#elemVH1_container").igScroll("option", "scrollTop", 100);
     assert.equal($("#elemVH1_container").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
     assert.equal($("#elemVH2_container").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
-    this.elemVH1().remove();
-    this.elemVH2().remove();
+    this.vhScroll1(this.elemVH1()).remove();
+    this.vhScroll2(this.elemVH2()).remove();
 });
 
 QUnit.test(testId_109, function (assert) {
@@ -3001,8 +3002,8 @@ QUnit.test(testId_109, function (assert) {
     $("#elemVH1_container").igScroll("option", "scrollLeft", 100);
     assert.equal($("#elemVH1_container").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
     assert.equal($("#elemVH2_container").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
-    this.elemVH1().remove();
-    this.elemVH2().remove();
+    this.vhScroll1(this.elemVH1()).remove();
+    this.vhScroll2(this.elemVH2()).remove();
 });
 
 QUnit.test(testId_110, function (assert) {
@@ -3016,20 +3017,20 @@ QUnit.test(testId_110, function (assert) {
     this.vhScroll().igScroll({
         scrollOnlyVBar: true,
         scrollbarType: "none",
-        scrollbarV: this.vScrollBar(this.vhScroll().get(0).id)
+        scrollbarV: this.vScrollBar(this.vhScrollId)
     });
-    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScroll().get(0).id).outerHeight());
-    this.vScrollBar(this.vhScroll().get(0).id).on("scroll", function (event) {
+    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScrollId).outerHeight());
+    this.vScrollBar(this.vhScrollId).on("scroll", function (event) {
         var currentPos = event.target.scrollTop;
-        self.scrollContainer(self.vhScroll().get(0).id).scrollTop(currentPos);
+        self.scrollContainer(self.vhScrollId).scrollTop(currentPos);
     });
 
-    this.vScrollBar(this.vhScroll().get(0).id).scrollTop(270);
+    this.vScrollBar(this.vhScrollId).scrollTop(270);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 270, "custom scrollbar scrolls when scrollOnlyVBar is true");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 270, "custom scrollbar scrolls when scrollOnlyVBar is true");
+        self.vScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.vScrollBar(self.vhScroll().get(0).id).remove();
         done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -3050,22 +3051,22 @@ QUnit.test(testId_111, function (assert) {
     this.vhScroll().igScroll({
         scrollOnlyVBar: true,
         scrollbarType: "none",
-        scrollbarV: self.vScrollBar(this.vhScroll().get(0).id)
+        scrollbarV: self.vScrollBar(this.vhScrollId)
     });
-    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScroll().get(0).id).outerHeight());
-    this.vScrollBar(this.vhScroll().get(0).id).on("scroll", function (event) {
+    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScrollId).outerHeight());
+    this.vScrollBar(this.vhScrollId).on("scroll", function (event) {
         var currentPos = event.target.scrollTop;
-        self.scrollContainer(self.vhScroll().get(0).id).scrollTop(currentPos);
+        self.scrollContainer(self.vhScrollId).scrollTop(currentPos);
     });
 
     var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvt);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvt);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 50, "content is scrolled on mouse wheel");
-        assert.equal(self.vScrollBar(self.vhScroll().get(0).id).scrollTop(), 50, "custom scrollbar has it's position updated on mouse wheel over the content");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 50, "content is scrolled on mouse wheel");
+        assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 50, "custom scrollbar has it's position updated on mouse wheel over the content");
+        self.vScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.vScrollBar(self.vhScroll().get(0).id).remove();
         done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -3087,22 +3088,22 @@ QUnit.test(testId_112, function (assert) {
         smoothing: true,
         scrollOnlyVBar: true,
         scrollbarType: "none",
-        scrollbarV: this.vScrollBar(this.vhScroll().get(0).id)
+        scrollbarV: this.vScrollBar(this.vhScrollId)
     });
-    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScroll().get(0).id).outerHeight());
-    this.vScrollBar(this.vhScroll().get(0).id).on("scroll", function (event) {
+    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScrollId).outerHeight());
+    this.vScrollBar(this.vhScrollId).on("scroll", function (event) {
         var currentPos = event.target.scrollTop;
-        self.scrollContainer(self.vhScroll().get(0).id).scrollTop(currentPos);
+        self.scrollContainer(self.vhScrollId).scrollTop(currentPos);
     });
 
     var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-    this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvt);
+    this.scrollContainer(this.vhScrollId).trigger(wheelEvt);
     done = assert.async();
     this.testUtil.wait(2000).then(function () {
-        assert.ok(self.scrollContainer(self.vhScroll().get(0).id).scrollTop() > 80, "content scrolled properly by the custom scrollbar on smooth mouse wheel");
-        assert.ok(self.vScrollBar(self.vhScroll().get(0).id).scrollTop() > 80, "custom scrollbar has it's position updated on smooth mouse wheel");
+        assert.ok(self.scrollContainer(self.vhScrollId).scrollTop() > 80, "content scrolled properly by the custom scrollbar on smooth mouse wheel");
+        assert.ok(self.vScrollBar(self.vhScrollId).scrollTop() > 80, "custom scrollbar has it's position updated on smooth mouse wheel");
+        self.vScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.vScrollBar(self.vhScroll().get(0).id).remove();
         done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -3126,22 +3127,22 @@ QUnit.test(testId_113, function (assert) {
     this.vhScroll().igScroll({
         scrollOnlyVBar: true,
         scrollbarType: "none",
-        scrollbarV: self.vScrollBar(this.vhScroll().get(0).id)
+        scrollbarV: self.vScrollBar(this.vhScrollId)
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
-    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScroll().get(0).id).outerHeight());
-    this.vScrollBar(this.vhScroll().get(0).id).on("scroll", function (event) {
+    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScrollId).outerHeight());
+    this.vScrollBar(this.vhScrollId).on("scroll", function (event) {
         var currentPos = event.target.scrollTop;
-        self.scrollContainer(self.vhScroll().get(0).id).scrollTop(currentPos);
+        self.scrollContainer(self.vhScrollId).scrollTop(currentPos);
     });
 
     done = assert.async();
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(1000).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 52, "content is scrolled by the custom vertical scrollbar properly");
-        assert.equal(self.vScrollBar(self.vhScroll().get(0).id).scrollTop(), 52, "custom scrollbar has it's position updated on touch swipe with no inertia");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 52, "content is scrolled by the custom vertical scrollbar properly");
+        assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 52, "custom scrollbar has it's position updated on touch swipe with no inertia");
+        self.vScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.vScrollBar(self.vhScroll().get(0).id).remove();
         self.util.isTouchDevice = function () { return false; };
         done();
     }).catch(function (er) {
@@ -3162,20 +3163,20 @@ QUnit.test(testId_114, function (assert) {
     this.vhScroll().igScroll({
         scrollOnlyHBar: true,
         scrollbarType: "none",
-        scrollbarH: self.hScrollBar(this.vhScroll().get(0).id)
+        scrollbarH: self.hScrollBar(this.vhScrollId)
     });
-    $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScroll().get(0).id).outerWidth());
-    this.hScrollBar(this.vhScroll().get(0).id).on("scroll", function (event) {
+    $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScrollId).outerWidth());
+    this.hScrollBar(this.vhScrollId).on("scroll", function (event) {
         var currentPos = event.target.scrollLeft;
-        self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(currentPos);
+        self.scrollContainer(self.vhScrollId).scrollLeft(currentPos);
     });
 
-    this.hScrollBar(this.vhScroll().get(0).id).scrollLeft(170);
+    this.hScrollBar(this.vhScrollId).scrollLeft(170);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 170, "custom scrollbar scrolls when scrollOnlyHBar is true");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 170, "custom scrollbar scrolls when scrollOnlyHBar is true");
+        self.hScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.hScrollBar(self.vhScroll().get(0).id).remove();
         done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -3198,20 +3199,20 @@ QUnit.test(testId_115, function (assert) {
         scrollOnlyHBar: true,
         scrollOnlyVBar: true,
         scrollbarType: "none",
-        scrollbarH: this.hScrollBar(this.vhScroll().get(0).id),
+        scrollbarH: this.hScrollBar(this.vhScrollId),
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
-    $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScroll().get(0).id).outerWidth());
-    this.hScrollBar(this.vhScroll().get(0).id).on("scroll", function (event) {
+    $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScrollId).outerWidth());
+    this.hScrollBar(this.vhScrollId).on("scroll", function (event) {
         var currentPos = event.target.scrollLeft;
-        self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(currentPos);
+        self.scrollContainer(self.vhScrollId).scrollLeft(currentPos);
     });
     done = assert.async();
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(self.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(self.vhScrollId), touchSteps, 10);
     this.testUtil.wait(1000).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 22, "custom scrollbar scrolls when scrollOnlyHBar is true");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 22, "custom scrollbar scrolls when scrollOnlyHBar is true");
+        self.hScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.hScrollBar(self.vhScroll().get(0).id).remove();
         self.util.isTouchDevice = function () { return false; };
         done();
     }).catch(function (er) {
@@ -3231,17 +3232,17 @@ QUnit.test(testId_116, function (assert) {
     assert.expect(1);
     this.vhScroll().igScroll({
         scrollbarType: "none",
-        scrollbarV: self.vScrollBar(this.vhScroll().get(0).id)
+        scrollbarV: self.vScrollBar(this.vhScrollId)
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
-    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScroll().get(0).id).outerHeight());
+    $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScrollId).outerHeight());
 
     done = assert.async();
-    this.vScrollBar(this.vhScroll().get(0).id).scrollTop(170);
+    this.vScrollBar(this.vhScrollId).scrollTop(170);
     this.testUtil.wait(1000).then(function () {
-        assert.equal(-self.getTransform3dValueY(self.elemContent(self.vhScroll().get(0).id)), 170, "igScroll content scrolled vertically using transformations");
+        assert.equal(-self.getTransform3dValueY(self.elemContent(self.vhScrollId)), 170, "igScroll content scrolled vertically using transformations");
+        self.vScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.vScrollBar(self.vhScroll().get(0).id).remove();
         self.util.isTouchDevice = function () { return false; };
         done();
     }).catch(function (er) {
@@ -3261,17 +3262,17 @@ QUnit.test(testId_117, function (assert) {
     assert.expect(1);
     this.vhScroll().igScroll({
         scrollbarType: "none",
-        scrollbarH: this.hScrollBar(this.vhScroll().get(0).id)
+        scrollbarH: this.hScrollBar(this.vhScrollId)
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
-    $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScroll().get(0).id).outerWidth());
+    $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScrollId).outerWidth());
 
     done = assert.async();
-    this.hScrollBar(this.vhScroll().get(0).id).scrollLeft(170);
+    this.hScrollBar(this.vhScrollId).scrollLeft(170);
     this.testUtil.wait(100).then(function () {
-        assert.equal(-self.getTransform3dValueX(self.elemContent(self.vhScroll().get(0).id)), 170, "igScroll content scrolled horizontally using transformations");
+        assert.equal(-self.getTransform3dValueX(self.elemContent(self.vhScrollId)), 170, "igScroll content scrolled horizontally using transformations");
+        self.hScrollBar(self.vhScrollId).remove();
         self.vhScroll().remove();
-        self.hScrollBar(self.vhScroll().get(0).id).remove();
         done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -3291,7 +3292,7 @@ QUnit.test(testId_118, function (assert) {
     this.hScroll().css("width", "1000px");
     this.hScroll().igScroll("refresh");
 
-    assert.equal(this.hScrollBar(this.hScroll().get(0).id).length, 0, "igScroll removed horizontal scrollbar on refresh");
+    assert.equal(this.hScrollBar(this.hScrollId).length, 0, "igScroll removed horizontal scrollbar on refresh");
     assert.equal(this.hScroll().data("igScroll")._hBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
     this.hScroll().remove();
 });
@@ -3304,17 +3305,17 @@ QUnit.test(testId_119, function (assert) {
     });
 
     //Check if there is only horizontal scrollbar
-    assert.equal(this.vScrollBar(this.hScroll().get(0).id).length, 0, "igScroll did not render vertical scrollbar on init");
-    assert.equal(this.hScrollBar(this.hScroll().get(0).id).length, 1, "igScroll rendered horizontal scrollbar on init");
+    assert.equal(this.vScrollBar(this.hScrollId).length, 0, "igScroll did not render vertical scrollbar on init");
+    assert.equal(this.hScrollBar(this.hScrollId).length, 1, "igScroll rendered horizontal scrollbar on init");
 
     //Make it bigger
     this.hScroll().css("width", "1000px");
     this.hScroll().igScroll("refresh");
 
-    assert.equal(this.hScrollBar(this.hScroll().get(0).id).length, 0, "igScroll removed horizontal scrollbar on refresh");
+    assert.equal(this.hScrollBar(this.hScrollId).length, 0, "igScroll removed horizontal scrollbar on refresh");
     assert.equal($("#elemH_scrollbarFiller").length, 0, "igScroll removed scrollbar filler on refresh");
     assert.equal(this.hScroll().data("igScroll")._hBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
-    assert.equal(this.elemContent(this.hScroll().get(0).id).css("padding-bottom"), "0px", "igScroll updated reference to scrollbar elements inside igScroll");
+    assert.equal(this.elemContent(this.hScrollId).css("padding-bottom"), "0px", "igScroll updated reference to scrollbar elements inside igScroll");
     this.hScroll().remove();
 });
 
@@ -3329,7 +3330,7 @@ QUnit.test(testId_120, function (assert) {
     this.vScroll().css("height", "2000px");
     this.vScroll().igScroll("refresh");
 
-    assert.equal(this.vScrollBar(this.vScroll().get(0).id).length, 0, "igScroll removed vertical scrollbar on refresh");
+    assert.equal(this.vScrollBar(this.vScrollId).length, 0, "igScroll removed vertical scrollbar on refresh");
     assert.equal(this.vScroll().data("igScroll")._vBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
     this.vScroll().remove();
 });
@@ -3342,17 +3343,17 @@ QUnit.test(testId_121, function (assert) {
     });
 
     //Check if there is only vertical scrollbar
-    assert.equal(this.vScrollBar(this.vScroll().get(0).id).length, 1, "igScroll rendered vertical scrollbar on init");
-    assert.equal(this.hScrollBar(this.vScroll().get(0).id).length, 0, "igScroll did not render horizontal scrollbar on init");
+    assert.equal(this.vScrollBar(this.vScrollId).length, 1, "igScroll rendered vertical scrollbar on init");
+    assert.equal(this.hScrollBar(this.vScrollId).length, 0, "igScroll did not render horizontal scrollbar on init");
 
     //Make it bigger
     this.vScroll().css("height", "2000px");
     this.vScroll().igScroll("refresh");
 
-    assert.equal(this.vScrollBar(this.vScroll().get(0).id).length, 0, "igScroll removed vertical scrollbar on refresh");
+    assert.equal(this.vScrollBar(this.vScrollId).length, 0, "igScroll removed vertical scrollbar on refresh");
     assert.equal($("#elemV_scrollbarFiller").length, 0, "igScroll removed scrollbar filler on refresh");
     assert.equal(this.vScroll().data("igScroll")._vBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
-    assert.equal(this.elemContent(this.vScroll().get(0).id).css("padding-right"), "0px", "igScroll updated reference to scrollbar elements inside igScroll");
+    assert.equal(this.elemContent(this.vScrollId).css("padding-right"), "0px", "igScroll updated reference to scrollbar elements inside igScroll");
     this.vScroll().remove();
 });
 
@@ -3368,8 +3369,8 @@ QUnit.test(testId_122, function (assert) {
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     this.vhScroll().igScroll("option", "scrollbarType", "native");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "igScroll rendered vertical scrollbar");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "igScroll rendered horizontal scrollbar");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "igScroll rendered vertical scrollbar");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "igScroll rendered horizontal scrollbar");
     assert.equal($("#elemVH_scrollbarFiller").length, 0, "igScroll did not render scrollbar filler");
     this.vhScroll().remove();
     this.util.isTouchDevice = function () { return false; };
@@ -3404,13 +3405,13 @@ QUnit.test(testId_124, function (assert) {
         syncedElemsV: [$("#syncV")],
         syncedElemsH: [$("#syncH")]
     });
-    this.hScrollBar(this.vhScroll().get(0).id).scrollLeft(100);
-    this.vScrollBar(this.vhScroll().get(0).id).scrollTop(300);
+    this.hScrollBar(this.vhScrollId).scrollLeft(100);
+    this.vScrollBar(this.vhScrollId).scrollTop(300);
 
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 300, "The main contianer scrolled vertically");
-        assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollLeft(), 100, "The main contianer scrolled horizontally");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 300, "The main contianer scrolled vertically");
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 100, "The main contianer scrolled horizontally");
         assert.equal($("#syncV_container").scrollTop(), 300, "The synced vertically container scrolled vertically ");
         assert.equal($("#syncV_container").scrollLeft(), 0, "The synced vertically container did not scroll horizontally");
         assert.equal($("#syncH_container").scrollTop(), 0, "The synced vertically container did not scroll vertically");
@@ -3447,7 +3448,7 @@ QUnit.test(testId_125, function (assert) {
     $("#syncH").data('igScroll')._bMixedEnvironment = false;
     done = assert.async();
     var touchSteps = [{ x: 20, y: 3 }, { x: 17, y: 7 }, { x: 17, y: 15 }, { x: 17, y: 15 }, { x: 7, y: 6 }, { x: 6, y: 5 }, { x: 1, y: 1 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         //The scroll ammount on X axis is 55 because there is swipe tollerance of 30px
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 55, "igScroll scrolled horizontally by the swipe");
@@ -3474,23 +3475,23 @@ QUnit.test(testId_126, function (assert) {
     this.vhScroll().igScroll();
 
     // Claclulating the drag width and height is based on the formula used in the igScroll implementation
-    var hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100,
-        vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    var hDragWidthPercentage = (this.hTrack(this.vhScrollId).width() / this.elemContent(this.vhScrollId).width()) * 100,
+        vDragHeightPercentage = (this.vTrack(this.vhScrollId).height() / this.elemContent(this.vhScrollId).height()) * 100;
 
-    assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
-    assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
+    assert.equal(parseFloat(this.hDrag(this.vhScrollId)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
+    assert.equal(parseFloat(this.vDrag(this.vhScrollId)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
 
     this.vhScroll().igScroll("option", "scrollWidth", 700);
-    hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100;
-    vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    hDragWidthPercentage = (this.hTrack(this.vhScrollId).width() / this.elemContent(this.vhScrollId).width()) * 100;
+    vDragHeightPercentage = (this.vTrack(this.vhScrollId).height() / this.elemContent(this.vhScrollId).height()) * 100;
 
-    assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
-    assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
+    assert.equal(parseFloat(this.hDrag(this.vhScrollId)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
+    assert.equal(parseFloat(this.vDrag(this.vhScrollId)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
 
     this.vhScroll().igScroll("option", "scrollWidth", 500);
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 0, "Horizontal thumb drag is removed");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "Vertical thumb drag is not removed");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 0, "Horizontal thumb drag is removed");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "Vertical thumb drag is not removed");
     this.vhScroll().remove();
 });
 
@@ -3500,23 +3501,23 @@ QUnit.test(testId_127, function (assert) {
     this.vhScroll().igScroll();
 
     // Claclulating the drag width and height is based on the formula used in the igScroll implementation
-    var hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100,
-        vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    var hDragWidthPercentage = (this.hTrack(this.vhScrollId).width() / this.elemContent(this.vhScrollId).width()) * 100,
+        vDragHeightPercentage = (this.vTrack(this.vhScrollId).height() / this.elemContent(this.vhScrollId).height()) * 100;
 
-    assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
-    assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
+    assert.equal(parseFloat(this.hDrag(this.vhScrollId)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
+    assert.equal(parseFloat(this.vDrag(this.vhScrollId)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
 
     this.vhScroll().igScroll("option", "scrollHeight", 1000);
-    hDragWidthPercentage = (this.hTrack(this.vhScroll().get(0).id).width() / this.elemContent(this.vhScroll().get(0).id).width()) * 100;
-    vDragHeightPercentage = (this.vTrack(this.vhScroll().get(0).id).height() / this.elemContent(this.vhScroll().get(0).id).height()) * 100;
+    hDragWidthPercentage = (this.hTrack(this.vhScrollId).width() / this.elemContent(this.vhScrollId).width()) * 100;
+    vDragHeightPercentage = (this.vTrack(this.vhScrollId).height() / this.elemContent(this.vhScrollId).height()) * 100;
 
-    assert.equal(parseFloat(this.hDrag(this.vhScroll().get(0).id)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
-    assert.equal(parseFloat(this.vDrag(this.vhScroll().get(0).id)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
+    assert.equal(parseFloat(this.hDrag(this.vhScrollId)[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
+    assert.equal(parseFloat(this.vDrag(this.vhScrollId)[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
 
     this.vhScroll().igScroll("option", "scrollHeight", 300);
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "Horizontal thumb drag is not removed");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 0, "Vertical thumb drag is removed");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "Horizontal thumb drag is not removed");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 0, "Vertical thumb drag is removed");
     this.vhScroll().remove();
 });
 
@@ -3533,13 +3534,13 @@ QUnit.test(testId_128, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 3 }, { x: 7, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 9 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 1);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
     this.testUtil.wait(2500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 200, "igScroll scrolled horizontally by the swipe");
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
 
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), -self.getTransform3dValueY($('#elemVSync_content')), "igScroll content and linked element did not sync vertically on touch");
-        assert.equal(-self.getTransform3dValueX(self.elemContent(self.vSyncScroll().get(0).id)), 0, "igScroll content and linked element did not sync vertically on touch");
+        assert.equal(-self.getTransform3dValueX(self.elemContent(self.vSyncScrollId)), 0, "igScroll content and linked element did not sync vertically on touch");
         self.vhScroll().remove();
         self.vSyncScroll().remove();
         self.util.isTouchDevice = function () { return false; };
@@ -3564,13 +3565,13 @@ QUnit.test(testId_129, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 3 }, { x: 7, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 9 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 27, "igScroll did not scroll vertically");
 
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), -self.getTransform3dValueX($('#elemHSync_content')), "igScroll content and linked element did not sync horizontally on touch");
-        assert.equal(-self.getTransform3dValueY(self.elemContent(self.hSyncScroll().get(0).id)), 0, "igScroll content and linked element did not sync horizontally on touch");
+        assert.equal(-self.getTransform3dValueY(self.elemContent(self.hSyncScrollId)), 0, "igScroll content and linked element did not sync horizontally on touch");
         self.vhScroll().remove();
         self.hSyncScroll().remove();
         self.util.isTouchDevice = function () { return false; };
@@ -3594,8 +3595,8 @@ QUnit.test(testId_130, function (assert) {
 
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        assert.equal(self.vScrollBar(self.vhScroll().get(0).id).scrollTop(), 600, "the vertical native scrollbar is poistioned correctly before hiding it");
-        assert.equal(self.hScrollBar(self.vhScroll().get(0).id).scrollLeft(), 100, "the horizontal native scrollbar is poistioned correctly before hiding it");
+        assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 600, "the vertical native scrollbar is poistioned correctly before hiding it");
+        assert.equal(self.hScrollBar(self.vhScrollId).scrollLeft(), 100, "the horizontal native scrollbar is poistioned correctly before hiding it");
 
         self.vhScroll().igScroll("option", "scrollbarType", "none");
 
@@ -3603,8 +3604,8 @@ QUnit.test(testId_130, function (assert) {
         self.vhScroll().igScroll("option", "scrollLeft", 200);
 
         self.vhScroll().igScroll("option", "scrollbarType", "native");
-        assert.equal(self.vScrollBar(self.vhScroll().get(0).id).scrollTop(), 700, "the vertical native scrollbar is poistioned correctly after showing it again");
-        assert.equal(self.hScrollBar(self.vhScroll().get(0).id).scrollLeft(), 200, "the horizontal native scrollbar is poistioned correctly after showing it again");
+        assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 700, "the vertical native scrollbar is poistioned correctly after showing it again");
+        assert.equal(self.hScrollBar(self.vhScrollId).scrollLeft(), 200, "the horizontal native scrollbar is poistioned correctly after showing it again");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -3625,14 +3626,14 @@ QUnit.test(testId_131, function (assert) {
     done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 3 }, { x: 7, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 9 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 1);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
     this.testUtil.wait(2500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 200, "igScroll scrolled horizontally by the swipe");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 27, "igScroll did not scroll properly vertically");
 
         self.vhScroll().igScroll("option", "scrollbarType", "native");
-        assert.equal(self.hScrollBar(self.vhScroll().get(0).id).scrollLeft(), 200, "the vertical native scrollbar is poistioned correctly after showing it again");
-        assert.equal(self.vScrollBar(self.vhScroll().get(0).id).scrollTop(), 27, "the horizontal native scrollbar is poistioned correctly after showing it again");
+        assert.equal(self.hScrollBar(self.vhScrollId).scrollLeft(), 200, "the vertical native scrollbar is poistioned correctly after showing it again");
+        assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 27, "the horizontal native scrollbar is poistioned correctly after showing it again");
         self.vhScroll().remove();
         self.util.isTouchDevice = function () { return false; };
         done();
@@ -3654,8 +3655,8 @@ QUnit.test(testId_132, function (assert) {
     this.vhScroll().igScroll("option", "scrollLeft", 100);
     done = assert.async();
     this.testUtil.wait(100).then(function () {
-        var oldScrollbarPosX = self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id)),
-            oldScrollbarPosY = self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id));
+        var oldScrollbarPosX = self.getTransform3dValueX(self.hDrag(self.vhScrollId)),
+            oldScrollbarPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
 
         self.vhScroll().igScroll("option", "scrollbarType", "none");
         self.vhScroll().igScroll("option", "scrollTop", 700);
@@ -3663,8 +3664,8 @@ QUnit.test(testId_132, function (assert) {
 
         self.vhScroll().igScroll("option", "scrollbarType", "custom");
         self.testUtil.wait(100).then(function () {
-            assert.ok(self.getTransform3dValueX(self.hDrag(self.vhScroll().get(0).id)) > oldScrollbarPosX, "the vertical native scrollbar is poistioned correctly after showing it again");
-            assert.ok(self.getTransform3dValueY(self.vDrag(self.vhScroll().get(0).id)) > oldScrollbarPosY, "the horizontal native scrollbar is poistioned correctly after showing it again");
+            assert.ok(self.getTransform3dValueX(self.hDrag(self.vhScrollId)) > oldScrollbarPosX, "the vertical native scrollbar is poistioned correctly after showing it again");
+            assert.ok(self.getTransform3dValueY(self.vDrag(self.vhScrollId)) > oldScrollbarPosY, "the horizontal native scrollbar is poistioned correctly after showing it again");
             self.vhScroll().remove();
             done();
         });
@@ -3683,8 +3684,8 @@ QUnit.test(testId_133, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "tabindex is the same as the main element");
     assert.equal(this.vhScroll().css("width"), "600px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "600px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 
@@ -3694,8 +3695,8 @@ QUnit.test(testId_133, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "tabindex is the same as the main element");
     assert.equal(this.vhScroll().css("width"), "300px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "300px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "300px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-hcontainer").css("width"), "300px", "tabindex is the same as the main element");
     this.vhScroll().remove();
@@ -3708,8 +3709,8 @@ QUnit.test(testId_134, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "tabindex is the same as the main element");
     assert.equal(this.vhScroll().css("width"), "600px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "600px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 
@@ -3719,8 +3720,8 @@ QUnit.test(testId_134, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "600px", "tabindex is the same as the main element");
     assert.equal(this.vhScroll().css("width"), "600px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "600px", "tabindex is the same as the main element");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "600px", "tabindex is the same as the main element");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "600px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-vcontainer").css("height"), "600px", "tabindex is the same as the main element");
     assert.equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 
@@ -3728,38 +3729,38 @@ QUnit.test(testId_134, function (assert) {
 });
 
 QUnit.test(testId_135, function (assert) {
-    $("body").append($('<div id="elemVH" style="height:400px; width: 400px; overflow: hidden;" tabindex="1"></div>').append(this.contentScrollV));
+    $("body").append($('<div id="elemVH" style="height:400px; width: 400px; overflow: hidden;" tabindex="1"></div>').append(this.contentScrollVH));
     assert.expect(31);
     this.vhScroll().igScroll();
 
     assert.equal(this.vhScroll().css("height"), "400px", "Initial height of the main element is correct");
     assert.equal(this.vhScroll().css("width"), "400px", "Initial width of the main element is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the igScroll main container is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Initial height of the igScroll main container is correct");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-    assert.equal(this.vTrack(this.vhScroll().get(0).id).css("bottom"), "30px", "Initial empty space under the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowDown(this.vhScroll().get(0).id).css("bottom"), "15px", "Initial empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), "400px", "Initial height of the custom vertical scrollbar container is correct");
+    assert.equal(this.vTrack(this.vhScrollId).css("bottom"), "30px", "Initial empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowDown(this.vhScrollId).css("bottom"), "15px", "Initial empty space under the custom vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-    assert.equal(this.hTrack(this.vhScroll().get(0).id).css("right"), "30px", "Initial empty space right of the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowRight(this.vhScroll().get(0).id).css("right"), "15px", "Initial empty space right of the custom vertical scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), "400px", "Initial height of the custom vertical scrollbar container is correct");
+    assert.equal(this.hTrack(this.vhScrollId).css("right"), "30px", "Initial empty space right of the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowRight(this.vhScrollId).css("right"), "15px", "Initial empty space right of the custom vertical scrollbar track is correct");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
-    this.vhScroll().css("width", "600px");
+    this.vhScroll().css("width", "1200px");
     this.vhScroll().data("igScroll")._onElementMutation([{ attributeName: "style" }]);
 
     assert.equal(this.vhScroll().css("height"), "400px", "Height of the main element is correct after changing width");
-    assert.equal(this.vhScroll().css("width"), "600px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.vhScroll().css("width"), "1200px", "Width of the main element is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "1200px", "Width of the igScroll main container is correct after changing width");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "Custom vertical scrollbar should be visible");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
-    assert.equal(this.vTrack(this.vhScroll().get(0).id).css("bottom"), "15px", "Empty space under the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowDown(this.vhScroll().get(0).id).css("bottom"), "0px", "Empty space under the custom down arrow is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "Custom vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
+    assert.equal(this.vTrack(this.vhScrollId).css("bottom"), "15px", "Empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowDown(this.vhScrollId).css("bottom"), "0px", "Empty space under the custom down arrow is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 0, "Custom horizontal scrollbar should not be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 0, "Custom horizontal scrollbar should not be visible");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("width", "400px");
@@ -3767,18 +3768,18 @@ QUnit.test(testId_135, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "400px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "Custom vertical scrollbar should be visible");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
-    assert.equal(this.vTrack(this.vhScroll().get(0).id).css("bottom"), "30px", "Empty space under the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowDown(this.vhScroll().get(0).id).css("bottom"), "15px", "Empty space under the custom vertical scrollbar down arrow is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "Custom vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
+    assert.equal(this.vTrack(this.vhScrollId).css("bottom"), "30px", "Empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowDown(this.vhScrollId).css("bottom"), "15px", "Empty space under the custom vertical scrollbar down arrow is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "Custom horizontal scrollbar should be visible");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
-    assert.equal(this.hTrack(this.vhScroll().get(0).id).css("right"), "30px", "Empty space right of the custom horizontal scrollbar track is correct");
-    assert.equal(this.arrowRight(this.vhScroll().get(0).id).css("right"), "15px", "Empty space right of the custom right arrow is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "Custom horizontal scrollbar should be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
+    assert.equal(this.hTrack(this.vhScrollId).css("right"), "30px", "Empty space right of the custom horizontal scrollbar track is correct");
+    assert.equal(this.arrowRight(this.vhScrollId).css("right"), "15px", "Empty space right of the custom right arrow is correct");
     this.vhScroll().remove();
 });
 
@@ -3789,16 +3790,16 @@ QUnit.test(testId_136, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Initial height of the main element is correct");
     assert.equal(this.vhScroll().css("width"), "400px", "Initial width of the main element is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the igScroll main container is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Initial height of the igScroll main container is correct");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-    assert.equal(this.vTrack(this.vhScroll().get(0).id).css("bottom"), "30px", "Initial empty space under the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowDown(this.vhScroll().get(0).id).css("bottom"), "15px", "Initial empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), "400px", "Initial height of the custom vertical scrollbar container is correct");
+    assert.equal(this.vTrack(this.vhScrollId).css("bottom"), "30px", "Initial empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowDown(this.vhScrollId).css("bottom"), "15px", "Initial empty space under the custom vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), "400px", "Initial height of the custom vertical scrollbar container is correct");
-    assert.equal(this.hTrack(this.vhScroll().get(0).id).css("right"), "30px", "Initial empty space right of the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowRight(this.vhScroll().get(0).id).css("right"), "15px", "Initial empty space right of the custom vertical scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), "400px", "Initial height of the custom vertical scrollbar container is correct");
+    assert.equal(this.hTrack(this.vhScrollId).css("right"), "30px", "Initial empty space right of the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowRight(this.vhScrollId).css("right"), "15px", "Initial empty space right of the custom vertical scrollbar track is correct");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("height", "1500px");
@@ -3806,15 +3807,15 @@ QUnit.test(testId_136, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "1500px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "400px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "1500px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "1500px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 0, "Custom vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 0, "Custom vertical scrollbar should be visible");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "Custom horizontal scrollbar should not be visible");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
-    assert.equal(this.hTrack(this.vhScroll().get(0).id).css("right"), "15px", "Empty space right of the custom horizontal scrollbar track is correct");
-    assert.equal(this.arrowRight(this.vhScroll().get(0).id).css("right"), "0px", "Empty space right of the custom right arrow is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "Custom horizontal scrollbar should not be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
+    assert.equal(this.hTrack(this.vhScrollId).css("right"), "15px", "Empty space right of the custom horizontal scrollbar track is correct");
+    assert.equal(this.arrowRight(this.vhScrollId).css("right"), "0px", "Empty space right of the custom right arrow is correct");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("height", "400px");
@@ -3822,18 +3823,18 @@ QUnit.test(testId_136, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "400px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "Custom vertical scrollbar should be visible");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
-    assert.equal(this.vTrack(this.vhScroll().get(0).id).css("bottom"), "30px", "Empty space under the custom vertical scrollbar track is correct");
-    assert.equal(this.arrowDown(this.vhScroll().get(0).id).css("bottom"), "15px", "Empty space under the custom vertical scrollbar down arrow is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "Custom vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), "400px", "Height of the custom vertical scrollbar container is correct");
+    assert.equal(this.vTrack(this.vhScrollId).css("bottom"), "30px", "Empty space under the custom vertical scrollbar track is correct");
+    assert.equal(this.arrowDown(this.vhScrollId).css("bottom"), "15px", "Empty space under the custom vertical scrollbar down arrow is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "Custom horizontal scrollbar should be visible");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
-    assert.equal(this.hTrack(this.vhScroll().get(0).id).css("right"), "30px", "Empty space right of the custom horizontal scrollbar track is correct");
-    assert.equal(this.arrowRight(this.vhScroll().get(0).id).css("right"), "15px", "Empty space right of the custom right arrow is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "Custom horizontal scrollbar should be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), "400px", "Width of the custom horizontal scrollbar container is correct");
+    assert.equal(this.hTrack(this.vhScrollId).css("right"), "30px", "Empty space right of the custom horizontal scrollbar track is correct");
+    assert.equal(this.arrowRight(this.vhScrollId).css("right"), "15px", "Empty space right of the custom right arrow is correct");
     this.vhScroll().remove();
 });
 
@@ -3847,15 +3848,15 @@ QUnit.test(testId_137, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Initial height of the main element is correct");
     assert.equal(this.vhScroll().css("width"), "400px", "Initial width of the main element is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the igScroll main container is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Initial height of the igScroll main container is correct");
     assert.equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("bottom"), nativeScrollSize + "px", "Initial empty space under the native vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("bottom"), nativeScrollSize + "px", "Initial empty space under the native vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("right"), nativeScrollSize + "px", "Initial empty space right of the native vertical scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("right"), nativeScrollSize + "px", "Initial empty space right of the native vertical scrollbar track is correct");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("width", "700px");
@@ -3863,15 +3864,15 @@ QUnit.test(testId_137, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "700px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "700px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "700px", "Width of the igScroll main container is correct after changing width");
     assert.equal($("#elemVH_scrollbarFiller").length, 0, "Native scrollbars filler should not be visible");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "native vertical scrollbar should be visible");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the native vertical scrollbar container is correct");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("bottom"), "0px", "Initial empty space under the native vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "native vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), "400px", "Initial height of the native vertical scrollbar container is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("bottom"), "0px", "Initial empty space under the native vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 0, "native horizontal scrollbar should not be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 0, "native horizontal scrollbar should not be visible");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("width", "400px");
@@ -3879,17 +3880,17 @@ QUnit.test(testId_137, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "400px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
     assert.equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "native vertical scrollbar should be visible");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), (400 - nativeScrollSize) + "px", "Height of the native vertical scrollbar container is correct");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("bottom"), nativeScrollSize + "px", "Empty space under the native vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "native vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), (400 - nativeScrollSize) + "px", "Height of the native vertical scrollbar container is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("bottom"), nativeScrollSize + "px", "Empty space under the native vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "native horizontal scrollbar should be visible");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), (400 - nativeScrollSize) + "px", "Width of the native horizontal scrollbar container is correct");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("right"), nativeScrollSize + "px", "Empty space right of the native horizontal scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "native horizontal scrollbar should be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), (400 - nativeScrollSize) + "px", "Width of the native horizontal scrollbar container is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("right"), nativeScrollSize + "px", "Empty space right of the native horizontal scrollbar track is correct");
     this.vhScroll().remove();
 });
 
@@ -3903,15 +3904,15 @@ QUnit.test(testId_138, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Initial height of the main element is correct");
     assert.equal(this.vhScroll().css("width"), "400px", "Initial width of the main element is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Initial height of the igScroll main container is correct");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Initial height of the igScroll main container is correct");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Initial height of the igScroll main container is correct");
     assert.equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("bottom"), nativeScrollSize + "px", "Initial empty space under the native vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("bottom"), nativeScrollSize + "px", "Initial empty space under the native vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("right"), nativeScrollSize + "px", "Initial empty space right of the native vertical scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), (400 - nativeScrollSize) + "px", "Initial height of the native vertical scrollbar container is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("right"), nativeScrollSize + "px", "Initial empty space right of the native vertical scrollbar track is correct");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("height", "1500px");
@@ -3919,15 +3920,15 @@ QUnit.test(testId_138, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "1500px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "400px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "1500px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "1500px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
     assert.equal($("#elemVH_scrollbarFiller").length, 0, "Native scrollbars filler should not be visible");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 0, "native vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 0, "native vertical scrollbar should be visible");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "native horizontal scrollbar should not be visible");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), "400px", "Width of the native horizontal scrollbar container is correct");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("right"), "0px", "Empty space right of the native horizontal scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "native horizontal scrollbar should not be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), "400px", "Width of the native horizontal scrollbar container is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("right"), "0px", "Empty space right of the native horizontal scrollbar track is correct");
 
     //Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
     this.vhScroll().css("height", "400px");
@@ -3935,17 +3936,17 @@ QUnit.test(testId_138, function (assert) {
 
     assert.equal(this.vhScroll().css("height"), "400px", "Height of the main element is correct after changing width");
     assert.equal(this.vhScroll().css("width"), "400px", "Width of the main element is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
-    assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "Height of the igScroll main container is correct after changing width");
+    assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "400px", "Width of the igScroll main container is correct after changing width");
     assert.equal($("#elemVH_scrollbarFiller").length, 1, "Native scrollbars filler should be visible");
 
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).length, 1, "native vertical scrollbar should be visible");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("height"), (400 - nativeScrollSize) + "px", "Height of the native vertical scrollbar container is correct");
-    assert.equal(this.vScrollBar(this.vhScroll().get(0).id).css("bottom"), nativeScrollSize + "px", "Empty space under the native vertical scrollbar track is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).length, 1, "native vertical scrollbar should be visible");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("height"), (400 - nativeScrollSize) + "px", "Height of the native vertical scrollbar container is correct");
+    assert.equal(this.vScrollBar(this.vhScrollId).css("bottom"), nativeScrollSize + "px", "Empty space under the native vertical scrollbar track is correct");
 
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).length, 1, "native horizontal scrollbar should be visible");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("width"), (400 - nativeScrollSize) + "px", "Width of the native horizontal scrollbar container is correct");
-    assert.equal(this.hScrollBar(this.vhScroll().get(0).id).css("right"), nativeScrollSize + "px", "Empty space right of the native horizontal scrollbar track is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).length, 1, "native horizontal scrollbar should be visible");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("width"), (400 - nativeScrollSize) + "px", "Width of the native horizontal scrollbar container is correct");
+    assert.equal(this.hScrollBar(this.vhScrollId).css("right"), nativeScrollSize + "px", "Empty space right of the native horizontal scrollbar track is correct");
     this.vhScroll().remove();
 });
 
@@ -3959,7 +3960,7 @@ QUnit.test(testId_140, function (assert) {
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 1);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
     done = assert.async();
     this.testUtil.wait(500).then(function () {
         //Check if we have scrolled more than if we didn't have inertia
@@ -4000,7 +4001,7 @@ QUnit.test(testId_141, function (assert) {
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     done = assert.async();
     this.testUtil.wait(500).then(function () {
         self.vhScroll().igScroll("option", "scrollLeft", 20);
