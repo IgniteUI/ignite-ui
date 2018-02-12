@@ -1351,6 +1351,7 @@ QUnit.test('Test disable option on initiation test 45', function(assert)	{
 	video.trigger(dblclick);
 	assert.equal(counter, 1);
 
+	$('#custDiv').remove();
 	this.checkElementNotClass($('body'), 'ui-igplayer-full-screen-mode');
 	
 });
