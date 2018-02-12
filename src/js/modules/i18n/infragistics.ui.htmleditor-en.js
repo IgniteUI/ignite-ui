@@ -64,12 +64,10 @@
 		linkTargetTopmostWindowDialogText: 'Topmost Window',
 		applyButtonTitle: 'Apply',
 		cancelButtonTitle: 'Cancel',
-		defaultToolbars: {
-			textToolbar: "text manipulation toolbar",
-			formattingToolbar: "text formatting toolbar",
-			insertObjectToolbar: "objects insertion toolbar",
-			copyPasteToolbar: "copy/paste toolbar"
-		},
+		textToolbar: "text manipulation toolbar",
+		formattingToolbar: "text formatting toolbar",
+		insertObjectToolbar: "objects insertion toolbar",
+		copyPasteToolbar: "copy/paste toolbar",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
