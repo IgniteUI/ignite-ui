@@ -330,6 +330,32 @@
             equal($("#dialog1").html(), "Content changed again.", "The content is different than the expected value after destroy.");
         });
 
+        test("#1391 Destroy dialog while animation is in progress", 1, function () {
+            var imgSrc = "https://www.igniteui.com/images/samples/dialog-window/content.jpg";
+            $('<div id="dialogAnim"><img id="contentImg" style="width: 200px" src=' + imgSrc + ' /></div>').appendTo("#container1");
+            var $dialog = $("#dialogAnim").igDialog({
+                height: 250,
+                openAnimation: "slide",
+                closeAnimation: "explode",
+                modal: true
+            });
+            $dialog.igDialog("destroy");
+            QUnit.equal($dialog.children().attr("id"), "contentImg", "The only child should be the image");
+            $dialog.remove();
+        });
+
+        test("Destroy dialog while animation in progress should retain content", function () {
+            $dialog = $("<div class='someClass'><p>SomeContent</p></div>")
+                .appendTo("#newContainer").igDialog({
+                    height: 250,
+                    openAnimation: "slide",
+                    closeAnimation: "explode",
+                    modal: true
+                });
+            $dialog.igDialog("destroy");
+            equal($("#newContainer").children().first().attr("class"), "someClass", "The dialog should be destoyed despite animation. Added element should retain class");
+        });
+
         test("Focus handling", function () {
             $("#dialog4").igDialog("open");
             var $frameBody = $("#testFrame").contents().find('body'), $input,
