@@ -1327,9 +1327,7 @@ QUnit.test('Test disable option on initiation test 45', function(assert)	{
 				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
 				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
 				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
-		width: 800,
-		height: 200,
-		disabled: true,
+		disabled:true,
 		fullscreen: true,
 		preload: true,
 		loop: true
