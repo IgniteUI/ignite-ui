@@ -114,6 +114,7 @@ module.exports = function(config) {
       "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js",
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
+      "tests/unit/common/simInteractions.js",
       "tests/test-patch.js",
       "tests/unit/splitter/jquery.simulate.js",
 	  
