@@ -105,9 +105,9 @@ QUnit.test(testId_1, function (assert) {
 	// Simulate keydown of backspace event
 	var downPressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.DOWN });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(downPressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 40, "scrolled down small increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(downPressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 40, "scrolled down small increment");
 });
 
 QUnit.test(testId_2, function (assert) {
@@ -118,9 +118,9 @@ QUnit.test(testId_2, function (assert) {
 	// Simulate keydown of backspace event
 	var upPressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.UP });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(upPressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 60, "scrolled up small increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(upPressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 60, "scrolled up small increment");
 });
 
 QUnit.test(testId_3, function (assert) {
@@ -131,9 +131,9 @@ QUnit.test(testId_3, function (assert) {
 	// Simulate keydown of backspace event
 	var leftPressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.LEFT });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(leftPressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 60, "scrolled left small increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(leftPressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 60, "scrolled left small increment");
 });
 
 QUnit.test(testId_4, function (assert) {
@@ -142,9 +142,9 @@ QUnit.test(testId_4, function (assert) {
 	// Simulate keydown of backspace event
 	var rightPressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.RIGHT });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(rightPressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 40, "scrolled right small increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(rightPressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 40, "scrolled right small increment");
 });
 
 QUnit.test(testId_5, function (assert) {
@@ -154,23 +154,23 @@ QUnit.test(testId_5, function (assert) {
 	// Simulate keydown of backspace event
 	var pageDownPressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.PAGE_DOWN });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(pageDownPressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), this.scrollContainer(this.vhScroll().get(0).id).height(), "scrolled down big increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(pageDownPressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), this.scrollContainer(this.vhScrollId).height(), "scrolled down big increment");
 });
 
 QUnit.test(testId_6, function (assert) {
 	assert.expect(1);
 	this.vhScroll().igScroll();
 
-	this.vhScroll().igScroll("option", "scrollTop", 2 * this.scrollContainer(this.vhScroll().get(0).id).height());
+	this.vhScroll().igScroll("option", "scrollTop", 2 * this.scrollContainer(this.vhScrollId).height());
 
 	// Simulate keydown of backspace event
 	var pageUpPressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.PAGE_UP });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(pageUpPressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), this.scrollContainer(this.vhScroll().get(0).id).height(), "scrolled down big increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(pageUpPressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), this.scrollContainer(this.vhScrollId).height(), "scrolled down big increment");
 });
 
 QUnit.test(testId_7, function (assert) {
@@ -180,29 +180,29 @@ QUnit.test(testId_7, function (assert) {
 	// Simulate keydown of backspace event
 	var spacePressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.SPACE });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(spacePressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), this.scrollContainer(this.vhScroll().get(0).id).height(), "scrolled down big increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(spacePressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), this.scrollContainer(this.vhScrollId).height(), "scrolled down big increment");
 });
 
 QUnit.test(testId_8, function (assert) {
 	assert.expect(1);
 	this.vhScroll().igScroll();
 
-	this.vhScroll().igScroll("option", "scrollTop", 2 * this.scrollContainer(this.vhScroll().get(0).id).height());
+	this.vhScroll().igScroll("option", "scrollTop", 2 * this.scrollContainer(this.vhScrollId).height());
 
 	// Simulate keydown of backspace event
 	var spacePressEvent = jQuery.Event("keydown", { keyCode: $.ui.keyCode.SPACE, shiftKey: true });
 
-	this.scrollContainer(this.vhScroll().get(0).id).focus();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(spacePressEvent);
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), this.scrollContainer(this.vhScroll().get(0).id).height(), "scrolled down big increment");
+	this.scrollContainer(this.vhScrollId).focus();
+	this.scrollContainer(this.vhScrollId).trigger(spacePressEvent);
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), this.scrollContainer(this.vhScrollId).height(), "scrolled down big increment");
 });
 
 QUnit.test(testId_9, function (assert) {
 	assert.expect(2);
 	this.vhScroll().igScroll();
 
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).attr("tabindex"), undefined, "tabindex is set");
-	assert.notEqual(this.scrollContainer(this.vhScroll().get(0).id).attr("tabindex"), 1, "tabindex is the same as the main element");
+	assert.equal(this.scrollContainer(this.vhScrollId).attr("tabindex"), undefined, "tabindex is set");
+	assert.notEqual(this.scrollContainer(this.vhScrollId).attr("tabindex"), 1, "tabindex is the same as the main element");
 });

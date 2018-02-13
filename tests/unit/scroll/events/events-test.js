@@ -148,8 +148,8 @@ QUnit.test("Scrolling event is fired and its event arguments are correct.", func
 		}
 	});
 	var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
 });
 
 QUnit.test("Scrolled event is fired and its event arguments are correct.", function (assert) {
@@ -164,8 +164,8 @@ QUnit.test("Scrolled event is fired and its event arguments are correct.", funct
 		}
 	});
 
-	this.hScrollbarContainer(this.vhScroll().get(0).id).mouseenter();
-	this.testUtil.simulateSingleClick(this.arrowRight(this.vhScroll().get(0).id));
+	this.hScrollbarContainer(this.vhScrollId).mouseenter();
+	this.testUtil.simulateSingleClick(this.arrowRight(this.vhScrollId));
 
 });
 
@@ -183,11 +183,11 @@ QUnit.test("When Scrolling event is canceled scrolling should not occur and the 
 	});
 
 	var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
 
 	assert.ok(!scrolledIsFired, "Scrolled event should not fire.");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollTop(), 0, "No scrolling should occur.");
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 0, "No scrolling should occur.");
 });
 
 QUnit.test("When Scrolling event is canceled scrolling should not occur when setting scrollLeft and the scrolled event should not fire.", function (assert) {
@@ -203,13 +203,13 @@ QUnit.test("When Scrolling event is canceled scrolling should not occur when set
 		}
 	});
 	var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.scrollContainer(this.vhScroll().get(0).id).trigger(wheelEvtDown);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
 
 	this.vhScroll().igScroll("option", "scrollLeft", 100);
 	//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
 	//ok(!scrolledIsFired, "Scrolled event should not fire.");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).scrollLeft(), 0, "No scrolling should occur.");
+	assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 0, "No scrolling should occur.");
 });
 
 QUnit.test("ThumbDragStart event is fired and its event arguments are correct.", function (assert) {
@@ -224,9 +224,9 @@ QUnit.test("ThumbDragStart event is fired and its event arguments are correct.",
 		}
 	});
 	done = assert.async();
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.vScrollbarContainer(this.vhScroll().get(0).id).mouseenter();
-	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScroll().get(0).id), 0, 50, 200);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.vScrollbarContainer(this.vhScrollId).mouseenter();
+	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScrollId), 0, 50, 200);
 
 	//Wait for simulation to finish
 	this.testUtil.wait(2500).then(function () {
@@ -254,9 +254,9 @@ QUnit.test("ThumbDragMove event is fired and its event arguments are correct.", 
 		}
 	});
 	done = assert.async();
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.vScrollbarContainer(this.vhScroll().get(0).id).mouseenter();
-	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScroll().get(0).id), 0, 50, 200);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.vScrollbarContainer(this.vhScrollId).mouseenter();
+	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScrollId), 0, 50, 200);
 
 	//Wait for simulation to finish
 	this.testUtil.wait(2500).then(function () {
@@ -285,9 +285,9 @@ QUnit.test("ThumbDragEnd event is fired and its event arguments are correct.", f
 	});
 
 	done = assert.async();
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.vScrollbarContainer(this.vhScroll().get(0).id).mouseenter();
-	this.testUtil.simulateClickDragRelese(this.vDrag((this.vhScroll().get(0).id)), 0, 50, 200);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.vScrollbarContainer(this.vhScrollId).mouseenter();
+	this.testUtil.simulateClickDragRelese(this.vDrag((this.vhScrollId)), 0, 50, 200);
 
 	//Wait for simulation to finish
 	this.testUtil.wait(2500).then(function () {
@@ -327,9 +327,9 @@ QUnit.test("Events order", function (assert) {
 	});
 
 	done = assert.async();
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.vScrollbarContainer(this.vhScroll().get(0).id).mouseenter();
-	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScroll().get(0).id), 0, 50, 200);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.vScrollbarContainer(this.vhScrollId).mouseenter();
+	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScrollId), 0, 50, 200);
 
 	//Wait for simulation to finish
 	this.testUtil.wait(2500).then(function () {
@@ -361,14 +361,14 @@ QUnit.test("When ThumbDragMove event is canceled scrolling should not occur and 
 		}
 	});
 	done = assert.async();
-	this.scrollContainer(this.vhScroll().get(0).id).mouseenter();
-	this.vScrollbarContainer(this.vhScroll().get(0).id).mouseenter();
-	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScroll().get(0).id), 0, 50, 200);
+	this.scrollContainer(this.vhScrollId).mouseenter();
+	this.vScrollbarContainer(this.vhScrollId).mouseenter();
+	this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScrollId), 0, 50, 200);
 
 	//Wait for simulation to finish
 	this.testUtil.wait(2500).then(function () {
 		assert.ok(!isFired, "ThumbDragEnd should not fire.");
-		assert.equal(self.scrollContainer(self.vhScroll().get(0).id).scrollTop(), 0, "No scrolling should occur.");
+		assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 0, "No scrolling should occur.");
 		done();
 	}).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
@@ -388,7 +388,7 @@ QUnit.test("When touchend/touchmove/touchstart are prevented igScroll does not s
 	});
 	done = assert.async();
 	var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
-	this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScroll().get(0).id), touchSteps, 10, true);
+	this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10, true);
 	
 	//Wait for simulation to finish
 	this.testUtil.wait(2500).then(function () {
@@ -418,8 +418,8 @@ QUnit.test("When changing the width of the element the resizing/resized events a
 	
 	assert.equal(this.vhScroll().css("height"), "400px", "Element initial height is correct");
 	assert.equal(this.vhScroll().css("width"), "600px", "Element initial width is correc");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "IgScroll's initial contianer height is correct");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "IgScroll's initial contianer width is correct");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "IgScroll's initial contianer height is correct");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "600px", "IgScroll's initial contianer width is correct");
 	assert.equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's initial vertical scrollbar container height is correct");
 	assert.equal($(".igscroll-hcontainer").css("width"), "600px", "IgScroll's initial horizontal scrollbar container width is correct");
 	
@@ -429,8 +429,8 @@ QUnit.test("When changing the width of the element the resizing/resized events a
 	
 	assert.equal(this.vhScroll().css("height"), "400px", "Element height after resising is correct");
 	assert.equal(this.vhScroll().css("width"), "300px", "Element width after resizing is correct");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "IgScroll's contaner height after resizing is correct");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "300px", "IgScroll's contaner width after resizing is correct");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "IgScroll's contaner height after resizing is correct");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "300px", "IgScroll's contaner width after resizing is correct");
 	assert.equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's vertical scrollbar container height after resizing is correct");
 	assert.equal($(".igscroll-hcontainer").css("width"), "300px", "IgScroll's horizontal scrollbar container width after resizing is correct");
 	assert.equal(eventsFired[0], "resizing", "Resizing event fired");
@@ -449,8 +449,8 @@ QUnit.test("When resizing event is canceled the igScroll should not refresh when
 	
 	assert.equal(this.vhScroll().css("height"), "400px", "Element initial height is correct");
 	assert.equal(this.vhScroll().css("width"), "600px", "Element initial width is correc");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "IgScroll's initial contianer height is correct");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "IgScroll's initial contianer width is correct");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "IgScroll's initial contianer height is correct");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "600px", "IgScroll's initial contianer width is correct");
 	assert.equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's initial vertical scrollbar container height is correct");
 	assert.equal($(".igscroll-hcontainer").css("width"), "600px", "IgScroll's initial horizontal scrollbar container width is correct");
 	
@@ -460,8 +460,8 @@ QUnit.test("When resizing event is canceled the igScroll should not refresh when
 	
 	assert.equal(this.vhScroll().css("height"), "400px", "Element height after resising is the same");
 	assert.equal(this.vhScroll().css("width"), "300px", "Element width after resizing is updated");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("height"), "400px", "IgScroll's contaner height after resizing is the same");
-	assert.equal(this.scrollContainer(this.vhScroll().get(0).id).css("width"), "600px", "IgScroll's contaner width after resizing is the same");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "400px", "IgScroll's contaner height after resizing is the same");
+	assert.equal(this.scrollContainer(this.vhScrollId).css("width"), "600px", "IgScroll's contaner width after resizing is the same");
 	assert.equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's vertical scrollbar container height after canceling resizing is the same");
 	
 	//The width of the horizontal scrollbar is changed because it fits the element it is child of to 100%, and since we resized that main element to 300px, the scrollbar container also auto resizes.
