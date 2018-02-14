@@ -17,6 +17,7 @@ QUnit.module("Knockout unit tests for igPercentEditor", {
 	viewModel: function() {
 		var self = this;
 		this.nonObservable = 44;
+		this.nonObservable2 = 245;
 		this.percentNumber = ko.observable(32);
 		this.setDefaultPercentNumber = function () {
 			self.percentNumber(32);
@@ -305,19 +306,37 @@ QUnit.test("Value set to nonObservable value", function (assert) {
 	assert.notEqual(editor.igPercentEditor("value"), this.model.nonObservable, "The value should not be updated");
 });
 
-/*QUnit.test("ListItem change -> immediate", function (assert) {
-	assert.expect(19);
-	this.assert = assert;
+QUnit.test("Value set when bound to a ViewModel's non-observable field", function (assert) {
+	assert.expect(4);
+	var done = assert.async(), self = this;
 
-	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igPercentEditor: { value: percentNumber, dataMode: 'double', width: '160px', displayFactor: 1, minDecimals: 3 }").appendTo(this.qunitFixture);
-	$(this.divTag).attr("id", "divEditor1").attr("data-bind", "igPercentEditor: { value: percentNumber, dataMode: 'double',width: '160px' }").appendTo(this.qunitFixture);
-	$(this.spanTag).attr("id", "spanEditor1").attr("data-bind", "igPercentEditor: { value: percentNumber, dataMode: 'double', width: '160px', displayFactor: 1,  minDecimals: 3}").appendTo(this.qunitFixture);
-	$(this.inputTag).attr("id", "inputValue").attr("data-bind", "value: percentNumber").appendTo(this.qunitFixture);
-	$(this.divTag).attr("id", "divValue").attr("data-bind", "text: percentNumber").appendTo(this.qunitFixture);
-	$(this.spanTag).attr("id", "spanValue").attr("data-bind", "text: percentNumber").appendTo(this.qunitFixture);
-	$(this.inputTag).attr("id", "resetButton").attr("type", "button").attr("data-bind", "click: setDefaultPercentNumber").appendTo(this.qunitFixture);
+	var editor =  $(this.inputTag).attr("data-bind", "igPercentEditor: { value: nonObservable2, displayFactor: 1, width: 160 }").appendTo(this.qunitFixture);
+	this.applyBindings();
+	this.model.nonObservable2 = 245;
+	assert.equal(this.model.nonObservable2, 245); // check the inital value
+	editor.focus(); // focus editor
+	editor.val(255); // change the editor's value
+	editor.blur(); // lose editor's focus to allow KO to update the binding
+	assert.equal(this.model.nonObservable2, 255); // check for the new value
+	editor.remove();
+	ko.cleanNode(this.qunitFixture[0]);
 
-});*/
+	var editor =  $(this.inputTag).attr("data-bind", "igPercentEditor: { value: nonObservable2, displayFactor: 1, width: 160, updateMode:\"immediate\" }").appendTo(this.qunitFixture);
+	this.applyBindings();
+	this.model.nonObservable2 = 245;
+	assert.equal(this.model.nonObservable2, 245); // check the inital value
+	editor.igPercentEditor("setFocus"); // focus editor
+	this.util.wait(100).then(function () {
+		self.util.type("256", editor.igPercentEditor("field"));
+		editor.trigger("blur"); // lose editor's focus to allow KO to update the binding
+		assert.equal(self.model.nonObservable2, 256); // check for the new value
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
 
 QUnit.test("updateMode set to not allowed value", function (assert) {
 	assert.expect(1);

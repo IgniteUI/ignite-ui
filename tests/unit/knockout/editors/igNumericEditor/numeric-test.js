@@ -252,6 +252,38 @@ QUnit.test('Test null binding', function (assert) {
 	assert.equal(editor.igNumericEditor("value"), null, "Editor should have null as a value");
 });
 
+QUnit.test("Value set when bound to a ViewModel's non-observable field", function (assert) {
+	assert.expect(4);
+	var done = assert.async(), self = this;
+
+	var editor =  $(this.inputTag).attr("data-bind", "igNumericEditor: { value: nonObservable2, width: 160 }").appendTo(this.qunitFixture);
+	this.applyBindings();
+	this.model.nonObservable2 = 245;
+	assert.equal(this.model.nonObservable2, 245); // check the inital value
+	editor.focus(); // focus editor
+	editor.val(255); // change the editor's value
+	editor.blur(); // lose editor's focus to allow KO to update the binding
+	assert.equal(this.model.nonObservable2, 255); // check for the new value
+	editor.remove();
+	ko.cleanNode(this.qunitFixture[0]);
+
+	var editor =  $(this.inputTag).attr("data-bind", "igNumericEditor: { value: nonObservable2, width: 160, updateMode:\"immediate\" }").appendTo(this.qunitFixture);
+	this.applyBindings();
+	this.model.nonObservable2 = 245;
+	assert.equal(this.model.nonObservable2, 245); // check the inital value
+	editor.igNumericEditor("setFocus"); // focus editor
+	this.util.wait(100).then(function () {
+		self.util.type("256", editor.igNumericEditor("field"));
+		editor.trigger("blur"); // lose editor's focus to allow KO to update the binding
+		assert.equal(self.model.nonObservable2, 256); // check for the new value
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
+
 QUnit.test("updateMode set to not allowed value", function (assert) {
 	assert.expect(1);
 	var self = this;
