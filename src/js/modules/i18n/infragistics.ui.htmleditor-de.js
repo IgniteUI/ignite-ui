@@ -64,12 +64,10 @@
 		linkTargetTopmostWindowDialogText: 'Fenster im Vordergrund',
 		applyButtonTitle: 'Übernehmen',
 		cancelButtonTitle: 'Abbrechen',
-		defaultToolbars: {
-			textToolbar: "Symbolleiste für Textbearbeitung",
-			formattingToolbar: "Symbolleiste für Textformatierung",
-			insertObjectToolbar: "Symbolleiste für das Einfügen von Objekten",
-			copyPasteToolbar: "Symbolleiste für Kopieren/Einfügen"
-		},
+		textToolbar: "Symbolleiste für Textbearbeitung",
+		formattingToolbar: "Symbolleiste für Textformatierung",
+		insertObjectToolbar: "Symbolleiste für das Einfügen von Objekten",
+		copyPasteToolbar: "Symbolleiste für Kopieren/Einfügen",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },

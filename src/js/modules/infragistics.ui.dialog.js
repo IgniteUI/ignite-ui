@@ -1179,6 +1179,9 @@
 			// Changing the destructor to accommodate for this.element being the top-most element
 			var self = this,
 				elem0 = this.element.children(".ui-igdialog-content");
+
+			// V.S. February 12th, 2018 #1391 Stop current dialog animation before destroy
+			this.element.stop(true, true);
 			this._doClose(null, true);
 			if (self._winResize) {
 				$(window).unbind("resize", self._winResize);
