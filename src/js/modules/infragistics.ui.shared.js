@@ -462,7 +462,7 @@
 			if (this.bookmarks) {
 
 				//V.S. February 16, 2018 #1566 VideoPlayer destroy removes the tooltip correctly.
-				$("#" +  this._id("_tooltip")).igTooltip("destroy").remove();
+				$("#" +  this._id("_tooltip")).remove();
 				this.bookmarks.remove();
 			}
 		},
