@@ -73,8 +73,6 @@ QUnit.module("igDataSource Hierarchical", {
 		},
 		before: function(){
 			var self = this;
-			window["jsonpcallback"] = $.noop;
-
 			$.mockjaxSettings.logging = 0;  // only critical error messages
 			$.mockjax({
 				// jsonp
