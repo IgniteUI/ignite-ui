@@ -64,12 +64,10 @@
 		linkTargetTopmostWindowDialogText: 'Fenêtre supérieure',
 		applyButtonTitle: 'Appliquer',
 		cancelButtonTitle: 'Annuler',
-		defaultToolbars: {
-			textToolbar: "barre d’outils de la manipulation de texte",
-			formattingToolbar: "barre d’outils de la mise en forme de texte",
-			insertObjectToolbar: "barre d’outils d’insertion d’objets",
-			copyPasteToolbar: "barre d’outils copier/coller"
-		},
+		textToolbar: "barre d’outils de la manipulation de texte",
+		formattingToolbar: "barre d’outils de la mise en forme de texte",
+		insertObjectToolbar: "barre d’outils d’insertion d’objets",
+		copyPasteToolbar: "barre d’outils copier/coller",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },

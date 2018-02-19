@@ -114,6 +114,7 @@ module.exports = function(config) {
       "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js",
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
+      "tests/unit/common/simInteractions.js",
       "tests/test-patch.js",
       "tests/unit/splitter/jquery.simulate.js",
 	  
@@ -152,7 +153,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/**/*.js": "coverage"
+      "src/js/modules/*.js": "coverage",
+      "src/js/extensions/*.js": "coverage"
     },
 
     // https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
