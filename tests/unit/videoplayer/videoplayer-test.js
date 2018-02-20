@@ -1186,7 +1186,7 @@ QUnit.test('Destroy video tag test 37"', function(assert) {
 });
 
 QUnit.test('Test fullscreen test 38', function(assert) {
-	assert.expect(10);
+	assert.expect(11);
 	this.assert = assert;
 	var done = assert.async();
 	let checkElementClass = this.checkElementClass;
@@ -1209,7 +1209,7 @@ QUnit.test('Test fullscreen test 38', function(assert) {
 	assert.ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
 	$("#player8").data('igVideoPlayerUnitTesting').pause();
 
-	setTimeout(function(){
+	setTimeout(function() {
 		//check bookmarks
 		var slider = $('#player8_ctrls_s');
 		var bookmarksObjects = $('#player8').igVideoPlayerUnitTesting('option', 'bookmarks');
@@ -1232,7 +1232,9 @@ QUnit.test('Test fullscreen test 38', function(assert) {
 		// $('#player8_ctrls_vs').trigger('mouseout');
 		$('#player8_ctrls_vc_btn').trigger('mouseout');
 		checkElementNotClass($('#player8_ctrls_vc_btn'), 'ui-state-hover', assert)
-
+		assert.equal($('body').children('#player8_ctrls_s_tooltip').css("display"), "none", 'The div player8_ctrls_s_tooltip is not hidden');
+		
+		$('#player8').igVideoPlayerUnitTesting('destroy');
 		assert.ok($('body').children('#player8_ctrls_s_tooltip').length === 0, 'The div player8_ctrls_s_tooltip is not destroyed')
 
 		done();
