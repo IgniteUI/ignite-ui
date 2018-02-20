@@ -431,8 +431,9 @@
 	var testId_49 = "igVidioPlayer Test changing currentTime on a paused vidio";
 	var testId_50 = "igVidioPlayer Test related videos fullscreen and replay";
 	var testId_51 = "igVidioPlayer Dummy Test";
-	var testId_52 = "igVidioPlayer Test entering fullscrren via double click"
-	var testId_53 = "igVidioPlayer Test setting sources after initiation"
+	var testId_52 = "igVidioPlayer Test entering fullscrren via double click";
+	var testId_53 = "igVidioPlayer Test setting sources after initiation";
+	var testId_54 = "igSlider removes it toolbar on destroy";
 
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -856,7 +857,6 @@
 					setTimeout(function(){
 						start();
 						vsPosNew = vs.position().top;
-
 						ok(vsPosNew > vsPos);
 
 						vs.focus();
@@ -1642,6 +1642,22 @@
 				equal(false, $("#player14").igVideoPlayer("paused"));
 				$("#player14").remove();
 			}, 600);
+		});
+		test(testId_54, function(assert) {
+			assert.expect(1);
+			$("<div id='testContainerSlider'></div>").appendTo("#testBedContainer").igSlider({
+				value: 0,
+				bookmarks : [{
+					value : 0,
+					title : "PH 0"
+				}, {
+					value : 1,
+					title : "PH 1"
+				}]
+			});
+			$("#testContainerSlider").igSlider("destroy");
+			equal($("#testContainerSlider_tooltip")[0],undefined, "The slider toolbar is not destroyed");
+			$("#testContainerSlider").remove();
 		});
 	
 	function checkButton(button) {
