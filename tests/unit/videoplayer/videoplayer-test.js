@@ -1771,3 +1771,20 @@ QUnit.test('Test setting sources after initiation test 53', function (assert) {
 		}, 600);
 });
 
+QUnit.test("igSlider removes its toolbar on destroy", function(assert) {
+	assert.expect(1);
+	$.ig.TestUtil.appendToFixture("<div id='testContainerSlider'></div>").igSlider({
+		value: 0,
+		bookmarks : [{
+			value : 0,
+			title : "PH 0"
+		}, {
+			value : 1,
+			title : "PH 1"
+		}]
+	});
+	$("#testContainerSlider").igSlider("destroy");
+	assert.equal($("#testContainerSlider_tooltip")[0],undefined, "The slider toolbar is not destroyed");
+	$("#testContainerSlider").remove();
+});
+
