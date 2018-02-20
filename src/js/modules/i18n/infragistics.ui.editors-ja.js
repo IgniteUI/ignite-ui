@@ -32,6 +32,7 @@
 		ariaMaskEditorFieldLabel: 'マスク エディター',
 		ariaDateEditorFieldLabel: '日付エディター',
 		ariaDatePickerFieldLabel: '日付ピッカー',
+		ariaTimePickerFieldLabel: '時間ピッカー',
 		ariaSpinUpButton: 'スピン アップ',
 		ariaSpinDownButton: 'スピン ダウン',
 		ariaDropDownButton: 'ドロップダウン',
@@ -87,7 +88,8 @@
 		noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。",
 		decimalNumber: "dataMode が '{0}' の場合、{1} オプションは 0 ～ {2} の間の値を承諾します。",
 		decimalSeparatorErrorMsg: "decimalSeparator オプションには別の値が必要です。値を単一文字に設定してください。",
-		decimalSeparatorEqualsGroupSeparatorErrorMsg: "groupSeparator および decimalSeparator オプションを同じ値に設定できません。"
+		decimalSeparatorEqualsGroupSeparatorErrorMsg: "groupSeparator および decimalSeparator オプションを同じ値に設定できません。",
+		timePickerNoSuchMethod: "時間ピッカーはこのメソッドをサポートしません。"
 	};
 
 	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.ja.Editor;
