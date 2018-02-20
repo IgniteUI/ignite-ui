@@ -1,5 +1,4 @@
-
-			QUnit.module("igDataSource Paging", {
+QUnit.module("igDataSource Paging", {
 				tableDs: null,
 				jsonDs: null,
 				treeDs: null,
@@ -138,7 +137,6 @@
 					this.jsonDs = new $.ig.ArrayDataSource( {sorting: { type: "local", defaultDirection: "asc" }, dataSource: this.arrayOfDataObjects }).dataBind();
 
 					// use jQuery templating to render the processed/transformed data source 
-					//$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
 					var template =  $(this.tmplHtml).appendTo($('#qunit-fixture'));
 					template.tmpl(this.jsonDs.dataView()).appendTo($('#qunit-fixture'));;
 
@@ -185,8 +183,6 @@
 				after: function() {
 				}
 			});
-			var testId_4 = "Paging test 3 - go to the next page programatically";
-			
 			QUnit.test("Paging test 1 - apply page size and check number of records for dataView and total data records", function(assert) {
 				assert.expect(4);
 				
