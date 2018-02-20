@@ -64,12 +64,10 @@
 		linkTargetTopmostWindowDialogText: '最上位のウィンドウで開く',
 		applyButtonTitle: '適用',
 		cancelButtonTitle: 'キャンセル',
-		defaultToolbars: {
-			textToolbar: "テキスト操作ツールバー",
-			formattingToolbar: "テキスト書式設定ツールバー",
-			insertObjectToolbar: "オブジェクト挿入ツールバー",
-			copyPasteToolbar: "コピー/貼り付けツールバー"
-		},
+		textToolbar: "テキスト操作ツールバー",
+		formattingToolbar: "テキスト書式設定ツールバー",
+		insertObjectToolbar: "オブジェクト挿入ツールバー",
+		copyPasteToolbar: "コピー/貼り付けツールバー",
 		fontNames: {
 			win: [
 				{ text: "メイリオ", value: "Meiryo" },

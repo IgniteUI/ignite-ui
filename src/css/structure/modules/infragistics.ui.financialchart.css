@@ -13,9 +13,15 @@
 .financialChartToolbar {
 	display: grid;
 }
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+   .financialChartToolbar {
+	display: -ms-grid;
+}
+}
 .financialChartRangeSelector {
 	text-align: center;
-	grid-column: 1;
+	grid-column: 4;
+	-ms-grid-column: 4;
 }
 .financialChartRangeSelector input {
 	display: none;
@@ -37,5 +43,31 @@
 	color: #0090ff;
 }
 .financialChartTypePicker {
+	grid-column: 5;
+	-ms-grid-column: 5;
+}
+.financialChartIndicatorPicker {
+	grid-column: 1;
+	-ms-grid-column: 1;
+}
+.financialChartOverlayPicker {
 	grid-column: 2;
+	-ms-grid-column: 2;
+}
+.financialChartTrendLineTypePicker {
+	grid-column: 3;
+	-ms-grid-column: 3;
+}
+.financialChartVolumeTypePicker {
+	grid-column: 6;
+	-ms-grid-column: 6;
+}
+.financialChartIndicatorPicker, .financialChartOverlayPicker {
+	position: relative; 
+	display: inline-block;
+}
+.financialChartIndicatorPickerDropDownList, .financialChartOverlayPickerDropDownList {
+	position: relative; 
+	display: inline-block;
+	z-index: 1;
 }
