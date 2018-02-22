@@ -3613,7 +3613,12 @@
 						this._showUnsupportedVideoSourceMsg();
 					}
 
-					$("body").toggleClass("ui-igplayer-full-screen-mode");
+					// P.M. February 22nd, 2018 Bug# 1594 Adding or removing the fullscreen mode css class based on the option value
+					if (value) {
+						$("body").addClass("ui-igplayer-full-screen-mode");
+					} else {
+						$("body").removeClass("ui-igplayer-full-screen-mode");
+					}
 
 					if (!options.browserControls) {
 						$("#" + this._id("_ctrls_fs_btn"))
