@@ -3394,7 +3394,8 @@
 				noCancel = true,
 				fsVideoH = 0;
 
-			if (this.options[ key ] === value) {
+			// P.M. February 22nd, 2018 Bug# 1594 We need to be sure that an option will be set when the method is called with the force parametar
+			if (this.options[ key ] === value && !force) {
 				return;
 			}
 
