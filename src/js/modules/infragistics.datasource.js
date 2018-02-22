@@ -7566,7 +7566,7 @@
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
-			if (t === "date") {
+			if (t === "date" || t === "time") {
 				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
