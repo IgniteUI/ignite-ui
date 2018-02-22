@@ -237,7 +237,7 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					headerTemplate {
+					headerTemplate: {
 						closeButton:true,
 						title :"The title of the popover"
 					}

@@ -3092,7 +3092,9 @@
 			var ul = this._populatingNode.ul, node = this._populatingNode.node,
 				path = node.attr("data-path"),
 				originalData = this.nodeDataFor(path),
-				depth = ul.attr("data-depth"),
+
+				// I.G. January 31st, 2018 #1564 igTree does not load nodes after lv3 when using loadOnDemand
+				depth = parseInt(ul.attr("data-depth"), 10),
 				binding = this._retrieveCurrentDepthBinding(depth - 1),
 				newData = data.data();
 
@@ -3836,7 +3838,7 @@
 			}
 
 			checkbox.attr("data-chk", "on");
-			checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
+			checkIcon.removeClass(css.checkboxOff).removeClass(css.checkboxPartial).addClass(css.checkboxOn);
 			nodeObj.data[ nodeObj.binding.checkedKey ] = "on";
 
 			if (opt.checkboxMode.toLowerCase() === "tristate") {
