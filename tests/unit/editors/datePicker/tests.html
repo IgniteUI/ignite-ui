@@ -916,8 +916,8 @@
 				$editor.data("igDatePicker")._dropDownButton.click();
 				ok(testYear !== undefined && testMonth !== undefined && testDate !== undefined, "onChangeMonthYear fires correctly on init.");
 				stop();
-				setTimeout(function(){
-					clickElement($editor.data("igDatePicker")._dropDownButton);
+				setTimeout(function(){	
+					$editor.data("igDatePicker")._dropDownButton.click();
 					$editor.igDatePicker("field").focus().select();
 					start();
 					$("#ui-datepicker-div").find("a.ui-datepicker-next").click();
@@ -937,7 +937,7 @@
 						equal(testDate, 31, "The date has not changed");
 					}
 					$("#ui-datepicker-div").find(".ui-datepicker-current-day").parent().prev().children().last().click();
-					clickElement($editor.data("igDatePicker")._dropDownButton);
+					$editor.data("igDatePicker")._dropDownButton.click();
 					$editor.igDatePicker("field").focus().select();
 					$("#ui-datepicker-div").find("a.ui-datepicker-prev").click();
 					equal(testYear, 2017, "The year has changed");
