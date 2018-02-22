@@ -1118,7 +1118,7 @@
 		ok($video2.width() !== 800, "Width should be reset");		
 	});
 	test(testId_38, function() {
-		$("#player8").data('igVideoPlayerUnitTesting').togglePlay();		
+		$("#player8").data('igVideoPlayerUnitTesting').togglePlay();
 		$("#player8").igVideoPlayerUnitTesting('option', 'fullscreen', true);
 		var videoElem = $('#player8_video')[0],
 			adMessage = $('#player8_ad_msg_c'),
@@ -1663,6 +1663,7 @@
 		});
 
 		test(testId_55, function () {
+			$("body").removeClass("ui-igplayer-full-screen-mode");  //Remove the full-screen-mode class that has been appended to the body from the previous tests
 			$("#player15").igVideoPlayer({
 				sources: [
 					"http://medias.jilion.com/sublimevideo/dartmoor.mov",
@@ -1688,6 +1689,7 @@
 		});
 
 		test(testId_56, function () {
+			$("body").removeClass("ui-igplayer-full-screen-mode");  //Remove the full-screen-mode class that has been appended to the body from the previous tests
 			$("#player16").igVideoPlayer({
 				sources: [
 					"http://medias.jilion.com/sublimevideo/dartmoor.mov",
