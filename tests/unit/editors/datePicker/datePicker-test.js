@@ -1098,3 +1098,60 @@ assert.expect(6);
 	this.input().blur();
 	assert.equal(editor.igDatePicker("displayValue"), "12/9/2017 4:00 AM", "Display value is not correct");
 });
+
+QUnit.test('Change month / year event should pass values accoridngly', function(assert){
+	assert.expect(11);
+	var editor, testYear, testMonth, testDate;
+	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
+		value: new Date("2017-12-31T00:00:00.000Z"),
+		dataMode: "date",
+		dateDisplayFormat: "dateTime",
+		enableUTCDates: true,
+		displayTimeOffset: 0,
+		dropDownAnimationDuration: 1,
+		datepickerOptions:{
+			onChangeMonthYear: function(year, month, date){
+				testYear = year;
+				testMonth = month;
+				testDate = date;
+			}
+		}	
+	});
+	assert.ok(testYear === undefined && testMonth === undefined && testDate === undefined, "Test values are undefined by default.");
+	editor.data("igDatePicker")._dropDownButton.click();
+	assert.ok(testYear !== undefined && testMonth !== undefined && testDate !== undefined, "onChangeMonthYear fires correctly on init.");
+	done = assert.async();
+	self.util.wait(100).then(function(){
+		editor.data("igDatePicker")._dropDownButton.click();
+		editor.igDatePicker("field").focus().select();
+		start();
+		$("#ui-datepicker-div").find("a.ui-datepicker-next").click();
+		assert.equal(testYear, 2018, "The year has changed");
+		assert.equal(testMonth, 1, "The month has changed");
+		if(testDate !== undefined){
+			assert.equal(testDate.currentDay, 31, "The date has not changed");
+		} else {
+			assert.equal(testDate, 31, "The date has not changed");
+		}
+		$("#ui-datepicker-div").find("a.ui-datepicker-prev").click();
+		assert.equal(testYear, 2017, "The year has changed");
+		assert.equal(testMonth, 12, "The month has changed");
+		if(testDate !== undefined){
+			assert.equal(testDate.currentDay, 31, "The date has not changed");
+		} else {
+			assert.equal(testDate, 31, "The date has not changed");
+		}
+		$("#ui-datepicker-div").find(".ui-datepicker-current-day").parent().prev().children().last().click();
+		editor.data("igDatePicker")._dropDownButton.click();
+		editor.igDatePicker("field").focus().select();
+		$("#ui-datepicker-div").find("a.ui-datepicker-prev").click();
+		assert.equal(testYear, 2017, "The year has changed");
+		assert.equal(testMonth, 11, "The month has changed");
+		if(testDate !== undefined){
+			assert.equal(testDate.currentDay, 30, "The date has changed");
+		} else {
+			assert.equal(testDate, 30, "The date has changed");
+		}
+		done();
+	});
+});
