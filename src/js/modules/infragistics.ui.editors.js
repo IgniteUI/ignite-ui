@@ -7344,8 +7344,10 @@
 			var maskSymbol, mask, isValid,
 				regex,
 				inputChar = ch,
-				letterOrDigitRegEx = "[\\d\u00C0-\u1FFF\u2C00-\uD7FFa-zA-Z]",
-				letterRegEx = "[\u00C0-\u1FFF\u2C00-\uD7FFa-zA-Z]",
+
+				//V.S. February 19th, 2018 #1362 Escaped unicode characters in RegEx;
+				letterOrDigitRegEx = "[\\d\\u00C0-\\u1FFF\\u2C00-\\uD7FFa-zA-Z]",
+				letterRegEx = "[\\u00C0-\\u1FFF\\u2C00-\\uD7FFa-zA-Z]",
 				digitRegEx = "[\\d]",
 				digitSpecialRegEx = "[\\d_\\+]";
 				mask = inputMask || this.options.inputMask;
