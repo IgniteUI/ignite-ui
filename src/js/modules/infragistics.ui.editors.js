@@ -3203,6 +3203,11 @@
 				editorInput: this._editorInput,
 				list: this._dropDownList
 			};
+
+			//V.S. 23 February 2018, #1571 - Fix render of dropDown using jQuery UI versions below 1.12.1. Capture scrollTop at start and reapply at end of anim.
+			if (this._scrollTopDropDownPosition !== undefined) {
+				this._dropDownList.scrollTop(this._scrollTopDropDownPosition);
+			}
 			return this._trigger(this.events.dropDownListOpened, null, args);
 		},
 		_triggerDropDownItemSelecting: function (item) {
@@ -3432,6 +3437,12 @@
 
 			if (!activeItem.length) {
 				return;
+			}
+
+			//V.S. 23 February 2018, #1571 - Fix render of dropDown using jQuery UI versions below 1.12.1. Capture scrollTop at start and reapply at end of anim.
+			if (this._dropDownList.parent().hasClass("ui-effects-wrapper")) {
+				this._scrollTopDropDownPosition = this._dropDownList.scrollTop() +
+				activeItem.position().top;
 			}
 			if (this._elementPositionInViewport(activeItem) !== "inside") {
 				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
