@@ -434,6 +434,8 @@
 	var testId_52 = "igVidioPlayer Test entering fullscrren via double click";
 	var testId_53 = "igVidioPlayer Test setting sources after initiation";
 	var testId_54 = "igSlider removes it toolbar on destroy";
+	var testId_55 = "igVidioPlayer Test fullscreen option class_true";
+	var testId_56 = "igVidioPlayer Test fullscreen option class_false";
 
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -1116,7 +1118,7 @@
 		ok($video2.width() !== 800, "Width should be reset");		
 	});
 	test(testId_38, function() {
-		$("#player8").data('igVideoPlayerUnitTesting').togglePlay();		
+		$("#player8").data('igVideoPlayerUnitTesting').togglePlay();
 		$("#player8").igVideoPlayerUnitTesting('option', 'fullscreen', true);
 		var videoElem = $('#player8_video')[0],
 			adMessage = $('#player8_ad_msg_c'),
@@ -1659,6 +1661,58 @@
 			equal($("#testContainerSlider_tooltip")[0],undefined, "The slider toolbar is not destroyed");
 			$("#testContainerSlider").remove();
 		});
+
+		test(testId_55, function () {
+			$("body").removeClass("ui-igplayer-full-screen-mode");  //Remove the full-screen-mode class that has been appended to the body from the previous tests
+			$("#player15").igVideoPlayer({
+				sources: [
+					"http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				fullscreen: true
+			});
+
+			var hasFullScreenClass = $("body").hasClass("ui-igplayer-full-screen-mode");
+			equal(hasFullScreenClass, true, "The \"ui-igplayer-full-screen-mode\" class should be added to the body when the video player fullscreen option is set to true.");
+
+			$('#player15').igVideoPlayer('option', 'fullscreen', false);
+			hasFullScreenClass = $("body").hasClass("ui-igplayer-full-screen-mode");
+			equal(hasFullScreenClass, false, "The \"ui-igplayer-full-screen-mode\" class should be removed from body when the video player fullscreen option is set to false.");
+
+			$('#player15').igVideoPlayer('option', 'fullscreen', true);
+			hasFullScreenClass = $("body").hasClass("ui-igplayer-full-screen-mode");
+			equal(hasFullScreenClass, true, "The \"ui-igplayer-full-screen-mode\" class should be added to the body when the video player fullscreen option is set to true.");
+			
+			$('#player15').igVideoPlayer('option', 'fullscreen', false);
+			$('#player15').remove();
+		});
+
+		test(testId_56, function () {
+			$("body").removeClass("ui-igplayer-full-screen-mode");  //Remove the full-screen-mode class that has been appended to the body from the previous tests
+			$("#player16").igVideoPlayer({
+				sources: [
+					"http://medias.jilion.com/sublimevideo/dartmoor.mov",
+					"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+					"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+					"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				fullscreen: false
+			});
+
+			var hasFullScreenClass = $("body").hasClass("ui-igplayer-full-screen-mode");
+			equal(hasFullScreenClass, false, "The \"ui-igplayer-full-screen-mode\" class should be removed from body when the video player fullscreen option is set to false.");
+
+			$('#player16').igVideoPlayer('option', 'fullscreen', true);
+			hasFullScreenClass = $("body").hasClass("ui-igplayer-full-screen-mode");
+			equal(hasFullScreenClass, true, "The \"ui-igplayer-full-screen-mode\" class should be added to the body when the video player fullscreen option is set to true.");
+
+			$('#player16').igVideoPlayer('option', 'fullscreen', false);
+			hasFullScreenClass = $("body").hasClass("ui-igplayer-full-screen-mode");
+			equal(hasFullScreenClass, false, "The \"ui-igplayer-full-screen-mode\" class should be removed from body when the video player fullscreen option is set to false.");
+			
+			$('#player16').remove();
+		});
+
 	
 	function checkButton(button) {
 		checkClass(button, 'ui-widget');
@@ -1745,6 +1799,13 @@
 	<br/>
 	<h1>igVideoPlayer 11</h1>	
 	<div id="player11"></div>
+	<br/>
+	<br/>
+	<h1>igVideoPlayer 15</h1>
+	<div id="player15"></div>
+	<br/>
+	<br/>
+	<div id="player16"></div>
 	<br/>
 	<br/>
 	<video id="video1" controls="true" src="http://video-js.zencoder.com/oceans-clip.mp4" type="video/mp4" ></video>
