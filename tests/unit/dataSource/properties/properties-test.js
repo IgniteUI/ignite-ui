@@ -11,9 +11,10 @@ QUnit.module("igDataSource Properties", {
 				return val < 2 ? true : false;
 			},
 			loadTestbeds: function(){
-				// define a simple data source control
 				var self = this;
+				// define a simple data source control
 				this.ds1 = new $.ig.DataSource();
+
 				this.ds1.settings.dataBinding = function () { self.dataBindingFired = true; };
 				this.ds1.settings.dataBound = function () { self.dataBoundFired = true; };
 				this.ds1.dataBind();
@@ -40,7 +41,7 @@ QUnit.module("igDataSource Properties", {
 				});
 				this.ds2.dataBind();
 			},
-			before: function(assert) {
+			beforeEach: function(assert) {
 				$.mockjaxSettings.logging = 0;  // only critical error messages
 				var done = assert.async();
 				//pause testing until tree is initialized
@@ -97,7 +98,9 @@ QUnit.module("igDataSource Properties", {
 	
 		QUnit.test("igDataSource properties test: type property test", function (assert) {
 			assert.expect(2);
-			var t = this.ds1.type("unknown").type();
+			//var t = this.ds1.type("unknown").type();
+			this.ds1.type("unknown");
+			var t = this.ds1.settings.type;
 			if ((t === "unknown" || t === "empty") && t !== undefined && t != null) {
 				assert.ok (true, "type is ok", true);
 			} else {
@@ -172,7 +175,7 @@ QUnit.module("igDataSource Properties", {
 			assert.equal(arrayDs.type(), "array", "Check if dataSource type is correct.");
 		});
 		QUnit.test("Test creating RemoteDataSource   ", function (assert) {
-			var arrayDs = new $.ig.RemoteDataSource ();
+			var arrayDs = new $.ig.RemoteDataSource();
 			assert.equal(arrayDs.type(), "remoteUrl", "Check if dataSource type is correct.");
 		});
 		
