@@ -1788,7 +1788,7 @@ QUnit.test("igSlider removes its toolbar on destroy", function(assert) {
 	$("#testContainerSlider").remove();
 });
 
-Unit.test('Test fullscreen option class when set to true test 55', function (assert) {
+QUnit.test('Test fullscreen option class when set to true test 55', function (assert) {
 	assert.expect(3);
 	createFixtureDiv('player15');
 
@@ -1840,3 +1840,4 @@ QUnit.test('Test fullscreen option class when set to false test 56', function (a
 	hasFullScreenClass = $("body").hasClass(fullscreenClass);
 	assert.notOk(hasFullScreenClass, "The full-screen-mode class should be removed from body when the video player fullscreen option is set to false.");
 });
+
