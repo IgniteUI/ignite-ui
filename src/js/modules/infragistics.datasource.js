@@ -7588,7 +7588,7 @@
 				} else {
 					results[ i ][ field.name ] = this._convertType(t, val);
 					/* assign offset in the record if applicable */
-					if (t === "date") {
+					if (t === "date" || t === "time") {
 						this._addOffset(results[ i ], field.name, i);
 					}
 				}
@@ -7652,7 +7652,7 @@
 					} else {
 						nDataRow[ fName ] = this._convertType(t, tmp);
 						/* assign offset in the record if applicable */
-						if (t === "date") {
+						if (t === "date" || t === "time") {
 							this._addOffset(nDataRow, fName, index);
 						}
 					}
