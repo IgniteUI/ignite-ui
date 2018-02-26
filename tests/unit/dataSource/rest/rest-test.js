@@ -60,11 +60,6 @@
 		},
 		loadTestbeds: function(){
 			$(this.html).appendTo($('#qunit-fixture'));
-			this.rs = {
-				create: {
-					url: "/api/productsRest/"
-				}
-			};
 			empty = {
 				create: {
 					url: null,
@@ -84,7 +79,32 @@
 				encodeRemoveInRequestUri: true,
 				contentSerializer: null,
 				contentType: 'application/json; charset=utf-8'
-			}
+			};
+			var emptyObjCopy = {
+				create: {
+					url: null,
+					template: null,
+					batch: false
+				},
+				update: {
+					url: null,
+					template: null,
+					batch: false
+				},
+				remove: {
+					url: null,
+					template: null,
+					batch: false
+				},
+				encodeRemoveInRequestUri: true,
+				contentSerializer: null,
+				contentType: 'application/json; charset=utf-8'
+			};
+			this.rs = emptyObjCopy;
+			this.rs.create = {
+				url: "/api/productsRest/"
+			};
+			
 			this.tUrl1 = "/api/create/productsRest/";
 			this.tUrl2 = "/api/update/productsRest/";
 			this.tUrl3 = "/api/delete/productsRest/";
