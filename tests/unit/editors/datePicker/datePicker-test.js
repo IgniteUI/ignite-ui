@@ -274,7 +274,7 @@ QUnit.test('Apply datepicker options', function (assert) {
 QUnit.test('Trigger key down, key up', function (assert) {
 	assert.expect(3);
 
-	var calendarVisibility;
+	var done = assert.async();
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker();
 
@@ -285,7 +285,15 @@ QUnit.test('Trigger key down, key up', function (assert) {
 	assert.ok(this.input()[0] === document.activeElement, "Input field not focused on dropDownListOpening");
 	this.dropDownButton().click();
 	this.util.keyInteraction(40, this.input());
-	assert.notOk(editor.igDatePicker("dropDownVisible"),"The dropdown container is visible, but it shouldn't be.");
+	this.util.wait(200).then(function () {
+		assert.notOk(editor.igDatePicker("dropDownVisible"),"The dropdown container is visible, but it shouldn't be.");
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+	
 });
 
 QUnit.test('Trigger onSelect and onClose', function (assert) {
@@ -1108,9 +1116,9 @@ QUnit.test('Change month / year event should pass values accoridngly', function(
 		dateDisplayFormat: "dateTime",
 		enableUTCDates: true,
 		displayTimeOffset: 0,
-		dropDownAnimationDuration: 1,
+		dropDownAnimationDuration: -1,
 		datepickerOptions:{
-			onChangeMonthYear: function(year, month, date){
+			onChangeMonthYear: function(year, month, date) {
 				testYear = year;
 				testMonth = month;
 				testDate = date;
@@ -1121,8 +1129,7 @@ QUnit.test('Change month / year event should pass values accoridngly', function(
 	editor.data("igDatePicker")._dropDownButton.click();
 	assert.ok(testYear !== undefined && testMonth !== undefined && testDate !== undefined, "onChangeMonthYear fires correctly on init.");
 	done = assert.async();
-	this.util.wait(100).then(function(){
-		editor.data("igDatePicker")._dropDownButton.click();
+	this.util.wait(100).then(function() {
 		editor.igDatePicker("field").focus().select();
 		$("#ui-datepicker-div").find("a.ui-datepicker-next").click();
 		assert.equal(testYear, 2018, "The year has changed");
@@ -1151,6 +1158,7 @@ QUnit.test('Change month / year event should pass values accoridngly', function(
 		} else {
 			assert.equal(testDate, 30, "The date has changed");
 		}
+		editor.data("igDatePicker")._dropDownButton.click();
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
