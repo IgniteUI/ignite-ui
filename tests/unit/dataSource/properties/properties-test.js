@@ -59,8 +59,8 @@ QUnit.module("igDataSource Properties", {
 			assert.equal(true, this.dataBindingFired, true);
 		});
 		QUnit.test("igDataSource events test: DataBound", function(assert) {
-			assert.expect(1);
-			assert.equal(true, this.dataBoundFired, true);
+		 	assert.expect(1);
+		 	assert.equal(true, this.dataBoundFired, true);
 		});
 		QUnit.test("igDataSource properties test: fields property", function (assert) {
 			assert.expect(1);
@@ -75,19 +75,28 @@ QUnit.module("igDataSource Properties", {
 		
 		QUnit.test("igDataSource properties test: paging settings property", function (assert) {
 			assert.expect(1);
-			var ps = this.ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			var ds =  new $.ig.DataSource({
+					paging: {enabled: true, pageSize:5}
+			});
+			var ps =ds.pagingSettings();
 			assert.equal(5, ps.pageSize, 5);
 			
 		});
 		QUnit.test("igDataSource properties test: filtering settings property", function (assert) {
+			var ds1 = new $.ig.DataSource({
+				filtering: {filterExprUrlKey: "f"}
+			});
 			assert.expect(1);
-			var fs = this.ds1.filterSettings({filterExprUrlKey: "f"}).filterSettings();
+			var fs = ds1.filterSettings();
 			assert.equal("f", fs.filterExprUrlKey, "f");
 		});
 		
 		QUnit.test("igDataSource properties test: sort settings property", function (assert) {
+			var ds1 = new $.ig.DataSource({
+				sorting: {exprString: "col1 ASC"}
+			});
 			assert.expect(1);
-			var ss = this.ds1.sortSettings({exprString: "col1 ASC"}).sortSettings();
+			var ss = ds1.sortSettings();
 			assert.equal("col1 ASC", ss.exprString, "col1 ASC");
 		});
 		QUnit.test("igDataSource properties test: dataSource property test", function (assert) {
@@ -108,19 +117,27 @@ QUnit.module("igDataSource Properties", {
 			}
 			assert.equal("unknown", this.ds1.settings.type, "unknown");
 		});	
-		// page index
+		//page index
 		QUnit.test("igDataSource properties test: page index property", function (assert) {
 			assert.expect(1);
-			var ps = this.ds1.pagingSettings({pageSize: 5}).pagingSettings();
-			assert.equal(0, this.ds1.pageIndex(), 0);
+			var ds =  new $.ig.DataSource({
+					paging: {enabled: true, pageSize:5, pageIndex:0}
+			});
+			ds.dataBind();
+			var ps = ds.pagingSettings();
+			assert.equal(0, ds.pageIndex(), 0);
 			
 		});
 		
 		// page count
 		QUnit.test("igDataSource properties test: page count property", function (assert) {
 			assert.expect(1);
-			var ps = this.ds1.pagingSettings({pageSize: 5}).pagingSettings();
-			assert.equal(1, this.ds1.pageCount(), 1);
+			var ds =  new $.ig.DataSource({
+					paging: {enabled: true, pageSize:5}
+			});
+			ds.dataBind();
+			var ps = ds.pagingSettings();
+			assert.equal(1, ds.pageCount(), 1);
 		});	
 		// test stringToJSONObject
 		QUnit.test("Test stringToJSONObject", function (assert) {
@@ -175,7 +192,7 @@ QUnit.module("igDataSource Properties", {
 			assert.equal(arrayDs.type(), "array", "Check if dataSource type is correct.");
 		});
 		QUnit.test("Test creating RemoteDataSource   ", function (assert) {
-			var arrayDs = new $.ig.RemoteDataSource();
+			var arrayDs = new $.ig.RemoteDataSource({});
 			assert.equal(arrayDs.type(), "remoteUrl", "Check if dataSource type is correct.");
 		});
 		

@@ -15,7 +15,7 @@
 		dsJSONWrappedRender:  function (success, error) {},
 		dsXMLBareRender: function (success, error) {},
 		dsXMLWrappedRender: function (success, error) {},	
-		beforeEach: function(assert) {
+		before: function(assert) {
 			var done = assert.async();
 			$.mockjaxSettings.logging = 0;  // only critical error messages
 			$.mockjax({
