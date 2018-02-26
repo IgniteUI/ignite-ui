@@ -688,4 +688,62 @@ QUnit.test("[ID18] change locale", function (assert) {
 	assert.equal(closeButton[0].getAttribute('title'), 'Cerrar', "The title of the Close Button is localized to 'Cerrar'");
 });
 
+QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fire 'animationEnded'", function (assert) {
+	assert.expect(3);
+	var self = this;
+	var animationEventFlag = false;
+	var $dialog = this.util.appendToFixture("<div id='openAnimationDialog'><h1>Hello World!</h1></div>")
+	.igDialog({
+		state: 'open',
+		modal: true,
+		height: '400px',
+		width: '600px',
+		openAnimation: { effect: 'scale', duration: 1000 },
+		closeAnimation: { effect: 'explode', duration: 1000 },
+		stateChanged: function (evt, ui) {
+			if (ui.action === 'close') {
+				$dialog.remove();
+			}
+			return true;
+		},
+		animationEnded: function(){
+			animationEventFlag = true;
+		}
+	});
+	var done = assert.async();
+	assert.ok(!animationEventFlag, "Animation flag should be false by default");
+	self.util.wait(1100).then(function(){
+		assert.ok(animationEventFlag, "Animation flag should be true after openAnimation is completed");
+		$dialog.igDialog("close");
+		animationEventFlag = false;
+		return self.util.wait(1110);
+	}).then(function(){
+		assert.ok(animationEventFlag, "Animation flag should be true after closeAnimation is completed");
+		done();
+	});
+});
+
+QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", function (assert) {
+	assert.expect(1);
+	var $dialog = this.util.appendToFixture("<div id='openAnimationDialog'><h1>Hello World!</h1></div>")
+	.igDialog({
+		state: 'open',
+		modal: true,
+		height: '400px',
+		width: '600px',
+		openAnimation: { effect: 'scale', duration: 1000 },
+		stateChanged: function (evt, ui) {
+			if (ui.action === 'close') {
+			}
+			return true;
+		}
+	});
+	var done = assert.async();
+	this.util.wait(1000).then(function(){
+		var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
+		assert.ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
+		done();
+	});
+});
+
 

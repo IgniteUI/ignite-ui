@@ -1112,3 +1112,46 @@ QUnit.test('[ID24] Mask editor drag and drop events', function (assert) {
 		throw er;
 	});
 });
+
+QUnit.test("[ID25] Unicode characters regex check", function (assert) {
+	assert.expect(14);
+	var $editor;
+	$editor = $.ig.TestUtil.appendToFixture(this.inputTag).igMaskEditor({ inputMask: "LLLLL" });
+	var field = $editor.igMaskEditor("field");
+	function enterValue(value){
+		$editor.focus()[0].setSelectionRange(0,0);
+		$.ig.TestUtil.type(value, field);
+	}
+	var testValues = [{
+		value: "たかむごひ",
+		valid: true
+	},{
+		value: "ⰁⰂⰃⰄⰅ",
+		valid: true
+	},{
+		value: "ퟻퟺퟯퟮퟭ",
+		valid: true
+	},{
+		value: "₩₩₩₩₩",
+		valid: false,
+		expected: "_____"
+	},{
+		value: "Ⰰ⯿⯾⯽⯼",
+		valid: false,
+		expected: "Ⰰ____"
+	},{
+		value: "‐‑‒–—",
+		valid: false,
+		expected: "_____"
+	},{
+		value: "¿¾½¼»",
+		valid: false,
+		expected: "_____"
+	}]
+	for(var i=0; i< testValues.length; i++){
+		$editor.igMaskEditor("field").val("_____");
+		enterValue(testValues[i].value);
+		assert.ok($editor.igMaskEditor("isValid") == testValues[i].valid, "Value is expected to be accepted.");
+		assert.equal(field.val(), testValues[i].valid ? testValues[i].value : testValues[i].expected, "The text is not as expected");
+	}
+});

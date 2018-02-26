@@ -7344,8 +7344,10 @@
 			var maskSymbol, mask, isValid,
 				regex,
 				inputChar = ch,
-				letterOrDigitRegEx = "[\\d\u00C0-\u1FFF\u2C00-\uD7FFa-zA-Z]",
-				letterRegEx = "[\u00C0-\u1FFF\u2C00-\uD7FFa-zA-Z]",
+
+				//V.S. February 19th, 2018 #1362 Escaped unicode characters in RegEx;
+				letterOrDigitRegEx = "[\\d\\u00C0-\\u1FFF\\u2C00-\\uD7FFa-zA-Z]",
+				letterRegEx = "[\\u00C0-\\u1FFF\\u2C00-\\uD7FFa-zA-Z]",
 				digitRegEx = "[\\d]",
 				digitSpecialRegEx = "[\\d_\\+]";
 				mask = inputMask || this.options.inputMask;
@@ -11045,8 +11047,10 @@
 			}
 			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
 				var isOnChangeMonthYear = regional.onChangeMonthYear;
-				options.onChangeMonthYear  = function () {
-					isOnChangeMonthYear.call(this);
+
+				//V.S. 22 February 2018, #1609 - adjusted onChangeMonthYear function to pass year, month, date to the event
+				options.onChangeMonthYear  = function (year, month, date) {
+					isOnChangeMonthYear.call(this, year, month, date);
 					if (self.options.suppressKeyboard) {
 						self._shouldNotFocusInput = true;
 					}

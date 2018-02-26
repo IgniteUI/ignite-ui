@@ -1792,3 +1792,56 @@ QUnit.test("igSlider removes its toolbar on destroy", function(assert) {
 	$("#testContainerSlider").remove();
 });
 
+QUnit.test('Test fullscreen option class when set to true test 55', function (assert) {
+	assert.expect(3);
+	createFixtureDiv('player15');
+
+	$("#player15").igVideoPlayer({
+		sources: [
+			"http://medias.jilion.com/sublimevideo/dartmoor.mov",
+			"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+			"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+			"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		fullscreen: true
+	});
+	
+	var fullscreenClass = "ui-igplayer-full-screen-mode";
+	var hasFullScreenClass = $("body").hasClass(fullscreenClass);
+	assert.ok(hasFullScreenClass, "The full-screen-mode class should be added to the body when the video player fullscreen option is set to true.");
+
+	$('#player15').igVideoPlayer('option', 'fullscreen', false);
+	hasFullScreenClass = $("body").hasClass(fullscreenClass);
+	assert.notOk(hasFullScreenClass, "The full-screen-mode class should be removed from body when the video player fullscreen option is set to false.");
+
+	$('#player15').igVideoPlayer('option', 'fullscreen', true);
+	hasFullScreenClass = $("body").hasClass(fullscreenClass);
+	assert.ok(hasFullScreenClass, "The full-screen-mode class should be added to the body when the video player fullscreen option is set to true.");
+});
+
+
+QUnit.test('Test fullscreen option class when set to false test 56', function (assert) {
+	assert.expect(3);
+	createFixtureDiv('player16');
+
+	$("#player16").igVideoPlayer({
+		sources: [
+			"http://medias.jilion.com/sublimevideo/dartmoor.mov",
+			"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+			"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+			"http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		fullscreen: false
+	});
+
+	var fullscreenClass = "ui-igplayer-full-screen-mode";
+	var hasFullScreenClass = $("body").hasClass(fullscreenClass);
+	assert.notOk(hasFullScreenClass, "The full-screen-mode class should be removed from body when the video player fullscreen option is set to false.");
+
+	$('#player16').igVideoPlayer('option', 'fullscreen', true);
+	hasFullScreenClass = $("body").hasClass(fullscreenClass);
+	assert.ok(hasFullScreenClass, "The full-screen-mode class should be added to the body when the video player fullscreen option is set to true.");
+
+	$('#player16').igVideoPlayer('option', 'fullscreen', false);
+	hasFullScreenClass = $("body").hasClass(fullscreenClass);
+	assert.notOk(hasFullScreenClass, "The full-screen-mode class should be removed from body when the video player fullscreen option is set to false.");
+});
+
