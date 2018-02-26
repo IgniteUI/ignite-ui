@@ -11,7 +11,7 @@ const reporters = ["progress"];
 
 // proxy entries need to be full file paths (no glob support)
 let proxies = glob.sync("src/js/**/*.js")
-  .map(x => "/base/mock/" + x)
+  .map((x) => "/base/mock/" + x)
   .reduce((obj, val) => {
       obj[val] = "/base/tests/unit/loader/empty.js";
       return obj;
