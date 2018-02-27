@@ -10,8 +10,28 @@
 .ui-financialchart-volumeChart {
 	margin-left: 15px;
 }
+.financialChartMainGrid {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	display: -ms-grid;
+	-ms-grid-columns: 100%;
+}
+.financialChartPrice {
+	grid-row: 2;
+}
+.financialChartIndicators {
+	grid-row: 3;
+}
+.financialChartVolume {
+	grid-row: 4;
+}
+.financialChartZoomSlider {
+	grid-row: 5;
+}
 .financialChartToolbar {
 	display: grid;
+	grid-row: 1;
 }
 @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
    .financialChartToolbar {
