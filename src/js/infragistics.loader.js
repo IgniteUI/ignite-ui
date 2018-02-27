@@ -2017,6 +2017,7 @@ $.ig.dependencies = [
 			{ name: "igExcel" },
 			{ name: "Functions", parentWidget: "igExcel" },
 			{ name: "igCombo" },
+			{ name: "igDialog" },
 			{ name: "_ig_undo" }
 		],
 		group: $.ig.loaderClass.locale.gridGroup,
