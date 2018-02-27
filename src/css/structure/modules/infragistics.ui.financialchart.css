@@ -30,8 +30,8 @@
 	border-right: 1px solid #758696;
 	padding: 0 10px;
 }
-.financialChartRangeSelector label:last-child {
-	border: none;
+.financialChartRangeSelectorLastOption {
+	border: none !important;
 	padding-right: 0;
 }
 .financialChartRangeSelector label:hover {
