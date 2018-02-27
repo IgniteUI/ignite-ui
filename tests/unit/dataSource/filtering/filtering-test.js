@@ -288,8 +288,6 @@ QUnit.module("igDataSource filtering", {
                            this.initialized = true;
                             done();
                         });
-						//setTimeout(function () { start(); }, 500);
-						
 					}
 				},
 				after: function() {
