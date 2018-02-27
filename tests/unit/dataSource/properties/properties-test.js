@@ -585,13 +585,16 @@ QUnit.module("igDataSource Properties", {
 		});
 
 		QUnit.test("Test analyzeDataSource API method", function (assert) {
-			assert.expect(2);
+			assert.expect(3);
 			var ds = new $.ig.DataSource();
 			ds.settings.dataSource = function () { };
 			assert.equal(ds.analyzeDataSource(), "function", "Verify analyzeDataSource returns correct results.");
 			ds.settings.dataSource = "[invalid]";
-			
 			assert.equal(ds.analyzeDataSource(), "unknown", "Verify analyzeDataSource returns correct results.");
+
+			ds.settings.dataSource = [];
+			assert.equal(ds.analyzeDataSource(), "array", "Verify analyzeDataSource returns correct results.");
+
 		});
 		QUnit.test("Test addRow when rowAdded option is defined", function (assert) {
 			assert.expect(2);
