@@ -3279,6 +3279,7 @@
 									keepFiltering: true
 								}, event);
 
+								// A.K. February 27th, 2018 #1627 Highlight mode is not applicable when the input value and the firstly met dataSource item are equal.
 								_options.autoSelectedItemData = curData;
 
 								matchFound = true;
