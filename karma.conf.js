@@ -11,14 +11,14 @@ const reporters = ["progress"];
 
 // proxy entries need to be full file paths (no glob support)
 let proxies = glob.sync("src/js/**/*.js")
-  .map(x => "/base/mock/" + x)
+  .map((x) => "/base/mock/" + x)
   .reduce((obj, val) => {
       obj[val] = "/base/tests/unit/loader/empty.js";
       return obj;
   }, {});
 
 const cssProxies = glob.sync("src/css/**/*.css")
-  .map(x => "/base/mock/" + x)
+  .map((x) => "/base/mock/" + x)
   .reduce((obj, val) => {
       obj[val] = "/base/tests/unit/loader/empty.css";
       return obj;
@@ -37,7 +37,7 @@ module.exports = function(config) {
 
   // When passed as `--widget integration` https://github.com/karma-runner/karma/issues/672#issuecomment-204620473
   if (config.widget) {
-    console.log(config.widget + "!");
+    // console.log(config.widget + "!");
   }
 
   config.set({
@@ -72,19 +72,18 @@ module.exports = function(config) {
       "src/js/modules/i18n/*-de.js",
       "src/js/modules/i18n/*-es.js",
       "src/js/modules/i18n/*-fr.js",
-	  
-	  
+
       "src/js/infragistics.loader.js",
       // core and LoB files:
       ...filesConfig.coreBundle("src"),
       ...filesConfig.lobBundle("src"),
       "src/js/extensions/infragistics.ui.*.knockout-extensions.js",
-	  
+
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-en.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-fr.js",
-	  
+
       // DV files for zoombar tests:
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/i18n/infragistics.dvcommonwidget-en.js", included: true, watched: false },
@@ -117,12 +116,12 @@ module.exports = function(config) {
       "tests/unit/common/simInteractions.js",
       "tests/test-patch.js",
       "tests/unit/splitter/jquery.simulate.js",
-	  
+
       { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
-	  { pattern: "tests/unit/tree/data/*", included: false, served: true, watched: false },
-	  { pattern: "tests/unit/tree/images/*", included: false, served: true, watched: false },
-	  
-	  // Data files
+      { pattern: "tests/unit/tree/data/*", included: false, served: true, watched: false },
+      { pattern: "tests/unit/tree/images/*", included: false, served: true, watched: false },
+
+      // Data files
       "tests/unit/templating/DB3.js",
 
       // Test files:

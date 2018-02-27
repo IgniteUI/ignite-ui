@@ -2760,3 +2760,28 @@ QUnit.test('Null value set as nullValue and empty string set as value', function
 	$editor.trigger("blur");
 	assert.equal($editor.igNumericEditor("value"), null, "Value should be null");
 });
+QUnit.test('Numeric Editor Scrollbar maintains scroll position after animation',function (assert) {
+	assert.expect(2);
+	done = assert.async();
+	var listValues = [10, 15, 20, 25, 30, 35, 40];
+	var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+			allowNullValue: true, 
+			nullValue: null, 
+			value: 40, 
+			listItems : listValues, 
+			dropDownListOpening: function(){
+				$editor.igNumericEditor("dropDownContainer").scrollTop(0);
+			}
+	});
+	$editor.igNumericEditor("dropDownContainer").wrap("<div class='ui-effects-wrapper'></div>");
+	$editor.igNumericEditor("dropDownButton").click();
+	this.util.wait(400).then(function () {
+		assert.ok($editor.igNumericEditor("value") === 40, "Value should be changed to 40.");
+		assert.ok($editor.igNumericEditor("dropDownContainer").scrollTop() !== 0, "The scroll should not be positioned at the top of the dropdown");
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		throw er;
+		done();
+	});
+});
