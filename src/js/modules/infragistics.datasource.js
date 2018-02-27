@@ -4339,7 +4339,7 @@
 				if (schema && schema.fields) {
 					for (i = 0; i < schema.fields.length; i++) {
 						/* transform date */
-						if (schema.fields[ i ].type === "date" &&
+						if ((schema.fields[ i ].type === "date" || schema.fields[ i ].type === "time") &&
 							offsets[ schema.fields[ i ].name ] !== undefined) {
 							key = schema.fields[ i ].name;
 							for (func in offsets[ key ]) {
@@ -5854,7 +5854,7 @@
 			return this.filter([{ filterAllFields: true, expr: expression, fields: fields }]);
 		},
 		/* this is used when sorting data
-		type can be "string", "number", "boolean", "date".
+		type can be "string", "number", "boolean", "date", "time".
 		Other values are ignored and default conversion is used
 		_convertf: function (val, type) {
 		not necessary for now. default type conversion happens in the data source directly
@@ -7489,11 +7489,12 @@
 				{
 					/* type="string" Name of the field*/
 					name: undefined,
-					/* type="string|number|bool|date|object" data type of the field
+					/* type="string|number|bool|date|time|object" data type of the field
 						string
 						number
 						bool
 						date
+						time
 						object
 					*/
 					type: undefined,
