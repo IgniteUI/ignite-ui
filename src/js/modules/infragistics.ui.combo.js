@@ -3245,10 +3245,8 @@
                                     keepFiltering: true
                                 }, event);
 
-                                // On full match the item shouldn't be considered as auto selected
-                                if (curDataText !== curText) {
-                                    _options.autoSelectedItemData = curData;
-                                }
+                                // A.K. February 27th, 2018 #1627 Highlight mode is not applicable when the input value and the firstly met dataSource item are equal.
+								_options.autoSelectedItemData = curData;
 
                                 matchFound = true;
                                 justSelectedData.push(curData);
