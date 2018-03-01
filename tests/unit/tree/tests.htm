@@ -1634,6 +1634,7 @@
 			testId_4 = "igTree expanding and collapsing events";
 			testId_5 = "igTree checkstateChanging/Changed events";
 			testId_6 = "igTree node populating/populated events";
+			testId_7 = "igTree nodeCheckStateChanged should not fire when triggered programatically.";
 			
 			test(testId_1, function () {
 				var dataBoundFired = false;
@@ -1892,6 +1893,56 @@
 				});
 				var node = $('#tree7').igTree('nodeByPath', '0');
 				$('#tree7').igTree('toggle', node);
+			});
+
+			test(testId_7, function(assert){
+				assert.expect(2);
+				var stateChangeFlag = false;
+				var $tree = $("<div id='checkTestTree'></div>").appendTo("#tree-container").igTree({
+					dataSource: results2,
+					bindings: {
+						textKey: 'Text',
+						valueKey: 'Value',
+						imageUrlKey: 'ImageUrl',
+						navigateUrlKey: 'URL',
+						childDataProperty: 'Children',
+						bindings: {
+							textKey: 'Text1',
+							valueKey: 'Value1',
+							imageUrlKey: 'ImageUrl1',
+							navigateUrlKey: 'URL1',
+							childDataProperty: 'Children1',
+							bindings: {
+								textKey: 'Text2',
+								valueKey: 'Value2',
+								imageUrlKey: 'ImageUrl2',
+								navigateUrlKey: 'URL2',
+								childDataProperty: 'Children2',
+								bindings: {
+									textKey: 'Text3',
+									valueKey: 'Value3'
+								}
+							}
+						}
+					},
+					checkboxMode: "triState",
+					rendered: function (evt, ui) {
+						var nodes = $("#checkTestTree").igTree("uncheckedNodes");
+						for (var i = 0; i < nodes.length; i++) {
+							var node = nodes[i];
+							$("#checkTestTree").igTree("toggleCheckstate", node.element);
+						};
+					},
+					nodeCheckstateChanging: function (evt, ui) {
+						stateChangeFlag = true;
+					}
+				});
+				assert.ok(!stateChangeFlag, "nodeCheckStateChanging should not be fired on event render");
+				stateChangeFlag = false;
+				var node = $("#checkTestTree").igTree('nodeByPath', '0_0_0_0');
+				node.children(".ui-igcheckbox-normal").children().focus().trigger("click");
+				assert.ok(stateChangeFlag, "nodeCheckStateChanging should fire when triggered by an event");
+				$("#checkTestTree").remove();
 			});
 			
 			/* ***************** END igTree Client events ***************** */
