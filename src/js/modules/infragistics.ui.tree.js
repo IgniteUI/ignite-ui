@@ -3681,7 +3681,9 @@
 
 			checkbox = node.children("span[data-role=checkbox]");
 			checkIcon = checkbox.children("span");
-			if(event){
+
+			//V.S. March 1st, 2018 - Issue #1634 - nodeCheckstateChanging and nodeCheckstateChanged should not fire on programmatic trigger. Fixed to match 17.2 functionality
+			if (event) {
 				noCancel = self._triggerNodeCheckstateChanging(event, node);
 			}
 			if (noCancel) {
@@ -3758,7 +3760,9 @@
 						checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
 					}
 				}
-				if(event){
+
+				//V.S. March 1st, 2018 - Issue #1634 - nodeCheckstateChanging and nodeCheckstateChanged should not fire on programmatic trigger. Fixed to match 17.2 functionality
+				if (event) {
 					self._triggerNodeCheckstateChanged(event, node);
 				}
 			}
