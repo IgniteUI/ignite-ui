@@ -3669,7 +3669,7 @@
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
 			var self = this, opt = self.options, css = self.css, childCheckboxes, childCheckIcons,
-				checkbox, checkIcon, parentLi, noCancel;
+				checkbox, checkIcon, parentLi, noCancel = true;
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
@@ -3681,7 +3681,9 @@
 
 			checkbox = node.children("span[data-role=checkbox]");
 			checkIcon = checkbox.children("span");
-			noCancel = self._triggerNodeCheckstateChanging(event, node);
+			if(event){
+				noCancel = self._triggerNodeCheckstateChanging(event, node);
+			}
 			if (noCancel) {
 				if (opt.checkboxMode.toLowerCase() === "tristate") {
 					if (checkbox.attr("data-chk") === "on" || checkbox.attr("data-chk") === "partial") {
@@ -3756,7 +3758,9 @@
 						checkIcon.removeClass(css.checkboxOff).addClass(css.checkboxOn);
 					}
 				}
-				self._triggerNodeCheckstateChanged(event, node);
+				if(event){
+					self._triggerNodeCheckstateChanged(event, node);
+				}
 			}
 		},
 		toggle: function (node, event) {
