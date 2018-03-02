@@ -6311,6 +6311,15 @@
 				}
 				return this._findDateMatch(val, expr, cond, preciseDateFormat);
 			}
+			if (t === "time") {
+				// parse expr
+				try {
+					expr = this._parser.toTime(expr);
+				} catch (ignore) {
+					/* log error that expr could not be converted */
+				}
+				return this._findTimeMatch(val, expr, cond);
+			}
 			if (($.type(val) === "boolean" && (t === undefined || t === null)) ||
 				(t === "boolean" || t === "bool")) {
 				return this._findBoolMatch(val, cond);
@@ -6593,6 +6602,45 @@
 			}
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined);
+			}
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
+		},
+		_findTimeMatch: function (val, expr, cond) {
+			var mins1, hs1, mins2, hs2, eq, valDateParts, exprDateParts;
+			/* 1. get the "expr" date and divide it into year, month, quarter, day, week, etc. */
+			if (val !== null && val !== undefined) {
+				valDateParts = this._getDateParts(val);
+				hs1 = valDateParts.hours;
+				mins1 = valDateParts.mins;
+			}
+			if ($.type(expr) === "date") {
+				exprDateParts = this._getDateParts(expr);
+				hs2 = exprDateParts.hours;
+				mins2 = exprDateParts.mins;
+			} else {
+				expr = new Date(expr);
+			}
+
+			eq = mins1 === mins2 && hs1 === hs2;
+			/* now compare */
+			if (cond === "at") {
+				return eq;
+			}
+			if (cond === "notAt") {
+				return !eq;
+			}
+			if (cond === "before") {
+				return hs1 < hs2 || (hs1 === hs2 && mins1 < mins2);
+			}
+			if (cond === "after") {
+				return hs1 > hs2 || (hs1 === hs2 && mins1 > mins2);
+			}
+			if (cond === "atBefore") {
+				return hs1 < hs2 || (hs1 === hs2 && mins1 <= mins2);
+			}
+			if (cond === "atAfter") {
+				return hs1 > hs2 || (hs1 === hs2 && mins1 >= mins2);
 			}
 			throw new Error(
 				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
@@ -7443,6 +7491,21 @@
 				d = $.ig.util.dateFromISO(obj);
 			}
 			return d;
+		},
+		toTime: function (obj) {
+			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
+				return null;
+			}
+			if ($.type(obj) === "date") {
+				return obj;
+			}
+			var d = new Date();
+			var result = new Date(d.toDateString() + " " + obj);
+			if (isNaN(result)) {
+				return null;
+			}
+
+			return result;
 		},
 		toNumber: function (obj) {
 			return (this.isNullOrUndefined(obj) || $.type(obj) === "function") ? null : obj * this.num();
