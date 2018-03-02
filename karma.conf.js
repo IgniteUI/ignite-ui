@@ -120,6 +120,7 @@ module.exports = function(config) {
       { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
       { pattern: "tests/unit/tree/data/*", included: false, served: true, watched: false },
       { pattern: "tests/unit/tree/images/*", included: false, served: true, watched: false },
+      { pattern: "tests/unit/tilemanager/tilemanager/assets/*", included: false, served: true, watched: false },
 
       // Data files
       "tests/unit/templating/DB3.js",
