@@ -10,12 +10,38 @@
 .ui-financialchart-volumeChart {
 	margin-left: 15px;
 }
+.financialChartMainGrid {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	display: -ms-grid;
+	-ms-grid-columns: 100%;
+}
+.financialChartPrice {
+	grid-row: 2;
+}
+.financialChartIndicators {
+	grid-row: 3;
+}
+.financialChartVolume {
+	grid-row: 4;
+}
+.financialChartZoomSlider {
+	grid-row: 5;
+}
 .financialChartToolbar {
 	display: grid;
+	grid-row: 1;
+}
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+   .financialChartToolbar {
+	display: -ms-grid;
+}
 }
 .financialChartRangeSelector {
 	text-align: center;
-	grid-column: 2;
+	grid-column: 4;
+	-ms-grid-column: 4;
 }
 .financialChartRangeSelector input {
 	display: none;
@@ -24,8 +50,8 @@
 	border-right: 1px solid #758696;
 	padding: 0 10px;
 }
-.financialChartRangeSelector label:last-child {
-	border: none;
+.financialChartRangeSelectorLastOption {
+	border: none !important;
 	padding-right: 0;
 }
 .financialChartRangeSelector label:hover {
@@ -37,15 +63,32 @@
 	color: #0090ff;
 }
 .financialChartTypePicker {
-	grid-column: 3;
+	grid-column: 5;
+	-ms-grid-column: 5;
 }
 .financialChartIndicatorPicker {
 	grid-column: 1;
+	-ms-grid-column: 1;
+}
+.financialChartOverlayPicker {
+	grid-column: 2;
+	-ms-grid-column: 2;
+}
+.financialChartTrendLineTypePicker {
+	grid-column: 3;
+	-ms-grid-column: 3;
+}
+.financialChartVolumeTypePicker {
+	grid-column: 6;
+	-ms-grid-column: 6;
+}
+.financialChartIndicatorPicker, .financialChartOverlayPicker {
 	position: relative; 
 	display: inline-block;
 }
-.financialChartIndicatorPickerDropDownList {
+.financialChartIndicatorPickerDropDownList, .financialChartOverlayPickerDropDownList {
 	position: relative; 
 	display: inline-block;
 	z-index: 1;
 }
+
