@@ -11099,6 +11099,13 @@
 			regional = ($.datepicker && typeof reg === "string") ?
 				$.datepicker.regional[ (reg === "defaults" || reg === "en-US") ? "" : reg ] :
 				null;
+
+			//V.S. March 7th 2018 - #1358 if no regional option is provided and a global regional is set, uses the global one
+			if (typeof $.ig.util.regional === "string") {
+				if ($.ig.util.regional !== reg && (reg === "defaults" || reg === "en-US")) {
+					regional = $.datepicker.regional[ $.ig.util.regional ] || $.datepicker.regional[ "" ];
+				}
+			}
 			if (regional === null && $.datepicker) {
 				for (lastRegional in $.datepicker.regional) { }
 				if ($.datepicker.regional[ lastRegional ]) {
