@@ -37,7 +37,12 @@ QUnit.module("igDatePicker unit tests", {
 	spinDownButton: function() {
 		return this.editor.igDatePicker("spinDownButton");
 	},
-	beforeEach: function () { $.fx.off = true; },
+	beforeEach: function () { 
+		$.fx.off = true; 
+		if($.ig.util.regional){
+			$.ig.util.changeGlobalRegional('');
+		}
+	},
 	afterEach: function () { $.fx.off = false; }
 });
 
@@ -1165,4 +1170,23 @@ QUnit.test('Change month / year event should pass values accoridngly', function(
 		done();
 		throw er;
 	});
+});
+
+QUnit.test('Calendar should fallback to locale settings, if no region is specified.', function (assert) {
+	var holder = "" + $.ig.util.regional, $editor, $currentDate;
+	if($.ig.util && $.ig.util.regional !== "ja"){
+		$.ig.util.changeGlobalRegional("ja");
+	}
+	assert.expect(1);
+	$editor = this.appendToFixture(this.inputTag).igDatePicker({
+		value: new Date("2018-03-04T00:00:00.000Z"),
+		dataMode: "date",					
+	});
+	console.log( $.ig.util.regional );
+	$editor.igDatePicker("dropDownButton").click();
+	$currentDate = $editor.igDatePicker("getCalendar").find(".ui-datepicker-header > .ui-datepicker-title").text();
+	console.log($editor.igDatePicker("getCalendar").find(".ui-datepicker-header > .ui-datepicker-title").text());
+	console.log($editor.igDatePicker("getCalendar").find(".ui-datepicker-header > .ui-datepicker-title").text(), "2018年 3月");
+	assert.ok($currentDate == "2018年 3月", "Date value should be in Japanese");
+	
 });
