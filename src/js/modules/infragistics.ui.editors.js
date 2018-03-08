@@ -11078,16 +11078,18 @@
 			this._attachButtonsEvents("dropdown", dropDownButton);
 		},
 		_dpRegion: function () {
-			var reg = this.options.regional, lastRegional, regional;
-			regional = ($.datepicker && typeof reg === "string") ?
-				$.datepicker.regional[ (reg === "defaults" || reg === "en-US") ? "" : reg ] :
-				null;
+			var reg = this.options.regional, lastRegional, regional = null, regAbbr = "";
 
 			//V.S. March 7th 2018 - #1358 if no regional option is provided and a global regional is set, uses the global one
-			if (typeof $.ig.util.regional === "string") {
-				if ($.ig.util.regional !== reg && (reg === "defaults" || reg === "en-US")) {
-					regional = $.datepicker.regional[ $.ig.util.regional ] || $.datepicker.regional[ "" ];
+			if ($.datepicker && typeof reg === "string") {
+				if (reg === "defaults" || reg === "en-US") {
+					if (typeof $.ig.util.regional === "string" && $.ig.util.regional) {
+						regAbbr = $.ig.util.regional;
+					}
+				} else {
+					regAbbr = reg;
 				}
+				regional = $.datepicker.regional[ regAbbr ] || $.datepicker.regional[ "" ];
 			}
 			if (regional === null && $.datepicker) {
 				for (lastRegional in $.datepicker.regional) { }
