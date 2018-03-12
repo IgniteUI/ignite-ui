@@ -417,6 +417,8 @@
 		var testId_140 = 'setting scrollTop during vertical inertia stops the inertia and executes the set scrollTop on touch.';
 		var testId_141 = 'setting scrollLeft during horizontal inertia stops the inertia and executes the set scrollLeft on touch.';
 		
+		var testId_142 = "setting scrollTop of the container manually on touch changes it to transform3d";
+		var testId_143 = "setting scrollLeft of the container manually on touch changes it to transform3d";
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -4091,6 +4093,52 @@
 					start();
 				}, 500);
 			}, 500);
+	    });
+		
+		test(testId_142, function () {
+			$.ig.util.isTouchDevice = function () { return true; };
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			var elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+	
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			
+			//Scroll down 100px
+			elemContainer.scrollTop(100);
+			setTimeout(function () {
+				equal(elemContainer.scrollTop(), 0, "scrollTop of the container should be 0");
+				equal(-getTransform3dValueY(elemContent), 100, "the Y axis of the transform3d of the content should be 100");
+				$("#elemVH").remove();
+				$.ig.util.isTouchDevice = function () { return false; };
+				start();
+			}, 10);
+	    });
+		
+		test(testId_143, function () {
+			$.ig.util.isTouchDevice = function () { return true; };
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			var elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+	
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			
+			//Scroll right 100px
+			elemContainer.scrollLeft(100);
+			setTimeout(function () {
+				equal(elemContainer.scrollLeft(), 0, "scrollLeft of the container should be 0");
+				equal(-getTransform3dValueX(elemContent), 100, "the X axis of the transform3d of the content should be 100");
+				$("#elemVH").remove();
+				$.ig.util.isTouchDevice = function () { return false; };
+				start();
+			}, 10);
 	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
