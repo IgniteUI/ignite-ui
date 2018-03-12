@@ -615,9 +615,9 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_dataseriesadapter" },
 			{ name: "_ig_dv_geometry" },
 			{ name: "_ig_dv_extendedaxes" },
-			{ name: "_ig_dv_commonwidget"},
-			{ name: "_ig_simple_datachart_core"},
-			{ name: "_ig_datachart_domainchart"},
+			{ name: "_ig_dv_commonwidget" },
+			{ name: "_ig_simple_datachart_core" },
+			{ name: "_ig_datachart_domainchart" },
 			{ name: "_ig_datachart_categorycore" },
 			{ name: "_ig_datachart_interactivity" }
 		],
@@ -670,7 +670,7 @@ $.ig.dependencies = [
 	{
 		widget: "_ig_simple_datachart_core",
 		dependency: [ { name: "igUtil" }, { name: "igTemplating" },
-					{ name: "igDataSource" }, { name: "_ig_dv_jquerydom" }, { name: "igWidget"}
+					{ name: "igDataSource" }, { name: "_ig_dv_jquerydom" }, { name: "igWidget" }
 		],
 		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
