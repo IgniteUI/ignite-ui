@@ -4086,6 +4086,10 @@
 			}
 			delete obj.elem;
 			delete obj.chart;
+			if (obj.__resizeProxy){
+				window.removeEventListener("resize", obj.__resizeProxy, false);
+				delete obj.__resizeProxy;
+			}
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
