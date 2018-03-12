@@ -1275,6 +1275,24 @@
 				},100);
 				
 			});
+			//$.ig.util.regional
+			testId = 'Calendar should fallback to locale settings, if no region is specified.';
+			QUnit.test(testId, function (assert) {
+				assert.expect(1);
+				var holder = "" + $.ig.util.regional;
+				if($.ig.util && $.ig.util.regional != "ja"){
+					$.ig.util.changeGlobalRegional("ja");
+				}
+				var $editor, $currentDate;
+				$editor = $('<input id="datePickerLocale"/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2018-03-04T00:00:00.000Z"),
+					dataMode: "date",					
+				});
+				$editor.igDatePicker("dropDownButton").click();
+				$currentDate = $editor.igDatePicker("getCalendar").find(".ui-datepicker-header > .ui-datepicker-title").text();
+				assert.ok($currentDate === "2018年 3月", "Test values are undefined by default.");
+				$.ig.util.changeGlobalRegional(holder);	
+			});
 		});
 		
 		function mouseInteraction(type, element) {

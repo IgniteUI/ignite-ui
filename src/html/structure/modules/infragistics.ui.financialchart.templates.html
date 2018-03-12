@@ -18,8 +18,7 @@
 	</div>
 </template>
 <template class='financialChartIndicatorPicker'>
-	<div class='financialChartIndicatorPicker'>
-		<button class='financialChartIndicatorPickerDropDownButton'>Indicator</button>
+		<button class='financialChartIndicatorPickerDropDownButton'>Indicators</button>
 		<select class='financialChartIndicatorPickerDropDownList' multiple='true'>
 			<option value='AbsoluteVolumeOscillator'>AbsoluteVolumeOscillator</option>
 			<option value='AccumulationDistribution'>AccumulationDistribution</option>
@@ -54,16 +53,13 @@
 			<option value='WeightedClose'>WeightedClose</option>
 			<option value='WilliamsPercentR'>WilliamsPercentR</option>
 		</select>
-	</div>
 </template>
 <template class='financialChartOverlayPicker'>
-	<div class='financialChartOverlayPicker'>
 		<button class='financialChartOverlayPickerDropDownButton'>Overlay</button>
 		<select class='financialChartOverlayPickerDropDownList' multiple='true'>
 			<option value='BollingerBands'>BollingerBands</option>
 			<option value='PriceChannel'>PriceChannel</option>
 		</select>
-	</div>
 </template>
 <template class='financialChartRangeSelector'>
 	<div class='financialChartRangeSelector'>
@@ -76,6 +72,7 @@
 	</div>
 </template>
 <template class='financialChartTrendLinePicker'>
+<span class="trendLinePickerLabel">Trendline</span>
 	<select class='financialChartTrendLinePicker'>
 		<option value='None'>None</option>
 		<option value='LinearFit'>LinearFit</option>
@@ -94,6 +91,7 @@
 	</select>
 </template>
 <template class='financialChartTypePicker'>
+<span class="chartTypePickerLabel">Chart Type</span>
 	<select class='financialChartTypePicker'>
 		<option value='Auto'>Auto</option>
 		<option value='Bar'>Bar</option>
@@ -103,6 +101,7 @@
 	</select>
 </template>
 <template class='financialChartVolumeTypePicker'>
+<span class="volumeTypePickerLabel">Volume</span>
 	<select class='financialChartVolumeTypePicker'>
 		<option value='None'>None</option>
 		<option value='Column'>Column</option>
