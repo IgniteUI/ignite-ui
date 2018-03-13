@@ -3394,7 +3394,8 @@
 				noCancel = true,
 				fsVideoH = 0;
 
-			if (this.options[ key ] === value) {
+			// P.M. February 22nd, 2018 Bug# 1594 We need to be sure that an option will be set when the method is called with the force parametar
+			if (this.options[ key ] === value && !force) {
 				return;
 			}
 
@@ -3613,7 +3614,12 @@
 						this._showUnsupportedVideoSourceMsg();
 					}
 
-					$("body").toggleClass("ui-igplayer-full-screen-mode");
+					// P.M. February 22nd, 2018 Bug# 1594 Adding or removing the fullscreen mode css class based on the option value
+					if (value) {
+						$("body").addClass("ui-igplayer-full-screen-mode");
+					} else {
+						$("body").removeClass("ui-igplayer-full-screen-mode");
+					}
 
 					if (!options.browserControls) {
 						$("#" + this._id("_ctrls_fs_btn"))
@@ -5365,6 +5371,7 @@
 			```
 			*/
 			var css = this.css;
+			var isFullscreen = this.options.fullscreen;
 			/* Clear any player specific settings from the element. */
 			clearTimeout(this._scrollingTimoutId);
 			clearTimeout(this._volumeSliderTimeoutId);
@@ -5416,6 +5423,12 @@
 				this.element.unwrap();
 			} else {
 				this.container.children().remove();
+			}
+
+			// A.M. February 2nd, 2018 Issue #1565
+			//Remove the fullscreen class from the <body> in case the player is destroyed while in fullscreen
+			if (isFullscreen) {
+				$(".ui-igplayer-full-screen-mode").removeClass("ui-igplayer-full-screen-mode");
 			}
 			this._superApply(arguments);
 		},

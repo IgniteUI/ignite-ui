@@ -1300,6 +1300,7 @@
 			testId_8 = "igTree hierarchical JSON remote load on demand (Bug 217440 : Child populate with responseDataKey)";
 			testId_9 = "igTree binding to XML";
 			testId_10 = "igTree binding to data that contains apostrophes";
+			testId_11 = "igTree does not load nodes after lv3 when using loadOnDemand #1564"
 			
 			QUnit.test(testId_1, function (assert) {
 				var nodeCount = $('#tree2').find('li[data-role=node]').length;
@@ -1759,7 +1760,7 @@
 				});
 				$remoteLOD.one("igtreenodepopulated", function (evt, ui) {
 					assert.ok(ui.data.Children.length === notWorkingResponse2.Items.length &&
-						ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name, "Child nodes were not populated successfully.");
+					ui.data.Children[0].Name === notWorkingResponse2.Items[0].Name, "Child nodes were not populated successfully.");	
 				});
 			});
 
@@ -1781,6 +1782,42 @@
 				$treeApos.igTree("removeNodesByValue", nodeValue);
 				assert.ok($treeApos.igTree("nodesByValue", nodeValue).length === 0, "Node with value that contains apostrophes should be deleted");
 				assert.ok(pivotData.length === 0, "pivotData data source should be empty");
+			});
+
+			QUnit.test(testId_11, function (assert) {
+				var node,
+					tree = $("<div id='mockTree' />").appendTo(document.body).igTree({
+						dataSourceUrl: '/api/jsonpitems',
+						dataSourceType: 'remoteUrl',
+						loadOnDemand: true,
+						dragAndDrop: true,
+						checkboxMode: "triState",
+						responseDataKey: "Items",
+						bindings: {
+							textKey: 'Name',
+							valueKey: 'Id',
+							childDataProperty: 'Children'
+						}
+					});
+				assert.expect(2);
+				var done1 = assert.async();
+				var done2 = assert.async();
+
+				tree.one("igtreerendered", function () {
+					tree.igTree("expand", tree.find("li[data-role=node]:first"));
+				});
+			
+				setTimeout(function(){
+					assert.ok(tree.igTree('nodeByPath', '0_0').children('ul').attr("data-depth") === "2", "wrong data-depth attribute for path 0_0.");
+					var node = tree.igTree('nodeByPath', '0_0');
+					node.children(".ui-igtree-expander:first").click();
+					done1();
+
+					setTimeout(function () {
+					assert.ok(tree.igTree('nodeByPath', '0_0_0').children('ul').attr("data-depth") === "3", "wrong data-depth attribute for path 0_0_0.");
+					done2();
+					},80);
+				},80);
 			});
 			/* ***************** END igTree databinding ***************** */
 			

@@ -30,5 +30,5 @@
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.es.Notifier;
-return $.ig.locale.fr.Notifier;
+return $.ig.locale.es.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES
