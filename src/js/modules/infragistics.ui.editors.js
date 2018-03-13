@@ -8772,6 +8772,11 @@
 				if (this._inComposition === true) {
 					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
 					newValue = this._parseValueByMask(newValue);
+
+					// N.A. January 12th, 2018 #1525 When wrong input is entered the value should be reverted, if the option is set.
+					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+						newValue = oldVal;
+					}
 				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
@@ -11180,8 +11185,10 @@
 			}
 			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
 				var isOnChangeMonthYear = regional.onChangeMonthYear;
-				options.onChangeMonthYear  = function () {
-					isOnChangeMonthYear.call(this);
+
+				//V.S. 22 February 2018, #1609 - adjusted onChangeMonthYear function to pass year, month, date to the event
+				options.onChangeMonthYear  = function (year, month, date) {
+					isOnChangeMonthYear.call(this, year, month, date);
 					if (self.options.suppressKeyboard) {
 						self._shouldNotFocusInput = true;
 					}

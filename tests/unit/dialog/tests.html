@@ -76,7 +76,7 @@
 			},
 			teardown: function() {
 			}
-		});
+        });
 
         var testId = '[ID1] dialog structure and layout';
         test(testId, function () {
@@ -329,6 +329,32 @@
             equal($("#dialog1").html(), "Content changed again.", "The content is different than the expected value after destroy.");
         });
 
+        test("#1391 Destroy dialog while animation is in progress", 1, function () {
+            var imgSrc = "https://www.igniteui.com/images/samples/dialog-window/content.jpg";
+            $('<div id="dialogAnim"><img id="contentImg" style="width: 200px" src=' + imgSrc + ' /></div>').appendTo("#container1");
+            var $dialog = $("#dialogAnim").igDialog({
+                height: 250,
+                openAnimation: "slide",
+                closeAnimation: "explode",
+                modal: true
+            });
+            $dialog.igDialog("destroy");
+            QUnit.equal($dialog.children().attr("id"), "contentImg", "The only child should be the image");
+            $dialog.remove();
+        });
+
+        test("Destroy dialog while animation in progress should retain content", function () {
+            $dialog = $("<div class='someClass'><p>SomeContent</p></div>")
+                .appendTo("#newContainer").igDialog({
+                    height: 250,
+                    openAnimation: "slide",
+                    closeAnimation: "explode",
+                    modal: true
+                });
+            $dialog.igDialog("destroy");
+            equal($("#newContainer").children().first().attr("class"), "someClass", "The dialog should be destoyed despite animation. Added element should retain class");
+        });
+
         test("Focus handling", function () {
             $("#dialog4").igDialog("open");
             var $frameBody = $("#testFrame").contents().find('body'), $input,
@@ -430,6 +456,65 @@
             }, 1000);
 
         });
+     
+        test("#1204 Modal openAnimation should display modal overlay on end", 1, function () {
+            var $dialog = $("<div id='openAnimationDialog'><h1>Hello World!</h1></div>").prependTo("#newContainer")
+            .igDialog({
+                state: 'open',
+                modal: true,
+                height: '400px',
+                width: '600px',
+                openAnimation: { effect: 'scale', duration: 1000 },
+                stateChanged: function (evt, ui) {
+                    if (ui.action === 'close') {
+                        popup.remove();
+                    }
+                    return true;
+                }
+            });
+            var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
+            stop();
+            setTimeout(function(){
+                start();
+                ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
+                $dialog.remove();
+            }, 100);
+        });
+        
+        test("#1204 Modal Open and Close animations, passed as objects, should fire 'animationEnded'", 3, function () {
+            var animationEventFlag = false;
+            var $dialog = $("<div id='openAnimationDialog'><h1>Hello World!</h1></div>").prependTo("#newContainer")
+            .igDialog({
+                state: 'open',
+                modal: true,
+                height: '400px',
+                width: '600px',
+                openAnimation: { effect: 'scale', duration: 1000 },
+                closeAnimation: { effect: 'explode', duration: 1000 },
+                stateChanged: function (evt, ui) {
+                    if (ui.action === 'close') {
+                        $dialog.remove();
+                    }
+                    return true;
+                },
+                animationEnded: function(){
+                    animationEventFlag = true;
+                }
+            });
+            ok(!animationEventFlag, "Animation flag should be false by default");
+            stop();
+            setTimeout(function(){
+                start();
+                ok(animationEventFlag, "Animation flag should be true after openAnimation is completed");
+                $dialog.igDialog("close");
+                animationEventFlag = false;
+                stop();
+                setTimeout(function(){
+                    start();
+                    ok(animationEventFlag, "Animation flag should be true after closeAnimation is completed");
+                },1100)
+            }, 1100);
+        });
     });
     </script>
 </head>
@@ -454,6 +539,7 @@
             <iframe id="testFrame"></iframe>
         </div>
         <div id="dialog5"></div>
+        <div id="dialog6"></div>
         <div id="newContainer"></div>
     </div>
     <div id="newContainer"></div>

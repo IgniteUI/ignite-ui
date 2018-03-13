@@ -7238,9 +7238,7 @@
 				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
-				if (dt === undefined) {
-					dt = !!(gbRec.val && gbRec.val.getTime);
-				}
+				dt = !!(gbRec.val && gbRec.val.getTime);
 				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
 				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
 				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
