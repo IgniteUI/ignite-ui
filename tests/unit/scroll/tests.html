@@ -417,6 +417,8 @@
 		var testId_140 = 'setting scrollTop during vertical inertia stops the inertia and executes the set scrollTop on touch.';
 		var testId_141 = 'setting scrollLeft during horizontal inertia stops the inertia and executes the set scrollLeft on touch.';
 		
+		var testId_142 = "setting scrollTop of the container manually on touch changes it to transform3d";
+		var testId_143 = "setting scrollLeft of the container manually on touch changes it to transform3d";
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -837,37 +839,44 @@
 				elemContainer = $("#elemVH_container"),
 				elemContent = $("#elemVH_content");
 
+			var vDragHeightOld = parseInt(vDrag.css("height"), 10);
+			var hDragWidthOld = parseInt(hDrag.css("width"), 10);
+			
 			//Make it smaller
 			$('#elemVH').css("height", "300px");
 			$('#elemVH').css("width", "500px");
 			$('#elemVH').igScroll("refresh");
 			
-			var vDragHeight = Math.floor(($('#elemVH').height() - 3 * 15) * (($('#elemVH').height() / elemContent.height())));
-			var hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
+			var vDragHeightNew = parseInt(vDrag.css("height"), 10);
+			var hDragWidthNew = parseInt(hDrag.css("width"), 10);
 			equal(elemContainer.css("height"), "300px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "500px", "igScroll container did not update it's width");
 			equal(vBarContainer.height(), 300, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 500, "igScroll did not update horizontal scrollbar container width");			
+			equal(hBarContainer.width(), 500, "igScroll did not update horizontal scrollbar container width");
 			ok(300 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 300 - 3 * 15 + 1, "igScroll did not update vertical track height");
 			ok(500 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update horizontal track width");
-			ok(vDragHeight - 1 <= parseInt(vDrag.css("height"), 10) && parseInt(vDrag.css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
-			ok(hDragWidth - 1 <= parseInt(hDrag.css("width"), 10) && parseInt(hDrag.css("width"), 10) <= hDragWidth + 1, "igScroll did not update horizontal thumb drag width");	
-			
+			ok(vDragHeightOld > vDragHeightNew, "igScroll did not update vertical thumb drag height");
+			ok(hDragWidthOld > hDragWidthNew, "igScroll did not update horizontal thumb drag width");
+
+			vDragHeightOld = vDragHeightNew;
+			hDragWidthOld = hDragWidthNew;
 			//Make it bigger
 			$('#elemVH').css("height", "500px");
 			$('#elemVH').css("width", "700px");
 			$('#elemVH').igScroll("refresh");
 			
+			vDragHeightNew = parseInt(vDrag.css("height"), 10);
+			hDragWidthNew = parseInt(hDrag.css("width"), 10);
 			vDragHeight = Math.floor(($('#elemVH').height() - 3 * 15) * (($('#elemVH').height() / elemContent.height())));
 			hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "500px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "700px", "igScroll container did not update it's width");
 			equal(vBarContainer.height(), 500, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 700, "igScroll did not update horizontal scrollbar container width");		
+			equal(hBarContainer.width(), 700, "igScroll did not update horizontal scrollbar container width");
 			ok(500 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update vertical track height");
 			ok(700 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 700 - 3 * 15 + 1, "igScroll did not update horizontal track width");
-			ok(vDragHeight - 1 <= parseInt(vDrag.css("height"), 10) && parseInt(vDrag.css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
-			ok(hDragWidth - 1 <= parseInt(hDrag.css("width"), 10) && parseInt(hDrag.css("width"), 10) <= hDragWidth + 1, "igScroll did not update horizontal thumb drag width");	
+			ok(vDragHeightOld < vDragHeightNew, "igScroll did not update vertical thumb drag height");
+			ok(hDragWidthOld < hDragWidthNew, "igScroll did not update horizontal thumb drag width");
 			$("#elemVH").remove();
 	    });
 		
@@ -1205,6 +1214,7 @@
 			
 	        var arrowDown = $("#elemVH_vBar_arrowDown"),
 				vDrag = $("#elemVH_vBar_drag"),
+				vTrack = $("#elemVH_vBar_track"),
 				vScrollbarContainer = $("#elemVH_vBar"),
 				elemContainer = $("#elemVH_container"),
 				elemContent = $("#elemVH_content");
@@ -1217,8 +1227,8 @@
 			
 			stop();
 			setTimeout(function () {
-				var scrollbarPixelContentRatio = ($('#elemVH').height() - 3 * 15) / elemContent.height();
-				equal((getTransform3dValueY(vDrag)).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+				var scrollbarPixelContentRatio =  (40 / (elemContent.height() - elemContainer.height())) * (vTrack.height() - vDrag.height());
+				equal((getTransform3dValueY(vDrag)).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
 				$("#elemVH").remove();
 				start();
 			},25);
@@ -1338,6 +1348,7 @@
 		 	});
 			
 	        var vDrag = $("#elemVH_vBar_drag"),
+				vTrack = $("#elemVH_vBar_track"),
 		 		arrowUp = $("#elemVH_vBar_arrowUp"),
 		 		arrowDown = $("#elemVH_vBar_arrowDown"),
 		 		vScrollbarContainer = $("#elemVH_vBar"),
@@ -1357,8 +1368,8 @@
 			
 		 	stop();
 		 	setTimeout(function () {
-		 		var scrollbarPixelContentRatio = ($('#elemVH').height() - 3 * 15) / elemContent.height();
-		 		equal((getTransform3dValueY(vDrag)).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+		 		var scrollbarPixelContentRatio = (40 / (elemContent.height() - elemContainer.height())) * (vTrack.height() - vDrag.height());
+		 		equal((getTransform3dValueY(vDrag)).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
 		 		$("#elemVH").remove();
 		 		start();
 		 	}, 500);
@@ -1513,6 +1524,7 @@
 			});
 			
 	        var hDrag = $("#elemVH_hBar_drag"),
+				hTrack = $("#elemVH_hBar_track"),
 				arrowLeft = $("#elemVH_hBar_arrowLeft"),
 				hScrollbarContainer = $("#elemVH_hBar"),
 				elemContainer = $("#elemVH_container"),
@@ -1526,8 +1538,8 @@
 			
 			stop();
 			setTimeout(function () {
-				var scrollbarPixelContentRatio = ($('#elemVH').width() - 3 * 15) / elemContent.width();
-				equal((getTransform3dValueX(hDrag)).toFixed(4), (60 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+				var scrollbarPixelContentRatio = (60 / (elemContent.width() - elemContainer.width())) * (hTrack.width() - hDrag.width());
+				equal((getTransform3dValueX(hDrag)).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
 				$("#elemVH").remove();
 				start();
 			}, 25);
@@ -1633,6 +1645,7 @@
 			});
 			
 	        var hDrag = $("#elemVH_hBar_drag"),
+				hTrack = $("#elemVH_hBar_track"),
 				arrowRight = $("#elemVH_hBar_arrowRight"),
 				hScrollbarContainer = $("#elemVH_hBar"),
 				elemContainer = $("#elemVH_container"),
@@ -1646,8 +1659,8 @@
 			
 			stop();
 			setTimeout(function () {
-				var scrollbarPixelContentRatio = ($('#elemVH').width() - 3 * 15) / elemContent.width();
-				equal((getTransform3dValueX(hDrag)).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+				var scrollbarPixelContentRatio = (40 / (elemContent.width() - elemContainer.width())) * (hTrack.width() - hDrag.width());
+				equal((getTransform3dValueX(hDrag)).toFixed(3), (scrollbarPixelContentRatio).toFixed(3), "igScroll did not update scrollbar position properly");
 				$("#elemVH").remove();
 				start();
 			}, 25);
@@ -1747,8 +1760,8 @@
 			setTimeout(function () {
 				equal(elemContainer.scrollTop(), $('#elemVH').height() , "igScroll did not scroll properly");
 				
-				var scrollbarPixelContentRatio = ($('#elemVH').height() - 3 * 15) / elemContent.height();
-				equal((getTransform3dValueY(vDrag)).toFixed(4), ($('#elemVH').height() *  scrollbarPixelContentRatio).toFixed(4), "igScroll did not scroll properly");
+				var scrollbarPixelContentRatio = ($('#elemVH').height() / (elemContent.height() - elemContainer.height())) * (vTrack.height() - vDrag.height());
+				equal((getTransform3dValueY(vDrag)).toFixed(4), (scrollbarPixelContentRatio).toFixed(4), "igScroll did not scroll properly");
 				$("#elemVH").remove();
 				start();
 			}, 25);
@@ -1778,8 +1791,8 @@
 				equal(elemContainer.scrollTop(), bottomPos - elemContainer.height() , "igScroll did not scroll properly");
 	
 				setTimeout(function () {
-					var scrollbarPixelContentRatio = ($('#elemVH').height() - 3 * 15) / elemContent.height();
-					equal(getTransform3dValueY(vDrag).toFixed(3), ((bottomPos - elemContainer.height()) *  scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
+					var scrollbarPixelContentRatio = ((bottomPos - elemContainer.height()) / (elemContent.height() - elemContainer.height())) * (vTrack.height() - vDrag.height());
+					equal(getTransform3dValueY(vDrag).toFixed(3), (scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
 					$("#elemVH").remove();
 					start();
 				}, 100);
@@ -1917,11 +1930,10 @@
 			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
 			setTimeout(function () {
 				//Pixel per move is taken from the igScroll source
-				var pixelsPerMove = (elemContent.outerHeight() / (elemContainer.outerHeight() - 3 * 17)).toFixed(0),
-					pixelsMoved = 50 * pixelsPerMove;
+				var pixelsMoved = (getTransform3dValueY(vDrag) / (vTrack.height() - vDrag.height())) * (elemContent.height() - elemContainer.height());
 
 				//We can have 2px error in the calculation due to rounding
-				equal(elemContainer.scrollTop(), pixelsMoved, "igScroll did not scroll properly");
+				equal(elemContainer.scrollTop(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
 				//equal(getTransform3dValueY(vDrag), 50, "igScroll did not update scrollbar position properly");
 				$("#elemVH").remove();
 				start();
@@ -1949,8 +1961,8 @@
 				equal(elemContainer.scrollLeft(), 200 , "igScroll did not scroll properly");
 				
 				//Check horizontal thumb drag position
-				var scrollbarPixelContentRatio = ($('#elemVH').width() - 3 * 15) / elemContent.width();
-				equal(getTransform3dValueX(hDrag), (200 *  scrollbarPixelContentRatio).toFixed(4), "igScroll did not scroll properly");
+				var scrollbarPixelContentRatio = (200 / (elemContent.width() - elemContainer.width())) * (hTrack.width() - hDrag.width());
+				equal(getTransform3dValueX(hDrag), (scrollbarPixelContentRatio).toFixed(3), "igScroll did not scroll properly");
 				start();
 				$("#elemVH").remove();
 			}, 25);
@@ -2086,10 +2098,9 @@
 			$.ig.TestUtil.simulateClickDragRelese(hDrag, 50, 0, 200);
 			setTimeout(function () {
 				//Pixel per move is taken from the igScroll source
-				var pixelsPerMove = (elemContent.outerWidth() / elemContainer.outerWidth()).toFixed(0),
-					pixelsMoved = 50 * pixelsPerMove;
+				var pixelsMoved = (getTransform3dValueX(hDrag) / (hTrack.width() - hDrag.width())) * (elemContent.width() - elemContainer.width());
 
-				equal(elemContainer.scrollLeft(), pixelsMoved, "igScroll did not scroll properly");
+				equal(elemContainer.scrollLeft(), Math.floor(pixelsMoved), "igScroll did not scroll properly");
 				//equal(getTransform3dValueX(hDrag), 50, "igScroll did not update scrollbar position properly");
 				$("#elemVH").remove();
 				start();
@@ -3549,16 +3560,18 @@
 	        $('#elemVH').igScroll();
 		
 			// Claclulating the drag width and height is based on the formula used in the igScroll implementation
-			var elemContent = $("#elemVH_content"),
-				hDragWidthPercentage = (600 / elemContent.width()) * 100,
-				vDragHeightPercentage = (400 / elemContent.height()) * 100;
+			var hTrack = $("#elemVH_hBar_track"),
+				vTrack = $("#elemVH_vBar_track"),
+				elemContent = $("#elemVH_content"),
+				hDragWidthPercentage = (hTrack.width() / elemContent.width())  * 100,
+				vDragHeightPercentage = (vTrack.height() / elemContent.height()) * 100;
 
 			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
 			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
 			
 			$('#elemVH').igScroll("option", "scrollWidth", 700);		
-			hDragWidthPercentage = (600 / elemContent.width()) * 100;
-			vDragHeightPercentage = (400 / elemContent.height()) * 100;
+			hDragWidthPercentage = (hTrack.width() / elemContent.width()) * 100;
+			vDragHeightPercentage = (vTrack.height() / elemContent.height()) * 100;
 			
 			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
 			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
@@ -3575,17 +3588,19 @@
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll();
 		
-			// Claclulating the drag width and height is based on the formula used in the igScroll implementation
-			var elemContent = $("#elemVH_content"),
-				hDragWidthPercentage = (600 / elemContent.width()) * 100,
-				vDragHeightPercentage = (400 / elemContent.height()) * 100;
+			// Calculating the drag width and height is based on the formula used in the igScroll implementation
+			var hTrack = $("#elemVH_hBar_track"),
+				vTrack = $("#elemVH_vBar_track"),
+				elemContent = $("#elemVH_content"),
+				hDragWidthPercentage = (hTrack.width() / elemContent.width())  * 100,
+				vDragHeightPercentage = (vTrack.height() / elemContent.height()) * 100;
 				
 			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has proper initial width");
 			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has proper initial height");
 
 			$('#elemVH').igScroll("option", "scrollHeight", 1000);			
-			hDragWidthPercentage = (600 / elemContent.width()) * 100;
-			vDragHeightPercentage = (400 / elemContent.height()) * 100;
+			hDragWidthPercentage = (hTrack.width() / elemContent.width()) * 100;
+			vDragHeightPercentage = (vTrack.height() / elemContent.height()) * 100;
 			
 			equal(parseFloat($("#elemVH_hBar_drag")[0].style.width).toFixed(4), hDragWidthPercentage.toFixed(4), "Horizontal thumb drag has updated its width after setting scrollWidth");
 			equal(parseFloat($("#elemVH_vBar_drag")[0].style.height).toFixed(4), vDragHeightPercentage.toFixed(4), "Vertical thumb drag has its height unchanged after setting scrollWidth");
@@ -4078,6 +4093,52 @@
 					start();
 				}, 500);
 			}, 500);
+	    });
+		
+		test(testId_142, function () {
+			$.ig.util.isTouchDevice = function () { return true; };
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			var elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+	
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			
+			//Scroll down 100px
+			elemContainer.scrollTop(100);
+			setTimeout(function () {
+				equal(elemContainer.scrollTop(), 0, "scrollTop of the container should be 0");
+				equal(-getTransform3dValueY(elemContent), 100, "the Y axis of the transform3d of the content should be 100");
+				$("#elemVH").remove();
+				$.ig.util.isTouchDevice = function () { return false; };
+				start();
+			}, 10);
+	    });
+		
+		test(testId_143, function () {
+			$.ig.util.isTouchDevice = function () { return true; };
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			var elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+	
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			
+			//Scroll right 100px
+			elemContainer.scrollLeft(100);
+			setTimeout(function () {
+				equal(elemContainer.scrollLeft(), 0, "scrollLeft of the container should be 0");
+				equal(-getTransform3dValueX(elemContent), 100, "the X axis of the transform3d of the content should be 100");
+				$("#elemVH").remove();
+				$.ig.util.isTouchDevice = function () { return false; };
+				start();
+			}, 10);
 	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>

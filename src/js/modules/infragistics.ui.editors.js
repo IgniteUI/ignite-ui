@@ -2104,6 +2104,9 @@
 				case "igDatePicker":
 					localeid = "ariaDatePickerFieldLabel";
 					break;
+				case "igTimePicker":
+					localeid = "ariaTimePickerFieldLabel";
+					break;
 				default: {
 					localeid = "ariaTextEditorFieldLabel";
 					break;
@@ -3200,6 +3203,11 @@
 				editorInput: this._editorInput,
 				list: this._dropDownList
 			};
+
+			//V.S. 23 February 2018, #1571 - Fix render of dropDown using jQuery UI versions below 1.12.1. Capture scrollTop at start and reapply at end of anim.
+			if (this._scrollTopDropDownPosition !== undefined) {
+				this._dropDownList.scrollTop(this._scrollTopDropDownPosition);
+			}
 			return this._trigger(this.events.dropDownListOpened, null, args);
 		},
 		_triggerDropDownItemSelecting: function (item) {
@@ -3429,6 +3437,12 @@
 
 			if (!activeItem.length) {
 				return;
+			}
+
+			//V.S. 23 February 2018, #1571 - Fix render of dropDown using jQuery UI versions below 1.12.1. Capture scrollTop at start and reapply at end of anim.
+			if (this._dropDownList.parent().hasClass("ui-effects-wrapper")) {
+				this._scrollTopDropDownPosition = this._dropDownList.scrollTop() +
+				activeItem.position().top;
 			}
 			if (this._elementPositionInViewport(activeItem) !== "inside") {
 				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
@@ -7341,8 +7355,10 @@
 			var maskSymbol, mask, isValid,
 				regex,
 				inputChar = ch,
-				letterOrDigitRegEx = "[\\d\u00C0-\u1FFF\u2C00-\uD7FFa-zA-Z]",
-				letterRegEx = "[\u00C0-\u1FFF\u2C00-\uD7FFa-zA-Z]",
+
+				//V.S. February 19th, 2018 #1362 Escaped unicode characters in RegEx;
+				letterOrDigitRegEx = "[\\d\\u00C0-\\u1FFF\\u2C00-\\uD7FFa-zA-Z]",
+				letterRegEx = "[\\u00C0-\\u1FFF\\u2C00-\\uD7FFa-zA-Z]",
 				digitRegEx = "[\\d]",
 				digitSpecialRegEx = "[\\d_\\+]";
 				mask = inputMask || this.options.inputMask;
@@ -8845,6 +8861,11 @@
 				if (this._inComposition === true) {
 					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
 					newValue = this._parseValueByMask(newValue);
+
+					// N.A. January 12th, 2018 #1525: When wrong input is entered the value should be reverted, if the option is set.
+					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
+						newValue = oldVal;
+					}
 				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
@@ -10694,7 +10715,7 @@
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
-```
+				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
 						buttonType : "dropdown"
@@ -11037,8 +11058,10 @@
 			}
 			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
 				var isOnChangeMonthYear = regional.onChangeMonthYear;
-				options.onChangeMonthYear  = function () {
-					isOnChangeMonthYear.call(this);
+
+				//V.S. 22 February 2018, #1609 - adjusted onChangeMonthYear function to pass year, month, date to the event
+				options.onChangeMonthYear  = function (year, month, date) {
+					isOnChangeMonthYear.call(this, year, month, date);
 					if (self.options.suppressKeyboard) {
 						self._shouldNotFocusInput = true;
 					}
@@ -11072,10 +11095,19 @@
 			this._attachButtonsEvents("dropdown", dropDownButton);
 		},
 		_dpRegion: function () {
-			var reg = this.options.regional, lastRegional, regional;
-			regional = ($.datepicker && typeof reg === "string") ?
-				$.datepicker.regional[ (reg === "defaults" || reg === "en-US") ? "" : reg ] :
-				null;
+			var reg = this.options.regional, lastRegional, regional = null, abbreviation = "";
+
+			//V.S. March 7th 2018 - #1358 if no regional option is provided and a global regional is set, uses the global one
+			if ($.datepicker && typeof reg === "string") {
+				if (reg === "defaults" || reg === "en-US") {
+					if (typeof $.ig.util.regional === "string" && $.ig.util.regional) {
+						abbreviation = $.ig.util.regional;
+					}
+				} else {
+					abbreviation = reg;
+				}
+				regional = $.datepicker.regional[ abbreviation ] || $.datepicker.regional[ "" ];
+			}
 			if (regional === null && $.datepicker) {
 				for (lastRegional in $.datepicker.regional) { }
 				if ($.datepicker.regional[ lastRegional ]) {
@@ -12052,6 +12084,645 @@
 			} else {
 				this._updateState(true);
 			}
+		}
+	});
+	$.widget("ui.igTimePicker", $.ui.igDateEditor, {
+		options: {
+			/* type="object" Gets delta-value which is used to generate the drop-down items for the time picker.
+				Accepted values for deltas are positive integer numbers, and the fractional portion of floating point numbers is ignored.
+			```
+				//Initialize with object
+				$(".selector").%%WidgetName%%({
+					itemsDelta: {
+						hours: 0,
+						minutes: 30,
+					}
+				});
+
+				//Get
+				var itemsDelta= $(".selector").%%WidgetName%%("option", "itemsDelta");
+
+			```
+			object type="object" A configuration object, which defines specific values for each time period. The option can accept the following format:
+				itemsDelta: {
+					hours: 0,
+					minutes: 30,
+				}
+			Time periods that don't have values use 0 as default for hours and 30 for minutes.
+			*/
+			itemsDelta: { hours: 0, minutes: 30 },
+			/* type="number|object" Gets/Sets delta-value which is used to increment or decrement the editor time on spin actions.
+				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
+				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
+				Accepted values for deltas are positive integer numbers, and the fractional portion of floating point numbers is ignored.
+			```
+				//Initialize with number
+				$(".selector").%%WidgetName%%({
+					spinDelta: 10
+				});
+				//Initialize with object
+				$(".selector").%%WidgetName%%({
+					spinDelta: {
+						hours: 12,
+						minutes: 15
+					}
+				});
+
+				//Get
+				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
+
+				//Set with number
+				$(".selector").%%WidgetName%%("option", "spinDelta", 10);
+				//Set with object
+				$(".selector").%%WidgetName%%("option", "spinDelta", { minutes: 15 });
+			```
+			number type="number" This value it is applied to hours and minutes,.
+			object type="object" A configuration object, which defines specific values for each time period. The option can accept the following format:
+				spinDelta: {
+					hours: 12,
+					minutes: 15
+				}
+			Default value is {hours: 1, minutes: 30}.
+			*/
+			spinDelta: { hours: 1, minutes: 30 },
+			/* type="string"
+				Gets format of time while timepicker has focus.
+				Value of that option can be set to explicit time pattern or to a flag defined by regional settings.
+				If value is set to explicit time pattern and pattern besides date-flags has explicit characters which match with time-flags or mask-flags, then the "escape" character should be used in front of them.
+				If option is not set, then the "time" is used automatically.
+				List of predefined regional flags:
+				"time": the timePattern member of regional option is used
+				List of explicit characters, which should have escape \\ character in front of them: C, &, a, A, ?, L, 9, 0, #, >, <, y, M, d, h, H, m, s, t, f.
+				List of time-flags when explicit time pattern is used:
+				"t": first character of string which represents AM/PM field
+				"tt": 2 characters of string which represents AM/PM field
+				"hh": hours field in 12-hours format with leading zero
+				"HH": hours field in 24-hours format with leading zero
+				"mm": minutes field with leading zero
+				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						timeInputFormat : "time"
+					});
+
+					//Get
+					var timeInputFormat = $(".selector").%%WidgetName%%("option", "timeInputFormat");
+				```
+			*/
+			timeInputFormat: "time",
+			/* type="string"
+				Gets/Sets format of time while timepicker has no focus.
+				Value of that option can be set to a specific time pattern or to a flag defined by regional settings.
+				If value is not set, then the timeInputFormat is used automatically.
+				If value is set to explicit time pattern and pattern besides time-flags has explicit characters which match with time-flags or mask-flags, then the "escape" character should be used in front of them.
+				List of predefined regional flags:
+				"time": the timePattern member of regional option is used
+				List of explicit characters, which should have escape \\ character in front of them:
+					C, &, a, A, ?, L, 9, 0, #, >, <, y, M, d, h, H, m, s, t, f.
+				List of time-flags when explicit time pattern is used:
+				"t": first character of string which represents AM/PM field
+				"tt": 2 characters of string which represents AM/PM field
+				"h": hours field in 12-hours format without leading zero
+				"hh": hours field in 12-hours format with leading zero
+				"H": hours field in 24-hours format without leading zero
+				"HH": hours field in 24-hours format with leading zero
+				"m": minutes field without leading zero
+				"mm": minutes field with leading zero
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						timeDisplayFormat: "time"
+					});
+
+					//Get
+					var timeDisplayFormat = $(".selector").%%WidgetName%%("option", "timeDisplayFormat");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "timeDisplayFormat", "time");
+				```
+			*/
+			timeDisplayFormat: null,
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Matching is case-insensitive.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					isLimitedToListValues : true
+				});
+
+				//Get
+				var limited = $(".selector").%%WidgetName%%("option", "isLimitedToListValues");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
+			```*/
+			isLimitedToListValues: true,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				Note: When drop down is opened the only way to close it will be using the drop down button.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false,
+			/* type="auto|bottom|top" Gets/Sets the drop-down list opening orientation when the list gets open. If the option is set to auto the timepicker has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownOrientation : "top"
+				});
+
+				//Get
+				var orientation = $(".selector").%%WidgetName%%("option", "dropDownOrientation");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dropDownOrientation", "bottom");
+
+				```
+				auto type="string" If the option is set to auto the timepicker has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
+				bottom type="string" The drop-down list is opened at the bottom of the timepicker.
+				top type="string" The drop-down list is opened at the top of the timepicker.
+			*/
+			dropDownOrientation: "auto",
+			/* type="number" Gets the number of the items to be shown at once when the drop-down list get opened.
+				Notes:
+				This option is overwritten if the number of list items is less than the set value. In that case the drop-down list displays all the items.
+				This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					visibleItemsCount : 5
+				});
+
+				//Get
+				var visibleItemsCount = $(".selector").%%WidgetName%%("option", "visibleItemsCount");
+				```
+			*/
+			visibleItemsCount: 5,
+			/* type="number" Gets/Sets custom width of the drop-down list in pixels. If the value is equal to 0 or negative, then the width of timepicker is set as a drop-down width.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					listWidth : 200
+				});
+
+				//Get
+				var width = $(".selector").%%WidgetName%%("option", "listWidth");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "listWidth", 200);
+			```
+			*/
+			listWidth: 0,
+			/* type="number" Gets/Sets the hover/unhover animation duration of a drop-down list item.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					listItemHoverDuration : 100
+				});
+
+				//Get
+				var hoverDuration = $(".selector").%%WidgetName%%("option", "listItemHoverDuration");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "listItemHoverDuration", 100);
+			```
+			*/
+			listItemHoverDuration: 0,
+			/* type="bool" Gets wheather the drop-down list element is attached to the body of the document, or to the timepicker container element.
+				If the option is set to false the timepicker will attach the drop-down list element to the timepicker container
+				If the option is set to true the timepicker will attach its drop-down list to as a child of the body.
+				Note! This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownAttachedToBody : true
+				});
+
+				//Get
+				var attachedToBody = $(".selector").%%WidgetName%%("option", "dropDownAttachedToBody");
+				```
+			*/
+			dropDownAttachedToBody: false,
+			/* type="number" Gets/Sets show/hide drop-down list animation duration in milliseconds.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+				  dropDownAnimationDuration: 500
+				});
+
+				//Get
+				var animationShowDuration= $(".selector").%%WidgetName%%("option", "dropDownAnimationDuration");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dropDownAnimationDuration", 500);
+			```
+			*/
+			dropDownAnimationDuration: 300,
+			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown, clear' or 'spin, clear' are supported too.
+				Note! This option can not be set runtime.
+				Note! A combination like 'dropdown, spin' is not allowed.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown"
+					});
+
+					//Get
+					var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+					//Initialize multiple buttons
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown,clear"
+					});
+				```
+				dropdown type="string" A button to open/close the list is located on the right side of the editor.
+				clear type="string" A button to clear the value is located on the right side of the editor.
+				spin type="string" Spin buttons are located on the right side of the editor.
+			*/
+			buttonType: "dropdown",
+			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
+				This applies to [minValue](ui.%%WidgetNameLowered%%#options:minValue) and [maxValue](ui.%%WidgetNameLowered%%#options:maxValue) or cycling through list items if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinWrapAround : true
+				});
+
+				//Get
+				var spinAround = $(".selector").%%WidgetName%%("option", "spinWrapAround");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinWrapAround", true);
+			```
+			*/
+			spinWrapAround: true,
+			/* @Ignored@ Removed from timepicker options*/
+			dateDisplayFormat: null,
+			/* @Ignored@ Removed from timepicker options*/
+			dateInputFormat: null,
+			/* @Ignored@ Removed from timepicker options*/
+			yearShift: null,
+			/* @Ignored@ Removed from timepicker options*/
+			displayTimeOffset: null
+		},
+		events: {
+			/* cancel="true" Fired when the drop down is opening.
+				```
+				//Delegate
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListOpening: function (evt, ui) {
+					...
+					}
+				});
+				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+			*/
+			dropDownListOpening: "dropDownListOpening",
+			/* cancel="true" Fired after the drop down is opened.
+				```
+				//Delegate
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListOpened: function (evt, ui) {
+					...
+					}
+				});
+				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+			*/
+			dropDownListOpened: "dropDownListOpened",
+			/* cancel="true" Fired when the drop down is closing.
+				```
+				//Delegate
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosing", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListClosing: function (evt, ui) {
+					...
+					}
+				});
+				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+			*/
+			dropDownListClosing: "dropDownListClosing",
+			/* cancel="false" Fired after the drop down is closed.
+				```
+				//Delegate
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListClosed: function (evt, ui) {
+					...
+					}
+				});
+				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+			*/
+			dropDownListClosed: "dropDownListClosed",
+			/* cancel="true" Fired when an item in the drop down list is being selected.
+				```
+				//Delegate
+				$(".selector").on("%%WidgetNameLowered%%dropdownitemselecting", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownItemSelecting: function (evt, ui) {
+					...
+					}
+				});
+				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.item" argType="object" Gets a reference to the list item which is about to be selected.
+			*/
+			dropDownItemSelecting: "dropDownItemSelecting",
+			/* cancel="false" Fired after an item in the drop down list is selected.
+				```
+				//Delegate
+				$(".selector").on("%%WidgetNameLowered%%dropdownitemselected", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownItemSelected: function (evt, ui) {
+					...
+					}
+				});
+				```
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
+				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
+				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
+			*/
+			dropDownItemSelected: "dropDownItemSelected"
+		},
+		_initialize: function () { // igTimePicker
+			if (this.options.timeDisplayFormat) {
+				this.options.dateDisplayFormat = this._parseTimeMask(this.options.timeDisplayFormat);
+			}
+
+			this.options.dateInputFormat = this._parseTimeMask(this.options.timeInputFormat);
+
+			this._super();
+
+			if (this.options.minValue) {
+				this.options.minValue = this._parseDateFromMaskedValue(this.options.minValue);
+			}
+
+			if (this.options.maxValue) {
+				this.options.maxValue = this._parseDateFromMaskedValue(this.options.maxValue);
+			}
+
+			var buttons = this.options.buttonType.toString().split(/[\s,]+/);
+
+			if ($.inArray("dropdown", buttons) !== -1 && $.inArray("spin", buttons) === -1) {
+				this._populateDropDown(this.options.minValue, this.options.maxValue);
+			}
+		},
+		getSelectedListItem: function () {
+			/* Gets the selected list item.
+			```
+			var selectedItem =  $(".selector").%%WidgetName%%("getSelectedListItem");
+			```
+				returnType="$" Selected list item.*/
+			return $.ui.igTextEditor.prototype.getSelectedListItem.call(this);
+		},
+		dropDownVisible: function () {
+			/* Returns the visibility state of the calendar.
+			```
+			$(".selector").igTimePicker("dropDownVisible");
+			```
+				returnType="bool" The visibility state of the calendar. */
+			return $.ui.igTextEditor.prototype.dropDownVisible.call(this);
+		},
+		dropDownButton: function () {
+			/* Returns a reference to the drop-down button UI element of the editor.
+			```
+			var button = $(".selector").%%WidgetName%%("dropDownButton");
+			```
+				returnType="$" Returns reference to jquery object. */
+			return $.ui.igTextEditor.prototype.dropDownButton.call(this);
+		},
+		dropDownContainer: function () {
+			/* Gets reference to jquery object which is used as container of drop-down list.
+			```
+				 $(".selector").%%WidgetName%%("dropDownContainer");
+			```
+				returnType="$" Returns reference to jquery object. */
+			return $.ui.igTextEditor.prototype.dropDownContainer.call(this);
+		},
+		findListItemIndex: function (text, matchType) {
+			/* Finds index of list item by text that matches with the search parameters.
+			```
+				var item =  $(".selector").igTimePicker("findListItemIndex");
+
+			```
+				paramType="string" optional="false" The text to search for in the drop down list.
+				paramType="startsWith|endsWith|contains|exact" optional="true" The rule that is applied for searching the text.
+				returnType="number" Returns index of the found item. */
+			return $.ui.igTextEditor.prototype.findListItemIndex.call(this, text, matchType);
+		},
+		selectedListIndex: function (index) {
+			/* Gets the index of the selected list item. Sets selected item by index.
+			```
+				$(".selector").%%WidgetName%%("selectedListIndex", 1);
+				var selectedIndex = $(".selector").%%WidgetName%%("selectedListIndex");
+			```
+				paramType="number" optional="true" The index of the item that needs to be selected.
+				returnType="number" Returns the selected index. */
+			return $.ui.igTextEditor.prototype.selectedListIndex.call(this, index);
+		},
+		_getEditModeValue: function (val) { // igTimePicker
+			if ($.type(val) === "date") {
+				return this._updateMaskedValue(val, true);
+			} else {
+				return this._super();
+			}
+		},
+		_populateDropDown: function(minValue, maxValue) {
+			if (minValue) {
+				minValue = minValue.getHours() * 60 + minValue.getMinutes();
+			} else {
+				minValue = 0;
+			}
+			if (maxValue) {
+				maxValue = maxValue.getHours() * 60 + maxValue.getMinutes();
+			} else {
+				maxValue = 1440;
+			}
+
+			var timeDeltaMinutes = this.options.itemsDelta.hours * 60 + this.options.itemsDelta.minutes;
+			var startMinutes = minValue / timeDeltaMinutes;
+			var dropDownItemsCount = 0;
+
+			if (timeDeltaMinutes > 0 && timeDeltaMinutes <= 1440) {
+				dropDownItemsCount = 1440 / timeDeltaMinutes;
+			}
+
+			var initDate = new Date();
+			initDate.setHours(0);
+			initDate.setMinutes(0);
+			initDate.setSeconds(0);
+
+			this.options.listItems = [];
+
+			for (var i = startMinutes; i < dropDownItemsCount; i++) {
+				var date = new Date(initDate);
+				date.setMinutes(timeDeltaMinutes * i);
+				if (timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue) {
+					this.options.listItems.push(date);
+				}
+			}
+		},
+		_parseTimeMask: function(mask) {
+			return mask.replace(/M/g, "\\M").replace(/d/g, "\\d").replace(/y/g, "\\y").replace(/s/g, "\\s").replace(/f/g, "\\f");
+		},
+		_validateValue: function (val) { //igTimePicker
+			if (this._super(val)) {
+				return $.ui.igTextEditor.prototype._validateValue.call(this, val);
+			} else {
+				return false;
+			}
+		},
+		_setOption: function (option, value) { //igTimePicker
+			var prevValue = this.options[ option ];
+			if (prevValue === value) {
+				return;
+			}
+
+			$.Widget.prototype._setOption.apply(this, arguments);
+			switch (option) {
+				case "timeDisplayFormat":
+					this._super("dateDisplayFormat", this._parseTimeMask(value));
+					break;
+				case "timeInputFormat":
+				case "itemsDelta":
+				case "minValue":
+				case "maxValue":
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("setOptionError") + option);
+				default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
+			}
+		},
+		value: function (newValue) { //igTimePicker
+			if (newValue === undefined || $.type(newValue) === "date") {
+				return this._super(newValue);
+			} else {
+				return this._super(this._parseDateFromMaskedValue(newValue));
+			}
+		},
+		_updateValue: function (value) { //igTimePicker
+			this._super(value);
+			if (this._dropDownList !== undefined) {
+				this._updateDropdownSelection(value);
+			}
+		},
+		_updateDropdownSelection: function (currentVal) { //igTimePicker
+			if ($.type(currentVal) === "date") {
+				this._super(currentVal);
+			} else {
+				if (this.options.dataMode === "displayModeText") {
+					currentVal = this._parseValueByMask(currentVal);
+				}
+				this._super(this._parseDateFromMaskedValue(currentVal));
+			}
+		},
+		_setBlur: function (event) { //igTimePicker
+			this._super(event);
+			if (this._dropDownList && this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
+				this._hideDropDownList();
+			}
+		},
+		_applyOptions: function () { // igTimePicker
+			if ($.type(this.options.value) !== "date" && this.options.value !== null) {
+				this.options.value = this._parseDateFromMaskedValue(this.options.value);
+			}
+			this._super();
+		},
+		_triggerKeyDown: function (event) { // igTimePicker
+			if (this._dropDownList) {
+				$.ui.igNumericEditor.prototype._triggerKeyDown.call(this, event);
+			} else {
+				this._super(event);
+			}
+		},
+		_spin: function (type, fireEvent) { // igTimePicker
+			if (this.options.isLimitedToListValues && this._dropDownList) {
+				$.ui.igNumericEditor.prototype._spin.call(this, type, fireEvent);
+			} else {
+				this._super(type, fireEvent);
+			}
+		},
+		_handleSpinUpEvent: function() { //igTimePicker
+			if (this.options.isLimitedToListValues && this._dropDownList) {
+				$.ui.igNumericEditor.prototype._handleSpinUpEvent.call(this);
+			} else {
+				this._super();
+			}
+		},
+		_handleSpinDownEvent: function() { //igTimePicker
+			if (this.options.isLimitedToListValues && this._dropDownList) {
+				$.ui.igNumericEditor.prototype._handleSpinDownEvent.call(this);
+			} else {
+				this._super();
+			}
+		},
+		/* This method is inherited from a parent widget and it's not supported in igTimePicker */
+		selectDate: function () {
+		/*@Ignored@*/
+			throw new Error(this._getLocaleValue("timePickerNoSuchMethod"));
 		}
 	});
 	return $;// REMOVE_FROM_COMBINED_FILES

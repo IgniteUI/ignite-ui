@@ -1162,6 +1162,9 @@
 			// Changing the destructor to accommodate for this.element being the top-most element
 			var self = this,
 				elem0 = this.element.children(".ui-igdialog-content");
+
+			// V.S. February 12th, 2018 #1391 Stop current dialog animation before destroy
+			this.element.stop(true, true);
 			this._doClose(null, true);
 			if (self._winResize) {
 				$(window).unbind("resize", self._winResize);
@@ -1507,10 +1510,23 @@
 			self._opened = true;
 			self._doSize(1);
 			if (anim) {
-				elem.hide().show(anim, function () {
-					self._trigger("animationEnded", e, arg);
-					self.moveToTop(true);
-				});
+
+				//V.S. 21 February, 2018 - #1204 animation chaining was not always calling moveToTop properly
+				if (typeof anim === "string") {
+					elem.hide().show(anim, function () {
+						self._trigger("animationEnded", e, arg);
+						self.moveToTop(true);
+					});
+				} else {
+					if (typeof anim !== "object") {
+						anim = { easing: anim };
+					}
+					anim.complete = function () {
+						self._trigger("animationEnded", e, arg);
+						self.moveToTop(true);
+					};
+					elem.hide(0).show(anim);
+				}
 			} else {
 				self.moveToTop(true);
 			}
@@ -1839,9 +1855,21 @@
 			}
 			self._doModal();
 			if (anim) {
-				elem.hide(anim, function () {
-					self._trigger("animationEnded", e, arg);
-				});
+
+				//V.S. 21 February, 2018 - #1204 animation chaining was not always calling moveToTop properly
+				if (typeof anim === "string") {
+					elem.hide(anim, function () {
+						self._trigger("animationEnded", e, arg);
+					});
+				} else {
+					if (typeof anim !== "object") {
+						anim = { easing: anim };
+					}
+					anim.complete = function () {
+						self._trigger("animationEnded", e, arg);
+					};
+					elem.hide(anim);
+				}
 			} else if (!destroy) {
 				elem.hide();
 			}
