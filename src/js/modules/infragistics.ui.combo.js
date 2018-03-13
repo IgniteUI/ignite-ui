@@ -3279,10 +3279,8 @@
 									keepFiltering: true
 								}, event);
 
-								// On full match the item shouldn't be considered as auto selected
-								if (curDataText !== curText) {
-									_options.autoSelectedItemData = curData;
-								}
+								// A.K. February 27th, 2018 #1627 Highlight mode is not applicable when the input value and the firstly met dataSource item are equal.
+								_options.autoSelectedItemData = curData;
 
 								matchFound = true;
 								justSelectedData.push(curData);
@@ -4948,14 +4946,12 @@
 			this.focusable.removeClass("ui-state-focus");
 
 			if (value) {
-				this._options.$input.attr("readonly", true);
+
+				// H.A. 8th Feb 2018, https://github.com/IgniteUI/ignite-ui/issues/1585
+				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
-
-				// S.T. 27th November 2015 Bug #210080: When disable the combo and enable it after that, in "mode" dropdown the input should be readonly.
-				if (this.options.mode !== "dropdown") {
-					this._options.$input.removeAttr("readonly");
-				}
+				this._options.$input.removeAttr("disabled");
 				this._options.$hiddenInput.removeAttr("disabled");
 			}
 		},
