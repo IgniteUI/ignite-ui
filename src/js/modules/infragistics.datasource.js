@@ -5445,7 +5445,7 @@
 			var arr = [], i, dataLen = data.length, reverse, sortF,
 				caseSensitive =  this.settings.sorting.caseSensitive,
 				compareValFunc = f.compareFunc, rec, val, formatter = f.formatter,
-				self = this, mapper = this._hasMapper;
+				self = this, mapper = this._hasMapper, field, fieldType;
 			if (f.dir !== undefined && f.dir !== null) {
 				reverse = f.dir.toLowerCase().startsWith("desc");
 				reverse = reverse ? -1 : 1;
@@ -5453,6 +5453,14 @@
 				reverse = direction.toLowerCase().startsWith("desc");
 				reverse = reverse ? -1 : 1;
 			}
+
+			field = this.schema().schema.fields.find(function (fld) {
+				return fld.name === f.fieldName;
+			});
+			if (field) {
+				fieldType = field.type;
+			}
+
 			for (i = 0; i < dataLen; i++) {
 				rec = data[ i ];
 				val = mapper ? self.getCellValue(f.fieldName, rec) : rec[ f.fieldName ];
@@ -5470,7 +5478,7 @@
 						val !== null && val.toLowerCase) {
 					val = val.toLowerCase();
 				} else if (val && val.getTime) {
-					val = val.getTime();
+					val = this._getDateAsNumber(val, fieldType);
 				}
 				arr.push({
 					val: val,
@@ -5500,6 +5508,23 @@
 				data[ i ] = arr[ i ].rec;
 			}
 			return data;
+		},
+		_getDateAsNumber: function (dateObject, fieldType) {
+			/* Get the date as number. If fieldType is 'time' set the date portion
+			   of the input value to the current date and then convert it to number. */
+			if (!dateObject || !dateObject.getTime) {
+				return dateObject;
+			}
+
+			if (fieldType === "time") {
+				var currentDate = new Date();
+				var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+					currentDate.getDate(), dateObject.getHours(), dateObject.getMinutes(),
+					dateObject.getSeconds(), dateObject.getMilliseconds());
+				return result.getTime();
+			}
+
+			return val.getTime();
 		},
 		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
 			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,
