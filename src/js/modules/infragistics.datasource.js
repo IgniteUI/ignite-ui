@@ -5445,7 +5445,7 @@
 			var arr = [], i, dataLen = data.length, reverse, sortF,
 				caseSensitive =  this.settings.sorting.caseSensitive,
 				compareValFunc = f.compareFunc, rec, val, formatter = f.formatter,
-				self = this, mapper = this._hasMapper, field, fieldType;
+				self = this, mapper = this._hasMapper, fieldType;
 			if (f.dir !== undefined && f.dir !== null) {
 				reverse = f.dir.toLowerCase().startsWith("desc");
 				reverse = reverse ? -1 : 1;
@@ -5454,13 +5454,7 @@
 				reverse = reverse ? -1 : 1;
 			}
 
-			field = this.schema().schema.fields.find(function (fld) {
-				return fld.name === f.fieldName;
-			});
-			if (field) {
-				fieldType = field.type;
-			}
-
+			fieldType = this._getFieldTypeFromSchema(f.fieldName);
 			for (i = 0; i < dataLen; i++) {
 				rec = data[ i ];
 				val = mapper ? self.getCellValue(f.fieldName, rec) : rec[ f.fieldName ];
@@ -5517,14 +5511,22 @@
 			}
 
 			if (fieldType === "time") {
-				var currentDate = new Date();
-				var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
-					currentDate.getDate(), dateObject.getHours(), dateObject.getMinutes(),
-					dateObject.getSeconds(), dateObject.getMilliseconds());
-				return result.getTime();
+				return this._resetDateObjectToCurrentDate(dateObject).getTime();
 			}
 
-			return val.getTime();
+			return dateObject.getTime();
+		},
+		_resetDateObjectToCurrentDate: function (dateObject) {
+			/* Replace the date part of a date object with current date */
+			if (!dateObject || !dateObject.getTime) {
+				return dateObject;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), dateObject.getHours(), dateObject.getMinutes(),
+				dateObject.getSeconds(), dateObject.getMilliseconds());
+			return result;
 		},
 		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
 			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,
@@ -7207,7 +7209,8 @@
 				mapper = this._hasMapper,
 				cmpFunc = gbExpr.compareFunc,
 				key = gbExpr.fieldName,
-				len = data.length;
+				len = data.length,
+				fieldType = this._getFieldTypeFromSchema(gbExpr.fieldName);
 			gbRes = gbRes || {};
 			if (!cmpFunc) {
 				cmpFunc = function (val1, val2) {
@@ -7219,11 +7222,18 @@
 			groupval = mapper ?
 							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
-			gbRes.val = groupval;
+			if (groupval && groupval.getTime) {
+				gbRes.val = this._getDateAsNumber(groupval, fieldType);
+			} else {
+				gbRes.val = groupval;
+			}
 			startInd++;
 			for (i = startInd; i < len; i++) {
 				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
-				cmpRes = cmpFunc(currval, groupval,
+				if (currval && currval.getTime) {
+					currval = this._getDateAsNumber(currval, fieldType);
+				}
+				cmpRes = cmpFunc(currval, gbRes.val,
 									{
 										fieldName: key,
 										recordX: data[ startInd ],
@@ -7323,7 +7333,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt,
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec,
 			groupRecordKey = this.settings.groupby.groupRecordKey,
 			summaries = this.settings.groupby.summaries;
 			gbInd = gbInd || 0;
@@ -7349,8 +7359,6 @@
 				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
-				dt = !!(gbRec.val && gbRec.val.getTime);
-				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
 				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
 				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
 				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
