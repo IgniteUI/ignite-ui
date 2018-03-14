@@ -1494,13 +1494,14 @@
 				return 0;
 			}
 
-			var curPosY;
+			var curPosY, contHeight;
 			if (this.options.scrollOnlyVBar) {
 				curPosY = this._getScrollbarVPosition();
 			} else {
 				curPosY = this._getContentPositionY();
 			}
 
+			contHeight = $.ig.util.isIE ? this._container.outerHeight() : this._container.height();
 			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._container.height());
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
