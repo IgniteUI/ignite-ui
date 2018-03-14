@@ -1502,7 +1502,7 @@
 			}
 
 			contHeight = $.ig.util.isIE ? this._container.outerHeight() : this._container.height();
-			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._container.height());
+			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - contHeight);
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
 			if (triggerEvents) {
