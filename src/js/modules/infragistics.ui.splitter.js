@@ -20,7 +20,7 @@
 
         // AMD. Register as an anonymous module.
         define([
-            "infragistics.ui.widget"
+            "./infragistics.ui.widget"
         ], factory);
     } else {
 
