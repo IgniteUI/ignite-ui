@@ -2181,8 +2181,10 @@
 			}
 
 			var evt = event.originalEvent,
+				scrollDeltaX = 0,
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
+				minWheelStep = 1 / this.options.wheelStep,
 				scrolledY, scrolledYDir;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
@@ -2191,55 +2193,81 @@
 				this._applyTransformOnScrollTop();
 			}
 
+			/** Get current scroll positions to base the next scroll position from */
+			if (this.options.scrollOnlyHBar) {
+				this._startX = this._getScrollbarHPosition();
+			} else {
+				this._startX = this._getContentPositionX();
+			}
+			if (this.options.scrollOnlyVBar) {
+				this._startY = this._getScrollbarVPosition();
+			} else {
+				this._startY = this._getContentPositionY();
+			}
+
+			/** Get delta for the X axis*/
+			if (evt.wheelDeltaX) {
+				/* Option supported on Chrome, Safari, Opera.
+				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
+				scrollDeltaX = -evt.wheelDeltaX / 120;
+
+				/** S.K. Fix for Issue #1438 When using trackpad the scroll amount could be less than 1 px, but scrollTop receives only integers, so we need to have it scroll minimum 1 px */
+				if (-minWheelStep < scrollDeltaX && scrollDeltaX < minWheelStep) {
+					scrollDeltaX = Math.sign(scrollDeltaX) * minWheelStep;
+				}
+			} else if (evt.deltaX) {
+				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
+				scrollDeltaX = this._clampAxisCoords(evt.deltaX, -1, 1);
+			}
+
+			/** Get delta for the Y axis*/
 			if (evt.wheelDeltaY) {
 				/* Option supported on Chrome, Safari, Opera.
 				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
 				scrollDeltaY = -evt.wheelDeltaY / 120;
+
+				/** S.K. Fix for Issue #1438 When using trackpad the scroll amount could be less than 1 px, but scrollTop receives only integers, so we need to have it scroll minimum 1 px */
+				if (-minWheelStep < scrollDeltaY && scrollDeltaY < minWheelStep) {
+					scrollDeltaY = Math.sign(scrollDeltaY) * minWheelStep;
+				}
 			} else if (evt.deltaY) {
 				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
-				scrollDeltaY = evt.deltaY > 0 ? 1 : -1;
+				scrollDeltaY = this._clampAxisCoords(evt.deltaY, -1, 1);
 			}
 
-			if (this.options.smoothing) {
-				//Scroll with small inertia
-				this._smoothWheelScrollY(scrollDeltaY);
+			if (scrollDeltaX) {
+				this._scrollToX(this._startX + scrollDeltaX * scrollStep, true);
 			} else {
-				//Normal scroll
-				if (this.options.scrollOnlyHBar) {
-					this._startX = this._getScrollbarVPosition();
+				if (this.options.smoothing) {
+					//Scroll with small inertia
+					this._smoothWheelScrollY(scrollDeltaY);
 				} else {
-					this._startX = this._getContentPositionY();
-				}
-				if (this.options.scrollOnlyVBar) {
-					this._startY = this._getScrollbarVPosition();
-				} else {
-					this._startY = this._getContentPositionY();
-				}
 
-				if (this._bMixedEnvironment) {
-					scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
-				} else {
-					scrolledY = this._scrollTouchToXY(
-						this._startX,
-						this._startY + scrollDeltaY * scrollStep,
-						true
-					).y;
-				}
+					if (this._bMixedEnvironment) {
+						scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
+					} else {
+						scrolledY = this._scrollTouchToXY(
+							this._startX,
+							this._startY + scrollDeltaY * scrollStep,
+							true
+						).y;
+					}
 
-				if (!this._cancelScrolling) {
-					//Trigger scrolled event
-					this._trigger("scrolled", null, {
-						owner: this,
-						smallIncrement: 0,
-						bigIncrement: 0,
-						horizontal: false
-					});
-				}
+					if (!this._cancelScrolling) {
+						//Trigger scrolled event
+						this._trigger("scrolled", null, {
+							owner: this,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: false
+						});
+					}
 
-				/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
-				/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
-				scrolledYDir = scrolledY > 0 ? 1 : -1;
-				return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
+					/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
+					/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
+					scrolledYDir = scrolledY > 0 ? 1 : -1;
+					return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
+				}
 			}
 
 			return false;
