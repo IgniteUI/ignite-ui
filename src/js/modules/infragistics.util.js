@@ -4083,7 +4083,7 @@
 			}
 			delete obj.elem;
 			delete obj.chart;
-			if (obj.__resizeProxy){
+			if (obj.__resizeProxy) {
 				window.removeEventListener("resize", obj.__resizeProxy, false);
 				delete obj.__resizeProxy;
 			}
