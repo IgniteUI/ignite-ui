@@ -1552,6 +1552,10 @@
 			if (this.options.scrollOnlyVBar) {
 				this._moveVBarY(destY);
 			} else {
+				//On IE11 we shouldn't call scrollTop when we want to scroll page on top/bottom of content. There is also an error of 1 pixed on IE11
+				if ($.ig.util.isIE && Math.abs(destY - curPosY) <= 1) {
+					return 0;
+				}
 				this._container.scrollTop(destY + endOffsetEdge); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
