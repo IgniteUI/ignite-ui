@@ -19,24 +19,25 @@
 }
 .financialChartPrice {
 	grid-row: 2;
+	-ms-grid-row: 2;
 }
 .financialChartIndicators {
 	grid-row: 3;
+	-ms-grid-row: 3;
 }
 .financialChartVolume {
 	grid-row: 4;
+	-ms-grid-row: 4;
 }
 .financialChartZoomSlider {
 	grid-row: 5;
+	-ms-grid-row: 5;
 }
 .financialChartToolbar {
 	display: grid;
-	grid-row: 1;
-}
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
-   .financialChartToolbar {
 	display: -ms-grid;
-}
+	grid-row: 1;
+	-ms-grid-row: 1;
 }
 .financialChartRangeSelector {
 	text-align: center;
@@ -92,10 +93,12 @@
 	z-index: 1;
 }
 .financialChartToolbar .financialChartToolbar {
-    display: flex;
+	display: flex;
+	display: -ms-flexbox;
     align-items: center;
     justify-content: space-around;
-    flex-flow: row nowrap;
+	flex-flow: row nowrap;
+	-ms-flex-flow: row nowrap;
     background: #eee;
     border: 1px solid #ccc;
 }
