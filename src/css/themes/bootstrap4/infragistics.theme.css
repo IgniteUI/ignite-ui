@@ -2135,7 +2135,7 @@ border-top removed for tables with virtualization, or headers */ }
   border-color: transparent; }
 
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
-  border-right: 1px solid #eceeef; }
+  border-right-color: #eceeef; }
 
 /* BUG 246065 END */
 .ui-iggrid tbody td,
@@ -3383,7 +3383,7 @@ border-top removed for tables with virtualization, or headers */ }
 
 .ui-radialgauge-tick {
   background-color: #373a3c;
-  border-top-color: none; }
+  border-top-color: transparent; }
 
 .ui-radialgauge-minorTick {
   background-color: #373a3c;

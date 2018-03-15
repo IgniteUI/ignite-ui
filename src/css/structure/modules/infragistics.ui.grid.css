@@ -4,11 +4,37 @@
     background-image: none;
 	border-width:0;
 }
-.ui-iggrid .ui-helper-reset {line-height: 1.4; border:0 none;}
-.ui-iggrid-table {table-layout:fixed; width:100%; border-collapse: separate; }
-.ui-iggrid-headertable {table-layout:fixed; width:100%; white-space: normal; border-collapse: separate; }
-.ui-iggrid table th, .ui-iggrid table td {overflow:hidden; text-overflow: ellipsis; vertical-align:middle /* reset to default value */;}
-.ui-iggrid .ui-iggrid-headertable, .ui-iggrid .ui-iggrid-content, .ui-iggrid .ui-widget-content, .ui-iggrid-scrolldiv table {border-width:0;}
+
+.ui-iggrid .ui-helper-reset {
+    line-height: 1.4; border: 0;
+}
+
+.ui-iggrid-table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: separate;
+}
+
+.ui-iggrid-headertable {
+    table-layout: fixed; width: 100%;
+    white-space: normal;
+    border-collapse: separate;
+}
+
+.ui-iggrid table th,
+.ui-iggrid table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle /* reset to default value */;
+}
+
+.ui-iggrid .ui-iggrid-headertable,
+.ui-iggrid .ui-iggrid-content,
+.ui-iggrid .ui-widget-content,
+.ui-iggrid-scrolldiv table {
+    border-width: 0;
+}
+
 .ui-iggrid .ui-iggrid-content {width: 100%;}
 /* Bug 214589 S.D., 22.02.2016, Missing borders; new classes for a MRL grid; header cell misalignment issue */
 .ui-iggrid-table-mrl,.ui-iggrid-headertable-mrl {border-collapse:collapse;table-layout:fixed;}
@@ -21,7 +47,8 @@
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
     border-spacing: 0;
     border-collapse: separate;
-    border-right: 1px solid #dadada;
+    border-right-width: 1px;
+    border-right-style: solid;
     box-sizing: border-box;
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable tr th {
@@ -296,7 +323,11 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 
 
 /* remove paddings in nested tables */
-.ui-iggrid-layout-helper>tbody>tr>td  {padding:0!important; background:none transparent!important; vertical-align:top;}
+.ui-iggrid-layout-helper>tbody>tr>td  {
+    padding:0!important;
+    background:none transparent!important;
+    vertical-align:top;
+}
 
 /*editors in grids*/
 .ui-iggrid .ui-igedit-fieldincontainer, .ui-iggrid .ui-igedit-button  {height:1.4em;}
