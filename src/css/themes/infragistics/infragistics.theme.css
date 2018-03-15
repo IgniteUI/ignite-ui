@@ -2955,11 +2955,6 @@ input.ui-igbutton {
 /**********/
 /* igGrid */
 /**********/
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-  /*padding: 10px;*/
-}
 .ui-iggrid .ui-iggrid-groupbyarea {
   background-color: #FFFFFF;
   border-color: #dadada;
@@ -3184,7 +3179,10 @@ input.ui-igbutton {
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable,
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
-  border-right: 1px solid #dadada;
+  border-right-color: #dadada;
+}
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable tr th {
+  border-right: 0;
 }
 /* END 246065 */
 .ui-iggrid tbody td,
