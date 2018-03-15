@@ -4,30 +4,185 @@
     border-width: 0px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-.financialChartRangeSelector
-{
-	text-align:center;
+.ui-financialchart-mainChart {
+	margin-left: 15px;
 }
-.financialChartRangeSelector input
-{
-	display:none;
+.ui-financialchart-volumeChart {
+	margin-left: 15px;
 }
-.financialChartRangeSelector label
-{
-	border-right:1px solid #758696;
-	padding:0 10px;
+.financialChartMainGrid {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	display: -ms-grid;
+	-ms-grid-columns: 100%;
 }
-.financialChartRangeSelector label:last-child
-{
-	border:none;
-	padding-right:0;
+.financialChartPrice {
+	grid-row: 2;
 }
-.financialChartRangeSelector label:hover
-{
-	color:#0090ff;
-	cursor:pointer;
+.financialChartIndicators {
+	grid-row: 3;
+}
+.financialChartVolume {
+	grid-row: 4;
+}
+.financialChartZoomSlider {
+	grid-row: 5;
+}
+.financialChartToolbar {
+	display: grid;
+	grid-row: 1;
+}
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+   .financialChartToolbar {
+	display: -ms-grid;
+}
+}
+.financialChartRangeSelector {
+	text-align: center;
+	grid-column: 4;
+	-ms-grid-column: 4;
+}
+.financialChartRangeSelector input {
+	display: none;
+}
+.financialChartRangeSelector label {
+	border-right: 1px solid #758696;
+	padding: 0 10px;
+}
+.financialChartRangeSelectorLastOption {
+	border: none !important;
+	padding-right: 0;
+}
+.financialChartRangeSelector label:hover {
+	color: #0090ff;
+	cursor: pointer;
 }
 .financialChartRangeSelector input:checked + span
 {
+	color: #0090ff;
+}
+.financialChartTypePicker {
+	grid-column: 5;
+	-ms-grid-column: 5;
+}
+.financialChartIndicatorPicker {
+	grid-column: 1;
+	-ms-grid-column: 1;
+}
+.financialChartOverlayPicker {
+	grid-column: 2;
+	-ms-grid-column: 2;
+}
+.financialChartTrendLineTypePicker {
+	grid-column: 3;
+	-ms-grid-column: 3;
+}
+.financialChartVolumeTypePicker {
+	grid-column: 6;
+	-ms-grid-column: 6;
+}
+.financialChartIndicatorPicker, .financialChartOverlayPicker {
+	position: relative; 
+	display: inline-block;
+}
+.financialChartIndicatorPickerDropDownList, .financialChartOverlayPickerDropDownList {
+	position: relative; 
+	display: inline-block;
+	z-index: 1;
+}
+.financialChartToolbar .financialChartToolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-flow: row nowrap;
+    background: #eee;
+    border: 1px solid #ccc;
+}
+
+.financialChartIndicatorPickerDropDownList,
+.financialChartOverlayPickerDropDownList {
+    position: absolute!important;
+	top: 30px;
+	left:0;
+	-webkit-box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.2);
+	box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.2);
+}
+
+.financialChartIndicatorPickerDropDownButton,.financialChartOverlayPickerDropDownButton {
+	background-color:transparent;
+	border:none;
+	outline:none;
+	cursor:pointer;
+}
+
+.financialChartIndicatorPickerDropDownButton:after,.financialChartOverlayPickerDropDownButton:after {
+	width: 0; 
+	height: 0; 
+	border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #777 transparent transparent transparent;
+	content:"";
+	position:absolute;
+	top: 50%;
+	left:100%;
+}
+
+.financialChartRangeSelector label {
+	padding:0!important;
+}
+
+.financialChartRangeSelector label span {
+	padding:2px 8px 4px;
+}
+
+.financialChartRangeSelector input:checked+span {
+	color:#444!important;
+	background-color:#d5d5d5;
+}
+
+.financialChartRangeSelector label {
+	border:none!important;
+	background-color:#eee;
+}
+
+.financialChartPrice {
+	margin-top:10px;
+}
+
+.financialChartRangeSelector {
+	text-transform:uppercase;
+}
+
+.financialChartToolbar,.financialChartToolbar button {
+	font:400 13px "Segoe UI", Arial, sans-serif!important;
+}
+
+.financialChartIndicatorPicker {
+	background: url(../images/igGrid/indicators-icon.svg) no-repeat 0 0;
+	padding-left:18px;
+}
+
+.financialChartIndicatorPicker:hover {
+	background: url(../images/igGrid/indicators-icon-on.svg) no-repeat 0 0;
+}
+
+.financialChartOverlayPicker {
+	background: url(../images/igGrid/overlay-icon.svg) no-repeat 0 0;
+	padding-left:18px;
+}
+
+.financialChartOverlayPicker:hover {
+	background: url(../images/igGrid/overlay-icon-on.svg) no-repeat 0 0;
+}
+
+.financialChartIndicatorPicker:hover,.financialChartOverlayPicker:hover {
+	cursor:pointer;
+}
+.financialChartIndicatorPicker:hover button,.financialChartOverlayPicker:hover button {
 	color:#0090ff;
+}
+.financialChartIndicatorPicker:hover .financialChartIndicatorPickerDropDownButton:after, .financialChartOverlayPicker:hover .financialChartOverlayPickerDropDownButton:after {
+	border-color: #0090ff transparent transparent transparent;
 }
