@@ -626,7 +626,7 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.financialchart.js",
 			"$path$/modules/infragistics.ui.financialchart.js"
 		],
-		css: [ 
+		css: [
 			"$path$/structure/modules/infragistics.ui.chart.css",
 			"$path$/structure/modules/infragistics.ui.financialchart.css" ],
 		group: $.ig.loaderClass.locale.dvGroup,
@@ -681,12 +681,11 @@ $.ig.dependencies = [
 	{
         widget: "igFinancialChart.*",
 		dependency: [{ name: "Category", parentWidget: "igFinancialChart" },
-		{ name: "Financial", parentWidget: "igFinancialChart" },
-		{ name: "ExtendedFinancial", parentWidget: "igFinancialChart" },
-		{ name: "Interactivity", parentWidget: "igFinancialChart" },
-		{ name: "ZoomSlider", parentWidget: "igFinancialChart" },
-		{ name: "VisualData", parentWidget: "igFinancialChart" }
-					
+			{ name: "Financial", parentWidget: "igFinancialChart" },
+			{ name: "ExtendedFinancial", parentWidget: "igFinancialChart" },
+			{ name: "Interactivity", parentWidget: "igFinancialChart" },
+			{ name: "ZoomSlider", parentWidget: "igFinancialChart" },
+			{ name: "VisualData", parentWidget: "igFinancialChart" }
 		]
 	},
 	{
