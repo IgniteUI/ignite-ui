@@ -626,7 +626,9 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.financialchart.js",
 			"$path$/modules/infragistics.ui.financialchart.js"
 		],
-		css: [ "$path$/structure/modules/infragistics.ui.financialchart.css" ],
+		css: [ 
+			"$path$/structure/modules/infragistics.ui.chart.css",
+			"$path$/structure/modules/infragistics.ui.financialchart.css" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
 	},
