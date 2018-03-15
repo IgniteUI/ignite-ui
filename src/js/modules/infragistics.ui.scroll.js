@@ -747,6 +747,7 @@
 			this._bKeyboardNavigation = true;
 			this._renderVerticalScrollbar = true;
 			this._renderHorizontalScrollbar = true;
+			/** When _bMixedEnvironment is true, only scrollTop/scrollLeft would be used to scroll. Otherwise used transformations */
 			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
@@ -1553,7 +1554,18 @@
 				}
 
 				self._nextY += ((-3 * x * x + 3) * deltaY * 2) * smoothingStep;
-				self._scrollToY(self._nextY, true);
+
+				if (self._bMixedEnvironment) {
+					self._scrollToY(self._nextY, true);
+				} else {
+					var curPosX = 0;
+					if (self.options.scrollOnlyHBar) {
+						curPosX = self._getScrollbarVPosition();
+					} else {
+						curPosX = self._getContentPositionY();
+					}
+					self._scrollTouchToXY(curPosX, self._nextY, true);
+				}
 
 				//continue the intertia
 				x += 0.08 * (1 / smoothingDuration);
@@ -1565,26 +1577,24 @@
 			animationId = requestAnimationFrame(inertiaStep);
 		},
 
-		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
-		_switchFromTouchToMixed: function () {
-			//stop any current ongoing inertia
-			cancelAnimationFrame(this._touchInertiaAnimID);
+		_applyTransformOnScrollTop: function () {
 
-			var startX = 0,
-				startY = this._getTransform3dValueY(this._content);
+			var startX = -this._container.scrollLeft(),
+				startY = -this._container.scrollTop();
+
+			if (startX === 0 && startY === 0) {
+				return;
+			}
+
 			if (this._contentX) {
-				startX = this._getTransform3dValueX(this._contentX);
+				startX += this._getTransform3dValueX(this._contentX);
 			} else {
-				startX = this._getTransform3dValueX(this._content);
+				startX += this._getTransform3dValueX(this._content);
 			}
-			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
-			if (startX !== 0 || startY !== 0) {
-				//Reset the transform3d position to 0.
-				this._scrollTouchToXY(0, 0, false);
+			startY += this._getTransform3dValueY(this._content);
 
-				//Go back to the scrolled position but using scrollTop and scrollLeft this time
-				this._scrollToXY(-startX, -startY, false);
-			}
+			this._scrollToXY(0, 0, false);
+			this._scrollTouchToXY(-startX, -startY, false);
 		},
 
 		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
@@ -2099,27 +2109,24 @@
 
 		_onScrollContainer: function () {
 			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
+				this._applyTransformOnScrollTop();
 			}
 
 			if (!this._scrollFromSyncContentV) {
-				this._syncElemsY(this._container[ 0 ], false);
+				this._syncElemsY(this._container[ 0 ], !this._bMixedEnvironment);
 
 				if (!this.options.scrollOnlyVBar) {
-					this._syncVBar(this._container[ 0 ], false);
+					this._syncVBar(this._container[ 0 ], !this._bMixedEnvironment);
 				}
 			} else {
 				this._scrollFromSyncContentV = false;
 			}
 
 			if (!this._scrollFromSyncContentH) {
-				this._syncElemsX(this._container[ 0 ], false);
+				this._syncElemsX(this._container[ 0 ], !this._bMixedEnvironment);
 
 				if (!this.options.scrollOnlyHBar) {
-					this._syncHBar(this._container[ 0 ], false);
+					this._syncHBar(this._container[ 0 ], !this._bMixedEnvironment);
 				}
 			} else {
 				this._scrollFromSyncContentH = false;
@@ -2155,10 +2162,7 @@
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
+				this._applyTransformOnScrollTop();
 			}
 
 			if (evt.wheelDeltaY) {
@@ -2175,13 +2179,26 @@
 				this._smoothWheelScrollY(scrollDeltaY);
 			} else {
 				//Normal scroll
+				if (this.options.scrollOnlyHBar) {
+					this._startX = this._getScrollbarVPosition();
+				} else {
+					this._startX = this._getContentPositionY();
+				}
 				if (this.options.scrollOnlyVBar) {
 					this._startY = this._getScrollbarVPosition();
 				} else {
 					this._startY = this._getContentPositionY();
 				}
 
-				scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
+				if (this._bMixedEnvironment) {
+					scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
+				} else {
+					scrolledY = this._scrollTouchToXY(
+						this._startX,
+						this._startY + scrollDeltaY * scrollStep,
+						true
+					).y;
+				}
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
@@ -2257,14 +2274,26 @@
 			this._totalMovedX = this._touchStartX - touchPos.screenX;
 			if (Math.abs(this._totalMovedX) < this.options.swipeToleranceX && !this._offsetRecorded) {
 				/* Do not scroll horizontally yet while in the tolerance range */
-				this._scrollToXY(this._startX, destY, true);
+				if (this._bMixedEnvironment) {
+					this._scrollToXY(this._startX, destY, true);
+				} else {
+					this._scrollTouchToXY(this._startX, destY, true);
+				}
 			} else {
 				if (!this._offsetRecorded) {
 					this._offsetDirection = Math.sign(destX - this._startX);
 					this._offsetRecorded = true;
 				}
 				/* Once the tolerance is exceeded it can be scrolled horizontally */
-				this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+				if (this._bMixedEnvironment) {
+					this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+				} else {
+					this._scrollTouchToXY(
+						destX - this._offsetDirection * this.options.swipeToleranceX,
+						destY,
+						true
+					);
+				}
 			}
 			this._moving = true;
 		},

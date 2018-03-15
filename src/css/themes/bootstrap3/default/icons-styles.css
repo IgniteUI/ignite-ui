@@ -1372,10 +1372,15 @@
 .ui-iggrid tr .ui-icon,
 .ui-igtree .ui-icon,
 .ui-igedit .ui-icon,
-.ui-igsplitter .ui-icon,
 .ui-igcombo .ui-icon {
     height: 16px !important;
     width: 16px !important;
+    font-size: 11px;
+}
+
+.ui-igsplitter .ui-icon {
+    height: 16px;
+    width: 16px;
     font-size: 11px;
 }
 
