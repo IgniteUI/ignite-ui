@@ -787,15 +787,8 @@
 			return val ? true : false;
 		},
 		_updateValue: function (value) { //Base Editor
-			if (value === this.options.nullValue && this.options.nullValue === null) {
-				this._editorInput.val("");
-				this._valueInput.val("");
-			} else {
-
-				//207411 T.P. 30th Oct 2015 setting the value at this stage causes the input to reset its cursor position.
-				//this._editorInput.val(value);
-				this._valueInput.val(value);
-			}
+			// D.P. 16th Mar 2018 Bug 251229 / #1666  Don't reset edit input text in value method
+			this._valueInput.val(value);
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.

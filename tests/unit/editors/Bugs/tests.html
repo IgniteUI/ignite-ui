@@ -1574,6 +1574,32 @@
 				equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text."); */
 				$editor.remove();
 			});
+
+			QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', function (assert) {
+				assert.expect(4);
+				var $editor =  $("<input/>").appendTo("#testBedContainer").igTextEditor({
+						value: "some text",
+						buttonType: "clear",
+						allowNullValue: true
+					}),
+					$clearButton =  $editor.igTextEditor("clearButton"),
+					textChangedFired = false, valueChangedFired = false;
+
+				$editor.one("igtexteditortextchanged", function (evt, ui) {
+					textChangedFired = true;
+				});
+				$editor.one("igtexteditorvaluechanged", function (evt, ui) {
+					valueChangedFired = true;
+				});
+
+				$clearButton.click();
+				assert.ok(textChangedFired, "textChanged event not fired");
+				assert.ok(valueChangedFired, "valueChanged event not fired");
+				assert.strictEqual($editor.igTextEditor("value"), null, "Value did not clear");
+				assert.strictEqual($editor.igTextEditor("field").val(), "", "Text did not clear");
+				
+				$editor.remove()
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
