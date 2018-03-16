@@ -32,7 +32,7 @@
 			ariaMaskEditorFieldLabel: 'Редактор маски',
 			ariaDateEditorFieldLabel: 'Редактор даты',
 			ariaDatePickerFieldLabel: 'Элемент выбора даты',
-			ariaTimePickerFieldLabel: 'Time Picker',
+			ariaTimePickerFieldLabel: 'Средство выбора времени',
 			ariaSpinUpButton: 'Выбор большего значения',
 			ariaSpinDownButton: 'Выбор меньшего значения',
 			ariaDropDownButton: 'Раскрытие списка',
@@ -89,7 +89,7 @@
 			decimalNumber: "Если свойство dataMode имеет значение '{0}', параметр {1} может принимать числовые значения от 0 до {2}.",
 			decimalSeparatorErrorMsg: "Для параметра decimalSeparator требуется другое значение. Это значение должно быть одиночным символом.",
 			decimalSeparatorEqualsGroupSeparatorErrorMsg: "Значения параметров groupSeparator и decimalSeparator не могут быть одинаковыми.",
-			timePickerNoSuchMethod: "The time picker does not support this method."
+			timePickerNoSuchMethod: "Этот метод не поддерживается средством выбора времени."
 	};
 
 	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.ru.Editor;
