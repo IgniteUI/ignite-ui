@@ -1410,7 +1410,9 @@
 				value.getMilliseconds();
 		},
 		getDate: function (value) {
-			return new Date(value - $.ig.Date.prototype.getTimeOfDay(value));
+			var newDate = new Date(+value);
+			newDate.setHours(0, 0, 0, 0);
+			return newDate;
 		},
 		_requiresISOCorrection: !isNaN(+new Date("2000-01-01T00:00:00")) &&
 			new Date("2000-01-01T00:00:00").getHours() !== 0,
