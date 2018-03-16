@@ -127,6 +127,7 @@
 	border:none;
 	outline:none;
 	cursor:pointer;
+	display: flex;
 }
 
 .financialChartIndicatorPickerDropDownButton:after,.financialChartOverlayPickerDropDownButton:after {
@@ -136,8 +137,8 @@
     border-width: 4px 4px 0 4px;
     border-color: #777 transparent transparent transparent;
 	content:"";
-	position:absolute;
-	top: 50%;
+	position:relative;
+	top: calc(0.5em + 3px);
 	margin-left: 5px;
 }
 
