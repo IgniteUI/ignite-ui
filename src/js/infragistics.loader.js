@@ -103,7 +103,7 @@ $.ig.loaderClass.locale.descriptions = {
 	categoryChartDescription: "Component that renders categorized data into a canvas on the page.",
 	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
 	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
-	financialDescription: "Contains the financial series for the igDataChart.",
+	financialDescription: "Contains the financial series for the chart.",
 	shapeDataSourceDescription: "This module supports loading shape data from various data sources.",
 	shapeChartDescription: "Component that renders areas in orthogonal (Cartesian) coordinate system into a canvas on the page.",
 	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
@@ -138,7 +138,8 @@ $.ig.loaderClass.locale.descriptions = {
 	visualDataDescription: "Enables visual data exporting for automated testing.",
 	chartVisualDataDescription: "Enables visual data exporting for automated testing for the charts.",
 	chartInteractivityDescription: "Provides support for user interaction such as panning, zooming, dragging, etc.",
-	schedulerDescription: "Component that provides scheduling solution for presenting and managing time periods and associated activities."
+	schedulerDescription: "Component that provides scheduling solution for presenting and managing time periods and associated activities.",
+	zoomSliderDescription: "Component that provides zoom navigation assistance for components like financial chart."
 };
 
 // jscs:enable
@@ -612,22 +613,80 @@ $.ig.dependencies = [
 	{
 		widget: "igFinancialChart",
 		dependency: [
+			{ name: "igWidget" },
 			{ name: "_ig_dv_dataseriesadapter" },
 			{ name: "_ig_dv_geometry" },
 			{ name: "_ig_dv_extendedaxes" },
 			{ name: "_ig_dv_commonwidget" },
 			{ name: "_ig_simple_datachart_core" },
 			{ name: "_ig_datachart_domainchart" },
-			{ name: "_ig_datachart_categorycore" },
-			{ name: "_ig_datachart_interactivity" }
+			{ name: "_ig_datachart_categorycore" }
 		],
 		scripts: [
 			"$path$/modules/infragistics.financialchart.js",
 			"$path$/modules/infragistics.ui.financialchart.js"
 		],
-		css: [ "$path$/structure/modules/infragistics.ui.financialchart.css" ],
+		css: [
+			"$path$/structure/modules/infragistics.ui.chart.css",
+			"$path$/structure/modules/infragistics.ui.financialchart.css" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+	},
+	{
+        widget: "Interactivity",
+        parentWidget: "igFinancialChart",
+        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
+    },
+	{
+        widget: "VisualData",
+        parentWidget: "igFinancialChart",
+        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
+    },
+	{
+		widget: "Category",
+		parentWidget: "igFinancialChart",
+		dependency: [ { name: "igFinancialChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_category.js" ],
+		description: $.ig.loaderClass.locale.descriptions.categoryDescription
+	},
+	{
+		widget: "Financial",
+		parentWidget: "igFinancialChart",
+		dependency: [ { name: "igFinancialChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_financial.js" ],
+		description: $.ig.loaderClass.locale.descriptions.financialDescription
+	},
+	{
+		widget: "ExtendedFinancial",
+		parentWidget: "igFinancialChart",
+		dependency: [ { name: "igFinancialChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_extendedfinancial.js" ],
+		description: $.ig.loaderClass.locale.descriptions.extendedFinancialDescription
+	},
+	{
+		widget: "ZoomSlider",
+		parentWidget: "igFinancialChart",
+		dependency: [ { name: "igFinancialChart" }, { name: "igZoomSlider" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [  ],
+		description: $.ig.loaderClass.locale.descriptions.zoomSliderDescription
+	},
+	{
+        widget: "igFinancialChart.*",
+		dependency: [{ name: "Category", parentWidget: "igFinancialChart" },
+			{ name: "Financial", parentWidget: "igFinancialChart" },
+			{ name: "ExtendedFinancial", parentWidget: "igFinancialChart" },
+			{ name: "Interactivity", parentWidget: "igFinancialChart" },
+			{ name: "ZoomSlider", parentWidget: "igFinancialChart" },
+			{ name: "VisualData", parentWidget: "igFinancialChart" }
+		]
 	},
 	{
 		widget: "igPieChart",
@@ -714,6 +773,22 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ],
 		description: $.ig.loaderClass.locale.descriptions.radialGaugeDescription
+	},
+
+	{
+		widget: "igZoomSlider",
+		dependency: [
+			{ name: "_ig_dv_geometry" },
+			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_dv_interactivity" },
+			{ name: "igWidget" }
+		],
+		scripts: [
+			"$path$/modules/infragistics.zoomslider_core.js",
+			"$path$/modules/infragistics.ui.zoomslider.js"
+			],
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.zoomSliderDescription
 	},
 
 	{
