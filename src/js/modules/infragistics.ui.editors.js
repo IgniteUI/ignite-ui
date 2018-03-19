@@ -3153,6 +3153,9 @@
 						}
 						if (!this._editMode) {
 							this._clearValue();
+
+							// D.P. 19th Mar 2018 Bug 251229 / #1666 Premtive text check in case clear resets text
+							this._processTextChanged();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
