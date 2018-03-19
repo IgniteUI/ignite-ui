@@ -32,7 +32,7 @@
 		ariaMaskEditorFieldLabel: 'Masken-Editor',
 		ariaDateEditorFieldLabel: 'Daten-Editor',
 		ariaDatePickerFieldLabel: 'Datumsauswahl',
-		ariaTimePickerFieldLabel: 'Time Picker',
+		ariaTimePickerFieldLabel: 'Zeitauswahl',
 		ariaSpinUpButton: 'Nach oben drehen',
 		ariaSpinDownButton: 'Nach unten drehen',
 		ariaDropDownButton: 'Aufklappen',
@@ -89,7 +89,7 @@
 		decimalNumber: "Wenn der dataMode auf '{0}' eingestellt ist, kann die Option {1} Zahlenwerte zwischen 0 und {2} akzeptieren.",
 		decimalSeparatorErrorMsg: "Die Option decimalSeparator erfordert einen anderen Wert. Der Wert sollte einstellig sein.",
 		decimalSeparatorEqualsGroupSeparatorErrorMsg: "Die Optionen groupSeparator und decimalSeparator können nicht denselben Wert haben.",
-		timePickerNoSuchMethod: "The time picker does not support this method."
+		timePickerNoSuchMethod: "Die Zeitauswahl unterstützt diese Methode nicht."
 	};
 
 	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.de.Editor;
