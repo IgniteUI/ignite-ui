@@ -16,7 +16,6 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-es.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 <style>
 .container {
     position: relative;
@@ -95,6 +94,39 @@
 			equal(1, $.ig.TestPublicEnum.bar, "Simple public enum member - Access value via prototype");
 			equal("Bar", $.ig.TestPublicEnum.prototype.getBox(1).toString(), "Simple public enum member - ToString.");
 			equal("Bar", $.ig.Enum.prototype.parse($.ig.TestPublicEnum.prototype.$type, "bar", true).toString(), "Simple public enum member - Parse");
+		});
+
+		test("Test getDate", function () {
+			var hoursArray = [ 1, 5 ];
+			var hoursSuffix = [" - before", " - after"];
+
+			for (var i = 0; i < hoursArray.length; i++) {
+				var hour = hoursArray[i];
+				var suffix = hoursSuffix[i];
+
+				// test some dst dates with a time after the change
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour)).getHours(), "Hours of US daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour)).getHours(), "Hours 0f BG daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour)).getHours(), "Hours of US daylight savings end" + suffix);
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour)).getHours(), "Hours of BG daylight savings end" + suffix);
+
+				equal(11, $.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour)).getDate(), "getDate of US daylight savings start" + suffix);
+				equal(25, $.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour)).getDate(), "getDate of BG daylight savings start" + suffix);
+				equal(11, $.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour)).getDate(), "getDate of US daylight savings end" + suffix);
+				equal(28, $.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour)).getDate(), "getDate of BG daylight savings end" + suffix);
+
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour))), "getTimeOfDay of US daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour))), "getTimeOfDay 0f BG daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour))), "getTimeOfDay of US daylight savings end" + suffix);
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour))), "getTimeOfDay of BG daylight savings end" + suffix);
+			}
+
+			var dateWithTime = $.ig.Date.prototype.getDate(new Date(2018, 2, 11, 23, 25, 15, 19));
+			equal(0, dateWithTime.getHours(), "Hours of Date with time");
+			equal(0, dateWithTime.getMinutes(), "Minutes of Date with time");
+			equal(0, dateWithTime.getSeconds(), "Seconds of Date with time");
+			equal(0, dateWithTime.getMilliseconds(), "Milliseconds of Date with time");
+			equal(0, $.ig.Date.prototype.getTimeOfDay(dateWithTime), "getTimeOfDay of Date with time");
 		});
 		test("Test appendToQueryString and prependToQueryString util functions", function () {
 			var url = "http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID";
@@ -242,6 +274,29 @@
 			equal($.ig.encode("&lt;div&gt;&lt;/div&gt;"), "&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;", "Should encode encoded div element");
 			equal($.ig.encode("<span id='span1'></span>"), "&lt;span id=&#39;span1&#39;&gt;&lt;/span&gt;", "Should encode span element with attribute and single quote");
 			equal($.ig.encode("<span id=\"span1\"></span>"), "&lt;span id=&#34;span1&#34;&gt;&lt;/span&gt;", "Should encode span element with attribute and double quote")
+		});
+		
+		test("Test $.ig.util.stringToColor", function () {
+			deepEqual($.ig.util.stringToColor(null), { a: 0, r: 0, g: 0, b: 0 }, "Passing null to stringToColor should return transparent.");
+			deepEqual($.ig.util.stringToColor("papayawhip"), { a: 255, r: 255, g: 239, b: 213 }, "Passing papayawhip to stringToColor should look as delicious as whipped papaya.");
+			deepEqual($.ig.util.stringToColor("rgba(13, 14, 15, 0.2)"), { r: 13, g: 14, b: 15, a: 51 }, "Passing rgba(13, 14, 15, 16) to stringToColor should return that color.");
+			deepEqual($.ig.util.stringToColor("rgb(13, 14, 15)"), { a: 255, r: 13, g: 14, b: 15 }, "Passing rgb(13, 14, 15) to stringToColor should return that color.");
+			deepEqual($.ig.util.stringToColor("#beefed"), { a: 255, r: 190, g: 239, b: 237 }, "Passing #beefed to stringToColor should return a nice pale cyan color.");
+			deepEqual($.ig.util.stringToColor("#def"), { a: 255, r: 221, g: 238, b: 255 }, "Passing #def to stringToColor should return a nice pale lavender color.");
+		});
+		test("Test numberToString", function() {
+			equal($.ig.util.numberToString1(Math.PI, "0"), "3", "numberToString1 truncates all decimals when format is 0");   
+			equal($.ig.util.numberToString1(Math.PI, "0.0"), "3.1", "numberToString1 truncates to 1 decimal place when format is 0.0 and 2nd decimal place rounds down");
+			equal($.ig.util.numberToString1(Math.PI, "00"), "03", "numberToString1 truncates all decimals and prepends leading 0 when format is 00 and number integral part has 1 digit");
+			equal($.ig.util.numberToString1(Math.PI, "00.00"), "03.14", "numberToString1 truncates to 2 decimal places and prepends leading 0 when format is 00.00 and number integral part has 1 digit and 3rd decimal place rounds down");
+			equal($.ig.util.numberToString1(Math.PI, "0.000"), "3.142", "numberToString1 rounds up when format is 0.000 and 4th decimal place rounds up");
+			equal($.ig.util.numberToString1(.1, "00.00"), "00.10", "numberToString1 prepends 2 leading 0s and appends 1 trailing 0 when format is 00.00 and number has 0 integral digits and 1 decimal digit");
+			equal($.ig.util.numberToString1(.1, "00.0#"), "00.1", "numberToString1 prepends 2 leading 0s and includes only significant decimal when format is 00.0# and number has 0 integral digits and 1 decimal digit");
+			equal($.ig.util.numberToString1(.19, "00.0#"), "00.19", "numberToString1 prepends 2 leading 0s and includes all significant decimals when format is 00.0# and number has 0 integral digits and 2 decimal digits");
+			equal($.ig.util.numberToString1(.1, "#"), "", "numberToString1 returns an empty string when format is # and number has 0 integral digits");
+			equal($.ig.util.numberToString1(1.1, "#"), "1", "numberToString1 truncates decimal portion when format is #");
+			equal($.ig.util.numberToString1(1.1, "0"), "1", "numberToString1 truncates decimal portion when format is 0");
+			equal($.ig.util.numberToString1(300, "0.#"), "300", "numberToString1 truncates decimal portion when format is 0.# and number has 0 decimal digits");
 		});
 	</script>
 </head>

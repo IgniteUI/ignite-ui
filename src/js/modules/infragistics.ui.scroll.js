@@ -71,6 +71,21 @@
 				native type="string" Native scrollbars
 				none type="string" No scrollbars should be visible */
 			scrollbarType: "custom",
+			/* type="number|string" Sets or gets the minimum size of the thumb drag in pixels. For the vertical thumb it means its minimum height, for the horizontal thumb it means its minimum width. This affects only the custom scrollblar when scrollbarType is set to "custom".
+			```
+				//Initialize
+				$(".selector").igScroll({
+					minThumbSize: 20
+				});
+
+				//Get
+					var minThumbSize = $(".selector").igScroll("option", "minThumbSize");
+
+				//Set
+				$(".selector").igScroll("option", "minThumbSize", 20);
+			```
+			*/
+			minThumbSize: 15,
 			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable.
 			```
 				//Initialize
@@ -747,6 +762,7 @@
 			this._bKeyboardNavigation = true;
 			this._renderVerticalScrollbar = true;
 			this._renderHorizontalScrollbar = true;
+			/** When _bMixedEnvironment is true, only scrollTop/scrollLeft would be used to scroll. Otherwise used transformations */
 			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
@@ -768,6 +784,7 @@
 			//Determines if the scroll event for the content is triggered when trying to sync it on a specific axis
 			this._scrollFromSyncContentH = false;
 			this._scrollFromSyncContentV = false;
+			this._bInternalScroll = false;
 
 			//Track if events should not be triggered
 			this._cancelScrolling = false;
@@ -928,6 +945,10 @@
 					this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 				}
 			}
+			if (key === "minThumbSize" &&
+				this.options.scrollbarType === "custom") {
+				this._refreshScrollbars();
+			}
 			if (key === "scrollTop") {
 				this._scrollTop(value, true);
 			}
@@ -975,6 +996,20 @@
 			return this._super(optionName, value);
 		},
 
+		_getContainerHeight: function () {
+			//We round up the container height across all browsers, so we have consistent experience.
+			//On Edge,Firefox and IE the height returned is a float, while on Chrome it appears to be rounded up(ceil).
+			//We don't use outerHeight becuse we do not expect anny css borders or such on the container itself
+			return Math.ceil(this._container.height());
+		},
+
+		_getContainerWidth: function () {
+			//We round up the container height across all browsers, so we have consistent experience.
+			//On Edge,Firefox and IE the height returned is a float, while on Chrome it appears to be rounded up(ceil).
+			//We don't use outerHeight becuse we do not expect anny css borders or such on the container itself
+			return Math.ceil(this._container.width());
+		},
+
 		_getContentHeight: function () {
 			if (this.options.scrollHeight !== null) {
 				return this.options.scrollHeight;
@@ -983,7 +1018,7 @@
 					/* S.K. Fix for bug 224900 - On IE reaching the bottom flickers because the height can be not a round number */
 					return Math.ceil(this._content[ 0 ].getBoundingClientRect().height);
 				} else {
-					return this._content.outerHeight();
+					return Math.ceil(this._content.outerHeight());
 				}
 			}
 		},
@@ -996,7 +1031,7 @@
 					/* S.K. Fix for bug 224900 - - On IE the width could be not a round number */
 					return Math.ceil(this._content[ 0 ].getBoundingClientRect().width);
 				} else {
-					return this._content.outerWidth();
+					return Math.ceil(this._content.outerWidth());
 				}
 			}
 		},
@@ -1148,7 +1183,7 @@
 
 		_setScrollWidth: function (inWidth) {
 			/* Do NOT refresh after calling this function!!! The custom width will be lost. */
-			this._elemWidth = this._container.width();
+			this._elemWidth = this._getContainerWidth();
 			this._contentWidth = inWidth;
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._isScrollableH = this._percentInViewH < 1;
@@ -1181,7 +1216,7 @@
 			this._elemWidth = this.element.width();
 
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				this._vDragHeight = this._percentInViewV * 100;
+				this._vDragHeight = this._calculateVDragHeight();
 				this._vBarDrag.css("height", this._vDragHeight + "%");
 				/* Update classes if only vertical scrollbar will be visible */
 				if (this._percentInViewH >= 1) {
@@ -1207,7 +1242,7 @@
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				this._hDragWidth = this._percentInViewH * 100;
+				this._hDragWidth = this._calculateHDragWidth();
 				this._hBarDrag.css("width", this._hDragWidth + "%");
 				/* Update classes if only vertical scrollbar will be visible */
 				if (this._percentInViewV >= 1) {
@@ -1380,9 +1415,9 @@
 				curPosY = this._getContentPositionY();
 			destX = this._clampAxisCoords(destX,
 										0,
-										Math.max(this._getContentWidth() - this._container.width(), 0));
+										Math.max(this._getContentWidth() - this._getContainerWidth(), 0));
 			destY = this._clampAxisCoords(destY,
-										0, Math.max(this._getContentHeight() - this._container.height(), 0));
+										0, Math.max(this._getContentHeight() - this._getContainerHeight(), 0));
 
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -1424,7 +1459,7 @@
 				curPosX = this._getContentPositionX();
 			}
 
-			destX = this._clampAxisCoords(destX, 0, this._getContentWidth() - this._container.width());
+			destX = this._clampAxisCoords(destX, 0, this._getContentWidth() - this._getContainerWidth());
 
 			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
 			if (triggerEvents) {
@@ -1444,6 +1479,7 @@
 				}
 			}
 
+			this._bInternalScroll = true;
 			if (this.options.scrollOnlyHBar) {
 				this._moveHBarX(destX);
 			} else {
@@ -1472,14 +1508,27 @@
 				return 0;
 			}
 
-			var curPosY;
+			var curPosY,
+				endOffsetEdge = 0;
+
 			if (this.options.scrollOnlyVBar) {
 				curPosY = this._getScrollbarVPosition();
 			} else {
 				curPosY = this._getContentPositionY();
 			}
 
-			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._container.height());
+			//On Edge, in order to trigger page scroll when we are at the top or botton, we need to scroll further in the desired direction than what is possible.
+			//We apply endOffsetEdge only when setting scrollTop and not directly to the destY.
+			//That is because destY is the actual destination that we will scroll to and (destY - curPosY) is 0 at the top/bottom, but with offset it will be -1/1.
+			if ($.ig.util.isEdge) {
+				if (destY < 0) {
+					endOffsetEdge = -1;
+				} else {
+					endOffsetEdge = destY > (this._getContentHeight() - this._getContainerHeight()) ? 1 : 0;
+				}
+			}
+
+			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._getContainerHeight());
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
 			if (triggerEvents) {
@@ -1499,11 +1548,15 @@
 				}
 
 			}
-
+			this._bInternalScroll = true;
 			if (this.options.scrollOnlyVBar) {
 				this._moveVBarY(destY);
 			} else {
-				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
+				//On IE11 we shouldn't call scrollTop when we want to scroll page on top/bottom of content. There is also an error of 1 pixed on IE11
+				if ($.ig.util.isIE && Math.abs(destY - curPosY) <= 1) {
+					return 0;
+				}
+				this._container.scrollTop(destY + endOffsetEdge); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
 			}
@@ -1553,7 +1606,18 @@
 				}
 
 				self._nextY += ((-3 * x * x + 3) * deltaY * 2) * smoothingStep;
-				self._scrollToY(self._nextY, true);
+
+				if (self._bMixedEnvironment) {
+					self._scrollToY(self._nextY, true);
+				} else {
+					var curPosX = 0;
+					if (self.options.scrollOnlyHBar) {
+						curPosX = self._getScrollbarVPosition();
+					} else {
+						curPosX = self._getContentPositionY();
+					}
+					self._scrollTouchToXY(curPosX, self._nextY, true);
+				}
 
 				//continue the intertia
 				x += 0.08 * (1 / smoothingDuration);
@@ -1565,26 +1629,24 @@
 			animationId = requestAnimationFrame(inertiaStep);
 		},
 
-		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
-		_switchFromTouchToMixed: function () {
-			//stop any current ongoing inertia
-			cancelAnimationFrame(this._touchInertiaAnimID);
+		_applyTransformOnScrollTop: function () {
 
-			var startX = 0,
-				startY = this._getTransform3dValueY(this._content);
+			var startX = -this._container.scrollLeft(),
+				startY = -this._container.scrollTop();
+
+			if (startX === 0 && startY === 0) {
+				return;
+			}
+
 			if (this._contentX) {
-				startX = this._getTransform3dValueX(this._contentX);
+				startX += this._getTransform3dValueX(this._contentX);
 			} else {
-				startX = this._getTransform3dValueX(this._content);
+				startX += this._getTransform3dValueX(this._content);
 			}
-			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
-			if (startX !== 0 || startY !== 0) {
-				//Reset the transform3d position to 0.
-				this._scrollTouchToXY(0, 0, false);
+			startY += this._getTransform3dValueY(this._content);
 
-				//Go back to the scrolled position but using scrollTop and scrollLeft this time
-				this._scrollToXY(-startX, -startY, false);
-			}
+			this._scrollToXY(0, 0, false);
+			this._scrollTouchToXY(-startX, -startY, false);
 		},
 
 		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
@@ -1597,10 +1659,10 @@
 
 			destX = this._clampAxisCoords(destX,
 										0,
-										Math.max(this._getContentWidth() - this._container.width(), 0));
+										Math.max(this._getContentWidth() - this._getContainerWidth(), 0));
 			destY = this._clampAxisCoords(destY,
 										0,
-										Math.max(this._getContentHeight() - this._container.height(), 0));
+										Math.max(this._getContentHeight() - this._getContainerHeight(), 0));
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
@@ -2099,45 +2161,47 @@
 
 		_onScrollContainer: function () {
 			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
+				this._applyTransformOnScrollTop();
 			}
 
 			if (!this._scrollFromSyncContentV) {
-				this._syncElemsY(this._container[ 0 ], false);
+				this._syncElemsY(this._container[ 0 ], !this._bMixedEnvironment);
 
 				if (!this.options.scrollOnlyVBar) {
-					this._syncVBar(this._container[ 0 ], false);
+					this._syncVBar(this._container[ 0 ], !this._bMixedEnvironment);
 				}
 			} else {
 				this._scrollFromSyncContentV = false;
 			}
 
 			if (!this._scrollFromSyncContentH) {
-				this._syncElemsX(this._container[ 0 ], false);
+				this._syncElemsX(this._container[ 0 ], !this._bMixedEnvironment);
 
 				if (!this.options.scrollOnlyHBar) {
-					this._syncHBar(this._container[ 0 ], false);
+					this._syncHBar(this._container[ 0 ], !this._bMixedEnvironment);
 				}
 			} else {
 				this._scrollFromSyncContentH = false;
 			}
 
-			var posX, posY;
-			if (this.options.scrollOnlyHBar) {
-				posX = this._getScrollbarHPosition();
-			} else {
-				posX = this._getContentPositionX();
-			}
-			if (this.options.scrollOnlyVBar) {
-				posY = this._getScrollbarVPosition();
-			} else {
-				posY = this._getContentPositionY();
-			}
+			if (!this._bInternalScroll)
+			{
+				var posX, posY;
+				if (this.options.scrollOnlyHBar) {
+					posX = this._getScrollbarHPosition();
+				} else {
+					posX = this._getContentPositionX();
+				}
+				if (this.options.scrollOnlyVBar) {
+					posY = this._getScrollbarVPosition();
+				} else {
+					posY = this._getContentPositionY();
+				}
 
-			this._updateScrollbarsPos(posX, posY);
+				this._updateScrollbarsPos(posX, posY);
+			} else {
+				this._bInternalScroll = false;
+			}
 
 			return false;
 		},
@@ -2148,55 +2212,90 @@
 			}
 
 			var evt = event.originalEvent,
+				scrollDeltaX = 0,
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
-				scrolledY, scrolledYDir;
+				minWheelStep = 1 / this.options.wheelStep,
+				scrolledY;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
+				this._applyTransformOnScrollTop();
 			}
 
+			/** Get current scroll positions to base the next scroll position from */
+			if (this.options.scrollOnlyHBar) {
+				this._startX = this._getScrollbarHPosition();
+			} else {
+				this._startX = this._getContentPositionX();
+			}
+			if (this.options.scrollOnlyVBar) {
+				this._startY = this._getScrollbarVPosition();
+			} else {
+				this._startY = this._getContentPositionY();
+			}
+
+			/** Get delta for the X axis*/
+			if (evt.wheelDeltaX) {
+				/* Option supported on Chrome, Safari, Opera.
+				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
+				scrollDeltaX = -evt.wheelDeltaX / 120;
+
+				/** S.K. Fix for Issue #1438 When using trackpad the scroll amount could be less than 1 px, but scrollTop receives only integers, so we need to have it scroll minimum 1 px */
+				if (-minWheelStep < scrollDeltaX && scrollDeltaX < minWheelStep) {
+					scrollDeltaX = Math.sign(scrollDeltaX) * minWheelStep;
+				}
+			} else if (evt.deltaX) {
+				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
+				scrollDeltaX = this._clampAxisCoords(evt.deltaX, -1, 1);
+			}
+
+			/** Get delta for the Y axis*/
 			if (evt.wheelDeltaY) {
 				/* Option supported on Chrome, Safari, Opera.
 				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
 				scrollDeltaY = -evt.wheelDeltaY / 120;
+
+				/** S.K. Fix for Issue #1438 When using trackpad the scroll amount could be less than 1 px, but scrollTop receives only integers, so we need to have it scroll minimum 1 px */
+				if (-minWheelStep < scrollDeltaY && scrollDeltaY < minWheelStep) {
+					scrollDeltaY = Math.sign(scrollDeltaY) * minWheelStep;
+				}
 			} else if (evt.deltaY) {
 				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
-				scrollDeltaY = evt.deltaY > 0 ? 1 : -1;
+				scrollDeltaY = this._clampAxisCoords(evt.deltaY, -1, 1);
 			}
 
-			if (this.options.smoothing) {
-				//Scroll with small inertia
-				this._smoothWheelScrollY(scrollDeltaY);
+			if (scrollDeltaX) {
+				this._scrollToX(this._startX + scrollDeltaX * scrollStep, true);
 			} else {
-				//Normal scroll
-				if (this.options.scrollOnlyVBar) {
-					this._startY = this._getScrollbarVPosition();
+				if (this.options.smoothing) {
+					//Scroll with small inertia
+					this._smoothWheelScrollY(scrollDeltaY);
 				} else {
-					this._startY = this._getContentPositionY();
+
+					if (this._bMixedEnvironment) {
+						scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
+					} else {
+						scrolledY = this._scrollTouchToXY(
+							this._startX,
+							this._startY + scrollDeltaY * scrollStep,
+							true
+						).y;
+					}
+
+					if (!this._cancelScrolling) {
+						//Trigger scrolled event
+						this._trigger("scrolled", null, {
+							owner: this,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: false
+						});
+					}
+
+					return !scrolledY;
 				}
-
-				scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
-
-				if (!this._cancelScrolling) {
-					//Trigger scrolled event
-					this._trigger("scrolled", null, {
-						owner: this,
-						smallIncrement: 0,
-						bigIncrement: 0,
-						horizontal: false
-					});
-				}
-
-				/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
-				/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
-				scrolledYDir = scrolledY > 0 ? 1 : -1;
-				return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
 			}
 
 			return false;
@@ -2257,14 +2356,26 @@
 			this._totalMovedX = this._touchStartX - touchPos.screenX;
 			if (Math.abs(this._totalMovedX) < this.options.swipeToleranceX && !this._offsetRecorded) {
 				/* Do not scroll horizontally yet while in the tolerance range */
-				this._scrollToXY(this._startX, destY, true);
+				if (this._bMixedEnvironment) {
+					this._scrollToXY(this._startX, destY, true);
+				} else {
+					this._scrollTouchToXY(this._startX, destY, true);
+				}
 			} else {
 				if (!this._offsetRecorded) {
 					this._offsetDirection = Math.sign(destX - this._startX);
 					this._offsetRecorded = true;
 				}
 				/* Once the tolerance is exceeded it can be scrolled horizontally */
-				this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+				if (this._bMixedEnvironment) {
+					this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+				} else {
+					this._scrollTouchToXY(
+						destX - this._offsetDirection * this.options.swipeToleranceX,
+						destY,
+						true
+					);
+				}
 			}
 			this._moving = true;
 		},
@@ -2703,13 +2814,6 @@
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
-			// jscs:disable
-			this._vDragHeight = this._percentInViewV * 100;
-			// jscs:enable
-			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
-				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
-				.css("height", this._vDragHeight + "%");
-
 			if (!bRenderScrollbarH) {
 				this._vBarTrack.addClass(css.verticalScrollTrackSingleScrollbar);
 				this._vBarArrowDown.addClass(css.verticalScrollArrowDownSingleScrollbar);
@@ -2729,7 +2833,31 @@
 					.appendTo(this._container[ 0 ].parentElement);
 			}
 
+			this._vDragHeight = this._calculateVDragHeight();
+			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
+				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
+				.css("height", this._vDragHeight + "%");
+
+			if (this.options.scrollbarVParent) {
+				this._vBarTrack.append(this._vBarDrag);
+			} else {
+				this._vBarTrack.append(this._vBarDrag);
+			}
+
 			this._bindCustomScrollBarV();
+		},
+
+		/** Calculates the vertical drag height and returns it in percents based on the vertical track height*/
+		_calculateVDragHeight: function () {
+			var dragHeightPx,
+				minSize = parseInt(this.options.minThumbSize, 10);
+
+			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
+			dragHeightPx = (this._vBarTrack.height() / this._contentHeight) * this._vBarTrack.height();
+			dragHeightPx = (dragHeightPx < minSize ? minSize : dragHeightPx);
+
+			//Turn it into percents.
+			return (dragHeightPx / this._vBarTrack.height()) * 100;
 		},
 
 		_bindCustomScrollBarV: function() {
@@ -2737,7 +2865,8 @@
 			this._bMouseDownV = false; //Used to track if mouse is holded on any of the vertical scrollbar elements
 			this._bUseArrowUp = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowDown = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._mouseLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._dragLastY = 0; //Used to save the last position of the vertical drag. This is needed because getting the position during scroll on Edge/Firefox is not reliable
 			this._bUseVDrag = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseVTrack = false; //Determines if the vertical track area is being used
 			this._lastBigIncDirV = 0; //Used to determine the last direction of the scroll when using the scrollbar track area
@@ -2805,7 +2934,7 @@
 		_scrollTimeoutY: function (step, bSmallIncement) {
 			var	curPosY = this._getContentPositionY();
 			if ((curPosY === 0 && step <= 0) ||
-				(curPosY === this._getContentHeight() - this._container.height() && step >= 0)) {
+				(curPosY === this._getContentHeight() - this._getContainerHeight() && step >= 0)) {
 				return;
 			}
 
@@ -2900,7 +3029,7 @@
 		_onMouseDownArrowDown: function () {
 			var scrollStep = this.options.smallIncrementStep,
 				curPosY = this._getContentPositionY();
-			if (curPosY === this._getContentHeight() - this._container.height()) {
+			if (curPosY === this._getContentHeight() - this._getContainerHeight()) {
 				scrollStep = 0;
 			}
 
@@ -2943,7 +3072,7 @@
 
 		_onMouseDownVDrag: function (event) {
 			this._bMouseDownV = true;
-			this._dragLastY = event.pageY;
+			this._mouseLastY = event.pageY;
 			this._bUseVDrag = true;
 			this._bUseHDrag = false;
 
@@ -3055,9 +3184,16 @@
 
 			if (this._bUseVDrag) {
 				var curPosY = this._getContentPositionY(),
-					offset = event.pageY - this._dragLastY,
-					nextPosY = curPosY + (offset * (this._getContentHeight() / (this._elemHeight - 3 * 17)));
+					offset = event.pageY - this._mouseLastY,
+					dragbPosY = this._dragLastY,
+					nextPosY;
 
+				/**	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
+				  *	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0. */
+				nextPosY = ((dragbPosY + offset) / (this._vBarTrack.height() - this._vBarDrag.height())) *
+							(this._getContentHeight() - this.element.height());
+				nextPosY = this._clampAxisCoords(nextPosY, 0,
+							Math.max(this._getContentHeight() - this._getContainerHeight(), 0));
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: false,
@@ -3071,7 +3207,8 @@
 				if (bNoCancel) {
 					//Move custom vertical scrollbar thumb drag
 					this._scrollToY(nextPosY, true);
-					this._dragLastY = event.pageY;
+					this._mouseLastY = event.pageY;
+					this._dragLastY = dragbPosY + offset;
 				}
 			}
 		},
@@ -3134,6 +3271,9 @@
 			this._bMouseDownV = false;
 
 			if (this._bUseVDrag) {
+				/** Get the actual position on mouseup because we may have moved too much out and using the thumb right after will have offset */
+				this._dragLastY = this._getTransform3dValueY(this._vBarDrag);
+
 				if (!this._cancelThumbDrag) {
 
 					this._trigger("thumbDragEnd", null, {
@@ -3175,13 +3315,6 @@
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
-			// jscs:disable
-			this._hDragWidth = this._percentInViewH * 100;
-			// jscs:enable
-			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
-				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
-				.css("width", this._hDragWidth + "%");
-
 			if (!bRenderScrollbarV) {
 				this._hBarTrack.addClass(css.horizontalScrollTrackSingleScrollbar);
 				this._hBarArrowRight.addClass(css.horizontalScrollArrowRightSingleScrollbar);
@@ -3201,16 +3334,41 @@
 					.appendTo(this._container[ 0 ].parentElement);
 			}
 
+			this._hDragWidth = this._calculateHDragWidth();
+			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
+				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
+				.css("width", this._hDragWidth + "%");
+
+			if (this.options.scrollbarHParent) {
+				this._hBarTrack.append(this._hBarDrag);
+			} else {
+				this._hBarTrack.append(this._hBarDrag);
+			}
+
 			this._bindCustomScrollBarH();
 		},
 
+		/** Calculates the horizontal drag width and returns it in percents based on the horizontal track width */
+		_calculateHDragWidth: function ()
+		{
+			var dragWidthPx,
+				minSize = parseInt(this.options.minThumbSize, 10);
+
+			//Calculate horizontal drag width in px first. If it is less than the minimum use the miminum width.
+			dragWidthPx = (this._hBarTrack.width() / this._contentWidth) * this._hBarTrack.width();
+			dragWidthPx = (dragWidthPx < minSize ? minSize : dragWidthPx);
+
+			//Turn it into percents.
+			return (dragWidthPx / this._hBarTrack.width()) * 100;
+		},
 		_bindCustomScrollBarH: function () {
 			this._holdTimeoutID = 0;
 			this._bMouseDownH = false;
 			this._bUseArrowLeft = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowRight = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseHDrag = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._mouseLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._dragLastX = 0; //Used to save the last position of the horizontal drag. This is needed because getting the position during scroll on Edge/Firefox is not reliable
 			this._bUseHTrack = false; //Determines if the horizontal track area is being used
 			this._lastBigIncDirH = 0; //Used to determine the last direction of the scroll when using the horizontal track area
 			this._mTrackLastPosH = 0; //Last know position of the mouse when interacting with the horizontal track area
@@ -3277,7 +3435,7 @@
 		_scrollTimeoutX: function (step, bSmallIncement) {
 			var curPosX = this._getContentPositionX();
 			if ((curPosX === 0 && step <= 0) ||
-				(curPosX === this._getContentWidth() - this._container.width() && step >= 0)) {
+				(curPosX === this._getContentWidth() - this._getContainerWidth() && step >= 0)) {
 				return;
 			}
 
@@ -3383,7 +3541,7 @@
 			var scrollStep = this.options.smallIncrementStep,
 				curPosX = this._getContentPositionX();
 
-			if (curPosX === this._getContentWidth() - this._container.width()) {
+			if (curPosX === this._getContentWidth() - this._getContainerWidth()) {
 				//We are at the bottom
 				scrollStep = 0;
 			}
@@ -3435,7 +3593,7 @@
 
 		_onMouseDownHDrag: function (event) {
 			this._bMouseDownH = true;
-			this._dragLastX = event.pageX;
+			this._mouseLastX = event.pageX;
 			this._bUseVDrag = false;
 			this._bUseHDrag = true;
 
@@ -3547,9 +3705,16 @@
 
 			if (this._bUseHDrag) {
 				var curPosX = this._getContentPositionX(),
-					offset = evt.pageX - this._dragLastX,
-					nextPostX = curPosX + (offset * (this._getContentWidth() / this._elemWidth));
+					offset = evt.pageX - this._mouseLastX,
+					dragbPosX = this._dragLastX,
+					nextPostX;
 
+				//	Using linear interpolation to determine position of the content relative to the viewport based on the next drag position.
+				//	Drag pos c in (a,b),  next scroll pos z in (x, y) => z = (c - a) / (b - a) * (y - x) + x = (c / b) * y , because a = 0 and x = 0.
+				nextPostX = ((dragbPosX + offset) / (this._hBarTrack.width() - this._hBarDrag.width())) *
+							(this._getContentWidth() - this.element.width());
+				nextPostX = this._clampAxisCoords(nextPostX, 0,
+							Math.max(this._getContentWidth() - this._getContainerWidth(), 0));
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: true,
@@ -3560,7 +3725,8 @@
 				if (bNoCancel) {
 					//Move custom horizondal scrollbar thumb drag
 					this._scrollToX(nextPostX, true);
-					this._dragLastX = evt.pageX;
+					this._mouseLastX = evt.pageX;
+					this._dragLastX = dragbPosX + offset;
 				}
 			}
 		},
@@ -3623,6 +3789,9 @@
 			this._bMouseDownH = false;
 
 			if (this._bUseHDrag) {
+				/** Get the actual position on mouseup because we may have moved too much out and using the thumb right after will have offset */
+				this._dragLastX = this._getTransform3dValueX(this._hBarDrag);
+
 				if (!this._cancelThumbDrag) {
 					this._trigger("thumbDragEnd", null, {
 						owner: this,
@@ -3702,26 +3871,32 @@
 
 			function updateCSS() {
 				if (self._hBarDrag) {
-					// jscs:disable
-					/**	destX * self._percentInViewH - the translated position of the thumb based on the scroll position
-						(self._hBarTrack.width() / self.element.width() - multiple with it since the track is not 100% the width of the container and the thumb will go out of it otherwise */
-					calculatedDest = destX * self._percentInViewH * (self._hBarTrack.width() / self.element.width());
-					// jscs:enable
+					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
+					  * Drag pos c in (a,b),  scroll pos z in (x, y) => c = (z - x) / (y - x) * (b - a) + a = (z / y) * b , because a = 0 and x = 0. */
+					calculatedDest = (destX / (self._contentWidth - self.element.width())) *
+										(self._hBarTrack.width() - self._hBarDrag.width());
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
 						.css("-moz-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Firefox */
 						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
+					/* We don't update the lastX here when using the thumb drag because there may be delay when this is executed. We forward calculate it instead in _onMouseMoveHDrag */
+					if (!self._bUseHDrag) {
+						self._dragLastX = calculatedDest;
+					}
 				}
 				if (self._vBarDrag) {
-					// jscs:disable
-					/**	destY * self._percentInViewV - the translated position of the thumb based on the scroll position
-						(self._vBarTrack.height() / self.element.height()) - multiple with it since the track is not 100% the height of the container and the thumb will go out of it otherwise */
-					calculatedDest = destY * self._percentInViewV * (self._vBarTrack.height() / self.element.height());
-					// jscs:enable
+					/**	Using linear interpolation to determine position of the drag relative to the track based on scroll position.
+					  * Drag pos c in (a,b),  scroll pos z in (x, y) => c = (z - x) / (y - x) * (b - a) + a = (z / y) * b , because a = 0 and x = 0. */
+					calculatedDest = (destY / (self._contentHeight - self.element.height())) *
+										(self._vBarTrack.height() - self._vBarDrag.height());
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-moz-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-ms-transform", "translate3d(0px, " + calculatedDest + "px, 0px)");
+					/* We don't update the lastY here when using the thumb drag because there may be delay when this is executed. We forward calculate it instead in _onMouseMoveVDrag */
+					if (!self._bUseVDrag) {
+						self._dragLastY = calculatedDest;
+					}
 				}
 			}
 

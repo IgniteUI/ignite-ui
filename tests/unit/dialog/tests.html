@@ -12,9 +12,9 @@
 
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.dialog.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-es.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-en.js"></script>
     
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -78,6 +78,23 @@
 			teardown: function() {
 			}
 		});
+
+        function simulateEvent(target, name, options) {
+			var event = jQuery.Event(name);
+			event.target = target;
+			$.extend(event, options);
+			$(target).trigger(event);
+		}
+
+        function getElementDimensions(element) {
+			var offset = element.offset(),
+				top = offset.top,
+				bottom = top + element[0].offsetHeight,
+				left = offset.left,
+				right = left + element[0].offsetWidth;
+
+			return { top: top, bottom: bottom, left: left, right: right };
+		}
 
         var testId = '[ID1] dialog structure and layout';
         test(testId, function () {
@@ -330,6 +347,32 @@
             equal($("#dialog1").html(), "Content changed again.", "The content is different than the expected value after destroy.");
         });
 
+        test("#1391 Destroy dialog while animation is in progress", 1, function () {
+            var imgSrc = "https://www.igniteui.com/images/samples/dialog-window/content.jpg";
+            $('<div id="dialogAnim"><img id="contentImg" style="width: 200px" src=' + imgSrc + ' /></div>').appendTo("#container1");
+            var $dialog = $("#dialogAnim").igDialog({
+                height: 250,
+                openAnimation: "slide",
+                closeAnimation: "explode",
+                modal: true
+            });
+            $dialog.igDialog("destroy");
+            QUnit.equal($dialog.children().attr("id"), "contentImg", "The only child should be the image");
+            $dialog.remove();
+        });
+
+        test("Destroy dialog while animation in progress should retain content", function () {
+            $dialog = $("<div class='someClass'><p>SomeContent</p></div>")
+                .appendTo("#newContainer").igDialog({
+                    height: 250,
+                    openAnimation: "slide",
+                    closeAnimation: "explode",
+                    modal: true
+                });
+            $dialog.igDialog("destroy");
+            equal($("#newContainer").children().first().attr("class"), "someClass", "The dialog should be destoyed despite animation. Added element should retain class");
+        });
+
         test("Focus handling", function () {
             $("#dialog4").igDialog("open");
             var $frameBody = $("#testFrame").contents().find('body'), $input,
@@ -431,6 +474,321 @@
             }, 1000);
 
         });
+
+        test("Press tab and Esc", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                modal: true,
+                trackFocus: false,
+                position: [100,100]
+            });
+
+            var dialog = $dialog.data().igDialog;            
+
+            $.ig.TestUtil.keyInteraction(9, $dialog);
+
+            $.ig.TestUtil.keyInteraction(27, $dialog);
+
+            equal(dialog.options.state,"closed","The dialog is closed");
+
+            $dialog.igDialog("option", "trackFocus", true);
+            equal(dialog.options.trackFocus, true,"The dialog's trackFocus is true");
+
+            $dialog.remove();
+        }); 
+
+        test("Restore", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                state: "maximized",
+                position: [100,100]
+            });
+
+            var dialog = $dialog.data().igDialog;        
+
+            dialog.restore();
+            dialog.minimize();
+            dialog.restore();    
+
+            equal(dialog.options.state,"opened","The dialog is restored");
+
+            $dialog.remove();
+        }); 
+
+        test("Initizlize Container", function () {  
+            $dialog = $("<div></div>").igDialog({
+                position: [100,100]
+            });
+      
+            var objContainer = $("#newContainer")
+            $dialog.igDialog("option", "container");
+            $dialog.igDialog("option", "container", "objContainer");
+            $dialog.igDialog("option", "container", objContainer);
+
+            $.ig.TestUtil.keyInteraction(9, $dialog);
+            ok($dialog.igDialog("option", "container").is(objContainer), "Container is set");
+        }); 
+
+        test("Start minimized and pinned", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                state: "minimized",
+                pinned: true,
+                position: [100,100]
+            });
+
+            var dialog = $dialog.data().igDialog; 
+
+            equal(dialog.options.state, "minimized","The dialog is minimized");
+            equal(dialog.options.pinned, true, "The dialog is pinned");
+
+            $dialog.remove();
+        }); 
+
+        test("Set different options", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                draggable: false,
+                resizable: false,
+                modal: true,
+                trackFocus: false,
+                pinned: true,
+                showFooter: true,
+                position: {left:-50, top: 50}
+            });
+
+            var dialog = $dialog.data().igDialog; 
+
+            $dialog.igDialog("option", "draggable", true);
+            equal(dialog.options.draggable, true,"The dialog is draggable");
+
+            $dialog.igDialog("option", "resizable", true);
+            equal(dialog.options.resizable, true,"The dialog is resizable");
+            
+            $dialog.igDialog("option", "modal", false);
+            equal(dialog.options.modal, false,"The dialog is not modal");
+
+            $dialog.igDialog("option", "headerText", "Dialog6");
+            equal(dialog.options.headerText, "Dialog6","The dialog's header text is Dialog6");
+
+            $dialog.igDialog("option", "footerText", "footer");
+            equal(dialog.options.footerText, "footer","The dialog has footer");
+
+            $dialog.igDialog("option", "tabIndex", 1);
+            equal(dialog.options.tabIndex, 1,"The dialog's tab index is 1");
+
+            $dialog.igDialog("option", "zIndex", 1);
+            equal(dialog.options.zIndex, 1,"The dialog's z index is 1");
+
+            $dialog.igDialog("option", "trackFocus", true);
+            equal(dialog.options.trackFocus, true,"The dialog's trackFocus is true");
+
+            $dialog.remove();
+        });  
+
+        test("Header tests", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                draggable: true,
+                resizable: true,
+                enableDblclick: false,
+                position: [100,100]
+            });
+
+            var dialog = $dialog.data().igDialog; 
+
+            var header = $dialog.find('.ui-igdialog-header'),
+                dim = getElementDimensions(header),
+                vCenter = (dim.top + dim.bottom) / 2;
+
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right - 10, pageY: vCenter });
+
+            var resultDim = getElementDimensions(header);
+            equal(resultDim.right, dim.right - 10,"The dialog is positioned correctly");
+
+            $dialog.igDialog("option", "state", "maximized");
+
+            dim = getElementDimensions(header),
+            vCenter = (dim.top + dim.bottom) / 2;
+
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousedown", { which: 1, pageX: dim.right, pageY: vCenter });
+            simulateEvent(header, "mousemove", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+            simulateEvent(header, "mouseup", { which: 1, pageX: dim.right + 10, pageY: vCenter });
+
+            resultDim = getElementDimensions($dialog);
+            equal(resultDim.right - 1, dim.right,"The dialog is not moved");
+
+            $dialog.igDialog("option", "state", "opened");
+
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+            equal(dialog.options.state, "opened","The dialog is opened"); 
+
+            $dialog.igDialog("option", "enableDblclick", true);
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+            equal(dialog.options.state, "maximized","The dialog is maximized"); 
+
+            $dialog.igDialog("option", "state", "minimized");
+            simulateEvent(header, "dblclick", { which: 1, pageX: dim.right, pageY: vCenter });
+            equal(dialog.options.state, "opened","The dialog is not opened after being minimized");
+
+            simulateEvent(header, "touchstart", { which: 1, pageX: dim.right, pageY: vCenter, originalEvent:{touches:"1"}});
+            simulateEvent(header, "touchmove", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent:{touches:"1"} });
+            simulateEvent(header, "touchend", { which: 1, pageX: dim.right + 1, pageY: vCenter, originalEvent:{touches:"1"} });
+
+            $dialog.igDialog("option", "showHeader", false);
+
+            resultDim = getElementDimensions(header);
+            equal(resultDim.left, 0,"The dialog doesn't have header");
+            equal(resultDim.top, 0,"The dialog doesn't have header");
+
+            $dialog.remove();
+        }); 
+
+        test("Resize horizontally", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({
+                draggable: true,
+                resizable: true,
+                position: [100,100]
+            });
+
+            var dialog = $dialog.data().igDialog; 
+            $dialog.igDialog("option", "modal", false);
+            dialog.moveToTop();            
+
+            var seResizer = $dialog.find('.ui-resizable-se'),
+                dim = getElementDimensions($dialog),
+                vPoint = dim.bottom - 3,
+                xPoint = dim.right - 3;
+
+            var dialogWidth = dialog.options.width;
+
+            simulateEvent(seResizer[0], "mouseover", { which: 1, pageX: xPoint, pageY: vPoint });
+            simulateEvent(seResizer[0], "mousedown", { which: 1, pageX: xPoint, pageY: vPoint });
+            simulateEvent(seResizer[0], "mousemove", { which: 1, pageX: xPoint - 10, pageY: vPoint});
+            simulateEvent(seResizer[0], "mouseup", { which: 1, pageX: xPoint, pageY: vPoint });
+
+            var resultDim = getElementDimensions($dialog);
+            equal(dialog.options.width, dialogWidth - 10,"The dialog is resized correctly");  
+
+            $dialog.remove();
+        }); 
+
+        test("InputName", function () {
+            $form = $("<form id='form1'></form>").appendTo("#container1");
+            $input = $("<input id='input1' name='input1'></input>").appendTo("#form1");
+
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({   
+                inputName: "input1",
+                position: [100,100]
+            });            
+
+            $dialog.igDialog("option", "inputName", "input2");
+            $dialog.igDialog("option", "state", "minimized");
+
+            ok($input[0].value.indexOf("s1:w300") !== -1,"The saved value is correct");  
+            ok($input[0].value.indexOf("p100,100") !== -1,"The saved value is correct");  
+
+            $dialog.remove();
+            $form.remove();
+            $input.remove();
+        }); 
+
+        test("toPX", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({   
+                width: 200,
+                height: 200,
+                position: [100,100]
+            });
+
+             $dialog.igDialog("option", "width", '20em');
+             equal($dialog[0].offsetWidth, 322,"The dialog's width is calculated correctly from 'em'");               
+
+             $dialog.remove();
+        }); 
+
+        test("Change locale", function () {            
+            $dialog = $("<div></div>")
+            .appendTo("#newContainer").igDialog({   
+                position: [100,100]
+            });
+
+            var closeButton = $dialog.find('.ui-igdialog-buttonclose');
+
+            equal(closeButton[0].getAttribute('title'), 'Close' ,"The title of the Close Button is 'Close'");  
+
+            $dialog.data().igDialog.options.language = "es";
+            $dialog.data().igDialog.changeLocale();
+
+            equal(closeButton[0].getAttribute('title'), 'Cerrar' ,"The title of the Close Button is localized to 'Cerrar'");                 
+
+            $dialog.remove();
+        });
+
+		test("#1204 Modal openAnimation should display modal overlay on end", 1, function () {
+            var $dialog = $("<div id='openAnimationDialog'><h1>Hello World!</h1></div>").prependTo("#newContainer")
+            .igDialog({
+                state: 'open',
+                modal: true,
+                height: '400px',
+                width: '600px',
+                openAnimation: { effect: 'scale', duration: 1000 },
+                stateChanged: function (evt, ui) {
+                    if (ui.action === 'close') {
+                        popup.remove();
+                    }
+                    return true;
+                }
+            });
+            var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
+            stop();
+            setTimeout(function(){
+                start();
+                ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
+                $dialog.remove();
+            }, 100);
+        });
+        
+        test("#1204 Modal Open and Close animations, passed as objects, should fire 'animationEnded'", 3, function () {
+            var animationEventFlag = false;
+            var $dialog = $("<div id='openAnimationDialog'><h1>Hello World!</h1></div>").prependTo("#newContainer")
+            .igDialog({
+                state: 'open',
+                modal: true,
+                height: '400px',
+                width: '600px',
+                openAnimation: { effect: 'scale', duration: 1000 },
+                closeAnimation: { effect: 'explode', duration: 1000 },
+                stateChanged: function (evt, ui) {
+                    if (ui.action === 'close') {
+                        $dialog.remove();
+                    }
+                    return true;
+                },
+                animationEnded: function(){
+                    animationEventFlag = true;
+                }
+            });
+            ok(!animationEventFlag, "Animation flag should be false by default");
+            stop();
+            setTimeout(function(){
+                start();
+                ok(animationEventFlag, "Animation flag should be true after openAnimation is completed");
+                $dialog.igDialog("close");
+                animationEventFlag = false;
+                stop();
+                setTimeout(function(){
+                    start();
+                    ok(animationEventFlag, "Animation flag should be true after closeAnimation is completed");
+                },1100)
+            }, 1100);
+        });
     });
     </script>
 </head>
@@ -441,7 +799,7 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
     </div>
-    <div id="container1" style="float:left;overflow:auto;padding:20px;position:absolute;width:400px;">
+    <div id="container1" style="float:left;overflow:auto;padding:20px;position:absolute;width:400px;height:400px;">
         <div id="dialog1" title="Title of DIV" style="background-color:orange;">
             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog1</p>
         </div>

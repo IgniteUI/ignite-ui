@@ -460,6 +460,9 @@
 
 		clearBookmarks: function () {
 			if (this.bookmarks) {
+
+				//V.S. February 16, 2018 #1566 VideoPlayer destroy removes the tooltip correctly.
+				$("#" +  this._id("_tooltip")).remove();
 				this.bookmarks.remove();
 			}
 		},
@@ -497,7 +500,9 @@
 			}
 
 			offset = handle.offset();
-			mouseOverHandle = !$(event.target).parents().andSelf().is(".ui-igslider-handle");
+
+			// N.P. December 12th, 2017 #516 .andSelf() has been deprecated and is now an alias for .addBack(), which should be used with jQuery 1.8 and later.
+			mouseOverHandle = !$(event.target).addBack().is(".ui-igslider-handle");
 			this._clickOffset = mouseOverHandle ? { left: 0, top: 0 } : {
 				left: event.pageX - offset.left - (handle.width() / 2),
 				top: event.pageY - offset.top -

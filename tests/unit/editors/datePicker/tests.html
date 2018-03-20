@@ -20,7 +20,6 @@
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
@@ -1217,7 +1216,85 @@
 				equal($editor.igDatePicker("displayValue"), "12/9/2017 4:00 AM", "Display value is not correct");
 				$editor.remove();
 			});
-	    });
+
+			var testId = 'Change month / year event should pass values accoridngly';
+			test(testId, 11, function () {
+				var $editor, $ddButton, $input, testYear, testMonth, testDate;
+
+				$editor = $('<input id="dateTimeTest"/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2017-12-31T00:00:00.000Z"),
+					dataMode: "date",
+					dateDisplayFormat: "dateTime",
+					enableUTCDates: true,
+					displayTimeOffset: 0,
+					dropDownAnimationDuration: 1,
+					datepickerOptions:{
+						onChangeMonthYear: function(year, month, date){
+							testYear = year;
+							testMonth = month;
+							testDate = date;
+						}
+					}
+					
+				});
+				ok(testYear === undefined && testMonth === undefined && testDate === undefined, "Test values are undefined by default.");
+				$editor.data("igDatePicker")._dropDownButton.click();
+				ok(testYear !== undefined && testMonth !== undefined && testDate !== undefined, "onChangeMonthYear fires correctly on init.");
+				stop();
+				setTimeout(function(){
+					clickElement($editor.data("igDatePicker")._dropDownButton);
+					$editor.igDatePicker("field").focus().select();
+					start();
+					$("#ui-datepicker-div").find("a.ui-datepicker-next").click();
+					equal(testYear, 2018, "The year has changed");
+					equal(testMonth, 1, "The month has changed");
+					if(testDate !== undefined){
+						equal(testDate.currentDay, 31, "The date has not changed");
+					} else {
+						equal(testDate, 31, "The date has not changed");
+					}
+					$("#ui-datepicker-div").find("a.ui-datepicker-prev").click();
+					equal(testYear, 2017, "The year has changed");
+					equal(testMonth, 12, "The month has changed");
+					if(testDate !== undefined){
+						equal(testDate.currentDay, 31, "The date has not changed");
+					} else {
+						equal(testDate, 31, "The date has not changed");
+					}
+					$("#ui-datepicker-div").find(".ui-datepicker-current-day").parent().prev().children().last().click();
+					clickElement($editor.data("igDatePicker")._dropDownButton);
+					$editor.igDatePicker("field").focus().select();
+					$("#ui-datepicker-div").find("a.ui-datepicker-prev").click();
+					equal(testYear, 2017, "The year has changed");
+					equal(testMonth, 11, "The month has changed");
+					if(testDate !== undefined){
+						equal(testDate.currentDay, 30, "The date has changed");
+					} else {
+						equal(testDate, 30, "The date has changed");
+					}
+				},100);
+				
+			});
+			//$.ig.util.regional
+			testId = 'Calendar should fallback to locale settings, if no region is specified.';
+			QUnit.test(testId, function (assert) {
+				assert.expect(1);
+				var holder = "" + $.ig.util.regional;
+				if($.ig.util && $.ig.util.regional != "ja"){
+					$.ig.util.changeGlobalRegional("ja");
+				}
+				var $editor, $currentDate;
+				$editor = $('<input id="datePickerLocale"/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date("2018-03-04T00:00:00.000Z"),
+					dataMode: "date",					
+				});
+				$editor.igDatePicker("dropDownButton").click();
+				$currentDate = $editor.igDatePicker("getCalendar").find(".ui-datepicker-header > .ui-datepicker-title").text();
+				assert.ok($currentDate === "2018年 3月", "Test values are undefined by default.");
+				$.ig.util.changeGlobalRegional(holder);	
+			});
+		});
+		
 		function mouseInteraction(type, element) {
 		    // create a mouse click event
 		    var event = document.createEvent('MouseEvents');

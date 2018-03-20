@@ -17,7 +17,6 @@
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>  
@@ -1115,6 +1114,50 @@
 				$editor.data("igMaskEditor")._insert("MMMMMMMMMMMM");
 				equal(field.val(), "MM-MMMM-MMLM", "Text is not MM-MMMM-MMLM");
 				$editor.remove();
+			});
+
+			testId = "Test with special characters";
+			QUnit.test(testId, function (assert) {
+				assert.expect(14);
+				var $editor;
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ inputMask: "LLLLL" });
+				var field = $editor.igMaskEditor("field");
+				function enterValue(value){
+					$editor.focus()[0].setSelectionRange(0,0);
+					$.ig.TestUtil.type(value, field);
+				}
+				var testValues = [{
+					value: "たかむごひ",
+					valid: true
+				},{
+					value: "ⰁⰂⰃⰄⰅ",
+					valid: true
+				},{
+					value: "ퟻퟺퟯퟮퟭ",
+					valid: true
+				},{
+					value: "₩₩₩₩₩",
+					valid: false,
+					expected: "_____"
+				},{
+					value: "Ⰰ⯿⯾⯽⯼",
+					valid: false,
+					expected: "Ⰰ____"
+				},{
+					value: "‐‑‒–—",
+					valid: false,
+					expected: "_____"
+				},{
+					value: "¿¾½¼»",
+					valid: false,
+					expected: "_____"
+				}]
+				for(var i=0; i< testValues.length; i++){
+					$editor.igMaskEditor("field").val("_____");
+					enterValue(testValues[i].value);
+					assert.ok($editor.igMaskEditor("isValid") == testValues[i].valid, "Value is expected to be accepted.");
+					assert.equal(field.val(), testValues[i].valid ? testValues[i].value : testValues[i].expected, "The text is not as expected");
+				}
 			});
 		});
 
