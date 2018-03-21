@@ -1116,7 +1116,7 @@
 		},
 
 		//Internal scrollLeft function that handles scrolling on the X axis
-		_scrollLeft: function (val, triggerEvents) {
+		_scrollLeft: function (val, triggerEvents, bSyncElems) {
 			/* Gets sets the position of the content horizontally.
 				paramType="number" optional="true" new value for scrollLeft.
 				returnType="number|object" Returns scrollLeft or reference to igScroll.
@@ -1130,9 +1130,9 @@
 
 			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posY = this._getContentPositionY();
-				this._scrollTouchToXY(val, posY, triggerEvents);
+				this._scrollTouchToXY(val, posY, triggerEvents, bSyncElems);
 			} else {
-				this._scrollToX(val, triggerEvents);
+				this._scrollToX(val, triggerEvents, bSyncElems);
 			}
 
 			if (triggerEvents) {
@@ -1149,7 +1149,7 @@
 		},
 
 		//Internal scrollLTop function that handles scrolling on the Y axis
-		_scrollTop: function (val, triggerEvents) {
+		_scrollTop: function (val, triggerEvents, bSyncElems) {
 			/* Gets sets the position of the content vertically.
 				paramType="number" optional="true" new value for scrollTop.
 				returnType="number|object" Returns scrollTop or reference to igScroll.
@@ -1163,9 +1163,9 @@
 
 			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posX = this._getContentPositionX();
-				this._scrollTouchToXY(posX, val, triggerEvents);
+				this._scrollTouchToXY(posX, val, triggerEvents, bSyncElems);
 			} else {
-				this._scrollToY(val, triggerEvents);
+				this._scrollToY(val, triggerEvents, bSyncElems);
 			}
 
 			if (triggerEvents && !this._cancelScrolling) {
@@ -1447,7 +1447,7 @@
 		/** Scrolls content to on the X axis using default scrollLeft.
 		*	Should be used when sure it's desktop/hybrid environment.
 		*	If not sure how to use, use the internal _scrollLeft. */
-		_scrollToX: function (destX, triggerEvents) {
+		_scrollToX: function (destX, triggerEvents, bSyncElems) {
 			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
 				return 0;
 			}
@@ -1484,8 +1484,9 @@
 				this._moveHBarX(destX);
 			} else {
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
-				this._syncElemsX(this._container[ 0 ], false);
-				/*self._syncHBar(this._container[ 0 ], false);*/
+				if (bSyncElems === undefined || bSyncElems === true) {
+					this._syncElemsX(this._container[ 0 ], false);
+				}
 			}
 
 			/* Update custom scrollbars position */
@@ -1503,7 +1504,7 @@
 		/** Scrolls content to on the Y axis using default scrollTop.
 		*	Should be used when sure it's desktop/hybrid environment.
 		*	If not sure how to use, use the internal _scrollTop. */
-		_scrollToY: function (destY, triggerEvents) {
+		_scrollToY: function (destY, triggerEvents, bSyncElems) {
 			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
 				return 0;
 			}
@@ -1557,8 +1558,9 @@
 					return 0;
 				}
 				this._container.scrollTop(destY + endOffsetEdge); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
-				this._syncElemsY(this._container[ 0 ], false);
-				/*this._syncVBar(this._container[ 0 ], false);*/
+				if (bSyncElems === undefined || bSyncElems === true) {
+					this._syncElemsY(this._container[ 0 ], false);
+				}
 			}
 
 			/* Update custom scrollbars position */
@@ -1652,7 +1654,7 @@
 		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
 		*	Should be used when sure it's mobile environment.
 		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
-		_scrollTouchToXY: function (destX, destY, triggerEvents) {
+		_scrollTouchToXY: function (destX, destY, triggerEvents, bSyncElems) {
 			var bNoCancel,
 				curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
@@ -1720,8 +1722,10 @@
 			}
 
 			/* Sync other elements */
-			this._syncElemsX(this._content, true);
-			this._syncElemsY(this._content, true);
+			if (bSyncElems === undefined || bSyncElems === true) {
+				this._syncElemsX(this._content, true);
+				this._syncElemsY(this._content, true);
+			}
 			this._updateScrollbarsPos(destX, destY);
 
 			//No need to sync these bars since they don't show on safari and we use custom ones.
@@ -1916,13 +1920,8 @@
 
 						if (this._linkedHElems[ index ].data("igScroll")  !== undefined &&
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
-							//We do not set igScroll option because there will be infinite recursion of syncing
-							destY = this._getTransform3dValueY(
-								this._linkedHElems[ index ].find(".igscroll-content")
-							);
-							this._linkedHElems[ index ].find(".igscroll-content").css({
-								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
-							});
+							//We set syncElems to false because there will be infinite recursion of syncing
+							this._linkedHElems[ index ].data("igScroll")._scrollLeft(-destX, true, false);
 						} else if (this.options.modifyDOM) {
 							this._linkedHElems[ index ].find(".igscroll-hsynced-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
@@ -1984,13 +1983,8 @@
 
 						if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
-							//We do not set igScroll option because there will be infinite recursion of syncing
-							destX = this._getTransform3dValueX(
-								this._linkedVElems[ index ].find(".igscroll-content")
-							);
-							this._linkedVElems[ index ].find(".igscroll-content").css({
-								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
-							});
+							//We set syncElems to false because there will be infinite recursion of syncing
+							this._linkedVElems[ index ].data("igScroll")._scrollTop(-destY, true, false);
 						} else if (this.options.modifyDOM) {
 							this._linkedVElems[ index ].find(".igscroll-vsynced-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
