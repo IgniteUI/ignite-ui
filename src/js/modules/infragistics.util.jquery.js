@@ -1046,6 +1046,128 @@
 		return scrollHeight;
 	};
 
+	$.ig.util.ajax = function (url, contentType, data, method, requestOptions) {
+		//return $.ig.util.corsRequest(url, contentType, data, method, requestOptions);
+
+		var deferred = $.Deferred();
+		var isCrossDomain;
+		if (requestOptions && "isCrossDomain" in requestOptions) {
+			isCrossDomain = requestOptions.isCrossDomain;
+		} else {
+			isCrossDomain = $.support.cors;
+		}
+
+		var xhrObj = (function (rOptions) {
+			var xhr = new XMLHttpRequest();
+
+			// do not use XDomainRequest for IE8/IE9 if the user has specifed withCredentials in request options
+			// which is interpreted as XmlHttpRequest to be used against trusted domain
+			// since XDomainRequest does not support withCredentials
+			if (isCrossDomain &&
+				!(("withCredentials" in xhr) ||
+				(rOptions && "withCredentials" in rOptions && rOptions.withCredentials)) &&
+					typeof XDomainRequest !== undefined) {
+
+				// handle IE8/IE9 with anonymous authentication
+				xhr = new XDomainRequest();
+
+				// fix for jQuery.ajax() callback is expecting some methods and props are defined
+				// PP 12/05/2012 jQuery 1.4.4 fix
+				xhr.getResponseHeader = function () {
+					return null;
+				};
+
+				// M.S. July 24st, 2013 Bug #145199 Fixed the data loading from XMLA, when using jQuery 2.0.0 in IE9
+				xhr.setRequestHeader = function () {
+					xhr.status = 200;
+				};
+
+				xhr.getAllResponseHeaders = function () {
+					return null;
+				};
+
+				xhr.onload = function () {
+					xhr.readyState = 4;
+					xhr.status = 200;
+					xhr.statusText = "success";
+					xhr.getAllResponseHeaders = function () {
+					};
+					xhr.onreadystatechange();
+				};
+
+				xhr.onerror = function () {
+					xhr.readyState = 4;
+					xhr.status = 0;
+					xhr.statusText = "error";
+					xhr.getAllResponseHeaders = function () {
+					};
+					xhr.onreadystatechange();
+				};
+
+				xhr.ontimeout = function () {
+					xhr.readyState = 4;
+					xhr.status = 0;
+					xhr.statusText = "timeout";
+					xhr.getAllResponseHeaders = function () {
+					};
+					xhr.onreadystatechange();
+				};
+
+				// keep this callback because otherwise XDomainRequest is aborted
+				// it's a bug in XDomainRequest
+				xhr.onprogress = function () {
+				};
+			}
+
+			return xhr;
+		})(requestOptions);
+
+		var xhrFields;
+
+		// when credentials are specified that will work with Chrome/FireFox/IE10
+		if ("withCredentials" in xhrObj &&
+			requestOptions && "withCredentials" in requestOptions &&
+		requestOptions.withCredentials) {
+
+			xhrFields = {
+				withCredentials: true
+			};
+		}
+
+		var beforeSend = function (jqXHR, options) {
+			if (requestOptions) {
+
+				if ($.isFunction(requestOptions.beforeSend)) {
+					jqXHR.setRequestHeader("Content-Type", contentType);
+					requestOptions.beforeSend.call(this, jqXHR, options, requestOptions);
+				}
+			}
+		};
+
+		$.ajax({
+			crossDomain: (isCrossDomain ? true : false),
+			isLocal: false,
+			url: url,
+			contentType: contentType,
+			data: data,
+			type: method,
+			dataType: "text",
+			xhrFields: xhrFields,
+			beforeSend: beforeSend,
+			xhr: function () {
+				return xhrObj;
+			},
+			success: function (responce) {
+				deferred.resolve(responce);
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				deferred.reject(errorThrown);
+			}
+		});
+
+		return deferred.promise();
+	};
+
 	$.ig.util._renderUnsupportedBrowser = function (widget, locale) {
 		if (!widget.events || !widget.events.browserNotSupported ||
 			widget._trigger(widget.events.browserNotSupported)) {
