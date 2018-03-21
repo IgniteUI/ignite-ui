@@ -6,12 +6,13 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- * jquery-1.9.1.js
+ *	jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
  *  infragistics.ui.widget.js
- *	infragistics.ui.scroll.js
+ *  infragistics.ui.popover.js
+ *  infragistics.ui.notifier.js
  *	infragistics.ui.validator.js
  */
 
@@ -21,7 +22,6 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"./infragistics.ui.widget",
-			"./infragistics.ui.scroll",
 			"./infragistics.ui.validator"
 		], factory );
 	} else {
@@ -4094,7 +4094,7 @@
 			return this._spinDownButton;
 		}
 	});
-
+	$.extend($.ui.igTextEditor, { version: "<build_number>" });
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
@@ -5967,6 +5967,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igNumericEditor, { version: "<build_number>" });
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
 		options: {
 			/* type="string" Gets/Sets the string, which is used as positive pattern. The "n" flag represents the value of number.
@@ -6028,6 +6029,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igCurrencyEditor, { version: "<build_number>" });
 	$.widget("ui.igPercentEditor", $.ui.igNumericEditor, {
 		options: {
 			/* type="string" Gets/Sets the pattern for positive numeric values, which is used in display (no focus) state.
@@ -6277,6 +6279,7 @@
 
 		}
 	});
+	$.extend($.ui.igPercentEditor, { version: "<build_number>" });
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
 			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
@@ -7608,6 +7611,7 @@
 			return valid;
 		}
 	});
+	$.extend($.ui.igMaskEditor, { version: "<build_number>" });
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
@@ -10712,6 +10716,7 @@
 			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		}
 	});
+	$.extend($.ui.igDateEditor, { version: "<build_number>" });
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
@@ -11484,6 +11489,7 @@
 			return this;
 		}
 	});
+	$.extend($.ui.igDatePicker, { version: "<build_number>" });
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
 			/* type="bool" Gets/Sets whether the checkbox is checked.
@@ -12086,6 +12092,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igCheckboxEditor, { version: "<build_number>" });
 	$.widget("ui.igTimePicker", $.ui.igDateEditor, {
 		options: {
 			/* type="object" Gets delta-value which is used to generate the drop-down items for the time picker.
@@ -12725,5 +12732,6 @@
 			throw new Error(this._getLocaleValue("timePickerNoSuchMethod"));
 		}
 	});
+	$.extend($.ui.igTimePicker, { version: "<build_number>" });
 	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
