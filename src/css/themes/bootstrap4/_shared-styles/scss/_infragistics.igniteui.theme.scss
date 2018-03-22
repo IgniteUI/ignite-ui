@@ -308,7 +308,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 
 
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
-    border-right: 1px solid $table-border-color;
+    border-right-color: $table-border-color;
 }
 /* BUG 246065 END */
 
@@ -1788,7 +1788,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 
 .ui-radialgauge-tick {
     background-color: $gray-dark;
-    border-top-color: none;
+    border-top-color: transparent;
 }
 
 .ui-radialgauge-minorTick {

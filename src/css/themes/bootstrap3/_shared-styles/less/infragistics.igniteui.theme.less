@@ -13,12 +13,6 @@
 /* igGrid */
 /**********/
 
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-    /*padding: 10px;*/
-}
-
 .ui-iggrid th,
 .ui-iggrid th.ui-widget-header.ui-state-default {
     border-top: 1px solid @table-border-color;
@@ -185,12 +179,19 @@
 }
 
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
 .ui-iggrid > table > thead + tfoot + tbody > tr:first-child td
 {
-    /* border-top: 0 none!important;
+    /* border-top: 0 !important;
    border-top removed for tables with virtualization, or headers */
+}
+
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+    border-top: 0 !important;
+}
+
+.ui-iggrid .ui-iggrid-headertable-mrl th, .ui-iggrid .ui-iggrid-table-mrl th{
+    border: 1px solid @table-border-color;
 }
 
 .ui-iggrid .ui-widget-header,
@@ -305,7 +306,7 @@
 }
 
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
-    border-right: 1px solid @table-border-color;
+    border-right-color:@table-border-color!important;
 }
 /* BUG 246065 END */
 
@@ -1391,8 +1392,8 @@
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
     border: 1px solid @input-border;
-    -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-    -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+    -webkit-box-shadow: inset 2px 2px 3px  rgba(50, 50, 50, 0.1);
+    -moz-box-shadow: inset 2px 2px 3px  rgba(50, 50, 50, 0.1);
     box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
@@ -1789,7 +1790,7 @@
 
 .ui-radialgauge-tick {
     background-color: @gray-darker;
-    border-top-color: none;
+    border-top-color: transparent;
 }
 
 .ui-radialgauge-minorTick {

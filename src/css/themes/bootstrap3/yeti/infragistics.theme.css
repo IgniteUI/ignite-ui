@@ -940,8 +940,8 @@ body .ui-tooltip {
   color: #008cba;
 }
 .ui-widget-header {
-  background: #008cba;
-  border: 1px solid #006687;
+  background: #888;
+  border-bottom: 1px solid #777;
   color: #fff;
   font-weight: normal;
 }
@@ -1808,7 +1808,7 @@ body .ui-tooltip {
  */
 .ui-tabs {
   background: transparent;
-  border: 0px none;
+  border: 0 none;
 }
 .ui-tabs .ui-tabs-nav {
   padding: 0;
@@ -1955,11 +1955,6 @@ body .ui-tooltip {
 /**********/
 /* igGrid */
 /**********/
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-  /*padding: 10px;*/
-}
 .ui-iggrid th,
 .ui-iggrid th.ui-widget-header.ui-state-default {
   border-top: 1px solid #ddd;
@@ -2099,11 +2094,17 @@ body .ui-tooltip {
   border-bottom: 1px solid #ddd;
 }
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
 .ui-iggrid > table > thead + tfoot + tbody > tr:first-child td {
-  /* border-top: 0 none!important;
+  /* border-top: 0 !important;
    border-top removed for tables with virtualization, or headers */
+}
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+  border-top: 0 !important;
+}
+.ui-iggrid .ui-iggrid-headertable-mrl th,
+.ui-iggrid .ui-iggrid-table-mrl th {
+  border: 1px solid #ddd;
 }
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -2196,7 +2197,7 @@ body .ui-tooltip {
   border-color: transparent;
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
-  border-right: 1px solid #ddd;
+  border-right-color: #ddd !important;
 }
 /* BUG 246065 END */
 .ui-iggrid tbody td,
@@ -3109,8 +3110,8 @@ body .ui-tooltip {
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
   border: 1px solid #ccc;
-  -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-  -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+  -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
   box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
@@ -3448,7 +3449,7 @@ body .ui-tooltip {
 }
 .ui-radialgauge-tick {
   background-color: #222222;
-  border-top-color: none;
+  border-top-color: transparent;
 }
 .ui-radialgauge-minorTick {
   background-color: #222222;

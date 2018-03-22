@@ -2280,7 +2280,7 @@ input.ui-igbutton {
   border-right: 1px solid transparent;
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
-  border-right: 1px solid #dadada;
+  border-right-color: #dadada;
 }
 /* BUG 246065 END */
 .ui-iggrid tbody td,
@@ -3670,7 +3670,7 @@ input.ui-igbutton {
 }
 .ui-radialgauge-tick {
   background-color: rgba(0, 0, 0, 0.35);
-  border-top-color: none;
+  border-top-color: transparent;
 }
 .ui-radialgauge-minorTick {
   background-color: rgba(0, 0, 0, 0.2);
@@ -3701,7 +3701,7 @@ input.ui-igbutton {
   border-top-color: transparent;
 }
 .ui-radialgauge-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
@@ -3782,7 +3782,7 @@ input.ui-igbutton {
   font-weight: bold;
 }
 .ui-bulletgraph-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
@@ -3855,7 +3855,7 @@ input.ui-igbutton {
   font-weight: bold;
 }
 .ui-lineargauge-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
