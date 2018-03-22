@@ -546,18 +546,27 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {
 
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer,
 .ui-iggrid-filtercell .ui-igeditor-input-container + .ui-iggrid-indicatorcontainer {
-    float      : right;
+    float: right;
     margin-top : 0;
 }
 
-.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container {
-    float : left;
-    width : 100%;
+.ui-iggrid-filtercell .ui-iggrid-filterbuttonright > div.ui-iggrid-indicatorcontainer {
+    float:right;
+    position:relative;
+    margin-top: 0px !important;
 }
 
-.ui-iggrid-filtercell .ui-igedit-button-common ~ .ui-igeditor-input-container {
-    float : left;
-    width : calc(100% - 35px);
+.ui-iggrid-filtercell .ui-iggrid-filterbuttonright > div.ui-iggrid-indicatorcontainer > a {
+    margin: 0px !important;
+    float: right !important;
+}
+
+.ui-iggrid-filtercell .ui-iggrid-filterbuttonright > div.ui-iggrid-indicatorcontainer > a:before {
+        margin: 0 1.4em 0 0;
+}
+
+.ui-iggrid-filtercell .ui-iggrid-filterbuttonright > div.ui-igeditor-input-container > span > input.ui-igedit-input {
+    padding: 0 !important;
 }
 
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a,
