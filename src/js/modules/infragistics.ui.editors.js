@@ -6,11 +6,12 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- * jquery-1.9.1.js
+ *	jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
- *	infragistics.ui.scroll.js
+ *  infragistics.ui.popover.js
+ *  infragistics.ui.notifier.js
  *	infragistics.ui.validator.js
  */
 
@@ -23,7 +24,6 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
-			"./infragistics.ui.scroll",
 			"./infragistics.ui.validator"
 		], factory );
 	} else {
@@ -4026,7 +4026,7 @@
 			return this._spinDownButton;
 		}
 	});
-
+	$.extend($.ui.igTextEditor, { version: "<build_number>" });
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
@@ -5910,6 +5910,7 @@
 			return this._getRegionalOption();
 		}
 	});
+	$.extend($.ui.igNumericEditor, { version: "<build_number>" });
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
 		options: {
 			/* type="string" Gets/Sets the string, which is used as positive pattern. The "n" flag represents the value of number.
@@ -5993,6 +5994,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igCurrencyEditor, { version: "<build_number>" });
 	$.widget("ui.igPercentEditor", $.ui.igNumericEditor, {
 		options: {
 			/* type="string" Gets/Sets the pattern for positive numeric values, which is used in display (no focus) state.
@@ -6253,6 +6255,7 @@
 
 		}
 	});
+	$.extend($.ui.igPercentEditor, { version: "<build_number>" });
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="object" Gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
@@ -7606,6 +7609,7 @@
 			return valid;
 		}
 	});
+	$.extend($.ui.igMaskEditor, { version: "<build_number>" });
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
@@ -10828,6 +10832,7 @@
 			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		}
 	});
+	$.extend($.ui.igDateEditor, { version: "<build_number>" });
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
 			/* type="object" Gets/Sets the custom regional settings for the editor. If it is a string, then $.ig.regional[stringValue] is assumed.
@@ -11576,6 +11581,7 @@
 			return this;
 		}
 	});
+	$.extend($.ui.igDatePicker, { version: "<build_number>" });
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
 			/* type="bool" Gets/Sets whether the checkbox is checked.
@@ -12176,5 +12182,5 @@
 			}
 		}
 	});
-
+	$.extend($.ui.igCheckboxEditor, { version: "<build_number>" });
 }));// REMOVE_FROM_COMBINED_FILES
