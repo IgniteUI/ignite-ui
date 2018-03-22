@@ -747,6 +747,7 @@
 			this._bKeyboardNavigation = true;
 			this._renderVerticalScrollbar = true;
 			this._renderHorizontalScrollbar = true;
+			/** When _bMixedEnvironment is true, only scrollTop/scrollLeft would be used to scroll. Otherwise used transformations */
 			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
@@ -975,6 +976,20 @@
 			return this._super(optionName, value);
 		},
 
+		_getContainerHeight: function () {
+			//We round up the container height across all browsers, so we have consistent experience.
+			//On Edge,Firefox and IE the height returned is a float, while on Chrome it appears to be rounded up(ceil).
+			//We don't use outerHeight becuse we do not expect anny css borders or such on the container itself
+			return Math.ceil(this._container.height());
+		},
+
+		_getContainerWidth: function () {
+			//We round up the container height across all browsers, so we have consistent experience.
+			//On Edge,Firefox and IE the height returned is a float, while on Chrome it appears to be rounded up(ceil).
+			//We don't use outerHeight becuse we do not expect anny css borders or such on the container itself
+			return Math.ceil(this._container.width());
+		},
+
 		_getContentHeight: function () {
 			if (this.options.scrollHeight !== null) {
 				return this.options.scrollHeight;
@@ -983,7 +998,7 @@
 					/* S.K. Fix for bug 224900 - On IE reaching the bottom flickers because the height can be not a round number */
 					return Math.ceil(this._content[ 0 ].getBoundingClientRect().height);
 				} else {
-					return this._content.outerHeight();
+					return Math.ceil(this._content.outerHeight());
 				}
 			}
 		},
@@ -996,7 +1011,7 @@
 					/* S.K. Fix for bug 224900 - - On IE the width could be not a round number */
 					return Math.ceil(this._content[ 0 ].getBoundingClientRect().width);
 				} else {
-					return this._content.outerWidth();
+					return Math.ceil(this._content.outerWidth());
 				}
 			}
 		},
@@ -1148,7 +1163,7 @@
 
 		_setScrollWidth: function (inWidth) {
 			/* Do NOT refresh after calling this function!!! The custom width will be lost. */
-			this._elemWidth = this._container.width();
+			this._elemWidth = this._getContainerWidth();
 			this._contentWidth = inWidth;
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._isScrollableH = this._percentInViewH < 1;
@@ -1380,9 +1395,9 @@
 				curPosY = this._getContentPositionY();
 			destX = this._clampAxisCoords(destX,
 										0,
-										Math.max(this._getContentWidth() - this._container.width(), 0));
+										Math.max(this._getContentWidth() - this._getContainerWidth(), 0));
 			destY = this._clampAxisCoords(destY,
-										0, Math.max(this._getContentHeight() - this._container.height(), 0));
+										0, Math.max(this._getContentHeight() - this._getContainerHeight(), 0));
 
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -1424,7 +1439,7 @@
 				curPosX = this._getContentPositionX();
 			}
 
-			destX = this._clampAxisCoords(destX, 0, this._getContentWidth() - this._container.width());
+			destX = this._clampAxisCoords(destX, 0, this._getContentWidth() - this._getContainerWidth());
 
 			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
 			if (triggerEvents) {
@@ -1472,14 +1487,27 @@
 				return 0;
 			}
 
-			var curPosY;
+			var curPosY,
+				endOffsetEdge = 0;
+
 			if (this.options.scrollOnlyVBar) {
 				curPosY = this._getScrollbarVPosition();
 			} else {
 				curPosY = this._getContentPositionY();
 			}
 
-			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._container.height());
+			//On Edge, in order to trigger page scroll when we are at the top or botton, we need to scroll further in the desired direction than what is possible.
+			//We apply endOffsetEdge only when setting scrollTop and not directly to the destY.
+			//That is because destY is the actual destination that we will scroll to and (destY - curPosY) is 0 at the top/bottom, but with offset it will be -1/1.
+			if ($.ig.util.isEdge) {
+				if (destY < 0) {
+					endOffsetEdge = -1;
+				} else {
+					endOffsetEdge = destY > (this._getContentHeight() - this._getContainerHeight()) ? 1 : 0;
+				}
+			}
+
+			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._getContainerHeight());
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
 			if (triggerEvents) {
@@ -1503,7 +1531,11 @@
 			if (this.options.scrollOnlyVBar) {
 				this._moveVBarY(destY);
 			} else {
-				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
+				//On IE11 we shouldn't call scrollTop when we want to scroll page on top/bottom of content. There is also an error of 1 pixed on IE11
+				if ($.ig.util.isIE && Math.abs(destY - curPosY) <= 1) {
+					return 0;
+				}
+				this._container.scrollTop(destY + endOffsetEdge); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
 			}
@@ -1553,7 +1585,18 @@
 				}
 
 				self._nextY += ((-3 * x * x + 3) * deltaY * 2) * smoothingStep;
-				self._scrollToY(self._nextY, true);
+
+				if (self._bMixedEnvironment) {
+					self._scrollToY(self._nextY, true);
+				} else {
+					var curPosX = 0;
+					if (self.options.scrollOnlyHBar) {
+						curPosX = self._getScrollbarVPosition();
+					} else {
+						curPosX = self._getContentPositionY();
+					}
+					self._scrollTouchToXY(curPosX, self._nextY, true);
+				}
 
 				//continue the intertia
 				x += 0.08 * (1 / smoothingDuration);
@@ -1565,26 +1608,24 @@
 			animationId = requestAnimationFrame(inertiaStep);
 		},
 
-		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
-		_switchFromTouchToMixed: function () {
-			//stop any current ongoing inertia
-			cancelAnimationFrame(this._touchInertiaAnimID);
+		_applyTransformOnScrollTop: function () {
 
-			var startX = 0,
-				startY = this._getTransform3dValueY(this._content);
+			var startX = -this._container.scrollLeft(),
+				startY = -this._container.scrollTop();
+
+			if (startX === 0 && startY === 0) {
+				return;
+			}
+
 			if (this._contentX) {
-				startX = this._getTransform3dValueX(this._contentX);
+				startX += this._getTransform3dValueX(this._contentX);
 			} else {
-				startX = this._getTransform3dValueX(this._content);
+				startX += this._getTransform3dValueX(this._content);
 			}
-			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
-			if (startX !== 0 || startY !== 0) {
-				//Reset the transform3d position to 0.
-				this._scrollTouchToXY(0, 0, false);
+			startY += this._getTransform3dValueY(this._content);
 
-				//Go back to the scrolled position but using scrollTop and scrollLeft this time
-				this._scrollToXY(-startX, -startY, false);
-			}
+			this._scrollToXY(0, 0, false);
+			this._scrollTouchToXY(-startX, -startY, false);
 		},
 
 		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
@@ -1597,10 +1638,10 @@
 
 			destX = this._clampAxisCoords(destX,
 										0,
-										Math.max(this._getContentWidth() - this._container.width(), 0));
+										Math.max(this._getContentWidth() - this._getContainerWidth(), 0));
 			destY = this._clampAxisCoords(destY,
 										0,
-										Math.max(this._getContentHeight() - this._container.height(), 0));
+										Math.max(this._getContentHeight() - this._getContainerHeight(), 0));
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
@@ -2099,27 +2140,24 @@
 
 		_onScrollContainer: function () {
 			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
+				this._applyTransformOnScrollTop();
 			}
 
 			if (!this._scrollFromSyncContentV) {
-				this._syncElemsY(this._container[ 0 ], false);
+				this._syncElemsY(this._container[ 0 ], !this._bMixedEnvironment);
 
 				if (!this.options.scrollOnlyVBar) {
-					this._syncVBar(this._container[ 0 ], false);
+					this._syncVBar(this._container[ 0 ], !this._bMixedEnvironment);
 				}
 			} else {
 				this._scrollFromSyncContentV = false;
 			}
 
 			if (!this._scrollFromSyncContentH) {
-				this._syncElemsX(this._container[ 0 ], false);
+				this._syncElemsX(this._container[ 0 ], !this._bMixedEnvironment);
 
 				if (!this.options.scrollOnlyHBar) {
-					this._syncHBar(this._container[ 0 ], false);
+					this._syncHBar(this._container[ 0 ], !this._bMixedEnvironment);
 				}
 			} else {
 				this._scrollFromSyncContentH = false;
@@ -2150,15 +2188,12 @@
 			var evt = event.originalEvent,
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
-				scrolledY, scrolledYDir;
+				scrolledY;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
+				this._applyTransformOnScrollTop();
 			}
 
 			if (evt.wheelDeltaY) {
@@ -2175,13 +2210,26 @@
 				this._smoothWheelScrollY(scrollDeltaY);
 			} else {
 				//Normal scroll
+				if (this.options.scrollOnlyHBar) {
+					this._startX = this._getScrollbarVPosition();
+				} else {
+					this._startX = this._getContentPositionY();
+				}
 				if (this.options.scrollOnlyVBar) {
 					this._startY = this._getScrollbarVPosition();
 				} else {
 					this._startY = this._getContentPositionY();
 				}
 
-				scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
+				if (this._bMixedEnvironment) {
+					scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
+				} else {
+					scrolledY = this._scrollTouchToXY(
+						this._startX,
+						this._startY + scrollDeltaY * scrollStep,
+						true
+					).y;
+				}
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
@@ -2193,10 +2241,7 @@
 					});
 				}
 
-				/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
-				/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
-				scrolledYDir = scrolledY > 0 ? 1 : -1;
-				return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
+				return !scrolledY;
 			}
 
 			return false;
@@ -2257,14 +2302,26 @@
 			this._totalMovedX = this._touchStartX - touchPos.screenX;
 			if (Math.abs(this._totalMovedX) < this.options.swipeToleranceX && !this._offsetRecorded) {
 				/* Do not scroll horizontally yet while in the tolerance range */
-				this._scrollToXY(this._startX, destY, true);
+				if (this._bMixedEnvironment) {
+					this._scrollToXY(this._startX, destY, true);
+				} else {
+					this._scrollTouchToXY(this._startX, destY, true);
+				}
 			} else {
 				if (!this._offsetRecorded) {
 					this._offsetDirection = Math.sign(destX - this._startX);
 					this._offsetRecorded = true;
 				}
 				/* Once the tolerance is exceeded it can be scrolled horizontally */
-				this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+				if (this._bMixedEnvironment) {
+					this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+				} else {
+					this._scrollTouchToXY(
+						destX - this._offsetDirection * this.options.swipeToleranceX,
+						destY,
+						true
+					);
+				}
 			}
 			this._moving = true;
 		},
@@ -2805,7 +2862,7 @@
 		_scrollTimeoutY: function (step, bSmallIncement) {
 			var	curPosY = this._getContentPositionY();
 			if ((curPosY === 0 && step <= 0) ||
-				(curPosY === this._getContentHeight() - this._container.height() && step >= 0)) {
+				(curPosY === this._getContentHeight() - this._getContainerHeight() && step >= 0)) {
 				return;
 			}
 
@@ -2900,7 +2957,7 @@
 		_onMouseDownArrowDown: function () {
 			var scrollStep = this.options.smallIncrementStep,
 				curPosY = this._getContentPositionY();
-			if (curPosY === this._getContentHeight() - this._container.height()) {
+			if (curPosY === this._getContentHeight() - this._getContainerHeight()) {
 				scrollStep = 0;
 			}
 
@@ -3277,7 +3334,7 @@
 		_scrollTimeoutX: function (step, bSmallIncement) {
 			var curPosX = this._getContentPositionX();
 			if ((curPosX === 0 && step <= 0) ||
-				(curPosX === this._getContentWidth() - this._container.width() && step >= 0)) {
+				(curPosX === this._getContentWidth() - this._getContainerWidth() && step >= 0)) {
 				return;
 			}
 
@@ -3383,7 +3440,7 @@
 			var scrollStep = this.options.smallIncrementStep,
 				curPosX = this._getContentPositionX();
 
-			if (curPosX === this._getContentWidth() - this._container.width()) {
+			if (curPosX === this._getContentWidth() - this._getContainerWidth()) {
 				//We are at the bottom
 				scrollStep = 0;
 			}

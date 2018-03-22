@@ -145,6 +145,23 @@
 					"Children": []
 				}]
 			},
+			notWorkingResponse3 = {
+				"Items": [{
+					"Id": "1",
+					"Name": "PARENT",
+					"Description": "",
+					"Links": {
+						"Self": "https://test",
+						"Databases": "https://test",
+						"UnitClasses": "https://test"
+					},
+					"Children": {
+						"__deferred": {
+							"uri": "/api/jsonpitems"
+						}
+					}
+				}]
+			},
 			notWorkingResponse2 = {
 				"Items": [{
 					"Id": "1",
@@ -176,6 +193,9 @@
 
 		$(document).ready(function () {
 			$.mockjaxSettings.logging = 0;  // only critical error messages
+			$.ajaxSettings.jsonpCallback = function() {
+				return "jsonpcallback";
+			};
 			$.mockjax({
 				url: '/api/items',
 				contentType: 'text/json',
@@ -190,6 +210,24 @@
 				contentType: 'text/json',
 				response: function () {
 					this.responseText = notWorkingResponse2;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems',
+				contentType: 'text/json',
+				responseTime: 0,
+				response: function () {
+					this.responseText = notWorkingResponse3;
+				}
+			});
+
+			$.mockjax({
+				url: '/api/jsonpitems?*',
+				contentType: "application/json",
+				responseTime: 0,
+				response: function (settings) {
+					jsonpcallback(notWorkingResponse3);
 				}
 			});
 
@@ -1241,6 +1279,7 @@
 			testId_8 = "igTree hierarchical JSON remote load on demand (Bug 217440 : Child populate with responseDataKey)";
 			testId_9 = "igTree binding to XML";
 			testId_10 = "igTree binding to data that contains apostrophes";
+			testId_11 = "igTree does not load nodes after lv3 when using loadOnDemand #1564"
 			
 			test(testId_1, function () {
 				var nodeCount = $('#tree2').find('li[data-role=node]').length;
@@ -1688,6 +1727,42 @@
 				$treeApos.igTree("removeNodesByValue", nodeValue);
 				ok($treeApos.igTree("nodesByValue", nodeValue).length === 0, "Node with value that contains apostrophes should be deleted");
 				ok(pivotData.length === 0, "pivotData data source should be empty");
+			});
+
+			QUnit.test(testId_11, function (assert) {
+				var node,
+					tree = $("<div id='mockTree' />").appendTo(document.body).igTree({
+						dataSourceUrl: '/api/jsonpitems',
+						dataSourceType: 'remoteUrl',
+						loadOnDemand: true,
+						dragAndDrop: true,
+						checkboxMode: "triState",
+						responseDataKey: "Items",
+						bindings: {
+							textKey: 'Name',
+							valueKey: 'Id',
+							childDataProperty: 'Children'
+						}
+					});
+				assert.expect(2);
+				var done1 = assert.async();
+				var done2 = assert.async();
+
+				tree.one("igtreerendered", function () {
+					tree.igTree("expand", tree.find("li[data-role=node]:first"));
+				});
+			
+				setTimeout(function(){
+					assert.ok(tree.igTree('nodeByPath', '0_0').children('ul').attr("data-depth") === "2", "wrong data-depth attribute for path 0_0.");
+					var node = tree.igTree('nodeByPath', '0_0');
+					node.children(".ui-igtree-expander:first").click();
+					done1();
+
+					setTimeout(function () {
+					assert.ok(tree.igTree('nodeByPath', '0_0_0').children('ul').attr("data-depth") === "3", "wrong data-depth attribute for path 0_0_0.");
+					done2();
+					},80);
+				},80);
 			});
 			/* ***************** END igTree databinding ***************** */
 			
