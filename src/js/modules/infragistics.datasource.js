@@ -26,7 +26,7 @@
  *
  */
 
-/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer, escape */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -4979,7 +4979,7 @@
 							);
 							/* d = ffields[i].expr.getTime(); */
 						} else {
-							d = ffields[ i ].expr;
+							d = escape(ffields[ i ].expr);
 						}
 						if (params.filteringParams[ key ] === undefined) {
 							params.filteringParams[ key ] = ffields[ i ].cond +
@@ -7238,9 +7238,7 @@
 				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
-				if (dt === undefined) {
-					dt = !!(gbRec.val && gbRec.val.getTime);
-				}
+				dt = !!(gbRec.val && gbRec.val.getTime);
 				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
 				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
 				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;

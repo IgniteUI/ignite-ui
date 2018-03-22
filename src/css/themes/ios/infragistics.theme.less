@@ -422,7 +422,8 @@
     background-position: -16px 0;
 }
 
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e{
     background-position: -32px 0;
 }
 
@@ -1237,12 +1238,20 @@
     padding-top: 0.4em;
     padding-bottom: 0.4em;
     border-width: 1px 0;
+    margin: 0; //overrides default beaviour
+    .ui-state-focus,
+    .ui-state-active{
+        margin: 0; //overrides default beaviour
+        background: transparent;
+        border-color: transparent;
+    }
 }
 
 .ui-menu .ui-menu-item.ui-state-focus {
     .stateActive-B;
     border-width: 1px 0;
     margin: 0; //overrides default beaviour
+
 }
 
 .ui-menu .ui-menu-item.ui-state-active {
@@ -1589,12 +1598,13 @@
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
 
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
-    border:1px solid @igGray3 !important;
+    border:1px solid @igGray3;
 }
-.ui-iggrid .ui-iggrid-table-mrl td.ui-state-hover {
-    border-color:@igGray1 !important;
+.ui-iggrid .ui-iggrid-table-mrl tbody td.ui-state-hover {
+    border-color:@igGray1;
 }
-.ui-iggrid .ui-iggrid-headertable-mrl th,.ui-iggrid .ui-iggrid-table-mrl th.ui-state-default {
+.ui-iggrid .ui-iggrid-headertable-mrl th,
+.ui-iggrid .ui-iggrid-table-mrl th.ui-state-default {
     border: 1px solid @igGray5 !important;
 }
 
@@ -1710,7 +1720,9 @@
     background-image: @jq-icons-light;
 }
 
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus
+{
     background: @accent1;
 }
 
@@ -1800,7 +1812,7 @@
 .ui-iggrid tfoot td {
     border-width: 1px 0!important;
     border-top: 1px solid transparent;
-    border-bottom: 1px solid @igGray3;
+    border-bottom: 1px solid #ececec;
 }
 
 .ui-iggrid tr.ui-ig-altrecord {
@@ -4207,6 +4219,34 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu-item:hover {
     background: @spreadsheet-menu-item-bg-hover;
     border-radius: 0;
+}
+
+
+.ui-igspreadsheet .ui-menu-item {
+    position: relative;
+    cursor: pointer;
+    min-height: 0;
+    padding: 0;
+    a {
+        border-radius: 0;
+        border-color: transparent;
+        border-left-color: #b1b1b1;
+        background: #fff;
+        &.ui-state-focus {
+            background: #e5f2ff;
+            color: @spreadsheet-text-color;
+        }
+        &.ui-state-active {
+            border: none;
+        }
+
+    }
+    div.ui-state-active {
+        background: #e5f2ff;
+        .ui-icons {
+
+        }
+    }
 }
 
 /*

@@ -467,14 +467,18 @@ button.ui-button::-moz-focus-inner {
   position: absolute;
 }
 .ui-menu .ui-menu-item {
+  padding: 0;
   position: relative;
-  margin: 0;
-  padding: 3px 1em 3px .4em;
   cursor: pointer;
   min-height: 0;
-  /* support: IE7 */
-  /* support: IE10, see #8844 */
-  list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  margin: 0;
+}
+.ui-menu .ui-menu-item .ui-state-focus {
+  margin: 0;
+  background: transparent;
+  border-color: transparent;
+  border: none;
+  color: #00aade;
 }
 .ui-menu .ui-menu-divider {
   margin: 5px 0;
@@ -857,8 +861,8 @@ body .ui-tooltip {
   color: #333333;
 }
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
-.ui-iggrid-table-mrl .ui-widget-content td {
-  border: 1px solid rgba(153, 153, 153, 0.06) !important;
+.ui-iggrid .ui-iggrid-table-mrl tbody td {
+  border: 1px solid rgba(153, 153, 153, 0.06);
 }
 .ui-iggrid-table-mrl .ui-widget-content td.ui-state-hover,
 .ui-iggrid-table-mrl .ui-widget-content .ui-iggrid-altrecord td.ui-state-hover {
@@ -1053,7 +1057,8 @@ body .ui-tooltip {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
@@ -1975,10 +1980,11 @@ body .ui-tooltip {
   background-repeat: repeat-x;
   border: 1px solid #2788b1;
 }
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus,
+.ui-iggrid-sortableheader:focus {
   background-color: white !important;
   background-image: none;
-  background-repeat: repeat-x;
   border: 1px solid #2788b1;
 }
 .ui-iggrid .ui-iggrid-footer,
@@ -4444,6 +4450,9 @@ Spreadsheet colors
   color: #00aade;
   cursor: pointer;
 }
+.ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
+  background: #80D5EF;
+}
 /* ScrollBar related
 ====================
 */
@@ -4667,6 +4676,29 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu-item:hover {
   background: rgba(0, 170, 222, 0.22);
   border-radius: 0;
+}
+.ui-igspreadsheet .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu-item a {
+  margin: 0;
+  border-radius: 0;
+  border-color: transparent;
+  border-left-color: #b1b1b1;
+  background: #fff;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-focus {
+  background: #e5f2ff;
+  color: #111;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-active {
+  border: none;
+}
+.ui-igspreadsheet .ui-menu-item div.ui-state-active {
+  background: #e5f2ff;
 }
 /*
 =========================

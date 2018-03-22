@@ -632,6 +632,24 @@ button.ui-button::-moz-focus-inner {
   -ms-touch-action: none;
   touch-action: none;
 }
+/*
+	jQuery UI Menu Overrides
+*/
+.ui-menu .ui-menu-item {
+  border: none;
+  border-top: 1px solid transparent;
+  padding: 0;
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  min-height: 0;
+  /* support: IE7 */
+  /* support: IE10, see #8844 */
+  list-style-image: none;
+}
+.ui-menu .ui-menu-item:first-of-type {
+  border-top: none;
+}
 .ui-menu {
   list-style: none;
   padding: 0;
@@ -641,16 +659,6 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-menu .ui-menu {
   position: absolute;
-}
-.ui-menu .ui-menu-item {
-  position: relative;
-  margin: 0;
-  padding: 3px 1em 3px .4em;
-  cursor: pointer;
-  min-height: 0;
-  /* support: IE7 */
-  /* support: IE10, see #8844 */
-  list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
 }
 .ui-menu .ui-menu-divider {
   margin: 5px 0;
@@ -1244,7 +1252,8 @@ input.ui-igbutton {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
@@ -2048,11 +2057,6 @@ input.ui-igbutton {
 /**********/
 /* igGrid */
 /**********/
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-  /*padding: 10px;*/
-}
 .ui-iggrid .ui-iggrid-groupbyarea {
   background-color: #FFFFFF;
   border-color: #dadada;
@@ -2141,8 +2145,8 @@ input.ui-igbutton {
   border-bottom: 0;
 }
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
-.ui-iggrid-table-mrl td,
-.ui-iggrid-table-mrl td.ui-state-hover {
+.ui-iggrid .ui-iggrid-table-mrl tbody td,
+.ui-iggrid .ui-iggrid-table-mrl tbody td.ui-state-hover {
   border: 1px solid #dadada;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th,
@@ -2226,7 +2230,8 @@ input.ui-igbutton {
   border-left: 0!important;
   border-bottom: 0!important;
 }
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #4897AA;
 }
 .ui-iggrid .ui-iggrid-footer,
@@ -2269,6 +2274,15 @@ input.ui-igbutton {
 .ui-iggrid th.ui-widget-header .ui-icon {
   color: #ffffff;
 }
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
+.ui-iggrid tbody td {
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+  border-right-color: #dadada;
+}
+/* BUG 246065 END */
 .ui-iggrid tbody td,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
 .ui-iggrid thead .ui-iggrid-editingcell,
@@ -2343,12 +2357,12 @@ input.ui-igbutton {
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
   padding-left: 4px;
-  padding-right: 3px;
+  padding-right: 4px;
 }
 /*Bug 215539 11.03.2012, S.D., fix padding in chrome to prevent jump when adding borders on focus*/
 .ui-iggrid td.ui-state-active,
 .ui-iggrid .ui-ig-altrecord td.ui-state-active {
-  padding-left: 3px;
+  padding-left: 4px;
 }
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
   border-color: transparent!important;
@@ -3656,7 +3670,7 @@ input.ui-igbutton {
 }
 .ui-radialgauge-tick {
   background-color: rgba(0, 0, 0, 0.35);
-  border-top-color: none;
+  border-top-color: transparent;
 }
 .ui-radialgauge-minorTick {
   background-color: rgba(0, 0, 0, 0.2);
@@ -3687,7 +3701,7 @@ input.ui-igbutton {
   border-top-color: transparent;
 }
 .ui-radialgauge-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
@@ -3768,7 +3782,7 @@ input.ui-igbutton {
   font-weight: bold;
 }
 .ui-bulletgraph-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
@@ -3841,7 +3855,7 @@ input.ui-igbutton {
   font-weight: bold;
 }
 .ui-lineargauge-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
@@ -4338,6 +4352,9 @@ input.ui-igbutton {
   content: '\e637';
 }
 .ui-icon-carat-1-e:before {
+  content: '\e638';
+}
+.ui-icon-caret-1-e:before {
   content: '\e638';
 }
 .ui-icon-caret-r:before {
@@ -6333,6 +6350,26 @@ Spreadsheet colors
 .ui-igspreadsheet .ui-menu-item:hover {
   background: rgba(72, 151, 170, 0.22);
   border-radius: 0;
+}
+.ui-igspreadsheet .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu-item a {
+  border-radius: 0;
+  border-color: transparent;
+  border-left-color: #b1b1b1;
+  background: #fff;
+}
+.ui-igspreadsheet .ui-menu-item a.ui-state-focus {
+  background: #9ECBD6;
+  color: #111;
+}
+.ui-igspreadsheet .ui-menu-item div.ui-state-active {
+  color: #fff;
+  background: #9ECBD6;
 }
 /*
 =========================

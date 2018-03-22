@@ -520,7 +520,8 @@ input.ui-igbutton {
     background-position: -16px 0;
 }
 
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e{
     background-position: -32px 0;
 }
 
@@ -1548,12 +1549,6 @@ input.ui-igbutton {
 /* igGrid */
 /**********/
 
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-    /*padding: 10px;*/
-}
-
 .ui-iggrid .ui-iggrid-groupbyarea {
     background-color: @body-bg;
     border-color: @table-border-color;
@@ -1660,7 +1655,8 @@ input.ui-igbutton {
 
 /* Bug 214415 18.02.2016 S.D. Missing borders; new classes for a MRL grid */
 
-.ui-iggrid-table-mrl td,.ui-iggrid-table-mrl td.ui-state-hover {
+.ui-iggrid .ui-iggrid-table-mrl tbody td,
+.ui-iggrid .ui-iggrid-table-mrl tbody td.ui-state-hover {
     border:1px solid @table-border-color;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th, .ui-iggrid .ui-iggrid-table-mrl th{
@@ -1765,9 +1761,13 @@ input.ui-igbutton {
     border-bottom: 0!important;
 }
 
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus
+{
     background: @accent2;
 }
+
+
 
 .ui-iggrid .ui-iggrid-footer,
 .ui-iggrid .ui-iggrid-toolbar {
@@ -1815,6 +1815,17 @@ input.ui-igbutton {
 .ui-iggrid th.ui-widget-header .ui-icon {
     color: @ui-icons-light;
 }
+
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
+.ui-iggrid tbody td {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+    border-right-color: @table-border-color;
+}
+/* BUG 246065 END */
 
 .ui-iggrid tbody td,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
@@ -1909,12 +1920,12 @@ input.ui-igbutton {
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
     padding-left: 4px;
-    padding-right: 3px;
+    padding-right: 4px;
 }
 /*Bug 215539 11.03.2012, S.D., fix padding in chrome to prevent jump when adding borders on focus*/
 .ui-iggrid td.ui-state-active,
 .ui-iggrid .ui-ig-altrecord td.ui-state-active {
-  padding-left: 3px;
+  padding-left: 4px;
 }
 
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
@@ -3430,7 +3441,7 @@ input.ui-igbutton {
 
 .ui-radialgauge-tick {
   background-color: rgba(0, 0, 0, 0.35);
-  border-top-color: none;
+  border-top-color: transparent;
 }
 
 .ui-radialgauge-minorTick {
@@ -3469,7 +3480,7 @@ input.ui-igbutton {
 }
 
 .ui-radialgauge-container {
-  font-family: Verdana;
+  font-family: 'verdana', sans-serif;
   font-size: 11px;
 }
 /***********************/
@@ -3566,8 +3577,8 @@ input.ui-igbutton {
 }
 
 .ui-bulletgraph-container {
-  font-family: Verdana;
-  font-size: 11px;
+    font-family: 'verdana', sans-serif;
+    font-size: 11px;
 }
 
 /***********************/
@@ -3655,8 +3666,8 @@ input.ui-igbutton {
 }
 
 .ui-lineargauge-container {
-  font-family: Verdana;
-  font-size: 11px;
+    font-family: 'verdana', sans-serif;
+    font-size: 11px;
 }
 
 /***********************/
@@ -4039,6 +4050,7 @@ input.ui-igbutton {
 .ui-icon-caret-u:before{content:'\e636'}
 .ui-icon-carat-1-ne:before{content:'\e637'}
 .ui-icon-carat-1-e:before{content:'\e638'}
+.ui-icon-caret-1-e:before{content:'\e638'}
 .ui-icon-caret-r:before{content:'\e638'}
 .ui-icon-carat-1-se:before{content:'\e639'}
 .ui-icon-carat-1-s:before{content:'\e63a'}
@@ -5309,6 +5321,33 @@ Spreadsheet colors
     background: @spreadsheet-menu-item-bg-hover;
     border-radius: 0;
 }
+
+
+
+.ui-igspreadsheet .ui-menu-item {
+    a {
+        border-radius: 0;
+        border-color: transparent;
+        border-left-color: #b1b1b1;
+        background: #fff;
+        &.ui-state-focus {
+            background: @accent1;
+            color: @spreadsheet-text-color;
+        }
+    }
+    position: relative;
+    cursor: pointer;
+    min-height: 0;
+    padding: 0;
+    div.ui-state-active {
+        color:#fff;
+        background: @accent1;
+        .ui-icons {
+
+        }
+    }
+}
+
 
 /*
 =========================

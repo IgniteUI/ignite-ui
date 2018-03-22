@@ -940,8 +940,8 @@ body .ui-tooltip {
   color: #2a6496;
 }
 .ui-widget-header {
-  background: #428bca;
-  border: 1px solid #3071a9;
+  background: #888;
+  border-bottom: 1px solid #777;
   color: #fff;
   font-weight: normal;
 }
@@ -1149,7 +1149,8 @@ body .ui-tooltip {
 .ui-icon-carat-1-ne {
   background-position: -16px 0;
 }
-.ui-icon-carat-1-e {
+.ui-icon-carat-1-e,
+.ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 .ui-icon-carat-1-se {
@@ -1807,7 +1808,7 @@ body .ui-tooltip {
  */
 .ui-tabs {
   background: transparent;
-  border: 0px none;
+  border: 0 none;
 }
 .ui-tabs .ui-tabs-nav {
   padding: 0;
@@ -1954,11 +1955,6 @@ body .ui-tooltip {
 /**********/
 /* igGrid */
 /**********/
-.ui-iggrid table tbody td,
-.ui-iggrid .ui-iggrid-header,
-.ui-iggrid table th {
-  /*padding: 10px;*/
-}
 .ui-iggrid th,
 .ui-iggrid th.ui-widget-header.ui-state-default {
   border-top: 1px solid #ddd;
@@ -2098,11 +2094,17 @@ body .ui-tooltip {
   border-bottom: 1px solid #ddd;
 }
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
 .ui-iggrid > table > thead + tfoot + tbody > tr:first-child td {
-  /* border-top: 0 none!important;
+  /* border-top: 0 !important;
    border-top removed for tables with virtualization, or headers */
+}
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+  border-top: 0 !important;
+}
+.ui-iggrid .ui-iggrid-headertable-mrl th,
+.ui-iggrid .ui-iggrid-table-mrl th {
+  border: 1px solid #ddd;
 }
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -2135,7 +2137,8 @@ body .ui-tooltip {
   background: #f5f5f5;
 }
 .ui-iggrid th.ui-state-active,
-.ui-iggrid th.ui-state-focus {
+.ui-iggrid th.ui-state-focus,
+.ui-iggrid-sortableheader:focus {
   background: #f5f5f5;
 }
 .ui-iggrid .ui-iggrid-footer,
@@ -2185,6 +2188,18 @@ body .ui-tooltip {
 .ui-iggrid th.ui-state-active.ui-state-hover .ui-icon {
   background-image: url(images/ui-icons_222222_256x240.png);
 }
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
+.ui-iggrid tbody td {
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+.ui-iggrid td.ui-state-hover {
+  border-color: transparent;
+}
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable {
+  border-right-color: #ddd !important;
+}
+/* BUG 246065 END */
 .ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
@@ -2255,8 +2270,8 @@ body .ui-tooltip {
 .ui-iggrid tr.ui-ig-altrecord.ui-state-focus td,
 .ui-iggrid td.ui-state-active.ui-state-focus,
 .ui-iggrid td.ui-state-focus {
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .ui-iggrid-activerow .ui-iggrid-selectedcell .ui-state-active {
   border-color: transparent!important;
@@ -3095,8 +3110,8 @@ body .ui-tooltip {
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
   border: 1px solid #ccc;
-  -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-  -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+  -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
   box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
@@ -3434,7 +3449,7 @@ body .ui-tooltip {
 }
 .ui-radialgauge-tick {
   background-color: #222222;
-  border-top-color: none;
+  border-top-color: transparent;
 }
 .ui-radialgauge-minorTick {
   background-color: #222222;
@@ -4148,8 +4163,27 @@ Spreadsheet colors
   border-radius: 0 4px 4px 4px;
 }
 .ui-igspreadsheet .ui-menu-item:hover {
+  border-radius: 0;
+}
+.ui-igspreadsheet .ui-menu-item > a {
+  background: transparent;
+  color: #333333;
+  border-color: transparent;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+}
+.ui-igspreadsheet .ui-menu .ui-menu-item .ui-state-focus {
   background: rgba(66, 139, 202, 0.22);
   border-radius: 0;
+  border-color: transparent;
+}
+.ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
+  background: rgba(66, 139, 202, 0.22);
+  border-color: transparent;
 }
 /*
 =========================

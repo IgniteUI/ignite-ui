@@ -652,6 +652,17 @@
 
 			equal(params, "%24filter=startswith(tolower(ProductID)%2C'cr')%20eq%20true");
 		});
+
+		test("Ensure special characters in filtering expression are escaped when encoded to url. ", function () {
+			ds.settings.filtering.expressions = [
+				{ fieldName: "ProductID", expr: "()", cond: "Contains" }
+			];
+			ds.settings.paging = {};
+
+			ds.settings.filtering.filterExprUrlKey = "filter";
+			params = $.param(ds._encodeUrl());
+			equal(params, "filter(ProductID)=Contains(%2528%2529)", "Filtering Expression Value should be escaped.");
+		});
 	});
 
 	</script>
