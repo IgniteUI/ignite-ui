@@ -1224,7 +1224,6 @@ $.ig.dependencies = [
 		dependency: [
 			{ name: "igWidget" },
 			{ name: "regional" },
-			{ name: "igScroll" },
 			{ name: "igValidator" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.editors.js" ],
