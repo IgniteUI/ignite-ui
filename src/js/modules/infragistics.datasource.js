@@ -5511,22 +5511,10 @@
 			}
 
 			if (fieldType === "time") {
-				return this._resetDateObjectToCurrentDate(dateObject).getTime();
+				return $.ig.Date.prototype.getTimeOfDay(dateObject);
 			}
 
 			return dateObject.getTime();
-		},
-		_resetDateObjectToCurrentDate: function (dateObject) {
-			/* Replace the date part of a date object with current date */
-			if (!dateObject || !dateObject.getTime) {
-				return dateObject;
-			}
-
-			var currentDate = new Date();
-			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
-				currentDate.getDate(), dateObject.getHours(), dateObject.getMinutes(),
-				dateObject.getSeconds(), dateObject.getMilliseconds());
-			return result;
 		},
 		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
 			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,

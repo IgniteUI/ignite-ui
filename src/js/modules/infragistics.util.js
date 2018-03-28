@@ -1459,6 +1459,18 @@
 			return value.toLocaleString($.ig.CultureInfo.prototype.currentCulture().name(),
 				this._longTimeFormatOptions).replace(/\u200E/g, "");
 		},
+		resetDateToCurrentDate: function (value) {
+			/* Replace the date part of a date object with current date */
+			if (!value || !value.getTime) {
+				return value;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), value.getHours(), value.getMinutes(),
+				value.getSeconds(), value.getMilliseconds());
+			return result;
+		},
 		$type: new $.ig.Type("Date", $.ig.Object.$type)
 	}, true);
 
