@@ -4232,8 +4232,9 @@
 			return result;
 		},
 		_getFieldTypeFromSchema: function (fieldName) {
-			var field = this._fields[ fieldName ], type, ds = this.dataSource();
+			var field, type, ds = this.dataSource();
 
+			field = this._fields ? this._fields[ fieldName ] : null;
 			if (!field) {
 				return undefined;
 			}
@@ -7382,7 +7383,7 @@
 			for (i = 0; i < summaries.length; i++) {
 				summary = summaries[ i ];
 				fieldValues = getValuesPerField(res, summary.field);
-				fieldType = this._fields ? this._getFieldTypeFromSchema(summary.field) : null;
+				fieldType = this._getFieldTypeFromSchema(summary.field);
 				for (j = 0; j < summary.summaryFunctions.length; j++) {
 					sumFunc = summary.summaryFunctions[ j ];
 					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
