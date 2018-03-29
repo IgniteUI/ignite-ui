@@ -6120,7 +6120,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 1,
 			"applyFormat": true
@@ -6130,7 +6130,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 2,
 			"applyFormat": true
