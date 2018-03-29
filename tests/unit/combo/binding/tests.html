@@ -126,6 +126,7 @@
                 contentType: "application/json",
                 responseTime: 500,
                 response: function (settings) {
+                    console.log(settings);
                     var responseText = remoteData;
                     if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
                         responseText = $.map(responseText, function (val, i) {
@@ -206,6 +207,7 @@
                 wrapper = $comboWrapper.igCombo('comboWrapper');
                 equal(wrapper[0], $comboWrapper[0], 'comboWrapper does not return the expected wrap element');
 
+                debugger;
                 $hiddenInput = $('#combo-json-ds input.ui-igcombo-hidden-field');
                 equal($hiddenInput.attr("name"), "combo-json", "The name attribute was not transferred to the hidden input");
 

@@ -626,12 +626,15 @@
                 var blurAfter = Math.floor($.mockjaxSettings.responseTime / 2);
                 stop();
                 setTimeout(function () {
+                    console.log("before");
                     $input.blur();
+                    console.log("after");
                     $comboWrapper.igCombo({
                         // Filtered event is used because after the dropdown is closed while loading clear filtering is called
                         filtered: function (evt, ui) {
                             strictEqual(ui.owner.dropDownOpened(), false, "Dropdown should be closed when load on demand is enabled and blur while loading.");
                             strictEqual($input.val(), "", "Dropdown input should be empty when load on demand is enabled and blur while loading.");
+                            console.log("filtered");
                             start();
                             $.mockjaxSettings.responseTime = currentMockjaxSettingsReposnseTime;
                         }

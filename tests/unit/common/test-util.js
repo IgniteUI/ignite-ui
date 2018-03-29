@@ -239,7 +239,7 @@
 		 * @returns False if canceled (inverted)
 		 */
 		mouseEvent: function (target, type, params) {
-			var evt;
+			var evt, ctrlKey, altKey, shiftKey, metaKey;
 			if (target instanceof $) {
 				target = target[0];
 			}
@@ -248,10 +248,15 @@
 				"bubbles": true,
 				"cancelable": true
 			}, params);
+
 			//evt = new MouseEvent(type, params);
 			// No DOM4 MouseEvent in PhantomJS yet :\
+			ctrlKey = params.ctrlKey? params.ctrlKey : false;
+			altKey = params.altKey? params.altKey : false;
+			shiftKey = params.shiftKey? params.shiftKey : false;
+			metaKey = params.metaKey? params.metaKey : false;
 			evt = document.createEvent('MouseEvent');
-			evt.initMouseEvent(type, params.bubbles, params.cancelable, window, 1, 0, 0, null, null, false, false, false, false, params.button, null);
+			evt.initMouseEvent(type, params.bubbles, params.cancelable, window, 1, 0, 0, null, null, ctrlKey, altKey, shiftKey, metaKey, params.button, null);
 
 			return !target.dispatchEvent(evt);
 		},

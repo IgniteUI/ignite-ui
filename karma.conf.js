@@ -124,10 +124,12 @@ module.exports = function(config) {
 
       // Data files
       "tests/unit/templating/DB3.js",
+      "tests/unit/combo/sample-data/local-data.js",
+      "tests/unit/combo/sample-data/remote-data.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      "tests/**/*-test.js"
+      "tests/**/combo-selection-test.js"
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,
