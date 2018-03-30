@@ -17,7 +17,6 @@
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>  
@@ -304,7 +303,8 @@
 					$("#clearButton_439").igMaskEditor({
 						inputMask: "CCCCCCC",
 						buttonType: "clear"
-					});
+					})
+
 				});
 			}
 			initialized = false;
@@ -1114,6 +1114,74 @@
 				$editor.data("igMaskEditor")._insert("MMMMMMMMMMMM");
 				equal(field.val(), "MM-MMMM-MMLM", "Text is not MM-MMMM-MMLM");
 				$editor.remove();
+			});
+
+			testId = "Test with special characters";
+			QUnit.test(testId, function (assert) {
+				assert.expect(14);
+				var $editor;
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ inputMask: "LLLLL" });
+				var field = $editor.igMaskEditor("field");
+				function enterValue(value){
+					$editor.focus()[0].setSelectionRange(0,0);
+					$.ig.TestUtil.type(value, field);
+				}
+				var testValues = [{
+					value: "たかむごひ",
+					valid: true
+				},{
+					value: "ⰁⰂⰃⰄⰅ",
+					valid: true
+				},{
+					value: "ퟻퟺퟯퟮퟭ",
+					valid: true
+				},{
+					value: "₩₩₩₩₩",
+					valid: false,
+					expected: "_____"
+				},{
+					value: "Ⰰ⯿⯾⯽⯼",
+					valid: false,
+					expected: "Ⰰ____"
+				},{
+					value: "‐‑‒–—",
+					valid: false,
+					expected: "_____"
+				},{
+					value: "¿¾½¼»",
+					valid: false,
+					expected: "_____"
+				}]
+				for(var i=0; i< testValues.length; i++){
+					$editor.igMaskEditor("field").val("_____");
+					enterValue(testValues[i].value);
+					assert.ok($editor.igMaskEditor("isValid") == testValues[i].valid, "Value is expected to be accepted.");
+					assert.equal(field.val(), testValues[i].valid ? testValues[i].value : testValues[i].expected, "The text is not as expected");
+				}
+			});
+
+			testId = "Should properly revert to last valid value";
+			QUnit.test(testId, function (assert) {
+				assert.expect(3);
+				var $editor;
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ 
+					inputMask: "(000) 000-000",
+					dataMode: "rawText"
+				});
+				var field = $editor.igMaskEditor("field");
+				$editor.focus()[0].setSelectionRange(0,0);
+				$.ig.TestUtil.type("111111111", field);
+				$editor.blur();
+				$editor.focus()[0].setSelectionRange(12, 13);
+				$editor.val("(111) 111-11_");
+				$editor.blur();
+				$editor.focus()[0].setSelectionRange(12,13);
+				debugger;
+				$.ig.TestUtil.type("2222", field);
+				$editor.blur();
+				assert.equal($editor.data("igMaskEditor")._maskedValue.length, 13, "The editor value should be the appropriate length");
+				assert.ok($editor.data("igMaskEditor")._editorInput.val().indexOf("(") > -1,"The displayed value has the mask in place");
+				assert.equal($editor.igMaskEditor("value"), "111111112", "The editor value should be reverted to the last valid one");
 			});
 		});
 
