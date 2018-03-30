@@ -858,14 +858,14 @@ $.ig.dependencies = [
 	{
         widget: "Interactivity",
         parentWidget: "igCategoryChart",
-        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        dependency: [ { name: "igCategoryChart" }, { name: "_ig_datachart_interactivity" } ],
         group: $.ig.loaderClass.locale.dvGroup,
         description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
     },
 	{
         widget: "VisualData",
         parentWidget: "igCategoryChart",
-        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        dependency: [ { name: "igCategoryChart" }, { name: "_ig_datachart_visualdata" } ],
         group: $.ig.loaderClass.locale.dvGroup,
         description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
     },
@@ -894,22 +894,22 @@ $.ig.dependencies = [
 	},
 	{
         widget: "Interactivity",
-        parentWidget: "igCategoryChart",
-        dependency: [ { name: "_ig_datachart_interactivity" } ],
+        parentWidget: "igShapeChart",
+        dependency: [ { name: "igShapeChart" }, { name: "_ig_datachart_interactivity" } ],
         group: $.ig.loaderClass.locale.dvGroup,
         description: $.ig.loaderClass.locale.descriptions.chartInteractivityDescription
     },
 	{
         widget: "VisualData",
-        parentWidget: "igCategoryChart",
-        dependency: [ { name: "_ig_datachart_visualdata" } ],
+        parentWidget: "igShapeChart",
+        dependency: [ { name: "igShapeChart" }, { name: "_ig_datachart_visualdata" } ],
         group: $.ig.loaderClass.locale.dvGroup,
         description: $.ig.loaderClass.locale.descriptions.chartVisualDataDescription
     },
 	{
-        widget: "igCategoryChart.*",
-		dependency: [ { name: "Interactivity", parentWidget: "igCategoryChart" },
-					{ name: "VisualData", parentWidget: "igCategoryChart" }
+        widget: "igShapeChart.*",
+		dependency: [ { name: "Interactivity", parentWidget: "igShapeChart" },
+					{ name: "VisualData", parentWidget: "igShapeChart" }
 		]
 	},
 /* /// End Data Visualization /// */
