@@ -281,8 +281,8 @@
                     }
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorrendered", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -299,8 +299,8 @@
                     }
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorrendering", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -314,8 +314,8 @@
                     actionExecuting: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditoractionexecuting", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditoractionexecuting", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                     //return toolbar name
@@ -333,8 +333,8 @@
                     actionExecuted: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditoractionexecuted", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditoractionexecuted", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                     //return toolbar name
@@ -352,8 +352,8 @@
                     toolbarCollapsing: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditortoolbarcollapsing", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditortoolbarcollapsing", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                     //return reference to toolbar object
@@ -371,8 +371,8 @@
                     toolbarCollapsed: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditortoolbarcollapsed", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditortoolbarcollapsed", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                     //return reference to toolbar object
@@ -390,8 +390,8 @@
                     toolbarExpanded: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditortoolbarexpanded", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditortoolbarexpanded", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                     //return reference to toolbar object
@@ -409,8 +409,8 @@
                     toolbarExpanding: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditortoolbarexpanding", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditortoolbarexpanding", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                     //return reference to toolbar object
@@ -428,8 +428,8 @@
                     cut: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorcut", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorcut", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -443,8 +443,8 @@
                     copy: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorcopy", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorcopy", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -458,8 +458,8 @@
                     paste: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorpaste", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorpaste", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -473,8 +473,8 @@
                     undo: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorundo", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorundo", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -488,8 +488,8 @@
                     redo: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorredo", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorredo", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -503,8 +503,8 @@
                     workspaceResized: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "ightmleditorworkspaceresized", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("ightmleditorworkspaceresized", ".selector", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });

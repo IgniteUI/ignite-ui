@@ -386,8 +386,8 @@
                     toolbarButtonClick: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbartoolbarbuttonclick", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbartoolbarbuttonclick", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -403,8 +403,8 @@
                     toolbarComboOpening: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbartoolbarcomboopening", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbartoolbarcomboopening", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -420,8 +420,8 @@
                     toolbarComboSelected: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbartoolbarcomboselected", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbartoolbarcomboselected", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -437,8 +437,8 @@
                     toolbarCustomItemClick: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbartoolbarcustomitemclick", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbartoolbarcustomitemclick", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -454,8 +454,8 @@
                     itemRemoved: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbaritemremoved", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbaritemremoved", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -471,8 +471,8 @@
                     itemAdded: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbaritemadded", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbaritemadded", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -488,8 +488,8 @@
                     collapsing: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbarcollapsing", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarcollapsing", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -505,8 +505,8 @@
                     collapsed: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbarcollapsed", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarcollapsed", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -522,8 +522,8 @@
                     expanding: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbarexpanding", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarexpanding", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -539,8 +539,8 @@
                     expanded: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbarexpanded", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarexpanded", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -556,8 +556,8 @@
                     itemDisable: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbaritemdisable", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbaritemdisable", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -573,8 +573,8 @@
                     itemEnabled: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbaritemenabled", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbaritemenabled", ".selector", function (evt, ui) {
                     //return reference to igToolbar object
                     ui.owner
                     //return type of the event
@@ -590,8 +590,8 @@
                     windowResized: function (evt, ui) {...}
                 });
 
-                //Delegate
-                $(document).delegate(".selector", "igtoolbarwindowresized", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarwindowresized", ".selector", function (evt, ui) {
                     //return type of the event
                     evt.type
                 });
