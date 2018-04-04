@@ -1,5 +1,36 @@
 QUnit.module("igCombo filtering unit tests", {
-	divTag: '<div></div>'
+	divTag: '<div></div>',
+	before: function () {
+		$.mockjax({
+			url: "http://localhost/api/invoices*",
+			dataType: 'json',
+			contentType: "application/json",
+			responseTime: 500,
+			response: function (settings) {
+				var responseText = remoteData;
+				if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
+					responseText = $.map(responseText, function (val, i) {
+						if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
+							return val;
+						}
+					});
+				}
+
+				if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+					responseText = {
+						"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+						"Count": remoteData.length
+					}
+				}
+
+				this.responseText = {
+					"d": {
+						"results": responseText
+					}
+				}
+			}
+		});
+	}
 });
 
 QUnit.test('[ID1] Generate expressions from texts for filtering', function (assert) {
@@ -132,36 +163,6 @@ QUnit.test('[ID2] Filtering by texts', function (assert) {
 	assert.equal($listItems.length, itemsCount, "The items should not be filtered when filteringType is null.");
 
 	// remote filtering tests
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
-
 	combo.options.filteringType = "remote";
 	combo.options.responseDataKey = "d.results";
 	combo.options.dataSource = "http://localhost/api/invoices?callback=?";
@@ -207,36 +208,6 @@ QUnit.test('[ID3] Default filtering value', function (assert) {
 QUnit.test('[ID4] Load on demand with local filtering type', function (assert) {
 	assert.expect(2);
 
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
-
 	var $listItems, combo, jsonSchema, dataSource
 	$comboElem = $.ig.TestUtil.appendToFixture(this.divTag),
 		dataSourceUrl = "http://localhost/api/invoices?callback=?";
@@ -280,37 +251,7 @@ QUnit.test('[ID4] Load on demand with local filtering type', function (assert) {
 
 QUnit.test('[ID5] Load on demand with remote filtering type', function (assert) {
 	assert.expect(2);
-
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
-
+	
 	var $comboElem = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-lod-remote" }),
 		done = assert.async(),
 		$listItems, combo,
@@ -364,36 +305,6 @@ QUnit.test('[ID5] Load on demand with remote filtering type', function (assert) 
 
 QUnit.test('[ID6] Local filtering with virtualization', function (assert) {
 	assert.expect(2);
-
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
 
 	var $combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "local-filtering-virt" }),
 		done = assert.async(),
@@ -467,39 +378,8 @@ QUnit.test('[ID7] Only lowercase items returned by igCombo filtering when filter
 QUnit.test('[ID8] When fitering is remote and multiSelection is enabled input value is not cleared after clicking outside the combo', function (assert) {
 	assert.expect(2);
 
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
-
 	var $combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-bug-200569" }),
 		done = assert.async(),
-		key = "v,",
 		data, $input, $listItems, $dropDownButton;
 
 	$combo.igCombo({
@@ -516,9 +396,7 @@ QUnit.test('[ID8] When fitering is remote and multiSelection is enabled input va
 	$combo.data().igCombo._options.$dropDownListCont.outerHeight(1000);
 	$input = $combo.igCombo("textInput");
 	$input.focus();
-	$.ig.TestUtil.keyDownChar(key, $input);
-	$input.val(key);
-	$.ig.TestUtil.keyUpChar(key, $input);
+	$.ig.TestUtil.type("v,", $input);
 	$dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
 
 	$.ig.TestUtil.wait(500).then(function () {
@@ -537,36 +415,6 @@ QUnit.test('[ID8] When fitering is remote and multiSelection is enabled input va
 
 QUnit.test('[ID9] In LoadOnDemand and virtualization when filtering is local, data is not filtered', function (assert) {
 	assert.expect(5);
-
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
 
 	var $combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-189514" }),
 		done = assert.async(),
@@ -641,40 +489,8 @@ QUnit.test('[ID10] Filtering event arguments', function (assert) {
 QUnit.test('[ID11] While remotely filtering combo is loading and blurred it should clear the input and close dropdown', function (assert) {
 	assert.expect(2);
 
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
-
 	var $comboWrapper = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-remote-filtering-blur" }),
-		done = assert.async(),
-		$input,
-		key = "qwerty",
+		done = assert.async(), $input,
 		currentMockjaxSettingsReposnseTime = $.mockjaxSettings.responseTime,
 		requiredMockjaxSettingsReposnseTime = 1000;
 
@@ -691,9 +507,7 @@ QUnit.test('[ID11] While remotely filtering combo is loading and blurred it shou
 	});
 
 	$input = $comboWrapper.igCombo("textInput");
-	$.ig.TestUtil.keyDownChar(key, $input);
-	$input.val(key);
-	$.ig.TestUtil.keyUpChar(key, $input);
+	$.ig.TestUtil.type("qwerty", $input);
 
 	// We are going to blur in the middle of the loading
 	var blurAfter = Math.floor($.mockjaxSettings.responseTime / 2);

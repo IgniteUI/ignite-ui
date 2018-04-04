@@ -129,7 +129,7 @@ module.exports = function(config) {
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      "tests/**/combo-selection-test.js"
+      "tests/**/*-test.js"
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,

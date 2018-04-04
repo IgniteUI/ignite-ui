@@ -135,6 +135,7 @@
 		 * Performs a series of `keyInteraction` for each character in a string. No delay(!) between events.
 		 * @param {string} characters
 		 * @param {object} target jQuery object target
+		 * @param {string} special Used for combinations to set true on the event - "altKey", "ctrlKey", "shiftKey"
 		 */
 		type: function (characters, target) {
 			if (characters) {
@@ -201,6 +202,7 @@
 			var evt = $.Event("keydown");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.which = key;
 			evt.originalEvent = {
 				preventDefault: $.noop,
 				stopPropagation: $.noop
@@ -216,6 +218,7 @@
 			var evt = $.Event("keypress");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.which = key;
 			if (special) {
 				evt[special] = true;
 			}
@@ -226,6 +229,7 @@
 			var evt = $.Event("keyup");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.which = key;
 			if (special) {
 				evt[special] = true;
 			}

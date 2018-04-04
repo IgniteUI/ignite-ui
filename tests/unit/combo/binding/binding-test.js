@@ -30,6 +30,37 @@ QUnit.module("igCombo data binding unit tests", {
 				}
 			}
 		}
+	},
+	before: function () {
+		$.mockjax({
+			url: "http://localhost/api/invoices*",
+			dataType: 'json',
+			contentType: "application/json",
+			responseTime: 500,
+			response: function (settings) {
+				var responseText = remoteData;
+				if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
+					responseText = $.map(responseText, function (val, i) {
+						if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
+							return val;
+						}
+					});
+				}
+
+				if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+					responseText = {
+						"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+						"Count": remoteData.length
+					}
+				}
+
+				this.responseText = {
+					"d": {
+						"results": responseText
+					}
+				}
+			}
+		});
 	}
 });
 
@@ -186,37 +217,7 @@ QUnit.test('[ID4] Function data binding', function (assert) {
 QUnit.test('[ID5] Remote data binding', function (assert) {
 	assert.expect(1);
 	this.assert = assert;
-
-	$.mockjax({
-		url: "http://localhost/api/invoices*",
-		dataType: 'json',
-		contentType: "application/json",
-		responseTime: 500,
-		response: function (settings) {
-			var responseText = remoteData;
-			if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
-				responseText = $.map(responseText, function (val, i) {
-					if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
-						return val;
-					}
-				});
-			}
-
-			if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
-				responseText = {
-					"Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
-					"Count": remoteData.length
-				}
-			}
-
-			this.responseText = {
-				"d": {
-					"results": responseText
-				}
-			}
-		}
-	});
-
+	
 	var $combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-remote-ds" }),
 		done = assert.async(),
 		dataSource, dataView, fields, expDataViewLen = 2155, self = this;

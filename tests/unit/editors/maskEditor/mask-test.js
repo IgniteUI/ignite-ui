@@ -1115,9 +1115,10 @@ QUnit.test('[ID24] Mask editor drag and drop events', function (assert) {
 
 QUnit.test("[ID25] Unicode characters regex check", function (assert) {
 	assert.expect(14);
-	var $editor;
-	$editor = $.ig.TestUtil.appendToFixture(this.inputTag).igMaskEditor({ inputMask: "LLLLL" });
-	var field = $editor.igMaskEditor("field");
+	
+	var $editor = $.ig.TestUtil.appendToFixture(this.inputTag).igMaskEditor({ inputMask: "LLLLL" }),
+		field = $editor.igMaskEditor("field");
+
 	function enterValue(value){
 		$editor.focus()[0].setSelectionRange(0,0);
 		$.ig.TestUtil.type(value, field);
