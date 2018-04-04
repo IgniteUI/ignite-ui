@@ -1554,7 +1554,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadfileselecting", function (evt, ui) {
+				$(document).on("iguploadfileselecting", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1577,7 +1577,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadfileselected", function (evt, ui) {
+				$(document).on("iguploadfileselected", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1607,7 +1607,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadfileuploading", function (evt, ui) {
+				$(document).on("iguploadfileuploading", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1646,7 +1646,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadfileuploaded", function (evt, ui) {
+				$(document).on("iguploadfileuploaded", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1680,7 +1680,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadfileuploadaborted", function (evt, ui) {
+				$(document).on("iguploadfileuploadaborted", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1712,7 +1712,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadcancelallclicked", function (evt, ui) {
+				$(document).on("iguploadcancelallclicked", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1737,7 +1737,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadonerror", function (evt, ui) {
+				$(document).on("iguploadonerror", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1768,7 +1768,7 @@
 			eventArgument="ui.owner" argType="object" Gets the the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadfileextensionsvalidating", function (evt, ui) {
+				$(document).on("iguploadfileextensionsvalidating", ".selector", function (evt, ui) {
 					//returns full file name
 					ui.fileName;
 
@@ -1794,7 +1794,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadoonxhrload", function (evt, ui) {
+				$(document).on("iguploadoonxhrload", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -1827,7 +1827,7 @@
 			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "iguploadonformdatasubmit", function (evt, ui) {
+				$(document).on("iguploadonformdatasubmit", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
