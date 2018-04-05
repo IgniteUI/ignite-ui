@@ -779,7 +779,7 @@
 				Return false in order to cancel the action.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogstatechanging", function (evt, ui) {
+				$(document).on("igdialogstatechanging", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -822,7 +822,7 @@
 			/* cancel="false" Event which is raised after the state of the dialog was changed.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogstatechanged", function (evt, ui) {
+				$(document).on("igdialogstatechanged", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -865,7 +865,7 @@
 			/* cancel="false" Event which is raised after the end of the animation when the dialog was closed or opened.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialoganimationended", function (evt, ui) {
+				$(document).on("igdialoganimationended", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -894,7 +894,7 @@
 			/* cancel="false" Event which is raised when the dialog or its content gets focus.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogfocus", function (evt, ui) {
+				$(document).on("igdialogfocus", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -913,7 +913,7 @@
 			/* cancel="false" Event which is raised when the dialog or its content loses focus.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogblur", function (evt, ui) {
+				$(document).on("igdialogblur", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
