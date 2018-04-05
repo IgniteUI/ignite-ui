@@ -449,8 +449,8 @@
 				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
 				eventArgument="args.owner" argType="event" Gets a reference to the igScroll.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollrendered", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollrendered", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 				});
@@ -473,8 +473,8 @@
 				eventArgument="args.stepX" argType="number" Gets how much the content will be scrolled horizontally.
 				eventArgument="args.stepY" argType="number" Gets how much the content will be scrolled vertically.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollscrolling", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollscrolling", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 					//returns if the content is scrolled by the arrow : 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
@@ -504,8 +504,8 @@
 				eventArgument="args.bigIncrement" argType="number" Gets if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
 				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollscrolled", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollscrolled", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 					//returns if the content is scrolled by the arrow : 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
@@ -529,8 +529,8 @@
 				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
 				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollthumbdragstart", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollthumbdragstart", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
@@ -552,8 +552,8 @@
 				eventArgument="args.stepX" argType="number" Gets how much the content will be scrolled horizontally.
 				eventArgument="args.stepY" argType="number" Gets how much the content will be scrolled vertically.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollthumbdragmove", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollthumbdragmove", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
@@ -577,8 +577,8 @@
 				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
 				eventArgument="args.horizontal" argType="bool" Gets which scrollbar thumb is being used - horizontal(true) or vertical(false).
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollthumbdragend", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollthumbdragend", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
@@ -597,8 +597,8 @@
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
 				Use args.owner to obtain reference to igScroll.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollresizing", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollresizing", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 				});
@@ -615,8 +615,8 @@
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
 				Use args.owner to obtain reference to igScroll.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igscrollresized", function (evt, args) {
+				//Bind after initialization
+				$(document).on("igscrollresized", ".selector", function (evt, args) {
 					//return reference to igScroll
 					args.owner;
 				});

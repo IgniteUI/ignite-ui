@@ -95,8 +95,8 @@
             $(".selector").igSplitButton({
                 click: function (evt, ui) {...}
             });
-            //Delegate
-            $(document).delegate(".selector", "igsplitbuttonclick", function (evt, ui) {
+            //Bind after initialization
+            $(document).on("igsplitbuttonclick", ".selector", function (evt, ui) {
                 // return reference to the igSplitButton element
                 ui.item
                 // return type of the event
@@ -113,8 +113,8 @@
             $(".selector").igSplitButton({
                 expanded: function (evt, ui) {...}
             });
-            //Delegate
-            $(document).delegate(".selector", "igsplitexpanded", function (evt, ui) {
+            //Bind after initialization
+            $(document).on("igsplitexpanded", ".selector", function (evt, ui) {
                 // return reference to the igSplitButton
                 ui.owner
                 // return type of the event
@@ -131,8 +131,8 @@
             $(".selector").igSplitButton({
                 expanding: function (evt, ui) {...}
             });
-            //Delegate
-            $(document).delegate(".selector", "igsplitexpanding", function (evt, ui) {
+            //Bind after initialization
+            $(document).on("igsplitexpanding", ".selector", function (evt, ui) {
                 // return reference to the igSplitButton
                 ui.owner
                 // return type of the event
@@ -149,8 +149,8 @@
             $(".selector").igSplitButton({
                 collapsed: function (evt, ui) {...}
             });
-            //Delegate
-            $(document).delegate(".selector", "igsplitcollapsed", function (evt, ui) {
+            //Bind after initialization
+            $(document).on("igsplitcollapsed", ".selector", function (evt, ui) {
                 // return reference to the igSplitButton
                 ui.owner
                 // return type of the event
@@ -167,8 +167,8 @@
             $(".selector").igSplitButton({
                 collapsing: function (evt, ui) {...}
             });
-            //Delegate
-            $(document).delegate(".selector", "igsplitcollapsing", function (evt, ui) {
+            //Bind after initialization
+            $(document).on("igsplitcollapsing", ".selector", function (evt, ui) {
                 // return reference to the igSplitButton
                 ui.owner
                 // return type of the event

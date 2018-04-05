@@ -93,8 +93,8 @@
                     colorSelected: function(evt, ui) {...}
                 });
 
-                // Delegate
-                $(document).delegate(".selector", "igcolorpickercolorselected", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igcolorpickercolorselected", ".selector", function (evt, ui) {
                     // use to get a reference to the color object.
                     ui.color;
                 });
