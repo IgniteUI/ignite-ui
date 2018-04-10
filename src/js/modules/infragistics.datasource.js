@@ -5517,6 +5517,18 @@
 
 			return dateObject.getTime();
 		},
+		_resetDateObjectToCurrentDate: function (dateObject) {
+			/* Replace the date part of a date object with current date */
+			if (!dateObject || !dateObject.getTime) {
+				return dateObject;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), dateObject.getHours(), dateObject.getMinutes(),
+				dateObject.getSeconds(), dateObject.getMilliseconds());
+			return result;
+		},
 		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
 			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,
 				fieldsLen = fields.length;
@@ -7375,15 +7387,19 @@
 			var res = gbRec.recs, gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
 				groupValue: gbRec.val, id: gbRec.id }, fieldValues, i, j,
 				sumFunc, summaries = this.settings.groupby.summaries,
-				sumFuncName, summary, summaryVal, fieldType, getValuesPerField;
+				sumFuncName, summary, summaryVal, fieldType, getValuesPerField,
+				self = this;
 			gbSummaryRec[ this.settings.groupby.groupSummaryRecordKey ] = true;
-			getValuesPerField = function (arr, fieldName) {
+			getValuesPerField = function (arr, fieldName, fieldType) {
+				if (fieldType === "time") {
+					return arr.map(function (val) {return self._resetDateObjectToCurrentDate(val[ fieldName ]);});
+				} 
 				return arr.map(function (val) {return val[ fieldName ];});
 			};
 			for (i = 0; i < summaries.length; i++) {
 				summary = summaries[ i ];
-				fieldValues = getValuesPerField(res, summary.field);
 				fieldType = this._getFieldTypeFromSchema(summary.field);
+				fieldValues = getValuesPerField(res, summary.field, fieldType);
 				for (j = 0; j < summary.summaryFunctions.length; j++) {
 					sumFunc = summary.summaryFunctions[ j ];
 					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
