@@ -7393,7 +7393,7 @@
 			getValuesPerField = function (arr, fieldName, fieldType) {
 				if (fieldType === "time") {
 					return arr.map(function (val) {return self._resetDateObjectToCurrentDate(val[ fieldName ]);});
-				} 
+				}
 				return arr.map(function (val) {return val[ fieldName ];});
 			};
 			for (i = 0; i < summaries.length; i++) {
