@@ -650,7 +650,7 @@
 			return "&nbsp;";
 		}
 
-		if (type === "date" || d) {
+		if (type === "date" || type === "time" || d) {
 			return $.ig.formatDates(val, d, format, enableUTCDates, dateOffset, reg);
 		}
 

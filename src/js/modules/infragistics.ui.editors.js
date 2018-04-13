@@ -818,8 +818,10 @@
 				this._detachListEvents();
 			}
 
-			this._editorContainer
-				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
+			if (this._editorContainer) {
+				this._editorContainer
+					.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
+			}
 		},
 		_detachButtonsEvents: function () {
 			if (this._dropDownList) {
@@ -853,7 +855,9 @@
 			this._removeContainer();
 		},
 		_removeContainer: function () {
-			this._valueInput.remove();
+			if (this._valueInput) {
+				this._valueInput.remove();
+			}
 			if (this.element.is("input")) {
 				this.element.unwrap().unwrap();
 			} else if (this.element.is("div")) {
@@ -937,12 +941,16 @@
 			}
 		},
 		_clearStyling: function () {
-			this._editorContainer
-				.removeClass(this.css.container)
-				.removeClass(this.css.hover)
-				.removeClass(this.css.active);
+			if (this._editorContainer) {
+				this._editorContainer
+					.removeClass(this.css.container)
+					.removeClass(this.css.hover)
+					.removeClass(this.css.active);
+			}
 
-			this._editorInput.removeClass(this.css.editor);
+			if (this._editorInput) {
+				this._editorInput.removeClass(this.css.editor);
+			}
 		},
 		_deleteInternalProperties: function () {
 			delete this._editorInput;
@@ -2825,10 +2833,13 @@
 		},
 		_detachEvents: function () {
 			this._super();
-			this._editorInput.off("focus.editor blur.editor paste.editor");
-			this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
-			this._editorInput.off("keydown.editor keyup.editor keypress.editor");
-			this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
+
+			if (this._editorInput) {
+				this._editorInput.off("focus.editor blur.editor paste.editor");
+				this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
+				this._editorInput.off("keydown.editor keyup.editor keypress.editor");
+				this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
+			}
 		},
 		_processValueChanging: function (value) { //TextEditor
 
@@ -6632,7 +6643,9 @@
 		},
 		_detachEvents: function () {
 			this._super();
-			this._editorInput.off("cut.editor dragend.editor");
+			if (this._editorInput) {
+				this._editorInput.off("cut.editor dragend.editor");
+			}
 		},
 		_getMaskLiteralsAndRequiredPositions: function() {
 			// This method returns array of indexes which represent literals into edit mode.
@@ -11483,7 +11496,9 @@
 			$(".selector").igDatePicker("destroy");
 			```
 			*/
-			this._editorInput.datepicker("destroy");
+			if (this._editorInput) {
+				this._editorInput.datepicker("destroy");
+			}
 			this._superApply(arguments);
 			return this;
 		}
