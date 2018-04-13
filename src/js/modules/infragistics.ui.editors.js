@@ -6,12 +6,13 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- * jquery-1.9.1.js
+ *	jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
  *  infragistics.ui.widget.js
- *	infragistics.ui.scroll.js
+ *  infragistics.ui.popover.js
+ *  infragistics.ui.notifier.js
  *	infragistics.ui.validator.js
  */
 
@@ -21,7 +22,6 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"./infragistics.ui.widget",
-			"./infragistics.ui.scroll",
 			"./infragistics.ui.validator"
 		], factory );
 	} else {
@@ -220,7 +220,7 @@
 			/* cancel="true" Fired before rendering of the editor has finished.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%rendering", function (evt, ui) {
 					...
 				});
@@ -240,7 +240,7 @@
 			/* cancel="false" Fired after rendering of the editor has finished.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%rendered", function (evt, ui) {
 					...
 				});
@@ -260,7 +260,7 @@
 			/* cancel="true" Fired on mousedown event.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mousedown", function (evt, ui) {
 					...
 				});
@@ -281,7 +281,7 @@
 			/* cancel="false" Fired on mouseup event.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mouseup", function (evt, ui) {
 					...
 				});
@@ -302,7 +302,7 @@
 			/* cancel="false" Fired on mousemove at any part of editor including the drop-down list.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mousemove", function (evt, ui) {
 					...
 				});
@@ -322,7 +322,7 @@
 			mousemove: "mousemove",
 			/* cancel="false" Fired on mouseover at any part of editor including the drop-down list.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mouseover", function (evt, ui) {
 					...
 				});
@@ -343,7 +343,7 @@
 			mouseover: "mouseover",
 			/* cancel="false" Fired on mouseleave at any part of editor including the drop-down list.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mouseout", function (evt, ui) {
 					...
 				});
@@ -364,7 +364,7 @@
 			mouseout: "mouseout",
 			/* cancel="false" Fired when the input field of the editor loses focus.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%blur", function (evt, ui) {
 					...
 				});
@@ -384,7 +384,7 @@
 			blur: "blur",
 			/* cancel="false" Fired when the input field of the editor gets focus.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%focus", function (evt, ui) {
 					...
 				});
@@ -406,7 +406,7 @@
 			/* cancel="true" Fired on keydown event.
 				Return false in order to cancel key action.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%keydown", function (evt, ui) {
 					...
 				});
@@ -428,7 +428,7 @@
 			/* cancel="true" Fired on keypress event.
 				Return false in order to cancel key action.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%keypress", function (evt, ui) {
 					...
 				});
@@ -450,7 +450,7 @@
 			keypress: "keypress",
 			/* cancel="false" Fired on keyup event.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%keyup", function (evt, ui) {
 					...
 				});
@@ -474,7 +474,7 @@
 				Return false in order to cancel change.
 				It can be raised after loosing focus or on spin events.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%valuechanging", function (evt, ui) {
 					...
 				});
@@ -495,7 +495,7 @@
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
 					...
 				});
@@ -787,15 +787,8 @@
 			return val ? true : false;
 		},
 		_updateValue: function (value) { //Base Editor
-			if (value === this.options.nullValue && this.options.nullValue === null) {
-				this._editorInput.val("");
-				this._valueInput.val("");
-			} else {
-
-				//207411 T.P. 30th Oct 2015 setting the value at this stage causes the input to reset its cursor position.
-				//this._editorInput.val(value);
-				this._valueInput.val(value);
-			}
+			// D.P. 16th Mar 2018 Bug 251229 / #1666  Don't reset edit input text in value method
+			this._valueInput.val(value);
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.
@@ -1674,7 +1667,7 @@
 		events: {
 			/* cancel="true" Fired when the drop down is opening.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
 					...
 				});
@@ -1695,7 +1688,7 @@
 			dropDownListOpening: "dropDownListOpening",
 			/* cancel="true" Fired after the drop down is opened.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
 					...
 				});
@@ -1715,7 +1708,7 @@
 			dropDownListOpened: "dropDownListOpened",
 			/* cancel="true" Fired when the drop down is closing.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosing", function (evt, ui) {
 					...
 				});
@@ -1736,7 +1729,7 @@
 			dropDownListClosing: "dropDownListClosing",
 			/* cancel="false" Fired after the drop down is closed.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
 					...
 				});
@@ -1757,7 +1750,7 @@
 			dropDownListClosed: "dropDownListClosed",
 			/* cancel="true" Fired when an item in the drop down list is being selected.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownitemselecting", function (evt, ui) {
 					...
 				});
@@ -1779,7 +1772,7 @@
 			dropDownItemSelecting: "dropDownItemSelecting",
 			/* cancel="false" Fired after an item in the drop down list is selected.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownitemselected", function (evt, ui) {
 					...
 				});
@@ -1801,7 +1794,7 @@
 			/* cancel="false" Fired after the editor's text has been changed. It can be raised when keyUp event occurs,
 				when the clear button is clicked or when an item from a list is selected.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%textchanged", function (evt, ui) {
 					...
 				});
@@ -3160,6 +3153,9 @@
 						}
 						if (!this._editMode) {
 							this._clearValue();
+
+							// D.P. 19th Mar 2018 Bug 251229 / #1666 Premtive text check in case clear resets text
+							this._processTextChanged();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
@@ -4094,7 +4090,7 @@
 			return this._spinDownButton;
 		}
 	});
-
+	$.extend($.ui.igTextEditor, { version: "<build_number>" });
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
@@ -5967,6 +5963,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igNumericEditor, { version: "<build_number>" });
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
 		options: {
 			/* type="string" Gets/Sets the string, which is used as positive pattern. The "n" flag represents the value of number.
@@ -6028,6 +6025,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igCurrencyEditor, { version: "<build_number>" });
 	$.widget("ui.igPercentEditor", $.ui.igNumericEditor, {
 		options: {
 			/* type="string" Gets/Sets the pattern for positive numeric values, which is used in display (no focus) state.
@@ -6277,6 +6275,7 @@
 
 		}
 	});
+	$.extend($.ui.igPercentEditor, { version: "<build_number>" });
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
 			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
@@ -7071,7 +7070,9 @@
 
 						// All the required fields, which are unfilled are replaced with the padChar
 						result = this._replaceCharAt(result, p, newChar);
-					} else {
+
+						// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask. Should respect spaces in mask.
+					} else if (maskChar !== " ") {
 						result = this._replaceCharAt(result, p, "");
 						p--;
 					}
@@ -7188,7 +7189,8 @@
 				if (this.options.revertIfNotValid) {
 
 					// N.A. May 12th, 2017 #903: Properly revert display value.
-					value = this._getMaskedValue(this._valueInput.val().trim());
+					// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask
+					value = this._getMaskedValue(this._maskedValue || this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
@@ -7608,6 +7610,7 @@
 			return valid;
 		}
 	});
+	$.extend($.ui.igMaskEditor, { version: "<build_number>" });
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
@@ -10712,6 +10715,7 @@
 			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		}
 	});
+	$.extend($.ui.igDateEditor, { version: "<build_number>" });
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
@@ -10793,7 +10797,7 @@
 		events: {
 			/* cancel="true" Fired when the drop down is opening.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
 					...
 				});
@@ -10813,7 +10817,7 @@
 			dropDownListOpening: "dropDownListOpening",
 			/* cancel="false" Fired after the drop down is opened.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
 					...
 				});
@@ -10837,7 +10841,7 @@
 			dropDownItemSelecting: "dropDownItemSelecting",
 			/* cancel="true" Fired after the drop down (calendar) is closed.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
 					...
 				});
@@ -10859,7 +10863,7 @@
 			dropDownItemSelected: "dropDownItemSelected",
 			/* cancel="false" Fired after a date selection in the calendar.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%itemselected", function (evt, ui) {
 					...
 				});
@@ -11484,6 +11488,7 @@
 			return this;
 		}
 	});
+	$.extend($.ui.igDatePicker, { version: "<build_number>" });
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
 			/* type="bool" Gets/Sets whether the checkbox is checked.
@@ -11592,7 +11597,7 @@
 			/* cancel="true" Fired before changing the editor's value.
 				Return false in order to cancel change.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("igcheckboxeditorvaluechanging", function (evt, ui) {
 					...
 				});
@@ -11616,7 +11621,7 @@
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor's value has been changed.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("igcheckboxeditorvaluechanged", function (evt, ui) {
 					...
 				});
@@ -12086,6 +12091,7 @@
 			}
 		}
 	});
+	$.extend($.ui.igCheckboxEditor, { version: "<build_number>" });
 	$.widget("ui.igTimePicker", $.ui.igDateEditor, {
 		options: {
 			/* type="object" Gets delta-value which is used to generate the drop-down items for the time picker.
@@ -12725,5 +12731,6 @@
 			throw new Error(this._getLocaleValue("timePickerNoSuchMethod"));
 		}
 	});
+	$.extend($.ui.igTimePicker, { version: "<build_number>" });
 	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
