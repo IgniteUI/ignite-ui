@@ -135,6 +135,7 @@
 		 * Performs a series of `keyInteraction` for each character in a string. No delay(!) between events.
 		 * @param {string} characters
 		 * @param {object} target jQuery object target
+		 * @param {string} special Used for combinations to set true on the event - "altKey", "ctrlKey", "shiftKey"
 		 */
 		type: function (characters, target) {
 			if (characters) {
@@ -201,6 +202,7 @@
 			var evt = $.Event("keydown");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.which = key;
 			evt.originalEvent = {
 				preventDefault: $.noop,
 				stopPropagation: $.noop
@@ -216,6 +218,7 @@
 			var evt = $.Event("keypress");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.which = key;
 			if (special) {
 				evt[special] = true;
 			}
@@ -226,6 +229,7 @@
 			var evt = $.Event("keyup");
 			evt.keyCode = key;
 			evt.charCode = key;
+			evt.which = key;
 			if (special) {
 				evt[special] = true;
 			}
@@ -239,7 +243,7 @@
 		 * @returns False if canceled (inverted)
 		 */
 		mouseEvent: function (target, type, params) {
-			var evt;
+			var evt, ctrlKey, altKey, shiftKey, metaKey;
 			if (target instanceof $) {
 				target = target[0];
 			}
@@ -248,10 +252,15 @@
 				"bubbles": true,
 				"cancelable": true
 			}, params);
+
 			//evt = new MouseEvent(type, params);
 			// No DOM4 MouseEvent in PhantomJS yet :\
+			ctrlKey = params.ctrlKey? params.ctrlKey : false;
+			altKey = params.altKey? params.altKey : false;
+			shiftKey = params.shiftKey? params.shiftKey : false;
+			metaKey = params.metaKey? params.metaKey : false;
 			evt = document.createEvent('MouseEvent');
-			evt.initMouseEvent(type, params.bubbles, params.cancelable, window, 1, 0, 0, null, null, false, false, false, false, params.button, null);
+			evt.initMouseEvent(type, params.bubbles, params.cancelable, window, 1, 0, 0, null, null, ctrlKey, altKey, shiftKey, metaKey, params.button, null);
 
 			return !target.dispatchEvent(evt);
 		},

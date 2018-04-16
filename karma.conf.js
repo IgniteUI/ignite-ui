@@ -124,6 +124,8 @@ module.exports = function(config) {
 
       // Data files
       "tests/unit/templating/DB3.js",
+      "tests/unit/combo/sample-data/local-data.js",
+      "tests/unit/combo/sample-data/remote-data.js",
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
