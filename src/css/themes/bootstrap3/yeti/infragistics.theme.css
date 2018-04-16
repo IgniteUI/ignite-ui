@@ -3177,12 +3177,8 @@ body .ui-tooltip {
 .ui-iggrid-layout-helper {
   border-bottom: 1px solid #ddd;
 }
-.ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
-.ui-iggrid > table > thead + tbody > tr:first-child td,
-.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td {
-  /* border-top: 0 none!important;
- border-top removed for tables with virtualization, or headers */
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+  border-top: 0 !important;
 }
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -3191,7 +3187,6 @@ body .ui-tooltip {
   color: #222222;
   border-color: #ddd;
   border-right: 1px solid #ddd;
-  border-left: 0 none;
 }
 .ui-iggrid th .ui-iggrid-indicatorcontainer .ui-iggrid-summaries-header-icon.ui-icon {
   background: url(images/igGrid/filter-icons-333333.png) no-repeat scroll -416px 0 transparent;
@@ -3270,9 +3265,6 @@ body .ui-tooltip {
 .ui-iggrid tbody td {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
-}
-.ui-iggrid tbody td.ui-state-hover {
-  border-color: transparent;
 }
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable,
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
