@@ -737,8 +737,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanagerinternalresized", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanagerinternalresized", "#layout", function (evt, ui) {
                     // reference to igLayoutManager
                     ui.owner;
                 });
@@ -756,8 +756,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanagerinternalresizing", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanagerinternalresizing", "#layout", function (evt, ui) {
                   // reference to igLayoutManager
                   ui.owner;
                 });
@@ -785,8 +785,8 @@
                     }
                 });
 
-                //  Bind
-                $(document).delegate("#layout", "iglayoutmanageritemrendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanageritemrendered", "#layout", function (evt, ui) {
                     //reference to rendered item
                     ui.item;
                     //reference to rendered item index
@@ -818,8 +818,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanageritemrendering", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanageritemrendering", "#layout", function (evt, ui) {
                     //reference to rendered item
                     ui.item;
                     //reference to item index which is goding to be rendered
@@ -843,8 +843,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanagerrendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanagerrendered", "#layout", function (evt, ui) {
                     //reference to rendered items
                     ui.items;
                 });

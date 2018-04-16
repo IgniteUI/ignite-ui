@@ -304,7 +304,7 @@
 			eventArgument="ui.owner" argType="object" Gets a reference to the %%WidgetName%% widget.
 			```
 			//Bind after initialization
-				$(document).delegate(".selector", "%%WidgetNameLowered%%showing", function (evt, ui) {
+				$(document).on("%%WidgetNameLowered%%showing", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -338,7 +338,7 @@
 			eventArgument="ui.owner" argType="object" Gets a reference to the %%WidgetName%% widget.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector","%%WidgetNameLowered%%shown",function (evt, ui) {
+				$(document).on("%%WidgetNameLowered%%shown", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -372,7 +372,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the %%WidgetName%% widget.
 			```
 				//Bind after initialization
-				(document).delegate(".selector", "%%WidgetNameLowered%%hiding", function (evt, ui) {
+				(document).on("%%WidgetNameLowered%%hiding", ".selector", function (evt, ui) {
 				//return the triggered event
 				evt;
 
@@ -406,7 +406,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the %%WidgetName%% widget.
 			```
 			//Bind after initialization
-				$(document).delegate(".selector", "%%WidgetNameLowered%%hidden", function (evt, ui) {
+				$(document).on("%%WidgetNameLowered%%hidden", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
