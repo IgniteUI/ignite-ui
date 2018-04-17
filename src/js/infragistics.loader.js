@@ -2111,7 +2111,8 @@ $.ig.dependencies = [
 			{ name: "Functions", parentWidget: "igExcel" },
 			{ name: "igCombo" },
 			{ name: "igDialog" },
-			{ name: "_ig_undo" }
+			{ name: "_ig_undo" },
+			{ name: "igEditors" }
 		],
 		group: $.ig.loaderClass.locale.gridGroup,
 		scripts: [
