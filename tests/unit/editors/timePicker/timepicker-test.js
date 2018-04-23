@@ -750,7 +750,7 @@ QUnit.test('Set JSON formatted value', function (assert) {
 	});
 
 	assert.equal("17:46", timePicker.igTimePicker("field").val());
-	assert.equal(new Date(1534441600000), timePicker.igTimePicker("value"));
+	assert.equal(new Date(1534441600000).getTime(), timePicker.igTimePicker("value").getTime());
 
 	timePicker.remove();
 });
