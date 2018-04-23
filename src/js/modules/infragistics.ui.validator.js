@@ -1599,15 +1599,15 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		this._addErrorOnSubmit();
 	},
 	_hideError: function (options, evt) {
-		var notifier = options._$messageTarget || options.notifyTarget.data("igNotifier"),
-			args = {
-				owner: this,
-				target: options._$messageTarget || options.notifyTarget,
-				message: notifier._currentText || options._$messageTarget && options._$messageTarget.text(),
-				fieldOptions: options === this.options ? null : options
-			};
-
 		if (this._hasVisibleError(options)) {
+			var notifier = options._$messageTarget || options.notifyTarget.data("igNotifier"),
+				args = {
+					owner: this,
+					target: options._$messageTarget || options.notifyTarget,
+					message: notifier._currentText || options._$messageTarget && options._$messageTarget.text(),
+					fieldOptions: options === this.options ? null : options
+				};
+
 			if (evt && !this._trigger(this.events.errorHiding, evt, args)) {
 				return; //canceled
 			}
@@ -1659,15 +1659,15 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		}
 	},
 	_hideSuccess: function (options, evt) {
-		var notifier = options._$messageTarget || options.notifyTarget.data("igNotifier"),
-			args = {
-				owner: this,
-				target: options._$messageTarget || options.notifyTarget,
-				message: notifier._currentText || options._$messageTarget && options._$messageTarget.text(),
-				fieldOptions: options === this.options ? null : options
-			};
-
 		if (this._hasVisibleSuccess(options)) {
+			var notifier = options._$messageTarget || options.notifyTarget.data("igNotifier"),
+				args = {
+					owner: this,
+					target: options._$messageTarget || options.notifyTarget,
+					message: notifier._currentText || options._$messageTarget && options._$messageTarget.text(),
+					fieldOptions: options === this.options ? null : options
+				};
+
 			if (evt && !this._trigger(this.events.successHiding, evt, args)) {
 				return; //canceled
 			}
@@ -1838,7 +1838,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		if (options._$messageTarget) {
 			return options._$messageTarget.is(":visible");
 		}
-		if (options.notifyTarget.data("igNotifier")) {
+		if (options.notifyTarget && options.notifyTarget.data("igNotifier")) {
 			return options.notifyTarget.data("igNotifier").isVisible();
 		}
 		return false;
