@@ -737,7 +737,7 @@ QUnit.test('Set forbidden options in runtime', function (assert) {
 });
 
 QUnit.test('Set JSON formatted value', function (assert) {
-	assert.expect(1);
+	assert.expect(2);
 
 	var timePicker = createInDiv().igTimePicker({
 		width: 150,
@@ -745,10 +745,12 @@ QUnit.test('Set JSON formatted value', function (assert) {
 		value: "\/Date(1534441600000)\/",
 		timeInputFormat: "HH:mm",
 		timeDisplayFormat: "HH:mm",
-		buttonType: "spin"
+		buttonType: "spin",
+		displayTimeOffset: 0
 	});
 
-	assert.equal("20:46", timePicker.igTimePicker("field").val());
+	assert.equal("17:46", timePicker.igTimePicker("field").val());
+	assert.equal(new Date(1534441600000), timePicker.igTimePicker("value"));
 
 	timePicker.remove();
 });
