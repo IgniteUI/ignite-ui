@@ -736,6 +736,25 @@ QUnit.test('Set forbidden options in runtime', function (assert) {
 	});
 });
 
+QUnit.test('Set JSON formatted value', function (assert) {
+	assert.expect(2);
+
+	var timePicker = createInDiv().igTimePicker({
+		width: 150,
+		height: 50,
+		value: "\/Date(1534441600000)\/",
+		timeInputFormat: "HH:mm",
+		timeDisplayFormat: "HH:mm",
+		buttonType: "spin",
+		displayTimeOffset: 0
+	});
+
+	assert.equal("17:46", timePicker.igTimePicker("field").val());
+	assert.equal(new Date(1534441600000).getTime(), timePicker.igTimePicker("value").getTime());
+
+	timePicker.remove();
+});
+
 const id = "time-picker";
 function createInDiv(){
 	return $("<div/>").attr("id", id).appendTo("#qunit-fixture");

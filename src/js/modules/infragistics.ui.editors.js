@@ -12708,7 +12708,13 @@
 		},
 		_applyOptions: function () { // igTimePicker
 			if ($.type(this.options.value) !== "date" && this.options.value !== null) {
-				this.options.value = this._parseDateFromMaskedValue(this.options.value);
+				// S.S. April 23rd, 2018 #1701 igTimePicker with JSON date format does not display the value
+				var convertedValue = this._getDateObjectFromValue(this.options.value);
+				if (!isNaN(convertedValue)) {
+					this.options.value = convertedValue;
+				} else {
+					this.options.value = this._parseDateFromMaskedValue(this.options.value);
+				}
 			}
 			this._super();
 		},
