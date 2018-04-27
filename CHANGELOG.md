@@ -1,6 +1,6 @@
 # Ignite UI for JavaScript Change Log
 
-All notable changes for each version of this project will be documented in this file.
+All notable changes for each version of this product will be documented in this file.
 
 ## 18.1 RTM
 
@@ -9,4 +9,4 @@ All notable changes for each version of this project will be documented in this 
 
 ### Bug Fixes
 
-The list if issues that are fixed in 18.1 RTM can be found [here](https://github.com/IgniteUI/ignite-ui/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22version%3A+18.1%22+is%3Aclosed+closed%3A%3C2018-04-05)
+The list of issues that are fixed in 18.1 RTM can be found [here](https://github.com/IgniteUI/ignite-ui/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22version%3A+18.1%22+is%3Aclosed+closed%3A%3C2018-04-05).
