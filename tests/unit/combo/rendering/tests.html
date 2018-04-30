@@ -730,13 +730,11 @@
                 $input = $comboElement.igCombo('textInput');
 
                 equal($comboWrapper.hasClass("ui-igCombo-disabled ui-state-disabled"), true, "The combo wrapper element does not have the disabled css classes applied.");
-                equal($hiddenInput.attr("disabled"), "disabled", "The disabled attribute is not applied to the hidden input.");
                 equal($input.attr("disabled"), "disabled", "The disabled attribute is not applied to the input.");
 
                 $comboElement.igCombo("option", "disabled", false);
 
                 equal($comboWrapper.hasClass("ui-igCombo-disabled ui-state-disabled"), false, "The combo wrapper element has the disabled css classes applied.");
-                equal($hiddenInput.attr("disabled"), undefined, "The disabled attribute is applied to the hidden input.");
                 equal($input.attr("disabled"), undefined, "The disabled attribute is applied to the input.");
             });
         });
