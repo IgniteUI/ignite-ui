@@ -4959,14 +4959,12 @@
 			this.focusable.removeClass("ui-state-focus");
 
 			if (value) {
-				this._options.$input.attr("readonly", true);
+
+				// H.A. 30th April 2018, https://github.com/IgniteUI/ignite-ui/issues/1585
+				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
-
-				// S.T. 27th November 2015 Bug #210080: When disable the combo and enable it after that, in "mode" dropdown the input should be readonly.
-				if (this.options.mode !== "dropdown") {
-					this._options.$input.removeAttr("readonly");
-				}
+				this._options.$input.removeAttr("disabled");
 				this._options.$hiddenInput.removeAttr("disabled");
 			}
 		},
