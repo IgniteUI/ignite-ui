@@ -11952,43 +11952,31 @@
 			if (this.element.is("div")) {
 				this.element.empty();
 			} else if (this.element.is("input")) {
-				if (this._editorInput) {
-					this._editorInput.remove();
-				}
+				this._editorInput.remove();
 				this.element.unwrap();
 			} else if (this.element.is("span")) {
-				if (this._valueInput) {
-					this._valueInput.remove();
-				}
+				this._valueInput.remove();
 				this.element.unwrap();
 			}
 		},
 		_detachEvents: function () {
-			if (this._editorContainer) {
-				this._editorContainer
-					.off("click.editor mousedown.editor focus.editor blur.editor keydown.editor");
-			}
+			this._editorContainer
+				.off("click.editor mousedown.editor focus.editor blur.editor keydown.editor");
 			this._super();
 		},
 		_clearStyling: function () {
-			if (this._editorContainer) {
-				this._editorContainer
-					.removeClass(this.css.checkboxContainer)
-					.removeClass(this.css.containerChecked)
-					.removeAttr("role");
-			}
-			if (this._editorInput) {
-				this._editorInput
-					.removeClass(this._checkedClass)
-					.removeClass(this._uncheckedClass)
-					.removeClass(this.css.checkboxIcon)
-					.removeClass(this.options.iconClass);
-			}
-			if (this._valueInput) {
-				this._valueInput
-					.removeClass(this.css.checkboxInput)
-					.removeAttr("aria-hidden");
-			}
+			this._editorContainer
+				.removeClass(this.css.checkboxContainer)
+				.removeClass(this.css.containerChecked)
+				.removeAttr("role");
+			this._editorInput
+				.removeClass(this._checkedClass)
+				.removeClass(this._uncheckedClass)
+				.removeClass(this.css.checkboxIcon)
+				.removeClass(this.options.iconClass);
+			this._valueInput
+				.removeClass(this.css.checkboxInput)
+				.removeAttr("aria-hidden");
 			this._super();
 		},
 		_deleteInternalProperties: function () {
