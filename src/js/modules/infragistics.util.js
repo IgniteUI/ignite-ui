@@ -913,7 +913,9 @@
 				}
 			}
 
-			values.sort(function (a, b) { return this[ a ] - this[ b ]; });
+			//P.M. May 2nd, 2018 Caching 'this' so that it does not point to the Window and sorting is done on the values array
+			var _self = this;
+			values.sort(function (a, b) { return _self[ a ] - _self[ b ]; });
 
 			for (var i = values.length - 1; i >= 0; i--) {
 				value = this[ values[ i ] ];
