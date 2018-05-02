@@ -220,7 +220,7 @@
 			/* cancel="true" Fired before rendering of the editor has finished.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%rendering", function (evt, ui) {
 					...
 				});
@@ -240,7 +240,7 @@
 			/* cancel="false" Fired after rendering of the editor has finished.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%rendered", function (evt, ui) {
 					...
 				});
@@ -260,7 +260,7 @@
 			/* cancel="true" Fired on mousedown event.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mousedown", function (evt, ui) {
 					...
 				});
@@ -281,7 +281,7 @@
 			/* cancel="false" Fired on mouseup event.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mouseup", function (evt, ui) {
 					...
 				});
@@ -302,7 +302,7 @@
 			/* cancel="false" Fired on mousemove at any part of editor including the drop-down list.
 
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mousemove", function (evt, ui) {
 					...
 				});
@@ -322,7 +322,7 @@
 			mousemove: "mousemove",
 			/* cancel="false" Fired on mouseover at any part of editor including the drop-down list.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mouseover", function (evt, ui) {
 					...
 				});
@@ -343,7 +343,7 @@
 			mouseover: "mouseover",
 			/* cancel="false" Fired on mouseleave at any part of editor including the drop-down list.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%mouseout", function (evt, ui) {
 					...
 				});
@@ -364,7 +364,7 @@
 			mouseout: "mouseout",
 			/* cancel="false" Fired when the input field of the editor loses focus.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%blur", function (evt, ui) {
 					...
 				});
@@ -384,7 +384,7 @@
 			blur: "blur",
 			/* cancel="false" Fired when the input field of the editor gets focus.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%focus", function (evt, ui) {
 					...
 				});
@@ -406,7 +406,7 @@
 			/* cancel="true" Fired on keydown event.
 				Return false in order to cancel key action.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%keydown", function (evt, ui) {
 					...
 				});
@@ -428,7 +428,7 @@
 			/* cancel="true" Fired on keypress event.
 				Return false in order to cancel key action.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%keypress", function (evt, ui) {
 					...
 				});
@@ -450,7 +450,7 @@
 			keypress: "keypress",
 			/* cancel="false" Fired on keyup event.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%keyup", function (evt, ui) {
 					...
 				});
@@ -474,7 +474,7 @@
 				Return false in order to cancel change.
 				It can be raised after loosing focus or on spin events.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%valuechanging", function (evt, ui) {
 					...
 				});
@@ -495,7 +495,7 @@
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor value is changed. It can be raised after loosing focus or on spin events.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
 					...
 				});
@@ -818,8 +818,10 @@
 				this._detachListEvents();
 			}
 
-			this._editorContainer
-				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
+			if (this._editorContainer) {
+				this._editorContainer
+					.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
+			}
 		},
 		_detachButtonsEvents: function () {
 			if (this._dropDownList) {
@@ -853,7 +855,9 @@
 			this._removeContainer();
 		},
 		_removeContainer: function () {
-			this._valueInput.remove();
+			if (this._valueInput) {
+				this._valueInput.remove();
+			}
 			if (this.element.is("input")) {
 				this.element.unwrap().unwrap();
 			} else if (this.element.is("div")) {
@@ -937,12 +941,16 @@
 			}
 		},
 		_clearStyling: function () {
-			this._editorContainer
-				.removeClass(this.css.container)
-				.removeClass(this.css.hover)
-				.removeClass(this.css.active);
+			if (this._editorContainer) {
+				this._editorContainer
+					.removeClass(this.css.container)
+					.removeClass(this.css.hover)
+					.removeClass(this.css.active);
+			}
 
-			this._editorInput.removeClass(this.css.editor);
+			if (this._editorInput) {
+				this._editorInput.removeClass(this.css.editor);
+			}
 		},
 		_deleteInternalProperties: function () {
 			delete this._editorInput;
@@ -1667,7 +1675,7 @@
 		events: {
 			/* cancel="true" Fired when the drop down is opening.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
 					...
 				});
@@ -1688,7 +1696,7 @@
 			dropDownListOpening: "dropDownListOpening",
 			/* cancel="true" Fired after the drop down is opened.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
 					...
 				});
@@ -1708,7 +1716,7 @@
 			dropDownListOpened: "dropDownListOpened",
 			/* cancel="true" Fired when the drop down is closing.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosing", function (evt, ui) {
 					...
 				});
@@ -1729,7 +1737,7 @@
 			dropDownListClosing: "dropDownListClosing",
 			/* cancel="false" Fired after the drop down is closed.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
 					...
 				});
@@ -1750,7 +1758,7 @@
 			dropDownListClosed: "dropDownListClosed",
 			/* cancel="true" Fired when an item in the drop down list is being selected.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownitemselecting", function (evt, ui) {
 					...
 				});
@@ -1772,7 +1780,7 @@
 			dropDownItemSelecting: "dropDownItemSelecting",
 			/* cancel="false" Fired after an item in the drop down list is selected.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownitemselected", function (evt, ui) {
 					...
 				});
@@ -1794,7 +1802,7 @@
 			/* cancel="false" Fired after the editor's text has been changed. It can be raised when keyUp event occurs,
 				when the clear button is clicked or when an item from a list is selected.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%textchanged", function (evt, ui) {
 					...
 				});
@@ -2825,10 +2833,13 @@
 		},
 		_detachEvents: function () {
 			this._super();
-			this._editorInput.off("focus.editor blur.editor paste.editor");
-			this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
-			this._editorInput.off("keydown.editor keyup.editor keypress.editor");
-			this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
+
+			if (this._editorInput) {
+				this._editorInput.off("focus.editor blur.editor paste.editor");
+				this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
+				this._editorInput.off("keydown.editor keyup.editor keypress.editor");
+				this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
+			}
 		},
 		_processValueChanging: function (value) { //TextEditor
 
@@ -6632,7 +6643,9 @@
 		},
 		_detachEvents: function () {
 			this._super();
-			this._editorInput.off("cut.editor dragend.editor");
+			if (this._editorInput) {
+				this._editorInput.off("cut.editor dragend.editor");
+			}
 		},
 		_getMaskLiteralsAndRequiredPositions: function() {
 			// This method returns array of indexes which represent literals into edit mode.
@@ -7070,7 +7083,9 @@
 
 						// All the required fields, which are unfilled are replaced with the padChar
 						result = this._replaceCharAt(result, p, newChar);
-					} else {
+
+						// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask. Should respect spaces in mask.
+					} else if (maskChar !== " ") {
 						result = this._replaceCharAt(result, p, "");
 						p--;
 					}
@@ -7187,7 +7202,8 @@
 				if (this.options.revertIfNotValid) {
 
 					// N.A. May 12th, 2017 #903: Properly revert display value.
-					value = this._getMaskedValue(this._valueInput.val().trim());
+					// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask
+					value = this._getMaskedValue(this._maskedValue || this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
@@ -10794,7 +10810,7 @@
 		events: {
 			/* cancel="true" Fired when the drop down is opening.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
 					...
 				});
@@ -10814,7 +10830,7 @@
 			dropDownListOpening: "dropDownListOpening",
 			/* cancel="false" Fired after the drop down is opened.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
 					...
 				});
@@ -10838,7 +10854,7 @@
 			dropDownItemSelecting: "dropDownItemSelecting",
 			/* cancel="true" Fired after the drop down (calendar) is closed.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
 					...
 				});
@@ -10860,7 +10876,7 @@
 			dropDownItemSelected: "dropDownItemSelected",
 			/* cancel="false" Fired after a date selection in the calendar.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("%%WidgetNameLowered%%itemselected", function (evt, ui) {
 					...
 				});
@@ -11480,7 +11496,9 @@
 			$(".selector").igDatePicker("destroy");
 			```
 			*/
-			this._editorInput.datepicker("destroy");
+			if (this._editorInput) {
+				this._editorInput.datepicker("destroy");
+			}
 			this._superApply(arguments);
 			return this;
 		}
@@ -11594,7 +11612,7 @@
 			/* cancel="true" Fired before changing the editor's value.
 				Return false in order to cancel change.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("igcheckboxeditorvaluechanging", function (evt, ui) {
 					...
 				});
@@ -11618,7 +11636,7 @@
 			valueChanging: "valueChanging",
 			/* cancel="false" Fired after the editor's value has been changed.
 				```
-				//Delegate
+				//Bind after initialization
 				$(".selector").on("igcheckboxeditorvaluechanged", function (evt, ui) {
 					...
 				});

@@ -346,7 +346,7 @@
 				If the application returns false, then the action is canceled and the value remains unchanged.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igratinghoverchange", function (evt, ui) {
+				$(document).on("igratinghoverchange", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
@@ -369,7 +369,7 @@
 				If the application returns false, then the action is canceled and the value remains unchanged.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igratingvaluechange", function (evt, ui) {
+				$(document).on("igratingvaluechange", ".selector", function (evt, ui) {
 					//return the triggered event
 					evt;
 
