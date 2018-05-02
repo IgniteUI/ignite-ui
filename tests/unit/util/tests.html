@@ -95,6 +95,39 @@
 			equal("Bar", $.ig.TestPublicEnum.prototype.getBox(1).toString(), "Simple public enum member - ToString.");
 			equal("Bar", $.ig.Enum.prototype.parse($.ig.TestPublicEnum.prototype.$type, "bar", true).toString(), "Simple public enum member - Parse");
 		});
+
+		test("Test getDate", function () {
+			var hoursArray = [ 1, 5 ];
+			var hoursSuffix = [" - before", " - after"];
+
+			for (var i = 0; i < hoursArray.length; i++) {
+				var hour = hoursArray[i];
+				var suffix = hoursSuffix[i];
+
+				// test some dst dates with a time after the change
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour)).getHours(), "Hours of US daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour)).getHours(), "Hours 0f BG daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour)).getHours(), "Hours of US daylight savings end" + suffix);
+				equal(0, $.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour)).getHours(), "Hours of BG daylight savings end" + suffix);
+
+				equal(11, $.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour)).getDate(), "getDate of US daylight savings start" + suffix);
+				equal(25, $.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour)).getDate(), "getDate of BG daylight savings start" + suffix);
+				equal(11, $.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour)).getDate(), "getDate of US daylight savings end" + suffix);
+				equal(28, $.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour)).getDate(), "getDate of BG daylight savings end" + suffix);
+
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour))), "getTimeOfDay of US daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour))), "getTimeOfDay 0f BG daylight savings start" + suffix);
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour))), "getTimeOfDay of US daylight savings end" + suffix);
+				equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour))), "getTimeOfDay of BG daylight savings end" + suffix);
+			}
+
+			var dateWithTime = $.ig.Date.prototype.getDate(new Date(2018, 2, 11, 23, 25, 15, 19));
+			equal(0, dateWithTime.getHours(), "Hours of Date with time");
+			equal(0, dateWithTime.getMinutes(), "Minutes of Date with time");
+			equal(0, dateWithTime.getSeconds(), "Seconds of Date with time");
+			equal(0, dateWithTime.getMilliseconds(), "Milliseconds of Date with time");
+			equal(0, $.ig.Date.prototype.getTimeOfDay(dateWithTime), "getTimeOfDay of Date with time");
+		});
 		test("Test appendToQueryString and prependToQueryString util functions", function () {
 			var url = "http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID";
 			var newUrl = $.ig.util.appendToQueryString(url, "additionalParam=1");
@@ -264,6 +297,11 @@
 			equal($.ig.util.numberToString1(1.1, "#"), "1", "numberToString1 truncates decimal portion when format is #");
 			equal($.ig.util.numberToString1(1.1, "0"), "1", "numberToString1 truncates decimal portion when format is 0");
 			equal($.ig.util.numberToString1(300, "0.#"), "300", "numberToString1 truncates decimal portion when format is 0.# and number has 0 decimal digits");
+		});
+		test("Test resetDateToCurrentDate", function() {
+			equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(10000000)).getDate(), new Date().getDate(),  "The date should be reset");
+			equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(21/10/2007)).getDate(), new Date().getDate(),  "The date should be reset");
+			equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(null)).getDate(), new Date().getDate(),  "The date should be reset");
 		});
 	</script>
 </head>

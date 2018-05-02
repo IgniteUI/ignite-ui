@@ -176,14 +176,10 @@
   border-bottom: 1px solid $table-border-color;
 }
 
-.ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
-.ui-iggrid > table > thead + tbody > tr:first-child td,
-.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td
-{
-  /* border-top: 0 none!important;
- border-top removed for tables with virtualization, or headers */
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+  border-top: 0 !important;
 }
+
 
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -192,7 +188,6 @@
   color: $body-color;
   border-color: $table-border-color;
   border-right: 1px solid $table-border-color;
-  border-left: 0 none;
 }
 
 //if the theme has dark grid headers change the image to $iggrid-icons-light
@@ -290,10 +285,6 @@
 .ui-iggrid tbody td {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
-}
-
-.ui-iggrid tbody td.ui-state-hover {
-  border-color:transparent;
 }
 
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable,

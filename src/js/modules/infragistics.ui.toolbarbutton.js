@@ -76,7 +76,8 @@
                 Function takes arguments evt and ui.
                 Use ui.owner to get reference to this igToolbarButton.
             ```
-                $(document).delegate(".selector", "igtoolbarbuttonactivating", function(evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarbuttonactivating", ".selector", function(evt, ui) {
                     //use to obtain reference to the event browser
                     evt.originalEvent;
                     //return reference to igToolbarButton
@@ -95,7 +96,8 @@
                 Function takes arguments evt and ui.
                 Use ui.owner to get reference to this igToolbarButton.
             ```
-                $(document).delegate(".selector", "igtoolbarbuttonactivated", function(evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarbuttonactivated", ".selector", function(evt, ui) {
                     //use to obtain reference to the event browser
                     evt.originalEvent;
                     //return reference to igToolbarButton
@@ -123,7 +125,7 @@
                     }
                 });
 
-                $(document).delegate(".selector", "igtoolbarbuttondeactivating", function(evt, ui) {
+                $(document).on("igtoolbarbuttondeactivating", ".selector", function(evt, ui) {
                     //return reference to igToolbarButton
                     ui.owner;
                 });
@@ -143,7 +145,8 @@
                     }
                 });
 
-                $(document).delegate(".selector", "igtoolbarbuttondeactivated", function(evt, ui) {
+                //Bind after initialization
+                $(document).on("igtoolbarbuttondeactivated", ".selector", function(evt, ui) {
                     //return reference to igToolbarButton
                     ui.owner;
                 });
