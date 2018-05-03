@@ -1587,11 +1587,13 @@
 		
 		var testId = 'maxLength is respected';
 		test(testId, 1, function () {
-			var $editor;
+			var $editor, $input;
 
 			$editor = $('<input id="maxLengthTest"/>').appendTo("#testBedContainer").igTextEditor({ maxLength : 3 });
-			typeInInput("abc s",  $editor.igTextEditor("field"));
-			ok($('#maxLengthTest').parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
+			$input = $('#maxLengthTest');
+			
+			$.ig.TestUtil.type("abc s", $input);
+			ok($input.parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
 			$editor.remove();
 		});
 		
@@ -1762,6 +1764,29 @@
 		});
 	});
 
+	var testId = 'Keydown event bubbling when maxLength is set';
+		test(testId, 1, function () {
+			var $editor, $input, text = "test", eventRaisedCounter = 0;
+
+			$editor = $('<input id="keydownBubblingTest"/>').appendTo("#testBedContainer").igTextEditor({ maxLength : 1 });
+			$input = $('#keydownBubblingTest');
+
+			var keydownEventHandler = function(event) {
+				var targetId = event.target.id;
+				if(targetId === 'keydownBubblingTest'){
+					eventRaisedCounter++;
+				}
+				//$(this).off("keydown", keydownEventHandler);
+			};
+			$( "body" ).on( "keydown", $input, keydownEventHandler);
+
+			$.ig.TestUtil.type(text, $input);
+			equal(eventRaisedCounter, text.length, "Keydown event should bubble up when the input text exceeds the maxLength");
+			$( "body" ).off( "keydown", keydownEventHandler);
+			$editor.remove();
+		});
+		
+
 	// Helper functions
 	function typeInInput(characters, element) {
 		var keyDown = jQuery.Event("keydown"),
@@ -1910,16 +1935,7 @@
 	<input id="issue481"/>
 	<div id="scrollTest"></div>
 </div>
-
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>
-	
-	
-	
-	
-	
-	
-	
-	
 </div>
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>	
 </body>
