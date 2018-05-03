@@ -2981,8 +2981,8 @@
 								(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 							selection = this._getSelection(this._editorInput[ 0 ]);
 							if (selection.start === selection.end) {
+								//P.M. April 25th, 2018 #1590 Remove the keydown.stopPropagation() so that the event can bubble up the DOM tree when the maxLength option is set
 								e.preventDefault();
-								e.stopPropagation();
 								this._sendNotification("warning",
 									{
 										optName: "maxLengthWarningMsg",
