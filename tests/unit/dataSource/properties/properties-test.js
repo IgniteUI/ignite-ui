@@ -852,11 +852,12 @@ QUnit.module("igDataSource Properties", {
 			}
 			this.dsLocal._addChangesErrorHandler(errorCallbackFunc);
 
-			$.mockjax({
+			var mockHandle = $.mockjax({
 				url: 'updateFail',
 				responseText: {
 					Success: false
-				}
+				},
+				responseTime: 100
 			});
 			this.dsLocal.allTransactions().clear();
 			this.dsLocal.settings.updateUrl = "updateFail";
@@ -866,17 +867,25 @@ QUnit.module("igDataSource Properties", {
 			assert.equal(this.dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
 
 			this.dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
-			this.util.wait(500).then(function () {
+			this.util.wait(100).then(function () {
+				$.mockjax.clear(mockHandle);
 				assert.equal(self.dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
 				assert.ok(callBackCalled, "Error callback should be called.");
 				assert.ok(customCallBackCalled, "Custom Error callback should be called.");
 
+				mockHandle = $.mockjax({
+					url: 'updateFail2',
+					responseText: "Not found",
+					status: 404,
+					responseTime: 100
+				});
 				self.dsLocal.settings.updateUrl = "updateFail2";
 				callBackCalled = false;
 				customCallBackCalled = false;
 				self.dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
 				return self.util.wait(100);
 				}).then(function () {
+					$.mockjax.clear(mockHandle);
 					assert.equal(self.dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
 					assert.ok(callBackCalled, "Error callback should be called.");
 					assert.ok(customCallBackCalled, "Custom Error callback should be called.");
