@@ -1156,3 +1156,27 @@ QUnit.test("[ID25] Unicode characters regex check", function (assert) {
 		assert.equal(field.val(), testValues[i].valid ? testValues[i].value : testValues[i].expected, "The text is not as expected");
 	}
 });
+
+QUnit.test("Should properly revert to last valid value", function (assert) {
+	assert.expect(3);
+
+	var $editor;
+	$editor = $.ig.TestUtil.appendToFixture(this.inputTag).igMaskEditor({ 
+		inputMask: "(000) 000-000",
+		dataMode: "rawText"
+	});
+	var field = $editor.igMaskEditor("field");
+	$editor.focus()[0].setSelectionRange(0,0);
+	$.ig.TestUtil.type("111111111", field);
+	$editor.blur();
+	$editor.focus()[0].setSelectionRange(12, 13);
+	$editor.val("(111) 111-11_");
+	$editor.blur();
+	$editor.focus()[0].setSelectionRange(12,13);
+
+	$.ig.TestUtil.type("2222", field);
+	$editor.blur();
+	assert.equal($editor.data("igMaskEditor")._maskedValue.length, 13, "The editor value should be the appropriate length");
+	assert.ok($editor.data("igMaskEditor")._editorInput.val().indexOf("(") > -1,"The displayed value has the mask in place");
+	assert.equal($editor.igMaskEditor("value"), "111111112", "The editor value should be reverted to the last valid one");
+});
