@@ -481,6 +481,8 @@ var testId_138 = 'changing the width of the main element twice should auto hide 
 
 var testId_140 = 'setting scrollTop during vertical inertia stops the inertia and executes the set scrollTop on touch.';
 var testId_141 = 'setting scrollLeft during horizontal inertia stops the inertia and executes the set scrollLeft on touch.';
+var testId_142 = "setting scrollTop of the container manually on touch changes it to transform3d";
+var testId_143 = "setting scrollLeft of the container manually on touch changes it to transform3d";
 
 
 QUnit.test(testId_1, function (assert) {
@@ -4014,6 +4016,63 @@ QUnit.test(testId_141, function (assert) {
             done();
         });
     }).catch(function (er) {
+        assert.pushResult({ result: false, message: er.message });
+        done();
+        throw er;
+    });
+});
+
+QUnit.test(testId_142, function (assert) {
+    var self = this;
+    assert.expect(2);
+	this.util.isTouchDevice = function () { return true; };
+    $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
+    this.vhScroll().igScroll({
+		modifyDOM: true
+	});
+	var elemContainer = $("#elemVH_container"),
+		elemContent = $("#elemVH_content");
+
+	this.vhScroll().data('igScroll')._bMixedEnvironment = false;
+	
+    this.vhScroll().igScroll("option", "scrollTop", 100);
+    done = assert.async();
+    this.testUtil.wait(10).then(function () {
+		assert.equal(elemContainer.scrollTop(), 0, "scrollTop of the container should be 0");
+		assert.equal(-self.getTransform3dValueY(elemContent), 100, "the Y axis of the transform3d of the content should be 100");
+		self.vhScroll().remove();
+        self.util.isTouchDevice = function () { return false; };
+        done();
+	}).catch(function (er) {
+        assert.pushResult({ result: false, message: er.message });
+        done();
+        throw er;
+    });
+});
+
+QUnit.test(testId_143, function (assert) {
+    var self = this;
+    assert.expect(2);
+	this.util.isTouchDevice = function () { return true; };
+    $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
+    this.vhScroll().igScroll({
+		modifyDOM: true
+	});
+	var elemContainer = $("#elemVH_container"),
+		elemContent = $("#elemVH_content");
+
+	this.vhScroll().data('igScroll')._bMixedEnvironment = false;
+	
+	//Scroll right 100px
+	this.vhScroll().igScroll("option", "scrollLeft", 100);
+    done = assert.async();
+    this.testUtil.wait(10).then(function () {
+		assert.equal(elemContainer.scrollLeft(), 0, "scrollLeft of the container should be 0");
+		assert.equal(-self.getTransform3dValueX(elemContent), 100, "the X axis of the transform3d of the content should be 100");
+		self.vhScroll().remove();
+        self.util.isTouchDevice = function () { return false; };
+        done();
+	}).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
         throw er;
