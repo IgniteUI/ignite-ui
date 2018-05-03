@@ -1,7 +1,7 @@
 QUnit.module("igCombo filtering unit tests", {
 	divTag: '<div></div>',
-	before: function () {
-		$.mockjax({
+	beforeEach: function () {
+		this.mockHandler = $.mockjax({
 			url: "http://localhost/api/invoices*",
 			dataType: 'json',
 			contentType: "application/json",
@@ -30,6 +30,9 @@ QUnit.module("igCombo filtering unit tests", {
 				}
 			}
 		});
+	},
+	afterEach: function () {
+		$.mockjax.clear(this.mockHandler);
 	}
 });
 
@@ -523,7 +526,7 @@ QUnit.test('[ID11] While remotely filtering combo is loading and blurred it shou
 			}
 		});
 		$input.blur();
-		return $.ig.TestUtil.wait(800);
+		return $.ig.TestUtil.wait(1000);
 	}).then(function () {
 		done();
 	}).catch(function (er) {

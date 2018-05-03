@@ -5,6 +5,8 @@ QUnit.testDone( ( { module, name, total, passed, failed, skipped, todo, runtime 
 	$("#qunit-fixture").empty();
 });
 
+$.mockjaxSettings.logging = 0;  // only critical error messages
+
 /**
  * Debug adjustments
  */

@@ -875,9 +875,9 @@ QUnit.test('[ID24] LTR testing', function (assert) {
 		$.ig.TestUtil.keyInteraction(40, $input); // press down arrow
 		assert.ok($comboWrapper.igCombo('dropDown').height() > 0, 'Dropdown is left opened');
 		$.ig.TestUtil.keyInteraction(38, $input, 'altKey'); // press shift + up arrow 
-		assert.ok($comboWrapper.igCombo('dropDown').height() === 0, 'Dropdown is closed');
 		return $.ig.TestUtil.wait(300);
 	}).then(function () {
+		assert.ok($comboWrapper.igCombo('dropDown').height() === 0, 'Dropdown is closed');
 		self.programmingLanguagesDataSource = self.programmingLanguagesDataSource.concat([
 			{ 'ID': 7, 'Name': 'Perl', 'Type': 'Scripting', "Paradigm": 'Multi' },
 			{ 'ID': 8, 'Name': 'Java', 'Type': 'Compiled', 'Paradigm': 'Object-oriented' },
