@@ -11497,6 +11497,9 @@
 			```
 			*/
 			if (this._editorInput) {
+				// D.P. Close picker if open, destroy won't remove external click handler or _curInst
+				// related: https://bugs.jqueryui.com/ticket/15270, https://bugs.jqueryui.com/ticket/9888
+				this._editorInput.datepicker("hide");
 				this._editorInput.datepicker("destroy");
 			}
 			this._superApply(arguments);
