@@ -1539,3 +1539,22 @@ QUnit.test("Scrollbar is not visible when not needed", function (assert) {
 	scrollContainer.remove();
 	style.remove();
 });
+
+QUnit.test("Keydown event bubbling when maxLength is set", function (assert) {
+	assert.expect(1);
+
+	var editor = this.appendToFixture(this.inputTag, {id: 'keydownBubblingTest'}).igTextEditor({ maxLength : 1 });
+	var text = "test", eventRaisedCounter = 0;
+	var keydownEventHandler = function(event) {
+		var targetId = event.target.id;
+		if(targetId === 'keydownBubblingTest'){
+			eventRaisedCounter++;
+		}
+		//$(this).off("keydown", keydownEventHandler);
+	};
+	
+	$( "body" ).on( "keydown", editor, keydownEventHandler);
+	$.ig.TestUtil.type(text, editor);
+	assert.equal(eventRaisedCounter, text.length, "Keydown event should bubble up when the input text exceeds the maxLength");
+	$( "body" ).off( "keydown", keydownEventHandler);
+});
