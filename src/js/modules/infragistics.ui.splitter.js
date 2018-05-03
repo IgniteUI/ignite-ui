@@ -142,8 +142,8 @@
             events: {
                 /* cancel="false" Fired after collapsing is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplittercollapsed", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplittercollapsed", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                         // index of the collapsed panel
@@ -162,8 +162,8 @@
                 collapsed: "collapsed",
                 /* cancel="false" Fired after expanding is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterexpanded", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterexpanded", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                         // index of the expanded panel
@@ -182,8 +182,8 @@
                 expanded: "expanded",
                 /* cancel="false" Fired before split bar move is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterresizestarted", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterresizestarted", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -199,8 +199,8 @@
                 resizeStarted: "resizeStarted",
                 /* cancel="true" Fired while split bar move is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterresizing", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterresizing", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -216,8 +216,8 @@
                 resizing: "resizing",
                 /* cancel="false" Fired after split bar move is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterresizeended", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterresizeended", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -233,8 +233,8 @@
                 resizeEnded: "resizeEnded",
                 /* cancel="true" Fired before the panels are refreshed because of browser"s resizing.
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterlayoutrefreshing", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterlayoutrefreshing", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -249,8 +249,8 @@
                 layoutRefreshing: "layoutRefreshing",
                 /* cancel="false" fired after the panels are refreshed because of browser"s resizing.
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterlayoutrefreshed", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterlayoutrefreshed", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });

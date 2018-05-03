@@ -1461,6 +1461,18 @@
 			return value.toLocaleString($.ig.CultureInfo.prototype.currentCulture().name(),
 				this._longTimeFormatOptions).replace(/\u200E/g, "");
 		},
+		resetDateToCurrentDate: function (value) {
+			/* Replace the date part of a date object with current date */
+			if (!value || !value.getTime) {
+				return value;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), value.getHours(), value.getMinutes(),
+				value.getSeconds(), value.getMilliseconds());
+			return result;
+		},
 		$type: new $.ig.Type("Date", $.ig.Object.$type)
 	}, true);
 
@@ -6110,7 +6122,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 1,
 			"applyFormat": true
@@ -6120,7 +6132,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 2,
 			"applyFormat": true

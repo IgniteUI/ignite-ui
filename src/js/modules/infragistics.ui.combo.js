@@ -1108,7 +1108,8 @@
 		events: {
 			/* cancel="false" Event which is raised after rendering of the combo completes.
 			```
-				$(document).delegate(".selector", "igcomborendered", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcomborendered", ".selector", function (evt, ui) {
 					//use to get a reference to the combo performing rendering.
 					ui.owner;
 					//use to get a reference to the main/top combo element.
@@ -1127,7 +1128,8 @@
 			rendered: "rendered",
 			/* cancel="true" Event which is raised before data binding is performed.
 			```
-				$(document).delegate(".selector", "igcombodatabinding", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombodatabinding", ".selector", function (evt, ui) {
 					//use to obtain reference to igCombo
 					ui.owner;
 					//use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1147,7 +1149,8 @@
 			dataBinding: "dataBinding",
 			/* cancel="false" Event which is raised after data binding is complete.
 			```
-				$(document).delegate(".selector", "igcombodatabound", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombodatabound", ".selector", function (evt, ui) {
 					//use to obtain reference to igCombo
 					ui.owner;
 					//use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1169,7 +1172,8 @@
 			dataBound: "dataBound",
 			/* cancel="true" Event which is raised before data filtering.
 			```
-				$(document).delegate(".selector", "igcombofiltering", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombofiltering", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1192,7 +1196,8 @@
 			filtering: "filtering",
 			/* cancel="false" Event which is raised after filtering.
 			```
-				$(document).delegate(".selector", "igcombofiltered", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombofiltered", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1216,7 +1221,8 @@
 			filtered: "filtered",
 			/* cancel="true" Event which is raised before rendering of the combo items is performed.
 			```
-				$(document).delegate(".selector", "igcomboitemsrendering", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcomboitemsrendering", ".selector", function (evt, ui) {
 					//use to get a reference to the combo performing rendering.
 					ui.owner;
 					//use to get a reference to the $.ig.DataSource combo is databound to.
@@ -1235,7 +1241,8 @@
 			itemsRendering: "itemsRendering",
 			/* cancel="false" Event which is raised after rendering of the combo items completes.
 			```
-				$(document).delegate(".selector", "igcomboitemsrendered", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcomboitemsrendered", ".selector", function (evt, ui) {
 					//use to obtain reference to igCombo
 					ui.owner;
 					//use to get a reference to the $.ig.DataSource combo is databound to.
@@ -1254,7 +1261,8 @@
 			itemsRendered: "itemsRendered",
 			/* cancel="true" Event which is raised before drop-down list is opened.
 			```
-				$(document).delegate(".selector", "igcombodropdownopening", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombodropdownopening", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1278,7 +1286,8 @@
 			dropDownOpening: "dropDownOpening",
 			/* cancel="false" Event which is raised after drop-down list was opened.
 			```
-				$(document).delegate(".selector", "igcombodropdownopened", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombodropdownopened", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1301,7 +1310,8 @@
 			dropDownOpened: "dropDownOpened",
 			/* cancel="true" Event which is raised before drop-down list is closed.
 			```
-				$(document).delegate(".selector", "igcombodropdownclosing", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombodropdownclosing", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1325,7 +1335,8 @@
 			dropDownClosing: "dropDownClosing",
 			/* cancel="false" Event which is raised after drop-down list was closed.
 			```
-				$(document).delegate(".selector", "igcombodropdownclosed", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcombodropdownclosed", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1349,7 +1360,8 @@
 			dropDownClosed: "dropDownClosed",
 			/* cancel="true" Event which is raised before selection change.
 			```
-				$(document).delegate(".selector", "igcomboselectionchanging", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcomboselectionchanging", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
@@ -1376,7 +1388,8 @@
 			selectionChanging: "selectionChanging",
 			/* cancel="false" Event which is raised after selection change.
 			```
-				$(document).delegate(".selector", "igcomboselectionchanged", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igcomboselectionchanged", ".selector", function (evt, ui) {
 					//use to obtain reference to the event browser
 					evt.originalEvent;
 					//use to obtain reference to igCombo
