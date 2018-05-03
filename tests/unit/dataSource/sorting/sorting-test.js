@@ -107,6 +107,17 @@ var textSettings =  {
 	   { "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "\/Date(1163548800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
 	   { "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "\/Date(1210204800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
 	],
+	northwindProductsTimeJSON: [
+		{ "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseHour": "2006-12-25T14:30:47.108Z", "DiscontinuedHour": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
+		{ "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseHour": "2004-12-25T13:30:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
+		{ "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseHour": "2007-12-25T11:30:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
+		{ "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseHour": "2004-12-25T09:30:47.108Z", "DiscontinuedHour": "2006-10-01T00:00:00.000Z", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
+		{ "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseHour": "2006-12-25T15:30:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
+		{ "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseHour": "2006-12-25T19:30:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+		{ "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseHour": "2006-12-25T00:04:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+		{ "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseHour": "2001-12-25T15:30:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
+		{ "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseHour": "2007-12-25T17:17:47.108Z", "DiscontinuedHour": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
+	],
 	treeFlatData: [
 		{ "employeeId": 0, "supervisorId": -1, "firstName": "Andrew", "lastName": "Fuller", "Category": { "ID": 0,  "Name": "Name"} },
 		{ "employeeId": 1, "supervisorId": -1, "firstName": "Jonathan", "lastName": "Smith", "Category": { "ID": 1,  "Name": "Name1"}  },
@@ -549,4 +560,35 @@ QUnit.test("IgDataSource Sorting - custom sort function and paging", function(as
 	this.jsonDs.settings.paging = {enabled:true, type: "local", pageSize: 3};
 	this.jsonDs.sort([{ fieldName: "firstName" }], "asc");
 	assert.equal(JSON.stringify(res), JSON.stringify(this.jsonDs.dataView()), "DataView should have the same view as the returned function. ");
+});
+
+QUnit.test("IgDataSource Sorting - sort single hours", function(assert) {
+	assert.expect(7);
+	var ds = new $.ig.DataSource({
+		// sorting: { type: "local", defaultDirection: "asc" }, 
+		dataSource: this.northwindProductsTimeJSON,
+		schema: {
+			fields: [{
+				name: "ID", type: "number"
+			}, {
+				name: "Name", type: "string"
+			}, {
+				name: "ReleaseHour", type: "time"
+			}]
+		}
+	}).dataBind()
+
+	ds.sort([{fieldName : "ReleaseHour"}], "asc", true);
+
+	assert.equal(ds.dataView()[2].Name, "Vint Soda", "Sort items (ascending) are not in correct order");
+	assert.equal(ds.dataView()[5].Name, "Fruit Punch", "Sort items (ascending) are not in correct order");
+	assert.equal(ds.dataView()[7].Name, "LCD HDTV", "Sort items (ascending) are not in correct order");
+	
+	ds.sort([{fieldName : "ReleaseHour"}], "desc", true);
+
+	assert.equal(ds.dataView()[2].Name, "Fruit Punch", "Sort items (descending) are not in correct order");
+	assert.equal(ds.dataView()[3].Name, "DVD Player", "Sort items (descending) are not in correct order");
+	assert.equal(ds.dataView()[5].Name, "Milk", "Sort items (descending) are not in correct order");
+	assert.equal(ds.dataView()[6].Name, "Vint Soda", "Sort items (descending) are not in correct order");
+
 });

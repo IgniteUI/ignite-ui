@@ -111,7 +111,7 @@ QUnit.module("igDataSource filtering", {
                         { "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "2006-11-05T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
                         { "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "2006-11-15T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
                         { "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "2008-05-08T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
-                 	],
+					 ],
                  treeFlatData: [
                     { "employeeId": 0, "supervisorId": -1, "firstName": "Andrew", "lastName": "Fuller", "Category": { "ID": 0, "Name": "Name" } },
                     { "employeeId": 1, "supervisorId": -1, "firstName": "Jonathan", "lastName": "Smith", "Category": { "ID": 1, "Name": "Name1" } },
@@ -961,7 +961,18 @@ QUnit.module("igDataSource filtering", {
                         { "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "2006-11-05T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
                         { "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "2006-11-15T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
                         { "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "2008-05-08T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
-                 	],
+					 ],
+					 northwindProductsTimeJSON: [
+						{ "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseHour": new Date(2006,10,25,20,30,47,00), "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
+						{ "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseHour": new Date(2006,12,25,15,30,47,00), "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
+						{ "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseHour": new Date(2000,11,25,17,23,57,00), "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
+						{ "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseHour": new Date(2006,12,25,15,30,47,00), "DiscontinuedDate": "2006-10-01T00:00:00.000Z", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
+						{ "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseHour": new Date(2006,12,25,15,30,47,00), "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
+						{ "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseHour": new Date(2006,12,25,19,30,47,00), "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+						{ "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseHour": new Date(2006,01,25,00,04,47,00), "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+						{ "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseHour": new Date(2001,03,25,15,30,47,00), "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
+						{ "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseHour": new Date(2007,12,25,17,17,47,00), "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
+					],
 					before: function () {
 						this.ds = new $.ig.DataSource({ 
 							filtering: { type: "local", enabled: true }, 
@@ -1353,4 +1364,87 @@ QUnit.module("igDataSource filtering", {
 					assert.equal(formattedRecs[7]["Description"], "Formatted 1080P Upconversion DVD Player !", "");
 					assert.equal(formattedRecs[8]["Name"], "Funky LCD HDTV :)", "");
 					assert.equal(formattedRecs[8]["Description"], "Formatted 42 inch 1080p LCD with Built-in Blu-ray Disc Player !", "");
+				});
+
+				QUnit.test("IgDataSource Test - filtering timeColumn testing conditions", function (assert) {
+					assert.expect(7);
+					var fd, ds;
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true },
+						dataSource: this.northwindProductsTimeJSON,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseHour", type: "time"
+							}]
+						}
+					}).dataBind();
+
+					// test all filter conditions
+					ds.filter([{ fieldName: "ReleaseHour", expr: "20:30", cond: "at" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 1, "Using 'at' condition expecting 1 records filtered result: " + fd.length);
+
+					ds.filter([{ fieldName: "ReleaseHour", expr: "20:30", cond: "notAt" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 8, "Using 'notat' condition expecting 8 records filtered result: " + fd.length);
+
+					ds.filter([{ fieldName: "ReleaseHour", expr: "15:30", cond: "before" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 1, "Using 'before' condition expecting 1 records filtered result: " + fd.length);
+
+					ds.filter([{ fieldName: "ReleaseHour", expr: "15:30", cond: "atBefore" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 5, "Using 'atBefore' condition expecting 5 records filtered result: " + fd.length);
+					
+					ds.filter([{ fieldName: "ReleaseHour", expr: "15:30", cond: "after" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 4, "Using 'after' condition expecting 4 records filtered result: " + fd.length);
+
+					ds.filter([{ fieldName: "ReleaseHour", expr: "15:30", cond: "atAfter" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 8, "Using 'after' condition expecting 8 records filtered result: " + fd.length);
+
+					var errorCount = 0;
+					try {
+						ds.filter([{ fieldName: "ReleaseHour", expr: "15:30", cond: "notRealContition" }], true);
+					} catch (e) {
+						errorCount++;
+					}
+					assert.equal(errorCount, 1, "One error should be thrown.");
+
+				});
+
+				QUnit.test("IgDataSource Test - filtering timeColumn testing filter values", function (assert) {
+					assert.expect(3);
+					var fd, ds;
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true },
+						dataSource: this.northwindProductsTimeJSON,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseHour", type: "time"
+							}]
+						}
+					}).dataBind();
+					ds.filter([{ fieldName: "ReleaseHour", expr: null, cond: "at" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 0, "The items shoould not be filtered");
+					ds.filter([{ fieldName: "ReleaseHour", expr: new Date(2006,12,25,22,30,47,00), cond: "before" }], true);
+					fd = ds.filteredData();
+					assert.equal(fd.length, 9, "The filtered records are not the expected count!");
+					ds.filter([{ fieldName: "ReleaseHour", expr: "this is not a data", cond: "at" }], true);
+					fd = ds.filteredData();
+					assert.ok(fd.length === 0, "The items shoould not be filtered");
 				});
