@@ -39,11 +39,13 @@ QUnit.module("igDatePicker unit tests", {
 	},
 	beforeEach: function () { 
 		$.fx.off = true; 
+	},
+	afterEach: function () { 
+		$.fx.off = false;
 		if($.ig.util.regional){
 			$.ig.util.changeGlobalRegional('');
 		}
-	},
-	afterEach: function () { $.fx.off = false; }
+	 }
 });
 
 QUnit.test('Date Picker initialization.', function (assert) {
