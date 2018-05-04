@@ -1,4 +1,10 @@
 QUnit.module("igUtil formatter unit tests", {
+	afterEach: function () { 
+		$.fx.off = false;
+		if($.ig.util.regional){
+			$.ig.util.changeGlobalRegional('');
+		}
+	 }
 });
 
 QUnit.test('[ID1] Test number type', function (assert) {

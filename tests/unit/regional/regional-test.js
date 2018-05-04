@@ -21,7 +21,13 @@ QUnit.module("Runtime regional changes unit tests", {
 		{ ID: 7, Salary: 5000 },
 		{ ID: 8, Salary: 3500 },
 		{ ID: 9, Salary: 200 }
-	]
+	],
+	afterEach: function () { 
+		$.fx.off = false;
+		if($.ig.util.regional){
+			$.ig.util.changeGlobalRegional('');
+		}
+	 }
 });
 
 QUnit.test('[ID1] Loading correct regional in combo for date field', function (assert) {
