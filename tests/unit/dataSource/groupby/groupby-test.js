@@ -2677,3 +2677,66 @@ $.mockjaxSettings.logging = 0;
 					assert.ok(groupByData.length > 0, "Verify that groupby data is populated.");
 				});
 			});
+
+			//test for bug 248224
+			QUnit.test("Test grouping by dates and sorting when some of the dates are null.", function(assert) {
+				assert.expect(1);
+				var fields = [
+					{
+						name : "Column1"
+					},
+					{
+						name : "Column2"
+					},
+					{
+						name : "Column3",
+						type: "date"
+					}
+				];
+				var recs = [
+					{
+					Column1  : "Test Data 1",
+					Column2 : "Hidden 1",
+					Column3 : "12/27/2017"		
+					},
+					{
+					Column1  : "Test Data 2",
+					Column2 : "Hidden 2",
+					Column3 : "12/28/2017"		
+					},
+					{
+					Column1  : "Test Data 2",
+					Column2 : "Hidden 12",
+					Column3 : "1/27/2017"
+					},
+					{
+					Column1  : "Test Data 3",
+					Column2 : "Hidden 21",
+					Column3 : "12/27/2018"
+					},
+					{
+					Column1  : "Test Data 3",
+					Column2 : "Hidden 21"
+					}
+				];
+
+				var ds = new $.ig.DataSource({
+					schema: {
+						fields: fields
+					},
+					sorting: {
+						expressions:[]
+					},
+					dataSource: recs
+				});
+				ds.dataBind();
+				var errorCount = 0;
+				try {
+					ds.settings.sorting.expressions.push({"fieldName": "Column3", "dir": "desc", "isGroupBy": true});
+					ds.dataBind();
+				} catch(e) {
+					errorCount++;
+					assert.ok(false, "Error was thrown. Message: " + e.message);
+				}
+				assert.equal(errorCount, 0, "No errors should be thrown.");
+			});

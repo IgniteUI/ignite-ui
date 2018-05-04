@@ -35,6 +35,7 @@ before_deploy:
 
 # update package versions
 - npm version "${TRAVIS_TAG}" --no-git-tag-version --save
+- if [[ "${TRAVIS_TAG}" == *"beta"* ]]; then export NPM_TAG="next"; else export NPM_TAG="latest"; fi
 # can't skip git commit on bower version call, bower/bower#2019
 # - bower version "${TRAVIS_TAG}" --save
 
@@ -49,6 +50,7 @@ before_deploy:
 
 deploy:
   provider: npm
+  tag: ${NPM_TAG}
   skip_cleanup: true
   email: igniteui@infragistics.com
   api_key:

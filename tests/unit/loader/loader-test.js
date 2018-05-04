@@ -51,14 +51,13 @@ QUnit.module("igLoader Common", {
 });
 
 QUnit.test("test 1: Test load resources on demand with nested initialization ", function (assert) {
-	assert.expect(19);
+	assert.expect(18);
 	var done = assert.async();
 
 	var expectedRes = [
 		"infragistics.util-en.js",
 		"infragistics.util.js",
 		"infragistics.util.jquery.js",
-		"infragistics.ui.scroll.js",
 		"infragistics.ui.popover-en.js",
 		"infragistics.ui.popover.js",
 		"infragistics.ui.notifier-en.js",

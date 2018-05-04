@@ -187,7 +187,7 @@ QUnit.test('Bug 211360', function (assert) {
 	});
 	this.dropDownButton().click();
 	editor.one("igdatepickertextchanged", function (evt, ui) {
-		assert.equal(ui.text, self.getMMDDYYYY(new Date()), "The text should be " + self.getMMDDYYYY(new Date()) + " Real Value: " + ui.text);
+		assert.equal(ui.text, self.getDDmmYYYY(new Date()), "The text should be " + self.getDDmmYYYY(new Date()) + " Real Value: " + ui.text);
 	});
 	$(this.calendar()).find(".ui-datepicker-today").find("a").click();
 
@@ -220,13 +220,17 @@ QUnit.test('Bug 215046', function (assert) {
 
 QUnit.test('Bug 215046', function (assert) {
 	assert.expect(2);
+	var done = assert.async();
 
 	editor1 = this.appendToFixture(this.inputTag).igDatePicker();
 	editor2 =  this.appendToFixture(this.inputTag).igDatePicker();
 	editor1.igDatePicker("dropDownButton").click();
 	editor2.igDatePicker("dropDownButton").click();
-	assert.ok(editor2.data("igDatePicker")._focused, "The second editor should be focused");
-	assert.ok(editor2.data("igDatePicker")._dropDownList.is(":visible"), "The calendar of the second editor should be visible");
+	$.ig.TestUtil.wait(20).then(function () {
+		assert.ok(editor2.data("igDatePicker")._focused, "The second editor should be focused");
+		assert.ok(editor2.data("igDatePicker")._dropDownList.is(":visible"), "The calendar of the second editor should be visible");
+		done();
+	});
 });
 
 QUnit.test('Bug 220775', function (assert) {
@@ -240,11 +244,15 @@ QUnit.test('Bug 220775', function (assert) {
 
 QUnit.test('Bug 221414', function (assert) {
 	assert.expect(1);
+	var done = assert.async();
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ datepickerOptions: { minDate: new Date(2016, 06, 05) } });
 	this.dropDownButton().click();
 	$(this.calendar()).find("a:last").click();
-	assert.notOk(editor.igDatePicker("dropDownVisible"), "The dropdown container is visible, but it shouldn't be.");
+	$.ig.TestUtil.wait(20).then(function () {
+		assert.notOk(editor.igDatePicker("dropDownVisible"), "The dropdown container is visible, but it shouldn't be.");
+		done();
+	});
 });
 
 QUnit.test('Issue 84', function (assert) {

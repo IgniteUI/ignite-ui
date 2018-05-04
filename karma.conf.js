@@ -8,6 +8,7 @@ const glob = require("glob");
 // https://github.com/karma-runner/karma-qunit/issues/92
 
 const reporters = ["progress"];
+let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
 let proxies = glob.sync("src/js/**/*.js")
@@ -35,10 +36,11 @@ module.exports = function(config) {
   }
 
 
-  // When passed as `--widget integration` https://github.com/karma-runner/karma/issues/672#issuecomment-204620473
-  if (config.widget) {
-    // console.log(config.widget + "!");
+  // When passed as `--testPath integration` https://github.com/karma-runner/karma/issues/672#issuecomment-204620473
+  if (config.testPath) {
+    testPath = config.testPath;
   }
+  console.log(`RUNNING tests under: "tests/${testPath}/*-test.js"`);
 
   config.set({
 
@@ -132,7 +134,7 @@ module.exports = function(config) {
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      "tests/**/*-test.js"
+      `tests/${testPath}/*-test.js`
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,

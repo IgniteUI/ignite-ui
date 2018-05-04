@@ -258,7 +258,7 @@
 
 	$.ig.util.changeGlobalRegional = function (regional) {
 		$.ig.util.regional = regional;
-		$.ig.regional.defaults = $.extend($.ig._regional,
+		$.ig.regional.defaults = $.extend({}, $.ig._regional,
 			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
 			$.ig.util.widgetStack[ i ].changeGlobalRegional();
@@ -913,7 +913,9 @@
 				}
 			}
 
-			values.sort(function (a, b) { return this[ a ] - this[ b ]; });
+			//P.M. May 2nd, 2018 Caching 'this' so that it does not point to the Window and sorting is done on the values array
+			var _self = this;
+			values.sort(function (a, b) { return _self[ a ] - _self[ b ]; });
 
 			for (var i = values.length - 1; i >= 0; i--) {
 				value = this[ values[ i ] ];
@@ -1410,7 +1412,9 @@
 				value.getMilliseconds();
 		},
 		getDate: function (value) {
-			return new Date(value - $.ig.Date.prototype.getTimeOfDay(value));
+			var newDate = new Date(+value);
+			newDate.setHours(0, 0, 0, 0);
+			return newDate;
 		},
 		_requiresISOCorrection: !isNaN(+new Date("2000-01-01T00:00:00")) &&
 			new Date("2000-01-01T00:00:00").getHours() !== 0,
@@ -1456,6 +1460,18 @@
 		toLongTimeString: function (value) {
 			return value.toLocaleString($.ig.CultureInfo.prototype.currentCulture().name(),
 				this._longTimeFormatOptions).replace(/\u200E/g, "");
+		},
+		resetDateToCurrentDate: function (value) {
+			/* Replace the date part of a date object with current date */
+			if (!value || !value.getTime) {
+				return value;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), value.getHours(), value.getMinutes(),
+				value.getSeconds(), value.getMilliseconds());
+			return result;
 		},
 		$type: new $.ig.Type("Date", $.ig.Object.$type)
 	}, true);
@@ -4086,6 +4102,10 @@
 			}
 			delete obj.elem;
 			delete obj.chart;
+			if (obj.__resizeProxy) {
+				window.removeEventListener("resize", obj.__resizeProxy, false);
+				delete obj.__resizeProxy;
+			}
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
@@ -6102,7 +6122,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 1,
 			"applyFormat": true
@@ -6112,7 +6132,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 2,
 			"applyFormat": true

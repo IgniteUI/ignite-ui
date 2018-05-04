@@ -268,3 +268,11 @@ QUnit.test('[ID15] Test numberToString', function (assert) {
 	assert.equal($.ig.util.numberToString1(1.1, "0"), "1", "numberToString1 truncates decimal portion when format is 0");
 	assert.equal($.ig.util.numberToString1(300, "0.#"), "300", "numberToString1 truncates decimal portion when format is 0.# and number has 0 decimal digits");
 });
+
+QUnit.test('[ID16] Test resetDateToCurrentDate', function (assert) {
+	assert.expect(3);
+
+	assert.equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(10000000)).getDate(), new Date().getDate(),  "The date should be reset");
+	assert.equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(21/10/2007)).getDate(), new Date().getDate(),  "The date should be reset");
+	assert.equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(null)).getDate(), new Date().getDate(),  "The date should be reset");
+});
