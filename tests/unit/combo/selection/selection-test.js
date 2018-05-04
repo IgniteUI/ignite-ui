@@ -176,7 +176,8 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 
 	$.ig.TestUtil.click($input);
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+	assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight,
+		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
 	$.ig.TestUtil.mouseEvent($item, "mouseover"); // Hover item
@@ -255,7 +256,8 @@ QUnit.test('[ID4] Readonlylist mode', function (assert) {
 
 	$.ig.TestUtil.click($input);
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+	assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight,
+		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
 	// Verify first item is selected
