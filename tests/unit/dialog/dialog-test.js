@@ -393,7 +393,7 @@ QUnit.test("[ID6] inner controls/frames", function (assert) {
 
 	$dialog.igDialog("minimize");
 	assert.equal($testFrame.contents().find('body').text(), text, "Internal frame lost its content on minimize");
-	$dialog.appendTo("body").igDialog("close");
+	$dialog.remove();
 });
 
 QUnit.test("[ID7] setting mainElement at runtime", function (assert) {
@@ -673,7 +673,7 @@ QUnit.test("[ID17] toPX", function (assert) {
 });
 
 QUnit.test("[ID18] change locale", function (assert) {
-	var $dialog = this.util.appendToFixture(this.divTag);
+	var $dialog;
 	$dialog = $("<div></div>")
 		.igDialog({
 			position: [100, 100]
@@ -686,6 +686,7 @@ QUnit.test("[ID18] change locale", function (assert) {
 	$dialog.data().igDialog.changeLocale();
 
 	assert.equal(closeButton[0].getAttribute('title'), 'Cerrar', "The title of the Close Button is localized to 'Cerrar'");
+	$dialog.remove();
 });
 
 QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fire 'animationEnded'", function (assert) {
