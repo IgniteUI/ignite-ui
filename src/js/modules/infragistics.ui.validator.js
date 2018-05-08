@@ -1752,7 +1752,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 	_getEditor: function (elem) {
 		// check if initialized on a editor control:
 		var widgets = elem.data(),
-			controls = [ "Editor", "Combo", "Rating", "DatePicker" ],
+			controls = [ "Editor", "Combo", "Rating", "DatePicker", "TimePicker" ],
 
 			// regEx results in something like /ig.*?(Editor|Combo|Rating)/
 			regEx = new RegExp("ig.*?(" + controls.join("|") + ")");
