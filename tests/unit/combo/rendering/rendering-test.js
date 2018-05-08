@@ -18,8 +18,10 @@ QUnit.module("igCombo rendering unit tests", {
 
 		// Adding tolerance for inconsistencies between the running engine and real browsers
 		if (tolerance && tolerance.width && tolerance.height) {
-			this.assert.ok(width - tolerance.width <= $elem.outerWidth() && width + tolerance.width >= $elem.outerWidth(), width, elName + ' width is not correct');
-			this.assert.ok(height - tolerance.height <= $elem.outerHeight() && height + tolerance.height >= $elem.outerHeight(), height, elName + ' height is not correct');
+			this.assert.ok(width - tolerance.width <= $elem.outerWidth() && width + tolerance.width >= $elem.outerWidth(),
+				`${elName} width is not correct: ${$elem.outerWidth()}, exp: ${width}`);
+			this.assert.ok(height - tolerance.height <= $elem.outerHeight() && height + tolerance.height >= $elem.outerHeight(),
+				`${elName} height is not correct: ${$elem.outerHeight()}, exp: ${height}`);
 		} else {
 			this.assert.strictEqual($elem.outerWidth(), width, elName + ' width is not correct');
 			this.assert.strictEqual($elem.outerHeight(), height, elName + ' height is not correct');
@@ -522,7 +524,7 @@ QUnit.test('[ID8] igCombo virtualization tests', function (assert) {
 	assert.ok($scroll.hasClass('ui-unselectable'), "The scroll should not be selectable.");
 
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.ok(scrollHeight - 80 <= $scroll.height() && scrollHeight + 80 >= $scroll.height(), scrollHeight, 'Scroll has wrong height.')
+	assert.ok(scrollHeight - 80 <= $scroll.height() && scrollHeight + 80 >= $scroll.height(), `Scroll has wrong height: ${$scroll.height()}, exp: ${scrollHeight}`);
 	// equal($scroll.height(), scrollHeight, "Scroll has wrong height.");
 
 	$listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder')
@@ -585,13 +587,15 @@ QUnit.test('[ID9] igCombo drop down opening', function (assert) {
 		assert.ok(isDropDownOpen, 'dropDownOpened is incorrect');
 
 		// Adding tolerance for inconsistencies between the running engine and real browsers
-		assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+		assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight,
+			`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 
 		// Open drop down again
 		$combo.igCombo('openDropDown');
 
 		// Adding tolerance for inconsistencies between the running engine and real browsers
-		assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+		assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight,
+			`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 		//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 		done();
 	}).catch(function (er) {
