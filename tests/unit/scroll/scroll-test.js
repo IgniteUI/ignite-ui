@@ -877,17 +877,14 @@ QUnit.test(testId_26, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
-
     var vTrack = this.vTrack(this.vhScrollId),
         hTrack = this.hTrack(this.vhScrollId);
-
     var vDragHeightOld = parseInt(this.vDrag(this.vhScrollId).css("height"), 10);
     var hDragWidthOld = parseInt(this.hDrag(this.vhScrollId).css("width"), 10);
     //Make it smaller
     this.vhScroll().css("height", "300px");
     this.vhScroll().css("width", "500px");
     this.vhScroll().igScroll("refresh");
-
     var vDragHeightNew = parseInt(this.vDrag(this.vhScrollId).css("height"), 10);
     var hDragWidthNew = parseInt(this.hDrag(this.vhScrollId).css("width"), 10);
     assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "300px", "igScroll container did not update it's height");
@@ -898,17 +895,15 @@ QUnit.test(testId_26, function (assert) {
     assert.ok(500 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update horizontal track width");
     assert.ok(vDragHeightOld > vDragHeightNew, "igScroll did not update vertical thumb drag height");
     assert.ok(hDragWidthOld > hDragWidthNew, "igScroll did not update horizontal thumb drag width");
-    
+ 
     vDragHeightOld = vDragHeightNew;
     hDragWidthOld = hDragWidthNew;
     //Make it bigger
     this.vhScroll().css("height", "500px");
     this.vhScroll().css("width", "700px");
     this.vhScroll().igScroll("refresh");
-
     vDragHeightNew = parseInt(this.vDrag(this.vhScrollId).css("height"), 10);
     hDragWidthNew = parseInt(this.hDrag(this.vhScrollId).css("width"), 10);
-
     vDragHeight = Math.floor((this.vhScroll().height() - 3 * 15) * ((this.vhScroll().height() / this.elemContent(this.vhScrollId).height())));
     hDragWidth = Math.floor((this.vhScroll().width() - 3 * 15) * (this.vhScroll().width() / this.elemContent(this.vhScrollId).width()));
     assert.equal(this.scrollContainer(this.vhScrollId).css("height"), "500px", "igScroll container did not update it's height");
@@ -3123,7 +3118,7 @@ QUnit.test(testId_113, function (assert) {
         touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }], wheelEvt;
 
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    var done, self = this;
+    var done = assert.async(), self = this;
     $("body").append($(verticalScrollbar));
     assert.expect(2);
     this.vhScroll().igScroll({
@@ -3137,9 +3132,7 @@ QUnit.test(testId_113, function (assert) {
         var currentPos = event.target.scrollTop;
         self.scrollContainer(self.vhScrollId).scrollTop(currentPos);
     });
-
-    done = assert.async();
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 50);
     this.testUtil.wait(1000).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 52, "content is scrolled by the custom vertical scrollbar properly");
         assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 52, "custom scrollbar has it's position updated on touch swipe with no inertia");
