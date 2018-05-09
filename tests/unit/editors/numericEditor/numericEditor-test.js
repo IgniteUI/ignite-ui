@@ -2390,14 +2390,16 @@ QUnit.test("Test minDecimals/maxDecimals options", function (assert) {
 		errorMessage = $.ig.util.stringFormat($.ig.Editor.locale.decimalNumber, mode, "{optionName}", boundary);
 		for (index = 0; index < testData.length; index++) {
 			assert.throws(function () {
-				$editor = $(this.inputTag).igNumericEditor({
+				$editor = $(this.inputTag);
+				$editor.igNumericEditor({
 					dataMode: mode,
 					minDecimals: testData[index]
 				});
 			}, Error(errorMessage.replace("{optionName}", "minDecimals")), "Exception should be thrown");
 			$editor.remove();
 			assert.throws(function () {
-				$editor = $(this.inputTag).igNumericEditor({
+				$editor = $(this.inputTag);
+				$editor.igNumericEditor({
 					dataMode: mode,
 					maxDecimals: testData[index]
 				});

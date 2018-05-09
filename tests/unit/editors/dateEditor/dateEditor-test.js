@@ -227,18 +227,17 @@ QUnit.test('Set dateDisplayFormat', function (assert) {
 
 QUnit.test('Initialize minVal and maxVal with wrong values', function (assert) {
 	assert.expect(2);
-	var $editor;
+	var $editor = $(this.inputTag);
 	// init MinVal
 	assert.throws(function () {
-		$editor = $(this.inputTag);
 		$editor.igDateEditor({
 			minValue: "wrong value"
 		});
 	}, "Uncaught Error: minValue option is not valid date");
-	
+	$editor.remove();
 	// init MinVal
+	$editor = $(this.inputTag);
 	assert.throws(function () {
-		$editor = $(this.inputTag);
 		$editor.appendToFixture(this.inputTag).igDateEditor({
 			maxValue: "wrong value"
 		});

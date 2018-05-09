@@ -32,7 +32,7 @@ QUnit.test('Editors initialization.', function (assert) {
 	assert.expect(8);
 
 	var $editorInInput = this.util.appendToFixture(this.inputTag),
-		$editorInDiv = this.util.appendToFixture(this.divTag),
+		$editorInDiv = $(this.divTag),
 		$textEditorInTextArea = this.util.appendToFixture(this.textareaTag),
 		$textEditorInDiv = this.util.appendToFixture(this.divTag);
 
@@ -49,19 +49,25 @@ QUnit.test('Editors initialization.', function (assert) {
 			messages: this.messages
 		});
 
+	var $errorEditor;
 	assert.throws(function () {
-		$editorInInput.igBaseEditor();
+		$errorEditor = $(this.inputTag);
+		$errorEditor.igBaseEditor();
 	},
 		Error($.ig.Editor.locale.renderErrMsg),
 		"igBaseEditor should not be initialized"
 	);
+	$errorEditor.remove();
 
+	var $errorTextArea;
 	assert.throws(function () {
-		$textEditorInTextArea.igTextEditor();
+		$errorTextArea = $(this.textareaTag);
+		$errorTextArea.igTextEditor();
 	},
 		Error($.ig.Editor.locale.multilineErrMsg),
 		"You should have the type of the editor as multiline"
 	);
+	$errorTextArea.remove();
 
 	assert.ok(typeof ($editorInInput.igTextEditor) === 'function', "Editors Script is not loaded");
 	assert.ok($editorInInput.data("igTextEditor") !== undefined, 'Error creating igTextEditor in an input');
@@ -69,6 +75,7 @@ QUnit.test('Editors initialization.', function (assert) {
 	assert.throws(function () {
 		$editorInDiv.igBaseEditor();
 	}, "Base editor should not be instantiated");
+	$editorInDiv.remove();
 	assert.equal($editorInInput.igTextEditor("value"), "input value", 'The initial value is not as expexted');
 	assert.equal($textEditorInDiv.igTextEditor("value"), "div value", 'The initial value is not as expexted');
 

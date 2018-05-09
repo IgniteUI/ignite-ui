@@ -61,12 +61,14 @@ QUnit.test('[ID1] Checkbox Editor initialization.', function (assert) {
 		'Error creating igCheckboxEditor in an INPUT');
 	assert.notStrictEqual($chkInSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
 	assert.equal($chkInInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+	var $labelElem = $(this.labelTag);
 	assert.throws(function () {
-			$chkLabel.igCheckboxEditor();
+			$labelElem.igCheckboxEditor();
 		},
 		Error($.ig.Editor.locale.instantiateCheckBoxErrMsg),
 		"igCheckboxEditor requires a different element. Use INPUT, SPAN or DIV element."
 	);
+	$labelElem.remove();
 	assert.equal($chkInInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox",
 		'Type of igCheckboxEditor is not checkbox');
 	assert.equal($chkInDiv.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox",
