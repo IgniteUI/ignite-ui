@@ -11122,6 +11122,7 @@
 					// D.P. 19th Dec 2017 #1453 - Entered date is converted to today's date when pressing the Enter key
 					// Double onSelect bug + getDate cause a parse on the text we already formatted, setting lastVal skips that:
 					inst.lastVal = self._getEditModeValue();
+					self._editorInput.val(inst.lastVal);
 					self._triggerItemSelected.call(self,
 						inst.dpDiv.find(".ui-datepicker-calendar>tbody>tr>td .ui-state-hover"),
 							dateFromPicker);
