@@ -732,7 +732,7 @@ QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", fun
 		modal: true,
 		height: '400px',
 		width: '600px',
-		openAnimation: { effect: 'scale', duration: 1000 },
+		openAnimation: { effect: 'scale', duration: 300 },
 		stateChanged: function (evt, ui) {
 			if (ui.action === 'close') {
 			}
@@ -740,7 +740,7 @@ QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", fun
 		}
 	});
 	var done = assert.async();
-	this.util.wait(1000).then(function(){
+	this.util.wait(320).then(function(){
 		var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
 		assert.ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
 		done();

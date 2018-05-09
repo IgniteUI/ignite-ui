@@ -1,7 +1,7 @@
 QUnit.module("igTextEditor unit tests", {
 	divTag: '<div></div>',
 	spanTag: '<span></span>',
-	inputTag: '<input></input>',
+	inputTag: '<input />',
 	textareaTag: '<textarea></textarea>',
 	util: $.ig.TestUtil,
 	editor: null,
@@ -392,15 +392,15 @@ QUnit.test("Lists testing", function (assert) {
 		itemSelecting: function () { itemselecting = true; },
 		itemSelected: function () { itemselected = true; }
 	});
-	editor.on("igtexteditorvaluechanging", function (e, args) {
+	editor.on("igtexteditorvaluechanging.test", function (e, args) {
 		assert.equal(args.newValue, "item1", "Value changing event is not fired with correct new value");
 		valuechanging = true;
 	});
-	editor.on("igtexteditorvaluechanged", function (e, args) {
+	editor.on("igtexteditorvaluechanged.test", function (e, args) {
 		assert.equal(args.newValue, "item1", "Value changed event is not fired with correct new value");
 		valuechanged = true;
 	});
-	editor.on("igtexteditortextchanged", function (e, args) {
+	editor.on("igtexteditortextchanged.test", function (e, args) {
 		assert.equal(args.text, "item1", "Text changed event is not fired with correct new value");
 		textchanged = true;
 	});
@@ -436,13 +436,13 @@ QUnit.test("Lists testing", function (assert) {
 	this.input().trigger("blur");
 	assert.ok(closing, "dropDownListClosing event not fired");
 	assert.ok(closed, "dropDownListClosed event not fired");
-	editor.off();
+	editor.off(".test");
 	editor.igTextEditor("setFocus");
 	this.util.wait(100).then(function () {
 		self.util.paste(self.input()[0], "newVal");
-		self.input().blur();
 		return self.util.wait(100);
 	}).then(function () {
+		self.input().blur();
 		assert.equal(editor.igTextEditor("value"), "item1", "The value after paste is not newVal");
 		editor.igTextEditor("value", "newVal1");
 		assert.equal(editor.igTextEditor("value"), "", "The value after paste is empty");
