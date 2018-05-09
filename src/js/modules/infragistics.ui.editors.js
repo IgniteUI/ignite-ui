@@ -11964,23 +11964,31 @@
 			}
 		},
 		_detachEvents: function () {
-			this._editorContainer
-				.off("click.editor mousedown.editor focus.editor blur.editor keydown.editor");
+			if (this._editorContainer) {
+				this._editorContainer
+					.off("click.editor mousedown.editor focus.editor blur.editor keydown.editor");
+			}
 			this._super();
 		},
 		_clearStyling: function () {
-			this._editorContainer
-				.removeClass(this.css.checkboxContainer)
-				.removeClass(this.css.containerChecked)
-				.removeAttr("role");
-			this._editorInput
-				.removeClass(this._checkedClass)
-				.removeClass(this._uncheckedClass)
-				.removeClass(this.css.checkboxIcon)
-				.removeClass(this.options.iconClass);
-			this._valueInput
-				.removeClass(this.css.checkboxInput)
-				.removeAttr("aria-hidden");
+			if (this._editorContainer) {
+				this._editorContainer
+					.removeClass(this.css.checkboxContainer)
+					.removeClass(this.css.containerChecked)
+					.removeAttr("role");
+			}
+			if (this._editorInput) {
+				this._editorInput
+					.removeClass(this._checkedClass)
+					.removeClass(this._uncheckedClass)
+					.removeClass(this.css.checkboxIcon)
+					.removeClass(this.options.iconClass);
+			}
+			if (this._valueInput) {
+				this._valueInput
+					.removeClass(this.css.checkboxInput)
+					.removeAttr("aria-hidden");
+			}
 			this._super();
 		},
 		_deleteInternalProperties: function () {
