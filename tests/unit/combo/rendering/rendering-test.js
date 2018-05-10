@@ -2,6 +2,10 @@ QUnit.module("igCombo rendering unit tests", {
 	divTag: '<div></div>',
 	inputTag: '<input></input>',
 	assert: null,
+	before: function () {
+		$("html").css("font-size", "16px");
+		$("html").css("line-height", "1.2");
+	},
 	getClassesCount: function ($elem) {
 		var classAttr = $elem.attr('class');
 
