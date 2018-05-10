@@ -860,7 +860,7 @@ QUnit.test(testId_25, function (assert) {
     assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 80, "igScroll did not scroll properly with smoothing on");
     this.scrollContainer(this.vhScrollId).trigger(wheelEvtUp);
     done = assert.async();
-    this.testUtil.wait(2000).then(function () {
+    this.testUtil.wait(2200).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 0, "igScroll did not scroll properly with smoothing on");
         self.vhScroll().remove();
         done();

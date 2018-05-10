@@ -339,10 +339,10 @@ QUnit.test(testId_29, function (assert) {
 	this.testUtil.wait(1000).then(function () {
 		done();
 		assert.ok($('#img1_popover_contentFrame').css("display") !== "none", "Popover content not shown!");
-		assert.ok($('#img1_popover_contentFrame').css("max-height") === "450px", "The max-height is not equal to the set one");
-		assert.ok($('#img1_popover_contentFrame').css("max-width") === "450px", "The max-width is not equal to the set one");
-		assert.ok($('#img1_popover_contentFrame').css("height") === "300px", "The height is not equal to the set one");
-		assert.ok($('#img1_popover_contentFrame').css("width") === "400px", "The width is not equal to the set one");
+		assert.equal($('#img1_popover_contentFrame').css("max-height"), "450px", "The max-height is not equal to the set one");
+		assert.equal($('#img1_popover_contentFrame').css("max-width"), "450px", "The max-width is not equal to the set one");
+		assert.equal($('#img1_popover_contentFrame').css("height"), "300px", "The height is not equal to the set one");
+		assert.equal($('#img1_popover_contentFrame').css("width"), "400px", "The width is not equal to the set one");
 		self.checkClass($('#img1_popover_arrow'), 'ui-igpopover-arrow-left');
 		$('#img1_popover_closeBtn').trigger("click");
 	}).catch(function (er) {

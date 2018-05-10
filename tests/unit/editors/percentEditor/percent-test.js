@@ -101,9 +101,9 @@ QUnit.test('[ID3] Runtime Min/Max value', function (assert) {
 QUnit.test('[ID4] Editors initialization with display factor different from 1 and 100', function (assert) {
 	assert.expect(3);
 
-	var editorInput3 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor3" });
-	var editorInput4 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor4" });
-	var editorInput5 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor5" });
+	var editorInput3 = $(this.inputTag, { id: "pEditor3" });
+	var editorInput4 = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "pEditor4ID4" });
+	var editorInput5 = $(this.inputTag, { id: "pEditor5" });
 	editorInput4.igPercentEditor({
 		displayFactor: 100,
 		dataMode: 'float',
@@ -115,11 +115,13 @@ QUnit.test('[ID4] Editors initialization with display factor different from 1 an
 			displayFactor: 50
 		});
 	}, "There is no exception when the display factor is not 1 or 100");
+	editorInput3.remove();
 	assert.throws(function () {
 		editorInput5.igPercentEditor({
 			displayFactor: "50"
 		});
 	}, "DisplayFactor option is of type number");
+	editorInput5.remove();
 	assert.throws(function () {
 		editorInput4.igPercentEditor("option", "displayFactor", "14");
 	}, "DisplayFactor option is of type number");
