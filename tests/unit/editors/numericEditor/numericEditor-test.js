@@ -1915,22 +1915,16 @@ QUnit.test('Paste and insert', function (assert) {
 	this.util.paste(editorInput[0], "33");
 
 	this.util.wait(20).then(function () {
-		var parseInt;
 
 		assert.equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
 		assert.equal(editorInput.val(), "33", "The text after paste is not correct");
 
 		// paste "+0024" in front, ultimately only adding 24:
 		editorInput[0].setSelectionRange(0, 0);
-		parseInt = window.parseInt;
-		window.parseInt = function (val, radix) {
-			return parseInt(val, 10); // we don't parseInt like it's ES3 anymore...
-		};
 
 		util.paste(editorInput[0], "+0024");
 		return util.wait(20);
 	}).then(function () {
-		window.parseInt = parseInt;
 		assert.equal(editorInput[0].selectionStart, 2, "Cursor position not correct after paste. Should be like [24|33]");
 		assert.equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
 

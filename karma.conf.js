@@ -86,6 +86,7 @@ module.exports = function(config) {
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-fr.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-bg.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-es.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-en.js", // Must be last so EN can stay default
 
       // DV files for zoombar tests:
