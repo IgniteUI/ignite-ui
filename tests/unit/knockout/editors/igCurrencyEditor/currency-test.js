@@ -51,12 +51,13 @@ QUnit.module("Knockout unit tests for igCurrencyEditor", {
 		this.nullValue = ko.observable(null);
 		this.eventTriggered = false;
 	},
-	before: function () {
+	beforeEach: function () {
 		this.appendToFixture();
 		this.model = new this.viewModel();
-		ko.applyBindings(this.model);
+		ko.applyBindings(this.model, this.qunitFixture[0]);
 	},
-	after: function () {
+	afterEach: function () {
+		ko.cleanNode(this.qunitFixture[0]);
 		$('#permanent-qunit-fixture').remove();
 	},
 	input: function() {
@@ -71,8 +72,6 @@ QUnit.module("Knockout unit tests for igCurrencyEditor", {
 	dropDownButton: function() {
 		return this.editor.igCurrencyEditor("dropDownButton");
 	},
-	beforeEach: function () { $.fx.off = true; },
-	afterEach: function () { $.fx.off = false; },
 	checkAllValues: function (val, message) {
 		this.assert.equal($('#inputEditor1').igCurrencyEditor("value"), val, message + " (inputEditor)");
 		this.assert.equal($('#divEditor1').igCurrencyEditor("value"), val, message + " (divEditor1)");

@@ -1598,7 +1598,7 @@ QUnit.test('[ID65] igHtmlEditor rendering tests - Adjust domPathToolbar width wh
 QUnit.test('[ID66] igHtmlEditor popover tests - setOptions method with name isHidden', function (assert) {
 	assert.expect(1);
 
-	$.ig.TestUtil.appendToFixture('<div id= targetId ></div><div id= popOverId></div>');
+	$.ig.TestUtil.appendToFixture('<div id="targetId"></div><div id="popOverId"></div>');
 	$("#popOverId").igHtmlEditorPopover({
 		target: $("#targetId")
 	});

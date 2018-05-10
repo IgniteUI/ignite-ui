@@ -60,6 +60,10 @@ QUnit.module("Runtime locale changes unit tests", {
 		]
 	}
 	],
+	after: function () {
+		// restore default locale when done
+		$.ig.util.changeGlobalLanguage("en");
+	},
 	createUpload : function () {
 		if ($("#upload_lang").length > 0) {
 			$("#upload_lang").remove();
@@ -300,6 +304,7 @@ QUnit.test('[ID2] Locale lowercase fallback', function (assert) {
 	assert.equal($elem.igMock("checkLocale", "test"), $.ig.locale.bg.Mock.test, "The locale value should be corrct");
 	$elem.igMock("option", "language", "ja");
 	assert.equal($elem.igMock("checkLocale", "test"), $.ig.locale.bg.Mock.test, "The locale value should fallback to default");
+	$elem.remove();
 });
 
 QUnit.test('[ID3] Changing language globally', function (assert) {
