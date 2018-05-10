@@ -786,6 +786,10 @@
             _removeClasses: function () {
                 var buttonLeft, buttonRight, resizeHandler, i;
                 this.element.removeClass(this.css.splitter);
+                if (!this._splitter && !this._panels) {
+                    // D.P. If _create threw this._splitter is not assigned
+                    return;
+                }
                 for (i = 0; i < this._panels.length; i++) {
                     this._panels[ i ].removeClass(this.css[ this.options.orientation + "Panel" ]);
                 }
@@ -850,6 +854,10 @@
                 }
             },
             _removeEventHandlers: function () {
+                if (!this._splitter) {
+                    // D.P. If _create threw this._splitter is not assigned
+                    return;
+                }
                 $(this._splitter.bar).unbind(this._getEvent("focus"),
                     this._getEvent("blur"),
                     this._getEvent("keydown"));

@@ -1490,6 +1490,7 @@ QUnit.test('Test 46: igSplitter when disabled and try to fire mousedown, mousele
 
 QUnit.test('Test 47: igSplitter exception on initialize', function(assert) {
 	assert.expect(1);
+	var $elem = $(this.divTag);
 	assert.throws(
 		function() {
 			var options = {
@@ -1500,11 +1501,12 @@ QUnit.test('Test 47: igSplitter exception on initialize', function(assert) {
 				],
 				ID: 'splitterExceptions'
 			};
-			this.addSplitter(options);
+			$elem.igSplitter(options);
 		},
 		new Error($.ig.Splitter.locale.errorPanels),
 		"Initializing more than 2 panels throws an error"
 	);
+	$elem.igSplitter("destroy");
 });
 
 QUnit.test('Test 48: igSplitter exception on _setOption', function(assert) {
