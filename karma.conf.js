@@ -81,10 +81,13 @@ module.exports = function(config) {
       ...filesConfig.lobBundle("src"),
       "src/js/extensions/infragistics.ui.*.knockout-extensions.js",
 
+      //"src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-ja.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-de.js",
-      "src/js/modules/i18n/regional/infragistics.ui.regional-en.js",
       "src/js/modules/i18n/regional/infragistics.ui.regional-fr.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-bg.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-es.js",
+      "src/js/modules/i18n/regional/infragistics.ui.regional-en.js", // Must be last so EN can stay default
 
       // DV files for zoombar tests:
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css", included: true, watched: false },
@@ -118,6 +121,7 @@ module.exports = function(config) {
       "tests/unit/common/simInteractions.js",
       "tests/test-patch.js",
       "tests/unit/splitter/jquery.simulate.js",
+      "tests/unit/upload/mockServerUpload.js",
 
       { pattern: "tests/unit/loader/empty.*", included: false, served: true, watched: false },
       { pattern: "tests/unit/tree/data/*", included: false, served: true, watched: false },

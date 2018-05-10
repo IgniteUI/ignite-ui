@@ -828,27 +828,31 @@
 		_attachEventsToTarget: function () {
 			var self = this, t = this._target,
 				showEvt, hideEvt, targetShowEvt, targetHideEvt;
-			if (this.options.showOn && this.options.showOn.match(/click|focus|mouseenter/)) {
-				switch (this.options.showOn) {
-					case "click":
-						showEvt = "click.popover";
-						hideEvt = "blur.popover";
-						targetShowEvt = self._targetClick;
-						targetHideEvt = self._targetBlur;
-						break;
-					case "focus":
-						showEvt = "focusin.popover";
-						hideEvt = "focusout.popover";
-						targetShowEvt = self._focusin;
-						targetHideEvt = self._focusout;
-						break;
-					case "mouseenter":
-						showEvt = "mouseenter.popover";
-						hideEvt = "mouseleave.popover";
-						targetShowEvt = self._targetMouseMove;
-						targetHideEvt = self._targetMouseLeave;
-						break;
-				}
+
+			switch (this.options.showOn) {
+				case "click":
+					showEvt = "click.popover";
+					hideEvt = "blur.popover";
+					targetShowEvt = self._targetClick;
+					targetHideEvt = self._targetBlur;
+					break;
+				case "focus":
+					showEvt = "focusin.popover";
+					hideEvt = "focusout.popover";
+					targetShowEvt = self._focusin;
+					targetHideEvt = self._focusout;
+					break;
+				case "mouseenter":
+					showEvt = "mouseenter.popover";
+					hideEvt = "mouseleave.popover";
+					targetShowEvt = self._targetMouseMove;
+					targetHideEvt = self._targetMouseLeave;
+					break;
+				default:
+
+					/* D.P. Don't unbind with undefined or attach events when
+					showOn is disabled explicitly (null), inheriting widgets case */
+					return;
 			}
 			/* K.D. July 18th, 2012 Bug #117374 The HTMLElement object is natively not defined in IE <= 8
 			Abstain from referring to "natively" defined objects as we're not sure in what cases they would

@@ -491,7 +491,7 @@ QUnit.test(testId_1, function (assert) {
     this.vhScroll().igScroll({ modifyDOM: true });
     assert.ok(typeof this.vhScroll().igScroll === 'function', "igScroll script did not load");
     assert.ok(typeof this.vhScroll().data("igScroll") === "object", "igScroll did not initialize");
-    this.vhScroll().remove;
+    this.vhScroll().remove();
 });
 
 QUnit.test(testId_2, function (assert) {
@@ -2778,7 +2778,7 @@ QUnit.test(testId_100, function (assert) {
 });
 
 QUnit.test(testId_101, function (assert) {
-    $("#body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
+    $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     this.vhScroll().igScroll({
         modifyDOM: true
     });

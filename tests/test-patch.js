@@ -2,7 +2,13 @@
 QUnit.testDone( ( { module, name, total, passed, failed, skipped, todo, runtime } ) => {
 	// QUnit and adapter use `innerHTML`/`removeChild` on start
 	// Ensure proper destroy on controls after test:
+	$("#qunit-fixture").children().remove(); //because `empty()` uses a live HTMLCollection in a loop that can skip items
 	$("#qunit-fixture").empty();
+
+	if ($.ig.util.widgetStack.length) {
+		QUnit.pushFailure(`WARNING: ${$.ig.util.widgetStack.length} widgets left after running ${module} - ${name}`);
+		$.ig.util.widgetStack = [];
+	}
 });
 
 $.mockjaxSettings.logging = 0;  // only critical error messages

@@ -393,7 +393,7 @@ QUnit.test("[ID6] inner controls/frames", function (assert) {
 
 	$dialog.igDialog("minimize");
 	assert.equal($testFrame.contents().find('body').text(), text, "Internal frame lost its content on minimize");
-	$dialog.appendTo("body").igDialog("close");
+	$dialog.remove();
 });
 
 QUnit.test("[ID7] setting mainElement at runtime", function (assert) {
@@ -673,7 +673,7 @@ QUnit.test("[ID17] toPX", function (assert) {
 });
 
 QUnit.test("[ID18] change locale", function (assert) {
-	var $dialog = this.util.appendToFixture(this.divTag);
+	var $dialog;
 	$dialog = $("<div></div>")
 		.igDialog({
 			position: [100, 100]
@@ -686,6 +686,7 @@ QUnit.test("[ID18] change locale", function (assert) {
 	$dialog.data().igDialog.changeLocale();
 
 	assert.equal(closeButton[0].getAttribute('title'), 'Cerrar', "The title of the Close Button is localized to 'Cerrar'");
+	$dialog.remove();
 });
 
 QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fire 'animationEnded'", function (assert) {
@@ -731,7 +732,7 @@ QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", fun
 		modal: true,
 		height: '400px',
 		width: '600px',
-		openAnimation: { effect: 'scale', duration: 1000 },
+		openAnimation: { effect: 'scale', duration: 300 },
 		stateChanged: function (evt, ui) {
 			if (ui.action === 'close') {
 			}
@@ -739,7 +740,7 @@ QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", fun
 		}
 	});
 	var done = assert.async();
-	this.util.wait(1000).then(function(){
+	this.util.wait(320).then(function(){
 		var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
 		assert.ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
 		done();

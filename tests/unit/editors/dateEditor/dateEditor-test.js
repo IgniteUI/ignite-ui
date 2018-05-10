@@ -158,9 +158,8 @@ QUnit.test('Set options, Apply options test', function (assert) {
 	$editor.remove();
 
 	// set invalid centuryThreshold. There is no longer setDefault functionality for invalid centuryThreshold 
-	$editor = this.util.appendToFixture(this.inputTag);
-
 	assert.throws(function () {
+		$dtEditor = $(this.inputTag);
 		$dtEditor.igDateEditor({
 			centuryThreshold: 100,
 			value: '01/09/50',
@@ -169,8 +168,10 @@ QUnit.test('Set options, Apply options test', function (assert) {
 	},
 		Error($.ig.Editor.locale.centuryThresholdValidValues),
 		"Invalid centuryThreshold is set.");
+	$dtEditor.remove();
 
 	assert.throws(function () {
+		$editor = $(this.inputTag);
 		$editor.igDateEditor({
 			centuryThreshold: -1,
 			value: '01/09/50',
@@ -179,6 +180,7 @@ QUnit.test('Set options, Apply options test', function (assert) {
 	},
 		Error($.ig.Editor.locale.centuryThresholdValidValues),
 		"Invalid centuryThreshold is set.");
+	$dtEditor.remove()
 	$editor.remove();
 });
 
@@ -225,20 +227,22 @@ QUnit.test('Set dateDisplayFormat', function (assert) {
 
 QUnit.test('Initialize minVal and maxVal with wrong values', function (assert) {
 	assert.expect(2);
+	var $editor = $(this.inputTag);
 	// init MinVal
 	assert.throws(function () {
-		$editor.remove();
-		this.util.appendToFixture(this.inputTag).igDateEditor({
+		$editor.igDateEditor({
 			minValue: "wrong value"
 		});
 	}, "Uncaught Error: minValue option is not valid date");
-
+	$editor.remove();
 	// init MinVal
+	$editor = $(this.inputTag);
 	assert.throws(function () {
-		this.util.appendToFixture(this.inputTag).igDateEditor({
+		$editor.appendToFixture(this.inputTag).igDateEditor({
 			maxValue: "wrong value"
 		});
 	}, "Uncaught Error: maxValue option is not valid date");
+	$editor.remove();
 });
 
 // Bug 
@@ -2436,7 +2440,8 @@ QUnit.test('Testing date formats with offset defined', function (assert) {
 		$dtEditor.remove();
 
 		assert.throws(function () {
-			util.appendToFixture(inputTag).igDateEditor({
+			$dtEditor = $(inputTag);
+			$dtEditor.igDateEditor({
 				value: new Date("2016-10-30T13:25:56.0000000Z"),
 				dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 				displayTimeOffset: 1860,
@@ -2447,6 +2452,7 @@ QUnit.test('Testing date formats with offset defined', function (assert) {
 				return err.message === $.ig.Editor.locale.dateEditorOffsetRange;
 			},
 			'Wrong offset error not thrown');
+		$dtEditor.remove();
 
 		$dtEditor = util.appendToFixture(inputTag).igDateEditor({
 			value: new Date("2016-03-26T23:59:56.0000000Z"),
