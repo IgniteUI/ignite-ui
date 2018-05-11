@@ -135,7 +135,7 @@ module.exports = function(config) {
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      `tests/${testPath}/*-test.js`
+      `tests/${testPath}/*-test?(s).js`
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,

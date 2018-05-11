@@ -430,6 +430,7 @@ QUnit.test('[ID3] Validator show errors on submit', function (assert) {
 	$("#target2").val("a");
 	shouldSubmit = true;
 	submitBtn.click();
+	$.ui.igValidator.defaults.showAllErrorsOnSubmit = true;
 });
 
 QUnit.test('[ID4] Validator API', function (assert) {
@@ -693,72 +694,64 @@ QUnit.test('[ID4] Validator API', function (assert) {
 	assert.ok(validatorInput.igValidator("notifier").isVisible(), "Setting invalid message target should revert to notifier");
 
 	//Field messages
-	var done = assert.async();
-	$.ig.TestUtil.wait(100).then(function () {
-		assert.ok(validationForm2.igValidator("isMessageDisplayed", 0), "isMessageDisplayed should return true on field with error");
-		assert.ok(validationForm2.igValidator("isMessageDisplayed", "#msgInput"), "isMessageDisplayed should return true on field with messageTarget");
-		assert.notOk(validationForm2.igValidator("isMessageDisplayed", 2), "isMessageDisplayed should not return cumulative true for bad field prameter");
-		assert.ok(validationForm2.igValidator("isMessageDisplayed"), "isMessageDisplayed should not return cumulative false for fields with visible error");
+	assert.ok(validationForm2.igValidator("isMessageDisplayed", 0), "isMessageDisplayed should return true on field with error");
+	assert.ok(validationForm2.igValidator("isMessageDisplayed", "#msgInput"), "isMessageDisplayed should return true on field with messageTarget");
+	assert.notOk(validationForm2.igValidator("isMessageDisplayed", 2), "isMessageDisplayed should not return cumulative true for bad field prameter");
+	assert.ok(validationForm2.igValidator("isMessageDisplayed"), "isMessageDisplayed should not return cumulative false for fields with visible error");
 
-		validationForm1.igValidator("isValid");
-		assert.equal(validationForm1.igValidator("getErrorMessages").length, 2, "Number of messages from getErrorMessages should be equal to 2");
-		assert.notOk(validationForm1.igValidator("isMessageDisplayed", 0), "isMessageDisplayed should return false for field with visible error");
-		assert.notOk(validationForm1.igValidator("isMessageDisplayed", 1), "isMessageDisplayed should return false for valid field with no success message");
+	validationForm1.igValidator("isValid");
+	assert.equal(validationForm1.igValidator("getErrorMessages").length, 2, "Number of messages from getErrorMessages should be equal to 2");
+	assert.notOk(validationForm1.igValidator("isMessageDisplayed", 0), "isMessageDisplayed should return false for field with visible error");
+	assert.notOk(validationForm1.igValidator("isMessageDisplayed", 1), "isMessageDisplayed should return false for valid field with no success message");
 
-		// Field messageTarget
-		assert.equal(msgLabel.text(), validationForm2.igValidator("getErrorMessages", "#msgInput"), "Error message should be set properly on target");
-		assert.ok(msgLabel.hasClass("field-validation-error"), "Message target should be marked with proper class");
-		$("#msgInput").val(-33);
-		validationForm2.igValidator("validate", '#msgInput');
-		assert.notOk(validationForm2.igValidator("isMessageDisplayed", '#msgInput'), "Error-only messageTarget should be hidden on success");
-		assert.ok(msgLabel.hasClass("field-validation-error"), "Message target should be marked with proper class");
+	// Field messageTarget
+	assert.equal(msgLabel.text(), validationForm2.igValidator("getErrorMessages", "#msgInput"), "Error message should be set properly on target");
+	assert.ok(msgLabel.hasClass("field-validation-error"), "Message target should be marked with proper class");
+	$("#msgInput").val(-33);
+	validationForm2.igValidator("validate", '#msgInput');
+	assert.notOk(validationForm2.igValidator("isMessageDisplayed", '#msgInput'), "Error-only messageTarget should be hidden on success");
+	assert.ok(msgLabel.hasClass("field-validation-error"), "Message target should be marked with proper class");
 
-		validationForm2.igValidator("updateField", '#msgInput', { successMessage: "Success" }); //Update merge
-		assert.ok(validationForm2.igValidator("option", 'fields')[1].successMessage === "Success" &&
-			validationForm2.igValidator("option", 'fields')[1].number, "updateField method should merge filed options");
-		validationForm2.igValidator("validate", '#msgInput');
-		assert.ok(validationForm2.igValidator("isMessageDisplayed", '#msgInput'), "Success messageTarget should be shown");
-		assert.ok(msgLabel.hasClass("field-validation-valid"), "Message target should be marked with proper class");
+	validationForm2.igValidator("updateField", '#msgInput', { successMessage: "Success" }); //Update merge
+	assert.ok(validationForm2.igValidator("option", 'fields')[1].successMessage === "Success" &&
+		validationForm2.igValidator("option", 'fields')[1].number, "updateField method should merge filed options");
+	validationForm2.igValidator("validate", '#msgInput');
+	assert.ok(validationForm2.igValidator("isMessageDisplayed", '#msgInput'), "Success messageTarget should be shown");
+	assert.ok(msgLabel.hasClass("field-validation-valid"), "Message target should be marked with proper class");
 
-		//Pre-check state
-		assert.ok(validationForm2.igValidator("isMessageDisplayed", 0) && validationForm2.igValidator("isMessageDisplayed", 1), "Validation messages should be displayed for all the fields");
-		validationForm2.igValidator("hide", validationForm2.igValidator("option", "fields")[1]);
-		assert.notOk(validationForm2.igValidator("isMessageDisplayed", 1), "isMessageDisplayed should return false for field after hide call");
+	//Pre-check state
+	assert.ok(validationForm2.igValidator("isMessageDisplayed", 0) && validationForm2.igValidator("isMessageDisplayed", 1), "Validation messages should be displayed for all the fields");
+	validationForm2.igValidator("hide", validationForm2.igValidator("option", "fields")[1]);
+	assert.notOk(validationForm2.igValidator("isMessageDisplayed", 1), "isMessageDisplayed should return false for field after hide call");
 
-		//Bug 216715:igValidator hide method not working correctly with fields collection
-		assert.ok(validationForm2.igValidator("isMessageDisplayed", 0), "Wrong error message should not be hidden on hide call with field parameter");
+	//Bug 216715:igValidator hide method not working correctly with fields collection
+	assert.ok(validationForm2.igValidator("isMessageDisplayed", 0), "Wrong error message should not be hidden on hide call with field parameter");
 
-		//Wrong index is ignored
-		validationForm2.igValidator("hide", 5);
-		assert.ok(validationForm2.igValidator("isMessageDisplayed", 0), "Hide method should be applied to fifth field only.");
+	//Wrong index is ignored
+	validationForm2.igValidator("hide", 5);
+	assert.ok(validationForm2.igValidator("isMessageDisplayed", 0), "Hide method should be applied to fifth field only.");
 
-		validationForm2.igValidator("hide");
-		assert.notOk(validationForm2.igValidator("isMessageDisplayed"), "Hide method should be applied to all fields.");
+	validationForm2.igValidator("hide");
+	assert.notOk(validationForm2.igValidator("isMessageDisplayed"), "Hide method should be applied to all fields.");
 
-		//Notifier
-		assert.equal(validationForm1.igValidator("notifier", 0).widgetName, $.ui.igNotifier.prototype.widgetName, "Field notifier should be returned when calling notifier method");
-		assert.equal(validationForm1.igValidator("notifier", 3), null, "Notifier method should return null for invalid field index");
-		//notifier required to apply target classes at minimum, must be initialized regardless of messageTarget
-		assert.equal(validationForm2.igValidator("notifier", "#msgInput").widgetName, $.ui.igNotifier.prototype.widgetName, "Notifier should be initialized on field with messageTarget");
-		validationForm1.igValidator("updateField", 0, { notificationOptions: { mode: "popover" } });
-		assert.equal(validationForm1.igValidator("notifier", 0).options.mode, "popover", "Notifier option should be set.");
-		validationForm1.igValidator("option", "notificationOptions", { mode: "inline" });
-		assert.equal(validationForm1.igValidator("notifier", 1).options.mode, "inline", "Notifier global option should be set");
-		assert.equal(validationForm1.igValidator("notifier", 0).options.mode, "popover", "Notifier global option should not override field option.");
+	//Notifier
+	assert.equal(validationForm1.igValidator("notifier", 0).widgetName, $.ui.igNotifier.prototype.widgetName, "Field notifier should be returned when calling notifier method");
+	assert.equal(validationForm1.igValidator("notifier", 3), null, "Notifier method should return null for invalid field index");
+	//notifier required to apply target classes at minimum, must be initialized regardless of messageTarget
+	assert.equal(validationForm2.igValidator("notifier", "#msgInput").widgetName, $.ui.igNotifier.prototype.widgetName, "Notifier should be initialized on field with messageTarget");
+	validationForm1.igValidator("updateField", 0, { notificationOptions: { mode: "popover" } });
+	assert.equal(validationForm1.igValidator("notifier", 0).options.mode, "popover", "Notifier option should be set.");
+	validationForm1.igValidator("option", "notificationOptions", { mode: "inline" });
+	assert.equal(validationForm1.igValidator("notifier", 1).options.mode, "inline", "Notifier global option should be set");
+	assert.equal(validationForm1.igValidator("notifier", 0).options.mode, "popover", "Notifier global option should not override field option.");
 
-		//Fields onsubmit
-		validationForm1.igValidator("updateField", 0, { "onsubmit": false });
-		validationForm1.igValidator("option", "onsubmit", false);
-		assert.equal(validationForm1.data("igValidator")._formHandleCounter, 0, "Fields onsubmit handlers should be removed.");
-		validationForm1.igValidator("option", "onsubmit", true);
-		assert.equal(validationForm1.data("igValidator")._formHandleCounter, 2, "Fields onsubmit handlers should be added.");
+	//Fields onsubmit
+	validationForm1.igValidator("updateField", 0, { "onsubmit": false });
+	validationForm1.igValidator("option", "onsubmit", false);
+	assert.equal(validationForm1.data("igValidator")._formHandleCounter, 0, "Fields onsubmit handlers should be removed.");
+	validationForm1.igValidator("option", "onsubmit", true);
+	assert.equal(validationForm1.data("igValidator")._formHandleCounter, 2, "Fields onsubmit handlers should be added.");
 
-		done();
-	}).catch(function (er) {
-		assert.pushResult({ result: false, message: er.message });
-		done();
-		throw er;
-	});
 });
 
 QUnit.test('[ID5] Validation targets/types', function (assert) {

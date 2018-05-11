@@ -324,9 +324,9 @@ QUnit.module("igHTMLEditor unit tests", {
 
 		toolabrCollapseButton.click();
 
-		$.ig.TestUtil.wait(300).then(function () {
+		$.ig.TestUtil.wait(310).then(function () {
 			toolabrCollapseButton.click();
-			return $.ig.TestUtil.wait(300);
+			return $.ig.TestUtil.wait(310);
 		}).then(function () {
 			self.assert.ok(self.equalWithEpsilon(toolbar.width(), toolbarWidth, epsilon), "The " + toolbarId + " toolbar is expanded.");
 			done();
