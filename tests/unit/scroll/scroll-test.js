@@ -860,7 +860,7 @@ QUnit.test(testId_25, function (assert) {
     assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 80, "igScroll did not scroll properly with smoothing on");
     this.scrollContainer(this.vhScrollId).trigger(wheelEvtUp);
     done = assert.async();
-    this.testUtil.wait(2200).then(function () {
+    this.testUtil.wait(500).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 0, "igScroll did not scroll properly with smoothing on");
         self.vhScroll().remove();
         done();
@@ -3203,7 +3203,7 @@ QUnit.test(testId_115, function (assert) {
         self.scrollContainer(self.vhScrollId).scrollLeft(currentPos);
     });
     done = assert.async();
-    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(self.vhScrollId), touchSteps, 10);
+    this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(self.vhScrollId), touchSteps, 100);
     this.testUtil.wait(1000).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 22, "custom scrollbar scrolls when scrollOnlyHBar is true");
         self.hScrollBar(self.vhScrollId).remove();

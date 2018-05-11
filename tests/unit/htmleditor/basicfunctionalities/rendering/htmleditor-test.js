@@ -764,6 +764,9 @@ QUnit.module("igHTMLEditor unit tests", {
 			done();
 			throw er;
 		});
+	},
+	afterEach: function() {
+		$.ig.util.isIE = false;
 	}
 });
 
