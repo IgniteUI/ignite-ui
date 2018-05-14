@@ -1266,7 +1266,7 @@ QUnit.test(testId_39, function (assert) {
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 325);
+    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 340);
 
     done = assert.async();
     this.testUtil.wait(400).then(function () {
@@ -1320,7 +1320,7 @@ QUnit.test(testId_41, function (assert) {
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
-    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 500);
+    this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 525);
 
     done = assert.async();
     this.testUtil.wait(325).then(function () {
@@ -1329,7 +1329,7 @@ QUnit.test(testId_41, function (assert) {
         self.testUtil.wait(100).then(function () {
             assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
             self.arrowDown(self.vhScrollId).mouseover();
-            self.testUtil.wait(100).then(function () {
+            self.testUtil.wait(150).then(function () {
                 assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 200, "igScroll did not scroll properly");
                 self.vhScroll().remove();
                 done();
