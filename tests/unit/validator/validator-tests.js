@@ -1514,7 +1514,8 @@ QUnit.test('[ID11] igCombo asterix', function (assert) {
 
 	var indicatorElement = $('.ui-igvalidator-required-indication');
 	var asterixPosition = indicatorElement.position();
-	assert.ok((comboEditor.position().top === asterixPosition.top), "The asterix should be on the same position as the combo.");
+	// Allow for line-height variation affecting vertical-align top:
+	assert.ok(Math.abs(comboEditor.position().top - asterixPosition.top) <= 1, "The asterix should be on the same position as the combo.");
 	assert.ok((comboEditor.igCombo("option", "width") <= asterixPosition.left && asterixPosition.left < 300), "The asterix position should be next to the combo.");
 });
 
