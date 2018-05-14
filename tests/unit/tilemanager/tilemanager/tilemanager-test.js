@@ -355,10 +355,10 @@ QUnit.module("igTileManager unit tests", {
 			this.assert.notOk(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
 		} else {
 			this.assert.ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
-			this.assert.equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
-			this.assert.equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
-			this.assert.equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
-			this.assert.equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
+			this.assert.equal(tile[0].style.left, '0px', 'The left property of the maximized tile did not match.');
+			this.assert.equal(tile[0].style.top, marginTop + 'px', 'The top property of the maximized tile did not match.');
+			this.assert.equal(tile[0].style.width.contains("%") ? tile.outerWidth() : parseInt(tile[0].style.width || 0), maximizedTileWidth, 'The width of the maximized tile did not match.');
+			this.assert.equal(parseInt(tile[0].style.height || 0), maximizedTileHeight, 'The height of the maximized tile did not match.');
 			this.assert.equal(tile.attr('data-index'), tileToMaximize + '', 'The index property of the maximized tile did not match.');
 			this.assert.equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
 			this.assert.equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
@@ -401,11 +401,11 @@ QUnit.module("igTileManager unit tests", {
 					expectedIndex = (index < tileToMaximize ? index : index + 1),
 					minimizeBtn, minimizeIcon;
 
-				self.assert.equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
-				self.assert.equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
+				self.assert.equal(tile[0].style.top || "0px", (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+				self.assert.equal(tile[0].style.left || "0px", ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
 
-				self.assert.equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
-				self.assert.equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
+				self.assert.equal(parseInt(tile[0].style.width || 0), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
+				self.assert.equal(parseInt(tile[0].style.height || 0), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
 				self.assert.ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
 				self.assert.equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
 
@@ -451,9 +451,9 @@ QUnit.module("igTileManager unit tests", {
 
 		// Left/right panels and the splitter
 		if (disabled) {
-			this.assert.equal(leftPanel[0].offsetWidth, leftPanelWidth, 'The left panel width did not match.');
+			this.assert.equal(leftPanel[0].style.width.contains("%") ? leftPanel[0].offsetWidth : parseInt(leftPanel[0].style.width), leftPanelWidth, 'The left panel width did not match.');
 		} else {
-			this.assert.equal(leftPanel[0].offsetWidth, leftPanelMaximizedWidth, 'The left panel width did not match.');
+			this.assert.equal(leftPanel[0].style.width.contains("%") ? leftPanel[0].offsetWidth : parseInt(leftPanel[0].style.width), leftPanelMaximizedWidth, 'The left panel width did not match.');
 		}
 		this.assert.equal(leftPanel[0].offsetHeight, leftPanelHeight, 'The left panel height did not match.');
 		this.assert.equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
@@ -470,7 +470,7 @@ QUnit.module("igTileManager unit tests", {
 		} else {
 			this.assert.equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
 			this.assert.notOk(rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
-			this.assert.equal(rightPanel[0].offsetWidth, rightPanelWidth, 'The width of the right panel did not match.');
+			this.assert.equal(rightPanel[0].style.width, rightPanelWidth + "px", 'The width of the right panel did not match.');
 			this.assert.equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
 		}
 
@@ -538,11 +538,11 @@ QUnit.module("igTileManager unit tests", {
 					expectedIndex = (index < tileToSwap ? index : index + 1),
 					minimizeBtn, minimizeIcon;
 
-				self.assert.equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
-				self.assert.equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
+				self.assert.equal(tile[0].style.top || "0px", (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+				self.assert.equal(tile[0].style.left || "0px", ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
 
-				self.assert.equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
-				self.assert.equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
+				self.assert.equal(parseInt(tile[0].style.width || 0), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
+				self.assert.equal(parseInt(tile[0].style.height || 0), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
 				self.assert.ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
 				self.assert.equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
 
@@ -624,8 +624,8 @@ QUnit.module("igTileManager unit tests", {
 
 			self.assert.equal(tile.css('left'), self.tileLeft + 'px', 'The left property of the ' + index + ' tile did not match.');
 			self.assert.equal(tile.css('top'), self.tileTop + 'px', 'The top property of the ' + index + ' tile did not match.');
-			self.assert.equal(tile.outerWidth(), self.tileWidth, 'The width of the ' + index + ' tile did not match.');
-			self.assert.equal(tile.outerHeight(), self.tileHeight, 'The height of the ' + index + ' tile did not match.');
+			self.assert.equal(parseInt(tile[0].style.width || 0), self.tileWidth, 'The width of the ' + index + ' tile did not match.');
+			self.assert.equal(parseInt(tile[0].style.height || 0), self.tileHeight, 'The height of the ' + index + ' tile did not match.');
 			self.assert.equal(tile.children().length, 1, 'The children count of the ' + index + ' tile did not match.');
 			self.assert.equal(tile.attr('data-index'), index + '', 'The index property of the ' + index + ' tile did not match.');
 
@@ -1057,12 +1057,17 @@ QUnit.test('[ID2] igTileManager initialize on markup. Default config', function 
 		height: 1000
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
 		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
 		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
 		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
 		showRightPanelScroll, enableSplitter, useApiMethods, fromMarkup,
 		splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 
@@ -1107,12 +1112,17 @@ QUnit.test('[ID3] iigTileManager initialize on markup. ColumnWidth and columnHei
 		maximizedState: ".maximized"
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
 		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
 		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
 		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
 		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
 		splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID4] igTileManager initialize on markup. ColumnWidth and columnHeight in percent', function (assert) {
@@ -1157,12 +1167,17 @@ QUnit.test('[ID4] igTileManager initialize on markup. ColumnWidth and columnHeig
 		maximizedState: ".maximized"
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
 		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
 		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
 		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
 		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
 		splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID5] igTileManager initialize on markup. Items configuration', function (assert) {
@@ -1207,13 +1222,17 @@ QUnit.test('[ID5] igTileManager initialize on markup. Items configuration', func
 		minimizedState: ".minimized",
 		maximizedState: ".maximized"
 	});
-
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 
@@ -1376,12 +1395,17 @@ QUnit.test('[ID8] igTileManager initialize on markup. Set options test. Containe
 	{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 7 },
 	{ colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 7 }];
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 
@@ -1484,12 +1508,17 @@ QUnit.test('[ID9] igTileManager initialize on markup. Set options test. Containe
 	{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 7 },
 	{ colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 7 }];
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
 		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
 		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
 		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
 		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
 		splitterInitiallyCollapsed);
+		done();
+	})
 });
 
 
@@ -1525,12 +1554,17 @@ QUnit.test('[ID10] igTileManager initialize on data source. Default config', fun
 		animationDuration: 0
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID11] igTileManager initialize on data source. ColumnWidth/Height in px. Container with vertical scrollbar. Use API methods', function (assert) {
@@ -1572,12 +1606,17 @@ QUnit.test('[ID11] igTileManager initialize on data source. ColumnWidth/Height i
 		animationDuration: 0
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID12] igTileManager initialize on data source. ColumnWidth and columnHeight in percent and cols option. Container with vertical and horizontal scrollbar. RearrangeItems false', function (assert) {
@@ -1626,12 +1665,17 @@ QUnit.test('[ID12] igTileManager initialize on data source. ColumnWidth and colu
 		animationDuration: 0
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
 		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
 		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
 		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
 		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
 		splitterInitiallyCollapsed);
+		done();
+	})
 });
 
 QUnit.test('[ID13] igTileManager initialize on data source. Items configuration. Rearrange false. Half of the container is empty', function (assert) {
@@ -1686,12 +1730,17 @@ QUnit.test('[ID13] igTileManager initialize on data source. Items configuration.
 		animationDuration: 0
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID14] igTileManager initialize on data source. MaximziedTileIndex with items provided', function (assert) {
@@ -1817,12 +1866,17 @@ QUnit.test('[ID15] igTileManager initialize on data source. Set options test', f
 		.igTileManager('option', 'showRightPanelScroll', true)
 		.igTileManager('option', 'splitterOptions', { enabled: splitterEnabled });
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID16] igTileManager events', function (assert) {
@@ -2086,12 +2140,17 @@ QUnit.test('[ID19] igTileManager splitter collapsed option', function (assert) {
 		}
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID20] igTileManager splitter setting collapsible and collapsed options', function (assert) {
@@ -2175,12 +2234,17 @@ QUnit.test('[ID21] igTileManager disabled', function (assert) {
 		}
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed, disabled);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed, disabled);
+		done();
+	});
 });
 
 QUnit.test('[ID22] igTileManager initialize on markup. ColumnWidth and ColumnHeight in *', function (assert) {
@@ -2224,12 +2288,17 @@ QUnit.test('[ID22] igTileManager initialize on markup. ColumnWidth and ColumnHei
 		maximizedState: ".maximized"
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 QUnit.test('[ID23] igTileManager initialize on markup. ColumnWidth and ColumnHeight arrays', function (assert) {
@@ -2271,12 +2340,17 @@ QUnit.test('[ID23] igTileManager initialize on markup. ColumnWidth and ColumnHei
 		maximizedState: ".maximized"
 	});
 
-	this.testTileManager(container, containerWidth, containerHeight, cols, rows,
-		colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
-		rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
-		tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
-		showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
-		splitterInitiallyCollapsed);
+	var done = assert.async(),
+		self = this;
+	window.requestAnimationFrame(function () {
+		self.testTileManager(container, containerWidth, containerHeight, cols, rows,
+			colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+			rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+			tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+			showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+			splitterInitiallyCollapsed);
+		done();
+	});
 });
 
 
