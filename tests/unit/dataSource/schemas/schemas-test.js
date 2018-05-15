@@ -104,13 +104,7 @@
 		this.result5 = this.tableSchema.transform($("#t1")[0]);
 		},
 		beforeEach: function (assert) {
-			var done = assert.async();
-			//pause testing until tree is initialized
-			if (!this.initialized) {
-				this.loadTestbeds();
-				this.util.wait(500).then(function () { done(); });
-				this.initialized = true;
-			}
+			this.loadTestbeds();
 		},
 		afterEach: function () {
 			$("#t1").remove();

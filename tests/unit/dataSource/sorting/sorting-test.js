@@ -230,16 +230,10 @@ var textSettings =  {
 		listTemplate.tmpl(this.jsonDs.dataView()).appendTo("#list1");
 	},
 	beforeEach: function(assert) {
-	 $(this.tableDsSource).appendTo($('#qunit-fixture'));
-	 $(this.listHtml).appendTo($('#qunit-fixture'));
+		$(this.tableDsSource).appendTo($('#qunit-fixture'));
+		$(this.listHtml).appendTo($('#qunit-fixture'));
 		$.mockjaxSettings.logging = 0;
-		var done = assert.async();
-		//pause testing until tree is initialized
-		if (!this.initialized) {
-			this.loadTestbeds();
-			this.util.wait(500).then(function () { done(); });
-			this.initialized = true;
-		}
+		this.loadTestbeds();
 	},
 	afterEach: function() {
 		$("#t1").remove();

@@ -15,13 +15,7 @@
 					this.ds2.dataBind();
 				},
 				beforeEach: function(assert) {
-					var done = assert.async();
-					//pause testing until tree is initialized
-					if (!this.initialized) {
-						this.loadTestbeds();
-						this.util.wait(500.).then(function () { done(); });
-						this.initialized = true;
-					}
+					this.loadTestbeds();
 				},
 				afterEach: function() {
 				}

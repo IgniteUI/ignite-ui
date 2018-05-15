@@ -1121,79 +1121,82 @@
 				this.dsRemoteLoadOnDemand.settings.treeDS.dataSourceUrl = "customLoadOnDemand";
 				this.dsRemoteLoadOnDemand.toggleRow(0);
 			});
-//			QUnit.test("Test if params are properly encoded when customEncodeUrlFunc is defined.", function (assert) {
-//				assert.expect(8);
-//				var successTimesCalled = 0, self = this, done = assert.async();
-//				$.mockjax({
-//					url: 'hierarchicalData2',
-//					responseText: {
-//						status: 'success',
-//						data: {
-//							results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }, { "ID": 1, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
-//						},
-//						totalRecCount: 6
-//					}
-//				});
-//				var dsRemoteLoadOnDemand1 = new $.ig.TreeHierarchicalDataSource({
-//					dataSource: "hierarchicalData2",
-//					dataSourceUrl: "hierarchicalData2",
-//					primaryKey: "ID",
-//					responseTotalRecCountKey: "totalRecCount",
-//					reponseDataKey: "data.results",
-//					schema: {
-//						fields: [
-//							{ name: "ID", type: "number" },
-//							{ name: "Name", type: "string" }
-//						],
-//						searchField: "data.results"
-//					},
-//					treeDS: {
-//						dataSourceUrl: "hierarchicalData",
-//						key: "ID",
-//						primaryKey: "ID",
-//						initialExpandDepth: 0,
-//						foreignKeyRootValue: -1,
-//						childDataKey: "Products",
-//						propertyDataLevel: "dataLevel",
-//						propertyExpanded: "expanded",
-//						enableRemoteLoadOnDemand: true
-//					}
-//				});
-//
-//				dsRemoteLoadOnDemand1.settings.treeDS.customEncodeUrlFunc = function (rec, expand) {
-//					return "customUrl";
-//				};
-//
-//
-//				dsRemoteLoadOnDemand1.dataBind();
-//				this.util.wait(500).then(function () {
-//					$.mockjax({
-//						url: "customUrl",
-//						responseText: {
-//							status: 'success',
-//							data: {
-//								results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
-//							},
-//							totalRecCount: 6
-//						},
-//						onAfterSuccess: function () {
-//							successTimesCalled++;
-//							assert.ok(true, "customEncodeUrlFunc has successfully taken affect.");
-//						}
-//					});
-//					dsRemoteLoadOnDemand1.toggleRow(0);
-//
-//					dsRemoteLoadOnDemand1.settings.treeDS.customEncodeUrlFunc = this.customEncoding;
-//
-//					dsRemoteLoadOnDemand1.toggleRow(1);
-//					self.util.wait(800);
-//						}).then(function () {
-//					
-//						assert.equal(successTimesCalled, 2, "Success should be called 2 times for the custom url specified.");
-//							done();
-//					});
-//			
-//			});
+			QUnit.test("Test if params are properly encoded when customEncodeUrlFunc is defined.", function (assert) {
+				assert.expect(3);
+				var successTimesCalled = 0, self = this, done = assert.async();
+				window.customEncoding = function() {
+					return "customUrl";
+				}
+				$.mockjax({
+					url: 'hierarchicalData2',
+					responseText: {
+						status: 'success',
+						data: {
+							results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }, { "ID": 1, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
+						},
+						totalRecCount: 6
+					}
+				});
+				var dsRemoteLoadOnDemand1 = new $.ig.TreeHierarchicalDataSource({
+					dataSource: "hierarchicalData2",
+					dataSourceUrl: "hierarchicalData2",
+					primaryKey: "ID",
+					responseTotalRecCountKey: "totalRecCount",
+					reponseDataKey: "data.results",
+					schema: {
+						fields: [
+							{ name: "ID", type: "number" },
+							{ name: "Name", type: "string" }
+						],
+						searchField: "data.results"
+					},
+					treeDS: {
+						dataSourceUrl: "hierarchicalData",
+						key: "ID",
+						primaryKey: "ID",
+						initialExpandDepth: 0,
+						foreignKeyRootValue: -1,
+						childDataKey: "Products",
+						propertyDataLevel: "dataLevel",
+						propertyExpanded: "expanded",
+						enableRemoteLoadOnDemand: true
+					}
+				});
+
+				dsRemoteLoadOnDemand1.settings.treeDS.customEncodeUrlFunc = function (rec, expand) {
+					return "customUrl";
+				};
+
+
+				dsRemoteLoadOnDemand1.dataBind();
+				this.util.wait(500).then(function () {
+					$.mockjax({
+						url: "customUrl",
+						responseText: {
+							status: 'success',
+							data: {
+								results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
+							},
+							totalRecCount: 6
+						},
+						onAfterSuccess: function () {
+							successTimesCalled++;
+							assert.ok(true, "customEncodeUrlFunc has successfully taken affect.");
+						}
+					});
+					dsRemoteLoadOnDemand1.toggleRow(0);
+
+					dsRemoteLoadOnDemand1.settings.treeDS.customEncodeUrlFunc = "customEncoding";
+
+					dsRemoteLoadOnDemand1.toggleRow(1);
+					return self.util.wait(800);
+				})
+				.then(function () {
+					assert.equal(successTimesCalled, 2, "Success should be called 2 times for the custom url specified.");
+					delete window.customEncoding;
+					done();
+				});
+			});
 
 			QUnit.test("Test changing schema and applying the new schema to the data source.", function (assert) {
 				assert.expect(3);

@@ -116,14 +116,7 @@
 			this.ds.dataBind();
 		},
 		beforeEach: function(assert) {
-			var done = assert.async(2);
-			//pause testing until tree is initialized
-			if (!this.initialized) {
-				done();
-				this.loadTestbeds();
-				this.util.wait(500).then(function () { done(); });
-				this.initialized = true;
-			}
+			this.loadTestbeds();
 		},
 		after: function() {
 		}

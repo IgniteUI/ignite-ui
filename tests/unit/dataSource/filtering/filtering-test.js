@@ -280,15 +280,7 @@ QUnit.module("igDataSource filtering", {
                         }
                 },
 				before: function(assert) {
-					//pause testing until tree is initialized
-					if (!this.initialized) {
-						var done = assert.async();
-                       this.loadTestbeds();
-                       this.util.wait(500).then(function(){
-                           this.initialized = true;
-                            done();
-                        });
-					}
+					this.loadTestbeds();
 				},
 				after: function() {
 				}
