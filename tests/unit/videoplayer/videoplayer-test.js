@@ -1032,26 +1032,31 @@ QUnit.test('No Compatible video source test 34', function(assert) {
 	assert.ok(noCompatibleVideoSource.is(':visible'), 'No compatible video source msg should be visible!');
 });
 
-// QUnit.test('Not Supported Video test 33', function(assert) {
-// 	assert.expect(5);
-// 	this.assert = assert;
-// 	createUnsupporterPlayer('player6');
+QUnit.test('Not Supported Video test 33', function(assert) {
+	assert.expect(9);
+	this.assert = assert;
+	var oldCreateElement  = document.createElement;
+	document.createElement = function (tag) {
+		return tag === "video" ? {} : oldCreateElement.call(this, tag);
+	}
+	createUnsupporterPlayer('player6');
+	document.createElement = oldCreateElement;
 
-// 	var messageDiv = $('#player6').children().last(),
-// 		currentBrowserLabel = messageDiv.children().first(),
-// 		nonHtml5Msg = messageDiv.children().first().next(),
-// 		browserList = $('ul', messageDiv);
-// 	this.checkClass(messageDiv, 'ui-html5-non-html5-supported-message');
-// 	this.checkClass(messageDiv, 'ui-helper-clearfix');
-// 	this.checkClass(currentBrowserLabel, 'ui-html5-current-browser-label');
-// 	assert.ok(currentBrowserLabel.html().indexOf('Current browser:') !== -1);
-// 	this.checkClass(nonHtml5Msg, 'ui-html5-non-html5-text');
-// 	equal(nonHtml5Msg.html(), $.ig.VideoPlayer.locale.unsupportedBrowser.replace('<br/>','<br>'), 'Browser message is not rendered!');
-// 	this.checkClass(browserList, 'ui-html5-browsers-list');
-// 	assert.ok(browserList.children().length === 5, 'Five browser icons should be shown!');
-// 	$('#player6').igVideoPlayerUnitTesting('destroy');
-// 	assert.ok($('#player6').empty(), 'Player DIV should be empty!');
-// });
+	var messageDiv = $('#player6').children().last(),
+		currentBrowserLabel = messageDiv.children().first(),
+		nonHtml5Msg = messageDiv.children().first().next(),
+		browserList = $('ul', messageDiv);
+	this.checkClass(messageDiv, 'ui-html5-non-html5-supported-message');
+	this.checkClass(messageDiv, 'ui-helper-clearfix');
+	this.checkClass(currentBrowserLabel, 'ui-html5-current-browser-label');
+	assert.ok(currentBrowserLabel.html().indexOf('Current browser:') !== -1);
+	this.checkClass(nonHtml5Msg, 'ui-html5-non-html5-text');
+	assert.equal(nonHtml5Msg.html(), $.ig.VideoPlayer.locale.unsupportedBrowser.replace('<br/>','<br>'), 'Browser message is not rendered!');
+	this.checkClass(browserList, 'ui-html5-browsers-list');
+	assert.ok(browserList.children().length === 5, 'Five browser icons should be shown!');
+	$('#player6').igVideoPlayerUnitTesting('destroy');
+	assert.ok($('#player6').empty(), 'Player DIV should be empty!');
+});
 
 QUnit.test('Instantiate on HTML video tag test 35', function(assert) {
 	assert.expect(2);
