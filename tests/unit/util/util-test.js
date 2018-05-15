@@ -276,3 +276,37 @@ QUnit.test('[ID16] Test resetDateToCurrentDate', function (assert) {
 	assert.equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(21/10/2007)).getDate(), new Date().getDate(),  "The date should be reset");
 	assert.equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(null)).getDate(), new Date().getDate(),  "The date should be reset");
 });
+
+QUnit.test("[ID17] Test getDate", function (assert) {
+	assert.expect(29);
+	var hoursArray = [ 1, 5 ];
+	var hoursSuffix = [" - before", " - after"];
+ 
+	for (var i = 0; i < hoursArray.length; i++) {
+	 var hour = hoursArray[i];
+	 var suffix = hoursSuffix[i];
+ 
+	 // test some dst dates with a time after the change
+	 assert.equal(0, $.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour)).getHours(), "Hours of US daylight savings start" + suffix);
+	 assert.equal(0, $.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour)).getHours(), "Hours 0f BG daylight savings start" + suffix);
+	 assert.equal(0, $.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour)).getHours(), "Hours of US daylight savings end" + suffix);
+	 assert.equal(0, $.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour)).getHours(), "Hours of BG daylight savings end" + suffix);
+ 
+	 assert.equal(11, $.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour)).getDate(), "getDate of US daylight savings start" + suffix);
+	 assert.equal(25, $.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour)).getDate(), "getDate of BG daylight savings start" + suffix);
+	 assert.equal(11, $.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour)).getDate(), "getDate of US daylight savings end" + suffix);
+	 assert.equal(28, $.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour)).getDate(), "getDate of BG daylight savings end" + suffix);
+ 
+	 assert.equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 2, 11, hour))), "getTimeOfDay of US daylight savings start" + suffix);
+	 assert.equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 2, 25, hour))), "getTimeOfDay 0f BG daylight savings start" + suffix);
+	 assert.equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 10, 11, hour))), "getTimeOfDay of US daylight savings end" + suffix);
+	 assert.equal(0, $.ig.Date.prototype.getTimeOfDay($.ig.Date.prototype.getDate(new Date(2018, 9, 28, hour))), "getTimeOfDay of BG daylight savings end" + suffix);
+	}
+ 
+	var dateWithTime = $.ig.Date.prototype.getDate(new Date(2018, 2, 11, 23, 25, 15, 19));
+	assert.equal(0, dateWithTime.getHours(), "Hours of Date with time");
+	assert.equal(0, dateWithTime.getMinutes(), "Minutes of Date with time");
+	assert.equal(0, dateWithTime.getSeconds(), "Seconds of Date with time");
+	assert.equal(0, dateWithTime.getMilliseconds(), "Milliseconds of Date with time");
+	assert.equal(0, $.ig.Date.prototype.getTimeOfDay(dateWithTime), "getTimeOfDay of Date with time");
+   });
