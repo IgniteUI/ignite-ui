@@ -1,6 +1,6 @@
 QUnit.module("igEditors Bugs Unit Tests ", {
 	divTag: "<div></div>",
-	inputTag: "<input>",
+	inputTag: "<input/>",
 	buttonTag: "<button>",
 	textAreaTag: "<textarea>",
 	util: $.ig.TestUtil,
@@ -1613,4 +1613,56 @@ QUnit.test('Bug 1205 Decimal numbers are rounded when the editor is blurred', fu
 		assert.ok(false, "(numeric nullValue) Typing caused an exception: " + error.message );
 	}
 	assert.equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text."); */
+});
+
+QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', function (assert) {
+	assert.expect(8);
+	var $editor = this.util.appendToFixture(this.inputTag).igTextEditor({
+			value: "some text",
+			buttonType: "clear",
+			allowNullValue: true
+		}),
+		$clearButton =  $editor.igTextEditor("clearButton"),
+		textChangedFired = false, valueChangedFired = false;
+
+	$editor.one("igtexteditortextchanged.test", function (evt, ui) {
+		textChangedFired = true;
+	});
+	$editor.one("igtexteditorvaluechanged.test", function (evt, ui) {
+		valueChangedFired = true;
+	});
+
+	$clearButton.click();
+	assert.ok(textChangedFired, "igTextEditor textChanged event not fired");
+	assert.ok(valueChangedFired, "igTextEditor valueChanged event not fired");
+	assert.strictEqual($editor.igTextEditor("value"), null, "igTextEditor value did not clear");
+	assert.strictEqual($editor.igTextEditor("field").val(), "", "igTextEditor text did not clear");
+
+	$editor.off(".test");
+	$editor.remove();
+
+	// numeric editor
+	$editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+			value: 357,
+			buttonType: "clear",
+			allowNullValue: true
+		});
+	$clearButton =  $editor.igNumericEditor("clearButton"),
+	textChangedFired = false;
+	valueChangedFired = false;
+
+	$editor.one("ignumericeditortextchanged", function (evt, ui) {
+		textChangedFired = true;
+	});
+	$editor.one("ignumericeditorvaluechanged", function (evt, ui) {
+		valueChangedFired = true;
+	});
+
+	$clearButton.click();
+	assert.ok(textChangedFired, "igNumericEditor textChanged event not fired");
+	assert.ok(valueChangedFired, "igNumericEditor valueChanged event not fired");
+	assert.strictEqual($editor.igNumericEditor("value"), null, "igNumericEditor value did not clear");
+	assert.strictEqual($editor.igNumericEditor("field").val(), "", "igNumericEditor text did not clear");
+	
+	$editor.remove()
 });

@@ -1561,11 +1561,12 @@ QUnit.test('Testing spin and max and min values set as string', function (assert
 });
 
 QUnit.test('Setting options on run time', function (assert) {
-	assert.expect(0);
+	assert.expect(1);
+	var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor();
 
-	// throws(function () {
-	// 	$("#inputEditor26").igDateEditor("option", "dateInputFormat", "timeLong");
-	// }, "This option cann't be set on run time, but the error doesn't appear.");
+	assert.throws(function () {
+		$dtEditor.igDateEditor("option", "dateInputFormat", "timeLong");
+	}, "This option can't be set on run time, but the error doesn't appear.");
 
 });
 
