@@ -4921,7 +4921,8 @@
 			}
 		},
 		_encodeSortingParams: function (params) {
-			var s = this.settings.sorting, tmpdir, i, sfields, url, urlQS, hlayout = null;
+			var s = this.settings.sorting, tmpdir, i, sfields, fieldName, field, url, urlQS,
+				key, hlayout = null;
 			if (s.type === "remote") {
 				/* handle sorting params */
 				if (s.exprString) {
@@ -4936,18 +4937,27 @@
 					if (sfields[ i ].layout) {
 						hlayout = sfields[ i ].layout;
 					}
+					fieldName = sfields[ i ].fieldName;
 					/* it's a sorting request */
 					if (s.sortUrlAscValueKey !== null && s.sortUrlDescValueKey !== null && s.sortUrlKey !== null) {
 						tmpdir = (sfields[ i ].dir && sfields[ i ].dir.toLowerCase().startsWith("asc")) ?
 							s.sortUrlAscValueKey : s.sortUrlDescValueKey;
-						params.sortingParams[ s.sortUrlKey + "(" + sfields[ i ].fieldName + ")" ] = tmpdir;
+
+						field = this._getSchemaField(fieldName);
+						if (field && field.type) {
+							key = s.sortUrlKey + "(" + fieldName + ":" + field.type + ")";
+						} else {
+							key = s.sortUrlKey + "(" + fieldName + ")";
+						}
+
+						params.sortingParams[ key ] = tmpdir;
 					} else {
 						// OData style encoding (the default)
 						if (params.sortingParams.$orderby === undefined) {
 							params.sortingParams.$orderby = "";
 						}
 						params.sortingParams.$orderby = params.sortingParams.$orderby +
-							sfields[ i ].fieldName + " " + sfields[ i ].dir.toLowerCase();
+							fieldName + " " + sfields[ i ].dir.toLowerCase();
 						if (i < sfields.length - 1) {
 							params.sortingParams.$orderby += ",";
 						}
@@ -4978,7 +4988,7 @@
 		},
 		_encodeFilteringParams: function (params) {
 			var f = this.settings.filtering, ffields, i, key, exprNotReq, cond,
-				d, day, month, year, curDate, expr, fieldName, logic = "and";
+				d, day, month, year, curDate, expr, fieldName, field, logic = "and";
 			if (f.type === "remote") {
 				// handle filtering params
 				if (f.exprString) {
@@ -4990,6 +5000,7 @@
 					// is a filtering request
 					this._isFilteringReq = true;
 					cond = ffields[ i ].cond;
+					fieldName = ffields[ i ].fieldName;
 
 					exprNotReq = this._isFilteringExprNotReq(cond);
 					/* if the filtering url key is explicitly defined, use this encoding:
@@ -4997,7 +5008,13 @@
 					otherwise we use OData as the default */
 					if (f.filterExprUrlKey !== null) {
 						// check if a filtering condition for the column already exists
-						key = f.filterExprUrlKey + "(" + ffields[ i ].fieldName + ")";
+						field = this._getSchemaField(fieldName);
+						if (field && field.type) {
+							key = f.filterExprUrlKey + "(" + fieldName + ":" + field.type + ")";
+						} else {
+							key = f.filterExprUrlKey + "(" + fieldName + ")";
+						}
+
 						if ($.type(ffields[ i ].expr) === "date") {
 							d = Date.UTC(
 								ffields[ i ].expr.getFullYear(),
@@ -5028,7 +5045,6 @@
 							params.filteringParams.$filter = "";
 						}
 						/* M.H. 5 Sep 2013 Fix for bug #150774: OData Request ignores Case Sensitivity */
-						fieldName = ffields[ i ].fieldName;
 						expr = ffields[ i ].expr;
 						if ($.type(expr) === "string") {
 							if (!f.caseSensitive) {
@@ -5248,7 +5264,7 @@
 		},
 		_encodeSummariesParams: function (params) {
 			var i, j, s = this.settings.summaries, cs = s.columnSettings,
-				methodsStr,
+				methodsStr, field, key, fieldName,
 				csLength = cs.length;
 
 			if (s.type === "remote") {
@@ -5269,11 +5285,25 @@
 						}
 					}
 					if (methodsStr !== "") {
-						params.summariesParams[ s.summaryExprUrlKey + "(" + cs[ i ].columnKey + ")" ] =
-							methodsStr.slice(0, -1);
+						fieldName = cs[ i ].columnKey;
+						field = this._getSchemaField(fieldName);
+						if (field && field.type) {
+							key = s.summaryExprUrlKey + "(" + fieldName + ":" + field.type + ")";
+						} else {
+							key = s.summaryExprUrlKey + "(" + fieldName + ")";
+						}
+
+						params.summariesParams[ key ] = methodsStr.slice(0, -1);
 					}
 				}
 			}
+		},
+		_getSchemaField: function (fieldName) {
+			if (this.settings.schema && this.settings.schema.fields.find) {
+				return this.settings.schema.fields.find(function (f) { return f.name === fieldName; });
+			}
+
+			return null;
 		},
 		filteredData: function () {
 			/*returns filtered data if local filtering is applied. If filtering is not applied OR type of filtering is remote returns undefined.
