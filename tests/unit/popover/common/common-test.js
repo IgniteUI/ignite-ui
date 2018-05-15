@@ -79,6 +79,7 @@ QUnit.module("Popover common unit tests", {
 // Options tests
 var testId_21 = "test 2.1 igPopover target option";
 var testId_22 = "test 2.2 igPopover selectors option";
+var testId_221 = "test 2.21 igPopover selectors w/o target & content";
 var testId_23 = "test 2.3 igPopover content option";
 var testId_24 = "test 2.4 igPopover contentFunction option";
 var testId_25 = "test 2.5 igPopover showOn option";
@@ -119,6 +120,7 @@ var testId_911 = "igPopover test 9.11: Test popover shows correctly when top dir
 var testId_912 = "igPopover test 9.12: Test popover shows correctly when bottom direction is set";
 var testId_913 = "igPopover test 9.13: Test popover shows correctly when left direction is set";
 var testId_914 = "igPopover test 9.14: Test popover shows correctly when auto direction is set";
+var testId_915 = "igPopover test 9.15: Test popover runtime direction set while visible";
 var testId_92 = "igPopover test 9.2: Test popover uses the document boundary if it doesn't fit on the current window";
 
 QUnit.test(testId_21, function (assert) {
@@ -210,6 +212,32 @@ QUnit.test(testId_22, function (assert) {
 			throw er;
 		});
 
+	});
+});
+
+QUnit.test(testId_221, function (assert) {
+	assert.expect(12)
+	this.testUtil.appendToFixture(this.divRegForm);
+	$("#registrationForm" ).igPopover( {
+		direction: "right",
+		position: "start",
+		closeOnBlur: false,
+		selectors: "[title]",
+		animationDuration: 150,
+		maxHeight: null,
+		maxWidth: 170,
+		headerTemplate: {
+			closeButton: true,
+			title: null
+		},
+		showOn: "click"
+	});
+	$('#registrationForm').find('[title]').each(function (index, element) {
+		var $target = $(this);
+		$target.trigger("click");
+		assert.ok($('#popoverTooltip_popover').css("display") !== "none", "Popover not shown!");
+		assert.ok($('#popoverTooltip_popover_contentFrame').css("display") !== "none", "Popover content not shown!");
+		assert.equal($('#popoverTooltip_popover_contentFrame').text(), $target.attr("title"), "Popover content not taken from target tittle!");
 	});
 });
 
@@ -852,7 +880,54 @@ QUnit.test(testId_914, function (assert) {
 		'Popover is positioned into the bounderies of the target');
 	$('#notifier').remove();
 });
+QUnit.test(testId_915, function (assert) {
+	// Combination of 9.1-9.14 before split, set runtime:
+	$("body").append(this.divNotifier);
+	$('#notifier').igPopover({ direction: 'right' });
+	$('#notifier').igPopover('show');
+	assert.ok($('notifier_popover').css('display') !== 'none', 'Popover not shown!');
 
+	assert.ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-left"), 'Popover arrow is pointing to left!');
+	assert.ok($('#notifier').offset().top < $('#notifier_popover').offset().top &&
+	$('#notifier_popover').offset().top < $('#notifier').offset().top + $('#notifier').height(),
+	'Popover is positioned above or below its target');
+	assert.ok($('#notifier').offset().left + $('#notifier').width() <= $('#notifier_popover').offset().left,
+		'Popover is not positioned on the left its target');
+
+	$('#notifier').igPopover('option', 'direction', 'top');
+	assert.ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-bottom"), 'Popover arrow is not pointing to bottom!');
+	assert.ok($('#notifier_popover').offset().top + $('#notifier_popover').height() <= $('#notifier').offset().top ||
+		$('#notifier_popover').offset().top === 0,    // fixed positions may now overlap the container
+		'Popover is not positioned above its target');
+	assert.ok($('#notifier').offset().left < $('#notifier_popover').offset().left &&
+		$('#notifier_popover').offset().left + $('#notifier_popover').width() < $('#notifier').offset().left + $('#notifier').width(),
+		'Popover is positioned into the bounderies of the target');
+
+	$('#notifier').igPopover('option', 'direction', 'bottom');
+	assert.ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-top"), 'Popover arrow is not pointing to top!');
+	assert.ok($('#notifier').offset().top + $('#notifier').height() <= $('#notifier_popover').offset().top,
+		'Popover is not positioned below its target');
+	assert.ok($('#notifier').offset().left < $('#notifier_popover').offset().left &&
+		$('#notifier_popover').offset().left + $('#notifier_popover').width() < $('#notifier').offset().left + $('#notifier').width(),
+		'Popover is positioned into the bounderies of the target');
+
+	$('#notifier').igPopover('option', 'direction', 'left');
+	assert.ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-right"), 'Popover arrow is not pointing to right!');
+	assert.ok($('#notifier').offset().top < $('#notifier_popover').offset().top &&
+		$('#notifier_popover').offset().top < $('#notifier').offset().top + $('#notifier').height(),
+		'Popover is positioned above or below its target');
+	assert.ok($('#notifier_popover').offset().left + $('#notifier_popover').width() <= $('#notifier').offset().left,
+		'Popover is not positioned on the left its target');
+
+	$('#notifier').igPopover('option', 'direction', 'auto');
+	assert.ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-top"), 'Popover arrow is not pointing to top!');
+	assert.ok($('#notifier').offset().top + $('#notifier').height() <= $('#notifier_popover').offset().top,
+		'Popover is not positioned below its target');
+	assert.ok($('#notifier').offset().left < $('#notifier_popover').offset().left &&
+		$('#notifier_popover').offset().left + $('#notifier_popover').width() < $('#notifier').offset().left + $('#notifier').width(),
+		'Popover is positioned into the bounderies of the target');
+	$('#notifier').remove();
+});
 
 //bug #230963 - Popover is not positioned as expected
 QUnit.test(testId_92, function (assert) {
