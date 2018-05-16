@@ -32,36 +32,10 @@ module.exports = function (grunt) {
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
-		qunit: {
-			all: ["<%= config.devTests%>"],
-			options: {
-				force: false,
-				"--web-security": "no",
-				coverage: {
-					src: grunt.file.readJSON('build/config/all/instrument.json').config,
-					instrumentedFiles: "src/instrumentedFiles",
-					lcovReport: "coverage/reportLCOV",
-					disposeCollector: true,
-					reportOnFail: true,
-					linesThresholdPct: 0,
-					statementsThresholdPct: 0,
-					functionsThresholdPct: 0,
-					branchesThresholdPct: 0
-				},
-				page: {
-					viewportSize: { width: 1600, height: 800 }
-				}
-			}
-		},
 		clean: {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
-			tests: ["qunit", "coverage", "instrumentedFiles"],
 			build: ["dist/**/*", "!dist/.git/**/*"]
-		},
-		coveralls: {
-			// LCOV coverage file (can be string, glob or array)
-			src: './coverage/reportLCOV/*.info'
 		},
 		copy: {
 			js: {
@@ -132,8 +106,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
-	grunt.loadNpmTasks("grunt-qunit-istanbul");
-	grunt.loadNpmTasks("grunt-coveralls");
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -186,72 +158,12 @@ module.exports = function (grunt) {
 		grunt.config("jscs.options.reporterOutput", output);
 		grunt.task.run("jscs");
 	});
-	
-	grunt.task.registerTask("test", "Task to run dev tests and generate coverage for a single control or for all of them.", function(control) {
-		var config, report = grunt.option('report');
 
-		if (!control) {
-			control = grunt.option('control');
-		}
-
-		console.log("CONTROL: '" + control + "'");
-
-		if (!!control) {
-			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
-		} else {
-			config = grunt.file.readJSON('build/config/all/tests.json').config;
-		}
-		grunt.task.run("clean:tests");
-		grunt.config("qunit.all", config);
-		grunt.config("qunit.options.coverage.htmlReport", report !== undefined ? "coverage/reportHTML" : undefined);
-		if (report !== undefined) {
-			grunt.task.run("qunitReport:init");
-		}
-		grunt.task.run("qunit:all");
-		if (report !== undefined) {
-			grunt.task.run("qunitReport:finalize");
-		}
-	});
-
-	grunt.task.registerTask("qunitReport", "Task to write QUnit report in HTML format", function(phase) {
-		var done;
-		if(phase === "finalize") {
-			done = this.async();
-		}
-		require('./build/ReporterQUnit.js').writeReport(phase, done);
-	});
-	grunt.event.on("qunit.moduleStart", function (name) {
-		require('./build/ReporterQUnit.js').initModule(name);
-	});
-	grunt.event.on("qunit.moduleDone", function(name, failed, passed, total) {
-		require('./build/ReporterQUnit.js').endModule(name, failed, passed, total);
-	});
-	grunt.event.on("qunit.done", function(failed, passed, total, runtime) {
-		require('./build/ReporterQUnit.js').endTest(failed, passed, total, runtime);
-	});
-	grunt.event.on('qunit.log', function (result, actual, expected, message, source) {
-		if (!result) {
-			require('./build/ReporterQUnit.js').onError(message, source, result, actual, expected);
-		}
-	});
-	grunt.event.on("qunit.error", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
-	});
-	grunt.event.on("qunit.error.onError", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
-	});
-	grunt.event.on("qunit.fail ", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
-	});
-	grunt.event.on("qunit.fail.timeout", function () {
-		require('./build/ReporterQUnit.js').onError("Timeout due to wrong references: Qunit and all other external references should reference files in Bower folder. The IgniteUI files should reference Source folder; ");
-	});
-	
 	grunt.task.registerTask("verify", "A sample task to run jshint, jscs, instrument files, run dev tests and produce coverage report.", function(control) {
 	    if (!!control) {
-	        grunt.task.run("hint:" + control, "cs:" + control, "test:" + control);
+	        grunt.task.run("hint:" + control, "cs:" + control);
 	    } else {
-	    	grunt.task.run("hint", "jscs", "test");
+	    	grunt.task.run("hint", "jscs");
 		}
 	});
 
