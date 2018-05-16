@@ -6,6 +6,10 @@ QUnit.module("igCombo rendering unit tests", {
 		$("html").css("font-size", "16px");
 		$("html").css("line-height", "1.2");
 	},
+	after: function () {
+		$("html").css("font-size", "");
+		$("html").css("line-height", "");
+	},
 	getClassesCount: function ($elem) {
 		var classAttr = $elem.attr('class');
 
