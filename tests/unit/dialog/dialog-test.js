@@ -315,11 +315,13 @@ QUnit.test("[ID3] igDialog API", function (assert) {
 });
 
 QUnit.test("[ID4] focus handling", function (assert) {
-	assert.expect(1);
+	assert.expect(2);
 
-	var $dialog = this.createDialog(this.dialog4),
+	var $dialog = this.createDialog(this.dialog4, { state: "closed" }),
 		$frameBody, $input, $header
 	done = assert.async();
+
+	assert.equal($dialog.css("display"), "none", "Dialog not initially hidden");
 	$dialog.igDialog("open");
 	$frameBody = $("#testFrame").contents().find('body');
 	$header = $dialog.find("." + $.ui.igDialog.prototype.css.header.split(" ").join("."));
@@ -444,8 +446,6 @@ QUnit.test("[ID8] modal Dialog with open Animation bug: 230989", function (asser
 		var zIndexDialog = $dialog.css("z-index"),
 			zIndex = $(".ui-igdialog-overlay").css("z-index");
 
-		console.log(zIndexDialog);
-		console.log(zIndex);
 		assert.equal(parseInt(zIndexDialog), parseInt(zIndex) + 1, "The dialog is not interactable.");
 
 		done();

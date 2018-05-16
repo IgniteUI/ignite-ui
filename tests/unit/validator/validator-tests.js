@@ -1081,6 +1081,11 @@ QUnit.test('[ID6] Validation rules', function (assert) {
 
 	var isCustomRuleApplied = false;
 	var validationForm = $.ig.TestUtil.appendToFixture('<form action=""><fieldset><input type="text" class="test"/><div id="numericEditor"></div><input type="number" id="msgInput" value="2" /><label id="msgLabel"> message target </label><input type="submit" value="Submit" /></fieldset></form>');
+	window.customValidationFunc = function (value, fieldOptions) {
+		isCustomRuleApplied = true;
+		assert.equal(fieldOptions.selector, "#msgInput", "fieldOptions should be set correctly on custom validation");
+		return true;
+	}
 	validationForm.igValidator({
 		required: true,
 		fields: [{
@@ -1090,11 +1095,7 @@ QUnit.test('[ID6] Validation rules', function (assert) {
 			selector: "#msgInput",
 			number: true
 		}],
-		custom: function (value, fieldOptions) {
-			isCustomRuleApplied = true;
-			assert.equal(fieldOptions.selector, "#msgInput", "fieldOptions should be set correctly on custom validation");
-			return true;
-		}
+		custom: "customValidationFunc"
 	});
 
 	valid = validationForm.igValidator("isValid", "#msgInput");

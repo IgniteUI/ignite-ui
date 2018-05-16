@@ -393,7 +393,8 @@ QUnit.test('[ID4] igLayoutManager vertical layout', function (assert) {
 });
 
 QUnit.test('[ID5] igLayoutManager grid layout', function (assert) {
-	assert.expect(18);
+	assert.expect(19);
+	var done = assert.async();
 
 	var layoutManagerElement = $.ig.TestUtil.appendToFixture(this.divTag, { id: "grid" });
 	layoutManagerElement.css({top: 0, left: 0, position: 'absolute', width : '600px'});
@@ -410,7 +411,7 @@ QUnit.test('[ID5] igLayoutManager grid layout', function (assert) {
 		],
 		gridLayout: {
 			rows: 3,
-			animationDuration : -1
+			animationDuration : 100
 		}
 	});
 	
@@ -422,41 +423,52 @@ QUnit.test('[ID5] igLayoutManager grid layout', function (assert) {
 	layoutManagerElement.igLayoutManager("option", "width", 800);
 	assert.equal(layoutManagerElement.children().eq(2).css("top"), "200px", "The items weren't reflowed");
 	layoutManagerElement.igLayoutManager("option", "height", 800);
-	assert.equal(layoutManagerElement.children().eq(2).css("top"), "266px", "The items were incorrectly reflowed");
-	layoutManagerElement.igLayoutManager("option", "gridLayout", {
-		columnHeight: 250
-	});
+	assert.equal(layoutManagerElement.children().eq(2).css("top"), "200px", "The items were incorrectly reflowed");
+	
+	$.ig.TestUtil.wait(150).then(function () {
+		assert.equal(layoutManagerElement.children().eq(2).css("top"), "266px", "The items were incorrectly reflowed after animation ends");
 
-	options = layoutManagerElement.data("igLayoutManager")._opt;
-	assert.equal(options.gridLayout.cols, 2, "The columns weren't correctly set");
-	assert.equal(options.gridLayout.rows, 3, "The rows weren't correctly set");
-	assert.equal(layoutManagerElement.children().length, 5, "The items weren't correctly rendered");
-	assert.equal(layoutManagerElement.children().first().width(), 390, "The items width wasn't correctly rendered");
-	assert.equal(layoutManagerElement.children().first().height(), 240, "The items width wasn't correctly rendered");
-	layoutManagerElement.igLayoutManager("option", "width", 800);
-	assert.equal(layoutManagerElement.children().eq(2).css("top"), "250px", "The items weren't reflowed");
-	layoutManagerElement.igLayoutManager("option", "height", 800);
-	assert.equal(layoutManagerElement.children().eq(2).css("top"), "250px", "The items were incorrectly reflowed");
+		layoutManagerElement.igLayoutManager("option", "gridLayout", {
+			columnHeight: 250
+		});
+	
+		options = layoutManagerElement.data("igLayoutManager")._opt;
+		assert.equal(options.gridLayout.cols, 2, "The columns weren't correctly set");
+		assert.equal(options.gridLayout.rows, 3, "The rows weren't correctly set");
+		assert.equal(layoutManagerElement.children().length, 5, "The items weren't correctly rendered");
+		assert.equal(layoutManagerElement.children().first().width(), 390, "The items width wasn't correctly rendered");
+		assert.equal(layoutManagerElement.children().first().height(), 240, "The items width wasn't correctly rendered");
+		layoutManagerElement.igLayoutManager("option", "width", 800);
+		assert.equal(layoutManagerElement.children().eq(2).css("top"), "250px", "The items weren't reflowed");
+		layoutManagerElement.igLayoutManager("option", "height", 800);
+		assert.equal(layoutManagerElement.children().eq(2).css("top"), "250px", "The items were incorrectly reflowed");
+	
+		layoutManagerElement.igLayoutManager("destroy");
+		assert.equal(layoutManagerElement.children().length, 0, 'The grid layout container did not clear its children before rendering items.');
+	
+		layoutManagerElement.igLayoutManager({
+			layoutMode: 'grid',
+			height: 600,
+			width: 900,
+			gridLayout: {
+				rows: 3,
+				cols: 3
+			}
+		});
+	
+		assert.equal(layoutManagerElement.children().length, 9, "The items weren't correctly rendered");
+		assert.equal(layoutManagerElement.children().first().outerWidth(), 300, "The items width wasn't correctly rendered");
+		assert.equal(layoutManagerElement.children().first().outerHeight(), 200, "The items width wasn't correctly rendered");
+	
+		layoutManagerElement.igLayoutManager("destroy");
+		assert.equal(layoutManagerElement.children().length, 0, 'The grid layout container did not clear its children before rendering items.');
+		done();
+    }).catch(function (er) {
+        assert.pushResult({ result: false, message: er.message });
+        done();
+        throw er;
+    });
 
-	layoutManagerElement.igLayoutManager("destroy");
-	assert.equal(layoutManagerElement.children().length, 0, 'The grid layout container did not clear its children before rendering items.');
-
-	layoutManagerElement.igLayoutManager({
-		layoutMode: 'grid',
-		height: 600,
-		width: 900,
-		gridLayout: {
-			rows: 3,
-			cols: 3
-		}
-	});
-
-	assert.equal(layoutManagerElement.children().length, 9, "The items weren't correctly rendered");
-	assert.equal(layoutManagerElement.children().first().outerWidth(), 300, "The items width wasn't correctly rendered");
-	assert.equal(layoutManagerElement.children().first().outerHeight(), 200, "The items width wasn't correctly rendered");
-
-	layoutManagerElement.igLayoutManager("destroy");
-	assert.equal(layoutManagerElement.children().length, 0, 'The grid layout container did not clear its children before rendering items.');
 });
 
 QUnit.test('[ID6] igLayoutManager grid layoutigLayoutManager grid layout with columsnWidth, columnsHeight and asterisks', function (assert) {

@@ -64,11 +64,13 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 	},
 	beforeEach: function () {		
 		this.model.data = ko.observableArray([
-			{ value: 0, name: 'name0' },
-			{ value: 1, name: 'name1' },
+			ko.observable({ value: 0, name: 'name0' }),
+			{ value: 1, name:  ko.observable('name1') },
 			{ value: 2, name: 'name2' },
 			{ value: 3, name: 'name3' },
 			{ value: 4, name: 'name4' }]);
+		// this.model.data[0] = ko.observable(this.model.data[0]);
+		// this.model.data[1].name = ko.observable(this.model.data[1].name);
 		this.model.selectedItems = ko.observableArray();
 		this.qunitFixture = $('#qunit-fixture');
 		$.fx.off = true;
@@ -115,6 +117,13 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 			this.assert.ok(textInput.val() === newText, 'The exteranl INPUT should be updated properly from the knockout extension');
 		}
 		this.assert.ok(select.val() === newValue, 'The exteranl SELECT should be updated properly from the knockout extension');
+	},
+	unwrapValue: function (value) {
+		if (typeof value === "function") {
+			return value();
+		} else {
+			return value;
+		}
 	}
 });
 
@@ -158,6 +167,7 @@ QUnit.test("[ID2] Changing combo editor UI affect ViewModel and vice versa", fun
 QUnit.test("[ID3] Combo editor adding and deleting items", function (assert) {
 	assert.expect(24);
 	this.assert = assert;
+	var self = this;
 
 	var textInput = $(this.inputTag).attr("type", "text").appendTo(this.qunitFixture);
 	var textSelect = $(this.selectTag).attr("data-bind", "{options: data, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItems}").appendTo(this.qunitFixture);
@@ -194,8 +204,8 @@ QUnit.test("[ID3] Combo editor adding and deleting items", function (assert) {
 		assert.ok(comboList.length === itemLength, "Combo editor drop down item count");
 
 		if (value !== undefined && text !== undefined) {
-			assert.ok(newItem.data.value === value, "The data source value should be updated");
-			assert.ok(newItem.data.name === text, "The data source text should be updated");
+			assert.ok(self.unwrapValue(newItem.data).value === value, "The data source value should be updated");
+			assert.ok(self.unwrapValue(newItem.data).name === text, "The data source text should be updated");
 		}
 	}
 });

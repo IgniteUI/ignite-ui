@@ -94,8 +94,8 @@ QUnit.test('[ID6] igToolbar allowCollapsiong option', function (assert) {
 });
 
 QUnit.test('[ID7] igToolbar setOptions items, isExpanded, CRUD items', function (assert) {
-	assert.expect(16);
-	
+	assert.expect(18);
+	var callbackRendererCount = 0;
 	var newItems = [
 		// Button
 		{
@@ -103,6 +103,9 @@ QUnit.test('[ID7] igToolbar setOptions items, isExpanded, CRUD items', function 
 			type: 'button',
 			scope: this,
 			title: 'Simple button',
+			callbackRenderer: function () {
+				callbackRendererCount++;
+			},
 			props: {
 					allowToggling: {
 						value: true
@@ -176,6 +179,7 @@ QUnit.test('[ID7] igToolbar setOptions items, isExpanded, CRUD items', function 
 		items: newItems
 	});
 	assert.equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'igToolbar items are correctly set');
+	assert.equal(callbackRendererCount, 1, "callbackRenderer not called");
 
 	$(this.igToolbarSelector).igToolbar('option', 'isExpanded', true);
 	assert.ok($(this.igToolbarSelector).igToolbar('option', 'isExpanded'), 'igToolbar should be expanded');
@@ -205,6 +209,8 @@ QUnit.test('[ID7] igToolbar setOptions items, isExpanded, CRUD items', function 
 
 	$(this.igToolbarSelector).igToolbar('addItem', newButton);
 	assert.equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'igToolbar should have 3 items');
+	assert.equal(callbackRendererCount, 2, "callbackRenderer not called for second createItems");
+
 
 	assert.ok($(this.igToolbarSelector).igToolbar('getItem', 0) != undefined, 'igToolbar getItem should return an object');
 
