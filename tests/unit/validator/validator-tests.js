@@ -1518,9 +1518,3 @@ QUnit.test('[ID11] igCombo asterix', function (assert) {
 	assert.ok(Math.abs(comboEditor.position().top - asterixPosition.top) <= 1, "The asterix should be on the same position as the combo.");
 	assert.ok((comboEditor.igCombo("option", "width") <= asterixPosition.left && asterixPosition.left < 300), "The asterix position should be next to the combo.");
 });
-
-
-
-
-
-
