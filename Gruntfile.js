@@ -1,5 +1,5 @@
 var buildVersion = require("./package.json").version,
-    year = new Date().getFullYear(),
+	year = new Date().getFullYear(),
 	config = {
 	scripts: "src/js/**/*.js",
 	scriptsDir: "src/js",
@@ -101,10 +101,10 @@ module.exports = function (grunt) {
 		},
 		uglify: require('./build/packages/combined-files.js').uglify,
 		concat: require('./build/packages/combined-files.js').concat
-    });
+	});
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -160,10 +160,10 @@ module.exports = function (grunt) {
 	});
 
 	grunt.task.registerTask("verify", "A sample task to run jshint, jscs, instrument files, run dev tests and produce coverage report.", function(control) {
-	    if (!!control) {
-	        grunt.task.run("hint:" + control, "cs:" + control);
-	    } else {
-	    	grunt.task.run("hint", "jscs");
+		if (!!control) {
+			grunt.task.run("hint:" + control, "cs:" + control);
+		} else {
+			grunt.task.run("hint", "jscs");
 		}
 	});
 
@@ -171,7 +171,7 @@ module.exports = function (grunt) {
 		grunt.task.run("clean:build");
 		grunt.task.run("copy");
 		grunt.task.run("concat");
-	    grunt.task.run("uglify");
+		grunt.task.run("uglify");
 		grunt.task.run("cssmin");
 	});
 };
