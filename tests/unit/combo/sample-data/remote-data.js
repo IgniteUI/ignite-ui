@@ -1,4 +1,4 @@
-var remoteData = [{
+window.remoteData = [{
     "ShipName": "Vins et alcools Chevalier",
     "ShipAddress": "59 rue de l'Abbaye",
     "ShipCity": "Reims",

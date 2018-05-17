@@ -8,82 +8,28 @@
     <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.toolbarbutton.css" media="screen" />
 
 
-    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <link type="text/css" href="../../../node_modules/qunitjs/qunit/qunit.css" rel="stylesheet" media="screen" />
 
-	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
-	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
-	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../node_modules/qunitjs/qunit/qunit.js"></script>
 
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
-
-	<script type="text/javascript">
-	    var equalWithEpsilon = function (a, b, epsilon) {
-	        return Math.abs(a - b) < epsilon;
-	    }
-
-	    var unitTestsSetup = {
-	        toolbarButtonSelector: "toolbar-button",
-	        actualToolbarButton: null,
-	        setup: function () {
-	            $('body').append($("<div></div>").attr("id", this.toolbarButtonSelector));
-	            $(this.id(this.toolbarButtonSelector)).igToolbarButton();
-	            this.actualToolbarButton = $(this.id(this.toolbarButtonSelector)).data("ui-igToolbarButton");
-	        },
-	        teardown: function () {
-	            $(this.id(this.toolbarButtonSelector)).remove();
-	        },
-	        id: function (selector) {
-	            return "#" + selector;
-	        }
-	    };
-
-	    module("igToolbarButton unit tests", unitTestsSetup);
-
-	    test("_setOptions", function () {
-	        ok(this.actualToolbarButton.options.allowToggling, "allowToggling is true");
-	        this.actualToolbarButton._setOption("allowToggling", false);
-	        ok(!this.actualToolbarButton.options.allowToggling, "allowToggling is false");
-
-	        ok(!this.actualToolbarButton.options.isSelected, "isSelected is false");
-	        this.actualToolbarButton._setOption("isSelected", true);
-	        ok(this.actualToolbarButton.options.isSelected, "isSelected is true");
-	    });
-
-		test('events', function() {
-			this.actualToolbarButton.options.disabled = true;
-			this.actualToolbarButton.element.click();
-			ok(!this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'Should not be active');
-
-			this.actualToolbarButton.options.disabled = false;
-			this.actualToolbarButton.element.click();
-			ok(this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'Should be active');
-
-			this.actualToolbarButton.options.allowToggling = false;
-
-			this.actualToolbarButton.element.mousedown();
-			ok(this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'mousedown event');
-
-			this.actualToolbarButton.element.mouseup();
-			ok(!this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonHoverClasses), 'mouseup event');
-			ok(!this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'mouseup event');
-		});
-	</script>
+	<script type="text/javascript" src="toolbarbtn-test.js" ></script>	
 </head>
+
 <body>
-	<!--div id="qunit"></div>
-    <div id="qunit-fixture"></div>-->
-
-
+	<!-- <div id="qunit"></div> -->
+	<div id="qunit-fixture"></div>
+		
 	<div style="float:right;width:400px;overflow:auto;">
 		<h1 id="qunit-header">Test results</h1>
 		<h2 id="qunit-banner"></h2>
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
 	</div>
-
 </body>
 </html>

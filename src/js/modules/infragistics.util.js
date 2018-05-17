@@ -258,7 +258,7 @@
 
 	$.ig.util.changeGlobalRegional = function (regional) {
 		$.ig.util.regional = regional;
-		$.ig.regional.defaults = $.extend($.ig._regional,
+		$.ig.regional.defaults = $.extend({}, $.ig._regional,
 			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
 			$.ig.util.widgetStack[ i ].changeGlobalRegional();

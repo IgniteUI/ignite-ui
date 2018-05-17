@@ -1,9 +1,21 @@
 language: node_js
 node_js:
-- '4'
+- '8.9.4'
+# https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-357626842
+sudo: required
+# dist: trusty
+addons:
+  chrome: stable
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  
 script:
-- grunt verify
-- grunt coveralls
+- npm run cover
+after_success:
+- cat ./coverage/lcov.info | coveralls
 
 before_deploy:
 # clone bower repo

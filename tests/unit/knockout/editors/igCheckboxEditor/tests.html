@@ -10,8 +10,8 @@
 	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
 	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
 	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
-	<script type="text/javascript" src="../../../../../bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../../node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
@@ -29,155 +29,23 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.editors.js"></script>
 	
-	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
-	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
+	<link type="text/css" href="../../../../../node_modules/qunitjs/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../../node_modules/qunitjs/qunit/qunit.js"></script>
+	<script type='text/javascript' src='../../../../../node_modules/knockout/build/output/knockout-latest.debug.js'></script>
 
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
 
-	
-	<script type="text/javascript">
-	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
-	$(document).ready(function () {
-		QUnit.config.reorder = false;
-
-		function viewModel() {
-			this.isDisabled =  ko.observable(false);
-
-			this.isChecked = ko.observable(false);
-			this.isCheckedNonObservable = false;
-
-			this.isCheckedWithValue = ko.observable(false);
-			this.isCheckedNonObservableWithValue = false;
-		};
-		
-		model = new viewModel();
-        ko.applyBindings(model);
-    	
-		initialized = false;
-		module('igCheckboxEditor Knockout', {
-			setup: function() {
-				//pause testing until tree is initialized
-				if (!initialized) {
-					stop();
-					setTimeout(function () { start(); }, 100);
-					initialized = true;
-				}
-			},
-			teardown: function() {
-			}
-		});
-
-		var testId = 'Test disabled binding';
-		test(testId, 9, function () {
-			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
-
-			ok(!$editor.igCheckboxEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igCheckboxEditor("field").prop("disabled"), "Editor should be enabled");
-			ok(!$editor.igCheckboxEditor("editorContainer").hasClass($.ui.igCheckboxEditor.prototype.css.disabled), "Editor should be enabled");
-			$chk.click();
-			ok($editor.igCheckboxEditor("option", "disabled"), "Editor should be disabled");
-			ok($editor.igCheckboxEditor("field").prop("disabled"), "Editor should be disabled");
-			ok($editor.igCheckboxEditor("editorContainer").hasClass($.ui.igCheckboxEditor.prototype.css.disabled), "Editor should be disabled");
-			$chk.click();
-			$chk.click();
-			$chk.click();
-			ok(!$editor.igCheckboxEditor("option", "disabled"), "Editor should be enabled");
-			ok(!$editor.igCheckboxEditor("field").prop("disabled"), "Editor should be enabled");
-			ok(!$editor.igCheckboxEditor("editorContainer").hasClass($.ui.igCheckboxEditor.prototype.css.disabled), "Editor should be enabled");
-			$editor.remove();
-			$chk.remove();
-		});
-
-		testId = 'Test isChecked binding observable';
-		test(testId, 4, function() {
-			var $igEditor = $("#edCheckedObservable");
-
-			ok(!model.isChecked(), "The view model observable and the igCheckEditor isCheked property should be synced.");
-			$igEditor.click();
-			ok(model.isChecked(), "The view model observable and the igCheckEditor isCheked property should be synced.");
-			$igEditor.click();
-			ok(!model.isChecked(), "The view model observable and the igCheckEditor isCheked property should be synced.");
-			model.isChecked(true);
-			ok($igEditor.igCheckboxEditor("option", "checked"), "The view model observable and the igCheckEditor isCheked property should be synced.");
-			$igEditor.remove();
-		});
-
-		testId = 'Test isChecked binding non-observable';
-		test(testId, 3, function() {
-			var $igEditor = $("#edCheckedNonObservable");
-
-			ok(!model.isCheckedNonObservable, "The view model observable and the igCheckEditor isCheckedNonObservable property should be synced.");
-			$igEditor.click();
-			ok(model.isCheckedNonObservable, "The view model observable and the igCheckEditor isCheckedNonObservable property should be synced.");
-			$igEditor.click();
-			ok(!model.isCheckedNonObservable, "The view model observable and the igCheckEditor isCheckedNonObservable property should be synced.");
-			$igEditor.remove();
-		});
-
-		testId = 'Test isChecked binding observable with value';
-		test(testId, 4, function() {
-			var $igEditor = $("#edCheckedObservableWithValue");
-
-			ok(!model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
-			$igEditor.click();
-			ok(model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
-			$igEditor.click();
-			ok(!model.isCheckedWithValue(), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
-			model.isCheckedWithValue(true);
-			ok($igEditor.igCheckboxEditor("option", "checked"), "The view model observable and the igCheckEditor isCheckedWithValue property should be synced.");
-			$igEditor.remove();
-		});
-
-		testId = 'Test isChecked binding non-observable with value';
-		test(testId, 3, function() {
-			var $igEditor = $("#edCheckedNonObservableWithValue");
-
-			ok(!model.isCheckedNonObservableWithValue, "The view model observable and the igCheckEditor isCheckedNonObservableWithValue property should be synced.");
-			$igEditor.click();
-			ok(model.isCheckedNonObservableWithValue, "The view model observable and the igCheckEditor isCheckedNonObservableWithValue property should be synced.");
-			$igEditor.click();
-			ok(!model.isCheckedNonObservableWithValue, "The view model observable and the igCheckEditor isCheckedNonObservableWithValue property should be synced.");
-			$igEditor.remove();
-		});
-
-		testId = 'Test updateMode not allowed value';
-		test(testId, 1, function() {
-			var err;
-			QUnit.throws(function () {
-				$("#containerDiv").empty();
-				$("#containerDiv").append("<input id=\"tempEditor\" data-bind=\"igCheckboxEditor: { checked: isCheckedWithValue, updateMode: 'None' }\"></input>");
-				ko.applyBindings(model, document.getElementById("tempEditor"));
-			}, function (err) {
-			    return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1;
-			}, 'An error was correctly thrown when updateMode option is not correctly changed');
-			ko.cleanNode(document.getElementById("tempEditor"));
-			$("#containerDiv").empty();
-		});
-
-	});//document ready
-</script>
+	<script type="text/javascript" src="checkbox-test.js"></script>
 </head>
 <body>
-<div style="float:right;width:500px;overflow:auto">
-     <h1 id="qunit-header">Test results</h1>
-     <h2 id="qunit-banner"></h2>
-     <h2 id="qunit-userAgent"></h2>
-     <ol id="qunit-tests"></ol>
-</div>
-<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px;">
-
-	<input id="edDisabled" data-bind="igCheckboxEditor: { checked: false }, igEditorDisable: isDisabled" />
-
-	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
-
-	<input id="edCheckedObservable" data-bind="igCheckboxEditor: { checked: isChecked }"/>
-	<input id="edCheckedObservableWithValue" data-bind="igCheckboxEditor: { checked: isCheckedWithValue, value: 'Test'  }"/>
-
-	<input id="edCheckedNonObservable" data-bind="igCheckboxEditor: { checked: isCheckedNonObservable }"/>
-	<input id="edCheckedNonObservableWithValue" data-bind="igCheckboxEditor: { checked: isCheckedNonObservableWithValue, value: 'Test' }"/>
-
-	<div id="containerDiv"></div>
-</div>
+	<!-- <div id="qunit"></div> -->
+	<div id="qunit-fixture"></div>
+		
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
 </body>
 </html>
