@@ -1258,10 +1258,13 @@ QUnit.test(testId_38, function (assert) {
 
 QUnit.test(testId_39, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    var done, self = this;
-    assert.expect(2);
+    var done, self = this, scrollingCount = 0;
+    assert.expect(3);
     this.vhScroll().igScroll({
         modifyDOM: true
+    });
+    this.vhScroll().on("igscrollscrolling", function (ev, ui) {
+        scrollingCount++;
     });
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
@@ -1270,7 +1273,8 @@ QUnit.test(testId_39, function (assert) {
 
     done = assert.async();
     this.testUtil.wait(400).then(function () {
-        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
+        assert.ok(scrollingCount >= 2, "Scroll should've occured at least twice when hoding down the mouse.")
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 40 * scrollingCount, "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
