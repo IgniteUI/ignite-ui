@@ -5301,14 +5301,10 @@
 		_getSchemaField: function (fieldName) {
 			var i, field;
 			if (this.settings.schema) {
-				if (Array.prototype.find) {
-					return this.settings.schema.fields.find(function (f) { return f.name === fieldName; });
-				} else {
-					for (i = 0; i < this.settings.schema.fields.length; i++) {
-						field = this.settings.schema.fields[ i ];
-						if (field.name === fieldName) {
-							return field;
-						}
+				for (i = 0; i < this.settings.schema.fields.length; i++) {
+					field = this.settings.schema.fields[ i ];
+					if (field.name === fieldName) {
+						return field;
 					}
 				}
 			}
