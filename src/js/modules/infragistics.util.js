@@ -5251,7 +5251,7 @@
 				r += "|";
 			}
 
-			r += separators[ i ];
+			r += $.ig.util.escapeRegExp(separators[ i ]);
 		}
 
 		var result = value.split(new RegExp(r));
