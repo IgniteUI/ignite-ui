@@ -698,7 +698,7 @@ QUnit.module("igDataSource Properties", {
 		
 		QUnit.test("Test commit API method - commit all", function (assert) {
 			assert.expect(2);
-			assert.equal(this.dsLocal.pendingTransactions().length, 2, "Pending transactions should be 2.");
+			assert.equal(this.dsLocal.pendingTransactions().length, 4, "Pending transactions should be 2.");
 			this.dsLocal.commit();
 			assert.equal(this.dsLocal.pendingTransactions().length, 0, "Pending transactions should be empty.");
 
