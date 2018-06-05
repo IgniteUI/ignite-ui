@@ -231,7 +231,7 @@
 					});
 					$("#211360Editor1").igDatePicker("dropDownButton").click();
 					$("#211360Editor1").one("igdatepickertextchanged", function (evt, ui) {
-						equal(ui.text, getMMDDYYYY(new Date()), "The text should be " + getMMDDYYYY(new Date()) + " Real Value: " + ui.text);
+						equal(ui.text, getDDmmYYYY(new Date()), "The text should be " + getDDmmYYYY(new Date()) + " Real Value: " + ui.text);
 					});
 					calendar = $("#211360Editor1").igDatePicker("getCalendar");
 					$(calendar).find(".ui-datepicker-today").find("a").click();
