@@ -10875,14 +10875,18 @@
 		_listMouseDownHandler: function () { // igDatePicker
 		},
 		_updateDropdownSelection: function () { //igDatePicker
-			var pickerInst, cursorPosition,
+			var pickerInst, cursorPosition, parsedDate,
 				val = this._editorInput.val();
 
 			// D.P. 19th Dec 2017 #1453 Update the `datepicker` selection if the input mask if fulfilled
 			if (this._pickerOpen && this._validateRequiredPrompts(val)) {
 				cursorPosition = this._getCursorPosition();
 				pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
-				this._editorInput.datepicker("setDate", this._valueFromText(val));
+				parsedDate = this._parseDateFromMaskedValue(val);
+				if (this.options.displayTimeOffset !== null) {
+					parsedDate = this._getDateOffset(parsedDate);
+				}
+				this._editorInput.datepicker("setDate", parsedDate);
 
 				// restore input after picker updates input:
 				this._editorInput.val(val);
