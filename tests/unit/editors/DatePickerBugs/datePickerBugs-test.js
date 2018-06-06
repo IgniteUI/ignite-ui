@@ -462,6 +462,44 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 	});
 });
 
+QUnit.test("Issue 1453 pt2 - Enter date w/ format and displayModeText dataMode", function (assert) {
+	assert.expect(5);
+	var done = assert.async(),
+		today = target = new Date(),
+		targetString, targetKeys, tomorrow = true,
+		todayString = this.getDDmmYYYY(today, "-"),
+		$editor = this.appendToFixture(this.inputTag).igDatePicker({
+			dateInputFormat: "dd-MM-yyyy",
+			dataMode: "displayModeText"
+		}),
+		$calendar = $editor.igDatePicker("getCalendar");
+
+	targetKeys = todayString.replace(/-/g, "");
+
+	$editor.igDatePicker("field").focus();
+	$editor.igDatePicker("showDropDown");
+
+	$.ig.TestUtil.wait(400).then(function () {
+		// picker opens with today as default
+		assert.strictEqual($calendar.find(".ui-datepicker-current-day").length, 0, "Calendar should have no initial selection");
+		//type in the date +/- a day, control check what's typed:
+		$.ig.TestUtil.type(targetKeys, $editor.igDatePicker("field"));
+		assert.equal($editor.igDatePicker("field").val(), todayString, "Typed text should match");
+		assert.equal($calendar.find(".ui-datepicker-current-day").text(), target.getDate(), "Calendar selection should be updated with typed in date");
+
+		$.ig.TestUtil.keyInteraction(13, $editor.igDatePicker("field"));
+		assert.equal($editor.igDatePicker("field").val(), todayString, "Typed text should remain after enter");
+		assert.equal($editor.igDatePicker("value"), todayString, "Value should match typed selection");
+
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
+
+
 QUnit.test("Issue 1733 - igDatePicker throws error, when selecting with displayModeText dataMode", function (assert) {
 	assert.expect(4);
 	var done = assert.async(),
