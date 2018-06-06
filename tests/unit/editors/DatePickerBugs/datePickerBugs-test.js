@@ -461,3 +461,49 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 		throw er;
 	});
 });
+
+QUnit.test("Issue 1733 - igDatePicker throws error, when selecting with displayModeText dataMode", function (assert) {
+	assert.expect(4);
+	var done = assert.async(),
+		self = this,
+		value = new Date(),
+		todayString, targetString,
+		$editor = this.appendToFixture(this.inputTag).igDatePicker({
+			dateInputFormat: "yyyy-MM-dd",
+			dataMode: "displayModeText"
+		}),
+		$calendar = $editor.igDatePicker("getCalendar");
+
+	value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+	todayString = this.getDDmmYYYY(value, "-").split("-").reverse().join("-");
+	
+
+	$editor.igDatePicker("field").focus();
+	$editor.igDatePicker("showDropDown");
+
+	$.ig.TestUtil.wait(400).then(function () {
+		// select today
+		$calendar.find(".ui-datepicker-today").find("a").click();
+		assert.equal($editor.val(), todayString, "Editor display text not updated with picked value");
+		assert.equal($editor.igDatePicker("value"), todayString, "Editor value not updated with picked one");
+
+		$editor.igDatePicker("showDropDown");
+		return $.ig.TestUtil.wait(400);
+		done();
+	})
+	.then(function () {
+		// select 15th or 16th depending on date
+		value.setDate(value.getDate() === 15 ? 16 : 15);
+		targetString = self.getDDmmYYYY(value, "-").split("-").reverse().join("-");
+
+		$calendar.find(".ui-datepicker-today").find("a").click();
+		assert.equal($editor.val(), todayString, "Editor display text not updated with picked value");
+		assert.equal($editor.igDatePicker("value"), todayString, "Editor value not updated with picked one");
+		done();
+	})	
+	.catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
