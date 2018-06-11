@@ -10901,14 +10901,18 @@
 		_listMouseDownHandler: function () { // igDatePicker
 		},
 		_updateDropdownSelection: function () { //igDatePicker
-			var pickerInst, cursorPosition,
+			var pickerInst, cursorPosition, parsedDate,
 				val = this._editorInput.val();
 
 			// D.P. 19th Dec 2017 #1453 Update the `datepicker` selection if the input mask if fulfilled
 			if (this._pickerOpen && this._validateRequiredPrompts(val)) {
 				cursorPosition = this._getCursorPosition();
 				pickerInst = $.data( this._editorInput[ 0 ], "datepicker" );
-				this._editorInput.datepicker("setDate", this._valueFromText(val));
+				parsedDate = this._parseDateFromMaskedValue(val);
+				if (this.options.displayTimeOffset !== null) {
+					parsedDate = this._getDateOffset(parsedDate);
+				}
+				this._editorInput.datepicker("setDate", parsedDate);
 
 				// restore input after picker updates input:
 				this._editorInput.val(val);
@@ -11007,6 +11011,7 @@
 					// D.P. 19th Dec 2017 #1453 - Entered date is converted to today's date when pressing the Enter key
 					// Double onSelect bug + getDate cause a parse on the text we already formatted, setting lastVal skips that:
 					inst.lastVal = self._getEditModeValue();
+					self._editorInput.val(inst.lastVal);
 					self._triggerItemSelected.call(self,
 						inst.dpDiv.find(".ui-datepicker-calendar>tbody>tr>td .ui-state-hover"),
 							dateFromPicker);
