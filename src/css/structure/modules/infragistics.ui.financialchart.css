@@ -154,11 +154,9 @@
 	background: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 55 55'%3E%3Cdefs%3E%3Cstyle%3E.cls-1{fill:%23777;}%3C/style%3E%3C/defs%3E%3Ctitle%3EArtboard 2%3C/title%3E%3Crect class='cls-1' x='46.32' y='16.34' width='5.97' height='38.47'/%3E%3Cpolygon class='cls-1' points='36.73 54.8 42.7 54.8 42.7 20.71 40.34 20.71 36.73 23.92 36.73 54.8'/%3E%3Cpolygon class='cls-1' points='27.14 30.07 27.14 54.8 33.11 54.8 33.11 27.15 28.46 31.28 27.14 30.07'/%3E%3Cpolygon class='cls-1' points='30.74 20.71 29.62 20.71 30.12 21.22 30.74 20.71'/%3E%3Cpolygon class='cls-1' points='17.55 26.49 17.55 54.8 23.52 54.8 23.52 26.76 20.26 23.78 17.55 26.49'/%3E%3Cpolygon class='cls-1' points='7.96 24.97 7.96 26.49 9.48 24.97 7.96 24.97'/%3E%3Cpolygon class='cls-1' points='7.96 54.8 13.93 54.8 13.93 30.11 7.96 36.08 7.96 54.8'/%3E%3Cpolygon class='cls-1' points='37.29 0.2 43.23 6.14 30.12 16.96 21.68 8.51 2.5 27.69 7.29 32.48 20.26 19.52 28.46 27.02 47.33 10.23 52.5 15.4 52.5 14.57 52.5 0.2 37.29 0.2'/%3E%3C/svg%3E") no-repeat 0 0;
 	padding-left:18px;
 }
-
 .financialChartIndicatorMenu:hover, .financialChartTypePicker:hover {
 	background: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 55 55'%3E%3Cdefs%3E%3Cstyle%3E.cls-1{fill:%230090ff;}.cls-2{fill:%23777;}%3C/style%3E%3C/defs%3E%3Ctitle%3EArtboard 2%3C/title%3E%3Crect class='cls-1' x='46.32' y='16.34' width='5.97' height='38.47'/%3E%3Cpolygon class='cls-1' points='36.73 54.8 42.7 54.8 42.7 20.71 40.34 20.71 36.73 23.92 36.73 54.8'/%3E%3Cpolygon class='cls-1' points='27.14 30.07 27.14 54.8 33.11 54.8 33.11 27.15 28.46 31.28 27.14 30.07'/%3E%3Cpolygon class='cls-2' points='30.74 20.71 29.62 20.71 30.12 21.22 30.74 20.71'/%3E%3Cpolygon class='cls-1' points='17.55 26.49 17.55 54.8 23.52 54.8 23.52 26.76 20.26 23.78 17.55 26.49'/%3E%3Cpolygon class='cls-2' points='7.96 24.97 7.96 26.49 9.48 24.97 7.96 24.97'/%3E%3Cpolygon class='cls-1' points='7.96 54.8 13.93 54.8 13.93 30.11 7.96 36.08 7.96 54.8'/%3E%3Cpolygon class='cls-1' points='37.29 0.2 43.23 6.14 30.12 16.96 21.68 8.51 2.5 27.69 7.29 32.48 20.26 19.52 28.46 27.02 47.33 10.23 52.5 15.4 52.5 14.57 52.5 0.2 37.29 0.2'/%3E%3C/svg%3E") no-repeat 0 0;
 }
-
 .financialChartIndicatorMenu:hover, .financialChartTypePicker:hover {
 	cursor:pointer;
 }
@@ -190,15 +188,15 @@
 	height: 50px;
 	width: 50px;
 }
-.financialChartTypePickerDropDownMenu li[data-value="Bar"],[data-value="Auto"], .financialChartTypePicker {
+.financialChartTypePickerDropDownMenu li[data-value="Bar"],[data-value="Auto"], .financialChartTypePickerDropDownButton {
 	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 3 2 L 3 4 L 3 6 L 3 7 L 0 7 L 0 9 L 3 9 L 3 12 L 5 12 L 5 9 L 5 7 L 5 6 L 8 6 L 8 4 L 5 4 L 5 2 L 3 2 ZM 10 0 L 10 3 L 10 5 L 10 10 L 7 10 L 7 12 L 10 12 L 10 15 L 12 15 L 12 12 L 12 10 L 12 5 L 15 5 L 15 3 L 12 3 L 12 0 L 10 0 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
 }
-.financialChartTypePickerDropDownMenu li[data-value="Line"] {
+.financialChartTypePickerDropDownMenu li[data-value="Line"], .financialChartTypePickerDropDownButton[data-value="Line"] {
 	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 11.3333 L 1.6842 13 L 6.5 8.8125 L 9.5313 11.3438 L 16 5.5 L 14 3.5 L 9.5313 8.1875 L 6.5 5.625 L 0 11.3333 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
 }
-.financialChartTypePickerDropDownMenu li[data-value="Candle"] {
+.financialChartTypePickerDropDownMenu li[data-value="Candle"], .financialChartTypePickerDropDownButton[data-value="Candle"] {
 	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 8 3 L 8 13 L 10 13 L 10 16 L 12 16 L 12 13 L 14 13 L 14 3 L 12 3 L 12 0 L 10 0 L 10 3 L 8 3 ZM 0 5 L 0 12 L 2 12 L 2 15 L 4 15 L 4 12 L 6 12 L 6 5 L 4 5 L 4 2 L 2 2 L 2 5 L 0 5 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
 }
-.financialChartTypePickerDropDownMenu li[data-value="Column"] {
+.financialChartTypePickerDropDownMenu li[data-value="Column"], .financialChartTypePickerDropDownButton[data-value="Column"] {
 	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 16 L 3 16 L 3 11 L 0 11 L 0 16 ZM 11 16 L 11 2 L 8 2 L 8 16 L 11 16 ZM 15 16 L 15 4 L 12 4 L 12 16 L 15 16 ZM 7 16 L 7 6 L 4 6 L 4 16 L 7 16 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
 }
