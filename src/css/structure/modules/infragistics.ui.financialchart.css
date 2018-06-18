@@ -185,8 +185,7 @@
 	content: "\2713"
 }
 .financialChartTypePickerDropDownMenu li {
-	height: 50px;
-	width: 50px;
+	padding-left: 1.5em;
 }
 .financialChartTypePickerDropDownMenu li[data-value="Bar"],[data-value="Auto"], .financialChartTypePickerDropDownButton {
 	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 3 2 L 3 4 L 3 6 L 3 7 L 0 7 L 0 9 L 3 9 L 3 12 L 5 12 L 5 9 L 5 7 L 5 6 L 8 6 L 8 4 L 5 4 L 5 2 L 3 2 ZM 10 0 L 10 3 L 10 5 L 10 10 L 7 10 L 7 12 L 10 12 L 10 15 L 12 15 L 12 12 L 12 10 L 12 5 L 15 5 L 15 3 L 12 3 L 12 0 L 10 0 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
