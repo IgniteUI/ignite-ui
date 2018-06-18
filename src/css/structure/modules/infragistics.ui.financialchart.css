@@ -46,7 +46,7 @@
 	display: flex;
 	display: -ms-flexbox;
 	align-items: center;
-	justify-content: flex-start;
+    justify-content: flex-start;
 	flex-flow: row nowrap;
 	-ms-flex-flow: row nowrap;
     background: #eee;
@@ -57,7 +57,7 @@
 }
 .financialChartRangeSelector {
 	text-align: center;
-	text-transform:uppercase;
+	text-transform: uppercase;
 }
 .financialChartRangeSelector input {
 	display: none;
@@ -65,9 +65,9 @@
 .financialChartRangeSelector label {
 	border-right: 1px solid #758696;
 	padding: 0 10px;
-	padding:0!important;
-	border:none!important;
-	background-color:#eee;
+	padding: 0!important;
+	border: none!important;
+	background-color: #eee;
 }
 .financialChartRangeSelectorLastOption {
 	border: none !important;
@@ -79,8 +79,8 @@
 }
 .financialChartRangeSelector input:checked + span {
 	color: #0090ff;
-	color:#444!important;
-	background-color:#d5d5d5;
+	color: #444!important;
+	background-color: #d5d5d5;
 }
 .financialChartRangeSelector label span {
 	padding:2px 8px 4px;
@@ -92,8 +92,6 @@
 	margin-right: 15px;
 }
 .financialChartIndicatorMenu {
-	grid-column: 1;
-	-ms-grid-column: 1;
 	border-right: solid 1px;
 }
 .financialChartIndicatorMenu, .financialChartTypePicker {
@@ -141,8 +139,8 @@
 	border-style: solid;
     border-width: 4px 4px 0 4px;
     border-color: #777 transparent transparent transparent;
-	content:"";
-	position:relative;
+	content: "";
+	position: relative;
 	flex: 0;
 }
 .financialChartIndicatorMenu {
