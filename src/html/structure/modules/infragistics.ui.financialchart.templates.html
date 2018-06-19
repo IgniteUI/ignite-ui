@@ -10,12 +10,13 @@
 <template class='financialChartToolbar'>
 	<div class='financialChartToolbar'>
 		<div class='financialChartIndicatorMenu'></div>
+		<div class='financialChartRangeSelector'></div>
 		<div class='financialChartTypePicker'></div>
 	</div>
 </template>
 <template class='financialChartIndicatorMenu'>
-<button class='financialChartIndicatorMenuDropDownButton'>Indicator</button>
-<div class='financialChartIndicatorMenuDropDownMenu'>
+	<button class='financialChartIndicatorMenuDropDownButton'>Indicators</button>
+	<div class='financialChartIndicatorMenuDropDownMenu'>
     <ul>
         <li data-value='FinancialOverlayType'>Overlays
             <ul>
@@ -58,6 +59,8 @@
     <li data-value='ChaikinVolatility'>ChaikinVolatility</li>
     <li data-value='CommodityChannelIndex'>CommodityChannelIndex</li>
     <li data-value='DetrendedPriceOscillator'>DetrendedPriceOscillator</li>
+	<li data-value='EaseOfMovement'>EaseOfMovement</li>
+	<li data-value='FastStochasticOscillator'>FastStochasticOscillator</li>
     <li data-value='ForceIndex'>ForceIndex</li>
     <li data-value='FullStochasticOscillator'>FullStochasticOscillator</li>
     <li data-value='MarketFacilitationIndex'>MarketFacilitationIndex</li>
@@ -83,6 +86,7 @@
     <li data-value='WilliamsPercentR'>WilliamsPercentR</li>
             </ul>
         </li>
+	</ul>
 </div>
 </template>
 <template class='financialChartRangeSelector'>
@@ -95,39 +99,15 @@
 		<label class='rangeSelectorAll'><input type='radio' value='all'><span>all</span></label>
 	</div>
 </template>
-<span class="trendLinePickerLabel">Trendline</span>
-	<select class='financialChartTrendLinePicker'>
-		<option value='None'>None</option>
-		<option value='LinearFit'>LinearFit</option>
-		<option value='QuadraticFit'>QuadraticFit</option>
-		<option value='CubicFit'>CubicFit</option>
-		<option value='QuarticFit'>QuarticFit</option>
-		<option value='QuinticFit'>QuinticFit</option>
-		<option value='LogarithmicFit'>LogarithmicFit</option>
-		<option value='ExponentialFit'>ExponentialFit</option>
-		<option value='PowerLawFit'>PowerLawFit</option>
-		<option value='SimpleAverage'>SimpleAverage</option>
-		<option value='ExponentialAverage'>ExponentialAverage</option>
-		<option value='ModifiedAverage'>ModifiedAverage</option>
-		<option value='CumulativeAverage'>CumulativeAverage</option>
-		<option value='WeightedAverage'>WeightedAverage</option>
-	</select>
-</template>
 <template class='financialChartTypePicker'>
-<span class="chartTypePickerLabel">Chart Type</span>
-	<select class='financialChartTypePicker'>
-		<option value='Auto'>Auto</option>
-		<option value='Bar'>Bar</option>
-		<option value='Line'>Line</option>
-		<option value='Candle'>Candle</option>
-		<option value='Column'>Column</option>
-	</select>
-</template>
-<span class="volumeTypePickerLabel">Volume</span>
-	<select class='financialChartVolumeTypePicker'>
-		<option value='None'>None</option>
-		<option value='Column'>Column</option>
-		<option value='Line'>Line</option>
-		<option value='Area'>Area</option>
-	</select>
+	<button class='financialChartTypePickerDropDownButton'></button>
+	<div class='financialChartTypePickerDropDownMenu'>
+		<ul>
+			<li data-value='Auto'>Auto</li>
+			<li data-value='Bar'>Bar</li>
+			<li data-value='Line'>Line</li>
+			<li data-value='Candle'>Candle</li>
+			<li data-value='Column'>Column</li>
+		</ul>
+	</div>
 </template>
