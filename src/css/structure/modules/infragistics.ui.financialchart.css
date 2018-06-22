@@ -18,21 +18,21 @@
 	-ms-grid-columns: 100%;
 }
 .financialChartPrice {
-	grid-row: 2;
-	-ms-grid-row: 2;
+	grid-row: 3;
+	-ms-grid-row: 3;
 	margin-top:10px;
 }
 .financialChartIndicators {
-	grid-row: 3;
-	-ms-grid-row: 3;
-}
-.financialChartVolume {
 	grid-row: 4;
 	-ms-grid-row: 4;
 }
-.financialChartZoomSlider {
+.financialChartVolume {
 	grid-row: 5;
 	-ms-grid-row: 5;
+}
+.financialChartZoomSlider {
+	grid-row: 6;
+	-ms-grid-row: 6;
 }
 .financialChartToolbar {
 	display: grid;
@@ -202,4 +202,8 @@
 }
 .financialChartTypePickerDropDownButton[data-value="Column"]:hover {
 	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 16 L 3 16 L 3 11 L 0 11 L 0 16 ZM 11 16 L 11 2 L 8 2 L 8 16 L 11 16 ZM 15 16 L 15 4 L 12 4 L 12 16 L 15 16 ZM 7 16 L 7 6 L 4 6 L 4 16 L 7 16 Z' fill='#0090ff' /%3E%3C/svg%3E") no-repeat 0 0;
+}
+.financialChartLegend {
+	grid-row: 2;
+	-ms-grid-row: 2;
 }
