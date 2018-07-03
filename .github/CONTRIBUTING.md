@@ -34,6 +34,15 @@ When working on an issue for the Ignite UI repository, you need to be aware of a
 1. `status: pending-localization` this status tells that there are changes in the localization strings that need to be translated. When you make such changes, put this status badge without removing the other applicable ones and assign a person to do the translations.
 2. `status: localized` this status is for issues that were with a pending translation status and have already been localized. Place this status label once these translation changes have been included in the current pull request, or the changes are already pulled with a different pull request.
 
+## Severity
+
+When logging issue you should assign `severity:` label. If you cannot determine the issue severity use the `severity: medium` as initial label and a developer will re-evaluate it when doing investigation.
+
+1. `severity: low` the issue is unnoticeable or barely noticeable in uncommon interactions with the feature. The issue does not affect end-user experience, or any of the general functionalities of the feature. The feature works fine if the issue persists to exist.
+2. `severity: medium` the issue is noticeable, but only in certain scenarios, which are not commonly anticipated. The issue affects end-user experience to a lesser degree, but does not affect the general functionalities of the feature. The feature behaviors may be affected by this issue when new behaviors are added, or new integration scenarios are developed.
+3. `severity: high` the issue is noticeable in common interaction scenarios. The issue affects the end-user experience significantly, and affects one or more of the general functionalities of the feature. The feature behaviors are affected by the issue, causing one or more of the behaviors to malfunction.
+4. `severity: critical` the issue appears in a core interaction scenarios (80% use-cases). The issue is immediately noticeable by end-users and stops their interaction flow (an exception is thrown which prevents the user to continue their work with the UI, or breaks the UI completely). The issues affects one or more of the core functionalities of the feature causing them or the entire feature to stop functioning. 
+
 # Fixing a bug  
 When fixing a bug you need to follow these guidelines:
 
