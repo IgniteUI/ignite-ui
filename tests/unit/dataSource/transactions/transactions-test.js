@@ -61,7 +61,7 @@
 				assert.expect(1);
 				this.ds1.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
 				this.ds1.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
-				assert.equal(this.ds1.pendingTransactions().length, 1);
+				assert.equal(this.ds1.pendingTransactions().length, 2);
 				this.ds1.rollback();
 			});
 			QUnit.test("check when cells in a row is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function(assert) {

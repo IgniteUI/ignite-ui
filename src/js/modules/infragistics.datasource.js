@@ -3437,6 +3437,9 @@
 						if (dirty) {
 							this._transactionLog[ i ].row = t.row;
 							this._syncGlobalTransaction(this._transactionLog[ i ]);
+							if (!shouldAggregateTransactions) {
+								exists = false;
+							}
 						} else {
 							/* remove the transaction because the last entered value is the same as the first one */
 							for (k = 0; k < this._accumulatedTransactionLog.length; k++) {
