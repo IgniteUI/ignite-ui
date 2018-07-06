@@ -1,4 +1,4 @@
-var localData = [{
+window.localData = [{
     "id": 0,
     "name": "magna"
 }, {

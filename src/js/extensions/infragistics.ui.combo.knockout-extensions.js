@@ -155,8 +155,8 @@
 				i;
 
             if (dataSource) {
-                for (i = 0; i < $comboList.length; i++) {
-                    if (ko.isObservable($comboList[ i ])) {
+                for (i = 0; i < dataSource.length; i++) {
+                    if (ko.isObservable(dataSource[ i ])) {
                         ko.applyBindingsToNode($comboList[ i ], {
                             igComboItem: {
                                 combo: combo,
@@ -174,14 +174,16 @@
 				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+                dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
+                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
 				$comboList, i;
 
             if (listLength !== dataSource.length) {
                 combo.one("igcomboitemsrendered", function () {
                     $comboList = combo.igCombo("listItems");
                     if (dataSource) {
-                        for (i = 0; i < $comboList.length; i++) {
-                            if (ko.isObservable($comboList[ i ])) {
+                        for (i = 0; i < dataSource.length; i++) {
+                            if (ko.isObservable(dataSource[ i ])) {
                                 ko.applyBindingsToNode($comboList[ i ], {
                                     igComboItem: {
                                         combo: combo,
@@ -199,6 +201,14 @@
                 // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
                 // This necessay in cases, when data source was empty array initially.
                 combo.igCombo("option", "dataSource", dataSource);
+
+                // R.K. 29th November, 2017 #246482: When an item is selected from the bottom of the list,
+                // the combo list "scrolls" back to top and the vertical scroll bar is positioned incorrectly.
+                // This happens with virtualization enabled. We're keeping the last scrollTop position and
+                // after data-bind, we reset the scrollbar to it minus 1px triggering the re-rendering of the correct list items.
+                if (options.virtualization) {
+                    dropDownScroller.scrollTop(lastScrollTop - 1);
+                }
             }
         }
     };
@@ -215,7 +225,7 @@
             }
             index = valueAccessor().index;
             dsItem = valueAccessor().value;
-            item = combo.igCombo("itemsFromIndex", index).element;
+            item = $(combo.igCombo("dropDown").find("li").eq(index));
             combo.data("igCombo")._updateItem(item, dsItem);
             combo.data("igCombo")._updateInputValues();
         }
@@ -228,7 +238,7 @@
             if (!ko.isObservable(visible)) {
                 return;
             }
-            combo.css("display", visible() ? "inline-block" : "none");
+            combo.igCombo("comboWrapper").css("display", visible() ? "inline-block" : "none");
         }
     };
 

@@ -560,7 +560,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="true" Event which is raised on validation before default validation logic is applied.
 			Return false in order to cancel the event and consider the field valid.
 			```
-				$(document).delegate(".selector", "igvalidatorvalidating", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorvalidating", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get current value in target
@@ -584,7 +585,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		validating: "validating",
 		/* cancel="false" Event which is raised after value was validated but before any action takes effect.
 		```
-			$(document).delegate(".selector", "igvalidatorvalidated", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorvalidated", ".selector", function (evt, ui) {
 				//get reference to the igValidator widget
 				ui.owner;
 				//get current value in target
@@ -614,7 +616,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="false" Event raised for valid field after value was validated but before any action takes effect.
 			Function takes arguments evt and ui.
 			```
-				$(document).delegate(".selector", "igvalidatorsuccess", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorsuccess", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get current value in target
@@ -642,7 +645,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="false" Event raised for invalid field after value was validated but before any action takes effect.
 			Function takes arguments evt and ui.
 			```
-				$(document).delegate(".selector", "igvalidatorerror", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorerror", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get current value in target
@@ -675,7 +679,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="true" Event which is raised before error message is displayed.
 			Return false in order to prevent error message display.
 			```
-				$(document).delegate(".selector", "igvalidatorerrorshowing", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorerrorshowing", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//gets text of message
@@ -703,7 +708,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="true" Event which is raised before error message is hidden.
 			Return false in order to keep the error message displayed.
 			```
-				$(document).delegate(".selector", "igvalidatorerrorhiding", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorerrorhiding", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//gets text of message
@@ -731,7 +737,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		errorHiding: "errorHiding",
 		/* cancel="false" Event which is raised after error message was displayed.
 		```
-			$(document).delegate(".selector", "igvalidatorerrorshown", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorerrorshown", ".selector", function (evt, ui) {
 				//get reference to the igValidator widget
 				ui.owner;
 				//gets text of message
@@ -758,7 +765,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		errorShown: "errorShown",
 		/* cancel="false" Event which is raised after error message was hidden.
 		```
-			$(document).delegate(".selector", "igvalidatorerrorhidden", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorerrorhidden", ".selector", function (evt, ui) {
 				//get reference to the igValidator widget
 				ui.owner;
 				//gets text of message
@@ -786,7 +794,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="true" Event which is raised before success message is displayed.
 			Return false in order to prevent success message display.
 			```
-				$(document).delegate(".selector", "igvalidatorsuccessshowing", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorsuccessshowing", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//gets text of message
@@ -814,23 +823,24 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="true" Event which is raised before success message is hidden.
 			Return false in order to keep success message displayed.
 			```
-			$(document).delegate(".selector", "igvalidatorsuccesshiding", function (evt, ui) {
-				//get reference to the igValidator widget
-				ui.owner;
-				//gets text of message
-				ui.message;
-				//get reference to the target of the message
-				ui.target;
-				//get the options of the specific field in the collection
-				ui.fieldOptions;
-				});
+				//Bind after initialization
+				$(document).on("igvalidatorsuccesshiding", ".selector", function (evt, ui) {
+					//get reference to the igValidator widget
+					ui.owner;
+					//gets text of message
+					ui.message;
+					//get reference to the target of the message
+					ui.target;
+					//get the options of the specific field in the collection
+					ui.fieldOptions;
+					});
 
-				//Initialize
-				$(".selector").igValidator({
-					successHiding: function (evt, ui) {
-					...
-					}
-				});
+					//Initialize
+					$(".selector").igValidator({
+						successHiding: function (evt, ui) {
+						...
+						}
+					});
 			```
 			Function takes arguments evt and ui.
 			eventArgument="evt" argType="event" jQuery event object.
@@ -841,7 +851,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		successHiding: "successHiding",
 		/* cancel="false" Event which is raised after success message was displayed.
 			```
-				$(document).delegate(".selector", "igvalidatorsuccessshown", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorsuccessshown", ".selector", function (evt, ui) {
 						//get reference to the igValidator widget
 						ui.owner;
 						//gets text of message
@@ -868,7 +879,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		successShown: "successShown",
 		/* cancel="false" Event which is raised after success message was hidden.
 		```
-			$(document).delegate(".selector", "igvalidatorsuccesshidden", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorsuccesshidden", ".selector", function (evt, ui) {
 				//get reference to the igValidator widget
 				ui.owner;
 				//gets text of message
@@ -896,7 +908,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		/* cancel="true" Event triggered on Validator instance level before handling a form submit event.
 			Return false to cancel to skip validating and potentially allow the submit if no other other validators return error.
 			```
-				$(document).delegate(".selector", "igvalidatorformvalidating", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvalidatorformvalidating", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get reference of the event target form
@@ -917,7 +930,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		formValidating: "formValidating",
 		/* cancel="false" Event triggered on Validator instance level after validation on form submit event..
 		```
-			$(document).delegate(".selector", "igvalidatorformvalidated", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorformvalidated", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get reference of the event target form
@@ -941,7 +955,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		formValidated: "formValidated",
 		/* cancel="false" Event triggered on Validator instance level after failed validation on form submit event.
 		```
-			$(document).delegate(".selector", "igvalidatorformerror", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorformerror", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get reference of the event target form
@@ -962,7 +977,8 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 		formError: "formError",
 		/* cancel="false" Event triggered on Validator instance level after successful validation on form submit event.
 		```
-			$(document).delegate(".selector", "igvalidatorformsuccess", function (evt, ui) {
+			//Bind after initialization
+			$(document).on("igvalidatorformsuccess", ".selector", function (evt, ui) {
 					//get reference to the igValidator widget
 					ui.owner;
 					//get reference of the event target form
@@ -1736,7 +1752,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 	_getEditor: function (elem) {
 		// check if initialized on a editor control:
 		var widgets = elem.data(),
-			controls = [ "Editor", "Combo", "Rating", "DatePicker" ],
+			controls = [ "Editor", "Combo", "Rating", "DatePicker", "TimePicker" ],
 
 			// regEx results in something like /ig.*?(Editor|Combo|Rating)/
 			regEx = new RegExp("ig.*?(" + controls.join("|") + ")");

@@ -32,6 +32,7 @@
 		ariaMaskEditorFieldLabel: 'Редактор на маски',
 		ariaDateEditorFieldLabel: 'Редактор на дати',
 		ariaDatePickerFieldLabel: 'Извличане на дата',
+		ariaTimePickerFieldLabel: 'Избор на време',
 		ariaSpinUpButton: 'Завъртане нагоре',
 		ariaSpinDownButton: 'Завъртане надолу',
 		ariaDropDownButton: 'Падащо меню',
@@ -87,7 +88,8 @@
 		noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems.",
 		decimalNumber: "Когато dataMode е '{0}’ опция {1} може да приема числови стойности в интервала 0 - {2}.",
 		decimalSeparatorErrorMsg: "Опцията decimalSeparator изисква различна стойност. Стойността трябва да бъде единичен символ.",
-		decimalSeparatorEqualsGroupSeparatorErrorMsg: "Опциите groupSeparator и decimalSeparator не могат да имат еднакви стойности."
+		decimalSeparatorEqualsGroupSeparatorErrorMsg: "Опциите groupSeparator и decimalSeparator не могат да имат еднакви стойности.",
+		timePickerNoSuchMethod: "Изборът на време поддържа този метод."
 	};
 
 	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.bg.Editor;

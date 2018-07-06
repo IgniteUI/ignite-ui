@@ -3178,12 +3178,8 @@ body .ui-tooltip {
 .ui-iggrid-layout-helper {
   border-bottom: 1px solid #ddd;
 }
-.ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
-.ui-iggrid > table > thead + tbody > tr:first-child td,
-.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td {
-  /* border-top: 0 none!important;
- border-top removed for tables with virtualization, or headers */
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+  border-top: 0 !important;
 }
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -3192,7 +3188,6 @@ body .ui-tooltip {
   color: #333333;
   border-color: #ddd;
   border-right: 1px solid #ddd;
-  border-left: 0 none;
 }
 .ui-iggrid th .ui-iggrid-indicatorcontainer .ui-iggrid-summaries-header-icon.ui-icon {
   background: url(images/igGrid/filter-icons-333333.png) no-repeat scroll -416px 0 transparent;
@@ -3267,10 +3262,16 @@ body .ui-tooltip {
 .ui-iggrid th.ui-state-active.ui-state-hover .ui-icon {
   color: #222222;
 }
+/* BUG 246065 Marin Popov 23.12.2017 Grid's header and body are misaligned when a grid is Multi Row Layout and is continuous virtualization mode.*/
 .ui-iggrid tbody td {
-  border-left: 1px solid transparent!important;
-  border-right: 1px solid transparent!important;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
 }
+.ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable,
+.ui-iggrid .ui-iggrid-table-mrl tbody td {
+  border-right: 1px solid #ddd;
+}
+/* BUG 246065 END */
 .ui-iggrid tbody td,
 .ui-iggrid thead .ui-iggrid-editingcell,
 .ui-iggrid tbody th.ui-iggrid-rowselector-class,
@@ -3439,7 +3440,8 @@ body .ui-tooltip {
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-hover,
 .ui-iggrid-columnmoving-dropdown-list.ui-state-hover a,
 .ui-igcombo-listitemholder li.ui-state-hover,
-.ui-igcombo-listitemholder li.ui-state-hover a {
+.ui-igcombo-listitemholder li.ui-state-hover a,
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-default.ui-igedit-listitemactive {
   border-color: #adadad;
   background-color: #ebebeb;
   color: #333;

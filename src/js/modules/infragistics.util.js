@@ -258,7 +258,7 @@
 
 	$.ig.util.changeGlobalRegional = function (regional) {
 		$.ig.util.regional = regional;
-		$.ig.regional.defaults = $.extend($.ig._regional,
+		$.ig.regional.defaults = $.extend({}, $.ig._regional,
 			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
 			$.ig.util.widgetStack[ i ].changeGlobalRegional();
@@ -913,7 +913,9 @@
 				}
 			}
 
-			values.sort(function (a, b) { return this[ a ] - this[ b ]; });
+			//P.M. May 2nd, 2018 Caching 'this' so that it does not point to the Window and sorting is done on the values array
+			var _self = this;
+			values.sort(function (a, b) { return _self[ a ] - _self[ b ]; });
 
 			for (var i = values.length - 1; i >= 0; i--) {
 				value = this[ values[ i ] ];
@@ -1410,7 +1412,9 @@
 				value.getMilliseconds();
 		},
 		getDate: function (value) {
-			return new Date(value - $.ig.Date.prototype.getTimeOfDay(value));
+			var newDate = new Date(+value);
+			newDate.setHours(0, 0, 0, 0);
+			return newDate;
 		},
 		_requiresISOCorrection: !isNaN(+new Date("2000-01-01T00:00:00")) &&
 			new Date("2000-01-01T00:00:00").getHours() !== 0,
@@ -1456,6 +1460,18 @@
 		toLongTimeString: function (value) {
 			return value.toLocaleString($.ig.CultureInfo.prototype.currentCulture().name(),
 				this._longTimeFormatOptions).replace(/\u200E/g, "");
+		},
+		resetDateToCurrentDate: function (value) {
+			/* Replace the date part of a date object with current date */
+			if (!value || !value.getTime) {
+				return value;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), value.getHours(), value.getMinutes(),
+				value.getSeconds(), value.getMilliseconds());
+			return result;
 		},
 		$type: new $.ig.Type("Date", $.ig.Object.$type)
 	}, true);
@@ -2833,11 +2849,14 @@
 			g: 0,
 			b: 0
 		};
-
+		var transparent = { a: 0, r: 0, g: 0, b: 0 };
+		if (!str) {
+			return transparent;
+		}
 		var asColorName = str.replace(" ", "").toLowerCase();
 
 		if (asColorName === "transparent") {
-			return { a: 0, r: 0, g: 0, b: 0 };
+			return transparent;
 		}
 
 		if ($.ig.util.wellKnownColors[ asColorName ] !== undefined) {
@@ -4074,14 +4093,44 @@
 			// width/height flags which trigger timer and adjustments of width/height on ticks
 			perc = obj.perc;
 		if (!prop) {
+			if (obj.observer) {
+				obj.observer.disconnect();
+				delete obj.observer;
+			}
 			if (obj.tickID) {
 				obj.onTick(true);
 			}
 			delete obj.elem;
 			delete obj.chart;
+			if (obj.__resizeProxy) {
+				window.removeEventListener("resize", obj.__resizeProxy, false);
+				delete obj.__resizeProxy;
+			}
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
+
+		if (window.MutationObserver && !obj.observer) {
+			var oldCollapsed = elem[ 0 ].style.display == "none";
+			var observer = new MutationObserver(function (event) {
+				var collapsed = elem[ 0 ].style.display == "none";
+
+				if (collapsed !== oldCollapsed) {
+					oldCollapsed = collapsed;
+					if (notifyResized && chart) {
+						chart[ notifyResized ]();
+					}
+				}
+			});
+			observer.observe(elem[ 0 ], {
+				attributes: true,
+				attributeFilter: [ "style" ],
+				childList: false,
+				characterData: false
+			});
+			obj.observer = observer;
+		}
+
 		if (!val) {
 			val = elem[ prop ]();
 		}
@@ -4154,8 +4203,7 @@
 			obj.onTick = obj.onTick || function (stop) {
 
 				// request to call notifyResized
-				var resize,
-					obj = this,
+				var obj = this,
 					chart = obj.chart,
 					elem = obj.elem,
 					perc = obj.perc || "",
@@ -4190,15 +4238,17 @@
 				if (!chart) {
 					return;
 				}
-				if (chart.width && ((perc.indexOf("width") >= 0 && width !== oldWidth) ||
-					wait.indexOf("width") >= 0)) {
-					chart.width(resize = width);
+				var percWidthChange = (perc.indexOf("width") >= 0 && width !== oldWidth) ||
+				    wait.indexOf("width") >= 0;
+				if (chart.width && percWidthChange) {
+					chart.width(width);
 				}
-				if (chart.height && ((perc.indexOf("height") >= 0 && height !== oldHeight) ||
-					wait.indexOf("height") >= 0)) {
-					chart.height(resize = height);
+				var percHeightChange = (perc.indexOf("height") >= 0 && height !== oldHeight) ||
+				    wait.indexOf("height") >= 0;
+				if (chart.height && percHeightChange) {
+					chart.height(height);
 				}
-				if (resize && obj.notify) {
+				if ((percWidthChange || percHeightChange) && obj.notify) {
 					chart[ obj.notify ]();
 				}
 			};
@@ -4977,29 +5027,55 @@
 					.replace(".", provider.numberFormat().numberDecimalSeparator());
 		}
 
-		if (format.startsWith("0")) {
-			var integerDigitsRequired = 0;
+		if (format.match(/[0\#\.]+/)) {
 			var isValid = true;
-			for (var i = 0; i < format.length; i++) {
-				if (format[ i ] === "0") {
-					integerDigitsRequired++;
+			var formatIndexOfDecimalSeparator = format.indexOf(".");
+			var decimalFormat = formatIndexOfDecimalSeparator == -1 ? "" :
+				format.substring(formatIndexOfDecimalSeparator + 1);
+			var numberString = number.toFixed(decimalFormat.length).toString();
+			var numberIndexOfDecimalSeparator = numberString.indexOf(".");
+			var integralPart = numberIndexOfDecimalSeparator == -1 ? numberString :
+				numberString.substring(0, numberIndexOfDecimalSeparator);
+			var integralFormat = formatIndexOfDecimalSeparator == -1 ? format :
+				format.substring(0, formatIndexOfDecimalSeparator);
+			while (integralFormat.length < integralPart.length) {
+				integralFormat = "0" + integralFormat;
+			}
+			while (integralPart.length < integralFormat.length) {
+				integralPart = "0" + integralPart;
+			}
+			var formattedIntegralPart = "";
+			var digit;
+			for (var ii = integralFormat.length - 1; ii >= 0; ii--) {
+				if (integralFormat[ ii ] == "0") {
+					formattedIntegralPart = integralPart[ ii ] + formattedIntegralPart;
+				} else if (integralFormat[ ii ] == "#") {
+					digit = integralPart.substring(0, ii + 1).match(/[1-9]/) ?
+						integralPart[ ii ] : "";
+					formattedIntegralPart = digit + formattedIntegralPart;
 				} else {
 					isValid = false;
-					break;
 				}
 			}
-
-			if (isValid) {
-				var result = number.toLocaleString(provider.name(), zeroFormatOptions);
-				while (result.length < integerDigitsRequired) {
-					result = "0" + result;
+			var decimalPart = numberIndexOfDecimalSeparator == -1 ? "" :
+				numberString.substring(numberIndexOfDecimalSeparator + 1);
+			var formattedDecimalPart = "";
+			for (var jj = 0; jj < decimalFormat.length; jj++) {
+				if (decimalFormat[ jj ] == "0") {
+					formattedDecimalPart += decimalPart[ jj ];
+				} else if (decimalFormat[ jj ] == "#") {
+					digit = decimalPart.length > jj && (decimalPart[ jj ] != "0" || decimalPart.substring(jj).match(/[1-9]/)) ?
+						decimalPart[ jj ] : "";
+					formattedDecimalPart += digit;
+				} else {
+					isValid = false;
 				}
-
-				return result;
+			}
+			if (isValid) {
+				return formattedIntegralPart +
+					(formattedDecimalPart.length > 0 ? "." + formattedDecimalPart : "");
 			}
 		}
-
-		// TODO: Add fraction support as well
 		throw new $.ig.FormatException(1, "Unsupported format code: " + format);
 	};
 
@@ -5177,7 +5253,7 @@
 				r += "|";
 			}
 
-			r += separators[ i ];
+			r += $.ig.util.escapeRegExp(separators[ i ]);
 		}
 
 		var result = value.split(new RegExp(r));
@@ -6046,7 +6122,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 1,
 			"applyFormat": true
@@ -6056,7 +6132,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 2,
 			"applyFormat": true
