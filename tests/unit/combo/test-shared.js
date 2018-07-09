@@ -205,7 +205,7 @@ function testComboIsDisabled($element) {
 
     ok($element.hasClass("ui-state-disabled"), "Combo does not have ui-state-disabled class applied");
     ok($element.hasClass("ui-igCombo-disabled"), "Combo does not have ui-igCombo-disabled class applied");
-    strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+    strictEqual($input.attr('disabled'), 'disabled', 'Disabled attribute was not applied');
 }
 
 function testComboIsEnabled($element) {
