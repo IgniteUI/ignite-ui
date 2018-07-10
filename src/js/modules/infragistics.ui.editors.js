@@ -7063,7 +7063,9 @@
 
 						// All the required fields, which are unfilled are replaced with the padChar
 						result = this._replaceCharAt(result, p, newChar);
-					} else {
+						
+						// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask. Should respect spaces in mask.
+					} else if (maskChar !== " ") {
 						result = this._replaceCharAt(result, p, "");
 						p--;
 					}
@@ -7183,7 +7185,8 @@
 				if (this.options.revertIfNotValid) {
 
 					// N.A. May 12th, 2017 #903: Properly revert display value.
-					value = this._getMaskedValue(this._valueInput.val().trim());
+					// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask
+					value = this._getMaskedValue(this._maskedValue || this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
