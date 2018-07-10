@@ -7063,7 +7063,7 @@
 
 						// All the required fields, which are unfilled are replaced with the padChar
 						result = this._replaceCharAt(result, p, newChar);
-						
+
 						// V.S. March 28th, 2018 #1673: Reverted value in editor should contain mask. Should respect spaces in mask.
 					} else if (maskChar !== " ") {
 						result = this._replaceCharAt(result, p, "");
