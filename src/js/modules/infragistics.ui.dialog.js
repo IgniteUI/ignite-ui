@@ -736,7 +736,10 @@
 				});
 
 				//Get
-				var url = $(".selector").igDialog("option", "http://infragistics.com");
+				var url = $(".selector").igDialog("option", "temporaryUrl");
+
+				//Set
+				$(".selector").igDialog("option", "temporaryUrl", "http://infragistics.com");
 				```
 			*/
 			temporaryUrl: null,
