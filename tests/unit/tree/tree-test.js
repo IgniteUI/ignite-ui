@@ -2944,15 +2944,19 @@ QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function
 	assert.ok(typeof data[binding.childDataProperty] === "object", "Child data is not an object.");
 });
 QUnit.test("[Databindings 04] igTree hierarchical JSON load on demand with all content on client", function (assert) {
-	assert.expect(56);
+	assert.expect(67);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
 				loadOnDemand: true,
 				checkboxMode: "triState",
 				dragAndDrop: true,
+				animationDuration: 0,
+				nodeExpanded: function () {
+					assert.ok(true);
+				},
 				bindings: {
 					textKey: "Text",
 					valueKey: "Value",
