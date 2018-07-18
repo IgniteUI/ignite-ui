@@ -2773,7 +2773,7 @@ QUnit.test("[Databindings 01] igTree binding to JSON", function (assert) {
 QUnit.test("[Databindings 02] igTree hierarchical bindings", function (assert) {
 	assert.expect(39);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.ulTag)
 			.igTree({
 				dataSource: datasource,
@@ -2854,7 +2854,7 @@ QUnit.test("[Databindings 02] igTree hierarchical bindings", function (assert) {
 QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function (assert) {
 	assert.expect(40);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.ulTag)
 			.igTree({
 				dataSource: datasource,
@@ -2944,15 +2944,24 @@ QUnit.test("[Databindings 03] igTree hierarchical JSON data retrieval", function
 	assert.ok(typeof data[binding.childDataProperty] === "object", "Child data is not an object.");
 });
 QUnit.test("[Databindings 04] igTree hierarchical JSON load on demand with all content on client", function (assert) {
-	assert.expect(56);
+	assert.expect(67);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
+		done = assert.async(),
+		counter = 0,
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
 				loadOnDemand: true,
 				checkboxMode: "triState",
 				dragAndDrop: true,
+				animationDuration: 0,
+				nodeExpanded: function () {
+					assert.ok(true);
+					if (++counter === 11) {
+						done();
+					}
+				},
 				bindings: {
 					textKey: "Text",
 					valueKey: "Value",
@@ -3177,7 +3186,7 @@ QUnit.test("[Databindings 04] igTree hierarchical JSON load on demand with all c
 QUnit.test("[Databindings 05] igTree and nodeContentTemplates in hierarchical bindings", function (assert) {
 	assert.expect(27);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
@@ -3282,8 +3291,8 @@ QUnit.test("[Databindings 06] igTree node retrieval API methods", function (asse
 	// parentNode method
 	assert.expect(60);
 
-	var datasource = dataSource = $.extend(true, [], this.results),
-		datasource2 = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results),
+		datasource2 = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
@@ -3451,7 +3460,7 @@ QUnit.test("[Databindings 07] igTree bug #203489 applyChangesToNode does not pes
 	function (assert) {
 		assert.expect(5);
 
-		var datasource = dataSource = $.extend(true, [], this.results),
+		var datasource = $.extend(true, [], this.results),
 			$container = this.util.appendToFixture(this.divTag)
 				.igTree({
 					dataSource: datasource,
@@ -3654,7 +3663,7 @@ QUnit.test("[Client events 01] igTree databinding events", function (assert) {
 	});
 });
 QUnit.test("[Client events 02] igTree rendering events", function (assert) {
-	assert.expect(6);
+	assert.expect(7);
 
 	var $container = this.util.appendToFixture(this.tree9Html),
 		dataRendered = false,
@@ -3671,6 +3680,7 @@ QUnit.test("[Client events 02] igTree rendering events", function (assert) {
 		rendered: function (event, args) {
 			dataRendered = true;
 			assert.ok(args.owner === $container.data("igTree"), "Arguments are empty");
+			assert.ok(dataRendering, "Rendering didn't fire before Rendered");
 			assert.equal($container.find("li[data-role=node]").length, 76, "Nodes were not rendered after rendered event was fired");
 		}
 	});
@@ -4123,7 +4133,7 @@ QUnit.test("[Add/Remove nodes 03] igTree remove node", function (assert) {
 QUnit.test("[Add/Remove nodes 04] igTree full path recalculation upon remove", function (assert) {
 	assert.expect(8);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
@@ -4245,7 +4255,7 @@ QUnit.test("[Add/Remove nodes 05] igTree insert at index", function (assert) {
 QUnit.test("[Add/Remove nodes 06] igTree add/remove using diverse hierarchical bindings", function (assert) {
 	assert.expect(8);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
@@ -4314,7 +4324,7 @@ QUnit.test("[Add/Remove nodes 06] igTree add/remove using diverse hierarchical b
 QUnit.test("[Add/Remove nodes 07] igTree init drag and drop", function (assert) {
 	assert.expect(4);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag).igTree(),
 		$otherContainer = this.util.appendToFixture(this.divTag)
 			.igTree({
@@ -4412,7 +4422,7 @@ QUnit.test("[Add/Remove nodes 07] igTree init drag and drop", function (assert) 
 });
 QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert) {
 	assert.expect(56);
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		bindings = {
 			textKey: "Text",
 			valueKey: "Value",
@@ -4680,7 +4690,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	assert.expect(39);
 
-	var datasource = dataSource = $.extend(true, [], this.results),
+	var datasource = $.extend(true, [], this.results),
 		$container = this.util.appendToFixture(this.divTag).igTree();
 
 	// _setOption unit tests
@@ -4852,7 +4862,7 @@ QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 QUnit.test("[Add/Remove nodes 10] igTree transaction log", function (assert) {
 	assert.expect(14);
 
-	var datasource = dataSource = $.extend(true, [], this.results2),
+	var datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,
@@ -5025,7 +5035,7 @@ QUnit.test("[Add/Remove nodes 12] igTree remove nodes by value", function (asser
 QUnit.test("[Add/Remove nodes 13] removeAt until all children are gone", function (assert) {
 	assert.expect(1);
 	var path = "0_0",
-		datasource = dataSource = $.extend(true, [], this.results2),
+		datasource = $.extend(true, [], this.results2),
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
 				dataSource: datasource,

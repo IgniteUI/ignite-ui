@@ -3129,7 +3129,9 @@
 			this._populatingNode.indicator.hide();
 			this._populatingNode.indicator.destroy();
 			this._populatingNode = null;
-			this.toggle(node);
+
+			// K.D. #1725 Expanding a node after render on demand doesn't raise events
+			this.toggle(node, true);
 
 			// K.D. December 15th, 2014 Bug #186563 After expand the load queue should be synced for expanding to node with LOD
 			this._loadRequest();
@@ -3210,7 +3212,9 @@
 				this._initDragAndDrop(ul);
 			}
 			this._triggerRendered();
-			this.toggle(node);
+
+			// K.D. #1725 Expanding a node after render on demand doesn't raise events
+			this.toggle(node, true);
 
 			// K.D. December 15th, 2014 Bug #186563 After expand the load queue should be synced for expanding to node with LOD
 			this._loadRequest();
