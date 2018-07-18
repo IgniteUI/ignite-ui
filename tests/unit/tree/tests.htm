@@ -272,6 +272,7 @@
 						loadOnDemand: true,
 						checkboxMode: 'triState',
 						dragAndDrop: true,
+						animationDuration: 0,
 						bindings: {
 							textKey: 'Text',
 							valueKey: 'Value',
@@ -1455,7 +1456,10 @@
 			});
 			QUnit.test(testId_4, function (assert) {
 				var nodeCount = $('#tree4').find('li[data-role=node]').length;
-				assert.expect(56);
+				assert.expect(67);
+				$('#tree4').bind('igtreenodeexpanded', function () {
+					ok(true);
+				});
 				assert.equal(nodeCount, 5, 'A different than the expected number of nodes rendered initially');
 				assert.throws(function () {$('#tree4').igTree('toggleCheckstate');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling toggleCheckstate without a parameter');
 				assert.throws(function () {$('#tree4').igTree('toggle');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling toggle without a parameter');
@@ -1548,6 +1552,7 @@
 				assert.ok($('#tree4').igTree('isSelected', $('#tree4').igTree('nodeByPath', '3_0_1')), 'API returned not selected');
 				nodeCount = $('#tree4').find('li[data-role=node]').length;
 				assert.equal(nodeCount, 27, 'A different than the expected number of nodes rendered after expand');
+				$('#tree4').unbind('igtreenodeexpanded');
 			});
 			QUnit.test(testId_5, function (assert) {
 				var node = $('#tree5').igTree('nodeByPath', '0'), anchor = node.children('a');
