@@ -1161,7 +1161,7 @@
 			if (!$(this.options.appendTo).is("body") && this._target) {
 				os = $.ig.util.getRelativeOffset(this.popover);
 				top = top - os.top;
-				left = left - os.left;
+				left = (left - os.left < 0) ? 0 : left - os.left;
 			}
 			this.popover.css({
 				"top": top,
