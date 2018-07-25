@@ -5767,14 +5767,17 @@
 			return filteredData;
 		},
 		_findMatchByFields: function (searchTokens, rec, fields, formattedRecord) {
-			var j, fl = fields.length, dataVal, fieldName, i,
+			var j, fl = fields.length, dataVal, fieldName, i, isDate,
 				ignoreCase = !this.settings.filtering.caseSensitive, s = "";
 			for (j = 0; j < fl; j++) {
 				fieldName = fields[ j ].name;
 				if (formattedRecord && formattedRecord[ fieldName ] !== undefined) {
 					dataVal = formattedRecord[ fieldName ];
 				} else {
-					dataVal = this._hasMapper ? this.getCellValue(fieldName, rec) : rec[ fieldName ];
+					isDate = fields[ j ].type === "date";
+					dataVal = this._hasMapper ?
+					this.getCellValue(fieldName, rec) :
+					isDate ? $.ig.formatter(rec[ fieldName ], "date") : rec[ fieldName ];
 				}
 				dataVal = (dataVal === null || dataVal === undefined) ? "" : dataVal;
 				s += dataVal + "||";
