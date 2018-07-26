@@ -763,7 +763,7 @@
 			this._renderVerticalScrollbar = true;
 			this._renderHorizontalScrollbar = true;
 			/** When _bMixedEnvironment is true, only scrollTop/scrollLeft would be used to scroll. Otherwise used transformations */
-			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
+			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0 || !$.ig.util.isTouchDevice();
 			this._linkedHElems = [];
 			this._linkedVElems = [];
 			this._linkedHBar = null;
@@ -1425,7 +1425,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
-					horizontal: null,
+					horizontal: destX - curPosX !== 0,
 					stepX: destX - curPosX,
 					stepY: destY - curPosY
 				});
@@ -1671,7 +1671,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
-					horizontal: null,
+					horizontal: destX - curPosX !== 0,
 					stepX: destX - curPosX,
 					stepY: destY - curPosY
 				});
@@ -2260,36 +2260,39 @@
 				scrollDeltaY = this._clampAxisCoords(evt.deltaY, -1, 1);
 			}
 
-			if (scrollDeltaX) {
-				this._scrollToX(this._startX + scrollDeltaX * scrollStep, true);
-			} else {
-				if (this.options.smoothing) {
+			if (this.options.smoothing) {
+				if (scrollDeltaX) {
+					this._scrollToX(this._startX + scrollDeltaX * scrollStep, true);
+				} else {
 					//Scroll with small inertia
 					this._smoothWheelScrollY(scrollDeltaY);
-				} else {
-
-					if (this._bMixedEnvironment) {
-						scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
-					} else {
-						scrolledY = this._scrollTouchToXY(
-							this._startX,
-							this._startY + scrollDeltaY * scrollStep,
-							true
-						).y;
-					}
-
-					if (!this._cancelScrolling) {
-						//Trigger scrolled event
-						this._trigger("scrolled", null, {
-							owner: this,
-							smallIncrement: 0,
-							bigIncrement: 0,
-							horizontal: false
-						});
-					}
-
-					return !scrolledY;
 				}
+			} else {
+				if (this._bMixedEnvironment) {
+					scrolledY = this._scrollToXY(
+						this._startX + scrollDeltaX * scrollStep,
+						this._startY + scrollDeltaY * scrollStep,
+						true
+					).y;
+				} else {
+					scrolledY = this._scrollTouchToXY(
+						this._startX,
+						this._startY + scrollDeltaY * scrollStep,
+						true
+					).y;
+				}
+
+				if (!this._cancelScrolling) {
+					//Trigger scrolled event
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: false
+					});
+				}
+
+				return !scrolledY;
 			}
 
 			return false;
