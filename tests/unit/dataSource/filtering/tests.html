@@ -1447,7 +1447,7 @@
 					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");					
 					
 					//Matches with date
-					searchTokens = ["08 2000"];
+					searchTokens = ["10/8/2000"];
 					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains milk and cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
 					formattedRecord = null;
 					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");		
