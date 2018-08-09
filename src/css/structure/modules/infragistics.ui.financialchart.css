@@ -174,12 +174,6 @@
 	align-items: center;
 }
 
-.financialChartTypePickerDropDownButton {
-	background-color:transparent;
-	height: 100%;
-	padding: 0 10px;
-}
-
 .financialChartIndicatorMenuDropDownMenuList {
 	font-weight: bold;
 }
@@ -229,3 +223,26 @@
 .ui-ChartButtonWrapepr .ui-icon-IndicatorsIcon{
 	margin-right: 5px;
 }
+
+.financialChartTypePickerDropDownButton {
+	background-color:transparent;
+	height: 100%;
+	padding: 0 10px;
+}
+
+.financialChartTypePickerDropDownButton[data-value="Bar"] .ui-icon-changeable:before {
+	content:"\e92f";
+}
+
+.financialChartTypePickerDropDownButton[data-value="Line"] .ui-icon-changeable:before {
+	content:"\e94d";
+}
+
+.financialChartTypePickerDropDownButton[data-value="Candle"] .ui-icon-changeable:before {
+	content:"\e94a";
+}
+
+.financialChartTypePickerDropDownButton[data-value="Column"] .ui-icon-changeable:before {
+	content:"\e94b";
+}
+

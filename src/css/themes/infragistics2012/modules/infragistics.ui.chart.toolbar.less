@@ -1,11 +1,11 @@
 .financialChartToolbar .financialChartToolbar {
-  background: @chart-toolbar-background;
-  border-color: @chart-toolbar-border-color;
+   background: @chart-toolbar-background;
+   border-color: @chart-toolbar-border-color;
 
-  .ui-icon {
-    color: @text-color;
-  }
-}
+   .ui-icon {
+     color: @text-color;
+   }
+ }
 
 .financialChartIndicatorMenuDropDownButton {
   color: @text-color;
@@ -69,5 +69,13 @@
   &:hover,
   &:hover {
     color: darken(@accent1, 10%);
+  }
+}
+
+.financialChartTypePickerDropDownButton {
+  &:hover {
+    .ui-icon {
+      color: @accent1;
+    }
   }
 }

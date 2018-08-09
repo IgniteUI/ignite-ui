@@ -2910,6 +2910,10 @@ body .ui-tooltip {
   color: #025aa5;
 }
 
+.financialChartTypePickerDropDownButton:hover .ui-icon {
+  color: #0275d8;
+}
+
 /***********/
 /* igCombo */
 /***********/

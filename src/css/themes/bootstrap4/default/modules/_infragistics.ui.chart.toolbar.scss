@@ -71,3 +71,11 @@
     color: darken($brand-primary, 10%);
   }
 }
+
+.financialChartTypePickerDropDownButton {
+  &:hover {
+    .ui-icon {
+      color: $brand-primary;
+    }
+  }
+}

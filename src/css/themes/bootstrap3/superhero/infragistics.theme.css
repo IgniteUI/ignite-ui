@@ -2479,6 +2479,9 @@ body .ui-tooltip {
 .financialChartTypePickerDropDownMenu li.checked:hover {
   color: #b15315;
 }
+.financialChartTypePickerDropDownButton:hover .ui-icon {
+  color: #DF691A;
+}
 /***********/
 /* igCombo */
 /***********/
