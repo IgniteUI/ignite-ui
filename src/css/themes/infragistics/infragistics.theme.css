@@ -2630,9 +2630,6 @@ input.ui-igbutton {
 .financialChartTypePicker {
   border-left-color: #dadada;
 }
-.financialChartRangeSelectorLabel {
-  border-color: #dadada;
-}
 .financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
   color: #4897AA;
 }

@@ -2644,9 +2644,6 @@ a.ui-button.ui-state-hover.ui-state-active.ui-state-focus {
 .financialChartTypePicker {
   border-left-color: #ebebeb;
 }
-.financialChartRangeSelectorLabel {
-  border-color: #ebebeb;
-}
 .financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
   color: #00aade;
 }

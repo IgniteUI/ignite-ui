@@ -2598,9 +2598,6 @@ body .ui-tooltip {
 .financialChartTypePicker {
   border-left-color: #ebebeb;
 }
-.financialChartRangeSelectorLabel {
-  border-color: #ebebeb;
-}
 .financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
   color: #2686ae;
 }

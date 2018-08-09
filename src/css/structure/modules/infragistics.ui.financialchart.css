@@ -82,8 +82,6 @@
 }
 
 .financialChartRangeSelectorLabel {
-	border-right-width: 1px;
-	border-right-style: solid;
 	cursor: pointer;
 	height: 100%;
 }

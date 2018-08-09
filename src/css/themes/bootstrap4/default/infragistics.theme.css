@@ -2872,9 +2872,6 @@ body .ui-tooltip {
   border-left-color: #eceeef;
 }
 
-.financialChartRangeSelectorLabel {
-  border-color: #eceeef;
-}
 .financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
   color: #0275d8;
 }
