@@ -228,6 +228,10 @@
 	padding: 0 10px;
 }
 
+.financialChartTypePickerDropDownButton[data-value="Auto"] .ui-icon-changeable:before {
+	content: "\e94c"
+}
+
 .financialChartTypePickerDropDownButton[data-value="Bar"] .ui-icon-changeable:before {
 	content:"\e92f";
 }
