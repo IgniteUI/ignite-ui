@@ -6711,7 +6711,6 @@
 			}
 			if (cond === "notNull") {
 				return val !== null;
-				/* A.T. 14 Feb 2011 - fix for bug #64465 */
 			}
 			if (cond === "empty") {
 				return (val === null || val === undefined);
