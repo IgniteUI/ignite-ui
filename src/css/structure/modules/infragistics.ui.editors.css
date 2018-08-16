@@ -83,6 +83,11 @@
 	  box-sizing: border-box;
 }
 
+/* V.S. Aug 16th, 2018 #1754: Hide dropdown scrollbar during animation when using jQuery UI ver < 1.12.1 */
+.ui-effects-wrapper > .ui-igedit-dropdown {
+	overflow-y: hidden;
+}
+
 /* Styles copied from combo control adapted for igedit-dropdown */
 
 .ui-igedit-dropdown-orientation-top {
