@@ -4687,6 +4687,34 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		throw er;
 	});
 });
+QUnit.test("[Add/Remove nodes 14] Drag and Drop node header with script tag", function (assert) {
+	assert.expect(1);
+	delete window.testVarDragAndDrop;
+	window.testVarDragAndDrop = 0;
+	var path = "0",
+		data = [
+		{ "Text": "Item1", "Value": "Item1" },
+		{ "Text": "Item2", "Value": "Item2" },
+		{ "Text": "&#x3C;script&#x3E;debugger;window.testVar++;&#x3C;/script&#x3E;", "Value": "Item3"},
+		{ "Text": "Item4", "Value": "Item4"}, 
+		{ "Text": "Item5", "Value": "Item5"}
+	],
+		$container = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dragAndDrop : true,
+                bindings: {
+                    textKey: 'Text',
+                    valueKey: 'Value'
+                },
+                dataSource: data
+			}),
+		node = $container.igTree("nodeByPath", "2");
+	this.simulateDragStart(node);
+	this.simulateDrag(node, $container.igTree("nodeByPath", "1"));
+	this.simulateDragStop(node);
+	assert.equal(window.testVarDragAndDrop, 0, "The script in the node was executed");
+	delete window.testVarDragAndDrop;
+});
 QUnit.test("[Add/Remove nodes 09] igTree setOption methods", function (assert) {
 	assert.expect(39);
 
