@@ -4695,7 +4695,7 @@ QUnit.test("[Add/Remove nodes 14] Drag and Drop node header with script tag", fu
 		data = [
 		{ "Text": "Item1", "Value": "Item1" },
 		{ "Text": "Item2", "Value": "Item2" },
-		{ "Text": "&#x3C;script&#x3E;debugger;window.testVar++;&#x3C;/script&#x3E;", "Value": "Item3"},
+		{ "Text": "&#x3C;script&#x3E;window.testVarDragAndDrop++;&#x3C;/script&#x3E;", "Value": "Item3"},
 		{ "Text": "Item4", "Value": "Item4"}, 
 		{ "Text": "Item5", "Value": "Item5"}
 	],
