@@ -2131,6 +2131,7 @@
 			testId_10 = "igTree transaction log";
 			testId_11 = "igTree add/remove with render on demand";
 			testId_12 = "igTree remove nodes by value";
+			testId_13 = "igTree Drag and Drop node header with script tag"
 			
 			QUnit.test(testId_1, function (assert) {
 				assert.expect(13);
@@ -2798,6 +2799,35 @@
 				node = tree.igTree('nodeByPath', '0_0');
 				assert.ok(tree.igTree("isChecked", node), "The node is not checked after all remaining children are checked");
 			});
+			QUnit.test(testId_13, function (assert) {
+				assert.expect(1);
+				delete window.testVarDragAndDrop;
+				window.testVarDragAndDrop = 0;
+				var path = "0",
+					data = [
+					{ "Text": "Item1", "Value": "Item1" },
+					{ "Text": "Item2", "Value": "Item2" },
+					{ "Text": "&#x3C;script&#x3E;window.testVarDragAndDrop++;&#x3C;/script&#x3E;", "Value": "Item3"},
+					{ "Text": "Item4", "Value": "Item4"}, 
+					{ "Text": "Item5", "Value": "Item5"}
+				],
+					$container = $('<div></div>').appendTo(document.body)
+						.igTree({
+							dragAndDrop : true,
+							bindings: {
+								textKey: 'Text',
+								valueKey: 'Value'
+							},
+							dataSource: data
+						}),
+					node = $container.igTree("nodeByPath", "2");
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, $container.igTree("nodeByPath", "1"));
+				$.ig.TestUtil.simulateDragStop(node);
+				assert.equal(window.testVarDragAndDrop, 0, "The script in the node was executed");
+				delete window.testVarDragAndDrop;
+				$container.igTree('destroy');
+			})
 			/* ***************** END igTree add/remove nodes ***************** */
 		});
 	
