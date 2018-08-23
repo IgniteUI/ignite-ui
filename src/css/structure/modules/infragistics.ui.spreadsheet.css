@@ -788,14 +788,25 @@
 	padding-left: 20px;
 	margin-bottom: 8px;
 }
+.ui-igspreadsheet-topOrBottom-dialog-show {
+	margin-bottom: 8px;
+}
+.ui-igspreadsheet-topOrBottom-dialog-input-area {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
 .ui-igspreadsheet-filter-dialog-condition1, .ui-igspreadsheet-filter-dialog-conditional-operator, .ui-igspreadsheet-filter-dialog-condition2 {
 	padding-left: 30px;
 }
-.ui-igspreadsheet-filter-dialog-condition1 #cboOperator1, .ui-igspreadsheet-filter-dialog-condition2 #cboOperator2 {
+.ui-igspreadsheet-filter-dialog-condition1 #cboOperator1, .ui-igspreadsheet-filter-dialog-condition2 #cboOperator2, .ui-igspreadsheet-topOrBottom-dialog-input-area #cboOperator{
     margin-right: 10px;
 }
-#cboOperator1, #cboOperator2 {
+#cboOperator, #cboOperator1, #cboOperator2 {
 	float:left;
+}
+#cboType {
+    margin-left: 10px;
+    float: right;
 }
 .ui-igspreadsheet-filter-dialog .ui-igcombo-wrapper {
 	height: 20px;
@@ -806,7 +817,7 @@
 .ui-igspreadsheet-filter-dialog-hint-text {
     margin: 10px 0;
 }
-.ui-igspreadsheet-filter-buttons button {
+.ui-igspreadsheet-filter-buttons button, .ui-igspreadsheet-topOrBottom-buttons button {
     margin-right: 10px;
 }
 .ui-igspreadsheet-filter-dialog-conditional-operator {
