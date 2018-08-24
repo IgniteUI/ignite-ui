@@ -1,0 +1,79 @@
+.financialChartToolbar .financialChartToolbar {
+   background: @chart-toolbar-background;
+   border-color: @chart-toolbar-border-color;
+
+   .ui-icon {
+     color: @text-color;
+   }
+ }
+
+.financialChartIndicatorMenuDropDownButton {
+  color: @text-color;
+}
+
+.financialChartIndicatorMenu {
+  color: @text-color;
+  border-right-color:@chart-toolbar-border-color;
+
+  &:hover {
+    .financialChartIndicatorMenuDropDownButton,
+    .financialChartIndicatorMenuDropDownButton:after {
+      color: @accent1;
+    }
+  }
+}
+
+.financialChartTypePicker {
+  border-left-color: @chart-toolbar-border-color;
+}
+
+// Range selector section
+
+.financialChartRangeSelectorLabel {
+  &:hover {
+    .financialChartRangeSelectorLabelSpan {
+      color: @accent1;
+    }
+  }
+}
+
+.financialChartRangeSelectorLabel input:checked + span {
+  color: @range-selector-active-color;
+  background-color: @range-selector-active-background;
+}
+
+.financialChartListItem {
+  &:hover {
+    color: @accent1;
+
+    .ui-icon {
+      color: @accent1;
+    }
+  }
+}
+
+.financialChartIndicatorMenuDropDownMenu,
+.financialChartTypePickerDropDownMenu {
+  background: @body-bg;
+}
+
+.financialChartIndicatorMenuDropDownMenu li.checked,
+.financialChartTypePickerDropDownMenu li.checked {
+  color: @accent1;
+  &:before {
+    color: @accent1;
+  }
+
+  &:hover,
+  &:hover {
+    color: darken(@accent1, 10%);
+  }
+}
+
+.financialChartTypePickerDropDownButton {
+  &:hover {
+    .ui-icon {
+      color: @accent1;
+    }
+  }
+}
