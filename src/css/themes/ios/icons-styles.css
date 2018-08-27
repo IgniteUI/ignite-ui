@@ -1414,5 +1414,15 @@
 .ui-igcheckbox-small-on,
 .ui-igcheckbox-verysmall-on,
 .ui-igcheckbox-large-on {
-/ / color: red
+/*color: red*/
 }
+
+/* Chart Toolbar */
+.ui-icon-BarIcon:before {content:"\e92f"}
+.ui-icon-CalendarIcon:before {content: "\e930"}
+.ui-icon-CandleIcon:before {content: "\e94a"}
+.ui-icon-ColumnIcon:before {content: "\e94b"}
+.ui-icon-IndicatorsIcon:before {content: "\e94c"}
+.ui-icon-LineIcon:before {content: "\e94d"}
+.ui-icon-SettingsIcon:before {content: "\e94e"}
+/* Chart Toolbar END */

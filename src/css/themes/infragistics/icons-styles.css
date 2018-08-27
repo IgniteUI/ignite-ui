@@ -732,14 +732,19 @@
 .ui-igbutton-underline:before{content:"\e91f"}
 .ui-igbutton-viewsource-icon:before{content:"\e920"}
 
-
-
+/* Chart Toolbar */
+.ui-icon-BarIcon:before {content:"\e92f"}
+.ui-icon-CalendarIcon:before {content: "\e930"}
+.ui-icon-CandleIcon:before {content: "\e94a"}
+.ui-icon-ColumnIcon:before {content: "\e94b"}
+.ui-icon-IndicatorsIcon:before {content: "\e94c"}
+.ui-icon-LineIcon:before {content: "\e94d"}
+.ui-icon-SettingsIcon:before {content: "\e94e"}
+/* Chart Toolbar END */
 
 .ui-igspreadsheet-copy-icon:before {content:"\e688"}
 .ui-igspreadsheet-cut-icon:before {content:"\e689"}
 .ui-igspreadsheet-paste-icon:before {content:"\e68a"}
-
-
 
 .ui-igspreadsheet-clearcontents-icon:before {content:"\e68f"}
 
@@ -779,8 +784,6 @@
 /* Column */
 .ui-igspreadsheet-insertcolumns-icon:before{content:"\e917"}
 .ui-igspreadsheet-deletecolumns-icon:before{content:"\e917"}
-
-
 
 /* animated font glyphs */
 .ui-loading-icon.ui-icon-balls:before  { content: '\e712'; }
