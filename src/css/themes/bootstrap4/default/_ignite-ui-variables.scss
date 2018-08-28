@@ -150,3 +150,10 @@ $scheduler-day-week-timeslot-bg:rgba(255, 255, 255, .005);
 $scheduler-day-week-timeslot-descripto-bg:transparent;
 $scheduler-day-week-timeslot-working-hour-bg:rgb(238, 238, 238);
 $scheduler-day-week-timeslot-selected-bg:$brand-info!important;
+
+// Chart Toolbar
+$chart-toolbar-dd-arrow: $igGray4;
+$chart-toolbar-background: $igGray11;
+$chart-toolbar-border-color: $table-border-color;
+$range-selector-active-color: $body-color;
+$range-selector-active-background: lighten($body-bg, 10%);
