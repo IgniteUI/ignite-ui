@@ -2435,59 +2435,77 @@ body .ui-tooltip {
   color: #222222;
 }
 .financialChartToolbar .financialChartToolbar {
-  background: #eee;
-  border-color: #dadada;
+  background: #eee !important;
+  border-color: #dadada !important;
 }
 .financialChartToolbar .financialChartToolbar .ui-icon {
-  color: #222222;
+  color: #222222 !important;
+}
+.financialChartToolbar .financialChartToolbar .ui-icon-toolbar-dd:before {
+  content: '';
+  border-color: #222222 transparent transparent transparent !important;
+}
+.financialChartToolbar .financialChartToolbar svg {
+  color: #222222 !important;
 }
 .financialChartIndicatorMenuDropDownButton {
-  color: #222222;
+  color: #222222 !important;
+}
+.financialChartIndicatorMenuDropDownButton:hover .ui-icon-toolbar-dd:before {
+  content: '';
+  border-color: #008cba transparent transparent transparent !important;
 }
 .financialChartIndicatorMenu {
-  color: #222222;
-  border-right-color: #dadada;
+  color: #222222 !important;
+  border-right-color: #dadada !important;
 }
 .financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton,
 .financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton:after {
-  color: #008cba;
+  color: #008cba !important;
 }
 .financialChartTypePicker {
-  border-left-color: #dadada;
+  border-left-color: #dadada !important;
 }
 .financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
-  color: #008cba;
+  color: #008cba !important;
 }
 .financialChartRangeSelectorLabel input:checked + span {
-  color: #222222;
-  background-color: #dadada;
+  color: #222222 !important;
+  background-color: #dadada !important;
 }
 .financialChartListItem:hover {
-  color: #008cba;
+  color: #008cba !important;
 }
 .financialChartListItem:hover .ui-icon {
-  color: #008cba;
+  color: #008cba !important;
 }
 .financialChartIndicatorMenuDropDownMenu,
 .financialChartTypePickerDropDownMenu {
-  background: #fff;
+  background: #fff !important;
 }
 .financialChartIndicatorMenuDropDownMenu li.checked,
 .financialChartTypePickerDropDownMenu li.checked {
-  color: #008cba;
+  color: #008cba !important;
 }
 .financialChartIndicatorMenuDropDownMenu li.checked:before,
 .financialChartTypePickerDropDownMenu li.checked:before {
-  color: #008cba;
+  color: #008cba !important;
 }
 .financialChartIndicatorMenuDropDownMenu li.checked:hover,
 .financialChartTypePickerDropDownMenu li.checked:hover,
 .financialChartIndicatorMenuDropDownMenu li.checked:hover,
 .financialChartTypePickerDropDownMenu li.checked:hover {
-  color: #006687;
+  color: #006687 !important;
 }
 .financialChartTypePickerDropDownButton:hover .ui-icon {
-  color: #008cba;
+  color: #008cba !important;
+}
+.financialChartTypePickerDropDownButton:hover .ui-icon-toolbar-dd:before {
+  content: '';
+  border-color: #008cba transparent transparent transparent !important;
+}
+.financialChartListItem[data-value='Auto'] {
+  border-bottom: 1px solid #dadada !important;
 }
 /***********/
 /* igCombo */
