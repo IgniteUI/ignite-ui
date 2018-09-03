@@ -24,7 +24,10 @@
 .financialChartPrice {
 	grid-row: 3;
 	-ms-grid-row: 3;
-	margin-top:10px;
+	margin-top: 10px;
+}
+.financialChartPrice, .financialChartPrice > div {
+	min-height: 100px;
 }
 .financialChartIndicators {
 	grid-row: 4;

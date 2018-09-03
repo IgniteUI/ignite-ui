@@ -6706,6 +6706,18 @@
 			if (cond === "atAfter") {
 				return hs1 > hs2 || (hs1 === hs2 && mins1 >= mins2);
 			}
+			if (cond === "null") {
+				return val === null;
+			}
+			if (cond === "notNull") {
+				return val !== null;
+			}
+			if (cond === "empty") {
+				return (val === null || val === undefined);
+			}
+			if (cond === "notEmpty") {
+				return (val !== null && val !== undefined);
+			}
 			throw new Error(
 				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
