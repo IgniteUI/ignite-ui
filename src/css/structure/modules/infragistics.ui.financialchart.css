@@ -229,14 +229,14 @@
 	-ms-grid-row: 2;
 }
 
-.ui-ChartButtonWrapepr {
+.ui-ChartButtonWrapper {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
 .financialChartTypePickerDropDownButton .ui-icon-triangle-1-s,
-.ui-ChartButtonWrapepr .ui-icon-triangle-1-s {
+.ui-ChartButtonWrapper .ui-icon-triangle-1-s {
 	font-size: 10px;
 }
 
@@ -246,7 +246,7 @@
 	padding: 0 10px;
 }
 
-.financialChartIndicatorMenulabel {
+.financialChartIndicatorMenuLabel {
 	margin: 0 5px;
 }
 
