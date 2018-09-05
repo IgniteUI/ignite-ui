@@ -1556,6 +1556,38 @@
 
 			return result;
 		};
+		var tt = function(value, provider, abbr) {
+			var h = value.getHours();
+			var designator = h <= 11 ? "AM" : "PM";
+
+			if (window.Intl) {
+				var d = new Date(+value);
+				d.setHours(h, 0, 0, 0);
+				var culture = provider.name();
+
+				// account for left-to-right marker ie/edge inject
+				var r = /\d|[\u200E]/g;
+				var withAmPm = new Intl.DateTimeFormat(culture, { hour12: true, hour:"2-digit" })
+					.format(d).replace(r, "");
+				var nonAmPm = new Intl.DateTimeFormat(culture, { hour12: false, hour:"2-digit" })
+					.format(d).replace(r, "");
+				var pattern = $.ig.util.escapeRegExp(nonAmPm);
+				var amPm = withAmPm.replace(new RegExp("\\s*" + pattern + "\\s*"), "").trim();
+
+				// ie & edge will not include the culture's am/pm designator
+				// and they instead include some erroneous extra characters.
+				// if that's the case then we'll just use the previous fallback
+				if (amPm.replace(/[.,:;]/g, "").length > 0) {
+					designator = amPm;
+				}
+			}
+
+			if (abbr && designator) {
+				designator = designator.charAt(0);
+			}
+
+			return designator;
+		};
 		var applyFormat = function(options) {
 			if (window.Intl) {
 				var formatter = new Intl.DateTimeFormat(provider.name(), options);
@@ -1599,7 +1631,7 @@
 				return result;
 
 			case "%t":
-				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
+				return tt(value, provider, true);
 			case "d":  // short date
 				return value.toLocaleDateString();
 			case "D": // long date
@@ -1641,7 +1673,7 @@
 		var hours = value.getHours();
 		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
-		result = result.replace("tt", hours < 12 ? "AM" : "PM");
+		result = result.replace("tt", tt(value, provider, false));
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
