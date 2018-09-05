@@ -653,7 +653,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 }
 
 .ui-iggrid-filterdialogaddconditionlist {
-    display : inline;
+    display : inline-flex;
     padding : 0 5px;
 }
 
@@ -666,11 +666,10 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     margin-top : 8px;
 }
 
-.ui-iggrid-filtertable td {
+.ui-iggrid table.ui-iggrid-filtertable tbody td {
     /* override alternate colors for rows in this table */
     background-color : transparent !important; /*transparent so it works with any jquery UI theme*/
     border           : none !important;
-    vertical-align   : top;
     padding          : 2px 4px 2px 0;
 }
 
