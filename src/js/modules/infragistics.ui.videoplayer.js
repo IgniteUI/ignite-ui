@@ -3980,11 +3980,13 @@
 			$(document).bind(this._documentEvts);
 
 			if (!this.options.browserControls) {
+				// B.P. August 21st, 2018 #1722 currentTime moves as expected
+				// The control used to use mouseover and mouseout, which resulted in flickering.
 				this._controlsEvts = {
-					mouseover: function (event) {
+					mouseenter: function (event) {
 						control._onControlMouseOver(event);
 					},
-					mouseout: function (event) {
+					mouseleave: function (event) {
 						control._onControlMouseOut(event);
 					}
 				};
