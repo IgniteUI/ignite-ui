@@ -57,7 +57,6 @@
 
 .ui-igspreadsheet .ui-menu-divider {
 	margin: 0;
-	border-top: none;
 }
 
 .ui-igspreadsheet .ui-menu-item-wrapper.ui-state-active {
@@ -784,44 +783,66 @@
 }
 
 /* ui-igspreadsheet-filter-dialog */
-.ui-igspreadsheet-filter-dialog-column-name {
-	padding-left: 20px;
-	margin-bottom: 8px;
+.ui-igspreadsheet-filter-dialog {
+	min-width:470px;
 }
-.ui-igspreadsheet-topOrBottom-dialog-show {
-	margin-bottom: 8px;
-}
-.ui-igspreadsheet-topOrBottom-dialog-input-area {
-    padding-left: 20px;
-    margin-bottom: 10px;
-}
-.ui-igspreadsheet-filter-dialog-condition1, .ui-igspreadsheet-filter-dialog-conditional-operator, .ui-igspreadsheet-filter-dialog-condition2 {
-	padding-left: 30px;
-}
-.ui-igspreadsheet-filter-dialog-condition1 #cboOperator1, .ui-igspreadsheet-filter-dialog-condition2 #cboOperator2, .ui-igspreadsheet-topOrBottom-dialog-input-area #cboOperator{
-    margin-right: 10px;
-}
-#cboOperator, #cboOperator1, #cboOperator2 {
-	float:left;
-}
-#cboType {
-    margin-left: 10px;
-    float: right;
-}
+
 .ui-igspreadsheet-filter-dialog .ui-igcombo-wrapper {
-	height: 20px;
+	flex: 1 0 0%;
+	min-width: 200px;
 }
-.ui-igspreadsheet-filter-dialog-conditional-operator label {
-    margin-left: 10px;
+
+.ui-igspreadsheet-filter-dialog input[type="radio" i],
+.ui-igspreadsheet-filter-dialog  {
+	margin:0 5px 0 0;
 }
+
+.ui-igspreadsheet-filter-dialog,
+.ui-igspreadsheet-filter-dialog .ui-igdialog-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.ui-igspreadsheet-filter-dialog .ui-igdialog-content > div {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.ui-igspreadsheet-filter-dialog .ui-igdialog-content > div > * {
+	margin-bottom: 10px;
+}
+
 .ui-igspreadsheet-filter-dialog-hint-text {
-    margin: 10px 0;
+	flex-direction: column;
 }
-.ui-igspreadsheet-filter-buttons button, .ui-igspreadsheet-topOrBottom-buttons button {
-    margin-right: 10px;
+
+.ui-igspreadsheet-filter-dialog-conditional-operator label {
+	display: flex;
+	align-items: center;
+	margin-right: 10px;
 }
-.ui-igspreadsheet-filter-dialog-conditional-operator {
-	padding-top: 5px;
-	padding-bottom: 5px;
-	clear: both;
+
+.ui-igspreadsheet-filter-dialog-conditional-operator label:last-of-type {
+	margin-right: 0;
+}
+
+.ui-igspreadsheet-filter-buttons {
+	justify-content: flex-end;
+}
+
+.ui-igspreadsheet-filter-dialog .ui-igdialog-content .ui-igspreadsheet-filter-buttons > * {
+	margin-bottom: 0;
+	margin-left:10px;
+}
+
+
+.ui-igspreadsheet-filter-dialog-condition1 select,
+.ui-igspreadsheet-filter-dialog-condition2 select {
+	flex:  1 0 0%;
+	margin-right: 10px;
+}
+
+.ui-igspreadsheet-filter-dialog-show-rows-where,
+.ui-igspreadsheet-filter-dialog-column-name {
+	margin-bottom: 15px;
 }
