@@ -19,86 +19,86 @@
 
 <template class='financialChartIndicatorMenu'>
 
-	<!-- TODO: Make it possible to disply all elements inside the button -->
+	<!-- TODO: Make it possible to display all elements inside the button -->
 
 	<button class='financialChartIndicatorMenuDropDownButton'>
-		<div class="ui-ChartButtonWrapepr">
-			<span class="ui-icon ui-icon-IndicatorsIcon"></span>
-			<span>Indicators</span>
-			<span class="ui-icon ui-icon-triangle-1-s"></span>
+		<div class='ui-ChartButtonWrapper'>
+			<span class='ui-icon ui-icon-IndicatorsIcon'></span>
+			<span class='financialChartIndicatorMenuLabel'>Indicators</span>
+			<span class='ui-icon-toolbar-dd'></span>
 		</div>
 	</button>
 
 	<div class='financialChartIndicatorMenuDropDownMenu'>
-		<ul class="financialChartIndicatorMenuDropDownMenuList">
+		<ul class='financialChartIndicatorMenuDropDownMenuList'>
 			<li data-value='FinancialOverlayType'>
 				<span>Overlays</span>
 				<ul>
-					<li class="financialChartListItem" data-value='BollingerBands'>BollingerBands</li>
-					<li class="financialChartListItem" data-value='PriceChannel'>PriceChannel</li>
+					<li class='financialChartListItem' data-value='BollingerBands'>BollingerBands</li>
+					<li class='financialChartListItem' data-value='PriceChannel'>PriceChannel</li>
 				</ul>
 			</li>
-			<li>
+			<li data-value='TrendLineType'>
+				<span>Trendlines</span>
 				<ul>
-					<li class="financialChartListItem" data-value='TrendLineType'><span>Trendlines</span>
-					<li class="financialChartListItem" data-value='LinearFit'>LinearFit</li>
-					<li class="financialChartListItem" data-value='QuadraticFit'>QuadraticFit</li>
-					<li class="financialChartListItem" data-value='CubicFit'>CubicFit</li>
-					<li class="financialChartListItem" data-value='QuarticFit'>QuarticFit</li>
-					<li class="financialChartListItem" data-value='QuinticFit'>QuinticFit</li>
-					<li class="financialChartListItem" data-value='LogarithmicFit'>LogarithmicFit</li>
-					<li class="financialChartListItem" data-value='ExponentialFit'>ExponentialFit</li>
-					<li class="financialChartListItem" data-value='PowerLawFit'>PowerLawFit</li>
-					<li class="financialChartListItem" data-value='SimpleAverage'>SimpleAverage</li>
-					<li class="financialChartListItem" data-value='ExponentialAverage'>ExponentialAverage</li>
-					<li class="financialChartListItem" data-value='ModifiedAverage'>ModifiedAverage</li>
-					<li class="financialChartListItem" data-value='CumulativeAverage'>CumulativeAverage</li>
-					<li class="financialChartListItem" data-value='WeightedAverage'>WeightedAverage</li>
+					<li class='financialChartListItem' data-value='LinearFit'>LinearFit</li>
+					<li class='financialChartListItem' data-value='QuadraticFit'>QuadraticFit</li>
+					<li class='financialChartListItem' data-value='CubicFit'>CubicFit</li>
+					<li class='financialChartListItem' data-value='QuarticFit'>QuarticFit</li>
+					<li class='financialChartListItem' data-value='QuinticFit'>QuinticFit</li>
+					<li class='financialChartListItem' data-value='LogarithmicFit'>LogarithmicFit</li>
+					<li class='financialChartListItem' data-value='ExponentialFit'>ExponentialFit</li>
+					<li class='financialChartListItem' data-value='PowerLawFit'>PowerLawFit</li>
+					<li class='financialChartListItem' data-value='SimpleAverage'>SimpleAverage</li>
+					<li class='financialChartListItem' data-value='ExponentialAverage'>ExponentialAverage</li>
+					<li class='financialChartListItem' data-value='ModifiedAverage'>ModifiedAverage</li>
+					<li class='financialChartListItem' data-value='CumulativeAverage'>CumulativeAverage</li>
+					<li class='financialChartListItem' data-value='WeightedAverage'>WeightedAverage</li>
 				</ul>
 			</li>
 			<li data-value='FinancialChartVolumeType'><span>Volume</span>
 				<ul>
-					<li class="financialChartListItem" data-value='Column'>Column</li>
-					<li class="financialChartListItem" data-value='Line'>Line</li>
-					<li class="financialChartListItem" data-value='Area'>Area</li>
+					<li class='financialChartListItem' data-value='Column'>Column</li>
+					<li class='financialChartListItem' data-value='Line'>Line</li>
+					<li class='financialChartListItem' data-value='Area'>Area</li>
 				</ul>
 			</li>
 			<li data-value='FinancialIndicatorType'><span>Standalone Indicators</span>
 				<ul>
-					<li class="financialChartListItem" data-value='AbsoluteVolumeOscillator'>AbsoluteVolumeOscillator</li>
-					<li class="financialChartListItem" data-value='AccumulationDistribution'>AccumulationDistribution</li>
-					<li class="financialChartListItem" data-value='AverageDirectionalIndex'>AverageDirectionalIndex</li>
-					<li class="financialChartListItem" data-value='AverageTrueRange'>AverageTrueRange</li>
-					<li class="financialChartListItem" data-value='BollingerBandWidth'>BollingerBandWidth</li>
-					<li class="financialChartListItem" data-value='ChaikinOscillator'>ChaikinOscillator</li>
-					<li class="financialChartListItem" data-value='ChaikinVolatility'>ChaikinVolatility</li>
-					<li class="financialChartListItem" data-value='CommodityChannelIndex'>CommodityChannelIndex</li>
-					<li class="financialChartListItem" data-value='DetrendedPriceOscillator'>DetrendedPriceOscillator</li>
-					<li class="financialChartListItem" data-value='EaseOfMovement'>EaseOfMovement</li>
-					<li class="financialChartListItem" data-value='FastStochasticOscillator'>FastStochasticOscillator</li>
-					<li class="financialChartListItem" data-value='ForceIndex'>ForceIndex</li>
-					<li class="financialChartListItem" data-value='FullStochasticOscillator'>FullStochasticOscillator</li>
-					<li class="financialChartListItem" data-value='MarketFacilitationIndex'>MarketFacilitationIndex</li>
-					<li class="financialChartListItem" data-value='MassIndex'>MassIndex</li>
-					<li class="financialChartListItem" data-value='MedianPrice'>MedianPrice</li>
-					<li class="financialChartListItem" data-value='MoneyFlowIndex'>MoneyFlowIndex</li>
-					<li class="financialChartListItem" data-value='MovingAverageConvergenceDivergence'>MovingAverageConvergenceDivergence</li>
-					<li class="financialChartListItem" data-value='NegativeVolumeIndex'>NegativeVolumeIndex</li>
-					<li class="financialChartListItem" data-value='OnBalanceVolume'>OnBalanceVolume</li>
-					<li class="financialChartListItem" data-value='PercentagePriceOscillator'>PercentagePriceOscillator</li>
-					<li class="financialChartListItem" data-value='PercentageVolumeOscillator'>PercentageVolumeOscillator</li>
-					<li class="financialChartListItem" data-value='PositiveVolumeIndex'>PositiveVolumeIndex</li>
-					<li class="financialChartListItem" data-value='PriceVolumeTrend'>PriceVolumeTrend</li>
-					<li class="financialChartListItem" data-value='RateOfChangeAndMomentum'>RateOfChangeAndMomentum</li>
-					<li class="financialChartListItem" data-value='RelativeStrengthIndex'>RelativeStrengthIndex</li>
-					<li class="financialChartListItem" data-value='SlowStochasticOscillator'>SlowStochasticOscillator</li>
-					<li class="financialChartListItem" data-value='StandardDeviation'>StandardDeviation</li>
-					<li class="financialChartListItem" data-value='StochRSI'>StochRSI</li>
-					<li class="financialChartListItem" data-value='TRIX'>TRIX</li>
-					<li class="financialChartListItem" data-value='TypicalPrice'>TypicalPrice</li>
-					<li class="financialChartListItem" data-value='UltimateOscillator'>UltimateOscillator</li>
-					<li class="financialChartListItem" data-value='WeightedClose'>WeightedClose</li>
-					<li class="financialChartListItem" data-value='WilliamsPercentR'>WilliamsPercentR</li>
+					<li class='financialChartListItem' data-value='AbsoluteVolumeOscillator'>AbsoluteVolumeOscillator</li>
+					<li class='financialChartListItem' data-value='AccumulationDistribution'>AccumulationDistribution</li>
+					<li class='financialChartListItem' data-value='AverageDirectionalIndex'>AverageDirectionalIndex</li>
+					<li class='financialChartListItem' data-value='AverageTrueRange'>AverageTrueRange</li>
+					<li class='financialChartListItem' data-value='BollingerBandWidth'>BollingerBandWidth</li>
+					<li class='financialChartListItem' data-value='ChaikinOscillator'>ChaikinOscillator</li>
+					<li class='financialChartListItem' data-value='ChaikinVolatility'>ChaikinVolatility</li>
+					<li class='financialChartListItem' data-value='CommodityChannelIndex'>CommodityChannelIndex</li>
+					<li class='financialChartListItem' data-value='DetrendedPriceOscillator'>DetrendedPriceOscillator</li>
+					<li class='financialChartListItem' data-value='EaseOfMovement'>EaseOfMovement</li>
+					<li class='financialChartListItem' data-value='FastStochasticOscillator'>FastStochasticOscillator</li>
+					<li class='financialChartListItem' data-value='ForceIndex'>ForceIndex</li>
+					<li class='financialChartListItem' data-value='FullStochasticOscillator'>FullStochasticOscillator</li>
+					<li class='financialChartListItem' data-value='MarketFacilitationIndex'>MarketFacilitationIndex</li>
+					<li class='financialChartListItem' data-value='MassIndex'>MassIndex</li>
+					<li class='financialChartListItem' data-value='MedianPrice'>MedianPrice</li>
+					<li class='financialChartListItem' data-value='MoneyFlowIndex'>MoneyFlowIndex</li>
+					<li class='financialChartListItem' data-value='MovingAverageConvergenceDivergence'>MovingAverageConvergenceDivergence</li>
+					<li class='financialChartListItem' data-value='NegativeVolumeIndex'>NegativeVolumeIndex</li>
+					<li class='financialChartListItem' data-value='OnBalanceVolume'>OnBalanceVolume</li>
+					<li class='financialChartListItem' data-value='PercentagePriceOscillator'>PercentagePriceOscillator</li>
+					<li class='financialChartListItem' data-value='PercentageVolumeOscillator'>PercentageVolumeOscillator</li>
+					<li class='financialChartListItem' data-value='PositiveVolumeIndex'>PositiveVolumeIndex</li>
+					<li class='financialChartListItem' data-value='PriceVolumeTrend'>PriceVolumeTrend</li>
+					<li class='financialChartListItem' data-value='RateOfChangeAndMomentum'>RateOfChangeAndMomentum</li>
+					<li class='financialChartListItem' data-value='RelativeStrengthIndex'>RelativeStrengthIndex</li>
+					<li class='financialChartListItem' data-value='SlowStochasticOscillator'>SlowStochasticOscillator</li>
+					<li class='financialChartListItem' data-value='StandardDeviation'>StandardDeviation</li>
+					<li class='financialChartListItem' data-value='StochRSI'>StochRSI</li>
+					<li class='financialChartListItem' data-value='TRIX'>TRIX</li>
+					<li class='financialChartListItem' data-value='TypicalPrice'>TypicalPrice</li>
+					<li class='financialChartListItem' data-value='UltimateOscillator'>UltimateOscillator</li>
+					<li class='financialChartListItem' data-value='WeightedClose'>WeightedClose</li>
+					<li class='financialChartListItem' data-value='WilliamsPercentR'>WilliamsPercentR</li>
 				</ul>
 			</li>
 		</ul>
@@ -109,57 +109,57 @@
 	<div class='financialChartRangeSelector'>
 		<label class='financialChartRangeSelectorLabel rangeSelectorOneMonth'>
 			<input type='radio' value='1m'>
-			<span class="financialChartRangeSelectorLabelSpan">1m</span>
+			<span class='financialChartRangeSelectorLabelSpan'>1m</span>
 		</label>
 		<label class='financialChartRangeSelectorLabel rangeSelectorThreeMonths'>
 			<input type='radio' value='3m'>
-			<span class="financialChartRangeSelectorLabelSpan">3m</span>
+			<span class='financialChartRangeSelectorLabelSpan'>3m</span>
 		</label>
 		<label class='financialChartRangeSelectorLabel rangeSelectorSixMonths'>
 			<input type='radio' value='6m'>
-			<span class="financialChartRangeSelectorLabelSpan">6m</span>
+			<span class='financialChartRangeSelectorLabelSpan'>6m</span>
 		</label>
 		<label class='financialChartRangeSelectorLabel rangeSelectorYTD'>
 			<input type='radio' value='YTD'>
-			<span class="financialChartRangeSelectorLabelSpan">YTD</span>
+			<span class='financialChartRangeSelectorLabelSpan'>YTD</span>
 		</label>
 		<label class='financialChartRangeSelectorLabel rangeSelectorOneYear'>
 			<input type='radio' value='1y'>
-			<span class="financialChartRangeSelectorLabelSpan">1y</span>
+			<span class='financialChartRangeSelectorLabelSpan'>1y</span>
 		</label>
 		<label class='financialChartRangeSelectorLabel rangeSelectorAll'>
 			<input type='radio' value='all'>
-			<span class="financialChartRangeSelectorLabelSpan">all</span>
+			<span class='financialChartRangeSelectorLabelSpan'>all</span>
 		</label>
 	</div>
 </template>
 
 <template class='financialChartTypePicker'>
 	<button class='financialChartTypePickerDropDownButton' data-value='Auto'>
-		<span class="ui-icon ui-icon-changeable"></span>
-		<span class="ui-icon ui-icon-triangle-1-s"></span>
+		<span class='ui-icon ui-icon-changeable'></span>
+		<span class='ui-icon-toolbar-dd'></span>
 	</button>
 
 	<div class='financialChartTypePickerDropDownMenu'>
 		<ul>
-			<li class="financialChartListItem" data-value='Auto'>
-			<span class="ui-icon ui-icon-IndicatorsIcon"></span>
-			<span>Auto</span>
+			<li class='financialChartListItem' data-value='Auto'>
+				<span class='ui-icon ui-icon-chartAuto'></span>
+				<span>Auto</span>
 			</li>
-			<li class="financialChartListItem" data-value='Bar'>
-				<span class="ui-icon ui-icon-BarIcon"></span>
+			<li class='financialChartListItem' data-value='Bar'>
+				<span class='ui-icon ui-icon-BarIcon'></span>
 				<span>Bar</span>
 			</li>
-			<li class="financialChartListItem" data-value='Line'>
-				<span class="ui-icon ui-icon-LineIcon"></span>
+			<li class='financialChartListItem' data-value='Line'>
+				<span class='ui-icon ui-icon-LineIcon'></span>
 				<span>Line</span>
 			</li>
-			<li class="financialChartListItem" data-value='Candle'>
-				<span class="ui-icon ui-icon-CandleIcon"></span>
+			<li class='financialChartListItem' data-value='Candle'>
+				<span class='ui-icon ui-icon-CandleIcon'></span>
 				<span>Candle</span>
 			</li>
-			<li class="financialChartListItem" data-value='Column'>
-				<span class="ui-icon ui-icon-ColumnIcon"></span>
+			<li class='financialChartListItem' data-value='Column'>
+				<span class='ui-icon ui-icon-ColumnIcon'></span>
 				<span>Column</span>
 			</li>
 		</ul>

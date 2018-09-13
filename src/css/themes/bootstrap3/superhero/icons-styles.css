@@ -1415,12 +1415,31 @@
 /*color: red*/
 }
 
+
 /* Chart Toolbar */
-.ui-icon-BarIcon:before {content:"\e92f"}
-.ui-icon-CalendarIcon:before {content: "\e930"}
-.ui-icon-CandleIcon:before {content: "\e94a"}
-.ui-icon-ColumnIcon:before {content: "\e94b"}
-.ui-icon-IndicatorsIcon:before {content: "\e94c"}
-.ui-icon-LineIcon:before {content: "\e94d"}
-.ui-icon-SettingsIcon:before {content: "\e94e"}
+[data-value="Bar"] .ui-icon-BarIcon,
+[data-value="Bar"] .ui-icon-changeable:before,
+.ui-icon-BarIcon:before {content:"\e92f"!important;}
+
+.ui-icon-CalendarIcon:before {content: "\e930"!important;}
+
+[data-value="Candle"] .ui-icon-CandleIcon,
+[data-value="Candle"] .ui-icon-changeable:before,
+.ui-icon-CandleIcon:before {content: "\e94a"!important;}
+
+[data-value="Column"] .ui-icon-ColumnIcon,
+[data-value="Column"] .ui-icon-changeable:before,
+.ui-icon-ColumnIcon:before {content: "\e94b"!important;}
+
+.ui-icon-IndicatorsIcon:before {content: "\e94c"!important;}
+
+[data-value="Auto"] .ui-icon-chartAuto,
+[data-value="Auto"] .ui-icon-changeable:before,
+.ui-icon-chartAuto:before {content: "\e92f"!important;}
+
+[data-value="Line"] .ui-icon-LineIcon,
+[data-value="Line"] .ui-icon-changeable:before,
+.ui-icon-LineIcon:before {content: "\e94d"!important;}
+
+.ui-icon-SettingsIcon:before {content: "\e94e"!important;}
 /* Chart Toolbar END */
