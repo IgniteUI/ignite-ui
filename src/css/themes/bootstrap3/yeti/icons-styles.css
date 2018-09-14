@@ -737,7 +737,7 @@
 
 
 
-.ui-igspreadsheet-clearcontents-icon:before {content:"\e68f"}
+.ui-igspreadsheet-clearcontents-icon:before {content:"\e676"}
 
 .ui-igspreadsheet-insertnewworksheets-icon:before {content: "\e681"}
 
@@ -770,11 +770,11 @@
 
 /* Row */
 .ui-igspreadsheet-insertrows-icon:before{content:"\e918"}
-.ui-igspreadsheet-deleterows-icon:before{content:"\e918"}
+.ui-igspreadsheet-deleterows-icon:before{content:"\e68f"}
 
 /* Column */
 .ui-igspreadsheet-insertcolumns-icon:before{content:"\e917"}
-.ui-igspreadsheet-deletecolumns-icon:before{content:"\e917"}
+.ui-igspreadsheet-deletecolumns-icon:before{content:"\e68f"}
 
 
 
