@@ -735,7 +735,7 @@
 
 
 
-.ui-igspreadsheet-clearcontents-icon:before {content:"\e68f"}
+.ui-igspreadsheet-clearcontents-icon:before {content:"\e676"}
 
 .ui-igspreadsheet-insertnewworksheets-icon:before {content: "\e681"}
 
@@ -744,7 +744,7 @@
 .ui-igspreadsheet-deleteworksheets-icon:before {content:"\e68f"}
 .ui-igspreadsheet-deletecells-icon:before {content:"\e68f"}
 
-/*.ui-igspreadsheet-hiderows-icon:before {content:"\e6da"}*/
+/*.ui-igspreadsheet-hiderows-icon:before {content:"\e93b"}*/
 .ui-igspreadsheet-unhiderows-icon:before {content:"\e6da"}
 
 /*.ui-igspreadsheet-autofitrowheight-icon:before {content:"\e6da"}*/
@@ -768,11 +768,11 @@
 
 /* Row */
 .ui-igspreadsheet-insertrows-icon:before{content:"\e918"}
-.ui-igspreadsheet-deleterows-icon:before{content:"\e918"}
+.ui-igspreadsheet-deleterows-icon:before{content:"\e68f"}
 
 /* Column */
 .ui-igspreadsheet-insertcolumns-icon:before{content:"\e917"}
-.ui-igspreadsheet-deletecolumns-icon:before{content:"\e917"}
+.ui-igspreadsheet-deletecolumns-icon:before{content:"\e68f"}
 
 
 

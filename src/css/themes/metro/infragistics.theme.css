@@ -3375,6 +3375,11 @@ ui-iggrid-groupbyarea a,
 }
 .ui-iggrid tfoot td.ui-state-hover {
   background-color: #ebebeb;
+  border-color: #dcdcdc;
+  border-width: 0!important;
+}
+.ui-iggrid tfoot td.ui-state-hover:first-child {
+  border-left-width: 1px!important;
 }
 .ui-iggrid tfoot td.ui-state-default .ui-icon {
   background-image: url(images/ui-icons_858585_256x240.png);
