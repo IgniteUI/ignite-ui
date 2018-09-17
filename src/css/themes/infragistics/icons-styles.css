@@ -161,19 +161,13 @@
     width: 1.2em;
 }
 
-/* more specificity required here to override default borders */
-.ui-spinner a.ui-spinner-button {
-    border-top: none;
-    border-bottom: none;
-    border-right: none;
-}
-
 /* vertically center icon */
 .ui-spinner .ui-icon {
     left: 0;
     margin-top: -0.5em;
     position: absolute;
     top: 50%;
+    margin-left: 0;
 }
 
 /* positioning on dialogs(s) */
