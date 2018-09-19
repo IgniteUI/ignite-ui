@@ -878,3 +878,49 @@
 /* Spinner END
    ===========
 */
+
+/* Custom sort dialog */
+
+.ui-igspreadsheet-sort-dialog-my-data-has-headers-checkbox {
+    float: right;
+}
+.ui-igspreadsheet-sort-dialog-top-buttons-area button {
+    margin-right: 4px;
+}
+.ui-igspreadsheet-sort-dialog-top-buttons-area {
+    margin-bottom: 10px;
+}
+#grdHeaders {
+	display: -ms-grid;
+	-ms-grid-rows: auto 3px;
+	-ms-grid-columns: 1fr 2px 1fr 12px 1fr 12px;
+	display: grid;
+	grid-template-rows: auto;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 12px;
+	margin-right: 17px;
+}
+#grdSortConditions {
+	display: -ms-grid;
+	-ms-grid-rows: auto 3px;
+	-ms-grid-columns: 1fr 2px 1fr 12px 1fr 12px;
+	display: grid;
+	grid-template-rows: auto;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 12px;
+}
+#pnlColumn div{
+	display: -ms-grid;
+	-ms-grid-rows: auto 3px;
+	-ms-grid-columns: auto 10px 1fr 10px;
+	display: grid;
+	grid-template-rows: auto;
+	grid-template-columns: auto 1fr;
+	grid-gap: 10px;
+}
+#cbCombo,#cboSortType,#cboSortDirection {
+    height: 32px !important;
+}
+.ui-igspreadsheet-sort-dialog-ok-cancel-buttons-area button {
+    margin-right: 10px;
+}
