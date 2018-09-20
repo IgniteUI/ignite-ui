@@ -898,7 +898,6 @@
 	grid-template-rows: auto;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 12px;
-	margin-right: 17px;
 }
 #grdSortConditions {
 	display: -ms-grid;
@@ -909,7 +908,7 @@
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 12px;
 }
-#pnlColumn div{
+#pnlColumnContentsGrid {
 	display: -ms-grid;
 	-ms-grid-rows: auto 3px;
 	-ms-grid-columns: auto 10px 1fr 10px;
