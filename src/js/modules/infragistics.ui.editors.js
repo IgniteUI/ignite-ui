@@ -2744,7 +2744,6 @@
 						self._editorInput.val() !== self._currentInputTextValue) {
 						self._processTextChanged();
 					}
-					self._currentInputTextValue = self._editorInput.val();
 					self._triggerKeyDown(event);
 				},
 				"keyup.editor": function (event) {
