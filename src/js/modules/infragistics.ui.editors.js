@@ -8397,8 +8397,8 @@
 				dateObj = this._getDateOffset(dateObj);
 			}
 
-			// TODO update all the fields
-			if (dateObj) {
+			// D.P. 26th Sep 2018 #1695 Uncaught TypeError w/ IME numbers, don't parse invalid date:
+			if (dateObj && dateObj.getTime() === dateObj.getTime()) {
 				if (this._dateIndices.yy !== undefined) {
 					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
