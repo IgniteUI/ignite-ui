@@ -1664,5 +1664,41 @@ QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', fu
 	assert.strictEqual($editor.igNumericEditor("value"), null, "igNumericEditor value did not clear");
 	assert.strictEqual($editor.igNumericEditor("field").val(), "", "igNumericEditor text did not clear");
 	
-	$editor.remove()
+	$editor.remove();
+});
+
+QUnit.test('Bug 256852: textChanged not fired on Safari on MacOS (Grid filtering)', function (assert) {
+	assert.expect(2);
+	var done = assert.async(),
+		$editor =  this.util.appendToFixture(this.inputTag).igTextEditor(),
+		$field = $editor.igTextEditor("field"),
+		textChangedArgs = [];
+
+	$editor.on("igtexteditortextchanged", function (evt, args) {
+		textChangedArgs.push(args);
+	});
+
+	/* Safari fires composition in the following order:
+		1. compositionstart
+		2. compositionupdate
+		3. input (value assigned to input)
+		4. keydown
+		5. keyup */
+	$field.focus();
+	$field.trigger(jQuery.Event("compositionstart"));
+	$field.trigger(jQuery.Event("compositionupdate"));
+	$field.val("d");
+	$field.trigger(jQuery.Event("input"));
+	$field.trigger(jQuery.Event("keydown"));
+	$field.trigger(jQuery.Event("keyup"));
+
+	assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+	assert.equal(textChangedArgs.pop().text, "d", "textChanged arg should be correct");
+
+	$.ig.TestUtil.wait(0) //compositionupdate handler
+	.then(function () {
+		$editor.off("igtexteditortextchanged");
+		$editor.remove();
+		done();
+	});
 });
