@@ -1697,6 +1697,30 @@
 					done();
 				});
 			}); // Bug 1695
+			QUnit.test('Bug 1776 Auto-fill does not update igTextEditor', function (assert) {
+				assert.expect(5);
+				var $editor = $('<input id="dateTimeTest"/>').appendTo("#testBedContainer").igTextEditor(),
+					textChangedArgs = [], valueChangedArgs = [];
+
+				$editor.on("igtexteditortextchanged", function (evt, args) {
+					textChangedArgs.push(args);
+				});
+				$editor.on("igtexteditorvaluechanged", function (evt, args) {
+					valueChangedArgs.push(args);
+				});
+
+				// no focus, immediate change like auto-fill:
+				$editor.val("username");
+				$editor.trigger(jQuery.Event("input"));
+
+ 				assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+				assert.equal(textChangedArgs.pop().text, "username", "textChanged arg should be correct");
+				assert.equal(valueChangedArgs.length, 1, "valueChanged should be triggered");
+				assert.equal(valueChangedArgs.pop().newValue, "username", "valueChanged arg should be correct");
+				assert.equal($editor.igTextEditor("value"), "username", "Value not updated");
+				$editor.off("igtexteditortextchanged igtexteditorvaluechanged");
+				$editor.remove();
+			}); // Bug 1776
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
