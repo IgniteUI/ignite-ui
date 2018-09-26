@@ -2707,6 +2707,13 @@
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
+				"input.editor": function () {
+					if (!self._editMode) {
+						// D.P. 26th Sep 2018 #1776 Auto-fill on page load does not update the editor
+						self._processTextChanged();
+						self._processValueChanging(self._editorInput.val());
+					}
+				},
 				"dragenter.editor": function () {
 					if (!self._focused && !self._editMode) {
 						//Controlled edit mode without selection to allow default drop handling
@@ -2827,7 +2834,7 @@
 		},
 		_detachEvents: function () {
 			this._super();
-			this._editorInput.off("focus.editor blur.editor paste.editor");
+			this._editorInput.off("focus.editor input.editor blur.editor paste.editor");
 			this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
 			this._editorInput.off("keydown.editor keyup.editor keypress.editor");
 			this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
