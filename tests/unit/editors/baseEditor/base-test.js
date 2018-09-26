@@ -116,10 +116,12 @@ QUnit.test('Events', function (assert) {
 	testEvent("mousemove", $editor, $editor);
 	testEvent("mouseover", $editor, $container);
 	this.mouseout($container[0]);
+
+	// focus first
+	testEvent("focus", $editor, $field);
 	testEvent("keydown", $editor, $editor);
 	testEvent("keyup", $editor, $editor);
 	testEvent("keypress", $editor, $editor);
-	testEvent("focus", $editor, $field);
 
 	flag = false;
 	$editor.off("igtexteditorkeydown igtexteditorkeyup igtexteditorkeypress");
