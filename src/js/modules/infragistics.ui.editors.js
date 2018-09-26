@@ -5009,7 +5009,7 @@
 
 				// In case of IME input digits we need to convert
 				// value = $.ig.util.replaceJpToEnNumbers(value);
-				value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping);
+				value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 
 				// D.P. 27th Oct 2015 Bug 208296: Don't replace group separator on actual numbers as it can be '.'
 				value = value.toString().replace(new RegExp($.ig.util.escapeRegExp(groupSeparator), "g"), ""); // TODO VERIFY Remove group separator cause parseInt("1,000") returns 1?
