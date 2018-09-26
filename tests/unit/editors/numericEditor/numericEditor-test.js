@@ -2791,3 +2791,25 @@ QUnit.test('Numeric Editor Scrollbar maintains scroll position after animation',
 		done();
 	});
 });
+QUnit.test('IME input numbers', function (assert) {
+	assert.expect(2);
+	var done = assert.async(),
+		$editor = this.util.appendToFixture(this.inputTag).igNumericEditor();
+	 $editor.trigger("focus");
+	$editor[0].setSelectionRange(0, 0);
+	$.ig.TestUtil.keyDownChar(50, $editor);
+	$editor.trigger(jQuery.Event("compositionstart"));
+	$editor.trigger(jQuery.Event("compositionupdate"));
+	$editor.val("２");
+	$.ig.TestUtil.keyUpChar(50, $editor);
+	$editor[0].setSelectionRange(1, 1);
+	$editor.trigger(jQuery.Event("compositionend"));
+	 $.ig.TestUtil.wait(0) //composition handlers
+	.then(function () {
+		$editor.trigger("blur");
+		assert.equal($editor.val(), "2", "IME text not converted and applied to mask.");
+		assert.strictEqual($editor.igNumericEditor("value"), 2, "Value after IME not correct");
+		$editor.remove();
+		done();
+	});
+}); // IME input numbers
