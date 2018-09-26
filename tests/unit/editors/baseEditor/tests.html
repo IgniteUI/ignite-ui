@@ -181,7 +181,10 @@
 			flag = false;
 
 
-
+			// focus first
+			editor.trigger('focus');
+			ok(flag, "focus not fired");
+			flag = false;
 			$('#eventEditor').trigger('keydown');
 			ok(flag, "keydown not fired");
 			flag = false;
@@ -190,9 +193,6 @@
 			flag = false;
 			$('#eventEditor').trigger('keypress');
 			ok(flag, "keypres not fired");
-			flag = false;
-			editor.trigger('focus');
-			ok(flag, "focus not fired");
 			flag = false;
 
 			$('#eventEditor').off("igtexteditorkeydown igtexteditorkeyup igtexteditorkeypress"); 
