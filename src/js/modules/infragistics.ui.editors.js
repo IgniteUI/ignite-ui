@@ -2712,6 +2712,13 @@
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
+				"input.editor": function () {
+					if (!self._editMode) {
+						// D.P. 26th Sep 2018 #1776 Auto-fill on page load does not update the editor
+						self._processTextChanged();
+						self._processValueChanging(self._editorInput.val());
+					}
+				},
 				"dragenter.editor": function () {
 					if (!self._focused && !self._editMode) {
 						//Controlled edit mode without selection to allow default drop handling
@@ -2834,7 +2841,7 @@
 			this._super();
 
 			if (this._editorInput) {
-				this._editorInput.off("focus.editor blur.editor paste.editor");
+				this._editorInput.off("focus.editor input.editor blur.editor paste.editor");
 				this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
 				this._editorInput.off("keydown.editor keyup.editor keypress.editor");
 				this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
@@ -5031,7 +5038,7 @@
 
 				// In case of IME input digits we need to convert
 				// value = $.ig.util.replaceJpToEnNumbers(value);
-				value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping);
+				value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 
 				// D.P. 27th Oct 2015 Bug 208296: Don't replace group separator on actual numbers as it can be '.'
 				value = value.toString().replace(new RegExp($.ig.util.escapeRegExp(groupSeparator), "g"), ""); // TODO VERIFY Remove group separator cause parseInt("1,000") returns 1?
@@ -8396,8 +8403,8 @@
 				dateObj = this._getDateOffset(dateObj);
 			}
 
-			// TODO update all the fields
-			if (dateObj) {
+			// D.P. 26th Sep 2018 #1695 Uncaught TypeError w/ IME numbers, don't parse invalid date:
+			if (dateObj && dateObj.getTime() === dateObj.getTime()) {
 				if (this._dateIndices.yy !== undefined) {
 					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
