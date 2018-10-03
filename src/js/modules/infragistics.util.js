@@ -5985,7 +5985,7 @@
 						if (next === "<" || next === "\"") {
 
 							if (netPattern[ i + 2 ] === "=" || netPattern[ i + 2 ] === "!") {
-								throw new Error("Lookbehind assertions are not supported in JavaScript: " + pattern);
+								throw new Error("Lookbehind assertions are not supported in JavaScript.");
 							}
 
 							i++;
