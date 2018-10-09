@@ -896,7 +896,7 @@
 	-ms-grid-columns: 1fr 2px 1fr 12px 1fr 12px;
 	display: grid;
 	grid-template-rows: auto;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 2fr;
 	grid-gap: 12px;
 }
 #grdSortConditions {
@@ -905,7 +905,7 @@
 	-ms-grid-columns: 1fr 2px 1fr 12px 1fr 12px;
 	display: grid;
 	grid-template-rows: auto;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 2fr;
 	grid-gap: 12px;
 }
 #pnlColumnContentsGrid {
