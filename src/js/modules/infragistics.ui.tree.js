@@ -2092,7 +2092,7 @@
 						markup = $(self.options.dragAndDropSettings.invalidMoveToMarkup
 						.replace("{0}", target.children("a").html()));
 					markup.addClass(self.css.invalidDropIndicator)
-						.find("span")
+						.find("span").eq(0)
 						.addClass(self.css.invalidMoveMarkupIcon);
 					return markup;
 				} : dragAndDropSettings.helper,
@@ -2183,10 +2183,10 @@
 				this._validationObject.valid) {
 				if (copy) {
 					markup = $(this.options.dragAndDropSettings.copyToMarkup.replace("{0}", target.html()));
-					markup.find("span").addClass(this.css.copyMarkupIcon);
+					markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 				} else {
 					markup = $(this.options.dragAndDropSettings.moveToMarkup.replace("{0}", target.html()));
-					markup.find("span").addClass(this.css.moveMarkupIcon);
+					markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 				}
 				this._helper = markup.html();
 				ui.helper.removeClass(this.css.invalidDropIndicator)
@@ -2202,23 +2202,23 @@
 							markup = $(this.options.dragAndDropSettings.copyBetweenMarkup.replace("{0}", target
 								.children("a").html()).replace("{1}",
 								target.next("li[data-role=node]").children("a").html()));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.copyAfterMarkup.replace(
 										"{0}", target.children("a").html()
 									));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						}
 					} else {
 						if (target.next("li[data-role=node]").length > 0) {
 							markup = $(this.options.dragAndDropSettings.moveBetweenMarkup.replace("{0}", target
 								.children("a").html()).replace("{1}", target
 								.next("li[data-role=node]").children("a").html()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.moveAfterMarkup
 								.replace("{0}", target.children("a").html()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						}
 					}
 					$(this._insertLine.html).appendTo(target);
@@ -2234,11 +2234,11 @@
 								.replace("{0}", target.children("a").html())
 								.replace("{1}", target.prev("li[data-role=node]")
 								.children("a").html()));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.copyBeforeMarkup
 								.replace("{0}", target.children("a").html()));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						}
 					} else {
 						if (target.prev("li[data-role=node]").length > 0) {
@@ -2246,11 +2246,11 @@
 								.replace("{0}", target.prev("li[data-role=node]")
 								.children("a").html())
 								.replace("{1}", target.children("a").html()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.moveBeforeMarkup
 								.replace("{0}", target.children("a").html()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						}
 					}
 					if (target.index() === 0) {
@@ -2269,10 +2269,10 @@
 				// K.D. December 13th, 2013 Bug #159540 Allowing for dragging and dropping into an empty tree.
 				if (copy) {
 					markup = $(this.options.dragAndDropSettings.copyToMarkup.replace("{0}", ""));
-					markup.find("span").addClass(this.css.copyMarkupIcon);
+					markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 				} else {
 					markup = $(this.options.dragAndDropSettings.moveToMarkup.replace("{0}", ""));
-					markup.find("span").addClass(this.css.moveMarkupIcon);
+					markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 				}
 				this._helper = markup.html();
 				ui.helper.removeClass(this.css.invalidDropIndicator)
