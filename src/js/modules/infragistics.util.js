@@ -5010,8 +5010,15 @@
 	};
 
 	$.ig.util.arrayCopy1 = function (source, sourceIndex, dest, destIndex, count) {
-		for (var i = 0; i < count; i++) {
-			dest[ i + destIndex ] = source[ i + sourceIndex ];
+		var i;
+		if (source === dest && sourceIndex < destIndex) {
+			for (i = count - 1; i >= 0; i--) {
+				dest[ i + destIndex ] = source[ i + sourceIndex ];
+			}
+		} else {
+			for (i = 0; i < count; i++) {
+				dest[ i + destIndex ] = source[ i + sourceIndex ];
+			}
 		}
 	};
 
