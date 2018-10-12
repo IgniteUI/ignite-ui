@@ -376,6 +376,24 @@
 			equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(21/10/2007)).getDate(), new Date().getDate(),  "The date should be reset");
 			equal($.ig.Date.prototype.resetDateToCurrentDate(new Date(null)).getDate(), new Date().getDate(),  "The date should be reset");
 		});
+		test("Test resetDateToCurrentDate", function() {
+		 	var arr = [0,2,3,4,5];
+			$.ig.util.arrayCopy1(arr, 1, arr, 0, 4);
+			deepEqual(arr, [2,3,4,5,5], "Move content forwards within same array");
+
+			arr = [2,3,4,5,0];
+			$.ig.util.arrayCopy1(arr, 0, arr, 1, 4);
+			deepEqual(arr, [2,2,3,4,5], "Move content back within the same array");
+
+			arr = [1,2,3,4,5];
+			var target = [6,7,8,9,10];
+			$.ig.util.arrayCopy1(arr, 1, target, 0, 4);
+			deepEqual(target, [2,3,4,5,10], "Copy content to the beginning of another array");
+
+			target = [6,7,8,9,10];
+			$.ig.util.arrayCopy1(arr, 0, target, 1, 4);
+			deepEqual(target, [6,1,2,3,4], "Copy content to the end of another array");
+		});
 	</script>
 </head>
 <body>
