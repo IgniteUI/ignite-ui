@@ -783,7 +783,8 @@
 }
 
 /* ui-igspreadsheet-filter-dialog */
-.ui-igspreadsheet-filter-dialog {
+.ui-igspreadsheet-filter-dialog,
+.ui-igspreadsheet-topOrBottom-dialog {
 	min-width:470px;
 }
 
@@ -845,6 +846,26 @@
 .ui-igspreadsheet-filter-dialog-show-rows-where,
 .ui-igspreadsheet-filter-dialog-column-name {
 	margin-bottom: 15px;
+}
+
+.ui-igspreadsheet-topOrBottom-dialog-input-area {
+	display: flex;
+	align-items: center;
+	margin:16px -8px 16px -8px;
+}
+
+.ui-igspreadsheet-topOrBottom-dialog-input-area > * {
+	margin:0 8px;
+	flex: 1 0 0%;
+}
+
+.ui-igspreadsheet-topOrBottom-buttons {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.ui-igspreadsheet-topOrBottom-buttons button {
+	margin-left:8px;
 }
 
 /* Spinner
