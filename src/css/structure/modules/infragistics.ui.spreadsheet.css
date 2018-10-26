@@ -911,28 +911,24 @@
 .ui-igspreadsheet-sort-dialog-top-buttons-area {
     margin-bottom: 10px;
 }
-#grdHeaders {
+#grdHeaders, #grdSortConditions, #pnlColumnContentsGrid {
 	display: grid;
 	display: -ms-grid;
-	-ms-grid-rows: auto 3px;
+	-ms-grid-rows: auto 3px;	
+}
+#grdHeaders {
 	-ms-grid-columns: 1fr 2px 1fr 12px 1fr 12px;
 	grid-template-rows: auto;
 	grid-template-columns: 1fr 1fr 2fr;
 	grid-gap: 12px;
 }
 #grdSortConditions {
-	display: grid;
-	display: -ms-grid;
-	-ms-grid-rows: auto 3px;
 	-ms-grid-columns: 1fr 2px 1fr 12px 1fr 12px;
 	grid-template-rows: auto;
 	grid-template-columns: 1fr 1fr 2fr;
 	grid-gap: 12px;
 }
 #pnlColumnContentsGrid {
-	display: grid;
-	display: -ms-grid;
-	-ms-grid-rows: auto 3px;
 	-ms-grid-columns: auto 10px 1fr 10px;
 	grid-template-rows: auto;
 	grid-template-columns: auto 1fr;
