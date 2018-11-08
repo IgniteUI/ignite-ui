@@ -2592,7 +2592,7 @@
 
 	QUnit.test('Numeric Editor Allow null value should take precedence over min/max values', function (assert) {
 		assert.expect(10);
-		var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		var $editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
 			dataMode: "int",
 			allowNullValue : true,
 			maxValue: 100,
@@ -2612,7 +2612,7 @@
 		assert.equal($editor.igNumericEditor("value"), 5, "The value is not correct.");
 		assert.equal($editor.igNumericEditor("displayValue"), "5", "The displayed value is not correct.");
 		$editor.igNumericEditor("destroy");
-		$editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
 			allowNullValue: true,
 			maxValue: 24,
 			minValue: 0.25
