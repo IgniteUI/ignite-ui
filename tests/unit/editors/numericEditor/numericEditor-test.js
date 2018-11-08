@@ -2815,7 +2815,7 @@ QUnit.test('IME input numbers', function (assert) {
 }); // IME input numbers
 
 QUnit.test('Numeric Editor Allow null value should take precedence over min/max values', function (assert) {
-	assert.expect(10);
+	assert.expect(12);
 
 	var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
 		dataMode: "int",
@@ -2837,6 +2837,19 @@ QUnit.test('Numeric Editor Allow null value should take precedence over min/max 
 	assert.equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
 
 	$editor.igNumericEditor("value", 3);
+	assert.equal($editor.igNumericEditor("value"), 5, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "5", "The displayed value is not correct.");
+	$editor.igNumericEditor("destroy");
+
+	var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		dataMode: "int",
+		allowNullValue : false,
+		maxValue: 100,
+		minValue: 5,
+		value: null,
+		width: 190
+	});
+
 	assert.equal($editor.igNumericEditor("value"), 5, "The value is not correct.");
 	assert.equal($editor.igNumericEditor("displayValue"), "5", "The displayed value is not correct.");
 	$editor.igNumericEditor("destroy");

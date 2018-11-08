@@ -4674,8 +4674,9 @@
 			}
 		},
 		_getValueBetweenMinMax: function(value) {
+
 			// N.A. 7 November 2018, Bug #1834, Initial value that is null, should not be overwritten by the min/max values.
-			if (value !== this.options.nullValue) {
+			if (!(this.options.allowNullValue && value === this.options.nullValue)) {
 				// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
 				if (!isNaN(this.options.minValue) && this.options.minValue > value) {
 					value = this.options.minValue;
