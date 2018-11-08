@@ -2814,7 +2814,7 @@ QUnit.test('IME input numbers', function (assert) {
 	});
 }); // IME input numbers
 
-QUnit.only('Numeric Editor Allow null value should take precedence over min/max values', function (assert) {
+QUnit.test('Numeric Editor Allow null value should take precedence over min/max values', function (assert) {
 	assert.expect(10);
 
 	var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
