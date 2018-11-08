@@ -4552,12 +4552,7 @@
 			return this.options[ name ] !== null ? this.options[ name ] : this._getRegionalValue(regName);
 		},
 		_setInitialValue: function (value) { // NumericEditor
-			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
-			if (!isNaN(this.options.minValue) && this.options.minValue > value) {
-				value = this.options.minValue;
-			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
-				value = this.options.maxValue;
-			}
+			value = this._getValueBetweenMinMax(value);
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
@@ -4655,6 +4650,18 @@
 				this._getOptionOrRegionalValue("maxDecimals")) {
 				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
+		},
+		_getValueBetweenMinMax: function(value) {
+			// N.A. 7 November 2018, Bug #1834, Initial value that is null, should not be overwritten by the min/max values.
+			if (value !== this.options.nullValue) {
+				// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+				if (!isNaN(this.options.minValue) && this.options.minValue > value) {
+					value = this.options.minValue;
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
+					value = this.options.maxValue;
+				}
+			}
+			return value;
 		},
 		_setOption: function (option, value) { // igNumericEditor
 			/* igNumericEditor custom setOption goes here */
@@ -5304,13 +5311,7 @@
 				newValue = this.options.nullValue;
 			}
 
-			// D.P. nullValue does not override min/max
-			// If the min value is different from zero, we clear the value with the minimum value.
-			if (!isNaN(this.options.minValue) && this.options.minValue > newValue) {
-				newValue = this.options.minValue;
-			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < newValue) {
-				newValue = this.options.maxValue;
-			}
+			newValue = this._getValueBetweenMinMax(newValue);
 
 			//D.P. This handles both invalid nullValue and 0 not being in the list of items for #942
 			if (!this._validateValue(newValue)) {
