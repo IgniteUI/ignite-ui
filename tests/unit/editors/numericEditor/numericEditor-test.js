@@ -2565,12 +2565,12 @@ QUnit.test("Test allowNullValue and NullValue at initialization #779", function 
 		maxValue: -3,
 		allowNullValue: true
 	});
-	assert.equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on init and default to max.");
+	assert.equal($editor.igNumericEditor("value"), 5, "Null value should be set on init and default max should be ignored.");
 
 	$editor.igNumericEditor("value", -5);
 	$editor.igNumericEditor("clearButton").trigger("click");
 
-	assert.equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on clear and default to max.");
+	assert.equal($editor.igNumericEditor("value"), 5, "Null value should be set on clear.");
 
 	//verify empty string is still accepted
 	$editor.igNumericEditor("value", "");
@@ -2813,3 +2813,52 @@ QUnit.test('IME input numbers', function (assert) {
 		done();
 	});
 }); // IME input numbers
+
+QUnit.test('Numeric Editor Allow null value should take precedence over min/max values', function (assert) {
+	assert.expect(12);
+
+	var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		dataMode: "int",
+		allowNullValue : true,
+		maxValue: 100,
+		minValue: 5,
+		value: null,
+		width: 190
+	});
+	assert.equal($editor.igNumericEditor("value"), null, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+
+	$editor.igNumericEditor("value", 3);
+	assert.equal($editor.igNumericEditor("value"), 5, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "5", "The displayed value is not correct.");
+
+	$editor.igNumericEditor("value", null);
+	assert.equal($editor.igNumericEditor("value"), null, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+
+	$editor.igNumericEditor("value", 3);
+	assert.equal($editor.igNumericEditor("value"), 5, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "5", "The displayed value is not correct.");
+	$editor.igNumericEditor("destroy");
+
+	var $editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		dataMode: "int",
+		allowNullValue : false,
+		maxValue: 100,
+		minValue: 5,
+		value: null,
+		width: 190
+	});
+
+	assert.equal($editor.igNumericEditor("value"), 5, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "5", "The displayed value is not correct.");
+	$editor.igNumericEditor("destroy");
+
+	$editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
+		allowNullValue: true,
+		maxValue: 24,
+		minValue: 0.25
+	});
+	assert.equal($editor.igNumericEditor("value"), null, "The value is not correct.");
+	assert.equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+});
