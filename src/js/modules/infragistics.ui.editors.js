@@ -3754,7 +3754,9 @@
 			var self = this;
 			if (type === "spinUp") {
 				this._handleSpinUpEvent();
-				if (!target.attr("disabled")) {
+				//	MV 23.11.18 #258989
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinUpEvent();
@@ -3763,7 +3765,9 @@
 				}
 			} else if (type === "spinDown") {
 				this._handleSpinDownEvent();
-				if (!target.attr("disabled")) {
+				//	MV 23.11.18 #258989
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinDownEvent();
