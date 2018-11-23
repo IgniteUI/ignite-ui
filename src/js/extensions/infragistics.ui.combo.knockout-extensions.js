@@ -137,6 +137,15 @@
                     valueAccessor().selectedItems(selectedValues);
                 }
             });
+        },
+        update: function (element, valueAccessor) { 
+            var combo = $(element);
+            // H.A. 23/11/2018 Bug #18040 (https://github.com/IgniteUI/ignite-ui/issues/1840)
+            // see https://knockoutjs.com/documentation/custom-bindings.html  #The “update” callback
+            // this is where we need to update when any dependencies that change at runtime and UI needs to refresh, like the dataSource
+            // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
+            // This necessay in cases, when data source was empty array initially.
+            combo.igCombo("option", "dataSource", valueAccessor().dataSource());
         }
     };
 
@@ -197,10 +206,6 @@
                     }
                     selectItems(combo, valueAccessor().selectedItems);
                 });
-
-                // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
-                // This necessay in cases, when data source was empty array initially.
-                combo.igCombo("option", "dataSource", dataSource);
 
                 // R.K. 29th November, 2017 #246482: When an item is selected from the bottom of the list,
                 // the combo list "scrolls" back to top and the vertical scroll bar is positioned incorrectly.
