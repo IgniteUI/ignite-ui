@@ -2643,6 +2643,11 @@
 			if (!target) {
 				return;
 			}
+
+			//	MV 23.11.18 #258989
+			//	ensure events are attached just once
+			this._detachButtonsEvents(target);
+
 			/* jshint -W083*/
 			target.on({
 				"mouseenter.button": function () {
