@@ -138,8 +138,9 @@
                 }
             });
         },
-        update: function (element, valueAccessor) { 
+        update: function (element, valueAccessor) {
             var combo = $(element);
+
             // H.A. 23/11/2018 Bug #18040 (https://github.com/IgniteUI/ignite-ui/issues/1840)
             // see https://knockoutjs.com/documentation/custom-bindings.html  #The “update” callback
             // this is where we need to update when any dependencies that change at runtime and UI needs to refresh, like the dataSource
