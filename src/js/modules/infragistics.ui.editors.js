@@ -2649,7 +2649,7 @@
 				return;
 			}
 
-			//	MV 23.11.18 #258989
+			//	MV 23.11.18 #1846
 			//	ensure events are attached just once
 			this._detachButtonsEvents(target);
 
@@ -3781,7 +3781,8 @@
 			var self = this;
 			if (type === "spinUp") {
 				this._handleSpinUpEvent();
-				//	MV 23.11.18 #258989
+
+				//	MV 23.11.18 #1846
 				//	we should call setTimeout just once
 				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
@@ -3792,7 +3793,8 @@
 				}
 			} else if (type === "spinDown") {
 				this._handleSpinDownEvent();
-				//	MV 23.11.18 #258989
+
+				//	MV 23.11.18 #1846
 				//	we should call setTimeout just once
 				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
