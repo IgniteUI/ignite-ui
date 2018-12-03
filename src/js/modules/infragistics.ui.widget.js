@@ -82,7 +82,7 @@
 				$(".selector").%%WidgetName%%("option", "regional", "ja");
 			```
 			*/
-			regional: "en-US"
+			regional: "defaults"
 		},
 		_createWidget: function (options) {
 			this._userPreset = options;
