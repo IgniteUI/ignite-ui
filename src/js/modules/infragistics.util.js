@@ -1732,6 +1732,10 @@
 			type = $.ig.Boolean.prototype.$type;
 		} else if (obj instanceof Date) {
 			type = $.ig.Date.prototype.$type;
+		} else if (obj instanceof Array) {
+			if (targetType == $.ig.IEnumerable.prototype.$type) {
+				return obj;
+			}
 		}
 
 		if ($.ig.util.canAssignSimple(targetType, type)) {
