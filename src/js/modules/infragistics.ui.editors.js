@@ -11114,7 +11114,7 @@
 
 			//V.S. March 7th 2018 - #1358 if no regional option is provided and a global regional is set, uses the global one
 			if ($.datepicker && typeof reg === "string") {
-				if (reg === "defaults" || reg === "en-US") {
+				if (reg === "defaults") {
 					if (typeof $.ig.util.regional === "string" && $.ig.util.regional) {
 						abbreviation = $.ig.util.regional;
 					}
