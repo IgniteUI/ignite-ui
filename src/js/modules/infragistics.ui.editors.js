@@ -2643,6 +2643,11 @@
 			if (!target) {
 				return;
 			}
+
+			//	MV 23.11.18 #1846
+			//	ensure events are attached just once
+			this._detachButtonsEvents(target);
+
 			/* jshint -W083*/
 			target.on({
 				"mouseenter.button": function () {
@@ -3754,7 +3759,10 @@
 			var self = this;
 			if (type === "spinUp") {
 				this._handleSpinUpEvent();
-				if (!target.attr("disabled")) {
+
+				//	MV 23.11.18 #1846
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinUpEvent();
@@ -3763,7 +3771,10 @@
 				}
 			} else if (type === "spinDown") {
 				this._handleSpinDownEvent();
-				if (!target.attr("disabled")) {
+
+				//	MV 23.11.18 #1846
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinDownEvent();
