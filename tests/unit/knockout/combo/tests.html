@@ -226,6 +226,8 @@
 				self.isVisibleInvalid = false;
 
 				self.bigData = ko.observable(modelBigData);
+
+				self.oneItemData = ko.observable([{id: 0, name: 'Item 0'}]);
 			}
 			ko.applyBindings(globalViewModel = new ViewModel());
 
@@ -495,7 +497,19 @@
 				ok(end - start < 5000, "Binding big data is taking too much time");
 				$comboCont.remove();
 			});
-			
+
+			var testId = '[ID19] Changing data source with data source with the same length but different items';
+			test(testId, function () {
+				var $comboCont = $("#oneItemDSCont");
+				$comboCont.append($("<span id='combo'></span>").attr("data-bind", "igCombo: { dataSource: oneItemData, textKey: 'name', valueKey: 'id', width: '200', mode: 'dropdown', enableClearButton: false }"));
+				ko.applyBindings(globalViewModel, $comboCont[0]);
+				debugger;
+				globalViewModel.oneItemData([{id: 6, name: "Item 6"}]);
+				debugger;
+				equal($("#combo").igCombo("option", "dataSource").data()[0].id, 6, "data source not updated");
+				$comboCont.remove();
+			});
+
 			function testBasic(newText, newValue, input) {
 				ok($('#comboBasic').igCombo('text') === newText, 'The igCombo is not updated properly from the knockout extension');
 				ok($('#comboSelectedItems').igCombo('text') === newText, 'The igCombo is not updated properly from the knockout extension');
@@ -859,6 +873,8 @@
 		}, igComboVisible: isVisibleInvalid" />
 	</div>
 	<div class="clear-floating"></div>
+
+	<div id="oneItemDSCont"></div>
 </div>
 </body>
 </html>
