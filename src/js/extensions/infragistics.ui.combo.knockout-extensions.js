@@ -80,9 +80,11 @@
         var valueKey = combo.igCombo("option", "valueKey"), comboDataSource, index;
 
         if (valueKey !== undefined) {
-            comboDataSource = ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data());
+            comboDataSource =
+                ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data());
             for (index = 0; index < comboDataSource.length; index++) {
-                if (comboDataSource[index][valueKey] !== viewModelDataSource[index][valueKey]) {
+                if (comboDataSource[ index ][ valueKey ] !==
+                    viewModelDataSource[ index ][ valueKey ]) {
                     return false;
                 }
             }
