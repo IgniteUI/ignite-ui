@@ -55,6 +55,50 @@
         }
     }
 
+    function applyListItemsBindings(valueAccessor) {
+        var combo = valueAccessor().combo,
+            $comboList = combo.igCombo("listItems"),
+            options = valueAccessor().options,
+            dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+            i;
+
+        for (i = 0; i < $comboList.length; i++) {
+            if (ko.isObservable($comboList[ i ])) {
+                ko.applyBindingsToNode($comboList[ i ], {
+                    igComboItem: {
+                        combo: combo,
+                        value: dataSource[ i ],
+                        index: i,
+                        options: options
+                    }
+                }, dataSource[ i ]);
+            }
+        }
+    }
+
+    function isNewDataSource(valueAccessor) {
+        var combo = $(valueAccessor().combo),
+            listLength = combo.igCombo("listItems").length,
+            valueKey = combo.igCombo("option", "valueKey"),
+            viewModelDataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+            comboDataSource =
+                ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data()),
+            index;
+
+        if (listLength === viewModelDataSource.length && valueKey !== undefined) {
+            comboDataSource =
+                ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data());
+            for (index = 0; index < comboDataSource.length; index++) {
+                if (comboDataSource[ index ][ valueKey ] !==
+                    viewModelDataSource[ index ][ valueKey ]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
     ko.bindingHandlers.igCombo = {
         init: function (element, valueAccessor) {
             var combo = $(element),
@@ -148,58 +192,23 @@
 
     ko.bindingHandlers.igComboList = {
         init: function (element, valueAccessor) {
-            var combo = valueAccessor().combo,
-				$comboList = combo.igCombo("listItems"),
-				options = valueAccessor().options,
-                dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
-				i;
-
-            if (dataSource) {
-                for (i = 0; i < $comboList.length; i++) {
-                    if (ko.isObservable($comboList[ i ])) {
-                        ko.applyBindingsToNode($comboList[ i ], {
-                            igComboItem: {
-                                combo: combo,
-                                value: dataSource[ i ],
-                                index: i,
-                                options: options
-                            }
-                        }, dataSource[ i ]);
-                    }
-                }
-            }
+            applyListItemsBindings(valueAccessor);
         },
         update: function (element, valueAccessor) {
             var combo = $(valueAccessor().combo),
-				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
                 dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
-                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
-				$comboList, i;
+                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0;
 
-            if (listLength !== dataSource.length) {
+            if (isNewDataSource(valueAccessor)) {
                 combo.one("igcomboitemsrendered", function () {
-                    $comboList = combo.igCombo("listItems");
-                    if (dataSource) {
-                        for (i = 0; i < $comboList.length; i++) {
-                            if (ko.isObservable($comboList[ i ])) {
-                                ko.applyBindingsToNode($comboList[ i ], {
-                                    igComboItem: {
-                                        combo: combo,
-                                        value: dataSource[ i ],
-                                        index: i,
-                                        options: options
-                                    }
-                                }, dataSource[ i ]);
-                            }
-                        }
-                    }
+                    applyListItemsBindings(valueAccessor);
                     selectItems(combo, valueAccessor().selectedItems);
                 });
 
                 // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
-                // This necessay in cases, when data source was empty array initially.
+                // This necessary in cases, when data source was empty array initially.
                 combo.igCombo("option", "dataSource", dataSource);
 
                 // R.K. 29th November, 2017 #246482: When an item is selected from the bottom of the list,

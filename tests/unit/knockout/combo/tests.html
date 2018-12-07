@@ -215,6 +215,8 @@
 				self.isDisabled = ko.observable(false);
 
 				self.bigData = ko.observable(modelBigData);
+
+				self.oneItemData = ko.observable([{id: 0, name: 'Item 0'}]);
 			}
 			ko.applyBindings(globalViewModel = new ViewModel());
 
@@ -415,6 +417,17 @@
 				ko.applyBindings(globalViewModel, $comboCont[0]);
 				var end = (new Date()).getTime();
 				ok(end - start < 5000, "Binding big data is taking too much time");
+				$comboCont.remove();
+			});
+
+			var testId = 'Changing data source with data source with the same length but different items';
+			test(testId, function () {
+				var $comboCont = $("#oneItemDSCont");
+				$comboCont.append($("<span id='combo'></span>").attr("data-bind", "igCombo: { dataSource: oneItemData, textKey: 'name', valueKey: 'id', width: '200', mode: 'dropdown', enableClearButton: false }"));
+				ko.applyBindings(globalViewModel, $comboCont[0]);
+
+				globalViewModel.oneItemData([{id: 6, name: "Item 6"}]);
+				equal($("#combo").igCombo("option", "dataSource").data()[0].id, 6, "data source not updated");
 				$comboCont.remove();
 			});
 
@@ -740,6 +753,8 @@
 	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 
 	<div id="bigDataContainer"></div>
+
+	<div id="oneItemDSCont"></div>
 </div>
 </body>
 </html>
