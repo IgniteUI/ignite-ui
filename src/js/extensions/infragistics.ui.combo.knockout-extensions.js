@@ -76,18 +76,24 @@
         }
     }
 
-    function identicalDataSources(combo, viewModelDataSource) {
-        var valueKey = combo.igCombo("option", "valueKey"), comboDataSource, index;
+    function isNewDataSource(valueAccessor) {
+        var combo = $(valueAccessor().combo),
+            listLength = combo.igCombo("listItems").length,
+            valueKey = combo.igCombo("option", "valueKey"),
+            viewModelDataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+            comboDataSource = ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data()),
+            index;
 
-        if (valueKey !== undefined) {
+        if (listLength === viewModelDataSource.length && valueKey !== undefined) {
             comboDataSource =
                 ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data());
             for (index = 0; index < comboDataSource.length; index++) {
                 if (comboDataSource[ index ][ valueKey ] !==
                     viewModelDataSource[ index ][ valueKey ]) {
-                    return false;
+                    return true;
                 }
             }
+            return false;
         }
         return true;
     }
@@ -189,14 +195,13 @@
         },
         update: function (element, valueAccessor) {
             var combo = $(valueAccessor().combo),
-				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
                 dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
                 lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
 				$comboList;
 
-            if (listLength !== dataSource.length || !identicalDataSources(combo, dataSource)) {
+            if (isNewDataSource(valueAccessor)) {
                 combo.one("igcomboitemsrendered", function () {
                     $comboList = combo.igCombo("listItems");
                     applyListItemsBindings(valueAccessor);
