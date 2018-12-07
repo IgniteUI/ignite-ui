@@ -81,7 +81,8 @@
             listLength = combo.igCombo("listItems").length,
             valueKey = combo.igCombo("option", "valueKey"),
             viewModelDataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
-            comboDataSource = ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data()),
+            comboDataSource =
+                ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data()),
             index;
 
         if (listLength === viewModelDataSource.length && valueKey !== undefined) {
@@ -198,12 +199,10 @@
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
                 dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
-                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
-				$comboList;
+                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0;
 
             if (isNewDataSource(valueAccessor)) {
                 combo.one("igcomboitemsrendered", function () {
-                    $comboList = combo.igCombo("listItems");
                     applyListItemsBindings(valueAccessor);
                     selectItems(combo, valueAccessor().selectedItems);
                 });
