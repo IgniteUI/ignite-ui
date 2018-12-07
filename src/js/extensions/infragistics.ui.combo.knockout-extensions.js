@@ -196,7 +196,6 @@
         },
         update: function (element, valueAccessor) {
             var combo = $(valueAccessor().combo),
-				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
                 dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
