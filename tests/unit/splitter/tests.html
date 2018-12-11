@@ -730,10 +730,10 @@
 	            panel = $(children[i]);
 	            if (i % 2 === 1) {
 	                ok(equalSplitter(panel.width(), widths[i]), 'igSplitter bar has wrong width. Expected: ' + widths[i] + ' Actual: ' + panel.width());
-	                ok(equalSplitter(panel.innerHeight(), 400), 'igSplitter bar has wrong height. Expected: 400 Actual: ' + panel.height());
+	                ok(equalSplitter(panel.outerHeight(), 400), 'igSplitter bar has wrong height. Expected: 400 Actual: ' + panel.height());
 	            } else {
 	                ok(equalSplitter((panel.width() / container.width()) * 100, widths[i]), 'igSplitter panel has wrong width. Expected: ' + widths[i] + ' Actual: ' + (panel.width() / container.width()) * 100);
-	                ok(equalSplitter(panel.innerHeight(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
+	                ok(equalSplitter(panel.outerHeight(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
 	            }
 	        }
 
