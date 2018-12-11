@@ -47,6 +47,7 @@
 
         /*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
         $(document).ready(function () {
+			$.fx.off = true;
                 fields = [{
                     selector: "#grpEdit1",
                     onsubmit: true,
@@ -1460,9 +1461,9 @@
                         }
  				});
 
-                 var asterixPosition = $("#requiredCombo ~ .ui-igvalidator-required-indication").position();
+                 var asterixPosition = $("#requiredCombo ~ .ui-igvalidator-required-indication").igPosition();
 
-                 ok(($("#requiredCombo").position().top === asterixPosition.top), "The asterix is not on the same position as the combo.");
+                 ok(($("#requiredCombo").igPosition().top === asterixPosition.top), "The asterix is not on the same position as the combo.");
                  ok(($comboEditor.igCombo("option", "width") < asterixPosition.left && asterixPosition.left < 300), "The asterix is not next to the combo.");
 
                  $comboEditor.remove();

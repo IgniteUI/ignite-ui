@@ -37,6 +37,7 @@
 		logger = function (msg) { logBuffer.push(msg); };
 
 	$(document).ready(function () {
+	$.fx.off = true;
 		// Create a editors
 		function loadTestbeds() {
 			$(function () {
@@ -256,7 +257,7 @@
 
 			/* hide */
 			editor.igNotifier("hide");
-			ok(editor.data("igNotifier").popover.is(":animated") && !editor.igNotifier("isVisible"), "Notification not hidden");
+			ok(!editor.igNotifier("isVisible"), "Notification not hidden");
 			ok(!editor.hasClass($.ui.igNotifier.prototype.css.successState), "Notification target state class not cleared");
 			editor.igNotifier("show");
 
@@ -313,72 +314,76 @@
 			ok(editor.igNotifier("option", "animationSlideDistance") === "0", "animationSlideDistance not set");
 			editor.igNotifier("option", "animationSlideDistance", 10);
 			editor.igNotifier("notify", "info");
+			stop();
 			ok((parseInt(editor.igNotifier("getCoordinates").top) + parseInt(editor.igNotifier("getCoordinates").left)) - originalCoords === 10, "Slide Distance not applied");
-
+			setTimeout(function() {
+				start();
+				
+			}, 10);
 
 			/* destroy */
-			var $popover = editor.data("igNotifier").popover;
-			editor.igNotifier("destroy");
-			ok(editor.data("igNotifier") === undefined && $popover.closest(document.documentElement).length === 0, "Notification not removed");
-			ok(editor.attr('class').indexOf("ui-ignotify") === -1, "Notification styles not removed");
+		 	var $popover = editor.data("igNotifier").popover;
+		 	editor.igNotifier("destroy");
+		 	ok(editor.data("igNotifier") === undefined && $popover.closest(document.documentElement).length === 0, "Notification not removed");
+		 	ok(editor.attr('class').indexOf("ui-ignotify") === -1, "Notification styles not removed");
 
-			editor.igNotifier({ notifyLevel: "warning" }).igNotifier("show");
-			/* inline */
-			throws(function(){
-				editor.igNotifier("option", "mode", "random");
-			},
-			Error($.ig.Notifier.locale.notSupportedMode),
-			"Not supported notification mode is set.");
+		 	editor.igNotifier({ notifyLevel: "warning" }).igNotifier("show");
+		 	/* inline */
+		 	throws(function(){
+		 		editor.igNotifier("option", "mode", "random");
+		 	},
+		 	Error($.ig.Notifier.locale.notSupportedMode),
+		 	"Not supported notification mode is set.");
 
-			ok(editor.igNotifier("option", "mode") === "auto", "Wrong notification mode accepted");
+		 	ok(editor.igNotifier("option", "mode") === "auto", "Wrong notification mode accepted");
 
-			editor.igNotifier("option", "mode", "inline");
-			ok(editor.igNotifier("isVisible"), "Inline changed visible state");
-			ok(editor.igNotifier("option", "mode") === "inline"
-				&& editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.inline)
-				&& editor.data("igNotifier").popover.prev()[0] === editor[0]
-				, "Inline mode not applied");
-			editor.igNotifier("option", "mode", "popover");
-			ok(editor.igNotifier("isVisible") && !editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.inline), "Inline state did not get properly switched");
+		 	editor.igNotifier("option", "mode", "inline");
+		 	ok(editor.igNotifier("isVisible"), "Inline changed visible state");
+		 	ok(editor.igNotifier("option", "mode") === "inline"
+		 		&& editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.inline)
+		 		&& editor.data("igNotifier").popover.prev()[0] === editor[0]
+		 		, "Inline mode not applied");
+		 	editor.igNotifier("option", "mode", "popover");
+		 	ok(editor.igNotifier("isVisible") && !editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.inline), "Inline state did not get properly switched");
 
-			// Multiple show() calls positioning for Bug 220794:igNotifier is not positioned correctly inside a grid
-			editor.igNotifier("destroy");
-			// first message must be considerably longer to push the container way up
-			editor.igNotifier({ contentTemplate: "<p>Entry reached the maximum value of 99999 for this field 323122p3 12321 213 123 123123 123 12333</p>", direction: "top" }).igNotifier("show");
-			stop();
-			setTimeout(function () {
-				start();
-				var popoverBottom = parseInt(editor.igNotifier("getCoordinates").top) + editor.igNotifier("container").closest(".ui-igpopover").height(), // bottom point of popover
-						distanceToEditor = $.ig.util.offset(editor).top // top point of target
-								- popoverBottom;
-				equal(distanceToEditor, editor.igNotifier("option", "animationSlideDistance"), "Notifier not positioned correctly above editor");
-				
-			}, editor.igNotifier("option", "animationDuration"));
-			//immediately fire another show with smalller message
-			$(editor).igNotifier("setContent", "<p>Entry reached the maximum value of 99999 for this field</p>").igNotifier("show");
-		});
+		 	// Multiple show() calls positioning for Bug 220794:igNotifier is not positioned correctly inside a grid
+		 	editor.igNotifier("destroy");
+		 	// first message must be considerably longer to push the container way up
+		 	editor.igNotifier({ contentTemplate: "<p>Entry reached the maximum value of 99999 for this field 323122p3 12321 213 123 123123 123 12333</p>", direction: "top" }).igNotifier("show");
+		 	stop();
+		 	setTimeout(function () {
+		 		start();
+		 		var popoverBottom = parseInt(editor.igNotifier("getCoordinates").top) + editor.igNotifier("container").closest(".ui-igpopover").height(), // bottom point of popover
+		 				distanceToEditor = $.ig.util.offset(editor).top // top point of target
+		 						- popoverBottom;
+		 		equal(distanceToEditor, editor.igNotifier("option", "animationSlideDistance"), "Notifier not positioned correctly above editor");
+		
+		 	}, editor.igNotifier("option", "animationDuration"));
+		 	//immediately fire another show with smalller message
+		 	$(editor).igNotifier("setContent", "<p>Entry reached the maximum value of 99999 for this field</p>").igNotifier("show");
+		 });
 
-		testId = 'Test Notifier hiding when value method is called';
-		test(testId, 6, function () {
-			var tEditor = $("#igTextEditorNotification"),
-				nEditor = $("#igNumericEditorNotification"),
-				mEditor = $("#igMaskEditorNotification"),
-				dEditor = $("#igDateEditorNotification");
+		 testId = 'Test Notifier hiding when value method is called';
+		 test(testId, 6, function () {
+		 	var tEditor = $("#igTextEditorNotification"),
+		 		nEditor = $("#igNumericEditorNotification"),
+		 		mEditor = $("#igMaskEditorNotification"),
+		 		dEditor = $("#igDateEditorNotification");
 
-			tEditor.igTextEditor("value", "I'm very long message ha ha");
-			ok(tEditor.igNotifier("isVisible"), "Notifier is shown");
-			tEditor.igTextEditor("value", "I'm short");
-			ok(!tEditor.igNotifier("isVisible"), "Notifier is hidden");
+		 	tEditor.igTextEditor("value", "I'm very long message ha ha");
+		 	ok(tEditor.igNotifier("isVisible"), "Notifier is shown");
+		 	tEditor.igTextEditor("value", "I'm short");
+		 	ok(!tEditor.igNotifier("isVisible"), "Notifier is hidden");
 
-			nEditor.igNumericEditor("value", 6);
-			ok(nEditor.igNotifier("isVisible"), "Notifier is shown");
-			nEditor.igNumericEditor("value", 3);
-			ok(!nEditor.igNotifier("isVisible"), "Notifier is hidden");
+		 	nEditor.igNumericEditor("value", 6);
+		 	ok(nEditor.igNotifier("isVisible"), "Notifier is shown");
+		 	nEditor.igNumericEditor("value", 3);
+		 	ok(!nEditor.igNotifier("isVisible"), "Notifier is hidden");
 
-			dEditor.igDateEditor("value", new Date(2018, 11, 12));
-			ok(dEditor.igNotifier("isVisible"), "Notifier is shown");
-			dEditor.igDateEditor("value", new Date(2015, 11, 12));
-			ok(!nEditor.igNotifier("isVisible"), "Notifier is hidden");
+		 	dEditor.igDateEditor("value", new Date(2018, 11, 12));
+		 	ok(dEditor.igNotifier("isVisible"), "Notifier is shown");
+		 	dEditor.igDateEditor("value", new Date(2015, 11, 12));
+		 	ok(!nEditor.igNotifier("isVisible"), "Notifier is hidden");
 		});
 
 		testId = 'Editor Set Options';

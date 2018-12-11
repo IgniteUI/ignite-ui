@@ -27,6 +27,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+			$.fx.off = true;
             var tm1Markup = [],
                 tm1MinimizedMarkup = [],
                 tm1MaximizedMarkup = [],
@@ -1364,8 +1365,8 @@
 
                 // Left/right panels and the splitter
                 equal(leftPanel.children().length, tilesCount, 'The left panel number of tiles did not match.');
-                equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
-                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.outerWidth(), leftPanelWidth, 'The left panel width did not match.');
+                equal(leftPanel.outerHeight(), leftPanelHeight, 'The left panel height did not match.');
                 ok(leftPanel.hasClass('ui-igtilemanager-left'), 'The left panel tile manager class did not apply.');
                 ok(leftPanel.hasClass('ig-layout'), 'The left panel layout manager classes did not apply.');
                 ok(leftPanel.hasClass('ui-igsplitter-panel-vertical') && leftPanel.hasClass('ui-widget-content'), 'The left panel splitter classes did not apply.');
@@ -1487,11 +1488,11 @@
 
                 // Left/right panels and the splitter
 				if (disabled) {
-					equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
+					equal(leftPanel.outerWidth(), leftPanelWidth, 'The left panel width did not match.');
 				} else {
-					equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+					equal(leftPanel.outerWidth(), leftPanelMaximizedWidth, 'The left panel width did not match.');
 				}
-                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.outerHeight(), leftPanelHeight, 'The left panel height did not match.');
                 equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
                 equal(leftPanel.css('margin-left'), marginLeft + 'px', 'The left margin of the left panel did not match.');
 				if (disabled) {
@@ -1506,7 +1507,7 @@
 				} else {
 					equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
 					ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
-					equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
+					equal(rightPanel.outerWidth(), rightPanelWidth, 'The width of the right panel did not match.');
 					equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
 				}
 
@@ -1625,11 +1626,11 @@
 
                 // Left/right panels and the splitter
                 if (disabled) {
-					equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
+					equal(leftPanel.outerWidth(), leftPanelWidth, 'The left panel width did not match.');
 				} else {
-					equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+					equal(leftPanel.outerWidth(), leftPanelMaximizedWidth, 'The left panel width did not match.');
 				}
-                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.outerHeight(), leftPanelHeight, 'The left panel height did not match.');
                 equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
                 equal(leftPanel.css('margin-left'), marginLeft + 'px', 'The left margin of the left panel did not match.');
                 if (disabled) {
@@ -1644,7 +1645,7 @@
 				} else {
 					equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
 					ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
-					equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
+					equal(rightPanel.outerWidth(), rightPanelWidth, 'The width of the right panel did not match.');
 					equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
 				}
 
@@ -1755,8 +1756,8 @@
                 }
 
                 equal(leftPanel.children().length, tilesCount, 'The left panel number of tiles did not match.');
-                equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
-                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.outerWidth(), leftPanelWidth, 'The left panel width did not match.');
+                equal(leftPanel.outerHeight(), leftPanelHeight, 'The left panel height did not match.');
                 equal(leftPanel.css('margin-right'), '0px', 'The right margin of the left panel did not match.');
                 equal(leftPanel.css('margin-left'), '0px', 'The left margin of the left panel did not match.');
 

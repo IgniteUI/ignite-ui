@@ -630,7 +630,7 @@
 			videoElem = $('#player1_video')[0],
 			currentTime = videoElem.currentTime,
 			mousemove = jQuery.Event("mousemove");
-		mousemove.pageX = handle.offset().left + 20;
+		mousemove.pageX = handle.igOffset().left + 20;
 		mousemove.button = 0;
 		handle.trigger('mousedown');
 		handle.trigger(mousemove);

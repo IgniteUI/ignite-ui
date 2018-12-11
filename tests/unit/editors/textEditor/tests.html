@@ -32,6 +32,7 @@
 		logger = function (msg) { logBuffer.push(msg); };
 	
 	$(document).ready(function () {
+	$.fx.off = true;
 		// Create a editors
 		function loadTestbeds() {
 			$(function () {
@@ -1728,7 +1729,7 @@
 			$lastItem = $editor.igTextEditor("dropDownContainer").last();
 			ok(!$input.is(":focus"), "The input should not be focused");
 			$ddButton.click();
-			ok((($ddList.offset().top + $ddList.outerHeight(true)) - ($lastItem.offset().top + $lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");	
+			ok((($ddList.igOffset().top + $ddList.outerHeight(true)) - ($lastItem.igOffset().top + $lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");	
 			
 			$editor.remove();
 

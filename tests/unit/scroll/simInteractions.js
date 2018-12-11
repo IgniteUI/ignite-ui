@@ -276,7 +276,7 @@
 	
 	function getCenter(node) {		
 		node = $(node);
-		var offset = node.offset(),
+		var offset = node.igOffset(),
 			centerX = offset.left + node.outerWidth() / 2;
 			centerY = offset.top + node.outerHeight() / 2;
 

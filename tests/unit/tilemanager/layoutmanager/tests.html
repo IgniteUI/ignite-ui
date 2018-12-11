@@ -38,7 +38,6 @@
 				}
 			];
 			$(document).ready(function () {
-				
 				function loadTestbeds() {
 					$('#layoutmanager').on("iglayoutmanageritemrendered", function (event, args) {
 						// get the element
@@ -170,7 +169,7 @@
 					equal($('#layoutmanager').outerWidth() * 0.3, $('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 'The center holder is with a different width than the containing element');
 					equal($('#layoutmanager').outerHeight(), 350, 'The height of the element does not match');
 					totalHeight = 0;
-					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
+					$('#layoutmanager').children().each(function () { totalHeight += Math.round($(this).outerHeight(true)) });
 					equal(totalHeight, 350, 'The height of the children does not match');
 					$('#layoutmanager').igLayoutManager('destroy');
 					equal($('#layoutmanager').children().length, 2, 'The header and footer containers were removed after a destroy.');
@@ -515,7 +514,7 @@
                         ]
                     });
 
-                    offset = container.offset();
+                    offset = container.igOffset();
                     gridLayout = lm.data("igLayoutManager")._opt.gridLayout;
                     firstElement = $(gridLayout.elements[0]);
                     secondElement = $(gridLayout.elements[1]);

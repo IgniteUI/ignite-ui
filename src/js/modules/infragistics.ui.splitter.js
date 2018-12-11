@@ -1284,7 +1284,7 @@
                         resizeArea.right.options.max),
                     pos;
                 if (max > min) {
-                    pos = resizeArea.right.offset()[ this._getOrientation("dimention") ] -
+                    pos = resizeArea.right.igOffset()[ this._getOrientation("dimention") ] -
                         this._capturedElement[ this._getOrientation("outerSize") ](true);
                     return {
                         position: pos,
@@ -1309,7 +1309,7 @@
                 };
             },
             _getNextBoundary: function (panel) {
-                var size = panel.right.offset()[ this._getOrientation("dimention") ] +
+                var size = panel.right.igOffset()[ this._getOrientation("dimention") ] +
                     panel.right[ this._getOrientation("size") ]() -
                     this._capturedElement[ this._getOrientation("outerSize") ](true);
                 if (panel.right.options.collapsed) {
@@ -1318,7 +1318,7 @@
                 return size;
             },
             _getPreviousBoundary: function (panel) {
-                var size = panel.left.offset()[ this._getOrientation("dimention") ];
+                var size = panel.left.igOffset()[ this._getOrientation("dimention") ];
                 if (panel.left.options.collapsed) {
                     size += panel.left.options.min;
                 }

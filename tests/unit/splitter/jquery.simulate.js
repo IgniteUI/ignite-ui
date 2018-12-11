@@ -227,7 +227,7 @@ function findCenter( elem ) {
 	var offset,
 		document = $( elem.ownerDocument );
 	elem = $( elem );
-	offset = elem.offset();
+	offset = elem.igOffset();
 
 	return {
 		x: offset.left + elem.outerWidth() / 2 - document.scrollLeft(),
