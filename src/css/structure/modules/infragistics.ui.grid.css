@@ -2350,3 +2350,7 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
     opacity: .5;
 }
 /* END BUG 220509 */
+
+.ui-grid tr th .ui-icon {
+    cursor: default;
+}
