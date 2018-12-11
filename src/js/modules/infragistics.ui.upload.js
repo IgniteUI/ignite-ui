@@ -178,7 +178,7 @@
 			var self = this, right, bottom, t, l, relativeOffset,
 				fileUploadButton = self.element,
 				filePicker = this.filePicker,
-				offset = fileUploadButton.offset(),
+				offset = fileUploadButton.igOffset(),
 				left = parseInt(offset.left, 10),
 				top = parseInt(offset.top, 10),
 				filePickerDOM = filePicker[ 0 ];
@@ -2966,7 +2966,7 @@
 												.width();
 					progressBarFileSize.text(originalFileSize);
 				}
-				offsetLeft = progressBarFileName.position().left - this.container().position().left;
+				offsetLeft = progressBarFileName.igPosition().left - this.container().igPosition().left;
 				while (offsetLeft +
 						progressBarFileName.width() +
 						progressBarFileSizeWidth >= singleProgressBarWidth &&

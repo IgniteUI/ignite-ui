@@ -2340,7 +2340,7 @@
 			}
 		},
 		_calculateDropDownListOrientation: function () {
-			var containerOffset = this._editorContainer.offset(),
+			var containerOffset = this._editorContainer.igOffset(),
 				containerTop = containerOffset.top,
 				containerHeight = parseFloat(this._editorContainer.css("height")),
 				dropDownAndEditorHeight = parseInt(containerTop + containerHeight + this._listInitialHeight),
@@ -2360,7 +2360,7 @@
 			return orientation;
 		},
 		_positionDropDownList: function () {
-			var containerOffset = this._editorContainer.offset(),
+			var containerOffset = this._editorContainer.igOffset(),
 			containerTop = containerOffset.top,
 			containerLeft = containerOffset.left,
 			containerHeight = parseFloat(this._editorContainer.css("height")),
@@ -3296,8 +3296,8 @@
 			return result;
 		},
 		_elementPositionInViewport: function (el) {
-				var areaTop = Math.ceil(el.parent().offset().top),
-					elementoffset = Math.ceil(el.offset().top),
+				var areaTop = Math.ceil(el.parent().igOffset().top),
+					elementoffset = Math.ceil(el.igOffset().top),
 					elementHeight = Math.ceil(el.outerHeight()),
 					listVisibleHeight = el.parent().outerHeight(), result;
 				if (elementoffset - areaTop < 0) {
@@ -3322,7 +3322,7 @@
 						newItem.outerHeight());
 				} else if (position === "bottom") {
 					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						newItem.position().top);
+						newItem.igPosition().top);
 				}
 				currentItem.removeClass(this.css.listItemActive,
 					this.options.listItemHoverDuration);
@@ -3344,7 +3344,7 @@
 						newItem.outerHeight());
 				} else if (position === "top") {
 					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						newItem.position().top);
+						newItem.igPosition().top);
 				}
 				currentItem.removeClass(this.css.listItemActive,
 					this.options.listItemHoverDuration);
@@ -3464,7 +3464,7 @@
 			}
 			if (this._elementPositionInViewport(activeItem) !== "inside") {
 				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						activeItem.position().top);
+						activeItem.igPosition().top);
 			}
 			activeItem.attr("data-active", true);
 		},
@@ -3885,7 +3885,7 @@
 					position = this._elementPositionInViewport(newSelectedItem);
 					if (position !== "inside") {
 						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-							newSelectedItem.position().top);
+							newSelectedItem.igPosition().top);
 					}
 					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);

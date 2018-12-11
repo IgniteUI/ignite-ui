@@ -66,7 +66,7 @@
 				if (pos.left < 0) {
 					pos.left = 0;
 				}
-				var p = $(this).css(pos).offset();
+				var p = $(this).css(pos).igOffset();
 				if (p.top < 0) {
 					$(this).css("top", pos.top - p.top);
 				}
