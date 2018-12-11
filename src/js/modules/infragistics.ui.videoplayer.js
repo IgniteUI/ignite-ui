@@ -2412,6 +2412,7 @@
 			var o = this.options,
 				video,
 				css = this.css;
+
 			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
 			this._isRendering = true;
 			this._prevReadyState = 0;
@@ -2482,6 +2483,7 @@
 			});
 
 			this.container.addClass(css.baseClasses);
+
 			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
 			setTimeout(() => {
 				delete this._isRendering;
@@ -2506,7 +2508,9 @@
 			this._removeVideoProperty(video, "autoplay");
 			this._removeVideoProperty(video, "preload");
 			this._removeVideoProperty(video, "loop");
-			this._oldPoster === "" ? $.noop() : this._removeVideoProperty(video, "poster");
+			if (this._oldPoster !== "") {
+				this._removeVideoProperty(video, "poster");
+			}
 			this._removeVideoProperty(video, "controls");
 			this._removeVideoProperty(video, "src");
 		},
