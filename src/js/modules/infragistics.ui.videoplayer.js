@@ -2412,9 +2412,6 @@
 			var o = this.options,
 				video,
 				css = this.css;
-
-			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
-			this._isRendering = true;
 			this._prevReadyState = 0;
 			this._bookmarksRendered = false;
 
@@ -2483,11 +2480,6 @@
 			});
 
 			this.container.addClass(css.baseClasses);
-
-			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
-			setTimeout(() => {
-				delete this._isRendering;
-			});
 		},
 
 		_createVideoElement: function (id) {
@@ -3871,10 +3863,7 @@
 					control._hideWaitingIndicator();
 				},
 				timeupdate: function (event) {
-					// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
-					if (control._isRendering === undefined) {
-						control._changeCurrentTime(event);
-					}
+					control._changeCurrentTime(event);
 				},
 				ended: function (event) {
 					/* Display big play button in the center when ended. */
@@ -3939,11 +3928,6 @@
 					control._refreshDuration();
 				}
 			};
-
-			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
-			if (control._isRendering === undefined) {
-				control._changeCurrentTime(event);
-			}
 
 			video.bind(this._videoEvents);
 		},
