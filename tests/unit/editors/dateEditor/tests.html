@@ -3411,8 +3411,8 @@
 				});
 				$dtEditor.igDateEditor("option", "dataMode", "data");
 				$dtEditor.blur();
-				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
-				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("displayValue"), "3/1/2015" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("3/1/2015").getTime(), "Display value is not correct");
 				$dtEditor.igDateEditor("value", null);
 				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
 				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
