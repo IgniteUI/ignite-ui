@@ -3877,8 +3877,8 @@ QUnit.test('Edge case testing', function (assert) {
 	});
 	$dtEditor.igDateEditor("option", "dataMode", "data");
 	$dtEditor.blur();
-	assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
-	assert.equal($dtEditor.igDateEditor("value"), "", "Display value is not correct");
+	assert.equal($dtEditor.igDateEditor("displayValue"), "3/1/2015" , "Display value is not correct");
+	assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("3/1/2015").getTime(), "Display value is not correct");
 
 	$dtEditor.igDateEditor("value", null);
 	assert.equal($dtEditor.igDateEditor("displayValue"), "", "Display value is not correct");
