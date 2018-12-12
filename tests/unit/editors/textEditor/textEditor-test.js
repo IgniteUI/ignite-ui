@@ -1508,7 +1508,7 @@ QUnit.test("Scrollbar is not visible when not needed", function (assert) {
 	lastItem = editor.igTextEditor("dropDownContainer").last();
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
-	assert.ok(((this.dropDownContainer().offset().top + this.dropDownContainer().outerHeight(true)) - (lastItem.offset().top + lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");	
+	assert.ok(((this.dropDownContainer().igOffset().top + this.dropDownContainer().outerHeight(true)) - (lastItem.igOffset().top + lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");	
 
 	//Test with custom dropdown container border-width
 	style = $('<style> #scrollTest .ui-igedit-dropdown {border-width: 30px 30px 30px 30px;} </style>').appendTo("head");

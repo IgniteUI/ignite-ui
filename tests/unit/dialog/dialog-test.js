@@ -38,7 +38,7 @@ QUnit.module("igDialog", {
 	},
 
 	getElementDimensions: function getElementDimensions(element) {
-		var offset = element.offset(),
+		var offset = element.igOffset(),
 			top = offset.top,
 			bottom = top + element[0].offsetHeight,
 			left = offset.left,
@@ -711,8 +711,8 @@ QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fi
 			animationEventFlag = true;
 		}
 	});
-	var done = assert.async();
 	assert.ok(!animationEventFlag, "Animation flag should be false by default");
+	var done = assert.async();
 	self.util.wait(1100).then(function(){
 		assert.ok(animationEventFlag, "Animation flag should be true after openAnimation is completed");
 		$dialog.igDialog("close");
