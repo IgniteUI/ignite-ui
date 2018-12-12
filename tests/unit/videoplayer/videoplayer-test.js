@@ -1869,7 +1869,6 @@ QUnit.test('Test igVidioPlayer renders correctly on a video element test 58', fu
 	var playerId = 'player18';
 	createFixtureVideo(playerId);
 	$(`#${playerId}`).igVideoPlayer();
-
 	var container = $(`#${playerId}_container`), 
 		video = $(`#${playerId}`),
 		playButton = $(`#${playerId}_play`),
@@ -1882,9 +1881,9 @@ QUnit.test('Test igVidioPlayer renders correctly on a video element test 58', fu
 	assert.ok(playerWaiting !== null, 'igVideoPlayer waiting state is rendered.');
 	assert.ok(seekToolTip !== null, 'igVideoPlayer seek tooltip is rendered.');
 
-	this.checkElementNotClass(container, 'ui-widget ui-igplayer', assert);
-	this.checkElementNotClass(video, 'ui-igplayer-video', assert);
-	this.checkElementNotClass(playButton, 'ui-state-default ui-igplayer-centerplaybutton-play', assert);
-	this.checkElementNotClass(playerWaiting, 'ui-state-default ui-igplayer-waiting', assert);
-	this.checkElementNotClass(seekToolTip, 'ui-widget ui-igpopover ui-igplayer-tooltip ui-igplayer-seektooltip', assert);
+	this.checkElementClass(container, 'ui-widget ui-igplayer', assert);
+	this.checkElementClass(video, 'ui-igplayer-video', assert);
+	this.checkElementClass(playButton, 'ui-state-default ui-igplayer-centerplaybutton-play', assert);
+	this.checkElementClass(playerWaiting, 'ui-state-default ui-igplayer-waiting', assert);
+	this.checkElementClass(seekToolTip, 'ui-widget ui-igpopover ui-igplayer-tooltip ui-igplayer-seektooltip', assert);
 });
