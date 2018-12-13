@@ -76,34 +76,13 @@
         }
     }
 
-    function isNewDataSource(valueAccessor) {
-        var combo = $(valueAccessor().combo),
-            listLength = combo.igCombo("listItems").length,
-            valueKey = combo.igCombo("option", "valueKey"),
-            viewModelDataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
-            comboDataSource =
-                ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data()),
-            index;
-
-        if (listLength === viewModelDataSource.length && valueKey !== undefined) {
-            comboDataSource =
-                ko.utils.unwrapObservable(combo.igCombo("option", "dataSource").data());
-            for (index = 0; index < comboDataSource.length; index++) {
-                if (comboDataSource[ index ][ valueKey ] !==
-                    viewModelDataSource[ index ][ valueKey ]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        return true;
-    }
-
     ko.bindingHandlers.igCombo = {
         init: function (element, valueAccessor) {
             var combo = $(element),
                 options = valueAccessor(),
-                selectedItems = valueAccessor().selectedItems;
+                dataSource = options.dataSource,
+                selectedItems = options.selectedItems,
+                dataSourceSubscription;
 
             combo.igCombo(options);
 
@@ -114,14 +93,23 @@
                 }
             }, selectedItems);
 
+            if (ko.isObservable(dataSource)) {
+                dataSourceSubscription = dataSource.subscribe(function() {
+                    combo.data("dataSourceUpdating", true);
+                });
+                ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                    dataSourceSubscription.dispose();
+                });
+            }
+
             ko.applyBindingsToNode(combo.data("igCombo")._options.$dropDownCont[ 0 ], {
                 igComboList: {
 					combo: combo,
                     options: options,
-                    dataSource: valueAccessor().dataSource,
+                    dataSource: dataSource,
                     selectedItems: selectedItems
                 }
-            }, valueAccessor().dataSource);
+            }, dataSource);
 
             ko.utils.registerEventHandler(element, "igcomboselectionchanged", function (evt, ui) {
                 var valueKey = ui.owner.options.valueKey,
@@ -201,7 +189,10 @@
                 dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
                 lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0;
 
-            if (isNewDataSource(valueAccessor)) {
+            // N.A. 12 December 2018 Bug #1840 (https://github.com/IgniteUI/ignite-ui/issues/1840)
+            // We want to dataBind only when dataSource() observable is invoked.
+            if (!!combo.data("dataSourceUpdating")) {
+                combo.removeData("dataSourceUpdating");
                 combo.one("igcomboitemsrendered", function () {
                     applyListItemsBindings(valueAccessor);
                     selectItems(combo, valueAccessor().selectedItems);
