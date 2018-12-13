@@ -4538,3 +4538,20 @@ QUnit.test('Runtime changes for local and regional options', function (assert) {
 	$dtEditor.blur();
 	assert.equal($dtEditor.val(), "Donnerstag, 13. April 2017", "Runtime time display format not applied");
 });
+
+QUnit.test('Test plain values that are not containing mask values', function (assert) {
+	assert.expect(2);
+
+	var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+		dateInputFormat: "dateTime",
+		value: new Date(2017, 7, 18, 18, 6)
+	});
+
+	var inp = $dtEditor.igDateEditor("field");
+	inp.focus();
+	inp.val("010120180000");
+	inp.blur();
+
+	assert.equal($dtEditor.igDateEditor("displayValue"), "1/1/2018 12:00 AM", 'The value is not as expected');
+	assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2018, 0, 1).getTime(), "Runtime time display format not applied");
+});
