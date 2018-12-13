@@ -29,6 +29,7 @@
 	<script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.combo.knockout-extensions.js"></script>
 	<link type="text/css" rel="stylesheet" href="../../../../bower_components/qunit/qunit/qunit.css" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/html" id="data-template">
 		<li>
@@ -507,6 +508,17 @@
 				globalViewModel.oneItemData([{id: 6, name: "Item 6"}]);
 				equal($("#combo").igCombo("option", "dataSource").data()[0].id, 6, "data source not updated");
 				$comboCont.remove();
+			});
+
+			QUnit.test('Filtering in combo should not invoke data source rebinding in knockout extension', function (assert) {
+				assert.expect(1);
+				var comboCont = $("<div></div>").append($("<span id='combo'></span>").attr("data-bind", "igCombo: { dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, width: '200', mode: 'editable', virtualization: true, filteringType: 'local', autoComplete: false, autoSelectFirstMatch: true, allowCustomValue: false, enableClearButton: false }")).appendTo(".test-container");
+				ko.cleanNode(comboCont[0]);
+				ko.applyBindings(globalViewModel, comboCont[0]);
+				var combo = $("#combo");
+				$.ig.TestUtil.type("c", combo.igCombo("textInput"));
+				assert.equal(combo.igCombo("text"), "c", "data filtering text should stay");
+				comboCont.remove();
 			});
 
 			function testBasic(newText, newValue, input) {
