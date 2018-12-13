@@ -713,7 +713,15 @@
 	
 	test(testId_35, function() {
 		try {
-			ok($("#player8").igVideoPlayerUnitTesting());
+			ok($("#player8").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				]
+			}));
+
+			$('#player8').igVideoPlayerUnitTesting('destroy');
 		} catch(e) {
 			ok(false, "igVideoPlayer threw an error upon initialization on a video element.");
 		}
@@ -721,12 +729,18 @@
 
 	test(testId_36, function() {
 		var playerId = 'player8';
-		$(`#${playerId}`).igVideoPlayerUnitTesting();
-		var container = $(`#${playerId}_container`), 
-			video = $(`#${playerId}`),
-			playButton = $(`#${playerId}_play`),
-			playerWaiting = $(`#${playerId}_waiting`),
-			seekToolTip = $(`#${playerId}_seek_tooltip`);
+		$('#' + playerId).igVideoPlayerUnitTesting({
+			sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+			]
+		});
+		var container = $("#" + playerId + "_container"), 
+			video = $("#" + playerId),
+			playButton = $("#" + playerId + "_play"),
+			playerWaiting = $("#" + playerId + "_waiting"),
+			seekToolTip = $("#" + playerId + "_seek_tooltip");
 
 		ok(container !== null, 'igVideoPlayer container is rendered.');
 		ok(video !== null, 'igVideoPlayer video is rendered.');
@@ -738,6 +752,8 @@
 		checkClass(video, 'ui-igplayer-video');
 		checkClass(playButton, 'ui-state-default ui-igplayer-centerplaybutton-play');
 		checkClass(playerWaiting, 'ui-state-default ui-igplayer-waiting');
+
+			$('#' + playerId).igVideoPlayerUnitTesting('destroy');
 	});
 
 	function checkButton(button) {
