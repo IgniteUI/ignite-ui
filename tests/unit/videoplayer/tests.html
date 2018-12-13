@@ -247,6 +247,8 @@
 	var testId_32 = "igVideoPlayer Ad Message Close test 32";
 	var testId_33 = "igVideoPlayer Not Supported Video test 33";
 	var testId_34 = "igVideoPlayer No Compatible video source test 34";
+	var testId_35 = "igVideoPlayer throws no errors when initialized on a video element"
+	var testId_36 = "igVideoPlayer renders correctly on a video element";
 	
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -709,6 +711,35 @@
 		ok($('#player6').empty(), 'Player DIV should be empty!');
 	});
 	
+	test(testId_35, function() {
+		try {
+			ok($("#player8").igVideoPlayerUnitTesting());
+		} catch(e) {
+			ok(false, "igVideoPlayer threw an error upon initialization on a video element.");
+		}
+	});
+
+	test(testId_36, function() {
+		var playerId = 'player8';
+		$(`#${playerId}`).igVideoPlayerUnitTesting();
+		var container = $(`#${playerId}_container`), 
+			video = $(`#${playerId}`),
+			playButton = $(`#${playerId}_play`),
+			playerWaiting = $(`#${playerId}_waiting`),
+			seekToolTip = $(`#${playerId}_seek_tooltip`);
+
+		ok(container !== null, 'igVideoPlayer container is rendered.');
+		ok(video !== null, 'igVideoPlayer video is rendered.');
+		ok(playButton !== null, 'igVideoPlayer play button is rendered.');
+		ok(playerWaiting !== null, 'igVideoPlayer waiting state is rendered.');
+		ok(seekToolTip !== null, 'igVideoPlayer seek tooltip is rendered.');
+
+		checkClass(container, 'ui-widget ui-igplayer');
+		checkClass(video, 'ui-igplayer-video');
+		checkClass(playButton, 'ui-state-default ui-igplayer-centerplaybutton-play');
+		checkClass(playerWaiting, 'ui-state-default ui-igplayer-waiting');
+	});
+
 	function checkButton(button) {
 		checkClass(button, 'ui-widget');
 		checkClass(button, 'ui-state-default');
@@ -756,5 +787,9 @@
 <br/>
 <h1>igVideoPlayer 7</h1>
 <div id="player7"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 8</h1>
+<video id="player8"></video>
 </body>
 </html>
