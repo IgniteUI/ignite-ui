@@ -7190,6 +7190,11 @@
 			if (this._validateValue(value) &&
 				(this.options.revertIfNotValid && this._validateRequiredPrompts(value) ||
 				!this.options.revertIfNotValid)) {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				this._updateValue(value);
 			} else {
 
@@ -9200,6 +9205,11 @@
 			if ($.type(value) === "date") {
 				parsedVal = value;
 			} else {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
 			parsedVal = this._getValueBetweenMinMax(parsedVal);
