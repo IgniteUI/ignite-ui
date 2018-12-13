@@ -436,6 +436,8 @@
 	var testId_54 = "igSlider removes it toolbar on destroy";
 	var testId_55 = "igVidioPlayer Test fullscreen option class_true";
 	var testId_56 = "igVidioPlayer Test fullscreen option class_false";
+	var testId_57 = "gVideoPlayer throws no errors when initialized on a video element";
+	var testId_58 = "igVideoPlayer renders correctly on a video element";
 
 	test(testId_16, function() {
 		var controls = $('#player1_title_ctrls');
@@ -1713,6 +1715,58 @@
 			$('#player16').remove();
 		});
 
+		test(testId_57, function() {
+			try {
+				ok($("#player8").igVideoPlayerUnitTesting({
+					sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+							"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+							"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+							"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+					]
+				}));
+
+				$('#player8').igVideoPlayerUnitTesting('destroy');
+			} catch(e) {
+				ok(false, "igVideoPlayer threw an error upon initialization on a video element.");
+			}
+		});
+
+		test(testId_58, function() {
+			var playerId = 'player8';
+			$('#' + playerId).igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+							"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+							"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+							"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				]
+			});
+			var container = $("#" + playerId + "_container"), 
+				video = $("#" + playerId),
+				playButton = $("#" + playerId + "_play"),
+				playerWaiting = $("#" + playerId + "_waiting"),
+				seekToolTip = $("#" + playerId + "_seek_tooltip");
+
+			ok(container !== null, 'igVideoPlayer container is rendered.');
+			ok(video !== null, 'igVideoPlayer video is rendered.');
+			ok(playButton !== null, 'igVideoPlayer play button is rendered.');
+			ok(playerWaiting !== null, 'igVideoPlayer waiting state is rendered.');
+			ok(seekToolTip !== null, 'igVideoPlayer seek tooltip is rendered.');
+
+			var targetClasses = [
+				'ui-widget ui-igplayer',
+				'ui-igplayer-video',
+				'ui-state-default ui-igplayer-centerplaybutton-play',
+				'ui-state-default ui-igplayer-waiting'
+			];
+
+			container.hasClass(targetClasses[0]);
+			video.hasClass(targetClasses[1]);
+			playButton.hasClass(targetClasses[2]);
+			playerWaiting.hasClass(targetClasses[3]);
+			seekToolTip.hasClass(targetClasses[4]);
+
+			$('#' + playerId).igVideoPlayerUnitTesting('destroy');
+		});
 	
 	function checkButton(button) {
 		checkClass(button, 'ui-widget');
@@ -1809,6 +1863,9 @@
 	<br/>
 	<br/>
 	<video id="video1" controls="true" src="http://video-js.zencoder.com/oceans-clip.mp4" type="video/mp4" ></video>
+	<br/>
+	<br/>
+	<video id="player17"></video>
 	<br/>
 	<br/>
 	<input id="input"></input>
