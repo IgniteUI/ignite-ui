@@ -2412,7 +2412,6 @@
 			var o = this.options,
 				video,
 				css = this.css;
-
 			this._prevReadyState = 0;
 			this._bookmarksRendered = false;
 
@@ -2501,7 +2500,11 @@
 			this._removeVideoProperty(video, "autoplay");
 			this._removeVideoProperty(video, "preload");
 			this._removeVideoProperty(video, "loop");
-			this._removeVideoProperty(video, "poster");
+
+			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
+			if (this._oldPoster !== "") {
+				this._removeVideoProperty(video, "poster");
+			}
 			this._removeVideoProperty(video, "controls");
 			this._removeVideoProperty(video, "src");
 		},
@@ -3925,6 +3928,7 @@
 					control._refreshDuration();
 				}
 			};
+
 			video.bind(this._videoEvents);
 		},
 
