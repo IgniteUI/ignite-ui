@@ -1630,6 +1630,16 @@
                 this._resolveRoundingConflictsOfCloneObject($panel2, $panel2.css(minSize),
                     $panel1, size, sizeKey);
 
+                if (this.options.orientation === "vertical") {
+                    // RMK: Dec 18, 2018 - git#1696
+                    // splitter orientation is vertical - panels are side by side
+                    // if there are left and/or right borders on the pannels - substract them from the panels' width
+                    var panel1BorderWidth = this._panels[0][0].offsetWidth - this._panels[0][0].clientWidth;
+                    $panel1[sizeKey]($panel1[sizeKey]() - panel1BorderWidth);
+                    var panel2BorderWidth = this._panels[1][0].offsetWidth - this._panels[1][0].clientWidth;
+                    $panel2[sizeKey]($panel2[sizeKey]() - panel2BorderWidth);
+                }
+
                 this._setPanelSize(this._panels[ 1 ], $panel2[ sizeKey ]());
 
                 if ($panel2.css(minSize) &&
