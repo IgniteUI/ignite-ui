@@ -2112,7 +2112,9 @@ $.ig.dependencies = [
 			{ name: "igCombo" },
 			{ name: "igDialog" },
 			{ name: "_ig_undo" },
-			{ name: "igEditors" }
+			{ name: "igEditors" },
+			{ name: "igPopover" },
+			{ name: "igColorPicker" }
 		],
 		group: $.ig.loaderClass.locale.gridGroup,
 		scripts: [

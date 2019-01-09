@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '8.9.4'
+- '10.12.0'
 # https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-357626842
 sudo: required
 # dist: trusty

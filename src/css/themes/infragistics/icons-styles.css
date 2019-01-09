@@ -161,19 +161,13 @@
     width: 1.2em;
 }
 
-/* more specificity required here to override default borders */
-.ui-spinner a.ui-spinner-button {
-    border-top: none;
-    border-bottom: none;
-    border-right: none;
-}
-
 /* vertically center icon */
 .ui-spinner .ui-icon {
     left: 0;
     margin-top: -0.5em;
     position: absolute;
     top: 50%;
+    margin-left: 0;
 }
 
 /* positioning on dialogs(s) */
@@ -732,16 +726,11 @@
 .ui-igbutton-underline:before{content:"\e91f"}
 .ui-igbutton-viewsource-icon:before{content:"\e920"}
 
-
-
-
 .ui-igspreadsheet-copy-icon:before {content:"\e688"}
 .ui-igspreadsheet-cut-icon:before {content:"\e689"}
 .ui-igspreadsheet-paste-icon:before {content:"\e68a"}
 
-
-
-.ui-igspreadsheet-clearcontents-icon:before {content:"\e68f"}
+.ui-igspreadsheet-clearcontents-icon:before {content:"\e676"}
 
 .ui-igspreadsheet-insertnewworksheets-icon:before {content: "\e681"}
 
@@ -750,7 +739,7 @@
 .ui-igspreadsheet-deleteworksheets-icon:before {content:"\e68f"}
 .ui-igspreadsheet-deletecells-icon:before {content:"\e68f"}
 
-/*.ui-igspreadsheet-hiderows-icon:before {content:"\e6da"}*/
+/*.ui-igspreadsheet-hiderows-icon:before {content:"\e93b"}*/
 .ui-igspreadsheet-unhiderows-icon:before {content:"\e6da"}
 
 /*.ui-igspreadsheet-autofitrowheight-icon:before {content:"\e6da"}*/
@@ -774,13 +763,11 @@
 
 /* Row */
 .ui-igspreadsheet-insertrows-icon:before{content:"\e918"}
-.ui-igspreadsheet-deleterows-icon:before{content:"\e918"}
+.ui-igspreadsheet-deleterows-icon:before{content:"\e68f"}
 
 /* Column */
 .ui-igspreadsheet-insertcolumns-icon:before{content:"\e917"}
-.ui-igspreadsheet-deletecolumns-icon:before{content:"\e917"}
-
-
+.ui-igspreadsheet-deletecolumns-icon:before{content:"\e68f"}
 
 /* animated font glyphs */
 .ui-loading-icon.ui-icon-balls:before  { content: '\e712'; }
@@ -1414,5 +1401,34 @@
 .ui-igcheckbox-small-on,
 .ui-igcheckbox-verysmall-on,
 .ui-igcheckbox-large-on {
-/ / color: red
+    /*color: red*/
 }
+
+/* Chart Toolbar */
+[data-value="Bar"] .ui-icon-BarIcon,
+[data-value="Bar"] .ui-icon-changeable:before,
+.ui-icon-BarIcon:before {content:"\e92f"!important;}
+
+.ui-icon-CalendarIcon:before {content: "\e930"!important;}
+
+[data-value="Candle"] .ui-icon-CandleIcon,
+[data-value="Candle"] .ui-icon-changeable:before,
+.ui-icon-CandleIcon:before {content: "\e94a"!important;}
+
+[data-value="Column"] .ui-icon-ColumnIcon,
+[data-value="Column"] .ui-icon-changeable:before,
+.ui-icon-ColumnIcon:before {content: "\e94b"!important;}
+
+.ui-icon-IndicatorsIcon:before {content: "\e94c"!important;}
+
+[data-value="Auto"] .ui-icon-chartAuto,
+[data-value="Auto"] .ui-icon-changeable:before,
+.ui-icon-chartAuto:before {content: "\e92f"!important;}
+
+[data-value="Line"] .ui-icon-LineIcon,
+[data-value="Line"] .ui-icon-changeable:before,
+.ui-icon-LineIcon:before {content: "\e94d"!important;}
+
+.ui-icon-SettingsIcon:before {content: "\e94e"!important;}
+/* Chart Toolbar END */
+

@@ -1664,5 +1664,93 @@ QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', fu
 	assert.strictEqual($editor.igNumericEditor("value"), null, "igNumericEditor value did not clear");
 	assert.strictEqual($editor.igNumericEditor("field").val(), "", "igNumericEditor text did not clear");
 	
-	$editor.remove()
+	$editor.remove();
 });
+
+QUnit.test('Bug 256852: textChanged not fired on Safari on MacOS (Grid filtering)', function (assert) {
+	assert.expect(2);
+	var done = assert.async(),
+		$editor =  this.util.appendToFixture(this.inputTag).igTextEditor(),
+		$field = $editor.igTextEditor("field"),
+		textChangedArgs = [];
+
+	$editor.on("igtexteditortextchanged", function (evt, args) {
+		textChangedArgs.push(args);
+	});
+
+	/* Safari fires composition in the following order:
+		1. compositionstart
+		2. compositionupdate
+		3. input (value assigned to input)
+		4. keydown
+		5. keyup */
+	$field.focus();
+	$field.trigger(jQuery.Event("compositionstart"));
+	$field.trigger(jQuery.Event("compositionupdate"));
+	$field.val("d");
+	$field.trigger(jQuery.Event("input"));
+	$field.trigger(jQuery.Event("keydown"));
+	$field.trigger(jQuery.Event("keyup"));
+
+	assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+	assert.equal(textChangedArgs.pop().text, "d", "textChanged arg should be correct");
+
+	$.ig.TestUtil.wait(0) //compositionupdate handler
+	.then(function () {
+		$editor.off("igtexteditortextchanged");
+		$editor.remove();
+		done();
+	});
+});
+QUnit.test('Bug 1695 Uncaught TypeError is thrown when IME is enabled and a number is typed', function (assert) {
+	assert.expect(4);
+	var done = assert.async(),
+		$editor = this.util.appendToFixture(this.inputTag).igDatePicker({
+			regional: "ja",
+			dataMode:"editModeText"
+		}),
+		textChangedArgs = [];
+	 $editor.trigger("focus");
+	$editor.on("igdatepickertextchanged", function (evt, args) {
+		textChangedArgs.push(args);
+	});
+	$editor[0].setSelectionRange(0, 0);
+	$.ig.TestUtil.keyDownChar(50, $editor);
+	$editor.trigger(jQuery.Event("compositionstart"));
+	$editor.trigger(jQuery.Event("compositionupdate"));
+	$editor.val("２" + $editor.val());
+	$.ig.TestUtil.keyUpChar(50, $editor);
+	assert.ok(true, "Text change processing did not throw.");
+	 assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+	assert.equal(textChangedArgs.pop().text, "２____/__/__", "textChanged arg should be correct");
+	$editor[0].setSelectionRange(1, 1);
+	$editor.trigger(jQuery.Event("compositionend"));
+	$.ig.TestUtil.wait(0) //composition handlers
+	.then(function () {
+		assert.equal($editor.val(), "2___/__/__", "IME value not converted and applied to mask.");
+		$editor.off("igdatepickertextchanged");
+		$editor.remove();
+		done();
+	});
+}); // Bug 1695
+QUnit.test('Bug 1776 Auto-fill does not update igTextEditor', function (assert) {
+	assert.expect(5);
+	var $editor = this.util.appendToFixture(this.inputTag).igTextEditor(),
+		textChangedArgs = [], valueChangedArgs = [];
+	 $editor.on("igtexteditortextchanged", function (evt, args) {
+		textChangedArgs.push(args);
+	});
+	$editor.on("igtexteditorvaluechanged", function (evt, args) {
+		valueChangedArgs.push(args);
+	});
+	 // no focus, immediate change like auto-fill:
+	$editor.val("username");
+	$editor.trigger(jQuery.Event("input"));
+	  assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+	assert.equal(textChangedArgs.pop().text, "username", "textChanged arg should be correct");
+	assert.equal(valueChangedArgs.length, 1, "valueChanged should be triggered");
+	assert.equal(valueChangedArgs.pop().newValue, "username", "valueChanged arg should be correct");
+	assert.equal($editor.igTextEditor("value"), "username", "Value not updated");
+	$editor.off("igtexteditortextchanged igtexteditorvaluechanged");
+	$editor.remove();
+}); // Bug 1776

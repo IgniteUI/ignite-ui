@@ -1,15 +1,18 @@
 .ui-financialchart-container {
     font-family: "Segoe UI",Arial,sans-serif;
     font-size: 12px;
-    border-width: 0px;
+    border-width: 0;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+
 .ui-financialchart-mainChart {
 	margin-left: 15px;
 }
+
 .ui-financialchart-volumeChart {
 	margin-left: 15px;
 }
+
 .financialChartMainGrid {
 	height: 100%;
 	width: 100%;
@@ -17,10 +20,14 @@
 	display: -ms-grid;
 	-ms-grid-columns: 100%;
 }
+
 .financialChartPrice {
 	grid-row: 3;
 	-ms-grid-row: 3;
-	margin-top:10px;
+	margin-top: 10px;
+}
+.financialChartPrice, .financialChartPrice > div {
+	min-height: 100px;
 }
 .financialChartIndicators {
 	grid-row: 4;
@@ -34,6 +41,15 @@
 	grid-row: 6;
 	-ms-grid-row: 6;
 }
+
+/*
+/////////////////////
+*/
+/* Toolbar styles */
+/*
+/////////////////////
+*/
+
 .financialChartToolbar {
 	display: grid;
 	display: -ms-grid;
@@ -42,168 +58,324 @@
 	-ms-grid-row: 1;
 	-ms-grid-columns: 100%;
 }
+
 .financialChartToolbar .financialChartToolbar {
 	display: flex;
 	display: -ms-flexbox;
 	align-items: center;
-    justify-content: flex-start;
-	flex-flow: row nowrap;
-	-ms-flex-flow: row nowrap;
-    background: #eee;
-    border: 1px solid #ccc;
+	border: 1px solid #dadada;
+	max-height: 45px;
+	background: #eeeeee;
 }
-.financialChartToolbar, .financialChartToolbar button {
+
+.financialChartToolbar,
+.financialChartToolbar button {
 	font:400 13px "Segoe UI", Arial, sans-serif!important;
 }
+
 .financialChartRangeSelector {
-	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	text-transform: uppercase;
+	height: 100%;
 }
+
 .financialChartRangeSelector input {
 	display: none;
 }
-.financialChartRangeSelector label {
-	border-right: 1px solid #758696;
-	padding: 0 10px;
-	padding: 0!important;
-	border: none!important;
-	background-color: #eee;
+
+.financialChartRangeSelectorLabel {
+	cursor: pointer;
+	height: 100%;
 }
+.financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
+	color: #4897AA;
+}
+
+.financialChartRangeSelectorLabel input:checked + span {
+	color: #444444;
+	background-color: #dadada;
+}
+
+.financialChartRangeSelectorLabelSpan {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
 .financialChartRangeSelectorLastOption {
-	border: none !important;
+	border: none;
 	padding-right: 0;
 }
-.financialChartRangeSelector label:hover {
-	color: #0090ff;
-	cursor: pointer;
-}
-.financialChartRangeSelector input:checked + span {
-	color: #0090ff;
-	color: #444!important;
-	background-color: #d5d5d5;
-}
-.financialChartRangeSelector label span {
-	padding:2px 8px 4px;
-}
+
+.financialChartIndicatorMenu,
 .financialChartTypePicker {
 	position: relative; 
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.financialChartTypePicker {
 	margin-left: auto;
-	margin-right: 15px;
+	height: 100%;
+	border-left: 1px solid #dadada;
 }
+
 .financialChartIndicatorMenu {
-	border-right: solid 1px;
+	height: 100%;
+	padding:0 10px;
+	border-right: 1px solid #dadada;
 }
-.financialChartIndicatorMenu, .financialChartTypePicker {
-	position: relative; 
-	display: inline-block;
+
+.financialChartIndicatorMenuDropDownMenu,
+.financialChartTypePickerDropDownMenu {
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	z-index: 1;
+	position: absolute;
+	top: calc(100% + 1px);
+	box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+	white-space: nowrap;
 }
+
 .financialChartIndicatorMenuDropDownMenu {
+	left:0;
+	min-width: 100px;
 	height: 300px;
 	overflow: auto;
 }
-.financialChartIndicatorMenuDropDownMenu, .financialChartTypePickerDropDownMenu {
-	background-color: white;
-	position: relative; 
-	display: inline-block;
-	z-index: 1;
-	position: absolute!important;
-	top: 30px;
-	left:0;
-	-webkit-box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.2);
-	-moz-box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.2);
-	box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.2);
+
+.financialChartTypePickerDropDownMenu {
+	right:0;
 }
+
+.financialChartListItem {
+	cursor: pointer;
+}
+
+.financialChartListItem:hover,
+.financialChartListItem:focus {
+	color: #4897AA;
+}
+
+.financialChartListItem span {
+	position: relative;
+	/* TODO: figure out why we need z-index here */
+	z-index: -1;
+}
+
+.financialChartTypePickerDropDownMenu .financialChartListItem {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.financialChartTypePickerDropDownMenu .ui-icon {
+	margin-right: 5px;
+}
+
+.financialChartIndicatorMenuDropDownButton,
 .financialChartTypePickerDropDownButton {
-	height: 25px;
-	width: 30px;
-}
-.financialChartIndicatorMenuDropDownButton, .financialChartTypePickerDropDownButton {
 	background-color:transparent;
 	border:none;
 	outline:none;
 	cursor:pointer;
 	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.financialChartIndicatorMenuDropDownButton:after {
-	top: calc(0.5em + 3px);
-	margin-left: 5px;
-}
-.financialChartTypePickerDropDownButton:after {
-	top: 5px;
-	margin-left: 20px;
-}
-.financialChartIndicatorMenuDropDownButton:after, .financialChartTypePickerDropDownButton:after {
-	width: 0; 
-	height: 0; 
-	border-style: solid;
-    border-width: 4px 4px 0 4px;
-    border-color: #777 transparent transparent transparent;
-	content: "";
-	position: relative;
-	flex: 0;
-}
-.financialChartIndicatorMenu {
-	background: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 55 55'%3E%3Cdefs%3E%3Cstyle%3E.cls-1{fill:%23777;}%3C/style%3E%3C/defs%3E%3Ctitle%3EArtboard 2%3C/title%3E%3Crect class='cls-1' x='46.32' y='16.34' width='5.97' height='38.47'/%3E%3Cpolygon class='cls-1' points='36.73 54.8 42.7 54.8 42.7 20.71 40.34 20.71 36.73 23.92 36.73 54.8'/%3E%3Cpolygon class='cls-1' points='27.14 30.07 27.14 54.8 33.11 54.8 33.11 27.15 28.46 31.28 27.14 30.07'/%3E%3Cpolygon class='cls-1' points='30.74 20.71 29.62 20.71 30.12 21.22 30.74 20.71'/%3E%3Cpolygon class='cls-1' points='17.55 26.49 17.55 54.8 23.52 54.8 23.52 26.76 20.26 23.78 17.55 26.49'/%3E%3Cpolygon class='cls-1' points='7.96 24.97 7.96 26.49 9.48 24.97 7.96 24.97'/%3E%3Cpolygon class='cls-1' points='7.96 54.8 13.93 54.8 13.93 30.11 7.96 36.08 7.96 54.8'/%3E%3Cpolygon class='cls-1' points='37.29 0.2 43.23 6.14 30.12 16.96 21.68 8.51 2.5 27.69 7.29 32.48 20.26 19.52 28.46 27.02 47.33 10.23 52.5 15.4 52.5 14.57 52.5 0.2 37.29 0.2'/%3E%3C/svg%3E") no-repeat 0 0;
-	padding-left:18px;
-}
-.financialChartIndicatorMenu:hover {
-	background: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 55 55'%3E%3Cdefs%3E%3Cstyle%3E.cls-1{fill:%230090ff;}.cls-2{fill:%23777;}%3C/style%3E%3C/defs%3E%3Ctitle%3EArtboard 2%3C/title%3E%3Crect class='cls-1' x='46.32' y='16.34' width='5.97' height='38.47'/%3E%3Cpolygon class='cls-1' points='36.73 54.8 42.7 54.8 42.7 20.71 40.34 20.71 36.73 23.92 36.73 54.8'/%3E%3Cpolygon class='cls-1' points='27.14 30.07 27.14 54.8 33.11 54.8 33.11 27.15 28.46 31.28 27.14 30.07'/%3E%3Cpolygon class='cls-2' points='30.74 20.71 29.62 20.71 30.12 21.22 30.74 20.71'/%3E%3Cpolygon class='cls-1' points='17.55 26.49 17.55 54.8 23.52 54.8 23.52 26.76 20.26 23.78 17.55 26.49'/%3E%3Cpolygon class='cls-2' points='7.96 24.97 7.96 26.49 9.48 24.97 7.96 24.97'/%3E%3Cpolygon class='cls-1' points='7.96 54.8 13.93 54.8 13.93 30.11 7.96 36.08 7.96 54.8'/%3E%3Cpolygon class='cls-1' points='37.29 0.2 43.23 6.14 30.12 16.96 21.68 8.51 2.5 27.69 7.29 32.48 20.26 19.52 28.46 27.02 47.33 10.23 52.5 15.4 52.5 14.57 52.5 0.2 37.29 0.2'/%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartIndicatorMenu:hover, .financialChartTypePicker:hover {
-	cursor:pointer;
-}
-.financialChartIndicatorMenu:hover button, .financialChartTypePicker:hover button {
-	color:#0090ff;
-}
-.financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton:after, .financialChartTypePicker:hover .financialChartTypePickerDropDownButton:after {
-	border-color: #0090ff transparent transparent transparent;
-}
-.financialChartIndicatorMenuDropDownMenu ul {
+
+.financialChartIndicatorMenuDropDownMenuList {
 	font-weight: bold;
 }
-.financialChartIndicatorMenuDropDownMenu ul, .financialChartTypePickerDropDownMenu ul {
+
+.financialChartIndicatorMenuDropDownMenu li.checked,
+.financialChartTypePickerDropDownMenu li.checked {
+	color: #4897AA;
+}
+
+.financialChartIndicatorMenuDropDownMenu ul,
+.financialChartTypePickerDropDownMenu ul {
 	list-style-type: none;
 	margin: 0;
-	padding: 0;
+	padding: 8px;
 }
-.financialChartIndicatorMenuDropDownMenu li > ul, .financialChartTypePickerDropDownMenu li > ul {
+
+.financialChartIndicatorMenuDropDownMenu ul ul,
+.financialChartTypePickerDropDownMenu ul ul {
 	padding-left: 15px;
 	font-weight: normal;
 }
-.financialChartIndicatorMenuDropDownMenu li.checked:before, .financialChartTypePickerDropDownMenu li.checked:before {
+
+.financialChartIndicatorMenuDropDownMenu ul li,
+.financialChartTypePickerDropDownMenu ul li {
+	padding-top:4px;
+	position: relative;
+}
+
+.financialChartIndicatorMenuDropDownMenu li.checked:before{
 	margin-left: -15px;
 	margin-right: 5px;
-	content: "\2713"
+	content: "\2713";
+	position: absolute;
 }
-.financialChartTypePickerDropDownMenu li {
-	padding-left: 1.5em;
-}
-.financialChartTypePickerDropDownMenu li[data-value="Bar"],[data-value="Auto"], .financialChartTypePickerDropDownButton {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 3 2 L 3 4 L 3 6 L 3 7 L 0 7 L 0 9 L 3 9 L 3 12 L 5 12 L 5 9 L 5 7 L 5 6 L 8 6 L 8 4 L 5 4 L 5 2 L 3 2 ZM 10 0 L 10 3 L 10 5 L 10 10 L 7 10 L 7 12 L 10 12 L 10 15 L 12 15 L 12 12 L 12 10 L 12 5 L 15 5 L 15 3 L 12 3 L 12 0 L 10 0 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownButton:hover {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 3 2 L 3 4 L 3 6 L 3 7 L 0 7 L 0 9 L 3 9 L 3 12 L 5 12 L 5 9 L 5 7 L 5 6 L 8 6 L 8 4 L 5 4 L 5 2 L 3 2 ZM 10 0 L 10 3 L 10 5 L 10 10 L 7 10 L 7 12 L 10 12 L 10 15 L 12 15 L 12 12 L 12 10 L 12 5 L 15 5 L 15 3 L 12 3 L 12 0 L 10 0 Z' fill='#0090ff' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownMenu li[data-value="Line"], .financialChartTypePickerDropDownButton[data-value="Line"] {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 11.3333 L 1.6842 13 L 6.5 8.8125 L 9.5313 11.3438 L 16 5.5 L 14 3.5 L 9.5313 8.1875 L 6.5 5.625 L 0 11.3333 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownButton[data-value="Line"]:hover {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 11.3333 L 1.6842 13 L 6.5 8.8125 L 9.5313 11.3438 L 16 5.5 L 14 3.5 L 9.5313 8.1875 L 6.5 5.625 L 0 11.3333 Z' fill='#0090ff' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownMenu li[data-value="Candle"], .financialChartTypePickerDropDownButton[data-value="Candle"] {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 8 3 L 8 13 L 10 13 L 10 16 L 12 16 L 12 13 L 14 13 L 14 3 L 12 3 L 12 0 L 10 0 L 10 3 L 8 3 ZM 0 5 L 0 12 L 2 12 L 2 15 L 4 15 L 4 12 L 6 12 L 6 5 L 4 5 L 4 2 L 2 2 L 2 5 L 0 5 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownButton[data-value="Candle"]:hover {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 8 3 L 8 13 L 10 13 L 10 16 L 12 16 L 12 13 L 14 13 L 14 3 L 12 3 L 12 0 L 10 0 L 10 3 L 8 3 ZM 0 5 L 0 12 L 2 12 L 2 15 L 4 15 L 4 12 L 6 12 L 6 5 L 4 5 L 4 2 L 2 2 L 2 5 L 0 5 Z' fill='#0090ff' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownMenu li[data-value="Column"], .financialChartTypePickerDropDownButton[data-value="Column"] {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 16 L 3 16 L 3 11 L 0 11 L 0 16 ZM 11 16 L 11 2 L 8 2 L 8 16 L 11 16 ZM 15 16 L 15 4 L 12 4 L 12 16 L 15 16 ZM 7 16 L 7 6 L 4 6 L 4 16 L 7 16 Z' fill='#777777' /%3E%3C/svg%3E") no-repeat 0 0;
-}
-.financialChartTypePickerDropDownButton[data-value="Column"]:hover {
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3E%3Cpath d='M 0 16 L 3 16 L 3 11 L 0 11 L 0 16 ZM 11 16 L 11 2 L 8 2 L 8 16 L 11 16 ZM 15 16 L 15 4 L 12 4 L 12 16 L 15 16 ZM 7 16 L 7 6 L 4 6 L 4 16 L 7 16 Z' fill='#0090ff' /%3E%3C/svg%3E") no-repeat 0 0;
-}
+
 .financialChartLegend {
 	grid-row: 2;
 	-ms-grid-row: 2;
+}
+
+.ui-ChartButtonWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.financialChartTypePickerDropDownButton .ui-icon-triangle-1-s,
+.ui-ChartButtonWrapper .ui-icon-triangle-1-s {
+	font-size: 10px;
+}
+
+.financialChartTypePickerDropDownButton {
+	background-color:transparent;
+	height: 100%;
+	padding: 0 10px;
+}
+
+.financialChartIndicatorMenuLabel {
+	margin: 0 5px;
+}
+
+/* Icon styles if no theme is includet */
+.financialChartToolbar .ui-icon {
+	color: #888888;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-indent: -99999px;
+	overflow: hidden;
+	position: relative;
+}
+.financialChartToolbar .ui-icon:before {
+	display: block;
+	height: 1em;
+	left: 50%;
+	line-height: 1;
+	margin-left: -0.5em;
+	margin-top: -0.5em;
+	position: absolute;
+	text-indent: 0;
+	top: 50%;
+	width: 1em;
+}
+
+.ui-icon-IndicatorsIcon:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2055%2055%27%20fill%3D%27%23777777%27%3E%3Crect%20x%3D%2746.32%27%20y%3D%2716.34%27%20width%3D%275.97%27%20height%3D%2738.47%27%2F%3E%3Cpolygon%20points%3D%2736.73%2054.8%2042.7%2054.8%2042.7%2020.71%2040.34%2020.71%2036.73%2023.92%2036.73%2054.8%27%2F%3E%3Cpolygon%20points%3D%2727.14%2030.07%2027.14%2054.8%2033.11%2054.8%2033.11%2027.15%2028.46%2031.28%2027.14%2030.07%27%2F%3E%3Cpolygon%20points%3D%2730.74%2020.71%2029.62%2020.71%2030.12%2021.22%2030.74%2020.71%27%2F%3E%3Cpolygon%20points%3D%2717.55%2026.49%2017.55%2054.8%2023.52%2054.8%2023.52%2026.76%2020.26%2023.78%2017.55%2026.49%27%2F%3E%3Cpolygon%20points%3D%277.96%2024.97%207.96%2026.49%209.48%2024.97%207.96%2024.97%27%2F%3E%3Cpolygon%20points%3D%277.96%2054.8%2013.93%2054.8%2013.93%2030.11%207.96%2036.08%207.96%2054.8%27%2F%3E%3Cpolygon%20points%3D%2737.29%200.2%2043.23%206.14%2030.12%2016.96%2021.68%208.51%202.5%2027.69%207.29%2032.48%2020.26%2019.52%2028.46%2027.02%2047.33%2010.23%2052.5%2015.4%2052.5%2014.57%2052.5%200.2%2037.29%200.2%27%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartIndicatorMenuDropDownButton:hover .ui-icon-IndicatorsIcon:before,
+.financialChartIndicatorMenuDropDownButton:focus .ui-icon-IndicatorsIcon:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2055%2055%27%20fill%3D%27%234897AA%27%3E%3Crect%20x%3D%2746.32%27%20y%3D%2716.34%27%20width%3D%275.97%27%20height%3D%2738.47%27%2F%3E%3Cpolygon%20points%3D%2736.73%2054.8%2042.7%2054.8%2042.7%2020.71%2040.34%2020.71%2036.73%2023.92%2036.73%2054.8%27%2F%3E%3Cpolygon%20points%3D%2727.14%2030.07%2027.14%2054.8%2033.11%2054.8%2033.11%2027.15%2028.46%2031.28%2027.14%2030.07%27%2F%3E%3Cpolygon%20points%3D%2730.74%2020.71%2029.62%2020.71%2030.12%2021.22%2030.74%2020.71%27%2F%3E%3Cpolygon%20points%3D%2717.55%2026.49%2017.55%2054.8%2023.52%2054.8%2023.52%2026.76%2020.26%2023.78%2017.55%2026.49%27%2F%3E%3Cpolygon%20points%3D%277.96%2024.97%207.96%2026.49%209.48%2024.97%207.96%2024.97%27%2F%3E%3Cpolygon%20points%3D%277.96%2054.8%2013.93%2054.8%2013.93%2030.11%207.96%2036.08%207.96%2054.8%27%2F%3E%3Cpolygon%20points%3D%2737.29%200.2%2043.23%206.14%2030.12%2016.96%2021.68%208.51%202.5%2027.69%207.29%2032.48%2020.26%2019.52%2028.46%2027.02%2047.33%2010.23%2052.5%2015.4%2052.5%2014.57%2052.5%200.2%2037.29%200.2%27%2F%3E%3C%2Fsvg%3E");
+}
+
+.ui-icon-toolbar-dd {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.ui-icon-toolbar-dd:before {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 5px 4px 0 4px;
+	border-color: #666 transparent transparent transparent;
+}
+
+.financialChartIndicatorMenuDropDownButton:hover .ui-icon-toolbar-dd:before,
+.financialChartIndicatorMenuDropDownButton:focus .ui-icon-toolbar-dd:before,
+.financialChartTypePickerDropDownButton:hover .ui-icon-toolbar-dd:before,
+.financialChartTypePickerDropDownButton:focus .ui-icon-toolbar-dd:before {
+	content: '';
+	border-color: #4897AA transparent transparent transparent;
+}
+
+.financialChartListItem[data-value='Auto'] {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 3px;
+}
+
+.financialChartTypePickerDropDownButton[data-value="Auto"] .ui-icon-chartAuto:before,
+.financialChartListItem[data-value='Auto'] .ui-icon-changeable:before,
+.financialChartListItem[data-value='Auto'] .ui-icon-chartAuto:before,
+.financialChartTypePickerDropDownButton[data-value="Auto"] .ui-icon-changeable:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%208%203%20L%208%2013%20L%2010%2013%20L%2010%2016%20L%2012%2016%20L%2012%2013%20L%2014%2013%20L%2014%203%20L%2012%203%20L%2012%200%20L%2010%200%20L%2010%203%20L%208%203%20ZM%200%205%20L%200%2012%20L%202%2012%20L%202%2015%20L%204%2015%20L%204%2012%20L%206%2012%20L%206%205%20L%204%205%20L%204%202%20L%202%202%20L%202%205%20L%200%205%20Z%27%20fill%3D%27%23777777%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartListItem[data-value='Auto']:hover .ui-icon-chartAuto:before,
+.financialChartListItem[data-value='Auto']:focus .ui-icon-chartAuto:before,
+.financialChartTypePickerDropDownButton[data-value='Auto']:hover .ui-icon-changeable:before,
+.financialChartTypePickerDropDownButton[data-value='Auto']:focus .ui-icon-changeable:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%20%3E%3Cpath%20d%3D%27M%208%203%20L%208%2013%20L%2010%2013%20L%2010%2016%20L%2012%2016%20L%2012%2013%20L%2014%2013%20L%2014%203%20L%2012%203%20L%2012%200%20L%2010%200%20L%2010%203%20L%208%203%20ZM%200%205%20L%200%2012%20L%202%2012%20L%202%2015%20L%204%2015%20L%204%2012%20L%206%2012%20L%206%205%20L%204%205%20L%204%202%20L%202%202%20L%202%205%20L%200%205%20Z%27%20fill%3D%27%234897AA%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartListItem[data-value='Bar'] .ui-icon-BarIcon:before,
+.financialChartTypePickerDropDownButton[data-value="Bar"] .ui-icon-changeable:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%20%3E%3Cpath%20d%3D%27M%203%202%20L%203%204%20L%203%206%20L%203%207%20L%200%207%20L%200%209%20L%203%209%20L%203%2012%20L%205%2012%20L%205%209%20L%205%207%20L%205%206%20L%208%206%20L%208%204%20L%205%204%20L%205%202%20L%203%202%20ZM%2010%200%20L%2010%203%20L%2010%205%20L%2010%2010%20L%207%2010%20L%207%2012%20L%2010%2012%20L%2010%2015%20L%2012%2015%20L%2012%2012%20L%2012%2010%20L%2012%205%20L%2015%205%20L%2015%203%20L%2012%203%20L%2012%200%20L%2010%200%20Z%27%20fill%3D%27%23777777%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartTypePickerDropDownButton[data-value='Bar']:hover .ui-icon-changeable:before,
+.financialChartTypePickerDropDownButton[data-value='Bar']:focus .ui-icon-changeable:before,
+.financialChartListItem[data-value="Bar"]:hover .ui-icon-BarIcon:before,
+.financialChartListItem[data-value="Bar"]:focus .ui-icon-BarIcon:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%203%202%20L%203%204%20L%203%206%20L%203%207%20L%200%207%20L%200%209%20L%203%209%20L%203%2012%20L%205%2012%20L%205%209%20L%205%207%20L%205%206%20L%208%206%20L%208%204%20L%205%204%20L%205%202%20L%203%202%20ZM%2010%200%20L%2010%203%20L%2010%205%20L%2010%2010%20L%207%2010%20L%207%2012%20L%2010%2012%20L%2010%2015%20L%2012%2015%20L%2012%2012%20L%2012%2010%20L%2012%205%20L%2015%205%20L%2015%203%20L%2012%203%20L%2012%200%20L%2010%200%20Z%27%20fill%3D%27%234897AA%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartListItem[data-value='Line'] .ui-icon-LineIcon:before,
+.financialChartTypePickerDropDownButton[data-value="Line"] .ui-icon-changeable:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%200%2011.3333%20L%201.6842%2013%20L%206.5%208.8125%20L%209.5313%2011.3438%20L%2016%205.5%20L%2014%203.5%20L%209.5313%208.1875%20L%206.5%205.625%20L%200%2011.3333%20Z%27%20fill%3D%27%23777777%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartTypePickerDropDownButton[data-value='Line']:hover .ui-icon-changeable:before,
+.financialChartTypePickerDropDownButton[data-value='Line']:focus .ui-icon-changeable:before,
+.financialChartListItem[data-value="Line"]:hover .ui-icon-LineIcon:before,
+.financialChartListItem[data-value="Line"]:focus .ui-icon-LineIcon:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%200%2011.3333%20L%201.6842%2013%20L%206.5%208.8125%20L%209.5313%2011.3438%20L%2016%205.5%20L%2014%203.5%20L%209.5313%208.1875%20L%206.5%205.625%20L%200%2011.3333%20Z%27%20fill%3D%27%234897AA%27%20%2F%3E%3C%2Fsvg%3E");}
+
+.financialChartListItem[data-value='Candle'] .ui-icon-CandleIcon:before,
+.financialChartTypePickerDropDownButton[data-value="Candle"] .ui-icon-changeable:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%208%203%20L%208%2013%20L%2010%2013%20L%2010%2016%20L%2012%2016%20L%2012%2013%20L%2014%2013%20L%2014%203%20L%2012%203%20L%2012%200%20L%2010%200%20L%2010%203%20L%208%203%20ZM%200%205%20L%200%2012%20L%202%2012%20L%202%2015%20L%204%2015%20L%204%2012%20L%206%2012%20L%206%205%20L%204%205%20L%204%202%20L%202%202%20L%202%205%20L%200%205%20Z%27%20fill%3D%27%23777777%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartTypePickerDropDownButton[data-value='Candle']:hover .ui-icon-changeable:before,
+.financialChartTypePickerDropDownButton[data-value='Candle']:focus .ui-icon-changeable:before,
+.financialChartListItem[data-value="Candle"]:hover .ui-icon-CandleIcon:before,
+.financialChartListItem[data-value="Candle"]:focus .ui-icon-CandleIcon:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%20%3E%3Cpath%20d%3D%27M%208%203%20L%208%2013%20L%2010%2013%20L%2010%2016%20L%2012%2016%20L%2012%2013%20L%2014%2013%20L%2014%203%20L%2012%203%20L%2012%200%20L%2010%200%20L%2010%203%20L%208%203%20ZM%200%205%20L%200%2012%20L%202%2012%20L%202%2015%20L%204%2015%20L%204%2012%20L%206%2012%20L%206%205%20L%204%205%20L%204%202%20L%202%202%20L%202%205%20L%200%205%20Z%27%20fill%3D%27%234897AA%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartListItem[data-value='Column'] .ui-icon-ColumnIcon:before,
+.financialChartTypePickerDropDownButton[data-value="Column"] .ui-icon-changeable:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%200%2016%20L%203%2016%20L%203%2011%20L%200%2011%20L%200%2016%20ZM%2011%2016%20L%2011%202%20L%208%202%20L%208%2016%20L%2011%2016%20ZM%2015%2016%20L%2015%204%20L%2012%204%20L%2012%2016%20L%2015%2016%20ZM%207%2016%20L%207%206%20L%204%206%20L%204%2016%20L%207%2016%20Z%27%20fill%3D%27%23777777%27%20%2F%3E%3C%2Fsvg%3E");
+}
+
+.financialChartTypePickerDropDownButton[data-value='Column']:hover .ui-icon-changeable:before,
+.financialChartTypePickerDropDownButton[data-value='Column']:focus .ui-icon-changeable:before,
+.financialChartListItem[data-value="Column"]:hover .ui-icon-ColumnIcon:before,
+.financialChartListItem[data-value="Column"]:focus .ui-icon-ColumnIcon:before {
+	content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M%200%2016%20L%203%2016%20L%203%2011%20L%200%2011%20L%200%2016%20ZM%2011%2016%20L%2011%202%20L%208%202%20L%208%2016%20L%2011%2016%20ZM%2015%2016%20L%2015%204%20L%2012%204%20L%2012%2016%20L%2015%2016%20ZM%207%2016%20L%207%206%20L%204%206%20L%204%2016%20L%207%2016%20Z%27%20fill%3D%27%234897AA%27%20%2F%3E%3C%2Fsvg%3E");
 }

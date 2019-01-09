@@ -55,6 +55,8 @@ QUnit.module("Knockout unit tests for igComboEditor", {
 		this.nameList = ko.observableArray(tmp);		
 		this.selectedItemsValue = ko.observableArray(["value2"]);
 		this.selectedItemsWhole = ko.observableArray([{ name: "name2", value: "value2" }]);
+
+		this.oneItemData = ko.observable([{id: 0, name: 'Item 0'}]);
 	},
 	applyBindings: function () {
 		ko.applyBindings(this.model, this.qunitFixture[0]);
@@ -452,6 +454,31 @@ QUnit.test("[ID13] Combo editor test big data", function (assert) {
 	assert.ok(end - start < 5000, "Binding big data should take less than 5 seconds");
 });
 
+QUnit.test('Changing data source with data source with the same length but different items', function (assert) {
+	assert.expect(1);
+	var comboCont = $(this.divTag).appendTo(this.qunitFixture);
+
+	comboCont.append($("<span id='combo'></span>").attr("data-bind", "igCombo: { dataSource: oneItemData, textKey: 'name', valueKey: 'id', width: '200', mode: 'dropdown', enableClearButton: false }")).appendTo(".test-container");
+	ko.cleanNode(comboCont[0]);
+	ko.applyBindings(this.model, comboCont[0]);
+	this.model.oneItemData([{id: 6, name: "Item 6"}]);
+	assert.equal($("#combo").igCombo("option", "dataSource").data()[0].id, 6, "data source not updated");
+	comboCont.remove();
+});
+
+QUnit.test('Filtering in combo should not invoke data source rebinding in knockout extension', function (assert) {
+	assert.expect(1);
+	var comboCont = $(this.divTag).appendTo(this.qunitFixture);
+
+	comboCont.append($("<span id='combo'></span>").attr("data-bind", "igCombo: { dataSource: data, textKey: 'name', valueKey: 'value', selectedItems: selectedItems, width: '200', mode: 'editable', virtualization: true, filteringType: 'local', autoComplete: false, autoSelectFirstMatch: true, allowCustomValue: false, enableClearButton: false }")).appendTo(".test-container");
+	ko.cleanNode(comboCont[0]);
+	ko.applyBindings(this.model, comboCont[0]);
+	combo = $("#combo");
+
+	$.ig.TestUtil.type("c", combo.igCombo("textInput"));
+	assert.equal(combo.igCombo("text"), "c", "data filtering text should stay");
+	comboCont.remove();
+});
 
 
 

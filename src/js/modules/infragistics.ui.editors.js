@@ -2648,6 +2648,11 @@
 			if (!target) {
 				return;
 			}
+
+			//	MV 23.11.18 #1846
+			//	ensure events are attached just once
+			this._detachButtonsEvents(target);
+
 			/* jshint -W083*/
 			target.on({
 				"mouseenter.button": function () {
@@ -2712,6 +2717,13 @@
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
+				"input.editor": function () {
+					if (!self._editMode) {
+						// D.P. 26th Sep 2018 #1776 Auto-fill on page load does not update the editor
+						self._processTextChanged();
+						self._processValueChanging(self._editorInput.val());
+					}
+				},
 				"dragenter.editor": function () {
 					if (!self._focused && !self._editMode) {
 						//Controlled edit mode without selection to allow default drop handling
@@ -2749,7 +2761,6 @@
 						self._editorInput.val() !== self._currentInputTextValue) {
 						self._processTextChanged();
 					}
-					self._currentInputTextValue = self._editorInput.val();
 					self._triggerKeyDown(event);
 				},
 				"keyup.editor": function (event) {
@@ -2835,7 +2846,7 @@
 			this._super();
 
 			if (this._editorInput) {
-				this._editorInput.off("focus.editor blur.editor paste.editor");
+				this._editorInput.off("focus.editor input.editor blur.editor paste.editor");
 				this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
 				this._editorInput.off("keydown.editor keyup.editor keypress.editor");
 				this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
@@ -3770,7 +3781,10 @@
 			var self = this;
 			if (type === "spinUp") {
 				this._handleSpinUpEvent();
-				if (!target.attr("disabled")) {
+
+				//	MV 23.11.18 #1846
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinUpEvent();
@@ -3779,7 +3793,10 @@
 				}
 			} else if (type === "spinDown") {
 				this._handleSpinDownEvent();
-				if (!target.attr("disabled")) {
+
+				//	MV 23.11.18 #1846
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinDownEvent();
@@ -4568,12 +4585,7 @@
 			return this.options[ name ] !== null ? this.options[ name ] : this._getRegionalValue(regName);
 		},
 		_setInitialValue: function (value) { // NumericEditor
-			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
-			if (!isNaN(this.options.minValue) && this.options.minValue > value) {
-				value = this.options.minValue;
-			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
-				value = this.options.maxValue;
-			}
+			value = this._getValueBetweenMinMax(value);
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
@@ -4671,6 +4683,19 @@
 				this._getOptionOrRegionalValue("maxDecimals")) {
 				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
+		},
+		_getValueBetweenMinMax: function(value) {
+
+			// N.A. 7 November 2018, Bug #1834, Initial value that is null, should not be overwritten by the min/max values.
+			if (!(this.options.allowNullValue && value === this.options.nullValue)) {
+				// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+				if (!isNaN(this.options.minValue) && this.options.minValue > value) {
+					value = this.options.minValue;
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
+					value = this.options.maxValue;
+				}
+			}
+			return value;
 		},
 		_setOption: function (option, value) { // igNumericEditor
 			/* igNumericEditor custom setOption goes here */
@@ -5032,7 +5057,7 @@
 
 				// In case of IME input digits we need to convert
 				// value = $.ig.util.replaceJpToEnNumbers(value);
-				value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping);
+				value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 
 				// D.P. 27th Oct 2015 Bug 208296: Don't replace group separator on actual numbers as it can be '.'
 				value = value.toString().replace(new RegExp($.ig.util.escapeRegExp(groupSeparator), "g"), ""); // TODO VERIFY Remove group separator cause parseInt("1,000") returns 1?
@@ -5320,13 +5345,7 @@
 				newValue = this.options.nullValue;
 			}
 
-			// D.P. nullValue does not override min/max
-			// If the min value is different from zero, we clear the value with the minimum value.
-			if (!isNaN(this.options.minValue) && this.options.minValue > newValue) {
-				newValue = this.options.minValue;
-			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < newValue) {
-				newValue = this.options.maxValue;
-			}
+			newValue = this._getValueBetweenMinMax(newValue);
 
 			//D.P. This handles both invalid nullValue and 0 not being in the list of items for #942
 			if (!this._validateValue(newValue)) {
@@ -7195,6 +7214,11 @@
 			if (this._validateValue(value) &&
 				(this.options.revertIfNotValid && this._validateRequiredPrompts(value) ||
 				!this.options.revertIfNotValid)) {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				this._updateValue(value);
 			} else {
 
@@ -8397,8 +8421,8 @@
 				dateObj = this._getDateOffset(dateObj);
 			}
 
-			// TODO update all the fields
-			if (dateObj) {
+			// D.P. 26th Sep 2018 #1695 Uncaught TypeError w/ IME numbers, don't parse invalid date:
+			if (dateObj && dateObj.getTime() === dateObj.getTime()) {
 				if (this._dateIndices.yy !== undefined) {
 					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
@@ -9207,6 +9231,11 @@
 			if ($.type(value) === "date") {
 				parsedVal = value;
 			} else {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
 			parsedVal = this._getValueBetweenMinMax(parsedVal);
@@ -11121,7 +11150,7 @@
 
 			//V.S. March 7th 2018 - #1358 if no regional option is provided and a global regional is set, uses the global one
 			if ($.datepicker && typeof reg === "string") {
-				if (reg === "defaults" || reg === "en-US") {
+				if (reg === "defaults") {
 					if (typeof $.ig.util.regional === "string" && $.ig.util.regional) {
 						abbreviation = $.ig.util.regional;
 					}

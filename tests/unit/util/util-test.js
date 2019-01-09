@@ -385,3 +385,24 @@ QUnit.test("[ID18] Test stringSplit", function (assert) {
 	assert.equal($.ig.util.stringSplit("This is easy. So is this.", [".", " ", "!", ">"], $.ig.StringSplitOptions.prototype.none).toString(), "This,is,easy,,So,is,this,", "Other Examples 4 - None");
 	assert.equal($.ig.util.stringSplit("This is easy. So is this.", [".", " ", "!", ">"], $.ig.StringSplitOptions.prototype.removeEmptyEntries).toString(), "This,is,easy,So,is,this", "Other Examples 4 - RemoveEmptyEntries");
    });
+
+QUnit.test('[ID19] Test arrayCopy1', function (assert) {
+	assert.expect(4);
+
+	var arr = [0,2,3,4,5];
+	$.ig.util.arrayCopy1(arr, 1, arr, 0, 4);
+	assert.deepEqual(arr, [2,3,4,5,5], "Move content forwards within same array");
+
+	arr = [2,3,4,5,0];
+	$.ig.util.arrayCopy1(arr, 0, arr, 1, 4);
+	assert.deepEqual(arr, [2,2,3,4,5], "Move content back within the same array");
+
+	arr = [1,2,3,4,5];
+	var target = [6,7,8,9,10];
+	$.ig.util.arrayCopy1(arr, 1, target, 0, 4);
+	assert.deepEqual(target, [2,3,4,5,10], "Copy content to the beginning of another array");
+
+	target = [6,7,8,9,10];
+	$.ig.util.arrayCopy1(arr, 0, target, 1, 4);
+	assert.deepEqual(target, [6,1,2,3,4], "Copy content to the end of another array");
+});
