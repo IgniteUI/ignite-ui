@@ -1180,3 +1180,18 @@ QUnit.test("Should properly revert to last valid value", function (assert) {
 	assert.ok($editor.data("igMaskEditor")._editorInput.val().indexOf("(") > -1,"The displayed value has the mask in place");
 	assert.equal($editor.igMaskEditor("value"), "111111112", "The editor value should be reverted to the last valid one");
 });
+
+QUnit.test('Test plain values that are not containing mask values', function (assert) {
+	assert.expect(1);
+
+	var $editor = $.ig.TestUtil.appendToFixture(this.inputTag).igMaskEditor({
+		inputMask: "00/00/0000 00:00"
+	});
+
+	var inp = $editor.igMaskEditor("field");
+	inp.focus();
+	inp.val("010120181200");
+	inp.blur();
+
+	assert.equal($editor.igMaskEditor("displayValue"), "01/01/2018 12:00", 'The value is not as expected');
+});
