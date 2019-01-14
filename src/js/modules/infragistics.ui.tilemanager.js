@@ -1972,7 +1972,7 @@
                 rightPanelTilesWidth = this._getRightPanelTilesWidth(),
                 rightPanelTilesHeight = this._getRightPanelTilesHeight(),
                 leftAdjustment = containerSwap ?
-                    _opt.$rightPanel.position().left - gl.marginLeft : 0,
+                    _opt.$rightPanel.igPosition().left - gl.marginLeft : 0,
                 topAdjustment = containerSwap ?
                     _opt.$rightPanel.scrollTop() : 0,
                 rightPanelCols = opt.rightPanelCols;
@@ -2095,7 +2095,7 @@
                 $tileToMinimize = _opt.$maximizedTile,
                 tileToMinimizeIndex = parseInt($tileToMinimize.attr("data-index"), 10),
                 tileToMaximizeIndex = parseInt($tileToMaximize.attr("data-index"), 10),
-                rightPanelOffset = _opt.$rightPanel.position().left - gl.marginLeft;
+                rightPanelOffset = _opt.$rightPanel.igPosition().left - gl.marginLeft;
 
             this._toMinimizedState($tileToMinimize);
 
@@ -2301,7 +2301,7 @@
             var _opt = this._options,
                 $tileToMinimize = _opt.$maximizedTile,
                 gl = _opt.gridLayout,
-                rightTilesOffset = _opt.$rightPanel.position().left,
+                rightTilesOffset = _opt.$rightPanel.igPosition().left,
                 tileToMinimizeIndex;
 
             if (!$tileToMinimize) {

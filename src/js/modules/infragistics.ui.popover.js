@@ -1284,8 +1284,8 @@
 			/* when don't have containment it popover should be positioned where it's target is,
 			this is done mainly for the scenarios with horizontal scrollbar */
 			if (this.options.containment === null) {
-				this.popover.css("left", trg.position().left);
-				this.popover.css("top", trg.position().top);
+				this.popover.css("left", trg.igPosition().left);
+				this.popover.css("top", trg.igPosition().top);
 			}
 			if (!this._visible) {
 				this.popover.show();

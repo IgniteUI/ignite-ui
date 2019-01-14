@@ -69,7 +69,7 @@ function testElementRendering($elem, elName, elType, width, height, top, left, c
     var curClass, i,
         clasesLen = classes ? classes.length : 0,
         attrLen = attributes ? attributes.length : 0,
-        elOffset = $elem.offset();
+        elOffset = $elem.igOffset();
 
     strictEqual($elem.length, 1, elName + ' was not rendered');
     ok($elem.is(elType), elName + ' should be div element');

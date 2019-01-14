@@ -118,6 +118,7 @@
 
     <script>
         $(function() {
+		$.fx.off = true;
             var testId_1 = 'Item selection',
                 testId_2 = 'Drop down mode',
 				testId_3 = 'Readonly mode',
@@ -251,8 +252,8 @@
 					dropDownExpHeight = 3 * itemHeight + border,
 					listItemExpWidth = 198,
 					listItemExpHeight = itemHeight,
-					listItemExpPosLeft = $combo.offset().left + 1,
-					listItemExpPosTop = $combo.offset().top + 30,
+					listItemExpPosLeft = $combo.igOffset().left + 1,
+					listItemExpPosTop = $combo.igOffset().top + 30,
 					click = $.Event('click'),
 					mouseEnter = $.Event('mouseenter'),
 					mouseLeave = $.Event('mouseleave'),
@@ -332,8 +333,8 @@
 					$combo = $('#combo-rolmode'),
 					listItemExpWidth = 198,
 					listItemExpHeight = 29,
-					listItemExpPosLeft = $combo.offset().left + 1,
-					listItemExpPosTop = $combo.offset().top + 30,
+					listItemExpPosLeft = $combo.igOffset().left + 1,
+					listItemExpPosTop = $combo.igOffset().top + 30,
 					dropDownExpHeight = 3 * listItemExpHeight + 1,
 					click = $.Event('click'),
 					mouseEnter = $.Event('mouseenter'),

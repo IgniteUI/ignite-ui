@@ -3487,9 +3487,9 @@
 			if (this._options.dropDownOpened) {
 				if ($item.length > 0) {
 					listContHeight = this._options.$dropDownListCont.height();
-					listContTop = this._options.$dropDownListCont.offset().top;
+					listContTop = this._options.$dropDownListCont.igOffset().top;
 					listContScrollTop = this.listScrollTop();
-					itemTop = $item.offset().top;
+					itemTop = $item.igOffset().top;
 					itemHeight = $item.outerHeight();
 
 					// Change scroll top only when the item is not in the visible area
@@ -3520,9 +3520,9 @@
 		_positionItemInVisibleArea: function ($item) {
 			var $listCont = this._options.$dropDownListCont,
 				listContHeight = $listCont.height(),
-				listContTop = $listCont.offset().top,
+				listContTop = $listCont.igOffset().top,
 				listContScrollTop = this.listScrollTop(),
-				itemTop = $item.offset().top,
+				itemTop = $item.igOffset().top,
 				itemHeight = $item.outerHeight(true);
 
 			// Item is hidden and is above visible area
@@ -5836,7 +5836,7 @@
 				_options = this._options,
 				direction = this.options.dropDownOrientation,
 				$combo = _options.$combo,
-				comboOffset = $combo.offset(),
+				comboOffset = $combo.igOffset(),
 				comboTopOffset = comboOffset.top,
 				comboOuterHeight = parseInt($combo.outerHeight(), 10),
 				dropDownContainerHeight = this._dropDownContHeight(),

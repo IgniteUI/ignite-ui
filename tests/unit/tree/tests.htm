@@ -192,6 +192,7 @@
 			];
 		var jsonpcallback = $.noop;
 		$(document).ready(function () {
+		$.fx.off = true;
 			$.mockjaxSettings.logging = 0;  // only critical error messages
 			$.ajaxSettings.jsonpCallback = function() {
 				return "jsonpcallback";
