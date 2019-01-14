@@ -1231,8 +1231,8 @@
 				this._lf.parent().css("cursor", "inherit");
 			}
 			if (this._draggedElement) {
-				this._draggedElementOffset = left - this._draggedElement.offset().left +
-					this._draggedElement.parent().offset().left + this._buttonWidth;
+				this._draggedElementOffset = left - this._draggedElement.igOffset().left +
+					this._draggedElement.parent().igOffset().left + this._buttonWidth;
 				if (!this._immediate) {
 					this._defStore = {
 						left: this._cw.left,
@@ -1248,7 +1248,7 @@
 				return;
 			}
 			if (this._draggedElement.hasClass("ui-igzoombar-window-handle-left")) {
-				nl = left - this._draggedElement.parent().offset().left;
+				nl = left - this._draggedElement.parent().igOffset().left;
 				nl = nl / this._cwidth;
 				nw = ow + ol - nl;
 				if (nw < this.options.zoomWindowMinWidth / 100) {
@@ -1259,7 +1259,7 @@
 					nw = ow + ol - nl;
 				}
 			} else if (this._draggedElement.hasClass("ui-igzoombar-window-handle-right")) {
-				nw = (left - this._sbt.offset().left) / this._cwidth;
+				nw = (left - this._sbt.igOffset().left) / this._cwidth;
 				if (nw < this.options.zoomWindowMinWidth / 100) {
 					return;
 				}
@@ -1321,7 +1321,7 @@
 			return true;
 		},
 		_moveWindowByPageX: function (cont, pageX) {
-			var percLeft = (pageX - cont.offset().left - this._buttonWidth) / this._cwidth, nl;
+			var percLeft = (pageX - cont.igOffset().left - this._buttonWidth) / this._cwidth, nl;
 			nl = percLeft - this._cw.width / 2;
 			this._zoom(nl, this._cw.width, true, true, true);
 		},

@@ -162,8 +162,8 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 		dropDownExpHeight = 3 * itemHeight + border,
 		listItemExpWidth = 198,
 		listItemExpHeight = itemHeight,
-		listItemExpPosLeft = $combo.offset().left + 1,
-		listItemExpPosTop = $combo.offset().top + 30;
+		listItemExpPosLeft = $combo.igOffset().left + 1,
+		listItemExpPosTop = $combo.igOffset().top + 30;
 
 	$combo.igCombo({
 		width: 200,
@@ -238,8 +238,8 @@ QUnit.test('[ID4] Readonlylist mode', function (assert) {
 		$combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-rolmode" }),
 		listItemExpWidth = 198,
 		listItemExpHeight = 29,
-		listItemExpPosLeft = $combo.offset().left + 1,
-		listItemExpPosTop = $combo.offset().top + 30,
+		listItemExpPosLeft = $combo.igOffset().left + 1,
+		listItemExpPosTop = $combo.igOffset().top + 30,
 		dropDownExpHeight = 3 * listItemExpHeight + 1;
 
 	$combo.igCombo({
