@@ -1077,8 +1077,8 @@ QUnit.test(testId_32, function (assert) {
     this.scrollContainer(this.vhScrollId).mouseleave();
     done = assert.async();
     this.testUtil.wait(2100).then(function () {
-        assert.equal(self.vDrag(self.vhScrollId).css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
-        assert.equal(self.hDrag(self.vhScrollId).css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") < 0.5, "igScroll vertical scrollbar thumb is visible");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") < 0.5, "igScroll horizontal scrollbar thumb is visible");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
@@ -1330,15 +1330,15 @@ QUnit.test(testId_41, function (assert) {
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
         self.arrowDown(self.vhScrollId).mouseout();
-        self.testUtil.wait(100).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
-            self.arrowDown(self.vhScrollId).mouseover();
-            self.testUtil.wait(150).then(function () {
-                assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 200, "igScroll did not scroll properly");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        return self.testUtil.wait(100);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
+        self.arrowDown(self.vhScrollId).mouseover();
+        return self.testUtil.wait(150);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 200, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
