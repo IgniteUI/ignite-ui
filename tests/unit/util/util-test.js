@@ -1,5 +1,5 @@
 QUnit.module("igUtil basic unit tests", {
-	divTag: '<div></div>',
+	divTag: '<div></div>'
 });
 
 QUnit.test('[ID1] Test getColType function', function (assert) {
@@ -36,15 +36,15 @@ QUnit.test('[ID2] Test getRelativeOffset function', function (assert) {
 
 	//check getRelativeOffset with relative positioning of the parent
 	var relOffset = $.ig.util.getRelativeOffset($("#span1"));
-	assert.ok($("#span1").parent().offset().left - $("#span1").parent().scrollLeft() === relOffset.left && $("#span1").parent().offset().top - $("#span1").parent().scrollTop() === relOffset.top, "The element offset should be correct.");
+	assert.ok($("#span1").parent().igOffset().left - $("#span1").parent().scrollLeft() === relOffset.left && $("#span1").parent().igOffset().top - $("#span1").parent().scrollTop() === relOffset.top, "The element offset should be correct.");
 	
 	//check getRelativeOffset with absolute positioning of the parent
 	relOffset = $.ig.util.getRelativeOffset($("#table1"));
-	assert.ok($("#table1").parent().offset().left - $("#table1").parent().scrollLeft() === relOffset.left && $("#table1").parent().offset().top - $("#table1").parent().scrollTop() === relOffset.top, "The element offset should be correct.");
+	assert.ok($("#table1").parent().igOffset().left - $("#table1").parent().scrollLeft() === relOffset.left && $("#table1").parent().igOffset().top - $("#table1").parent().scrollTop() === relOffset.top, "The element offset should be correct.");
 	
 	//check getRelativeOffset with static positioning of the parent
 	relOffset = $.ig.util.getRelativeOffset($("#span2"));
-	assert.ok($("#span2").parent().parent().offset().left - $("#span2").parent().parent().scrollLeft() === relOffset.left && $("#span2").parent().parent().offset().top - $("#span2").parent().parent().scrollTop() === relOffset.top, "The element offset should be correct.");
+	assert.ok($("#span2").parent().parent().igOffset().left - $("#span2").parent().parent().scrollLeft() === relOffset.left && $("#span2").parent().parent().igOffset().top - $("#span2").parent().parent().scrollTop() === relOffset.top, "The element offset should be correct.");
 });
 
 QUnit.test('[ID3] Test defEnum', function (assert) {
