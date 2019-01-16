@@ -2853,7 +2853,6 @@
 			}
 		},
 		_processValueChanging: function (value) { //TextEditor
-
 			if (value !== this.value()) {
 				if (!(this.value() === null && value === "")) {
 				this._triggerInternalValueChange(value);
@@ -3110,6 +3109,7 @@
 			}
 		},
 		_triggerValueChanged: function (originalValue) {
+			debugger;
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,

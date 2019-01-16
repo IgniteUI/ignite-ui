@@ -512,7 +512,74 @@
 			}
 		}
 	};
+	ko.bindingHandlers.igTimePicker = {
+		init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+			var editor = $(element), options;
+			options = $.extend({}, valueAccessor());
+			options.value = ko.utils.unwrapObservable(options.value);
+			editor.igTimePicker(options);
+			if (options.updateMode === undefined) {
+				options.updateMode = "onchange";
+			} else if (options.updateMode.toLowerCase() !== "onchange" &&
+				options.updateMode.toLowerCase() !== "immediate") {
+				throw new Error($.ig.Editor.locale.updateModeUnsupportedValue);
+			}
+			if (options.updateMode.toLowerCase() === "onchange") {
 
+				//In that case the model is updated on valueChanged event
+				editor.bind("igtimepickervaluechanged", function (event, args) { 
+					if (ko.isObservable(valueAccessor().value)) {
+
+						valueAccessor().value(args.owner.value());
+					} else {
+						updatePropertyValue(element, "igTimePicker", viewModel, args.owner.value());
+					}
+				});
+			} else {
+				throw new Error($.ig.Editor.locale.updateModeNotSupported);
+			}
+			ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+				$(element).igTimePicker("destroy");
+			});
+		},
+		update: function (element, valueAccessor) {
+			var value, current, editor = $(element), parsedDate, val;
+			value = ko.utils.unwrapObservable(valueAccessor().value);
+
+			if (value === null || value === undefined || value === "") {
+				editor.igTimePicker("value", value);
+			} else {
+				value = value.toString().replace(/_(\d)/g, "$1");
+				parsedDate = Date.parse(value);
+				if (value.toString().indexOf("/Date(") === 0) {
+
+					//handle date data coming via json from Microsoft
+					value = new Date(parseInt(value.replace(/\/Date\((.*?)\)\//gi, "$1"), 10));
+					if (value.toString() === "Invalid Date") {
+						value = undefined;
+					}
+				} else if (isNaN(parsedDate)) {
+					val = new Date(value);
+					if (val && isNaN(val) && val.toString() !== "Invalid Date") {
+						val = $.ig.util.dateFromISO(value);
+					}
+					value = val;
+					if (value.toString() === "Invalid Date") {
+						value = undefined;
+					}
+				}
+				current = editor.igTimePicker("value");
+				current = Date.parse(current);
+				if (current !== parsedDate) {
+
+					if (value !== undefined && value !== editor.igTimePicker("displayValue")) {
+						value = new Date(value);
+					}
+					editor.igTimePicker("value", value);
+				}
+			}
+		}
+	};
 	ko.bindingHandlers.igEditorDisable = {
         update: function (element, valueAccessor) {
             var disabled = valueAccessor(),
