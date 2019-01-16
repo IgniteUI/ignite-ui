@@ -1,0 +1,248 @@
+QUnit.module("Knockout unit tests for igDatePicker", {
+	inputTag: '<input></input>',
+	divTag: '<div></div>',
+	spanTag: '<span></span>',
+	util: $.ig.TestUtil,
+	editor: null,
+	model: null,
+	input: function () {
+		return this.editor.igTimePicker("field");
+	},
+	container: function () {
+		return this.editor.igTimePicker("editorContainer");
+	},
+	getTime: function (h, m, s) {
+		var time = new Date(1, 1, 1);
+		h = h || 20;
+		m = m || 32;
+		s = s || 16
+		time.setHours(h);
+		time.setMinutes(m);
+		time.setSeconds(s);
+		return time;
+	},
+	viewModel: function () {
+		var self = this;
+		this.nonObservable = "11/17/2007";
+		this.nullable = ko.observable(null);
+		var time = new Date(1, 1, 1);
+		time.setHours(20);
+		time.setMinutes(32);
+		time.setSeconds(16);
+		this.timeValue = ko.observable(time);
+
+		setTime = function (t) {
+			self.timeValue(t);
+		};
+
+		this.isDisabled = ko.observable(false);
+		this.invalidTime = ko.observable("");
+	},
+	applyBindings: function () {
+		ko.applyBindings(this.model, this.qunitFixture[0]);
+	},
+	before: function () {
+		this.qunitFixture = $('#qunit-fixture');
+		this.model = new this.viewModel();
+	},
+	beforeEach: function () {
+		$.fx.off = true;
+		this.qunitFixture = $('#qunit-fixture');
+	},
+	afterEach: function () {
+		$.fx.off = false;
+		ko.cleanNode(this.qunitFixture[0]);
+	},
+	checkEditorsValues: function (val, message) {
+		var dateObject = new Date(val);
+
+		this.assert.equal($('#inputEditor1').igTimePicker("value").toString(), dateObject.toString(), message + " (inputEditor) date");
+		this.assert.equal($('#divEditor1').igTimePicker("value").toString(), dateObject.toString(), message + " (divEditor1) date");
+		this.assert.equal($('#spanEditor1').igTimePicker("value").toString(), dateObject.toString(), message + " (tdEditor1) date");
+	},
+	checkFieldsValues: function (val, message) {
+		this.assert.equal($("#inputValue").val(), val, message + " (inputValue)");
+		this.assert.equal($("#divValue").html(), val, message + " (divValue)");
+		this.assert.equal($("#spanValue").html(), val, message + " (spanValue)");
+	}
+});
+
+QUnit.only("Initializing igTimePicker", function (assert) {
+	assert.expect(86); //Passing
+	this.assert = assert;
+
+	var setupObject = "igTimePicker: { value: timeValue, isLimitedToListValues: false, width: '160px' }";
+	$(this.inputTag).attr("id", "inputEditor1").attr("data-bind", setupObject).appendTo(this.qunitFixture);
+	$(this.divTag).attr("id", "divEditor1").attr("data-bind", setupObject).appendTo(this.qunitFixture);
+	$(this.spanTag).attr("id", "spanEditor1").attr("data-bind", setupObject).appendTo(this.qunitFixture);
+
+	$(this.inputTag).attr("id", "inputValue").attr("data-bind", "value: timeValue").appendTo(this.qunitFixture);
+	$(this.divTag).attr("id", "divValue").attr("data-bind", "text: timeValue").appendTo(this.qunitFixture);
+	$(this.spanTag).attr("id", "spanValue").attr("data-bind", "text: timeValue").appendTo(this.qunitFixture);
+
+	$(this.inputTag).attr("id", "resetButton").attr("type", "button").attr("data-bind", "click: setTime").appendTo(this.qunitFixture);
+	this.applyBindings();
+
+	// Initializing igTimePicker
+	assert.ok(typeof (ko.bindingHandlers.igTimePicker) !== 'undefined', 'igTimePicker knockoutJS extension script is not loaded');
+	assert.ok(typeof (ko.bindingHandlers.igTimePicker) === 'object', 'igTimePicker knockoutJS extension is of a wrong type');
+	assert.ok($('#inputEditor1').data("igTimePicker") !== undefined, 'Creating igTimePicker in an input');
+	assert.ok($('#divEditor1').data("igTimePicker") !== undefined, 'Creating igTimePicker in a div');
+	assert.ok($('#spanEditor1').data("igTimePicker") !== undefined, 'Creating igTimePicker in a td');
+	assert.equal($('#inputEditor1').igTimePicker("value").toString(), this.model.timeValue().toString(), 'The initial value is as expexted');
+	assert.equal($('#divEditor1').igTimePicker("value").toString(), this.model.timeValue().toString(), 'The initial value is as expexted');
+	assert.equal($('#spanEditor1').igTimePicker("value").toString(), this.model.timeValue().toString(), 'The initial value is as expexted');
+
+	// Update model -> editor (input)"
+	$('#inputEditor1').igTimePicker("setFocus");
+	var time = this.getTime(16, 35, 18);
+	$('#inputEditor1').igTimePicker("field").val("4:15 PM").blur();
+	this.checkEditorsValues(time, "Value are as expected");
+	this.checkFieldsValues(new Date("11/11/2012").toString(), "Values are as expected");
+
+	// // Update model -> editor (div)
+	// $('#divEditor1').igDatePicker("setFocus");
+	// $('#divEditor1').igDatePicker("field").val("09/25/2012").blur();
+	// this.checkEditorsValues("9/25/2012", "Values are as expected");
+	// this.checkFieldsValues(new Date("9/25/2012").toString(), "Values are as expected");
+
+	// // Update model -> editor (td)
+	// $('#spanEditor1').igDatePicker("field").val("04/21/2012").blur();
+	// this.checkEditorsValues("4/21/2012", "Values are as expected");
+	// this.checkFieldsValues(new Date("4/21/2012").toString(), "Values are as expected");
+
+	// // Update Model, check editors
+	// $("#resetButton3").click();
+	// //Split the logic for editors and the divs/spans and inputs
+	// date = new Date(2008, 9, 15, 0, 0, 0, 0);
+	// this.checkEditorsValues("10/15/2008", "Values are as expected", date);
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+	// $("#resetButton2").click();
+	// this.checkEditorsValues("10/10/2014", "Values are as expected");
+	// date = new Date("10/10/2014");
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+	// //Set invalid Date - all the editors should fallback to the previous state
+	// $("#resetButton1").click();
+	// date = new Date("Wed Dec 12 2012 00:00:00");
+	// this.checkEditorsValues("12/12/2012", "Values are as expected");
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+	// $("#resetButton").click();
+	// this.checkEditorsValues("11/11/2011", "Values are as expected");
+	// date = new Date("11/11/2011");
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+	// $("#resetButton4").click();
+	// date = new Date();
+	// this.checkEditorsValues(this.getShortDateAsString(date), "Values are as expected", date);
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+
+	// //"update from outside input"
+	// date = new Date();
+	// $('#inputValue').val(date.toString()).change();
+	// this.checkEditorsValues(this.getShortDateAsString(date), "Values are as expected", date);			
+	// this.checkFieldsValues(date.toString(), "Values are as expected");		
+	// var d = new Date("05/15/2008")
+	// date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 13, 45, 29, 10);
+	// $('#inputValue').val(date.toString()).change();
+	// date = new Date(2008, 4, 15, 13, 45, 29, 10);
+	// this.checkEditorsValues("5/15/2008", "Values are as expected", date);
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+	// //Split the logic for editors and the divs/spans and inputs
+	// var dd = new Date("10/10/2014");
+	// dd = Date.parse(dd);
+	// date = new Date(dd);
+	// $('#inputValue').val(date.toString()).change();
+	// this.checkEditorsValues("10/10/2014", "Values are as expected");
+	// date = new Date("10/10/2014");
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+	// date = new Date("11/11/2011");
+	// $('#inputValue').val(date.toString()).change();
+	// this.checkEditorsValues("11/11/2011", "Values are as expected");
+	// this.checkFieldsValues(date.toString(), "Values are as expected");
+
+	// $('#inputEditor1').remove();
+	// ko.cleanNode(this.qunitFixture[0]);
+	// $(this.inputTag).attr("id", "inputEditor1").attr("data-bind", "igDatePicker: { value: dateValue, width: '160px', updateMode: 'onchange' }").appendTo(this.qunitFixture);
+	// this.applyBindings();
+
+	// $('#inputEditor1').igDatePicker('value', '10/10/2010');
+	// $('#inputEditor1').igDatePicker('setFocus');
+	// editorInput = $("#inputEditor1").igDatePicker("field").val("10/10/2009").blur();
+	// this.checkEditorsValues("10/10/2009", "The value is updated on change");
+	// this.checkFieldsValues(new Date(2009,9,10).toString(), "The value is updated on change");
+});
+
+QUnit.test('Test disabled binding', function (assert) {
+	assert.expect(12);
+
+	editor = $(this.inputTag).attr("data-bind", "igDatePicker: { width: '200' }, igEditorDisable: isDisabled").appendTo(this.qunitFixture);
+	chk = $(this.inputTag).attr("type", "checkbox").attr("data-bind", "checked: isDisabled").appendTo(this.qunitFixture);
+	this.applyBindings();
+
+	assert.notOk(editor.igDatePicker("option", "disabled"), "Editor should be enabled");
+	assert.notOk(editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
+	assert.equal(editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
+	assert.notOk(editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
+	chk.click();
+	assert.ok(editor.igDatePicker("option", "disabled"), "Editor should be disabled");
+	assert.ok(editor.igDatePicker("field").prop("disabled"), "Editor should be disabled");
+	assert.equal(editor.igDatePicker("field").attr("disabled"), "disabled", "Editor should be disabled");
+	assert.ok(editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be disabled");
+	chk.click();
+	chk.click();
+	chk.click();
+	assert.notOk(editor.igDatePicker("option", "disabled"), "Editor should be enabled");
+	assert.notOk(editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
+	assert.equal(editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
+	assert.notOk(editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
+});
+
+QUnit.test('Test invalid dates binding', function (assert) {
+	assert.expect(2);
+	var editor = $(this.inputTag).attr("data-bind", "igDatePicker: { value: invalidDate, width: '160px' }").appendTo(this.qunitFixture);
+	this.applyBindings();
+
+	this.model.invalidDate("/Date(-1)");
+	assert.equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
+	this.model.invalidDate(NaN);
+	assert.equal(editor.igDatePicker("value"), "", "Editor value shouldn't have any value");
+});
+
+QUnit.test("datePicker bound to non-observable value", function (assert) {
+	assert.expect(2);
+
+	var date = new Date("12/15/2017"), done = assert.async(), self = this;
+	var editor = $(this.inputTag).attr("data-bind", "igDatePicker: { value: nonObservable, width: '160px'}").appendTo(this.qunitFixture);
+	this.applyBindings();
+
+	editor.igDatePicker("field").val("12/15/2017").blur();
+	this.util.wait(300).then(function () {
+		assert.equal(date.toString(), self.model.nonObservable.toString(), "Changes in the date picker should be reflected in the view model");
+		self.model.nonObservable = new Date("12/31/2017");
+		assert.notEqual(editor.igDatePicker("value").toString(), self.model.nonObservable.toString(), "Changes in the view model shouldn't be reflected in the editor");
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
+
+QUnit.test("updateMode set to not allowed value", function (assert) {
+	assert.expect(1);
+	var self = this;
+
+	assert.throws(function () {
+		$(self.inputTag).attr("data-bind", "igDatePicker: { value: dateValue, width: \"160px\", updateMode: \"none\" }").appendTo(self.qunitFixture);
+		self.applyBindings();
+	}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+});
+
+QUnit.test("updateMode set to immediate", function (assert) {
+	assert.expect(1);
+	var self = this;
+
+	$(this.inputTag).attr("data-bind", "igDatePicker: { value: dateValue, width: \"160px\", updateMode: \"immediate\" }").appendTo(this.qunitFixture);
+	assert.throws(function () { self.applyBindings(); },
+		function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeNotSupported) > -1; },
+		'An error was correctly thrown when updateMode option is not correctly changed');
+});
