@@ -1291,22 +1291,23 @@ QUnit.test(testId_40, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
+    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 375);
 
-    done = assert.async();
+    
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
         self.arrowDown(self.vhScrollId).mouseout();
         $(window).mouseup();
         self.arrowDown(self.vhScrollId).mouseover();
-        self.testUtil.wait(50).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(50);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1445,11 +1446,11 @@ QUnit.test(testId_46, function (assert) {
         modifyDOM: true,
         scrollTop: 500
     });
+    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 375);
-    done = assert.async();
     this.testUtil.wait(325).then(function () {
         //500 minus 120
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
@@ -1457,13 +1458,12 @@ QUnit.test(testId_46, function (assert) {
         self.arrowUp(self.vhScrollId).mouseout();
         $(window).mouseup();
         self.arrowUp(self.vhScrollId).mouseover();
-
-        self.testUtil.wait(50).then(function () {
-            //500 minus 160
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(50);
+    }).then(function () {
+        //500 minus 160
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1479,25 +1479,27 @@ QUnit.test(testId_47, function (assert) {
         modifyDOM: true,
         scrollTop: 500
     });
+    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
     this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 500);
-    done = assert.async();
     this.testUtil.wait(325).then(function () {
         //500 minus 120
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
         self.arrowUp(self.vhScrollId).mouseout();
-        self.testUtil.wait(100).then(function () {
-            //500 minus 160
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
-            self.arrowUp(self.vhScrollId).mouseover();
-            self.testUtil.wait(100).then(function () {
-                //500 minus 160
-                assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 300, "igScroll did not scroll properly");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+
+        return self.testUtil.wait(100);
+    }).then(function () {
+        //500 minus 160
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
+        self.arrowUp(self.vhScrollId).mouseover();
+
+        return self.testUtil.wait(100);
+    }).then(function () {
+        //500 minus 160
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 300, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1513,13 +1515,12 @@ QUnit.test(testId_48, function (assert) {
         modifyDOM: true,
         scrollLeft: 100
     });
+    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateSingleClick(this.arrowLeft(this.vhScrollId));
     assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 60, "igScroll did not scroll properly");
-
-    done = assert.async();
     this.testUtil.wait(25).then(function () {
         var scrollbarPixelContentRatio = (60 / (self.elemContent(self.vhScrollId).width() - self.scrollContainer(self.vhScrollId).width())) * 
         (self.hTrack(self.vhScrollId).width() - self.hDrag(self.vhScrollId).width());
@@ -1570,12 +1571,11 @@ QUnit.test(testId_51, function (assert) {
         modifyDOM: true,
         scrollLeft: 180
     });
+    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScrollId), 325);
-
-    done = assert.async();
     this.testUtil.wait(400).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll did not scroll properly");
         self.vhScroll().remove();
@@ -1591,12 +1591,11 @@ QUnit.test(testId_52, function (assert) {
         modifyDOM: true,
         scrollLeft: 180
     });
-
+    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScrollId), 375);
-    done = assert.async();
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll did not scroll properly");
 
@@ -1604,11 +1603,11 @@ QUnit.test(testId_52, function (assert) {
         $(window).mouseup();
         self.arrowLeft(self.vhScrollId).mouseover();
 
-        self.testUtil.wait(50).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll continued scrolling left after hovering left arrow again");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(50);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 60, "igScroll continued scrolling left after hovering left arrow again");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1671,11 +1670,12 @@ QUnit.test(testId_55, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
+
+    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScrollId), 325);
-    done = assert.async();
     this.testUtil.wait(400).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
         self.vhScroll().remove();
@@ -1694,22 +1694,21 @@ QUnit.test(testId_56, function (assert) {
     this.vhScroll().igScroll({
         modifyDOM: true
     });
+    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScrollId), 375);
-    done = assert.async();
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
         self.arrowRight(self.vhScrollId).mouseout();
         $(window).mouseup();
         self.arrowRight(self.vhScrollId).mouseover();
-
-        self.testUtil.wait(50).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll continued scrolling right after hovering right arrow again");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(50);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll continued scrolling right after hovering right arrow again");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1762,18 +1761,18 @@ QUnit.test(testId_58, function (assert) {
         self.testUtil.simulateSingleClick(self.vTrack(self.vhScrollId), { offsetY: 150 });
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), bottomPos - self.scrollContainer(self.vhScrollId).height(), "igScroll did not scroll properly");
 
-        self.testUtil.wait(100).then(function () {
-            var scrollContainerHeight = self.scrollContainer(self.vhScrollId).height(),
-                contentHeight = self.elemContent(self.vhScrollId).height(),
-                vTrackHeight = self.vTrack(self.vhScrollId).height(),
-                vDragHeight = self.vDrag(self.vhScrollId).height(),
-                scrollbarPixelContentRatio = (bottomPos - scrollContainerHeight) / (contentHeight - scrollContainerHeight) * (vTrackHeight - vDragHeight),
-                expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
+        return self.testUtil.wait(100);
+    }).then(function () {
+        var scrollContainerHeight = self.scrollContainer(self.vhScrollId).height(),
+            contentHeight = self.elemContent(self.vhScrollId).height(),
+            vTrackHeight = self.vTrack(self.vhScrollId).height(),
+            vDragHeight = self.vDrag(self.vhScrollId).height(),
+            scrollbarPixelContentRatio = (bottomPos - scrollContainerHeight) / (contentHeight - scrollContainerHeight) * (vTrackHeight - vDragHeight),
+            expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
 
-            assert.equal(expectedPosY.toFixed(3), scrollbarPixelContentRatio.toFixed(3), "igScroll did not scroll properly");
-            self.vhScroll().remove();
-            done();
-        });
+        assert.equal(expectedPosY.toFixed(3), scrollbarPixelContentRatio.toFixed(3), "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1789,9 +1788,9 @@ QUnit.test(testId_59, function (assert) {
         modifyDOM: true,
         scrollHeight: 5000
     });
+    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateClickAndHold(this.vTrack(this.vhScrollId), 325, { offsetY: 250 });
-    done = assert.async();
     this.testUtil.wait(400).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 3 * self.scrollContainer(self.vhScrollId).height(), "igScroll did not scroll properly");
         self.vhScroll().remove();
@@ -1817,12 +1816,12 @@ QUnit.test(testId_60, function (assert) {
     this.testUtil.wait(100).then(function () {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 325, { offsetY: 150 });
-        self.testUtil.wait(400).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
-                "igScroll did not scroll properly");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(400);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
+            "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1843,17 +1842,17 @@ QUnit.test(testId_61, function (assert) {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 400, { offsetY: 350 });
         //Wait a while to move out of the track area
-        self.testUtil.wait(200).then(function () {
-            self.vTrack(self.vhScrollId).mouseout();
-            assert.ok(self.scrollContainer(self.vhScrollId).scrollTop() < 4 * self.scrollContainer(self.vhScrollId).height(), "igScroll should not scroll fully");
+        return self.testUtil.wait(200);
+    }).then(function () {
+        self.vTrack(self.vhScrollId).mouseout();
+        assert.ok(self.scrollContainer(self.vhScrollId).scrollTop() < 4 * self.scrollContainer(self.vhScrollId).height(), "igScroll should not scroll fully");
 
-            //Verify that it donesn't continue to scroll
-            self.testUtil.wait(500).then(function () {
-                assert.notEqual(self.scrollContainer(self.vhScrollId).scrollTop(), 4 * self.scrollContainer(self.vhScrollId).height(), "igScroll scrolled after moving the mouse out of the track while holding");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        //Verify that it donesn't continue to scroll
+        return self.testUtil.wait(500);
+    }).then(function () {
+        assert.notEqual(self.scrollContainer(self.vhScrollId).scrollTop(), 4 * self.scrollContainer(self.vhScrollId).height(), "igScroll scrolled after moving the mouse out of the track while holding");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1876,20 +1875,20 @@ QUnit.test(testId_62, function (assert) {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 400, { offsetY: 150 });
         //Wait 100ms and then move out of the track area before the hold is finished
-        self.testUtil.wait(350).then(function () {
-            self.vTrack(self.vhScrollId).mouseout();
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(),
-                (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
-                "igScroll did not scroll properly");
-            //Verify that it donesn't continue to scroll
-            self.testUtil.wait(200).then(function () {
-                assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(),
-                    (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
-                    "igScroll scrolled after moving the mouse out of the track while holding");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        return self.testUtil.wait(350);
+    }).then(function () {
+        self.vTrack(self.vhScrollId).mouseout();
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(),
+            (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
+            "igScroll did not scroll properly");
+        //Verify that it donesn't continue to scroll
+        return self.testUtil.wait(200);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(),
+            (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height()) - 3 * self.scrollContainer(self.vhScrollId).height(),
+            "igScroll scrolled after moving the mouse out of the track while holding");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -1973,13 +1972,13 @@ QUnit.test(testId_65, function (assert) {
         self.hScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateSingleClick(self.hTrack(self.vhScrollId), { offsetX: 50 });
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 0, "igScroll did not scroll properly");
-        self.testUtil.wait(100).then(function () {
-            //Check horizontal thumb drag position
-            var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScrollId).width();
-            assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScrollId)), 0, "igScroll did not scroll properly");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(100);
+    }).then(function () {
+        //Check horizontal thumb drag position
+        var scrollbarPixelContentRatio = (self.vhScroll().width() - 3 * 15) / self.elemContent(self.vhScrollId).width();
+        assert.equal(self.getTransform3dValueX(self.hDrag(self.vhScrollId)), 0, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2023,13 +2022,13 @@ QUnit.test(testId_67, function (assert) {
     this.testUtil.wait(100).then(function () {
         self.hScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.hTrack(self.vhScrollId), 325, { offsetX: 150 });
-        self.testUtil.wait(400).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(),
-                (self.elemContent(self.vhScrollId).width() - self.scrollContainer(self.vhScrollId).width()) - 3 * self.scrollContainer(self.vhScrollId).width(),
-                "igScroll did not scroll properly");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(400);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(),
+            (self.elemContent(self.vhScrollId).width() - self.scrollContainer(self.vhScrollId).width()) - 3 * self.scrollContainer(self.vhScrollId).width(),
+            "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2050,17 +2049,17 @@ QUnit.test(testId_68, function (assert) {
         self.hScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.hTrack(self.vhScrollId), 400, { offsetX: 300 });
         //Wait a while to move out of the track area
-        self.testUtil.wait(350).then(function () {
-            self.hTrack(self.vhScrollId).mouseout();
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(), "igScroll did not scroll properly");
-            //Verify that it donesn't continue to scroll
-            self.testUtil.wait(200).then(function () {
-                assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(),
-                    "igScroll scrolled after moving the mouse out of the track while holding");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        return self.testUtil.wait(350);
+    }).then(function () {
+        self.hTrack(self.vhScrollId).mouseout();
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(), "igScroll did not scroll properly");
+        //Verify that it donesn't continue to scroll
+        return self.testUtil.wait(200);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(),
+            "igScroll scrolled after moving the mouse out of the track while holding");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2285,7 +2284,7 @@ QUnit.test(testId_81, function (assert) {
 QUnit.test(testId_82, function (assert) {
     this.util.isTouchDevice = function () { return true; };
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    var done, self = this;
+    var done, self = this, lastPosY;
     assert.expect(4);
     this.vhScroll().igScroll({
         modifyDOM: true,
@@ -2298,14 +2297,14 @@ QUnit.test(testId_82, function (assert) {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
 
-        var lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
-        self.testUtil.wait(1000).then(function () {
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
-            assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously vertically");
-            self.util.isTouchDevice = function () { return false; };
-            self.vhScroll().remove();
-            done();
-        });
+        lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
+        return self.testUtil.wait(1000);
+    }).then(function () {
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+        assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously vertically");
+        self.util.isTouchDevice = function () { return false; };
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2342,7 +2341,7 @@ QUnit.test(testId_83, function (assert) {
 QUnit.test(testId_84, function (assert) {
     this.util.isTouchDevice = function () { return true; };
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    var done, self = this;
+    var done, lastPosY, self = this;
     assert.expect(6);
     this.vhScroll().igScroll({
         modifyDOM: true,
@@ -2356,25 +2355,25 @@ QUnit.test(testId_84, function (assert) {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > 13, "igScroll did not scroll properly vertically");
 
-        var lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
-        self.testUtil.wait(500).then(function () {
-            //Check if we have scrolled even more than last time
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
-            assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously");
+        lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
+        return self.testUtil.wait(500);
+    }).then(function () {
+        //Check if we have scrolled even more than last time
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+        assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously");
 
-            //Should interrupt inertia
-            self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScrollId), 50, 50);
+        //Should interrupt inertia
+        self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScrollId), 50, 50);
 
-            lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
-            self.testUtil.wait(500).then(function () {
-                //Check if we have successfully interrupted the inertia
-                assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
-                assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), lastPosY, "igScroll did not scroll properly vertically");
-                self.util.isTouchDevice = function () { return false; };
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
+        return self.testUtil.wait(500);
+    }).then(function () {
+        //Check if we have successfully interrupted the inertia
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), lastPosY, "igScroll did not scroll properly vertically");
+        self.util.isTouchDevice = function () { return false; };
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2565,14 +2564,13 @@ QUnit.test(testId_94, function (assert) {
     this.testUtil.wait(1500).then(function () {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
-
-        self.testUtil.wait(1000).then(function () {
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), -self.getTransform3dValueY(self.vSyncElemContent(self.vSyncScrollId)), "igScroll content and linked element did not sync vertically on touch");
-            self.util.isTouchDevice = function () { return false; };
-            self.vhScroll().remove();
-            self.vSyncScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(1000);
+    }).then(function () {
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), -self.getTransform3dValueY(self.vSyncElemContent(self.vSyncScrollId)), "igScroll content and linked element did not sync vertically on touch");
+        self.util.isTouchDevice = function () { return false; };
+        self.vhScroll().remove();
+        self.vSyncScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2689,20 +2687,20 @@ QUnit.test(testId_98, function (assert) {
         assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
         assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
 
-        self.testUtil.wait(200).then(function () {
-            assert.notOk(self.arrowUp(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
-            assert.notOk(self.arrowDown(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
-            assert.notOk(self.arrowLeft(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
-            assert.notOk(self.arrowRight(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
-            assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
-            assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
-            assert.ok(self.vDrag(self.vhScrollId).hasClass(self.vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
-            assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
-            assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
-            assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
-            self.vhScroll().remove();
-            done();
-        });
+        return self.testUtil.wait(200);
+    }).then(function () {
+        assert.notOk(self.arrowUp(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+        assert.notOk(self.arrowDown(self.vhScrollId).hasClass(self.hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+        assert.notOk(self.arrowLeft(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+        assert.notOk(self.arrowRight(self.vhScrollId).hasClass(self.hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+        assert.notOk(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
+        assert.ok(self.vDrag(self.vhScrollId).hasClass(self.vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+        assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+        assert.notOk(self.hDrag(self.vhScrollId).hasClass(self.hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2732,20 +2730,20 @@ QUnit.test(testId_99, function (assert) {
         assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
         assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
 
-        self.testUtil.wait(200).then(function () {
-            assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-            assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-            assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-            assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-            assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
-            assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
-            assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
-            assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is  big");
+        return self.testUtil.wait(200);
+    }).then(function () {
+        assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+        assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+        assert.equal(self.arrowLeft(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+        assert.equal(self.arrowRight(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
+        assert.equal(self.vDrag(self.vhScrollId).css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
+        assert.equal(self.hDrag(self.vhScrollId).css("height"), "5px", "igScroll horizontal scrollbar thumb drag is  big");
 
-            self.util.isTouchDevice = function () { return false; };
-            self.vhScroll().remove();
-            done();
-        });
+        self.util.isTouchDevice = function () { return false; };
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2818,28 +2816,30 @@ QUnit.test(testId_102, function (assert) {
         scrollWidth: 5000,
         scrollLeft: 500,
     });
+
+    done = assert.async();
+
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowLeft(this.vhScrollId), 500);
-    done = assert.async();
     this.testUtil.wait(325).then(function () {
         //500 minus 120
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 380, "igScroll did not scroll properly");
-
         self.arrowLeft(self.vhScrollId).mouseout();
-        self.testUtil.wait(100).then(function () {
-            //500 minus 160
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 380, "igScroll did not scroll properly");
 
-            self.arrowLeft(self.vhScrollId).mouseover();
-            self.testUtil.wait(100).then(function () {
-                //500 minus 160
-                assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 300, "igScroll did not scroll properly");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        return self.testUtil.wait(100);
+    }).then(function () {
+        //500 minus 160
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 380, "igScroll did not scroll properly");
+        self.arrowLeft(self.vhScrollId).mouseover();
+
+        return self.testUtil.wait(100);
+    }).then(function () {
+        //500 minus 160
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 300, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -2862,16 +2862,16 @@ QUnit.test(testId_103, function (assert) {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
 
         self.arrowRight(self.vhScrollId).mouseout();
-        self.testUtil.wait(100).then(function () {
-            assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
+        return self.testUtil.wait(100);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
 
-            self.arrowRight(self.vhScrollId).mouseover();
-            self.testUtil.wait(100).then(function () {
-                assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
-                self.vhScroll().remove();
-                done();
-            });
-        });
+        self.arrowRight(self.vhScrollId).mouseover();
+        return self.testUtil.wait(100);
+    }).then(function () {
+        assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
+        self.vhScroll().remove();
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -3952,7 +3952,7 @@ QUnit.test(testId_138, function (assert) {
 QUnit.test(testId_140, function (assert) {
     this.util.isTouchDevice = function () { return true; };
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
-    var done, self = this;
+    var done, lastPosY, self = this;
     assert.expect(6);
     this.vhScroll().igScroll({
         modifyDOM: true,
@@ -3966,23 +3966,23 @@ QUnit.test(testId_140, function (assert) {
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
         assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > 13, "igScroll did not scroll properly vertically");
 
-        var lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
-        self.testUtil.wait(500).then(function () {
-            //Check if we have scrolled even more than last time
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
-            assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously");
+        lastPosY = self.vhScroll().data("igScroll")._getContentPositionY();
+        return self.testUtil.wait(500);
+    }).then(function () {
+        //Check if we have scrolled even more than last time
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+        assert.ok(self.vhScroll().data("igScroll")._getContentPositionY() > lastPosY, "igScroll did not scroll continuously");
 
-            //Should interrupt inertia
-            self.vhScroll().igScroll("option", "scrollTop", 20);
-            self.testUtil.wait(500).then(function () {
-                //Check if we have successfully interrupted the inertia
-                assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
-                assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 20, "igScroll did not scroll properly vertically");
-                self.vhScroll().remove();
-                self.util.isTouchDevice = function () { return false; };
-                done();
-            });
-        });
+        //Should interrupt inertia
+        self.vhScroll().igScroll("option", "scrollTop", 20);
+        return self.testUtil.wait(500);
+    }).then(function () {
+        //Check if we have successfully interrupted the inertia
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 20, "igScroll did not scroll properly vertically");
+        self.vhScroll().remove();
+        self.util.isTouchDevice = function () { return false; };
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
@@ -4004,14 +4004,14 @@ QUnit.test(testId_141, function (assert) {
     done = assert.async();
     this.testUtil.wait(500).then(function () {
         self.vhScroll().igScroll("option", "scrollLeft", 20);
-        self.testUtil.wait(500).then(function () {
-            //Check if we have successfully interrupted the inertia
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 20, "igScroll scrolled horizontally by the swipe");
-            assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
-            self.vhScroll().remove();
-            self.util.isTouchDevice = function () { return false; };
-            done();
-        });
+        return self.testUtil.wait(500);
+    }).then(function() {
+        //Check if we have successfully interrupted the inertia
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 20, "igScroll scrolled horizontally by the swipe");
+        assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
+        self.vhScroll().remove();
+        self.util.isTouchDevice = function () { return false; };
+        done();
     }).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
         done();
