@@ -527,7 +527,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igtimepickervaluechanged", function (event, args) { 
+				editor.bind("igtimepickervaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.owner.value());
 					} else {
@@ -542,7 +542,7 @@
 			});
 		},
 		update: function (element, valueAccessor) {
-			var value, current, editor = $(element), parsedDate, val;
+			var value, current, editor = $(element), parsedDate;
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			if (value === null || value === undefined || value === "") {
