@@ -20,9 +20,11 @@
 </head>
 <body><p><b>Note: </b>The Knockout extensions do not work with the ASP.NET MVC Helpers.<br>            This sample demonstrates how to instantiate and bind Ignite UI editor controls to data using KnockoutJS data bindings.</p>
     <script type="text/javascript">
+        var orderDate = new Date(2012,9,24,10,30);
+        var shipDate = new Date(2012,10,12,22,45);
         var viewModel = {
-            orderDate: ko.observable("10/24/2012"),
-            shipDate: ko.observable("11/12/2012"),
+            orderDate: ko.observable(orderDate),
+            shipDate: ko.observable(shipDate),
             dueInDays: ko.observable(7),
             customerName: ko.observable("Peter Sanders"),
             contactPhone: ko.observable("318-555-6879"),
@@ -105,12 +107,34 @@
 
         <div class="editor-row">
             <div class="row">
+                <label class="row-label">Order Time:</label>
+            </div>
+            <div class="row">
+                <!-- time picker -->
+                <div id="orderTimeIG" class="row-control" data-bind="igTimePicker: { value: orderDate, textAlign: 'right', isLimitedToListValues: false }"></div>
+                <input id="orderTime" type="text" class="row-control" data-bind="value: orderDate">
+            </div>
+        </div>
+
+        <div class="editor-row">
+            <div class="row">
                 <label class="row-label">Ship Date</label>
             </div>
             <div class="row">
                 <!-- date picker -->
                 <div id="shipDateIG" class="gosho row-control" data-bind="igDatePicker: { value: shipDate, textAlign: 'right' }"></div>
                 <input id="shipDate" class="date-row-control row-control" data-bind="value: shipDate">
+            </div>
+        </div>
+
+        <div class="editor-row">
+            <div class="row">
+                <label class="row-label">Ship Time:</label>
+            </div>
+            <div class="row">
+                <!-- time picker -->
+                <div id="shipTimeIG" class="row-control" data-bind="igTimePicker: { value: shipDate, textAlign: 'right', isLimitedToListValues: false }"></div>
+                <input id="shipTime" type="text" class="row-control" data-bind="value: shipDate">
             </div>
         </div>
 
