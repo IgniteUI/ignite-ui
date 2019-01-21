@@ -604,7 +604,7 @@ QUnit.test('seeking test - move slider and check currentTime test 13', function(
 		videoElem = $('#player1_video')[0],
 		currentTime = videoElem.currentTime,
 		mousemove = jQuery.Event("mousemove");
-	mousemove.pageX = handle.offset().left + 20;
+	mousemove.pageX = handle.igOffset().left + 20;
 	mousemove.button = 0;
 	handle.trigger('mousedown');
 	handle.trigger(mousemove);
@@ -1312,7 +1312,7 @@ QUnit.test('slider test 42', function(assert) {
 		mousedown = jQuery.Event("mousedown"),
 		mousemove = jQuery.Event("mousemove");
 	mousedown.which = 1;
-	mousemove.pageX = handle.offset().left - 20;
+	mousemove.pageX = handle.igOffset().left - 20;
 	mousemove.button = 0;
 	handle.trigger(mousedown);
 	handle.trigger(mousemove);
@@ -1727,7 +1727,7 @@ QUnit.test('Test entering fullscrren via double click test 52', function (assert
 					$("#player13").igVideoPlayerUnitTesting("pause");
 				checkElementClass(mark, 'ui-igslider-bookmark', assert);
 
-				var bmOffset = mark.offset(),
+				var bmOffset = mark.igOffset(),
 					bmWidth = mark.width(),
 					bmHeight = mark.height(),
 					x = bmOffset.left + bmWidth / 2,

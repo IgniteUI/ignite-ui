@@ -19,7 +19,7 @@ QUnit.module("igCombo rendering unit tests", {
 		var curClass, i,
 			clasesLen = classes ? classes.length : 0,
 			attrLen = attributes ? attributes.length : 0,
-			elOffset = $elem.offset();
+			elOffset = $elem.igOffset();
 
 		this.assert.strictEqual($elem.length, 1, elName + ' was not rendered');
 		this.assert.ok($elem.is(elType), elName + ' should be div element');
@@ -75,9 +75,9 @@ QUnit.module("igCombo rendering unit tests", {
 			border = 1,
 			comboWrapperExpWidth = comboExpWidth = width,
 			comboWrapperExpHeight = comboExpHeight = height,
-			comboWrapperExpPosTop = comboExpPosTop = $parent.offset().top,
-			comboWrapperExpPosLeft = comboExpPosLeft = $parent.offset().left,
-			comboOffset = $comboWrapper.offset(),
+			comboWrapperExpPosTop = comboExpPosTop = $parent.igOffset().top,
+			comboWrapperExpPosLeft = comboExpPosLeft = $parent.igOffset().left,
+			comboOffset = $comboWrapper.igOffset(),
 			ddIconExpWidth = 16,
 			ddIconExpHeight = 16,
 			ddBtnPadding = 5,
@@ -85,7 +85,7 @@ QUnit.module("igCombo rendering unit tests", {
 			ddBtnExpHeight = comboExpHeight - 2 * border,
 			ddBtnExpPosTop = comboWrapperExpPosTop + border,
 			ddBtnExpPosLeft = comboExpWidth + comboOffset.left - border - ddBtnExpWidth,
-			ddIconExpPosTop = (ddBtnExpHeight - ddIconExpHeight) / 2 + $ddBtn.offset().top,
+			ddIconExpPosTop = (ddBtnExpHeight - ddIconExpHeight) / 2 + $ddBtn.igOffset().top,
 			ddIconExpPosLeft = ddBtnExpPosLeft + border + ddBtnPadding,
 			clearIconExpWidth = 16,
 			clearIconExpHeight = 16,
@@ -93,7 +93,7 @@ QUnit.module("igCombo rendering unit tests", {
 			clearBtnExpHeight = comboExpHeight - 2 * border,
 			clearBtnExpPosTop = comboWrapperExpPosTop + border,
 			clearBtnExpPosLeft = ddBtnExpPosLeft - clearBtnExpWidth,
-			clearIconExpPosTop = (clearBtnExpHeight - clearIconExpHeight) / 2 + $clearBtn.offset().top,
+			clearIconExpPosTop = (clearBtnExpHeight - clearIconExpHeight) / 2 + $clearBtn.igOffset().top,
 			clearIconExpPosLeft = clearBtnExpPosLeft,
 			textFieldContExpWidth = comboExpWidth - 2 * border - ddBtnExpWidth,
 			textFieldContExpHeight = comboExpHeight - 2 * border,
