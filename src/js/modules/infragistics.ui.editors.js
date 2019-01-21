@@ -3109,7 +3109,6 @@
 			}
 		},
 		_triggerValueChanged: function (originalValue) {
-			debugger;
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
