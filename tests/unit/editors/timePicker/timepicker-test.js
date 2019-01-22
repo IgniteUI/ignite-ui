@@ -457,6 +457,7 @@ QUnit.test('Dropdown - invalid user input', function (assert) {
 		height: 50,
 		itemsDelta: {hours: 1, minutes: 30},
 		visibleItemsCount : 7,
+		isLimitedToListValues: true,
 		buttonType: "dropdown, clear",
 		timeDisplayFormat: "HH:mm",
 		timeInputFormat: "hh:mm tt"
@@ -530,6 +531,7 @@ QUnit.test('Dropdown - Keyboard navigation', function (assert) {
 		height: 50,
 		itemsDelta: {hours: 1, minutes: 0},
 		visibleItemsCount: 10,
+		isLimitedToListValues: true,
 		timeInputFormat: "HH:mm",
 		buttonType: "dropdown"
 	});
