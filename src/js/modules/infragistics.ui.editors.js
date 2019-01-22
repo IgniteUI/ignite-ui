@@ -12281,7 +12281,7 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
 			```*/
-			isLimitedToListValues: true,
+			isLimitedToListValues: false,
 			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
 				Note: The option does not perform device detection so its behavior is always active if enabled.
 				Note: When drop down is opened the only way to close it will be using the drop down button.
@@ -12677,12 +12677,14 @@
 			initDate.setSeconds(0);
 
 			this.options.listItems = [];
+			this.options.timeItems = [];
 
 			for (var i = startMinutes; i < dropDownItemsCount; i++) {
 				var date = new Date(initDate);
 				date.setMinutes(timeDeltaMinutes * i);
 				if (timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue) {
 					this.options.listItems.push(date);
+					this.options.timeItems.push(date.toTimeString());
 				}
 			}
 		},
@@ -12743,6 +12745,12 @@
 				}
 				this._super(this._parseDateFromMaskedValue(currentVal));
 			}
+		},
+		_valueIndexInList: function (val) { //igTimePicker
+			if (!val && val !== 0) {
+				return -1;
+			}
+			return $.inArray(val.toTimeString(), this.options.timeItems);
 		},
 		_setBlur: function (event) { //igTimePicker
 			this._super(event);
