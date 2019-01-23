@@ -40,6 +40,7 @@ QUnit.module("Knockout unit tests for igDatePicker", {
 		this.invalidTime = ko.observable("");
 	},
 	applyBindings: function () {
+		ko.cleanNode(this.qunitFixture[0]);
 		ko.applyBindings(this.model, this.qunitFixture[0]);
 	},
 	before: function () {
