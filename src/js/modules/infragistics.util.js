@@ -125,6 +125,23 @@
 
 		// The dummy class constructor
 		function Class() {
+			prototype = this;
+			for (name in prop) {
+				if (prop.hasOwnProperty(name)) {
+
+					// Check if we're overwriting an existing function
+					var isFn = prototype[ name ] = doSuper && typeof prop[ name ] === "function" &&
+								typeof _super[ name ] === "function" && fnTest.test(prop[ name ]);
+					if (isFn) {
+						prototype[ name ] = makeFn(name, prop[ name ]);
+					} else if ( name === 'settings' && typeof  prop[ name ] === "object") {
+						prototype[ name ] = $.extend({}, prop[ name ]);
+					} else {
+						prototype[ name ] = prop[ name ];
+					}
+				}
+			}
+
 			// All construction is actually done in the init method
 			if (!initializing && this.init) {
 				if (!isForIntellisense || Class === $.ig.Type) {

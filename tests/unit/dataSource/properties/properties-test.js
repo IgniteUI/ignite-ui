@@ -54,6 +54,16 @@ QUnit.module("igDataSource Properties", {
 			after: function() {
 			}
 		});
+		//V.K issue 1639
+		QUnit.test("Test if dataSource settings are cleared between new instances of the ig.DataSource", function(assert){
+			assert.expect(2);
+			var ds1 =  new $.ig.DataSource();
+			ds1.settings.requestType = "test";
+			var ds2 = new $.ig.DataSource({});
+
+			assert.equal(ds1.settings.requestType, "test", "The ds1 settings are correctly applied.");
+			assert.equal(ds2.settings.requestType, "GET", "The ds settings are succesfully cleared between new instances of the ig.DataSource." );
+		});
 		QUnit.test("igDataSource events test: DataBinding", function(assert) {
 			assert.expect(1);
 			assert.equal(true, this.dataBindingFired, true);
@@ -455,7 +465,7 @@ QUnit.module("igDataSource Properties", {
 		});
 
 		QUnit.test("Test clearLocalSorting/clearLocalFilter API methods", function (assert) {
-			assert.expect(4);
+			assert.expect(5);
 			var done = assert.async(),
 				dsLocalOperations = new $.ig.DataSource({
 					dataSource: [
@@ -500,7 +510,7 @@ QUnit.module("igDataSource Properties", {
 
 				dsLocalOperations.clearLocalFilter();
 
-				//assert.equal(dsLocalOperations.filteredData().length, 1, "Filtered data should contain 1 record.");
+				assert.equal(dsLocalOperations.filteredData().length, 3, "Filtered data should contain 3 records.");
 				
 				dsLocalOperations.filter([{ fieldName: "ID", expr: 2, cond: "lessThan" }], "AND", true);
 
