@@ -549,9 +549,9 @@
 				editor.igTimePicker("value", value);
 			} else {
 				current = editor.igTimePicker("value");
-				current = Date.parse(current);
+				parsedDate = new Date(value);
 				if (current !== parsedDate) {
-					editor.igTimePicker("value", value);
+					editor.igTimePicker("value", parsedDate);
 				}
 			}
 		}
