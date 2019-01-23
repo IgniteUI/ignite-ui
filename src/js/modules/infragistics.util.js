@@ -134,7 +134,7 @@
 								typeof _super[ name ] === "function" && fnTest.test(prop[ name ]);
 					if (isFn) {
 						prototype[ name ] = makeFn(name, prop[ name ]);
-					} else if ( name === 'settings' && typeof  prop[ name ] === "object") {
+					} else if ( name === "settings" && typeof  prop[ name ] === "object") {
 						prototype[ name ] = $.extend({}, prop[ name ]);
 					} else {
 						prototype[ name ] = prop[ name ];
