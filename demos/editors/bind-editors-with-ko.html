@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>KnockoutJS Binding Sample - KnockoutJS Binding with Editors Control - Ignite UI�</title>
 
@@ -18,11 +19,16 @@
     <script type="text/javascript" src="../../node_modules/knockout/build/output/knockout-latest.js"></script>
     <script type="text/javascript" src="../../dist/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
 </head>
-<body><p><b>Note: </b>The Knockout extensions do not work with the ASP.NET MVC Helpers.<br>            This sample demonstrates how to instantiate and bind Ignite UI editor controls to data using KnockoutJS data bindings.</p>
+
+<body>
+    <p><b>Note: </b>The Knockout extensions do not work with the ASP.NET MVC Helpers.<br> This sample demonstrates how
+        to instantiate and bind Ignite UI editor controls to data using KnockoutJS data bindings.</p>
     <script type="text/javascript">
+        var orderDate = new Date(2012, 9, 24, 10, 12);
+        var shipDate = new Date(2012, 10, 12, 22, 45);
         var viewModel = {
-            orderDate: ko.observable("10/24/2012"),
-            shipDate: ko.observable("11/12/2012"),
+            orderDate: ko.observable(orderDate),
+            shipDate: ko.observable(shipDate),
             dueInDays: ko.observable(7),
             customerName: ko.observable("Peter Sanders"),
             contactPhone: ko.observable("318-555-6879"),
@@ -36,19 +42,26 @@
     </script>
 
     <style type="text/css">
-        body { font-family: Arial; }
-        label { display: inline-block; }
+        body {
+            font-family: Arial;
+        }
+
+        label {
+            display: inline-block;
+        }
 
         .order-container {
             position: relative;
             width: 450px;
             margin-left: -225px;
             left: 50%;
-            font-size:1.2em;
+            font-size: 1.2em;
         }
+
         .row {
             margin-top: 5px;
         }
+
         .row-control {
             height: 28px;
             padding: 0;
@@ -57,14 +70,15 @@
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
         }
-        .heading-row
-        {
+
+        .heading-row {
             margin: 20px 0px 10px 0px;
             font-size: large;
         }
-        
-        .heading-label, .row-label, .row-control
-        {
+
+        .heading-label,
+        .row-label,
+        .row-control {
             width: 200px;
             margin: 0px 5px 0px 5px;
         }
@@ -105,12 +119,34 @@
 
         <div class="editor-row">
             <div class="row">
+                <label class="row-label">Order Time:</label>
+            </div>
+            <div class="row">
+                <!-- time picker -->
+                <div id="orderTimeIG" class="row-control" data-bind="igTimePicker: { value: orderDate, textAlign: 'right' }"></div>
+                <input id="orderTime" type="text" class="row-control" data-bind="value: orderDate">
+            </div>
+        </div>
+
+        <div class="editor-row">
+            <div class="row">
                 <label class="row-label">Ship Date</label>
             </div>
             <div class="row">
                 <!-- date picker -->
-                <div id="shipDateIG" class="gosho row-control" data-bind="igDatePicker: { value: shipDate, textAlign: 'right' }"></div>
+                <div id="shipDateIG" class="row-control" data-bind="igDatePicker: { value: shipDate, textAlign: 'right' }"></div>
                 <input id="shipDate" class="date-row-control row-control" data-bind="value: shipDate">
+            </div>
+        </div>
+
+        <div class="editor-row">
+            <div class="row">
+                <label class="row-label">Ship Time:</label>
+            </div>
+            <div class="row">
+                <!-- time picker -->
+                <div id="shipTimeIG" class="row-control" data-bind="igTimePicker: { value: shipDate, textAlign: 'right' }"></div>
+                <input id="shipTime" type="text" class="row-control" data-bind="value: shipDate">
             </div>
         </div>
 
@@ -178,4 +214,5 @@
         </div>
     </div>
 </body>
+
 </html>
