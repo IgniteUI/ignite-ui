@@ -2853,7 +2853,6 @@
 			}
 		},
 		_processValueChanging: function (value) { //TextEditor
-
 			if (value !== this.value()) {
 				if (!(this.value() === null && value === "")) {
 				this._triggerInternalValueChange(value);
