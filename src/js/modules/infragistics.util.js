@@ -1533,17 +1533,17 @@
 	}
 
 	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
-	function remove() {
+	function removePolyfillIE() {
 		return this.parentNode && this.parentNode.removeChild(this);
 	}
 
-	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+ 	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
 	if (!Element.prototype.remove) {
-		Element.prototype.remove = remove;
+		Element.prototype.remove = removePolyfillIE;
 	}
 
-	if (Text && !Text.prototype.remove) {
-		Text.prototype.remove = remove;
+ 	if (Text && !Text.prototype.remove) {
+		Text.prototype.remove = removePolyfillIE;
 	}
 
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
