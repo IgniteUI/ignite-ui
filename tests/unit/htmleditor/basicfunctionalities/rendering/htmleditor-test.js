@@ -710,13 +710,13 @@ QUnit.module("igHTMLEditor unit tests", {
 			$.browser = { "IE": "IE" };
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._commands.insertunorderedlist.browsers = ["IE", "Chrome"];
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
-			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<ul><li><i>Some content</i><br></li></ul>', "Content changed to have unordered list");
+			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<ul><li><i>Some content</i></li></ul>', "Content changed to have unordered list");
 
 			$.browser = undefined;
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("bold", null);
 
-			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<i style=\"font-weight: bold;\">Some content</i><br>', "Content remains the same");
+			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<i style=\"font-weight: bold;\">Some content</i>', "Content remains the same");
 			return $.ig.TestUtil.wait(300);
 		}).then(function () {
 			htmlEditor.igHtmlEditor("setContent", "<div id='div1'>Some content1<div>Some content2<div>Some content3<div><div><div>", "html");
