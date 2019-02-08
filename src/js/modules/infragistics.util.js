@@ -1537,12 +1537,12 @@
 		return this.parentNode && this.parentNode.removeChild(this);
 	}
 
- 	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
 	if (!Element.prototype.remove) {
 		Element.prototype.remove = removePolyfillIE;
 	}
 
- 	if (Text && !Text.prototype.remove) {
+	if (Text && !Text.prototype.remove) {
 		Text.prototype.remove = removePolyfillIE;
 	}
 
