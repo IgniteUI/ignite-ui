@@ -710,7 +710,7 @@ QUnit.module("igHTMLEditor unit tests", {
 			$.browser = { "IE": "IE" };
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._commands.insertunorderedlist.browsers = ["IE", "Chrome"];
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
-			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<ul><li><i>Some content</i><br></li></ul>', "Content changed to have unordered list");
+			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<ul><li><i>Some content</i></li></ul>', "Content changed to have unordered list");
 
 			$.browser = undefined;
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
