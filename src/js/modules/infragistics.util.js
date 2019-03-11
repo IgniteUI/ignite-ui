@@ -1549,6 +1549,20 @@
 		Date.prototype.toISOString = Date.prototype.toJSON;
 	}
 
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	function removePolyfillIE() {
+		return this.parentNode && this.parentNode.removeChild(this);
+	}
+
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	if (!Element.prototype.remove) {
+		Element.prototype.remove = removePolyfillIE;
+	}
+
+	if (Text && !Text.prototype.remove) {
+		Text.prototype.remove = removePolyfillIE;
+	}
+
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
 		var result;
 		provider = provider || $.ig.CultureInfo.prototype.currentCulture(); // TODO: Use the provider below
