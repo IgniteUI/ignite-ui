@@ -737,8 +737,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanagerinternalresized", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanagerinternalresized", "#layout", function (evt, ui) {
                     // reference to igLayoutManager
                     ui.owner;
                 });
@@ -756,8 +756,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanagerinternalresizing", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanagerinternalresizing", "#layout", function (evt, ui) {
                   // reference to igLayoutManager
                   ui.owner;
                 });
@@ -785,8 +785,8 @@
                     }
                 });
 
-                //  Bind
-                $(document).delegate("#layout", "iglayoutmanageritemrendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanageritemrendered", "#layout", function (evt, ui) {
                     //reference to rendered item
                     ui.item;
                     //reference to rendered item index
@@ -818,8 +818,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanageritemrendering", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanageritemrendering", "#layout", function (evt, ui) {
                     //reference to rendered item
                     ui.item;
                     //reference to item index which is goding to be rendered
@@ -843,8 +843,8 @@
                     }
                 });
 
-                // Bind
-                $(document).delegate("#layout", "iglayoutmanagerrendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("iglayoutmanagerrendered", "#layout", function (evt, ui) {
                     //reference to rendered items
                     ui.items;
                 });
@@ -1669,7 +1669,7 @@
                     colHeight = $.isArray(gl.columnHeight) ? null : gl.columnHeight,
                     colsHeightMatrix = $.isArray(gl.columnHeight) ?
                         this._calculateColumnsWidthOrHeightMatrix(gl.columnHeight) : null,
-                    offset = e.offset(),
+                    offset = e.igOffset(),
                     $children = e.children();
 
                 // Create items for each item definition in this.options.items
@@ -1869,7 +1869,7 @@
                     colHeight = $.isArray(gl.columnHeight) ? null : gl.columnHeight,
                     colsHeightMatrix = $.isArray(gl.columnHeight) ?
                         this._calculateColumnsWidthOrHeightMatrix(gl.columnHeight) : null,
-                    offset = e.offset();
+                    offset = e.igOffset();
 
                 for (i = 0; i < rows; i++) {
                     for (j = 0; j < cols; j++) {
@@ -2020,8 +2020,8 @@
                     items = this.options.items,
                     newContainerWidthNoScroll = this._getContainerWidthNoScroll(),
                     newContainerHeightNoScroll = this._getContainerHeightNoScroll(),
-                    leftOffset = gl.useOffset ? e.offset().left : 0,
-                    topOffset = gl.useOffset ? e.offset().top : 0,
+                    leftOffset = gl.useOffset ? e.igOffset().left : 0,
+                    topOffset = gl.useOffset ? e.igOffset().top : 0,
                     colWidth, colHeight, colsWidthMatrix, colsHeightMatrix,
                     col, row, colSpan, rowSpan, newColCount, newDim, helperArray, itemData,
                     colWidthChanged, colHeightChanged, positionsChanged, foundMatch,

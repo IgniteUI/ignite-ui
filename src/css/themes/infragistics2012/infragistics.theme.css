@@ -92,51 +92,51 @@
   border: 1px solid #C62D36 !important;
 }
 .chartMarkerPalette1 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #2380A8 !important;
 }
 .chartMarkerPalette2 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #333333 !important;
 }
 .chartMarkerPalette3 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #808080 !important;
 }
 .chartMarkerPalette4 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #185170 !important;
 }
 .chartMarkerPalette5 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #879922 !important;
 }
 .chartMarkerPalette6 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #FBA609 !important;
 }
 .chartMarkerPalette7 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #FF5559 !important;
 }
 .chartMarkerPalette8 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #8856b1 !important;
 }
 .chartMarkerPalette9 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #e3720c !important;
 }
 .chartMarkerPalette10 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #582c7d !important;
 }
 .chartMarkerPalette11 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #386a23 !important;
 }
 .chartMarkerPalette12 {
-  background-color: #fff!important;
+  background-color: #fff !important;
   border: 1px solid #C62D36 !important;
 }
 .chartPaletteNegative {
@@ -145,51 +145,51 @@
 }
 .doughnutPalette1 {
   background-color: #2380A8 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette2 {
   background-color: #333333 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette3 {
   background-color: #808080 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette4 {
   background-color: #185170 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette5 {
   background-color: #879922 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette6 {
   background-color: #FBA609 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette7 {
   background-color: #FF5559 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette8 {
   background-color: #8856b1 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette9 {
   background-color: #e3720c !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette10 {
   background-color: #582c7d !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette11 {
   background-color: #386a23 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .doughnutPalette12 {
   background-color: #C62D36 !important;
-  border: 1px solid #fff!important;
+  border: 1px solid #fff !important;
 }
 .boxShadow-1 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -311,7 +311,7 @@
   cursor: pointer;
   position: relative;
   margin: 2px 0 0 0;
-  padding: .5em .5em .5em .7em;
+  padding: 0.5em 0.5em 0.5em 0.7em;
   min-height: 0;
   /* support: IE7 */
   font-size: 100%;
@@ -324,7 +324,7 @@
 }
 .ui-accordion .ui-accordion-header .ui-accordion-header-icon {
   position: absolute;
-  left: .5em;
+  left: 0.5em;
   top: 50%;
   margin-top: -8px;
 }
@@ -344,7 +344,7 @@
   position: relative;
   padding: 0;
   line-height: normal;
-  margin-right: .1em;
+  margin-right: 0.1em;
   cursor: pointer;
   vertical-align: middle;
   text-align: center;
@@ -378,20 +378,20 @@ button.ui-button-icons-only {
   line-height: normal;
 }
 .ui-button-text-only .ui-button-text {
-  padding: .4em 1em;
+  padding: 0.4em 1em;
 }
 .ui-button-icon-only .ui-button-text,
 .ui-button-icons-only .ui-button-text {
-  padding: .4em;
+  padding: 0.4em;
   text-indent: -9999999px;
 }
 .ui-button-text-icon-primary .ui-button-text,
 .ui-button-text-icons .ui-button-text {
-  padding: .4em 1em .4em 2.1em;
+  padding: 0.4em 1em 0.4em 2.1em;
 }
 .ui-button-text-icon-secondary .ui-button-text,
 .ui-button-text-icons .ui-button-text {
-  padding: .4em 2.1em .4em 1em;
+  padding: 0.4em 2.1em 0.4em 1em;
 }
 .ui-button-text-icons .ui-button-text {
   padding-left: 2.1em;
@@ -399,7 +399,7 @@ button.ui-button-icons-only {
 }
 /* no icon support for input elements, provide padding by default */
 input.ui-button {
-  padding: .4em 1em;
+  padding: 0.4em 1em;
 }
 /* button icon element(s) */
 .ui-button-icon-only .ui-icon,
@@ -418,12 +418,12 @@ input.ui-button {
 .ui-button-text-icon-primary .ui-button-icon-primary,
 .ui-button-text-icons .ui-button-icon-primary,
 .ui-button-icons-only .ui-button-icon-primary {
-  left: .5em;
+  left: 0.5em;
 }
 .ui-button-text-icon-secondary .ui-button-icon-secondary,
 .ui-button-text-icons .ui-button-icon-secondary,
 .ui-button-icons-only .ui-button-icon-secondary {
-  right: .5em;
+  right: 0.5em;
 }
 /* button sets */
 .ui-buttonset {
@@ -442,12 +442,12 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-datepicker {
   width: 17em;
-  padding: .2em .2em 0;
+  padding: 0.2em 0.2em 0;
   display: none;
 }
 .ui-datepicker .ui-datepicker-header {
   position: relative;
-  padding: .2em 0;
+  padding: 0.2em 0;
 }
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next {
@@ -496,12 +496,12 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-datepicker table {
   width: 100%;
-  font-size: .9em;
+  font-size: 0.9em;
   border-collapse: collapse;
-  margin: 0 0 .4em;
+  margin: 0 0 0.4em;
 }
 .ui-datepicker th {
-  padding: .7em .3em;
+  padding: 0.7em 0.3em;
   text-align: center;
   font-weight: bold;
   border: 0;
@@ -513,23 +513,23 @@ button.ui-button::-moz-focus-inner {
 .ui-datepicker td span,
 .ui-datepicker td a {
   display: block;
-  padding: .2em;
+  padding: 0.2em;
   text-align: right;
   text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   background-image: none;
-  margin: .7em 0 0 0;
-  padding: 0 .2em;
+  margin: 0.7em 0 0 0;
+  padding: 0 0.2em;
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
 }
 .ui-datepicker .ui-datepicker-buttonpane button {
   float: right;
-  margin: .5em .2em .4em;
+  margin: 0.5em 0.2em 0.4em;
   cursor: pointer;
-  padding: .2em .6em .3em .6em;
+  padding: 0.2em 0.6em 0.3em 0.6em;
   width: auto;
   overflow: visible;
 }
@@ -545,7 +545,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-datepicker-multi .ui-datepicker-group table {
   width: 95%;
-  margin: 0 auto .4em;
+  margin: 0 auto 0.4em;
 }
 .ui-datepicker-multi-2 .ui-datepicker-group {
   width: 50%;
@@ -608,16 +608,16 @@ button.ui-button::-moz-focus-inner {
   position: absolute;
   top: 0;
   left: 0;
-  padding: .2em;
+  padding: 0.2em;
   outline: 0;
 }
 .ui-dialog .ui-dialog-titlebar {
-  padding: .4em 1em;
+  padding: 0.4em 1em;
   position: relative;
 }
 .ui-dialog .ui-dialog-title {
   float: left;
-  margin: .1em 0;
+  margin: 0.1em 0;
   white-space: nowrap;
   /* S.D. July 22nd, 2015 Bug #189608 Buttons for minimize/maximize/etc. are being pushed down by the title after minimize. */
   /* width: 90%; */
@@ -626,7 +626,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-dialog .ui-dialog-titlebar-close {
   position: absolute;
-  right: .3em;
+  right: 0.3em;
   top: 50%;
   width: 20px;
   margin: -10px 0 0 0;
@@ -636,7 +636,7 @@ button.ui-button::-moz-focus-inner {
 .ui-dialog .ui-dialog-content {
   position: relative;
   border: 0;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   background: none;
   overflow: auto;
 }
@@ -644,14 +644,14 @@ button.ui-button::-moz-focus-inner {
   text-align: left;
   border-width: 1px 0 0 0;
   background-image: none;
-  margin-top: .5em;
-  padding: .3em 1em .5em .4em;
+  margin-top: 0.5em;
+  padding: 0.3em 1em 0.5em 0.4em;
 }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
   float: right;
 }
 .ui-dialog .ui-dialog-buttonpane button {
-  margin: .5em .4em .5em 0;
+  margin: 0.5em 0.4em 0.5em 0;
   cursor: pointer;
 }
 .ui-dialog .ui-resizable-se {
@@ -680,7 +680,7 @@ button.ui-button::-moz-focus-inner {
 .ui-menu .ui-menu-item {
   position: relative;
   margin: 0;
-  padding: 3px 1em 3px .4em;
+  padding: 3px 1em 3px 0.4em;
   cursor: pointer;
   min-height: 0;
   /* support: IE7 */
@@ -710,7 +710,7 @@ button.ui-button::-moz-focus-inner {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: .2em;
+  left: 0.2em;
   margin: auto 0;
 }
 /* right-aligned */
@@ -881,7 +881,7 @@ button.ui-button::-moz-focus-inner {
 .ui-slider .ui-slider-range {
   position: absolute;
   z-index: 1;
-  font-size: .7em;
+  font-size: 0.7em;
   display: block;
   border: 0;
   background-position: 0 0;
@@ -892,7 +892,7 @@ button.ui-button::-moz-focus-inner {
   filter: inherit;
 }
 .ui-slider-horizontal {
-  height: .8em;
+  height: 0.8em;
 }
 .ui-slider-horizontal .ui-slider-handle {
   top: -0.3em;
@@ -909,7 +909,7 @@ button.ui-button::-moz-focus-inner {
   right: 0;
 }
 .ui-slider-vertical {
-  width: .8em;
+  width: 0.8em;
   height: 100px;
 }
 .ui-slider-vertical .ui-slider-handle {
@@ -943,15 +943,15 @@ button.ui-button::-moz-focus-inner {
   background: none;
   color: inherit;
   padding: 0;
-  margin: .2em 0;
+  margin: 0.2em 0;
   vertical-align: middle;
-  margin-left: .4em;
+  margin-left: 0.4em;
   margin-right: 22px;
 }
 .ui-spinner-button {
   width: 16px;
   height: 50%;
-  font-size: .5em;
+  font-size: 0.5em;
   padding: 0;
   margin: 0;
   text-align: center;
@@ -988,25 +988,25 @@ button.ui-button::-moz-focus-inner {
 .ui-tabs {
   position: relative;
   /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-  padding: .2em;
+  padding: 0.2em;
 }
 .ui-tabs .ui-tabs-nav {
   margin: 0;
-  padding: .2em .2em 0;
+  padding: 0.2em 0.2em 0;
 }
 .ui-tabs .ui-tabs-nav li {
   list-style: none;
   float: left;
   position: relative;
   top: 0;
-  margin: 1px .2em 0 0;
+  margin: 1px 0.2em 0 0;
   border-bottom-width: 0;
   padding: 0;
   white-space: nowrap;
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
   float: left;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   text-decoration: none;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
@@ -1201,14 +1201,14 @@ body .ui-tooltip {
 .ui-priority-secondary,
 .ui-widget-content .ui-priority-secondary,
 .ui-widget-header .ui-priority-secondary {
-  opacity: .7;
+  opacity: 0.7;
   filter: alpha(opacity=70);
   font-weight: normal;
 }
 .ui-state-disabled,
 .ui-widget-content .ui-state-disabled,
 .ui-widget-header .ui-state-disabled {
-  opacity: .35;
+  opacity: 0.35;
   nowhitespace: afterproperty;
   filter: alpha(opacity=35);
   cursor: default!important;
@@ -1826,7 +1826,7 @@ body .ui-tooltip {
 /* Overlays */
 .ui-widget-overlay {
   background: #222;
-  opacity: .70;
+  opacity: 0.7;
   filter: alpha(opacity=70) !important;
   /*!important needed for ie7 and ie8*/
 }
@@ -1834,7 +1834,7 @@ body .ui-tooltip {
   margin: -5px 0 0 -5px;
   padding: 5px;
   background: #000000;
-  opacity: .20;
+  opacity: 0.2;
   filter: alpha(opacity=20);
   border-radius: 5px;
 }
@@ -1854,7 +1854,7 @@ body .ui-tooltip {
 }
 .ui-accordion .ui-accordion-header.ui-state-active {
   background: #2686ae url(images/gradient_2.png) repeat-x;
-  border-color: #2788B1!important;
+  border-color: #2788B1 !important;
   border-bottom: 0 !important;
 }
 /*
@@ -2052,7 +2052,7 @@ body .ui-tooltip {
   text-shadow: 0px 1px 0px rgba(83, 83, 83, 0.8);
 }
 .ui-datepicker th {
-  padding: .3em .3em!important;
+  padding: 0.3em 0.3em !important;
   /*!important needed to override jquery's default padding */
   font-size: 0.9em;
 }
@@ -2159,52 +2159,52 @@ body .ui-tooltip {
 /* igChart */
 /***********/
 .ui-chart-palette-1 {
-  border-color: #2380A8!important;
-  background-color: #44ACD6!important;
+  border-color: #2380A8 !important;
+  background-color: #44ACD6 !important;
 }
 .ui-chart-palette-2 {
-  border-color: #333333!important;
-  background-color: #494949!important;
+  border-color: #333333 !important;
+  background-color: #494949 !important;
 }
 .ui-chart-palette-3 {
-  border-color: #808080!important;
-  background-color: #A8A8A8!important;
+  border-color: #808080 !important;
+  background-color: #A8A8A8 !important;
 }
 .ui-chart-palette-4 {
-  border-color: #185170!important;
-  background-color: #216E99!important;
+  border-color: #185170 !important;
+  background-color: #216E99 !important;
 }
 .ui-chart-palette-5 {
-  border-color: #879922!important;
-  background-color: #A4bA29!important;
+  border-color: #879922 !important;
+  background-color: #A4bA29 !important;
 }
 .ui-chart-palette-6 {
-  border-color: #FBA609!important;
-  background-color: #FDBD48!important;
+  border-color: #FBA609 !important;
+  background-color: #FDBD48 !important;
 }
 .ui-chart-palette-7 {
-  border-color: #FF5559!important;
-  background-color: #FF6A6F!important;
+  border-color: #FF5559 !important;
+  background-color: #FF6A6F !important;
 }
 .ui-chart-palette-8 {
-  border-color: #8856b1!important;
-  background-color: #9E73C1!important;
+  border-color: #8856b1 !important;
+  background-color: #9E73C1 !important;
 }
 .ui-chart-palette-9 {
-  border-color: #e3720c!important;
-  background-color: #F79036!important;
+  border-color: #e3720c !important;
+  background-color: #F79036 !important;
 }
 .ui-chart-palette-10 {
-  border-color: #582c7d!important;
-  background-color: #793BAC!important;
+  border-color: #582c7d !important;
+  background-color: #793BAC !important;
 }
 .ui-chart-palette-11 {
-  border-color: #386a23!important;
-  background-color: #48892D!important;
+  border-color: #386a23 !important;
+  background-color: #48892D !important;
 }
 .ui-chart-palette-12 {
-  border-color: #C62D36!important;
-  background-color: #D3404B!important;
+  border-color: #C62D36 !important;
+  background-color: #D3404B !important;
 }
 .ui-chart-piechart-container,
 .ui-chart-legend-item-text {
@@ -2319,7 +2319,7 @@ body .ui-tooltip {
   border: 0;
 }
 .ui-funnel-slice-selected {
-  opacity: 1.0;
+  opacity: 1;
 }
 .ui-funnel-slice-unselected {
   opacity: 0.49;
@@ -2577,6 +2577,72 @@ body .ui-tooltip {
   font-size: 12px;
   color: #494949;
 }
+.financialChartToolbar .financialChartToolbar {
+  background: #f8f8f8 !important;
+  border-color: #ebebeb !important;
+}
+.financialChartToolbar .financialChartToolbar svg {
+  color: #000000 !important;
+}
+.financialChartIndicatorMenuDropDownButton {
+  color: #000000 !important;
+}
+.financialChartIndicatorMenuDropDownButton:hover .ui-icon-toolbar-dd:before {
+  content: '';
+  border-color: #2686ae transparent transparent transparent !important;
+}
+.financialChartIndicatorMenu {
+  color: #000000 !important;
+  border-right-color: #ebebeb !important;
+}
+.financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton,
+.financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton:after {
+  color: #2686ae !important;
+}
+.financialChartTypePicker {
+  border-left-color: #ebebeb !important;
+}
+.financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
+  color: #2686ae !important;
+}
+.financialChartRangeSelectorLabel input:checked + span {
+  color: #000000 !important;
+  background-color: #ebebeb !important;
+}
+.financialChartListItem:hover {
+  color: #2686ae !important;
+}
+.financialChartListItem:hover .ui-icon {
+  color: #2686ae !important;
+}
+.financialChartIndicatorMenuDropDownMenu,
+.financialChartTypePickerDropDownMenu {
+  background: #FFFFFF !important;
+}
+.financialChartIndicatorMenuDropDownMenu li.checked,
+.financialChartTypePickerDropDownMenu li.checked {
+  color: #2686ae !important;
+}
+.financialChartIndicatorMenuDropDownMenu li.checked:before,
+.financialChartTypePickerDropDownMenu li.checked:before {
+  color: #2686ae !important;
+}
+.financialChartIndicatorMenuDropDownMenu li.checked:hover,
+.financialChartTypePickerDropDownMenu li.checked:hover,
+.financialChartIndicatorMenuDropDownMenu li.checked:hover,
+.financialChartTypePickerDropDownMenu li.checked:hover {
+  color: #1d6684 !important;
+}
+.financialChartTypePickerDropDownButton:hover .ui-icon {
+  color: #2686ae !important;
+}
+.financialChartTypePickerDropDownButton:hover .ui-icon-toolbar-dd:before {
+  content: '';
+  border-color: #2686ae transparent transparent transparent !important;
+}
+.financialChartListItem[data-value='Auto'] {
+  border-bottom: 1px solid #ebebeb !important;
+}
 /***********/
 /* igCombo */
 /***********/
@@ -2643,7 +2709,7 @@ body .ui-tooltip {
   background: #a1a1a1 url(images/gradient_3.png) 0px 0px repeat-x;
   color: #333333;
   font-weight: normal !important;
-  padding: 0.4em 1em!important;
+  padding: 0.4em 1em !important;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   border-color: #979797;
 }
@@ -3020,7 +3086,7 @@ body .ui-tooltip {
 .ui-iggrid > table tr:first-child td,
 .ui-iggrid > table > tbody tr:first-child th,
 .ui-iggrid-responsive-vertical {
-  border-top: 1px solid #DCDCDC!important;
+  border-top: 1px solid #DCDCDC !important;
   /* border-top for tables without headers */
 }
 .ui-iggrid-layout-helper {
@@ -3038,7 +3104,7 @@ body .ui-tooltip {
   border-color: #535353 #535353 #535353 #757575;
 }
 .ui-iggrid > table > tbody tr:first-child th.ui-igpivotgrid-header {
-  border-top-color: #535353!important;
+  border-top-color: #535353 !important;
 }
 .ui-iggrid th a,
 .ui-iggrid th.ui-state-default a,
@@ -3166,12 +3232,12 @@ body .ui-tooltip {
 /* active cells */
 .ui-iggrid td.ui-state-focus,
 .ui-iggrid th.ui-iggrid-rowselector-class.ui-state-focus {
-  border-color: #185170!important;
+  border-color: #185170 !important;
   background: #FFFFFF none;
 }
 .ui-ig-altrecord td.ui-state-focus,
 .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-focus {
-  border-color: #185170!important;
+  border-color: #185170 !important;
   background: #EBEBEB none;
 }
 /* active rows */
@@ -3183,13 +3249,13 @@ body .ui-tooltip {
 }
 .ui-iggrid tr.ui-state-focus td,
 .ui-iggrid tr.ui-state-focus th {
-  border-top-color: #185170!important;
-  border-bottom-color: #185170!important;
+  border-top-color: #185170 !important;
+  border-bottom-color: #185170 !important;
 }
 .ui-iggrid .ui-ig-altrecord.ui-state-focus td,
 .ui-iggrid .ui-ig-altrecord.ui-state-focus th {
-  border-top-color: #185170!important;
-  border-bottom-color: #185170!important;
+  border-top-color: #185170 !important;
+  border-bottom-color: #185170 !important;
 }
 /* selected rows */
 .ui-iggrid td.ui-state-active,
@@ -3243,7 +3309,7 @@ body .ui-tooltip {
   border: 1px solid transparent;
 }
 .ui-igedit.ui-state-default .ui-icon {
-  color: #888888;
+  color: #ffffff;
 }
 .ui-state-hover .ui-icon.ui-iggrid-filterbutton.ui-state-hover,
 .ui-state-hover .ui-icon.ui-iggrid-filterbutton,
@@ -3478,6 +3544,16 @@ ui-iggrid-groupbyarea a,
 .ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom-color: #DCDCDC;
 }
+.ui-iggrid-deletebutton .ui-icon,
+.ui-iggrid-featurechooserbutton .ui-icon,
+.ui-iggrid-indicatorcontainer .ui-icon,
+.ui-datepicker-header .ui-icon {
+  color: #ffffff;
+}
+.ui-state-hover .ui-igcheckbox-container .ui-icon,
+.ui-state-focus .ui-igcheckbox-container .ui-icon {
+  color: #888888;
+}
 /*****************/
 /* Notifier      */
 /****************/
@@ -3495,7 +3571,7 @@ ui-iggrid-groupbyarea a,
   border: 1px solid #2788B1;
 }
 .ui-igpivot-rowheaderlink {
-  color: #3AB4E7!important;
+  color: #3AB4E7 !important;
 }
 /***********************/
 /* Popover             */
@@ -3705,7 +3781,7 @@ ui-iggrid-groupbyarea a,
   background-color: #cccccc;
 }
 .ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
-  font-size: .75em;
+  font-size: 0.75em;
   padding: 0 0 0 3px!important;
 }
 .ui-igscheduler-tabs .ui-icon,
@@ -3726,7 +3802,7 @@ ui-iggrid-groupbyarea a,
   background-color: #D9D9D9;
 }
 .ui-igscheduler-core .ui-igscheduler-allday-event-subject {
-  font-size: .5em;
+  font-size: 0.5em;
   background-color: #D9D9D9;
   color: #000000;
 }
@@ -3768,7 +3844,7 @@ ui-iggrid-groupbyarea a,
   background-color: rgba(255, 255, 255, 0.005);
 }
 .ui-igscheduler-core .ui-igscheduler-dayweek-timeslot-descriptor {
-  font-size: .8em;
+  font-size: 0.8em;
   background-color: transparent;
   color: #000000;
 }
@@ -4296,12 +4372,12 @@ Spreadsheet
 .ui-ie6 .ui-igprogressbar-range {
   filter: none!important;
   background-image: none!important;
-  background-color: #2686AE!important;
+  background-color: #2686AE !important;
 }
 .ui-ie6 .ui-igupload-summaryprogres_summpbar_progress {
   filter: none;
   background-image: none;
-  background-color: #2686AE!important;
+  background-color: #2686AE !important;
 }
 .ui-ie6 .ui-igprogressbar {
   filter: none;
@@ -4315,7 +4391,7 @@ Spreadsheet
 /* Opera fixes */
 .ui-opera .ui-igprogressbar-range {
   background-image: url(images/gradient_2.png) !important;
-  background-color: #2686AE!important;
+  background-color: #2686AE !important;
 }
 /******************
 *  igVideoPlayer  *
@@ -4505,3 +4581,4 @@ Spreadsheet
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#3BB7EB', EndColorStr='#2686AE')";
   border: 1px solid #288BB4;
 }
+/*# sourceMappingURL=infragistics.theme.css.map */

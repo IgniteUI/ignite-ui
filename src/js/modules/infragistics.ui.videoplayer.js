@@ -1953,8 +1953,8 @@
 		events: {
 			/* cancel="true" Occurs when the video has ended.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerended", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerended", ".selector", function (evt, ui) {
 					//return the duration of the video in seconds
 					ui.duration;
 					//return the url of the playing video (the one that is used from the sources array)
@@ -1973,8 +1973,8 @@
 			ended: "ended",
 			/* cancel="true" Occurs when video gets playing.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerplaying", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerplaying", ".selector", function (evt, ui) {
 					//return the ellapsed time
 					ui.currentTime;
 					//return the duration of the video
@@ -1996,8 +1996,8 @@
 			playing: "playing",
 			/* cancel="true" Occurs when the video is paused.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerpaused", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerpaused", ".selector", function (evt, ui) {
 					//return the ellapsed time
 					ui.currentTime;
 					//return the duration of the video
@@ -2019,8 +2019,8 @@
 			paused: "paused",
 			/* cancel="true" Occurs when a chunk of data is buffered.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerbuffering", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerbuffering", ".selector", function (evt, ui) {
 					//return the buffering precentage
 					ui.buffered;
 					//return the url of the playing video (the one that is used from the sources array)
@@ -2039,8 +2039,8 @@
 			buffering: "buffering",
 			/* cancel="true" Occurs when the video has advanced the playback position.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerprogress", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerprogress", ".selector", function (evt, ui) {
 					//return the current time(current position) in the video at which the event was fired
 					ui.currentTime;
 					//return the duration of the video
@@ -2062,8 +2062,8 @@
 			progress: "progress",
 			/* cancel="true" Occurs when igVideoPlayer is waiting for data from the server.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerwaiting", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerwaiting", ".selector", function (evt, ui) {
 					//return the current time(current position) in the video at which the event was fired
 					ui.currentTime;
 					//return the duration of the video
@@ -2085,8 +2085,8 @@
 			waiting: "waiting",
 			/* cancel="true" Occurs when a bookmark is hit.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerbookmarkhit", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerbookmarkhit", ".selector", function (evt, ui) {
 					//return the bookmark object from the bookmarks array
 					ui.bookmark;
 					//return bookmark html element in the DOM
@@ -2108,8 +2108,8 @@
 			bookmarkHit: "bookmarkHit",
 			/* cancel="true" Occurs when a bookmark is clicked.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerbookmarkclick", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerbookmarkclick", ".selector", function (evt, ui) {
 					//return a bookmark object from the bookmarks array
 					ui.bookmark;
 					//return the bookmark html element in the DOM
@@ -2128,8 +2128,8 @@
 			bookmarkClick: "bookmarkClick",
 			/* cancel="true" Occurs when igVideoPlayer enters full screen mode.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerenterfullscreen", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerenterfullscreen", ".selector", function (evt, ui) {
 					//return the url of the playing video (the one that is used from the sources array)
 					ui.source;
 				});
@@ -2145,8 +2145,8 @@
 			enterFullScreen: "enterFullScreen",
 			/* cancel="true" Occurs when igVideoPlayer exits full screen mode.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerexitfullscreen", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerexitfullscreen", ".selector", function (evt, ui) {
 					//return the url of the playing video (the one that is used from the sources array)
 					ui.source;
 				});
@@ -2162,8 +2162,8 @@
 			exitFullScreen: "exitFullScreen",
 			/* cancel="true" Occurs when a related video is clicked.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerrelatedvideoclick", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerrelatedvideoclick", ".selector", function (evt, ui) {
 					//return the relatedVideo object from the relatedVideos array
 					ui.relatedVideo;
 					//return relatedVideo html element in the DOM
@@ -2182,8 +2182,8 @@
 			relatedVideoClick: "relatedVideoClick",
 			/* cancel="true" Defines the name of the player banner visible event. Fired when the banner has been displayed.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerbannervisible", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerbannervisible", ".selector", function (evt, ui) {
 					//return the banner object from the banners array
 					ui.banner;
 					//return the banner html element in the DOM
@@ -2205,8 +2205,8 @@
 			bannerVisible: "bannerVisible",
 			/* cancel="true" Occurs when the banner is hidden.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerbannerhidden", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerbannerhidden", ".selector", function (evt, ui) {
 					//return the banner object from the banners array
 					ui.banner;
 					//return the banner html element in the DOM
@@ -2228,8 +2228,8 @@
 			bannerHidden: "bannerHidden",
 			/* cancel="false" Occurs when the banner is clicked.
 			```
-				//Delegate
-				$(document).delegate(".selector", "igvideoplayerbannerclick", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igvideoplayerbannerclick", ".selector", function (evt, ui) {
 					//return the clicked banner element
 					ui.bannerElement;
 				});
@@ -2412,7 +2412,6 @@
 			var o = this.options,
 				video,
 				css = this.css;
-
 			this._prevReadyState = 0;
 			this._bookmarksRendered = false;
 
@@ -2501,7 +2500,11 @@
 			this._removeVideoProperty(video, "autoplay");
 			this._removeVideoProperty(video, "preload");
 			this._removeVideoProperty(video, "loop");
-			this._removeVideoProperty(video, "poster");
+
+			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
+			if (this._oldPoster !== "") {
+				this._removeVideoProperty(video, "poster");
+			}
 			this._removeVideoProperty(video, "controls");
 			this._removeVideoProperty(video, "src");
 		},
@@ -3161,7 +3164,7 @@
 			}
 
 			var comVideo = $("#" + this._id("_com_video")),
-				videoOffset = this.currentVideo.offset(),
+				videoOffset = this.currentVideo.igOffset(),
 				slider = $("#" + this._id("_ctrls_s")),
 				bookmarks = slider.data("igSlider").bookmarks,
 				bookmarkTitle = $("#" + this._id("_ctrls_s_tooltip"));
@@ -3389,7 +3392,7 @@
 				titleOption,
 				videoElem = video[ 0 ],
 				mainVideo = this._getMainVideo(),
-				videoOffset = video.offset(),
+				videoOffset = video.igOffset(),
 				options = this.options,
 				noCancel = true,
 				fsVideoH = 0;
@@ -3925,6 +3928,7 @@
 					control._refreshDuration();
 				}
 			};
+
 			video.bind(this._videoEvents);
 		},
 
@@ -3980,11 +3984,13 @@
 			$(document).bind(this._documentEvts);
 
 			if (!this.options.browserControls) {
+				// B.P. August 21st, 2018 #1722 currentTime moves as expected
+				// The control used to use mouseover and mouseout, which resulted in flickering.
 				this._controlsEvts = {
-					mouseover: function (event) {
+					mouseenter: function (event) {
 						control._onControlMouseOver(event);
 					},
-					mouseout: function (event) {
+					mouseleave: function (event) {
 						control._onControlMouseOut(event);
 					}
 				};
@@ -4762,11 +4768,11 @@
 			$("#" + this._id("_ctrls_pb")).bind({
 				mousemove: function (e) {
 					if (control.options.showSeekTime && this.offsetWidth > 0) {
-						var relativeX = e.pageX - this.offsetLeft - $(this).offset().left,
+						var relativeX = e.pageX - this.offsetLeft - $(this).igOffset().left,
 							percentLocation = parseInt((relativeX / this.offsetWidth) * 100, 10),
 							duration = videoElem.duration,
 							seconds,
-							controlOffset = control.container.offset();
+							controlOffset = control.container.igOffset();
 						if (!isNaN(duration) && duration !== Infinity && !control._commercialPlaying) {
 							seconds = parseInt((percentLocation * duration) / 100, 10);
 							control._showSeekTimeToolTip(e.pageX - controlOffset.left,

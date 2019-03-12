@@ -1216,8 +1216,8 @@
 		events: {
 			/* cancel="false" Fired before databinding is performed.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreedatabinding", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreedatabinding", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 				});
@@ -1233,8 +1233,8 @@
 			dataBinding: "dataBinding",
 			/* cancel="false" Fired after databinding is finished.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreedatabound", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreedatabound", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the data the tree has been databound to.
@@ -1253,8 +1253,8 @@
 			dataBound: "dataBound",
 			/* cancel="false" Fired before rendering of the tree begins.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreerendering", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreerendering", ".selector", function (evt, ui) {
 					//return reference to the tree.
 					ui.owner;
 					//return reference to the data the tree is going to render.
@@ -1273,8 +1273,8 @@
 			rendering: "rendering",
 			/* cancel="false" Fired after rendering of the tree has finished.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreerendered", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreerendered", ".selector", function (evt, ui) {
 					//return reference to the tree.
 					ui.owner;
 				});
@@ -1290,8 +1290,8 @@
 			rendered: "rendered",
 			/* cancel="true" Fired before a new node is selected.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreeselectionchanging", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreeselectionchanging", ".selector", function (evt, ui) {
 					//return reference to the tree.
 					ui.owner;
 					//return reference to the currently selected nodes.
@@ -1313,8 +1313,8 @@
 			selectionChanging: "selectionChanging",
 			/* cancel="false" Fired after a new node is selected.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreeselectionchanged", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreeselectionchanged", ".selector", function (evt, ui) {
 					//return reference to the tree.
 					ui.owner;
 					//return reference to the selected nodes.
@@ -1336,8 +1336,8 @@
 			selectionChanged: "selectionChanged",
 			/* cancel="true" Fired before the checkbox state of a node is changed.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodecheckstatechanging", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodecheckstatechanging", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object the checkbox of which is being interacted with.
@@ -1365,8 +1365,8 @@
 			nodeCheckstateChanging: "nodeCheckstateChanging",
 			/* cancel="false" Fired after the checkstate of a node is changed.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodecheckstatechanged", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodecheckstatechanged", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object the checkbox of which is being interacted with.
@@ -1394,8 +1394,8 @@
 			nodeCheckstateChanged: "nodeCheckstateChanged",
 			/* cancel="true" Fired before the children of a node are populated in the case of load on demand.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodepopulating", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodepopulating", ".selector", function (evt, ui) {
 					//return areference to the path of the node being populated.
 					ui.path;
 					//return a reference to the jQuery element of the node being populated.
@@ -1420,8 +1420,8 @@
 			nodePopulating: "nodePopulating",
 			/* cancel="false" Fired after the children of a node are populated in the case of load on demand.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodepopulated", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodepopulated", ".selector", function (evt, ui) {
 					//return a reference to the path of the populated node.
 					ui.path;
 					//return a reference to the jQuery element of the populated node.
@@ -1446,8 +1446,8 @@
 			nodePopulated: "nodePopulated",
 			/* cancel="true" Fired before a node is collapsed.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodecollapsing", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodecollapsing", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object about to collapse.
@@ -1466,8 +1466,8 @@
 			nodeCollapsing: "nodeCollapsing",
 			/* cancel="false" Fired after a node is collapsed.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodecollapsed", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodecollapsed", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the collapsed node object.
@@ -1486,8 +1486,8 @@
 			nodeCollapsed: "nodeCollapsed",
 			/* cancel="true" Fired before a node is expanded.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodeexpanding", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodeexpanding", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object about to expand.
@@ -1506,8 +1506,8 @@
 			nodeExpanding: "nodeExpanding",
 			/* cancel="false" Fired after a node is expanded.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodeexpanded", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodeexpanded", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the expanded node object.
@@ -1526,8 +1526,8 @@
 			nodeExpanded: "nodeExpanded",
 			/* cancel="false" Fired on node click.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodeclick", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodeclick", ".selector", function (evt, ui) {
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object being clicked.
@@ -1546,8 +1546,8 @@
 			nodeClick: "nodeClick",
 			/* cancel="false" Fired on node double click.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodedoubleclick", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodedoubleclick", ".selector", function (evt, ui) {
 					//return a reference to the path of the double clicked node.
 					ui.path;
 					//return a reference to the jQuery element of the double clicked node.
@@ -1572,8 +1572,8 @@
 			nodeDoubleClick: "nodeDoubleClick",
 			/* cancel="true" Fired on node drag start.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreedragstart", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreedragstart", ".selector", function (evt, ui) {
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1610,8 +1610,8 @@
 			dragStart: "dragStart",
 			/* cancel="true" Fired on node drag.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreedrag", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreedrag", ".selector", function (evt, ui) {
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1649,8 +1649,8 @@
 			drag: "drag",
 			/* cancel="false" Fired after a drag operation has completed.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreedragstop", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreedragstop", ".selector", function (evt, ui) {
 					ui.offest;
 					//return to get a reference to the original position of the draggable element (the node).
 					ui.orginalPosition
@@ -1674,8 +1674,8 @@
 			dragStop: "dragStop",
 			/* cancel="true" Fired before a node is dropped.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodedropping", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodedropping", ".selector", function (evt, ui) {
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1712,8 +1712,8 @@
 			nodeDropping: "nodeDropping",
 			/* cancel="false" Fired after a node is dropped.
 			```
-				//Bind
-				$(document).delegate(".selector", "igtreenodedropped", function (evt, ui) {
+				//Bind after initialization
+				$(document).on("igtreenodedropped", ".selector", function (evt, ui) {
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -2091,9 +2091,9 @@
 				helper = dragAndDropSettings.helper === "default" ? function (event) {
 					var target = $(event.target).closest("li[data-role=node]"),
 						markup = $(self.options.dragAndDropSettings.invalidMoveToMarkup
-						.replace("{0}", target.children("a").text()));
+						.replace("{0}", target.children("a").html()));
 					markup.addClass(self.css.invalidDropIndicator)
-						.find("span")
+						.find("span").eq(0)
 						.addClass(self.css.invalidMoveMarkupIcon);
 					return markup;
 				} : dragAndDropSettings.helper,
@@ -2183,43 +2183,43 @@
 			if ((target.is("a") || target.closest("a").parent().is("li[data-role=node]")) &&
 				this._validationObject.valid) {
 				if (copy) {
-					markup = $(this.options.dragAndDropSettings.copyToMarkup.replace("{0}", target.text()));
-					markup.find("span").addClass(this.css.copyMarkupIcon);
+					markup = $(this.options.dragAndDropSettings.copyToMarkup.replace("{0}", target.html()));
+					markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 				} else {
-					markup = $(this.options.dragAndDropSettings.moveToMarkup.replace("{0}", target.text()));
-					markup.find("span").addClass(this.css.moveMarkupIcon);
+					markup = $(this.options.dragAndDropSettings.moveToMarkup.replace("{0}", target.html()));
+					markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 				}
 				this._helper = markup.html();
 				ui.helper.removeClass(this.css.invalidDropIndicator)
 					.addClass(this.css.dropIndicator).html(this._helper);
 				this._helperDirty = true;
 			} else if (target.is("li[data-role=node]") && this._validationObject.valid) {
-				targetTop = target.offset().top + target.height() / 2;
+				targetTop = target.igOffset().top + target.height() / 2;
 				dragTop = ui.offset.top + this._const.dragCursorAt.top;
 				if (dragTop > targetTop) {
 					this._validationObject.dropAfter = true;
 					if (copy) {
 						if (target.next("li[data-role=node]").length > 0) {
 							markup = $(this.options.dragAndDropSettings.copyBetweenMarkup.replace("{0}", target
-								.children("a").text()).replace("{1}",
-								target.next("li[data-role=node]").children("a").text()));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+								.children("a").html()).replace("{1}",
+								target.next("li[data-role=node]").children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.copyAfterMarkup.replace(
-										"{0}", target.children("a").text()
+										"{0}", target.children("a").html()
 									));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						}
 					} else {
 						if (target.next("li[data-role=node]").length > 0) {
 							markup = $(this.options.dragAndDropSettings.moveBetweenMarkup.replace("{0}", target
-								.children("a").text()).replace("{1}", target
-								.next("li[data-role=node]").children("a").text()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+								.children("a").html()).replace("{1}", target
+								.next("li[data-role=node]").children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.moveAfterMarkup
-								.replace("{0}", target.children("a").text()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+								.replace("{0}", target.children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						}
 					}
 					$(this._insertLine.html).appendTo(target);
@@ -2232,26 +2232,26 @@
 					if (copy) {
 						if (target.prev("li[data-role=node]").length > 0) {
 							markup = $(this.options.dragAndDropSettings.copyBetweenMarkup
-								.replace("{0}", target.children("a").text())
+								.replace("{0}", target.children("a").html())
 								.replace("{1}", target.prev("li[data-role=node]")
-								.children("a").text()));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+								.children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.copyBeforeMarkup
-								.replace("{0}", target.children("a").text()));
-							markup.find("span").addClass(this.css.copyMarkupIcon);
+								.replace("{0}", target.children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 						}
 					} else {
 						if (target.prev("li[data-role=node]").length > 0) {
 							markup = $(this.options.dragAndDropSettings.moveBetweenMarkup
 								.replace("{0}", target.prev("li[data-role=node]")
-								.children("a").text())
-								.replace("{1}", target.children("a").text()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+								.children("a").html())
+								.replace("{1}", target.children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						} else {
 							markup = $(this.options.dragAndDropSettings.moveBeforeMarkup
-								.replace("{0}", target.children("a").text()));
-							markup.find("span").addClass(this.css.moveMarkupIcon);
+								.replace("{0}", target.children("a").html()));
+							markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 						}
 					}
 					if (target.index() === 0) {
@@ -2270,10 +2270,10 @@
 				// K.D. December 13th, 2013 Bug #159540 Allowing for dragging and dropping into an empty tree.
 				if (copy) {
 					markup = $(this.options.dragAndDropSettings.copyToMarkup.replace("{0}", ""));
-					markup.find("span").addClass(this.css.copyMarkupIcon);
+					markup.find("span").eq(0).addClass(this.css.copyMarkupIcon);
 				} else {
 					markup = $(this.options.dragAndDropSettings.moveToMarkup.replace("{0}", ""));
-					markup.find("span").addClass(this.css.moveMarkupIcon);
+					markup.find("span").eq(0).addClass(this.css.moveMarkupIcon);
 				}
 				this._helper = markup.html();
 				ui.helper.removeClass(this.css.invalidDropIndicator)
@@ -3129,7 +3129,9 @@
 			this._populatingNode.indicator.hide();
 			this._populatingNode.indicator.destroy();
 			this._populatingNode = null;
-			this.toggle(node);
+
+			// K.D. #1725 Expanding a node after render on demand doesn't raise events
+			this.toggle(node, true);
 
 			// K.D. December 15th, 2014 Bug #186563 After expand the load queue should be synced for expanding to node with LOD
 			this._loadRequest();
@@ -3210,7 +3212,9 @@
 				this._initDragAndDrop(ul);
 			}
 			this._triggerRendered();
-			this.toggle(node);
+
+			// K.D. #1725 Expanding a node after render on demand doesn't raise events
+			this.toggle(node, true);
 
 			// K.D. December 15th, 2014 Bug #186563 After expand the load queue should be synced for expanding to node with LOD
 			this._loadRequest();

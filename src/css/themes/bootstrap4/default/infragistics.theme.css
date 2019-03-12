@@ -2332,6 +2332,69 @@ body .ui-tooltip {
   font-size: 12px;
   color: #373a3c; }
 
+.financialChartToolbar .financialChartToolbar {
+  background: rgba(0, 0, 0, 0.12) !important;
+  border-color: #eceeef !important; }
+  .financialChartToolbar .financialChartToolbar .ui-icon {
+    color: #373a3c !important; }
+  .financialChartToolbar .financialChartToolbar .ui-icon-toolbar-dd:before {
+    content: '';
+    border-color: #373a3c transparent transparent transparent !important; }
+  .financialChartToolbar .financialChartToolbar svg {
+    color: #373a3c !important; }
+
+.financialChartIndicatorMenuDropDownButton {
+  color: #373a3c !important; }
+  .financialChartIndicatorMenuDropDownButton:hover .ui-icon-toolbar-dd:before {
+    content: '';
+    border-color: #0275d8 transparent transparent transparent !important; }
+
+.financialChartIndicatorMenu {
+  color: #373a3c !important;
+  border-right-color: #eceeef !important; }
+  .financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton,
+  .financialChartIndicatorMenu:hover .financialChartIndicatorMenuDropDownButton:after {
+    color: #0275d8 !important; }
+
+.financialChartTypePicker {
+  border-left-color: #eceeef !important; }
+
+.financialChartRangeSelectorLabel:hover .financialChartRangeSelectorLabelSpan {
+  color: #0275d8 !important; }
+
+.financialChartRangeSelectorLabel input:checked + span {
+  color: #373a3c !important;
+  background-color: white !important; }
+
+.financialChartListItem:hover {
+  color: #0275d8 !important; }
+  .financialChartListItem:hover .ui-icon {
+    color: #0275d8 !important; }
+
+.financialChartIndicatorMenuDropDownMenu,
+.financialChartTypePickerDropDownMenu {
+  background: #fff !important; }
+
+.financialChartIndicatorMenuDropDownMenu li.checked,
+.financialChartTypePickerDropDownMenu li.checked {
+  color: #0275d8 !important; }
+  .financialChartIndicatorMenuDropDownMenu li.checked:before,
+  .financialChartTypePickerDropDownMenu li.checked:before {
+    color: #0275d8 !important; }
+  .financialChartIndicatorMenuDropDownMenu li.checked:hover, .financialChartIndicatorMenuDropDownMenu li.checked:hover,
+  .financialChartTypePickerDropDownMenu li.checked:hover,
+  .financialChartTypePickerDropDownMenu li.checked:hover {
+    color: #025aa5 !important; }
+
+.financialChartTypePickerDropDownButton:hover .ui-icon {
+  color: #0275d8 !important; }
+.financialChartTypePickerDropDownButton:hover .ui-icon-toolbar-dd:before {
+  content: '';
+  border-color: #0275d8 transparent transparent transparent !important; }
+
+.financialChartListItem[data-value='Auto'] {
+  border-bottom: 1px solid #eceeef !important; }
+
 /***********/
 /* igCombo */
 /***********/
@@ -2827,12 +2890,8 @@ body .ui-tooltip {
 .ui-iggrid-layout-helper {
   border-bottom: 1px solid #eceeef; }
 
-.ui-iggrid-layout-helper > tbody > tr:first-child > td,
-.ui-iggrid-layout-helper > tbody > tr:first-child > td th,
-.ui-iggrid > table > thead + tbody > tr:first-child td,
-.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td {
- /* border-top: 0 none!important;
-border-top removed for tables with virtualization, or headers */ }
+.ui-iggrid-layout-helper > tbody > tr:first-child > td th {
+  border-top: 0 !important; }
 
 .ui-iggrid .ui-widget-header,
 .ui-iggrid th,
@@ -2840,8 +2899,7 @@ border-top removed for tables with virtualization, or headers */ }
   background-color: #fff;
   color: #373a3c;
   border-color: #eceeef;
-  border-right: 1px solid #eceeef;
-  border-left: 0 none; }
+  border-right: 1px solid #eceeef; }
 
 .ui-iggrid th .ui-iggrid-indicatorcontainer .ui-iggrid-summaries-header-icon.ui-icon {
   background: url(images/igGrid/filter-icons-333333.png) no-repeat scroll -416px 0 transparent; }
@@ -2920,9 +2978,6 @@ border-top removed for tables with virtualization, or headers */ }
 .ui-iggrid tbody td {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent; }
-
-.ui-iggrid tbody td.ui-state-hover {
-  border-color: transparent; }
 
 .ui-iggrid-headertable-mrl.ui-iggrid-headertable-mrl-scrollable,
 .ui-iggrid .ui-iggrid-table-mrl tbody td {
@@ -4187,10 +4242,10 @@ Spreadsheet colors
   border-width: 3px; }
 
 .ui-igplayer-bookmark-item-time {
-  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px transparent !important; }
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 1px rgba(0, 0, 0, 0) !important; }
 
 .ui-igslider .ui-igslider-bookmark.ui-state-default {
-  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px transparent !important; }
+  background: url("images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0 -1px rgba(0, 0, 0, 0) !important; }
 
 .ui-igplayer-bookmark-item-time:hover,
 .ui-igplayer-bookmark-active-item .ui-igplayer-bookmark-item-time,

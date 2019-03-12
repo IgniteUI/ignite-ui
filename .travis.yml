@@ -1,9 +1,21 @@
 language: node_js
 node_js:
-- '4'
+- '10.12.0'
+# https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-357626842
+sudo: required
+# dist: trusty
+addons:
+  chrome: stable
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  
 script:
-- grunt verify
-- grunt coveralls
+- npm run cover
+after_success:
+- cat ./coverage/lcov.info | coveralls
 
 before_deploy:
 # clone bower repo
@@ -23,6 +35,7 @@ before_deploy:
 
 # update package versions
 - npm version "${TRAVIS_TAG}" --no-git-tag-version --save
+- if [[ "${TRAVIS_TAG}" == *"beta"* ]]; then export NPM_TAG="next"; else export NPM_TAG="latest"; fi
 # can't skip git commit on bower version call, bower/bower#2019
 # - bower version "${TRAVIS_TAG}" --save
 
@@ -37,10 +50,11 @@ before_deploy:
 
 deploy:
   provider: npm
+  tag: ${NPM_TAG}
   skip_cleanup: true
   email: igniteui@infragistics.com
   api_key:
-    secure: JeRvlOs2mLvzJHqtpVLvEtTVrZZqB4kufmz7+4RNk9XgzcSwXVbp5ZCpdYkZy/2HypJTjyryN98FuqCQo4cnmnkVS2phiejA9b9YVl3uFtCeFxGJJ4st/98UT3f7OrDgqFIh4v+MtzIS76+Erv2YmV8RBtEgoOpfCpuO5aBpi3oJR49iw8TN2dZwfyvUtb2ytMfzyR1q7xsl+Q0qYzwhX00BxVxGY6UkKF1VaRjsfGYrfC4FkpAT4u5mD+KtUMwRHGpMyQm1LYusS99+ugwOloq4gFArham/J/06tLwCXXjW/xhVH4HyQRiMZE649rl7TI/j88vZrGUKw16SQT+K/0+3sw4/BtwwlEjNiD1UIr97lRL7oFTZp/NYBs1PgNHd+xYGLnWA34NuUWlo9pviUz5U/mVaRVPZ5u1oLKHjPYX2VElE/GgqjQuj08il8rtRr7UHP0O5y0MPJ+t1WgWnivc0ISs+AHe+edLPoGAMHiK7vEcsM10y8z7Lfx7BbuWLFfv2eoWeruO1B0kEP+jeuognOBcyjSD/zKMfmosW/L+muhHCCPI1yDSmtutq24HVzktq0ggF9i5g4jTpH9kORBGKOirXuMP1Hf412IvzeQ71LK4A9W9z+mKje+9ygqrPDrbyYaclDiCrwOrAi3IGrpoi5F5ACdY13ObZpKG71RA=
+    secure: TD07I9BJ4QwVrvPRqNMaDRtygpOSS2LtryzPIaIbb9fFA3ftHDkrfNk0EIkZU2E4kaLBuHS6/+ltUEcmomCq3rkZXR00Ervrnc/cQUqPNMSivFi7g8O4F9mCIkEzj6iWmgTRRUwQh10ZPeOGJjkKKnKHkVHu3n6mI7tiiVDKLvgIqQyM9MPOdcR65DVEBqktPt7ifK9lBOiE5EkzX0EqOBZNOVP7jA3mFVzymJXU7dPfrv8Ft2u6Mso/oqjN7EkLPHm0Olr9++Ij0kCndCQfqsoxXmcZMEYSOYi7/IqDno+TCiy8zzFlxhrVbMklT5/dn92BcgxaLXLI1P9gfAfbkNW03i8By9W5OvNcJ/qqY5a+YDEad8BzXb8KLKNQskEpFUwc9nYjX/0LNZXbBzBebhDTda+Em9pnAp07C/uaGMus7FCYqhVz7ZsElp5pisZZkh2BiFmJEWL18PRNEZO57ldBQfbRrLXuJzaKwlY26HORhoYLvh3CBYwkPEUPeY+6LXuvtyoDUToNSMVT6/sD66HKzSCuYQMGfsOY/jRUYhdCCP6KsiKg5qAvhgSPEX+mbn8z5plShUymwllSotWbBD/t112LH56I/A/YFly1yk5gmtYHxYbDepy6PogNcBqqemshqE8sPcPzopekjdAnkvrFqVViaSXlOR/UVYQ0D3w=
   on:
     tags: true
     repo: IgniteUI/ignite-ui

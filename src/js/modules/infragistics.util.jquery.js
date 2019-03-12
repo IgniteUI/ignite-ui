@@ -35,6 +35,9 @@
 	$.ig = (window.jQuery && window.jQuery.ig) || $.ig || { _isNamespace: true };
 	window.$ig = window.$ig || $.ig;
 
+	$.ig.getWindow = function( elem ) {
+		return jQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
+	};
 	$.fn.startsWith = function (str) {
 		return this[ 0 ].innerHTML.indexOf(str) === 0;
 	};
@@ -148,6 +151,88 @@
 			.replace(/'/g, "&#39;")
 			.replace(/"/g, "&#34;") : "";
 	};
+	jQuery.fn.extend( {
+		igOffset: function (options) {
+			// Preserve chaining for setter
+		if ( arguments.length ) {
+			return options === undefined ?
+				this :
+				this.each( function( i ) {
+					jQuery.offset.setOffset( this, options, i );
+				} );
+		}
+
+		var docElem, win, rect, doc,
+			elem = this[ 0 ];
+
+		if ( !elem ) {
+			return;
+		}
+
+		// Support: IE <=11 only
+		// Running getBoundingClientRect on a
+		// disconnected node in IE throws an error
+		if ( !elem.getClientRects().length ) {
+			return { top: 0, left: 0 };
+		}
+
+		rect = elem.getBoundingClientRect();
+
+		// Make sure element is not hidden (display: none)
+		if ( rect.width || rect.height ) {
+			doc = elem.ownerDocument;
+			win = $.ig.getWindow( doc );
+			docElem = doc.documentElement;
+
+			return {
+				top: rect.top + win.pageYOffset - docElem.clientTop,
+				left: rect.left + win.pageXOffset - docElem.clientLeft
+			};
+		}
+
+		// Return zeros for disconnected and hidden elements (gh-2310)
+		return rect;
+		},
+		igPosition: function () {
+			if ( !this[ 0 ] ) {
+				return;
+			}
+
+			var offsetParent, offset,
+				parentOffset = { top: 0, left: 0 },
+				elem = this[ 0 ];
+
+			// Fixed elements are offset from window (parentOffset = {top:0, left: 0},
+			// because it is its only offset parent
+			if ( jQuery.css( elem, "position" ) === "fixed" ) {
+
+				// we assume that getBoundingClientRect is available when computed position is fixed
+				offset = elem.getBoundingClientRect();
+			} else {
+
+				// Get *real* offsetParent
+				offsetParent = this.offsetParent();
+
+				// Get correct offsets
+				offset = this.igOffset();
+				if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
+					parentOffset = offsetParent.igOffset();
+				}
+
+				// Add offsetParent borders
+				parentOffset.top  += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
+				parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
+			}
+
+			// Subtract parent offsets and element margins
+			// note: when an element has margin: auto the offsetLeft and marginLeft
+			// are the same in Safari causing offset.left to incorrectly be 0
+			return {
+				top:  offset.top  - parentOffset.top - jQuery.css( elem, "marginTop", true ),
+				left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
+			};
+		}
+	});
 
 	$.ig.millisecondsToString = function(milliseconds, flag) {
 		var result = parseInt(milliseconds / Math.pow(10, flag.length - 1)).toString();
@@ -650,7 +735,7 @@
 			return "&nbsp;";
 		}
 
-		if (type === "date" || d) {
+		if (type === "date" || type === "time" || d) {
 			return $.ig.formatDates(val, d, format, enableUTCDates, dateOffset, reg);
 		}
 
@@ -835,7 +920,7 @@
             windowBorderWidth = 8,
             zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth;
 
-		xy = xy || e.offset();
+		xy = xy || e.igOffset();
 
 		if (zoom && zoom > 1 && ($.ig.util.isIE10 || $.ig.util.isIE11 || $.ig.util.isEdge)) {
 			if ($.ig.util.isIE) {
@@ -874,14 +959,14 @@
 						documentScrollTop = doc.body.scrollTop;
 					}
 
-					o.left = elem.offset().left;
-					o.top = elem.offset().top;
+					o.left = elem.igOffset().left;
+					o.top = elem.igOffset().top;
 
 					o.left += documentScrollLeft - window.pageXOffset;
 					o.top += documentScrollTop - window.pageYOffset;
 				} else {
-					o.left = elem.offset().left - elem.scrollLeft();
-					o.top = elem.offset().top - elem.scrollTop();
+					o.left = elem.igOffset().left - elem.scrollLeft();
+					o.top = elem.igOffset().top - elem.scrollTop();
 				}
 				break;
 			}
@@ -1044,6 +1129,128 @@
 		scrollHeight = el[ 0 ].offsetHeight - el[ 0 ].clientHeight;
 		el.remove();
 		return scrollHeight;
+	};
+
+	$.ig.util.ajax = function (url, contentType, data, method, requestOptions) {
+		//return $.ig.util.corsRequest(url, contentType, data, method, requestOptions);
+
+		var deferred = $.Deferred();
+		var isCrossDomain;
+		if (requestOptions && "isCrossDomain" in requestOptions) {
+			isCrossDomain = requestOptions.isCrossDomain;
+		} else {
+			isCrossDomain = $.support.cors;
+		}
+
+		var xhrObj = (function (rOptions) {
+			var xhr = new XMLHttpRequest();
+
+			// do not use XDomainRequest for IE8/IE9 if the user has specifed withCredentials in request options
+			// which is interpreted as XmlHttpRequest to be used against trusted domain
+			// since XDomainRequest does not support withCredentials
+			if (isCrossDomain &&
+				!(("withCredentials" in xhr) ||
+				(rOptions && "withCredentials" in rOptions && rOptions.withCredentials)) &&
+					typeof XDomainRequest !== undefined) {
+
+				// handle IE8/IE9 with anonymous authentication
+				xhr = new XDomainRequest();
+
+				// fix for jQuery.ajax() callback is expecting some methods and props are defined
+				// PP 12/05/2012 jQuery 1.4.4 fix
+				xhr.getResponseHeader = function () {
+					return null;
+				};
+
+				// M.S. July 24st, 2013 Bug #145199 Fixed the data loading from XMLA, when using jQuery 2.0.0 in IE9
+				xhr.setRequestHeader = function () {
+					xhr.status = 200;
+				};
+
+				xhr.getAllResponseHeaders = function () {
+					return null;
+				};
+
+				xhr.onload = function () {
+					xhr.readyState = 4;
+					xhr.status = 200;
+					xhr.statusText = "success";
+					xhr.getAllResponseHeaders = function () {
+					};
+					xhr.onreadystatechange();
+				};
+
+				xhr.onerror = function () {
+					xhr.readyState = 4;
+					xhr.status = 0;
+					xhr.statusText = "error";
+					xhr.getAllResponseHeaders = function () {
+					};
+					xhr.onreadystatechange();
+				};
+
+				xhr.ontimeout = function () {
+					xhr.readyState = 4;
+					xhr.status = 0;
+					xhr.statusText = "timeout";
+					xhr.getAllResponseHeaders = function () {
+					};
+					xhr.onreadystatechange();
+				};
+
+				// keep this callback because otherwise XDomainRequest is aborted
+				// it's a bug in XDomainRequest
+				xhr.onprogress = function () {
+				};
+			}
+
+			return xhr;
+		})(requestOptions);
+
+		var xhrFields;
+
+		// when credentials are specified that will work with Chrome/FireFox/IE10
+		if ("withCredentials" in xhrObj &&
+			requestOptions && "withCredentials" in requestOptions &&
+		requestOptions.withCredentials) {
+
+			xhrFields = {
+				withCredentials: true
+			};
+		}
+
+		var beforeSend = function (jqXHR, options) {
+			if (requestOptions) {
+
+				if ($.isFunction(requestOptions.beforeSend)) {
+					jqXHR.setRequestHeader("Content-Type", contentType);
+					requestOptions.beforeSend.call(this, jqXHR, options, requestOptions);
+				}
+			}
+		};
+
+		$.ajax({
+			crossDomain: (isCrossDomain ? true : false),
+			isLocal: false,
+			url: url,
+			contentType: contentType,
+			data: data,
+			type: method,
+			dataType: "text",
+			xhrFields: xhrFields,
+			beforeSend: beforeSend,
+			xhr: function () {
+				return xhrObj;
+			},
+			success: function (responce) {
+				deferred.resolve(responce);
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				deferred.reject(errorThrown);
+			}
+		});
+
+		return deferred.promise();
 	};
 
 	$.ig.util._renderUnsupportedBrowser = function (widget, locale) {

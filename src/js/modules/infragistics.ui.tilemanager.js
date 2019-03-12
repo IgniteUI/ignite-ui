@@ -717,8 +717,8 @@
         events: {
             /* cancel="true" Fired before databinding is performed
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagerdatabinding", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagerdatabinding", ".selector", function (evt, ui) {
                     // reference to igTileManager
                     ui.owner;
                     //reference to dataSource
@@ -737,8 +737,8 @@
             dataBinding: "dataBinding",
             /* cancel="false" Fired after databinding is complete
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagerdatabound", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagerdatabound", ".selector", function (evt, ui) {
                     // reference to igTilemanager
                     ui.owner;
                     // reference to the data the tile has been databound to.
@@ -759,8 +759,8 @@
             dataBound: "dataBound",
             /* cancel="true" Fired before rendering of the tile manager begins.
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagerrendering", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagerrendering", ".selector", function (evt, ui) {
                     //reference to the tile.
                     ui.owner;
                     //reference to tiles
@@ -782,8 +782,8 @@
             rendering: "rendering",
             /* cancel="false" Fired after rendering of the tile manager completes.
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagerrendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagerrendered", ".selector", function (evt, ui) {
                     // reference to the tile.
                     ui.owner;
                 });
@@ -799,8 +799,8 @@
             rendered: "rendered",
             /* cancel="true" Event fired before a tile is rendered in the container
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagertilerendering", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagertilerendering", ".selector", function (evt, ui) {
                     //reference to the widget
                     ui.owner;
                     //reference to the tile.
@@ -819,8 +819,8 @@
             tileRendering: "tileRendering",
             /* cancel="false" Event Fired after a tile has been rendered in the container
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagertilerendered", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagertilerendered", ".selector", function (evt, ui) {
                     //reference to the widget.
                     ui.owner;
                     //reference to the tile
@@ -839,8 +839,8 @@
             tileRendered: "tileRendered",
             /* cancel="true" Fired before a tile in the tile manager is maximized.
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagertilemaximizing", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagertilemaximizing", ".selector", function (evt, ui) {
                     //reference to the widget.
                     ui.owner;
                     //reference to the tile that is going to be maximized.
@@ -862,8 +862,8 @@
             tileMaximizing: "tileMaximizing",
             /* cancel="false" Fired after a tile in the tile manager is maximized.
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagertilemaximized", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagertilemaximized", ".selector", function (evt, ui) {
                     //reference to the widget.
                     ui.owner;
                     //reference to the maximized tile
@@ -882,8 +882,8 @@
             tileMaximized: "tileMaximized",
             /* cancel="true" Fired before a tile in the tile manager is minimized.
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagertileminimizing", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagertileminimizing", ".selector", function (evt, ui) {
                     //reference to the widget.
                     ui.owner;
                     //reference to the tile that is going to be minimized
@@ -905,8 +905,8 @@
             tileMinimizing: "tileMinimizing",
             /* cancel="false" Fired after a tile in the tile manager is minimized.
             ```
-                //Bind
-                $(document).delegate(".selector", "igtilemanagertileminimized", function (evt, ui) {
+                //Bind after initialization
+                $(document).on("igtilemanagertileminimized", ".selector", function (evt, ui) {
                     //reference to the widget
                     ui.owner;
                     //reference to the tile that was minimized
@@ -1972,7 +1972,7 @@
                 rightPanelTilesWidth = this._getRightPanelTilesWidth(),
                 rightPanelTilesHeight = this._getRightPanelTilesHeight(),
                 leftAdjustment = containerSwap ?
-                    _opt.$rightPanel.position().left - gl.marginLeft : 0,
+                    _opt.$rightPanel.igPosition().left - gl.marginLeft : 0,
                 topAdjustment = containerSwap ?
                     _opt.$rightPanel.scrollTop() : 0,
                 rightPanelCols = opt.rightPanelCols;
@@ -2095,7 +2095,7 @@
                 $tileToMinimize = _opt.$maximizedTile,
                 tileToMinimizeIndex = parseInt($tileToMinimize.attr("data-index"), 10),
                 tileToMaximizeIndex = parseInt($tileToMaximize.attr("data-index"), 10),
-                rightPanelOffset = _opt.$rightPanel.position().left - gl.marginLeft;
+                rightPanelOffset = _opt.$rightPanel.igPosition().left - gl.marginLeft;
 
             this._toMinimizedState($tileToMinimize);
 
@@ -2301,7 +2301,7 @@
             var _opt = this._options,
                 $tileToMinimize = _opt.$maximizedTile,
                 gl = _opt.gridLayout,
-                rightTilesOffset = _opt.$rightPanel.position().left,
+                rightTilesOffset = _opt.$rightPanel.igPosition().left,
                 tileToMinimizeIndex;
 
             if (!$tileToMinimize) {
