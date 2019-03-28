@@ -493,6 +493,7 @@
 				var $comboCont = $("#bigDataContainer");
 				$comboCont.append($("<span id='comboBigData'></span>").attr("data-bind", "igCombo: { dataSource: bigData, textKey: 'name', valueKey: 'id', width: '200', mode: 'dropdown', enableClearButton: false }"));
 				var start = (new Date()).getTime();
+				ko.cleanNode($comboCont[0]);
 				ko.applyBindings(globalViewModel, $comboCont[0]);
 				var end = (new Date()).getTime();
 				ok(end - start < 5000, "Binding big data is taking too much time");
