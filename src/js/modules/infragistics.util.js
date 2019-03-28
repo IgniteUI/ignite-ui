@@ -258,7 +258,7 @@
 
 	$.ig.util.changeGlobalRegional = function (regional) {
 		$.ig.util.regional = regional;
-		$.ig.regional.defaults = $.extend($.ig._regional,
+		$.ig.regional.defaults = $.extend({}, $.ig._regional,
 			(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
 			$.ig.util.widgetStack[ i ].changeGlobalRegional();
@@ -913,7 +913,9 @@
 				}
 			}
 
-			values.sort(function (a, b) { return this[ a ] - this[ b ]; });
+			//P.M. May 2nd, 2018 Caching 'this' so that it does not point to the Window and sorting is done on the values array
+			var _self = this;
+			values.sort(function (a, b) { return _self[ a ] - _self[ b ]; });
 
 			for (var i = values.length - 1; i >= 0; i--) {
 				value = this[ values[ i ] ];
@@ -1410,7 +1412,9 @@
 				value.getMilliseconds();
 		},
 		getDate: function (value) {
-			return new Date(value - $.ig.Date.prototype.getTimeOfDay(value));
+			var newDate = new Date(+value);
+			newDate.setHours(0, 0, 0, 0);
+			return newDate;
 		},
 		_requiresISOCorrection: !isNaN(+new Date("2000-01-01T00:00:00")) &&
 			new Date("2000-01-01T00:00:00").getHours() !== 0,
@@ -1456,6 +1460,18 @@
 		toLongTimeString: function (value) {
 			return value.toLocaleString($.ig.CultureInfo.prototype.currentCulture().name(),
 				this._longTimeFormatOptions).replace(/\u200E/g, "");
+		},
+		resetDateToCurrentDate: function (value) {
+			/* Replace the date part of a date object with current date */
+			if (!value || !value.getTime) {
+				return value;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), value.getHours(), value.getMinutes(),
+				value.getSeconds(), value.getMilliseconds());
+			return result;
 		},
 		$type: new $.ig.Type("Date", $.ig.Object.$type)
 	}, true);
@@ -1516,6 +1532,20 @@
 		Date.prototype.toISOString = Date.prototype.toJSON;
 	}
 
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	function removePolyfillIE() {
+		return this.parentNode && this.parentNode.removeChild(this);
+	}
+
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	if (!Element.prototype.remove) {
+		Element.prototype.remove = removePolyfillIE;
+	}
+
+	if (Text && !Text.prototype.remove) {
+		Text.prototype.remove = removePolyfillIE;
+	}
+
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
 		var result;
 		provider = provider || $.ig.CultureInfo.prototype.currentCulture(); // TODO: Use the provider below
@@ -1539,6 +1569,38 @@
 			}
 
 			return result;
+		};
+		var tt = function(value, provider, abbr) {
+			var h = value.getHours();
+			var designator = h <= 11 ? "AM" : "PM";
+
+			if (window.Intl) {
+				var d = new Date(+value);
+				d.setHours(h, 0, 0, 0);
+				var culture = provider.name();
+
+				// account for left-to-right marker ie/edge inject
+				var r = /\d|[\u200E]/g;
+				var withAmPm = new Intl.DateTimeFormat(culture, { hour12: true, hour:"2-digit" })
+					.format(d).replace(r, "");
+				var nonAmPm = new Intl.DateTimeFormat(culture, { hour12: false, hour:"2-digit" })
+					.format(d).replace(r, "");
+				var pattern = $.ig.util.escapeRegExp(nonAmPm);
+				var amPm = withAmPm.replace(new RegExp("\\s*" + pattern + "\\s*"), "").trim();
+
+				// ie & edge will not include the culture's am/pm designator
+				// and they instead include some erroneous extra characters.
+				// if that's the case then we'll just use the previous fallback
+				if (amPm.replace(/[.,:;]/g, "").length > 0) {
+					designator = amPm;
+				}
+			}
+
+			if (abbr && designator) {
+				designator = designator.charAt(0);
+			}
+
+			return designator;
 		};
 		var applyFormat = function(options) {
 			if (window.Intl) {
@@ -1583,7 +1645,7 @@
 				return result;
 
 			case "%t":
-				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
+				return tt(value, provider, true);
 			case "d":  // short date
 				return value.toLocaleDateString();
 			case "D": // long date
@@ -1625,7 +1687,7 @@
 		var hours = value.getHours();
 		result = result.replace("HH", hours.toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("hh", (hours % 12 == 0 ? 12 : hours % 12).toString().replace(/^(\d)$/, "0$1"));
-		result = result.replace("tt", hours < 12 ? "AM" : "PM");
+		result = result.replace("tt", tt(value, provider, false));
 		result = result.replace("mm", value.getMinutes().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ss", value.getSeconds().toString().replace(/^(\d)$/, "0$1"));
 		result = result.replace("ff", Math.round(value.getMilliseconds() / 10).toString().replace(/^(\d)$/, "0$1")); // hundredths of a second
@@ -1684,6 +1746,10 @@
 			type = $.ig.Boolean.prototype.$type;
 		} else if (obj instanceof Date) {
 			type = $.ig.Date.prototype.$type;
+		} else if (obj instanceof Array) {
+			if (targetType == $.ig.IEnumerable.prototype.$type) {
+				return obj;
+			}
 		}
 
 		if ($.ig.util.canAssignSimple(targetType, type)) {
@@ -4086,6 +4152,10 @@
 			}
 			delete obj.elem;
 			delete obj.chart;
+			if (obj.__resizeProxy) {
+				window.removeEventListener("resize", obj.__resizeProxy, false);
+				delete obj.__resizeProxy;
+			}
 			elem[ 0 ]._w_s_f = null; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 			return;
 		}
@@ -4958,8 +5028,15 @@
 	};
 
 	$.ig.util.arrayCopy1 = function (source, sourceIndex, dest, destIndex, count) {
-		for (var i = 0; i < count; i++) {
-			dest[ i + destIndex ] = source[ i + sourceIndex ];
+		var i;
+		if (source === dest && sourceIndex < destIndex) {
+			for (i = count - 1; i >= 0; i--) {
+				dest[ i + destIndex ] = source[ i + sourceIndex ];
+			}
+		} else {
+			for (i = 0; i < count; i++) {
+				dest[ i + destIndex ] = source[ i + sourceIndex ];
+			}
 		}
 	};
 
@@ -5233,7 +5310,7 @@
 				r += "|";
 			}
 
-			r += separators[ i ];
+			r += $.ig.util.escapeRegExp(separators[ i ]);
 		}
 
 		var result = value.split(new RegExp(r));
@@ -5933,7 +6010,7 @@
 						if (next === "<" || next === "\"") {
 
 							if (netPattern[ i + 2 ] === "=" || netPattern[ i + 2 ] === "!") {
-								throw new Error("Lookbehind assertions are not supported in JavaScript: " + pattern);
+								throw new Error("Lookbehind assertions are not supported in JavaScript.");
 							}
 
 							i++;
@@ -6102,7 +6179,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 1,
 			"applyFormat": true
@@ -6112,7 +6189,7 @@
 				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
-			"dataType": [ "number", "date", "numeric" ],
+			"dataType": [ "number", "date", "time", "numeric" ],
 			"active": true,
 			"order": 2,
 			"applyFormat": true

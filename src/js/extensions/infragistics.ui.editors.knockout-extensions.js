@@ -512,14 +512,57 @@
 			}
 		}
 	};
+	ko.bindingHandlers.igTimePicker = {
+		init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+			var editor = $(element), options;
+			options = $.extend({}, valueAccessor());
+			options.value = ko.utils.unwrapObservable(options.value);
+			editor.igTimePicker(options);
+			if (options.updateMode === undefined) {
+				options.updateMode = "onchange";
+			} else if (options.updateMode.toLowerCase() !== "onchange" &&
+				options.updateMode.toLowerCase() !== "immediate") {
+				throw new Error($.ig.Editor.locale.updateModeUnsupportedValue);
+			}
+			if (options.updateMode.toLowerCase() === "onchange") {
 
+				//In that case the model is updated on valueChanged event
+				editor.bind("igtimepickervaluechanged", function (event, args) {
+					if (ko.isObservable(valueAccessor().value)) {
+						valueAccessor().value(args.owner.value());
+					} else {
+						updatePropertyValue(element, "igTimePicker", viewModel, args.owner.value());
+					}
+				});
+			} else {
+				throw new Error($.ig.Editor.locale.updateModeNotSupported);
+			}
+			ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+				$(element).igTimePicker("destroy");
+			});
+		},
+		update: function (element, valueAccessor) {
+			var value, current, editor = $(element), parsedDate;
+			value = ko.utils.unwrapObservable(valueAccessor().value);
+
+			if (value === null || value === undefined || value === "") {
+				editor.igTimePicker("value", value);
+			} else {
+				current = editor.igTimePicker("value");
+				parsedDate = new Date(value);
+				if (current !== parsedDate) {
+					editor.igTimePicker("value", parsedDate);
+				}
+			}
+		}
+	};
 	ko.bindingHandlers.igEditorDisable = {
         update: function (element, valueAccessor) {
             var disabled = valueAccessor(),
                 editor = $(element),
 				widgetNames = [ "igTextEditor", "igNumericEditor",
 					"igPercentEditor", "igCurrencyEditor", "igMaskEditor",
-					"igDateEditor", "igDatePicker", "igCheckboxEditor" ],
+					"igDateEditor", "igDatePicker", "igCheckboxEditor", "igTimePicker" ],
 				name;
 
 			// N.A. September 5th, 2017 #1168 Unwrap observable and using it instead of checking if it is such.

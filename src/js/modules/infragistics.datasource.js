@@ -4232,8 +4232,9 @@
 			return result;
 		},
 		_getFieldTypeFromSchema: function (fieldName) {
-			var field = this._fields[ fieldName ], type, ds = this.dataSource();
+			var field, type, ds = this.dataSource();
 
+			field = this._fields ? this._fields[ fieldName ] : null;
 			if (!field) {
 				return undefined;
 			}
@@ -4339,7 +4340,7 @@
 				if (schema && schema.fields) {
 					for (i = 0; i < schema.fields.length; i++) {
 						/* transform date */
-						if (schema.fields[ i ].type === "date" &&
+						if ((schema.fields[ i ].type === "date" || schema.fields[ i ].type === "time") &&
 							offsets[ schema.fields[ i ].name ] !== undefined) {
 							key = schema.fields[ i ].name;
 							for (func in offsets[ key ]) {
@@ -4920,7 +4921,8 @@
 			}
 		},
 		_encodeSortingParams: function (params) {
-			var s = this.settings.sorting, tmpdir, i, sfields, url, urlQS, hlayout = null;
+			var s = this.settings.sorting, tmpdir, i, sfields, fieldName, field, url, urlQS,
+				key, hlayout = null;
 			if (s.type === "remote") {
 				/* handle sorting params */
 				if (s.exprString) {
@@ -4935,18 +4937,27 @@
 					if (sfields[ i ].layout) {
 						hlayout = sfields[ i ].layout;
 					}
+					fieldName = sfields[ i ].fieldName;
 					/* it's a sorting request */
 					if (s.sortUrlAscValueKey !== null && s.sortUrlDescValueKey !== null && s.sortUrlKey !== null) {
 						tmpdir = (sfields[ i ].dir && sfields[ i ].dir.toLowerCase().startsWith("asc")) ?
 							s.sortUrlAscValueKey : s.sortUrlDescValueKey;
-						params.sortingParams[ s.sortUrlKey + "(" + sfields[ i ].fieldName + ")" ] = tmpdir;
+
+						field = this._getSchemaField(fieldName);
+						if (field && field.type) {
+							key = s.sortUrlKey + "(" + fieldName + ":" + field.type + ")";
+						} else {
+							key = s.sortUrlKey + "(" + fieldName + ")";
+						}
+
+						params.sortingParams[ key ] = tmpdir;
 					} else {
 						// OData style encoding (the default)
 						if (params.sortingParams.$orderby === undefined) {
 							params.sortingParams.$orderby = "";
 						}
 						params.sortingParams.$orderby = params.sortingParams.$orderby +
-							sfields[ i ].fieldName + " " + sfields[ i ].dir.toLowerCase();
+							fieldName + " " + sfields[ i ].dir.toLowerCase();
 						if (i < sfields.length - 1) {
 							params.sortingParams.$orderby += ",";
 						}
@@ -4977,7 +4988,7 @@
 		},
 		_encodeFilteringParams: function (params) {
 			var f = this.settings.filtering, ffields, i, key, exprNotReq, cond,
-				d, day, month, year, curDate, expr, fieldName, logic = "and";
+				d, day, month, year, curDate, expr, fieldName, field, logic = "and";
 			if (f.type === "remote") {
 				// handle filtering params
 				if (f.exprString) {
@@ -4989,6 +5000,7 @@
 					// is a filtering request
 					this._isFilteringReq = true;
 					cond = ffields[ i ].cond;
+					fieldName = ffields[ i ].fieldName;
 
 					exprNotReq = this._isFilteringExprNotReq(cond);
 					/* if the filtering url key is explicitly defined, use this encoding:
@@ -4996,7 +5008,13 @@
 					otherwise we use OData as the default */
 					if (f.filterExprUrlKey !== null) {
 						// check if a filtering condition for the column already exists
-						key = f.filterExprUrlKey + "(" + ffields[ i ].fieldName + ")";
+						field = this._getSchemaField(fieldName);
+						if (field && field.type) {
+							key = f.filterExprUrlKey + "(" + fieldName + ":" + field.type + ")";
+						} else {
+							key = f.filterExprUrlKey + "(" + fieldName + ")";
+						}
+
 						if ($.type(ffields[ i ].expr) === "date") {
 							d = Date.UTC(
 								ffields[ i ].expr.getFullYear(),
@@ -5027,7 +5045,6 @@
 							params.filteringParams.$filter = "";
 						}
 						/* M.H. 5 Sep 2013 Fix for bug #150774: OData Request ignores Case Sensitivity */
-						fieldName = ffields[ i ].fieldName;
 						expr = ffields[ i ].expr;
 						if ($.type(expr) === "string") {
 							if (!f.caseSensitive) {
@@ -5247,7 +5264,7 @@
 		},
 		_encodeSummariesParams: function (params) {
 			var i, j, s = this.settings.summaries, cs = s.columnSettings,
-				methodsStr,
+				methodsStr, field, key, fieldName,
 				csLength = cs.length;
 
 			if (s.type === "remote") {
@@ -5268,11 +5285,31 @@
 						}
 					}
 					if (methodsStr !== "") {
-						params.summariesParams[ s.summaryExprUrlKey + "(" + cs[ i ].columnKey + ")" ] =
-							methodsStr.slice(0, -1);
+						fieldName = cs[ i ].columnKey;
+						field = this._getSchemaField(fieldName);
+						if (field && field.type) {
+							key = s.summaryExprUrlKey + "(" + fieldName + ":" + field.type + ")";
+						} else {
+							key = s.summaryExprUrlKey + "(" + fieldName + ")";
+						}
+
+						params.summariesParams[ key ] = methodsStr.slice(0, -1);
 					}
 				}
 			}
+		},
+		_getSchemaField: function (fieldName) {
+			var i, field;
+			if (this.settings.schema) {
+				for (i = 0; i < this.settings.schema.fields.length; i++) {
+					field = this.settings.schema.fields[ i ];
+					if (field.name === fieldName) {
+						return field;
+					}
+				}
+			}
+
+			return null;
 		},
 		filteredData: function () {
 			/*returns filtered data if local filtering is applied. If filtering is not applied OR type of filtering is remote returns undefined.
@@ -5445,7 +5482,7 @@
 			var arr = [], i, dataLen = data.length, reverse, sortF,
 				caseSensitive =  this.settings.sorting.caseSensitive,
 				compareValFunc = f.compareFunc, rec, val, formatter = f.formatter,
-				self = this, mapper = this._hasMapper;
+				self = this, mapper = this._hasMapper, fieldType;
 			if (f.dir !== undefined && f.dir !== null) {
 				reverse = f.dir.toLowerCase().startsWith("desc");
 				reverse = reverse ? -1 : 1;
@@ -5453,6 +5490,8 @@
 				reverse = direction.toLowerCase().startsWith("desc");
 				reverse = reverse ? -1 : 1;
 			}
+
+			fieldType = this._getFieldTypeFromSchema(f.fieldName);
 			for (i = 0; i < dataLen; i++) {
 				rec = data[ i ];
 				val = mapper ? self.getCellValue(f.fieldName, rec) : rec[ f.fieldName ];
@@ -5470,7 +5509,7 @@
 						val !== null && val.toLowerCase) {
 					val = val.toLowerCase();
 				} else if (val && val.getTime) {
-					val = val.getTime();
+					val = this._getDateAsNumber(val, fieldType);
 				}
 				arr.push({
 					val: val,
@@ -5500,6 +5539,31 @@
 				data[ i ] = arr[ i ].rec;
 			}
 			return data;
+		},
+		_getDateAsNumber: function (dateObject, fieldType) {
+			/* Get the date as number. If fieldType is 'time' set the date portion
+			   of the input value to the current date and then convert it to number. */
+			if (!dateObject || !dateObject.getTime) {
+				return dateObject;
+			}
+
+			if (fieldType === "time") {
+				return $.ig.Date.prototype.getTimeOfDay(dateObject);
+			}
+
+			return dateObject.getTime();
+		},
+		_resetDateObjectToCurrentDate: function (dateObject) {
+			/* Replace the date part of a date object with current date */
+			if (!dateObject || !dateObject.getTime) {
+				return dateObject;
+			}
+
+			var currentDate = new Date();
+			var result = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+				currentDate.getDate(), dateObject.getHours(), dateObject.getMinutes(),
+				dateObject.getSeconds(), dateObject.getMilliseconds());
+			return result;
 		},
 		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
 			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,
@@ -5854,7 +5918,7 @@
 			return this.filter([{ filterAllFields: true, expr: expression, fields: fields }]);
 		},
 		/* this is used when sorting data
-		type can be "string", "number", "boolean", "date".
+		type can be "string", "number", "boolean", "date", "time".
 		Other values are ignored and default conversion is used
 		_convertf: function (val, type) {
 		not necessary for now. default type conversion happens in the data source directly
@@ -6311,6 +6375,15 @@
 				}
 				return this._findDateMatch(val, expr, cond, preciseDateFormat);
 			}
+			if (t === "time") {
+				// parse expr
+				try {
+					expr = this._parser.toTime(expr);
+				} catch (ignore) {
+					/* log error that expr could not be converted */
+				}
+				return this._findTimeMatch(val, expr, cond);
+			}
 			if (($.type(val) === "boolean" && (t === undefined || t === null)) ||
 				(t === "boolean" || t === "bool")) {
 				return this._findBoolMatch(val, cond);
@@ -6587,6 +6660,57 @@
 			if (cond === "notNull") {
 				return val !== null;
 				/* A.T. 14 Feb 2011 - fix for bug #64465 */
+			}
+			if (cond === "empty") {
+				return (val === null || val === undefined);
+			}
+			if (cond === "notEmpty") {
+				return (val !== null && val !== undefined);
+			}
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
+		},
+		_findTimeMatch: function (val, expr, cond) {
+			var mins1, hs1, mins2, hs2, eq, valDateParts, exprDateParts;
+			/* 1. get the "expr" date and divide it into year, month, quarter, day, week, etc. */
+			if (val !== null && val !== undefined) {
+				valDateParts = this._getDateParts(val);
+				hs1 = valDateParts.hours;
+				mins1 = valDateParts.mins;
+			}
+			if ($.type(expr) === "date") {
+				exprDateParts = this._getDateParts(expr);
+				hs2 = exprDateParts.hours;
+				mins2 = exprDateParts.mins;
+			} else {
+				expr = new Date(expr);
+			}
+
+			eq = mins1 === mins2 && hs1 === hs2;
+			/* now compare */
+			if (cond === "at") {
+				return eq;
+			}
+			if (cond === "notAt") {
+				return !eq;
+			}
+			if (cond === "before") {
+				return hs1 < hs2 || (hs1 === hs2 && mins1 < mins2);
+			}
+			if (cond === "after") {
+				return hs1 > hs2 || (hs1 === hs2 && mins1 > mins2);
+			}
+			if (cond === "atBefore") {
+				return hs1 < hs2 || (hs1 === hs2 && mins1 <= mins2);
+			}
+			if (cond === "atAfter") {
+				return hs1 > hs2 || (hs1 === hs2 && mins1 >= mins2);
+			}
+			if (cond === "null") {
+				return val === null;
+			}
+			if (cond === "notNull") {
+				return val !== null;
 			}
 			if (cond === "empty") {
 				return (val === null || val === undefined);
@@ -7134,7 +7258,8 @@
 				mapper = this._hasMapper,
 				cmpFunc = gbExpr.compareFunc,
 				key = gbExpr.fieldName,
-				len = data.length;
+				len = data.length,
+				fieldType = this._getFieldTypeFromSchema(gbExpr.fieldName);
 			gbRes = gbRes || {};
 			if (!cmpFunc) {
 				cmpFunc = function (val1, val2) {
@@ -7146,11 +7271,18 @@
 			groupval = mapper ?
 							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
-			gbRes.val = groupval;
+			if (groupval && groupval.getTime) {
+				gbRes.val = this._getDateAsNumber(groupval, fieldType);
+			} else {
+				gbRes.val = groupval;
+			}
 			startInd++;
 			for (i = startInd; i < len; i++) {
 				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
-				cmpRes = cmpFunc(currval, groupval,
+				if (currval && currval.getTime) {
+					currval = this._getDateAsNumber(currval, fieldType);
+				}
+				cmpRes = cmpFunc(currval, gbRes.val,
 									{
 										fieldName: key,
 										recordX: data[ startInd ],
@@ -7250,7 +7382,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt,
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec,
 			groupRecordKey = this.settings.groupby.groupRecordKey,
 			summaries = this.settings.groupby.summaries;
 			gbInd = gbInd || 0;
@@ -7276,10 +7408,6 @@
 				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
-				if (dt === undefined) {
-					dt = !!(gbRec.val && gbRec.val.getTime);
-				}
-				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
 				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
 				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
 				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
@@ -7307,15 +7435,19 @@
 			var res = gbRec.recs, gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
 				groupValue: gbRec.val, id: gbRec.id }, fieldValues, i, j,
 				sumFunc, summaries = this.settings.groupby.summaries,
-				sumFuncName, summary, summaryVal, fieldType, getValuesPerField;
+				sumFuncName, summary, summaryVal, fieldType, getValuesPerField,
+				self = this;
 			gbSummaryRec[ this.settings.groupby.groupSummaryRecordKey ] = true;
-			getValuesPerField = function (arr, fieldName) {
+			getValuesPerField = function (arr, fieldName, fieldType) {
+				if (fieldType === "time") {
+					return arr.map(function (val) {return self._resetDateObjectToCurrentDate(val[ fieldName ]);});
+				}
 				return arr.map(function (val) {return val[ fieldName ];});
 			};
 			for (i = 0; i < summaries.length; i++) {
 				summary = summaries[ i ];
-				fieldValues = getValuesPerField(res, summary.field);
-				fieldType = this._fields ? this._getFieldTypeFromSchema(summary.field) : null;
+				fieldType = this._getFieldTypeFromSchema(summary.field);
+				fieldValues = getValuesPerField(res, summary.field, fieldType);
 				for (j = 0; j < summary.summaryFunctions.length; j++) {
 					sumFunc = summary.summaryFunctions[ j ];
 					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
@@ -7446,6 +7578,21 @@
 			}
 			return d;
 		},
+		toTime: function (obj) {
+			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
+				return null;
+			}
+			if ($.type(obj) === "date") {
+				return obj;
+			}
+			var d = new Date();
+			var result = new Date(d.toDateString() + " " + obj);
+			if (isNaN(result)) {
+				return null;
+			}
+
+			return result;
+		},
 		toNumber: function (obj) {
 			return (this.isNullOrUndefined(obj) || $.type(obj) === "function") ? null : obj * this.num();
 		},
@@ -7491,11 +7638,12 @@
 				{
 					/* type="string" Name of the field*/
 					name: undefined,
-					/* type="string|number|bool|date|object" data type of the field
+					/* type="string|number|bool|date|time|object" data type of the field
 						string
 						number
 						bool
 						date
+						time
 						object
 					*/
 					type: undefined,
@@ -7568,7 +7716,7 @@
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
-			if (t === "date") {
+			if (t === "date" || t === "time") {
 				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
@@ -7590,7 +7738,7 @@
 				} else {
 					results[ i ][ field.name ] = this._convertType(t, val);
 					/* assign offset in the record if applicable */
-					if (t === "date") {
+					if (t === "date" || t === "time") {
 						this._addOffset(results[ i ], field.name, i);
 					}
 				}
@@ -7654,7 +7802,7 @@
 					} else {
 						nDataRow[ fName ] = this._convertType(t, tmp);
 						/* assign offset in the record if applicable */
-						if (t === "date") {
+						if (t === "date" || t === "time") {
 							this._addOffset(nDataRow, fName, index);
 						}
 					}

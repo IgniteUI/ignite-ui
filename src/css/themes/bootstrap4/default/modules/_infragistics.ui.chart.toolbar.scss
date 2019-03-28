@@ -1,0 +1,103 @@
+.financialChartToolbar .financialChartToolbar {
+  background: $chart-toolbar-background !important;
+  border-color: $chart-toolbar-border-color !important;
+
+  .ui-icon {
+    color:$body-color!important;
+  }
+
+  .ui-icon-toolbar-dd:before {
+    content: '';
+    border-color: $body-color transparent transparent transparent!important;
+  }
+
+  svg {
+    color: $body-color!important;
+  }
+}
+
+.financialChartIndicatorMenuDropDownButton {
+  color: $body-color!important;
+
+  &:hover {
+    .ui-icon-toolbar-dd:before {
+      content: '';
+      border-color: $brand-primary transparent transparent transparent!important;
+    }
+  }
+}
+
+.financialChartIndicatorMenu {
+  color: $body-color!important;
+  border-right-color:$chart-toolbar-border-color !important;
+
+  &:hover {
+    .financialChartIndicatorMenuDropDownButton,
+    .financialChartIndicatorMenuDropDownButton:after {
+      color: $brand-primary!important;
+    }
+  }
+}
+
+.financialChartTypePicker {
+  border-left-color: $chart-toolbar-border-color !important;
+}
+
+// Range selector section
+
+.financialChartRangeSelectorLabel {
+  &:hover {
+    .financialChartRangeSelectorLabelSpan {
+      color: $brand-primary!important;
+    }
+  }
+}
+
+.financialChartRangeSelectorLabel input:checked + span {
+  color: $range-selector-active-color!important;
+  background-color: $range-selector-active-background!important;
+}
+
+.financialChartListItem {
+  &:hover {
+    color: $brand-primary!important;
+
+    .ui-icon {
+      color: $brand-primary!important;
+    }
+  }
+}
+
+.financialChartIndicatorMenuDropDownMenu,
+.financialChartTypePickerDropDownMenu {
+  background: $body-bg!important;
+}
+
+.financialChartIndicatorMenuDropDownMenu li.checked,
+.financialChartTypePickerDropDownMenu li.checked {
+  color: $brand-primary!important;
+  &:before {
+    color: $brand-primary!important;
+  }
+
+  &:hover,
+  &:hover {
+    color: darken($brand-primary, 10%) !important;
+  }
+}
+
+.financialChartTypePickerDropDownButton {
+  &:hover {
+    .ui-icon {
+      color: $brand-primary!important;
+    }
+    .ui-icon-toolbar-dd:before {
+      content: '';
+      border-color: $brand-primary transparent transparent transparent!important;
+    }
+  }
+}
+
+.financialChartListItem[data-value='Auto'] {
+  border-bottom: 1px solid $chart-toolbar-border-color!important;
+}

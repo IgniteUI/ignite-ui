@@ -55,11 +55,35 @@
         }
     }
 
+    function applyListItemsBindings(valueAccessor) {
+        var combo = valueAccessor().combo,
+            $comboList = combo.igCombo("listItems"),
+            options = valueAccessor().options,
+            dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
+            i;
+         if (dataSource) {
+            for (i = 0; i < dataSource.length; i++) {
+                if (ko.isObservable(dataSource[ i ])) {
+                    ko.applyBindingsToNode($comboList[ i ], {
+                        igComboItem: {
+                            combo: combo,
+                            value: dataSource[ i ],
+                            index: i,
+                            options: options
+                        }
+                    }, dataSource[ i ]);
+                }
+            }
+        }
+    }
+
     ko.bindingHandlers.igCombo = {
         init: function (element, valueAccessor) {
             var combo = $(element),
                 options = valueAccessor(),
-                selectedItems = valueAccessor().selectedItems;
+                dataSource = options.dataSource,
+                selectedItems = options.selectedItems,
+                dataSourceSubscription;
 
             combo.igCombo(options);
 
@@ -70,14 +94,23 @@
                 }
             }, selectedItems);
 
+            if (ko.isObservable(dataSource)) {
+                dataSourceSubscription = dataSource.subscribe(function() {
+                    combo.data("dataSourceUpdating", true);
+                });
+                ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                    dataSourceSubscription.dispose();
+                });
+            }
+
             ko.applyBindingsToNode(combo.data("igCombo")._options.$dropDownCont[ 0 ], {
                 igComboList: {
 					combo: combo,
                     options: options,
-                    dataSource: valueAccessor().dataSource,
+                    dataSource: dataSource,
                     selectedItems: selectedItems
                 }
-            }, valueAccessor().dataSource);
+            }, dataSource);
 
             ko.utils.registerEventHandler(element, "igcomboselectionchanged", function (evt, ui) {
                 var valueKey = ui.owner.options.valueKey,
@@ -148,58 +181,26 @@
 
     ko.bindingHandlers.igComboList = {
         init: function (element, valueAccessor) {
-            var combo = valueAccessor().combo,
-				$comboList = combo.igCombo("listItems"),
-				options = valueAccessor().options,
-                dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
-				i;
-
-            if (dataSource) {
-                for (i = 0; i < dataSource.length; i++) {
-                    if (ko.isObservable(dataSource[ i ])) {
-                        ko.applyBindingsToNode($comboList[ i ], {
-                            igComboItem: {
-                                combo: combo,
-                                value: dataSource[ i ],
-                                index: i,
-                                options: options
-                            }
-                        }, dataSource[ i ]);
-                    }
-                }
-            }
+            applyListItemsBindings(valueAccessor);
         },
         update: function (element, valueAccessor) {
             var combo = $(valueAccessor().combo),
-				listLength = combo.igCombo("listItems").length,
 				options = valueAccessor().options,
                 dataSource = ko.utils.unwrapObservable(valueAccessor().dataSource),
                 dropDownScroller = combo.data("igCombo")._options.$dropDownScrollCont,
-                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0,
-				$comboList, i;
+                lastScrollTop = dropDownScroller ? dropDownScroller.scrollTop() : 0;
 
-            if (listLength !== dataSource.length) {
+            // N.A. 12 December 2018 Bug #1840 (https://github.com/IgniteUI/ignite-ui/issues/1840)
+            // We want to dataBind only when dataSource() observable is invoked.
+            if (!!combo.data("dataSourceUpdating")) {
+                combo.removeData("dataSourceUpdating");
                 combo.one("igcomboitemsrendered", function () {
-                    $comboList = combo.igCombo("listItems");
-                    if (dataSource) {
-                        for (i = 0; i < dataSource.length; i++) {
-                            if (ko.isObservable(dataSource[ i ])) {
-                                ko.applyBindingsToNode($comboList[ i ], {
-                                    igComboItem: {
-                                        combo: combo,
-                                        value: dataSource[ i ],
-                                        index: i,
-                                        options: options
-                                    }
-                                }, dataSource[ i ]);
-                            }
-                        }
-                    }
+                    applyListItemsBindings(valueAccessor);
                     selectItems(combo, valueAccessor().selectedItems);
                 });
 
                 // N.A. 8/5/2015 Bug #203826 Set datasource, cause in this case it is analyzed and then the dataBind happens.
-                // This necessay in cases, when data source was empty array initially.
+                // This necessary in cases, when data source was empty array initially.
                 combo.igCombo("option", "dataSource", dataSource);
 
                 // R.K. 29th November, 2017 #246482: When an item is selected from the bottom of the list,

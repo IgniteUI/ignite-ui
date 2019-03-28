@@ -66,7 +66,7 @@
 				if (pos.left < 0) {
 					pos.left = 0;
 				}
-				var p = $(this).css(pos).offset();
+				var p = $(this).css(pos).igOffset();
 				if (p.top < 0) {
 					$(this).css("top", pos.top - p.top);
 				}
@@ -736,7 +736,10 @@
 				});
 
 				//Get
-				var url = $(".selector").igDialog("option", "http://infragistics.com");
+				var url = $(".selector").igDialog("option", "temporaryUrl");
+
+				//Set
+				$(".selector").igDialog("option", "temporaryUrl", "http://infragistics.com");
 				```
 			*/
 			temporaryUrl: null,
@@ -779,7 +782,7 @@
 				Return false in order to cancel the action.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogstatechanging", function (evt, ui) {
+				$(document).on("igdialogstatechanging", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -822,7 +825,7 @@
 			/* cancel="false" Event which is raised after the state of the dialog was changed.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogstatechanged", function (evt, ui) {
+				$(document).on("igdialogstatechanged", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -865,7 +868,7 @@
 			/* cancel="false" Event which is raised after the end of the animation when the dialog was closed or opened.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialoganimationended", function (evt, ui) {
+				$(document).on("igdialoganimationended", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -894,7 +897,7 @@
 			/* cancel="false" Event which is raised when the dialog or its content gets focus.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogfocus", function (evt, ui) {
+				$(document).on("igdialogfocus", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 
@@ -913,7 +916,7 @@
 			/* cancel="false" Event which is raised when the dialog or its content loses focus.
 				```
 				//Bind after initialization
-				$(document).delegate(".selector", "igdialogblur", function (evt, ui) {
+				$(document).on("igdialogblur", ".selector", function (evt, ui) {
 					//return the triggered browser event
 					evt;
 

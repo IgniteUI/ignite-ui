@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet" />
+    <style>
+        h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .group-fields {
+            margin-bottom: 10px;
+        }
+
+            .group-fields label {
+                display: block;
+                line-height: 18px;
+            }
+
+            .group-fields .inline {
+                display: inline;
+            }
+
+            .group-fields .ui-igcheckbox-normal {
+                margin-right: 5px;
+                float: left;
+            }
+
+            .group-fields .ui-igedit-container {
+                width: 230px;
+            }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .group-fields.clearfix > div {
+            float: left;
+            margin-right: 10px;
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+</head>
+<body>
+    <h3>$$(day_organizer)</h3>
+    <div class="group-fields">
+        <label for="alarm">$$(alarm_time)</label>
+        <input id="alarm" />
+    </div>
+    <div class="group-fields">
+        <label for="lunchBreak">$$(lunch_break)</label>
+        <input id="lunchBreak" />
+    </div>
+    <div class="group-fields">
+        <label for="meetingTime">$$(meeting)</label>
+        <label for="meetingTime">$$(meeting_workingHours)</label>
+        <input id="meetingTime" />
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#alarm").igTimePicker({
+                timeInputFormat: "hh:mm tt",
+                isLimitedToListValues: false,
+                spinDelta: { hours: 1, minutes: 1 },
+                buttonType: "spin",
+                value: "07:15 AM"
+            });
+
+            $("#lunchBreak").igTimePicker({
+                timeInputFormat: "HH:mm",
+                timeDisplayFormat: "HH:mm",
+                minValue: "11:00",
+                maxValue: "14:00",
+                itemsDelta: { hours: 1, minutes: 0 },
+                value: "12:00"
+            });
+
+            $("#meetingTime").igTimePicker({
+                timeInputFormat: "HH:mm",
+                timeDisplayFormat: "HH:mm",
+                minValue: "09:00",
+                maxValue: "18:00",
+                buttonType: "clear",
+                value: "14:00"
+            });
+        });
+    </script>
+</body>
+</html>

@@ -20,7 +20,7 @@
 
         // AMD. Register as an anonymous module.
         define([
-            "infragistics.ui.widget"
+            "./infragistics.ui.widget"
         ], factory);
     } else {
 
@@ -142,8 +142,8 @@
             events: {
                 /* cancel="false" Fired after collapsing is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplittercollapsed", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplittercollapsed", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                         // index of the collapsed panel
@@ -162,8 +162,8 @@
                 collapsed: "collapsed",
                 /* cancel="false" Fired after expanding is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterexpanded", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterexpanded", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                         // index of the expanded panel
@@ -182,8 +182,8 @@
                 expanded: "expanded",
                 /* cancel="false" Fired before split bar move is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterresizestarted", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterresizestarted", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -199,8 +199,8 @@
                 resizeStarted: "resizeStarted",
                 /* cancel="true" Fired while split bar move is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterresizing", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterresizing", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -216,8 +216,8 @@
                 resizing: "resizing",
                 /* cancel="false" Fired after split bar move is performed
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterresizeended", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterresizeended", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -233,8 +233,8 @@
                 resizeEnded: "resizeEnded",
                 /* cancel="true" Fired before the panels are refreshed because of browser"s resizing.
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterlayoutrefreshing", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterlayoutrefreshing", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -249,8 +249,8 @@
                 layoutRefreshing: "layoutRefreshing",
                 /* cancel="false" fired after the panels are refreshed because of browser"s resizing.
                 ```
-                    // Bind
-                    $(document).delegate(".selector", "igsplitterlayoutrefreshed", function (evt, ui) {
+                    //Bind after initialization
+                    $(document).on("igsplitterlayoutrefreshed", ".selector", function (evt, ui) {
                         // reference to igSplitter
                         ui.owner;
                     });
@@ -786,6 +786,10 @@
             _removeClasses: function () {
                 var buttonLeft, buttonRight, resizeHandler, i;
                 this.element.removeClass(this.css.splitter);
+                if (!this._splitter && !this._panels) {
+                    // D.P. If _create threw this._splitter is not assigned
+                    return;
+                }
                 for (i = 0; i < this._panels.length; i++) {
                     this._panels[ i ].removeClass(this.css[ this.options.orientation + "Panel" ]);
                 }
@@ -850,6 +854,10 @@
                 }
             },
             _removeEventHandlers: function () {
+                if (!this._splitter) {
+                    // D.P. If _create threw this._splitter is not assigned
+                    return;
+                }
                 $(this._splitter.bar).unbind(this._getEvent("focus"),
                     this._getEvent("blur"),
                     this._getEvent("keydown"));
@@ -1284,7 +1292,7 @@
                         resizeArea.right.options.max),
                     pos;
                 if (max > min) {
-                    pos = resizeArea.right.offset()[ this._getOrientation("dimention") ] -
+                    pos = resizeArea.right.igOffset()[ this._getOrientation("dimention") ] -
                         this._capturedElement[ this._getOrientation("outerSize") ](true);
                     return {
                         position: pos,
@@ -1309,7 +1317,7 @@
                 };
             },
             _getNextBoundary: function (panel) {
-                var size = panel.right.offset()[ this._getOrientation("dimention") ] +
+                var size = panel.right.igOffset()[ this._getOrientation("dimention") ] +
                     panel.right[ this._getOrientation("size") ]() -
                     this._capturedElement[ this._getOrientation("outerSize") ](true);
                 if (panel.right.options.collapsed) {
@@ -1318,7 +1326,7 @@
                 return size;
             },
             _getPreviousBoundary: function (panel) {
-                var size = panel.left.offset()[ this._getOrientation("dimention") ];
+                var size = panel.left.igOffset()[ this._getOrientation("dimention") ];
                 if (panel.left.options.collapsed) {
                     size += panel.left.options.min;
                 }
@@ -1621,6 +1629,18 @@
                     $panel2, size, sizeKey);
                 this._resolveRoundingConflictsOfCloneObject($panel2, $panel2.css(minSize),
                     $panel1, size, sizeKey);
+
+                if (this.options.orientation === "vertical") {
+                    // RMK: Dec 18, 2018 - git#1696
+                    // splitter orientation is vertical - panels are side by side
+                    // if there are left and/or right borders on the panels - subtract them from the panels' width
+                    var panel1BorderWidth =
+                        this._panels[ 0 ][ 0 ].offsetWidth - this._panels[ 0 ][ 0 ].clientWidth;
+                    $panel1[ sizeKey ]($panel1[ sizeKey ]() - panel1BorderWidth);
+                    var panel2BorderWidth =
+                        this._panels[ 1 ][ 0 ].offsetWidth - this._panels[ 1 ][ 0 ].clientWidth;
+                    $panel2[ sizeKey ]($panel2[ sizeKey ]() - panel2BorderWidth);
+                }
 
                 this._setPanelSize(this._panels[ 1 ], $panel2[ sizeKey ]());
 

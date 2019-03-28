@@ -1,112 +1,167 @@
 <template class='financialChartMainGrid'>
 	<div class='financialChartMainGrid'>
 		<div class='financialChartToolbar'></div>
+		<div class='financialChartLegend'></div>
 		<div class='financialChartPrice'></div>
 		<div class='financialChartIndicators'></div>
 		<div class='financialChartVolume'></div>
 		<div class='financialChartZoomSlider'></div>
 	</div>
 </template>
+
 <template class='financialChartToolbar'>
 	<div class='financialChartToolbar'>
-		<div class='financialChartIndicatorPicker'></div>
-		<div class='financialChartOverlayPicker'></div>
-		<div class='financialChartTrendLineTypePicker'></div>
+		<div class='financialChartIndicatorMenu'></div>
 		<div class='financialChartRangeSelector'></div>
 		<div class='financialChartTypePicker'></div>
-		<div class='financialChartVolumeTypePicker'></div>
 	</div>
 </template>
-<template class='financialChartIndicatorPicker'>
-	<div class='financialChartIndicatorPicker'>
-		<button class='financialChartIndicatorPickerDropDownButton'>Indicator</button>
-		<select class='financialChartIndicatorPickerDropDownList' multiple='true'>
-			<option value='AbsoluteVolumeOscillator'>AbsoluteVolumeOscillator</option>
-			<option value='AccumulationDistribution'>AccumulationDistribution</option>
-			<option value='AverageDirectionalIndex'>AverageDirectionalIndex</option>
-			<option value='AverageTrueRange'>AverageTrueRange</option>
-			<option value='BollingerBandWidth'>BollingerBandWidth</option>
-			<option value='ChaikinOscillator'>ChaikinOscillator</option>
-			<option value='ChaikinVolatility'>ChaikinVolatility</option>
-			<option value='CommodityChannelIndex'>CommodityChannelIndex</option>
-			<option value='DetrendedPriceOscillator'>DetrendedPriceOscillator</option>
-			<option value='ForceIndex'>ForceIndex</option>
-			<option value='FullStochasticOscillator'>FullStochasticOscillator</option>
-			<option value='MarketFacilitationIndex'>MarketFacilitationIndex</option>
-			<option value='MassIndex'>MassIndex</option>
-			<option value='MedianPrice'>MedianPrice</option>
-			<option value='MoneyFlowIndex'>MoneyFlowIndex</option>
-			<option value='MovingAverageConvergenceDivergence'>MovingAverageConvergenceDivergence</option>
-			<option value='NegativeVolumeIndex'>NegativeVolumeIndex</option>
-			<option value='OnBalanceVolume'>OnBalanceVolume</option>
-			<option value='PercentagePriceOscillator'>PercentagePriceOscillator</option>
-			<option value='PercentageVolumeOscillator'>PercentageVolumeOscillator</option>
-			<option value='PositiveVolumeIndex'>PositiveVolumeIndex</option>
-			<option value='PriceVolumeTrend'>PriceVolumeTrend</option>
-			<option value='RateOfChangeAndMomentum'>RateOfChangeAndMomentum</option>
-			<option value='RelativeStrengthIndex'>RelativeStrengthIndex</option>
-			<option value='SlowStochasticOscillator'>SlowStochasticOscillator</option>
-			<option value='StandardDeviation'>StandardDeviation</option>
-			<option value='StochRSI'>StochRSI</option>
-			<option value='TRIX'>TRIX</option>
-			<option value='TypicalPrice'>TypicalPrice</option>
-			<option value='UltimateOscillator'>UltimateOscillator</option>
-			<option value='WeightedClose'>WeightedClose</option>
-			<option value='WilliamsPercentR'>WilliamsPercentR</option>
-		</select>
+
+<template class='financialChartIndicatorMenu'>
+
+	<!-- TODO: Make it possible to display all elements inside the button -->
+
+	<button class='financialChartIndicatorMenuDropDownButton'>
+		<div class='ui-ChartButtonWrapper'>
+			<span class='ui-icon ui-icon-IndicatorsIcon'></span>
+			<span class='financialChartIndicatorMenuLabel'>Indicators</span>
+			<span class='ui-icon-toolbar-dd'></span>
+		</div>
+	</button>
+
+	<div class='financialChartIndicatorMenuDropDownMenu'>
+		<ul class='financialChartIndicatorMenuDropDownMenuList'>
+			<li data-value='FinancialOverlayType'>
+				<span>Overlays</span>
+				<ul>
+					<li class='financialChartListItem' data-value='BollingerBands'>Bollinger Bands</li>
+					<li class='financialChartListItem' data-value='PriceChannel'>Price Channel</li>
+				</ul>
+			</li>
+			<li data-value='TrendLineType'>
+				<span>Trendlines</span>
+				<ul>
+					<li class='financialChartListItem' data-value='LinearFit'>Linear Fit</li>
+					<li class='financialChartListItem' data-value='QuadraticFit'>Quadratic Fit</li>
+					<li class='financialChartListItem' data-value='CubicFit'>Cubic Fit</li>
+					<li class='financialChartListItem' data-value='QuarticFit'>Quartic Fit</li>
+					<li class='financialChartListItem' data-value='QuinticFit'>Quintic Fit</li>
+					<li class='financialChartListItem' data-value='LogarithmicFit'>Logarithmic Fit</li>
+					<li class='financialChartListItem' data-value='ExponentialFit'>Exponential Fit</li>
+					<li class='financialChartListItem' data-value='PowerLawFit'>PowerLaw Fit</li>
+					<li class='financialChartListItem' data-value='SimpleAverage'>Simple Average</li>
+					<li class='financialChartListItem' data-value='ExponentialAverage'>Exponential Average</li>
+					<li class='financialChartListItem' data-value='ModifiedAverage'>Modified Average</li>
+					<li class='financialChartListItem' data-value='CumulativeAverage'>Cumulative Average</li>
+					<li class='financialChartListItem' data-value='WeightedAverage'>Weighted Average</li>
+				</ul>
+			</li>
+			<li data-value='FinancialChartVolumeType'><span>Volume</span>
+				<ul>
+					<li class='financialChartListItem' data-value='Column'>Column</li>
+					<li class='financialChartListItem' data-value='Line'>Line</li>
+					<li class='financialChartListItem' data-value='Area'>Area</li>
+				</ul>
+			</li>
+			<li data-value='FinancialIndicatorType'><span>Standalone Indicators</span>
+				<ul>
+					<li class='financialChartListItem' data-value='AbsoluteVolumeOscillator'>Absolute Volume Oscillator</li>
+					<li class='financialChartListItem' data-value='AccumulationDistribution'>Accumulation Distribution</li>
+					<li class='financialChartListItem' data-value='AverageDirectionalIndex'>Average Directional Index</li>
+					<li class='financialChartListItem' data-value='AverageTrueRange'>Average True Range</li>
+					<li class='financialChartListItem' data-value='BollingerBandWidth'>Bollinger Band Width</li>
+					<li class='financialChartListItem' data-value='ChaikinOscillator'>Chaikin Oscillator</li>
+					<li class='financialChartListItem' data-value='ChaikinVolatility'>Chaikin Volatility</li>
+					<li class='financialChartListItem' data-value='CommodityChannelIndex'>Commodity Channel Index</li>
+					<li class='financialChartListItem' data-value='DetrendedPriceOscillator'>Detrended Price Oscillator</li>
+					<li class='financialChartListItem' data-value='EaseOfMovement'>Ease Of Movement</li>
+					<li class='financialChartListItem' data-value='FastStochasticOscillator'>Fast Stochastic Oscillator</li>
+					<li class='financialChartListItem' data-value='ForceIndex'>Force Index</li>
+					<li class='financialChartListItem' data-value='FullStochasticOscillator'>Full Stochastic Oscillator</li>
+					<li class='financialChartListItem' data-value='MarketFacilitationIndex'>Market Facilitation Index</li>
+					<li class='financialChartListItem' data-value='MassIndex'>Mass Index</li>
+					<li class='financialChartListItem' data-value='MedianPrice'>Median Price</li>
+					<li class='financialChartListItem' data-value='MoneyFlowIndex'>Money Flow Index</li>
+					<li class='financialChartListItem' data-value='MovingAverageConvergenceDivergence'>MACD</li>
+					<li class='financialChartListItem' data-value='NegativeVolumeIndex'>Negative Volume Index</li>
+					<li class='financialChartListItem' data-value='OnBalanceVolume'>On Balance Volume</li>
+					<li class='financialChartListItem' data-value='PercentagePriceOscillator'>Percentage Price Oscillator</li>
+					<li class='financialChartListItem' data-value='PercentageVolumeOscillator'>Percentage Volume Oscillator</li>
+					<li class='financialChartListItem' data-value='PositiveVolumeIndex'>Positive Volume Index</li>
+					<li class='financialChartListItem' data-value='PriceVolumeTrend'>Price Volume Trend</li>
+					<li class='financialChartListItem' data-value='RateOfChangeAndMomentum'>ROC</li>
+					<li class='financialChartListItem' data-value='RelativeStrengthIndex'>RSI</li>
+					<li class='financialChartListItem' data-value='SlowStochasticOscillator'>Slow Stochastic Oscillator</li>
+					<li class='financialChartListItem' data-value='StandardDeviation'>Standard Deviation</li>
+					<li class='financialChartListItem' data-value='StochRSI'>Stoch RSI</li>
+					<li class='financialChartListItem' data-value='TRIX'>TRIX</li>
+					<li class='financialChartListItem' data-value='TypicalPrice'>Typical Price</li>
+					<li class='financialChartListItem' data-value='UltimateOscillator'>Ultimate Oscillator</li>
+					<li class='financialChartListItem' data-value='WeightedClose'>Weighted Close</li>
+					<li class='financialChartListItem' data-value='WilliamsPercentR'>Williams %R</li>
+				</ul>
+			</li>
+		</ul>
 	</div>
 </template>
-<template class='financialChartOverlayPicker'>
-	<div class='financialChartOverlayPicker'>
-		<button class='financialChartOverlayPickerDropDownButton'>Overlay</button>
-		<select class='financialChartOverlayPickerDropDownList' multiple='true'>
-			<option value='BollingerBands'>BollingerBands</option>
-			<option value='PriceChannel'>PriceChannel</option>
-		</select>
-	</div>
-</template>
+
 <template class='financialChartRangeSelector'>
 	<div class='financialChartRangeSelector'>
-		<label class='rangeSelectorOneMonth'><input type='radio' value='1m'><span>1m</span></label>
-		<label class='rangeSelectorThreeMonths'><input type='radio' value='3m'><span>3m</span></label>
-		<label class='rangeSelectorSixMonths'><input type='radio' value='6m'><span>6m</span></label>
-		<label class='rangeSelectorYTD'><input type='radio' value='YTD'><span>YTD</span></label>
-		<label class='rangeSelectorOneYear'><input type='radio' value='1y'><span>1y</span></label>
-		<label class='rangeSelectorAll'><input type='radio' value='all'><span>all</span></label>
+		<label class='financialChartRangeSelectorLabel rangeSelectorOneMonth'>
+			<input type='radio' value='1m'>
+			<span class='financialChartRangeSelectorLabelSpan'>1m</span>
+		</label>
+		<label class='financialChartRangeSelectorLabel rangeSelectorThreeMonths'>
+			<input type='radio' value='3m'>
+			<span class='financialChartRangeSelectorLabelSpan'>3m</span>
+		</label>
+		<label class='financialChartRangeSelectorLabel rangeSelectorSixMonths'>
+			<input type='radio' value='6m'>
+			<span class='financialChartRangeSelectorLabelSpan'>6m</span>
+		</label>
+		<label class='financialChartRangeSelectorLabel rangeSelectorYTD'>
+			<input type='radio' value='YTD'>
+			<span class='financialChartRangeSelectorLabelSpan'>YTD</span>
+		</label>
+		<label class='financialChartRangeSelectorLabel rangeSelectorOneYear'>
+			<input type='radio' value='1y'>
+			<span class='financialChartRangeSelectorLabelSpan'>1y</span>
+		</label>
+		<label class='financialChartRangeSelectorLabel rangeSelectorAll'>
+			<input type='radio' value='all'>
+			<span class='financialChartRangeSelectorLabelSpan'>all</span>
+		</label>
 	</div>
 </template>
-<template class='financialChartTrendLinePicker'>
-	<select class='financialChartTrendLinePicker'>
-		<option value='None'>None</option>
-		<option value='LinearFit'>LinearFit</option>
-		<option value='QuadraticFit'>QuadraticFit</option>
-		<option value='CubicFit'>CubicFit</option>
-		<option value='QuarticFit'>QuarticFit</option>
-		<option value='QuinticFit'>QuinticFit</option>
-		<option value='LogarithmicFit'>LogarithmicFit</option>
-		<option value='ExponentialFit'>ExponentialFit</option>
-		<option value='PowerLawFit'>PowerLawFit</option>
-		<option value='SimpleAverage'>SimpleAverage</option>
-		<option value='ExponentialAverage'>ExponentialAverage</option>
-		<option value='ModifiedAverage'>ModifiedAverage</option>
-		<option value='CumulativeAverage'>CumulativeAverage</option>
-		<option value='WeightedAverage'>WeightedAverage</option>
-	</select>
-</template>
+
 <template class='financialChartTypePicker'>
-	<select class='financialChartTypePicker'>
-		<option value='Auto'>Auto</option>
-		<option value='Bar'>Bar</option>
-		<option value='Line'>Line</option>
-		<option value='Candle'>Candle</option>
-		<option value='Column'>Column</option>
-	</select>
-</template>
-<template class='financialChartVolumeTypePicker'>
-	<select class='financialChartVolumeTypePicker'>
-		<option value='None'>None</option>
-		<option value='Column'>Column</option>
-		<option value='Line'>Line</option>
-		<option value='Area'>Area</option>
-	</select>
+	<button class='financialChartTypePickerDropDownButton' data-value='Auto'>
+		<span class='ui-icon ui-icon-changeable'></span>
+		<span class='ui-icon-toolbar-dd'></span>
+	</button>
+
+	<div class='financialChartTypePickerDropDownMenu'>
+		<ul>
+			<li class='financialChartListItem' data-value='Auto'>
+				<span class='ui-icon ui-icon-chartAuto'></span>
+				<span>Auto</span>
+			</li>
+			<li class='financialChartListItem' data-value='Bar'>
+				<span class='ui-icon ui-icon-BarIcon'></span>
+				<span>Bar</span>
+			</li>
+			<li class='financialChartListItem' data-value='Line'>
+				<span class='ui-icon ui-icon-LineIcon'></span>
+				<span>Line</span>
+			</li>
+			<li class='financialChartListItem' data-value='Candle'>
+				<span class='ui-icon ui-icon-CandleIcon'></span>
+				<span>Candle</span>
+			</li>
+			<li class='financialChartListItem' data-value='Column'>
+				<span class='ui-icon ui-icon-ColumnIcon'></span>
+				<span>Column</span>
+			</li>
+		</ul>
+	</div>
 </template>

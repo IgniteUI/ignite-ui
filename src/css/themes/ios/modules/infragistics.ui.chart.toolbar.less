@@ -1,0 +1,95 @@
+.financialChartToolbar .financialChartToolbar {
+  background: @chart-toolbar-background !important;
+  border-color: @chart-toolbar-border-color !important;
+
+  svg {
+    color: @text-color!important;
+  }
+}
+
+.financialChartIndicatorMenuDropDownButton {
+  color: @text-color!important;
+
+  &:hover {
+    .ui-icon-toolbar-dd:before {
+      content: '';
+      border-color: @accent1 transparent transparent transparent!important;
+    }
+  }
+}
+
+.financialChartIndicatorMenu {
+  color: @text-color!important;
+  border-right-color:@chart-toolbar-border-color!important;
+
+  &:hover {
+    .financialChartIndicatorMenuDropDownButton,
+    .financialChartIndicatorMenuDropDownButton:after {
+      color: @accent1!important;
+    }
+  }
+}
+
+.financialChartTypePicker {
+  border-left-color: @chart-toolbar-border-color!important;
+}
+
+// Range selector section
+
+.financialChartRangeSelectorLabel {
+  &:hover {
+    .financialChartRangeSelectorLabelSpan {
+      color: @accent1!important;
+    }
+  }
+}
+
+.financialChartRangeSelectorLabel input:checked + span {
+  color: @range-selector-active-color!important;
+  background-color: @range-selector-active-background!important;
+}
+
+.financialChartListItem {
+  &:hover {
+    color: @accent1!important;
+
+    .ui-icon {
+      color: @accent1!important;
+    }
+  }
+}
+
+.financialChartIndicatorMenuDropDownMenu,
+.financialChartTypePickerDropDownMenu {
+  background: @body-bg!important;
+}
+
+.financialChartIndicatorMenuDropDownMenu li.checked,
+.financialChartTypePickerDropDownMenu li.checked {
+  color: @accent1!important;
+  &:before {
+    color: @accent1!important;
+  }
+
+  &:hover,
+  &:hover {
+    color: darken(@accent1, 10%)!important;
+  }
+}
+
+.financialChartTypePickerDropDownButton {
+  &:hover {
+    .ui-icon {
+      color: @accent1!important;
+    }
+    .ui-icon-toolbar-dd:before {
+      content: '';
+      border-color: @accent1 transparent transparent transparent!important;
+    }
+  }
+}
+
+.financialChartListItem[data-value='Auto'] {
+  border-bottom: 1px solid @chart-toolbar-border-color!important;
+}
+

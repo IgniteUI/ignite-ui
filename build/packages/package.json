@@ -18,7 +18,7 @@
     "url": "https://github.com/IgniteUI/ignite-ui/issues"
   },
   "license": "Apache-2.0",
-  "optionalDependencies": {
+  "peerDependencies": {
     "jquery": ">=1.9.1",
     "jquery-ui": ">=1.10.5"
   }

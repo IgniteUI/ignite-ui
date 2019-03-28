@@ -269,7 +269,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarzoomchanging", function (evt, ui) {
+				$(document).on("igzoombarzoomchanging", ".selector", function (evt, ui) {
 					//Get the previous zoom window left position as a fraction of the absolute width of the target
 					ui.previousZoom.left
 					//Get the previous zoom window width as a fraction of the absolute width of the target
@@ -298,7 +298,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarzoomchanged", function (evt, ui) {
+				$(document).on("igzoombarzoomchanged", ".selector", function (evt, ui) {
 					//Get the previous zoom window left position as a fraction of the absolute width of the target
 					ui.previousZoom.left
 					//Get the previous zoom window width as a fraction of the absolute width of the target
@@ -332,7 +332,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowdragstarting", function (evt, ui) {
+				$(document).on("igzoombarwindowdragstarting", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -355,7 +355,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowdragstarted", function (evt, ui) {
+				$(document).on("igzoombarwindowdragstarted", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -378,7 +378,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowdragging", function (evt, ui) {
+				$(document).on("igzoombarwindowdragging", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -401,7 +401,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowdragending", function (evt, ui) {
+				$(document).on("igzoombarwindowdragending", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -424,7 +424,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowdragended", function (evt, ui) {
+				$(document).on("igzoombarwindowdragended", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -447,7 +447,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowresizing", function (evt, ui) {
+				$(document).on("igzoombarwindowresizing", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -470,7 +470,7 @@
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
-				$(document).delegate(".selector", "igzoombarwindowresized", function (evt, ui) {
+				$(document).on("igzoombarwindowresized", ".selector", function (evt, ui) {
 					//Get the current zoom window left position as a fraction of the absolute width of the target
 					ui.zoomWindow.left
 					//Get the current zoom window width as a fraction of the absolute width of the target
@@ -1231,8 +1231,8 @@
 				this._lf.parent().css("cursor", "inherit");
 			}
 			if (this._draggedElement) {
-				this._draggedElementOffset = left - this._draggedElement.offset().left +
-					this._draggedElement.parent().offset().left + this._buttonWidth;
+				this._draggedElementOffset = left - this._draggedElement.igOffset().left +
+					this._draggedElement.parent().igOffset().left + this._buttonWidth;
 				if (!this._immediate) {
 					this._defStore = {
 						left: this._cw.left,
@@ -1248,7 +1248,7 @@
 				return;
 			}
 			if (this._draggedElement.hasClass("ui-igzoombar-window-handle-left")) {
-				nl = left - this._draggedElement.parent().offset().left;
+				nl = left - this._draggedElement.parent().igOffset().left;
 				nl = nl / this._cwidth;
 				nw = ow + ol - nl;
 				if (nw < this.options.zoomWindowMinWidth / 100) {
@@ -1259,7 +1259,7 @@
 					nw = ow + ol - nl;
 				}
 			} else if (this._draggedElement.hasClass("ui-igzoombar-window-handle-right")) {
-				nw = (left - this._sbt.offset().left) / this._cwidth;
+				nw = (left - this._sbt.igOffset().left) / this._cwidth;
 				if (nw < this.options.zoomWindowMinWidth / 100) {
 					return;
 				}
@@ -1321,7 +1321,7 @@
 			return true;
 		},
 		_moveWindowByPageX: function (cont, pageX) {
-			var percLeft = (pageX - cont.offset().left - this._buttonWidth) / this._cwidth, nl;
+			var percLeft = (pageX - cont.igOffset().left - this._buttonWidth) / this._cwidth, nl;
 			nl = percLeft - this._cw.width / 2;
 			this._zoom(nl, this._cw.width, true, true, true);
 		},
