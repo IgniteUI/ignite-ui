@@ -46,6 +46,7 @@
 			this.children = children;
 		};
 		$(document).ready(function () {
+			QUnit.config.reorder = false;
 			hierarchicalData = ko.observableArray([
 					new Item(1, "One child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
 					new Item(2, "Two child"),
