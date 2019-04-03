@@ -10357,7 +10357,7 @@
 
 			// N.A. 3/12/2016 Bug #215134: When we enter a value and spin before the date is created, we create a today date, cause everything is empty.
 			if (!this._dateObjectValue && mask.indexOf(unfilled) >= 0) {
-				mask = this._initEmptyMask(this._dateObjectValue);
+				mask = this._initEmptyMask(this._dateObjectValue, mask);
 				mask = mask.substring(0, time.startPosition) +
 					currentValueString +
 					mask.substring(time.endPosition, mask.length);
@@ -10393,15 +10393,15 @@
 			}
 			return mask;
 		},
-		_initEmptyMask: function (date) {
-			var mask = this._maskWithPrompts,
-				today = this._setNewDateMidnight(),
-				timeYear, timeMonth, timeDay, timeHours,
+		_initEmptyMask: function (date, mask) {
+			mask = mask || this._maskWithPrompts;
+			var	timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
 
 			if (!date) {
-				date = today;
+				// V.S. Apr 2nd 2018, #1902 If there is not previous value, get value from mask
+				date = this._parseDateFromMaskedValue(mask);
 			}
 
 			timeYear = this._createYearPosition();
@@ -10463,7 +10463,7 @@
 			if (mask === undefined) {
 				return;
 			} else if (mask === "" || mask === this._maskWithPrompts) {
-				mask = this._initEmptyMask(this._dateObjectValue);
+				mask = this._initEmptyMask(this._dateObjectValue, mask);
 			} else {
 				mask = this._updateTimeMask(mask, time, delta);
 			}
