@@ -1864,7 +1864,6 @@ QUnit.test('Test igVidioPlayer throws no errors when initialized on a video elem
 	}
 });
 
-
 QUnit.test('Test igVidioPlayer renders correctly on a video element test 58', function (assert) {
 	var playerId = 'player18';
 	createFixtureVideo(playerId);
@@ -1875,13 +1874,11 @@ QUnit.test('Test igVidioPlayer renders correctly on a video element test 58', fu
 		playerWaiting = $(`#${playerId}_waiting`),
 		seekToolTip = $(`#${playerId}_seek_tooltip`);
 
-
 	assert.ok(container !== null, 'igVideoPlayer container is rendered.');
 	assert.ok(video !== null, 'igVideoPlayer video is rendered.');
 	assert.ok(playButton !== null, 'igVideoPlayer play button is rendered.');
 	assert.ok(playerWaiting !== null, 'igVideoPlayer waiting state is rendered.');
 	assert.ok(seekToolTip !== null, 'igVideoPlayer seek tooltip is rendered.');
-
 
 	this.checkElementClass(container, 'ui-widget ui-igplayer', assert);
 	this.checkElementClass(video, 'ui-igplayer-video', assert);

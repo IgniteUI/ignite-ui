@@ -2412,7 +2412,6 @@
 			var o = this.options,
 				video,
 				css = this.css;
-
 			this._prevReadyState = 0;
 			this._bookmarksRendered = false;
 
@@ -3929,6 +3928,7 @@
 					control._refreshDuration();
 				}
 			};
+
 			video.bind(this._videoEvents);
 		},
 
