@@ -824,6 +824,7 @@ QUnit.test(testId_24, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         smoothing: true
@@ -831,7 +832,6 @@ QUnit.test(testId_24, function (assert) {
     var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
     this.scrollContainer(this.vhScrollId).mouseenter();
     this.scrollContainer(this.vhScrollId).trigger(wheelEvtDown);
-    done = assert.async();
     this.testUtil.wait(2000).then(function () {
         //Using the mouse wheel once is approximately 99 pixels by default
         //On non touch environment scrollTop can be used to determine the scroll position
@@ -849,6 +849,7 @@ QUnit.test(testId_25, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         smoothing: true,
@@ -859,7 +860,6 @@ QUnit.test(testId_25, function (assert) {
     //On non touch environment scrollTop can be used to determine the scroll position
     assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 80, "igScroll did not scroll properly with smoothing on");
     this.scrollContainer(this.vhScrollId).trigger(wheelEvtUp);
-    done = assert.async();
     this.testUtil.wait(500).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 0, "igScroll did not scroll properly with smoothing on");
         self.vhScroll().remove();
@@ -978,11 +978,11 @@ QUnit.test(testId_29, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollbarType: "native"
     });
-    done = assert.async();
     //Make sure that we are testing mobile way of scrolling despite being hybrid, because that way we use 3d transformations
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }]
@@ -1010,10 +1010,10 @@ QUnit.test(testId_30, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(14);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.testUtil.wait(650).then(function () {
         assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
         assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
@@ -1044,11 +1044,11 @@ QUnit.test(testId_31, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(8);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.scrollContainer(this.vhScrollId).mouseenter();
-    done = assert.async();
     this.testUtil.wait(200).then(function () {
         assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
         assert.equal(self.arrowDown(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
@@ -1071,11 +1071,11 @@ QUnit.test(testId_32, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.scrollContainer(this.vhScrollId).mouseleave();
-    done = assert.async();
     this.testUtil.wait(2100).then(function () {
         assert.ok(self.vDrag(self.vhScrollId).css("opacity") < 0.5, "igScroll vertical scrollbar thumb is visible");
         assert.ok(self.hDrag(self.vhScrollId).css("opacity") < 0.5, "igScroll horizontal scrollbar thumb is visible");
@@ -1092,11 +1092,11 @@ QUnit.test(testId_33, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.scrollContainer(this.vhScrollId).mouseleave();
-    done = assert.async();
     this.testUtil.wait(2100).then(function () {
         assert.ok(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
         assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
@@ -1145,10 +1145,10 @@ QUnit.test(testId_35, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(14);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.scrollContainer(this.vhScrollId).mouseenter();
     this.testUtil.wait(2200).then(function () {
     assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
@@ -1185,11 +1185,11 @@ QUnit.test(testId_36, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(12);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.scrollContainer(this.vhScrollId).mouseleave();
-    done = assert.async();
     this.testUtil.wait(2100).then(function () {
         assert.ok(self.vDrag(self.vhScrollId).hasClass(self.hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
         assert.ok(self.hDrag(self.vhScrollId).hasClass(self.hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
@@ -1218,6 +1218,7 @@ QUnit.test(testId_37, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
@@ -1228,7 +1229,6 @@ QUnit.test(testId_37, function (assert) {
     this.testUtil.simulateSingleClick(this.arrowDown(this.vhScrollId));
     assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 40, "igScroll did not scroll properly");
 
-    done = assert.async();
     this.testUtil.wait(25).then(function () {
         var scrollbarPixelContentRatio =  (40 / (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height())) * 
         (self.vTrack(self.vhScrollId).height() - self.vDrag(self.vhScrollId).height());
@@ -1260,6 +1260,7 @@ QUnit.test(testId_39, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this, scrollingCount = 0;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
@@ -1271,7 +1272,6 @@ QUnit.test(testId_39, function (assert) {
 
     this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 340);
 
-    done = assert.async();
     this.testUtil.wait(400).then(function () {
         assert.ok(scrollingCount >= 2, "Scroll should've occured at least twice when hoding down the mouse.")
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 40 * scrollingCount, "igScroll did not scroll properly");
@@ -1288,16 +1288,15 @@ QUnit.test(testId_40, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowDown(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
     this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 375);
 
-    
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
         self.arrowDown(self.vhScrollId).mouseout();
@@ -1319,6 +1318,7 @@ QUnit.test(testId_41, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
@@ -1327,7 +1327,6 @@ QUnit.test(testId_41, function (assert) {
 
     this.testUtil.simulateClickAndHold(this.arrowDown(this.vhScrollId), 525);
 
-    done = assert.async();
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 120, "igScroll did not scroll properly");
         self.arrowDown(self.vhScrollId).mouseout();
@@ -1351,6 +1350,7 @@ QUnit.test(testId_42, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(5);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
@@ -1366,7 +1366,6 @@ QUnit.test(testId_42, function (assert) {
     this.testUtil.simulateSingleClick(this.arrowUp(this.vhScrollId));
     assert.equal(this.scrollContainer(this.vhScrollId).scrollTop(), 40, "igScroll did not scroll properly");
 
-    done = assert.async();
     this.testUtil.wait(500).then(function () {
         var scrollbarPixelContentRatio = (40 / (self.elemContent(self.vhScrollId).height() - self.scrollContainer(self.vhScrollId).height())) * 
             (self.vTrack(self.vhScrollId).height() - self.vDrag(self.vhScrollId).height());
@@ -1416,6 +1415,7 @@ QUnit.test(testId_44, function (assert) {
 QUnit.test(testId_45, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollTop: 500
@@ -1425,7 +1425,6 @@ QUnit.test(testId_45, function (assert) {
 
     this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 325);
 
-    done = assert.async();
     this.testUtil.wait(400).then(function () {
         //500 minus 120
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 380, "igScroll did not scroll properly");
@@ -1442,11 +1441,11 @@ QUnit.test(testId_46, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollTop: 500
     });
-    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
@@ -1475,11 +1474,11 @@ QUnit.test(testId_47, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollTop: 500
     });
-    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowUp(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
     this.testUtil.simulateClickAndHold(this.arrowUp(this.vhScrollId), 500);
@@ -1511,11 +1510,11 @@ QUnit.test(testId_48, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollLeft: 100
     });
-    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
@@ -1567,11 +1566,11 @@ QUnit.test(testId_51, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollLeft: 180
     });
-    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
@@ -1587,11 +1586,11 @@ QUnit.test(testId_52, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollLeft: 180
     });
-    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
@@ -1619,6 +1618,7 @@ QUnit.test(testId_53, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
@@ -1627,7 +1627,6 @@ QUnit.test(testId_53, function (assert) {
 
     this.testUtil.simulateSingleClick(this.arrowRight(this.vhScrollId));
     assert.equal(this.scrollContainer(this.vhScrollId).scrollLeft(), 40, "igScroll did not scroll properly");
-    done = assert.async();
     this.testUtil.wait(25).then(function () {
         var scrollContainerWidth = self.scrollContainer(self.vhScrollId).width(),
             contentWidth = self.elemContent(self.vhScrollId).width(),
@@ -1667,11 +1666,11 @@ QUnit.test(testId_55, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
 
-    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
@@ -1691,10 +1690,10 @@ QUnit.test(testId_56, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 
@@ -1720,12 +1719,12 @@ QUnit.test(testId_57, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.vScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateSingleClick(this.vTrack(this.vhScrollId), { offsetY: 300 });
-    done = assert.async();
     this.testUtil.wait(25).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), self.vhScroll().height(), "igScroll did not scroll properly");
         var scrollContainerHeight = self.scrollContainer(self.vhScrollId).height(),
@@ -1749,13 +1748,13 @@ QUnit.test(testId_58, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     //scroll to the bottom first
     var bottomPos = this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height();
     this.vhScroll().igScroll("option", "scrollTop", bottomPos);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateSingleClick(self.vTrack(self.vhScrollId), { offsetY: 150 });
@@ -1784,11 +1783,11 @@ QUnit.test(testId_59, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollHeight: 5000
     });
-    done = assert.async();
     this.vScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateClickAndHold(this.vTrack(this.vhScrollId), 325, { offsetY: 250 });
     this.testUtil.wait(400).then(function () {
@@ -1806,13 +1805,13 @@ QUnit.test(testId_60, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollHeight: 5000
     });
     //scroll to the bottom first
     this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height());
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 325, { offsetY: 150 });
@@ -1833,11 +1832,11 @@ QUnit.test(testId_61, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollHeight: 5000
     });
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 400, { offsetY: 350 });
@@ -1864,13 +1863,13 @@ QUnit.test(testId_62, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollHeight: 5000
     });
     //scroll to the bottom first
     this.vhScroll().igScroll("option", "scrollTop", this.elemContent(this.vhScrollId).height() - this.scrollContainer(this.vhScrollId).height());
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         self.vScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.vTrack(self.vhScrollId), 400, { offsetY: 150 });
@@ -1900,11 +1899,11 @@ QUnit.test(testId_63, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollHeight: 5000
     });
-    done = assert.async();
     this.scrollContainer(this.vhScrollId).mouseenter();
     this.vScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateClickDragRelese(this.vDrag(this.vhScrollId), 0, 50, 200);
@@ -1933,12 +1932,12 @@ QUnit.test(testId_64, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.hScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateSingleClick(this.hTrack(this.vhScrollId), { offsetX: 500 });
-    done = assert.async();
     this.testUtil.wait(25).then(function () {
         //200 because the width of the content is actually 800 and the width of the container is 600.
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
@@ -1961,12 +1960,12 @@ QUnit.test(testId_65, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     //scroll to the bottom first
     this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScrollId).width() - this.scrollContainer(this.vhScrollId).width());
-    done = assert.async();
     this.testUtil.wait(500).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 200, "igScroll did not scroll properly");
         self.hScrollBar(self.vhScrollId).mouseenter();
@@ -1990,13 +1989,13 @@ QUnit.test(testId_66, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollWidth: 5000
     });
     this.hScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateClickAndHold(this.hTrack(this.vhScrollId), 325, { offsetX: 250 });
-    done = assert.async();
     this.testUtil.wait(400).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 3 * self.scrollContainer(self.vhScrollId).width(), "igScroll did not scroll properly");
         self.vhScroll().remove();
@@ -2012,13 +2011,13 @@ QUnit.test(testId_67, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollWidth: 5000
     });
     //scroll to the bottom first
     this.vhScroll().igScroll("option", "scrollLeft", this.elemContent(this.vhScrollId).width() - this.scrollContainer(this.vhScrollId).width());
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         self.hScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.hTrack(self.vhScrollId), 325, { offsetX: 150 });
@@ -2040,11 +2039,11 @@ QUnit.test(testId_68, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollWidth: 5000
     });
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         self.hScrollBar(self.vhScrollId).mouseenter();
         self.testUtil.simulateClickAndHold(self.hTrack(self.vhScrollId), 400, { offsetX: 300 });
@@ -2071,11 +2070,11 @@ QUnit.test(testId_69, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollWidth: 5000
     });
-    done = assert.async();
     this.scrollContainer(this.vhScrollId).mouseenter();
     this.hScrollBar(this.vhScrollId).mouseenter();
     this.testUtil.simulateClickDragRelese(this.hDrag(this.vhScrollId), 50, 0, 200);
@@ -2103,12 +2102,12 @@ QUnit.test(testId_70, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollbarType: "native"
     });
     this.vScrollBar(this.vhScrollId).scrollTop(100);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 100, "igScroll did not scroll properly with native vertical scrollbar");
@@ -2125,12 +2124,12 @@ QUnit.test(testId_71, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollbarType: "native"
     });
     this.hScrollBar(this.vhScrollId).scrollLeft(100);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 100, "igScroll did not scroll properly with native horizontal scrollbar");
@@ -2147,12 +2146,12 @@ QUnit.test(testId_72, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollbarType: "native"
     });
     this.scrollContainer(this.vhScrollId).scrollTop(100);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionY(), 100, "igScroll did not scroll properly with native horizontal scrollbar");
@@ -2169,12 +2168,12 @@ QUnit.test(testId_73, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollbarType: "native"
     });
     this.scrollContainer(this.vhScrollId).scrollLeft(100);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.hScrollBar(self.vhScrollId).scrollLeft(), 100, "igScroll did not scroll properly");
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 100, "igScroll did not scroll properly with native horizontal scrollbar");
@@ -2235,10 +2234,10 @@ QUnit.test(testId_80, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2260,10 +2259,10 @@ QUnit.test(testId_81, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 15, y: 0 }, { x: 15, y: 0 }, { x: 6, y: 0 }, { x: 5, y: 0 }, { x: 1, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2286,10 +2285,10 @@ QUnit.test(testId_82, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this, lastPosY;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
@@ -2317,11 +2316,11 @@ QUnit.test(testId_83, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         inertiaDuration: 0.2
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2343,10 +2342,10 @@ QUnit.test(testId_84, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, lastPosY, self = this;
     assert.expect(6);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
@@ -2386,13 +2385,13 @@ QUnit.test(testId_85, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
-    done = assert.async();
     this.testUtil.wait(1500).then(function () {
         self.testUtil.simulateTouchTap(self.scrollContainer(self.vhScrollId), 50, 50);
         assert.notEqual(self.vhScroll().data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
@@ -2413,10 +2412,10 @@ QUnit.test(testId_86, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }];
     this.testUtil.simulateTouchSwipeFromCenterIE(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2439,10 +2438,10 @@ QUnit.test(testId_87, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 15, y: 0 }, { x: 15, y: 0 }, { x: 6, y: 0 }, { x: 5, y: 0 }, { x: 1, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenterIE(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2465,10 +2464,10 @@ QUnit.test(testId_88, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var self = this, done;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 7 }, { x: 0, y: 15 }, { x: 0, y: 15 }, { x: 0, y: 6 }, { x: 0, y: 5 }, { x: 0, y: 1 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2553,11 +2552,11 @@ QUnit.test(testId_94, function (assert) {
     $("body").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         syncedElemsV: [this.vSyncScroll()],
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
@@ -2584,11 +2583,11 @@ QUnit.test(testId_95, function (assert) {
     $("body").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(3);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         syncedElemsH: [this.hSyncScroll()],
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -2611,11 +2610,11 @@ QUnit.test(testId_96, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(8);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         alwaysVisible: true
     });
-    done = assert.async();
     this.testUtil.wait(1500).then(function () {
         assert.ok(self.arrowUp(self.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
         assert.ok(self.arrowDown(self.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
@@ -2639,11 +2638,11 @@ QUnit.test(testId_97, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(8);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         alwaysVisible: true
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     this.testUtil.wait(1500).then(function () {
         assert.equal(self.arrowUp(self.vhScrollId).css("opacity"), 0, "igScroll scrollbar Arrow Up is not visible");
@@ -2668,11 +2667,11 @@ QUnit.test(testId_98, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(20);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.scrollContainer(this.vhScrollId).mouseleave();
-    done = assert.async();
     this.testUtil.wait(2100).then(function () {
         self.vhScroll().igScroll("option", "alwaysVisible", true);
 
@@ -2712,12 +2711,12 @@ QUnit.test(testId_99, function (assert) {
     $.ig.util.isTouchDevice = function () { return true; };
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     this.scrollContainer(this.vhScrollId).mouseleave();
-    done = assert.async();
     this.testUtil.wait(1500).then(function () {
         self.vhScroll().igScroll("option", "alwaysVisible", true);
 
@@ -2811,13 +2810,13 @@ QUnit.test(testId_102, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         scrollWidth: 5000,
         scrollLeft: 500,
     });
 
-    done = assert.async();
 
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowLeft(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
@@ -2851,12 +2850,12 @@ QUnit.test(testId_103, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true
     });
     this.hScrollBar(this.vhScrollId).mouseenter();
     assert.ok(this.arrowRight(this.vhScrollId).css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
-    done = assert.async();
     this.testUtil.simulateClickAndHold(this.arrowRight(this.vhScrollId), 500);
     this.testUtil.wait(325).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 120, "igScroll did not scroll properly");
@@ -3015,6 +3014,7 @@ QUnit.test(testId_110, function (assert) {
     var done, self = this;
     $("body").append($(verticalScrollbar));
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollOnlyVBar: true,
         scrollbarType: "none",
@@ -3027,7 +3027,6 @@ QUnit.test(testId_110, function (assert) {
     });
 
     this.vScrollBar(this.vhScrollId).scrollTop(270);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 270, "custom scrollbar scrolls when scrollOnlyVBar is true");
         self.vScrollBar(self.vhScrollId).remove();
@@ -3049,6 +3048,7 @@ QUnit.test(testId_111, function (assert) {
     var self = this, done;
     $("body").append($(verticalScrollbar));
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollOnlyVBar: true,
         scrollbarType: "none",
@@ -3062,7 +3062,6 @@ QUnit.test(testId_111, function (assert) {
 
     var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
     this.scrollContainer(this.vhScrollId).trigger(wheelEvt);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 50, "content is scrolled on mouse wheel");
         assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 50, "custom scrollbar has it's position updated on mouse wheel over the content");
@@ -3085,6 +3084,7 @@ QUnit.test(testId_112, function (assert) {
     var done, self = this;
     $("body").append($(verticalScrollbar));
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         smoothing: true,
         scrollOnlyVBar: true,
@@ -3099,7 +3099,6 @@ QUnit.test(testId_112, function (assert) {
 
     var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
     this.scrollContainer(this.vhScrollId).trigger(wheelEvt);
-    done = assert.async();
     this.testUtil.wait(2000).then(function () {
         assert.ok(self.scrollContainer(self.vhScrollId).scrollTop() > 80, "content scrolled properly by the custom scrollbar on smooth mouse wheel");
         assert.ok(self.vScrollBar(self.vhScrollId).scrollTop() > 80, "custom scrollbar has it's position updated on smooth mouse wheel");
@@ -3159,6 +3158,7 @@ QUnit.test(testId_114, function (assert) {
     var done, self = this;
     $("body").append($(horizontalScrollbar));
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollOnlyHBar: true,
         scrollbarType: "none",
@@ -3171,7 +3171,6 @@ QUnit.test(testId_114, function (assert) {
     });
 
     this.hScrollBar(this.vhScrollId).scrollLeft(170);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 170, "custom scrollbar scrolls when scrollOnlyHBar is true");
         self.hScrollBar(self.vhScrollId).remove();
@@ -3194,6 +3193,7 @@ QUnit.test(testId_115, function (assert) {
     var done, self = this;
     $("body").append($(horizontalScrollbar));
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollOnlyHBar: true,
         scrollOnlyVBar: true,
@@ -3206,7 +3206,6 @@ QUnit.test(testId_115, function (assert) {
         var currentPos = event.target.scrollLeft;
         self.scrollContainer(self.vhScrollId).scrollLeft(currentPos);
     });
-    done = assert.async();
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(self.vhScrollId), touchSteps, 100);
     this.testUtil.wait(1000).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 22, "custom scrollbar scrolls when scrollOnlyHBar is true");
@@ -3229,6 +3228,7 @@ QUnit.test(testId_116, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     $("body").append($(verticalScrollbar));
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollbarType: "none",
         scrollbarV: self.vScrollBar(this.vhScrollId)
@@ -3236,7 +3236,6 @@ QUnit.test(testId_116, function (assert) {
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     $("#elemVH_vBar_inner").css("height", this.elemContent(this.vhScrollId).outerHeight());
 
-    done = assert.async();
     this.vScrollBar(this.vhScrollId).scrollTop(170);
     this.testUtil.wait(1000).then(function () {
         assert.equal(-self.getTransform3dValueY(self.elemContent(self.vhScrollId)), 170, "igScroll content scrolled vertically using transformations");
@@ -3259,6 +3258,7 @@ QUnit.test(testId_117, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     $("body").append($(horizontalScrollbar));
     assert.expect(1);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollbarType: "none",
         scrollbarH: this.hScrollBar(this.vhScrollId)
@@ -3266,7 +3266,6 @@ QUnit.test(testId_117, function (assert) {
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     $("#elemVH_hBar_inner").css("width", this.elemContent(this.vhScrollId).outerWidth());
 
-    done = assert.async();
     this.hScrollBar(this.vhScrollId).scrollLeft(170);
     this.testUtil.wait(100).then(function () {
         assert.equal(-self.getTransform3dValueX(self.elemContent(self.vhScrollId)), 170, "igScroll content scrolled horizontally using transformations");
@@ -3397,6 +3396,7 @@ QUnit.test(testId_124, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(6);
+    done = assert.async();
     $("#syncV").igScroll();
     $("#syncH").igScroll();
     this.vhScroll().igScroll({
@@ -3407,7 +3407,6 @@ QUnit.test(testId_124, function (assert) {
     this.hScrollBar(this.vhScrollId).scrollLeft(100);
     this.vScrollBar(this.vhScrollId).scrollTop(300);
 
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.scrollContainer(self.vhScrollId).scrollTop(), 300, "The main contianer scrolled vertically");
         assert.equal(self.scrollContainer(self.vhScrollId).scrollLeft(), 100, "The main contianer scrolled horizontally");
@@ -3434,6 +3433,7 @@ QUnit.test(testId_125, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(6);
+    done = assert.async();
     $("#syncV").igScroll();
     $("#syncH").igScroll();
     this.vhScroll().igScroll({
@@ -3445,7 +3445,6 @@ QUnit.test(testId_125, function (assert) {
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     $("#syncV").data('igScroll')._bMixedEnvironment = false;
     $("#syncH").data('igScroll')._bMixedEnvironment = false;
-    done = assert.async();
     var touchSteps = [{ x: 20, y: 3 }, { x: 17, y: 7 }, { x: 17, y: 15 }, { x: 17, y: 15 }, { x: 7, y: 6 }, { x: 6, y: 5 }, { x: 1, y: 1 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
     this.testUtil.wait(2500).then(function () {
@@ -3526,11 +3525,11 @@ QUnit.test(testId_128, function (assert) {
     $("body").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollV));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         syncedElemsV: [this.vSyncScroll()],
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 3 }, { x: 7, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 9 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
@@ -3557,11 +3556,11 @@ QUnit.test(testId_129, function (assert) {
     $("body").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
         syncedElemsH: [this.hSyncScroll()],
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 3 }, { x: 7, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 9 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
@@ -3586,13 +3585,13 @@ QUnit.test(testId_130, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollbarType: "native"
     });
     this.vhScroll().igScroll("option", "scrollTop", 600);
     this.vhScroll().igScroll("option", "scrollLeft", 100);
 
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         assert.equal(self.vScrollBar(self.vhScrollId).scrollTop(), 600, "the vertical native scrollbar is poistioned correctly before hiding it");
         assert.equal(self.hScrollBar(self.vhScrollId).scrollLeft(), 100, "the horizontal native scrollbar is poistioned correctly before hiding it");
@@ -3619,10 +3618,10 @@ QUnit.test(testId_131, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(4);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollbarType: "none"
     });
-    done = assert.async();
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 3 }, { x: 7, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 9 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
@@ -3647,12 +3646,12 @@ QUnit.test(testId_132, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         scrollbarType: "custom"
     });
     this.vhScroll().igScroll("option", "scrollTop", 600);
     this.vhScroll().igScroll("option", "scrollLeft", 100);
-    done = assert.async();
     this.testUtil.wait(100).then(function () {
         var oldScrollbarPosX = self.getTransform3dValueX(self.hDrag(self.vhScrollId)),
             oldScrollbarPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
@@ -3954,13 +3953,13 @@ QUnit.test(testId_140, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, lastPosY, self = this;
     assert.expect(6);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 3 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 1);
-    done = assert.async();
     this.testUtil.wait(500).then(function () {
         //Check if we have scrolled more than if we didn't have inertia
         assert.equal(self.vhScroll().data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -3995,13 +3994,13 @@ QUnit.test(testId_141, function (assert) {
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     var done, self = this;
     assert.expect(2);
+    done = assert.async();
     this.vhScroll().igScroll({
         modifyDOM: true,
     });
     this.vhScroll().data('igScroll')._bMixedEnvironment = false;
     var touchSteps = [{ x: 3, y: 0 }, { x: 7, y: 0 }, { x: 8, y: 0 }, { x: 9, y: 0 }];
     this.testUtil.simulateTouchSwipeFromCenter(this.scrollContainer(this.vhScrollId), touchSteps, 10);
-    done = assert.async();
     this.testUtil.wait(500).then(function () {
         self.vhScroll().igScroll("option", "scrollLeft", 20);
         return self.testUtil.wait(500);
@@ -4020,8 +4019,9 @@ QUnit.test(testId_141, function (assert) {
 });
 
 QUnit.test(testId_142, function (assert) {
-    var self = this;
+    var self = this, done;
     assert.expect(2);
+    done = assert.async();
 	this.util.isTouchDevice = function () { return true; };
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     this.vhScroll().igScroll({
@@ -4033,7 +4033,7 @@ QUnit.test(testId_142, function (assert) {
 	this.vhScroll().data('igScroll')._bMixedEnvironment = false;
 	
     this.vhScroll().igScroll("option", "scrollTop", 100);
-    done = assert.async();
+
     this.testUtil.wait(10).then(function () {
 		assert.equal(elemContainer.scrollTop(), 0, "scrollTop of the container should be 0");
 		assert.equal(-self.getTransform3dValueY(elemContent), 100, "the Y axis of the transform3d of the content should be 100");
@@ -4048,8 +4048,9 @@ QUnit.test(testId_142, function (assert) {
 });
 
 QUnit.test(testId_143, function (assert) {
-    var self = this;
+    var self = this, done;
     assert.expect(2);
+    done = assert.async();
 	this.util.isTouchDevice = function () { return true; };
     $("body").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(this.contentScrollVH));
     this.vhScroll().igScroll({
@@ -4062,7 +4063,6 @@ QUnit.test(testId_143, function (assert) {
 	
 	//Scroll right 100px
 	this.vhScroll().igScroll("option", "scrollLeft", 100);
-    done = assert.async();
     this.testUtil.wait(10).then(function () {
 		assert.equal(elemContainer.scrollLeft(), 0, "scrollLeft of the container should be 0");
 		assert.equal(-self.getTransform3dValueX(elemContent), 100, "the X axis of the transform3d of the content should be 100");
