@@ -91,713 +91,713 @@
 				finOpts.axes[0].dataSource = finData;
 			}
 
-			module("igZoombar", {
-				setup: function() {
-					//pause testing until grids are initialized
-					if (!initialized) {
-						stop();
-						generateBasicDataSource();
-						setTimeout(function () { start(); }, 100);
-						initialized = true;
-					}
-				},
-				teardown: function() {
-				}
-			});
-			
-			basicOpts = {
-				width: "500px",
-				height: "200px",
-				horizontalZoomable: true,
-				verticalZoomable: false,
-				windowResponse: "immediate"
-			};
-			$.extend(true, genericOpts, basicOpts, {
-				axes: [
-					{ name: "xAxis", type: "categoryX", label: "Label"},
-					{ name: "yAxis", type: "numericY" }
-				],
-				series: [{
-					name: "series3",
-					title: "Mazda",
-					type: "area",
-					xAxis: "xAxis",
-					yAxis: "yAxis",
-					valueMemberPath: "Value3",
-					showTooltip: false
-				}],
-			});
-			$.extend(true, barOpts, basicOpts, {
-				axes: [
-					{ name: "yAxis", type: "categoryY", label: "Label" },
-					{ name: "xAxis", type: "numericX" }
-				],
-				series: [{
-					name: "series1",
-					title: "Test Series",
-					type: "bar",
-					xAxis: "xAxis",
-					yAxis: "yAxis",
-					valueMemberPath: "Value1",
-					markerType: "circle",
-					showTooltip: true,
-					isHighlightingEnabled: true,
-					trendLineType: "linearFit",
-					trendLineBrush: "red"
-				}]
-			});
-			$.extend(true, rangeOpts, basicOpts, {
-				axes: [
-					{ name: "xAxis", type: "categoryX", label: "Label" },
-					{ name: "yAxis", type: "numericY" }
-				],
-				series: [{
-					name: "series1",
-					type: "rangeArea",
-					xAxis: "xAxis",
-					yAxis: "yAxis",
-					lowMemberPath: "Value1",
-					highMemberPath: "Value2"
-				}]
-			});
-			$.extend(true, scatterOpts, basicOpts, {
-				axes: [
-					{ name: "xAxis", type: "numericX" },
-					{ name: "yAxis", type: "numericY" }
-				],
-				series: [{
-					name: "series1",
-					type: "scatter",
-					xAxis: "xAxis",
-					yAxis: "yAxis",
-					xMemberPath: "Index",
-					yMemberPath: "Value1"
-				}]	
-			});
-			$.extend(true, finOpts, basicOpts, {
-				axes: [{
-					name: "xAxis",
-					type: "categoryX",
-					label: "DateString",
-					labelVisibility: "collapsed"
-				},
-				{
-					name: "yAxis",
-					type: "numericY",
-					labelVisibility: "collapsed"
-				}],
-				series: [{
-					name: "series1",
-					title: "Price Series",
-					type: "financial",
-					xAxis: "xAxis",
-					yAxis: "yAxis",
-					openMemberPath: "Open",
-					highMemberPath: "High",
-					lowMemberPath: "Low",
-					closeMemberPath: "Close",
-					showTooltip: true,
-					thickness: 2,
-					trendLineBrush: "rgba(68, 172, 214, .8)",
-					trendLineThickness: 5,
-					trendLineType: "exponentialAverage",
-					negativeBrush: "rgba(198, 45, 54, .8)",
-					displayType: "ohlc"
-				}]
-			});
-			
-			// Rendering tests
-			var testId_11 = "igZoombar test 1.1: init/destroy tests for area chart";
-			var testId_12 = "igZoombar test 1.2: init/destroy tests for column chart";
-			var testId_13 = "igZoombar test 1.3: init/destroy tests for line chart";
-			var testId_14 = "igZoombar test 1.4: init/destroy tests for spline area chart";
-			var testId_15 = "igZoombar test 1.5: init/destroy tests for spline chart";
-			var testId_16 = "igZoombar test 1.6: init/destroy tests for step area chart";
-			var testId_17 = "igZoombar test 1.7: init/destroy tests for step line chart";
-			var testId_18 = "igZoombar test 1.8: init/destroy tests for waterfall chart";
-			var testId_19 = "igZoombar test 1.9: init/destroy tests for bar chart";
-			var testId_110 = "igZoombar test 1.10: init/destroy tests for range area chart";
-			var testId_111 = "igZoombar test 1.11: init/destroy tests for range column chart";
-			var testId_112 = "igZoombar test 1.12: init/destroy tests for scatter chart";
-			var testId_113 = "igZoombar test 1.13: init/destroy tests for scatter line chart";
-			var testId_114 = "igZoombar test 1.14: init/destroy tests for scatter spline chart";
-			var testId_115 = "igZoombar test 1.15: init/destroy tests for bubble chart";
-			var testId_116 = "igZoombar test 1.16: init/destroy tests for financial ohlc chart";
-			var testId_117 = "igZoombar test 1.17: init tests for financial candlestick chart";
-			// API tests
-			var testId_21 = "igZoombar test 2.1: properties tests";
-			var testId_22 = "igZoombar test 2.2: public api tests";
-			var testId_23 = "igZoombar test 2.3: custom provider tests";
-			// Bug automation
-			var bugTest_1 = "igZoombar bug automation test 1: Zoom operation with the same zoom params shouldn't be processed";
-			
-			test(testId_11, 13, function () {
-				var cloneOpts;
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_12, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "column";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_13, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "line";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_14, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "splineArea";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_15, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "spline";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_16, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "stepArea";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_17, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "stepLine";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_18, 13, function () {
-				var cloneOpts;
-				genericOpts.series[0].type = "waterfall";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_19, 13, function () {
-				var cloneOpts;
-				chart.igDataChart(barOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_110, 13, function () {
-				var cloneOpts;
-				chart.igDataChart(rangeOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_111, 13, function () {
-				var cloneOpts;
-				rangeOpts.series[0].type = "rangeColumn";
-				chart.igDataChart(rangeOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_112, 13, function () {
-				var cloneOpts;
-				chart.igDataChart(scatterOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_113, 13, function () {
-				var cloneOpts;
-				scatterOpts.series[0].type = "scatterLine";
-				chart.igDataChart(scatterOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_114, 13, function () {
-				var cloneOpts;
-				scatterOpts.series[0].type = "scatterSpline";
-				chart.igDataChart(scatterOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_115, 13, function () {
-				var cloneOpts;
-				$.extend(true, bubbleOpts, scatterOpts, { 
-					series: [{
-						type: "bubble",
-						radiusMemberPath: "Value2",
-						fillMemberPath: "Value3",
-						labelMemberPath: "Value2",
-						markerType: "circle",
-						fillScale: {
-							type: "value",
-							brushes: ["red", "blue"],
-							minimumValue: 0,
-							maximumValue: 20
-						}
-					}]
-				});
-				chart.igDataChart(bubbleOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_116, 13, function () {
-				var cloneOpts;
-				chart.igDataChart(finOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-				stop();
-				setTimeout(function () {
-					start();
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-					strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
-					strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
-				}, 500);
-			});
-			test(testId_117, 11, function () {
-				var cloneOpts;
-				finOpts.series[0].dataSource = finData;
-				finOpts.axes[0].dataSource = finData;
-				finOpts.series[0].displayType = "candleStick";
-				chart.igDataChart(finOpts);
-				zoom.igZoombar({ target: chart });
-				notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-				notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-				cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
-				strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
-				strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
-				strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
-				strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
-				strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
-				strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
-				strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
-				strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
-				strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
-			});
-			test(testId_21, 20, function () {
-				stop();
-				setTimeout(function () {
-					zoom.igZoombar("destroy");
-					zoom.igZoombar({
-						provider: $.ig.ZoombarProviderDataChart,
-						providerCreated: function (evt, ui) {
-							ui.provider.targetObject($(".testclass").data("igDataChart"));
-						},
-						target: ".testclass",
-						clone: "none",
-						width: "600px",
-						height: "300px"
-					});
-					notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-					notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-					strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "undefined", "clone none should not create a clone assert");
-					strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
-					strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
-					strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
-					setTimeout(function () {
-						start();
-						zoom.igZoombar("destroy");
-						zoom.igZoombar({
-							target: ".testclass",
-							zoomWindowMoveDistance: 20,
-							defaultZoomWindow: {
-								left: 40,
-								width: 20
-							},
-							zoomWindowMinWidth: 10,
-							windowPanDuration: 0
-						});
-						notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-						notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-						strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "object", "clone none should not create a clone assert");
-						strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
-						strictEqual(zoom.outerWidth(), 500, "zoombar assings proper width assert");
-						strictEqual(zoom.outerHeight(), 70, "zoombar assings proper height assert");
-						strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.40", "zoombar assings proper left for window assert");
-						strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.20", "zoombar assings proper width for window assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.40", "zoombar assings proper left to chart assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
-						// test zoomWindowMoveDistance
-						$("#tzoombar_zoombar_buttons_right").children().first().trigger("click");
-						strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.60", "zoombar assings proper left for window assert");
-						strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.20", "zoombar assings proper width for window assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.60", "zoombar assings proper left to chart assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
-					}, 500);
-				}, 500);
-				// test zoomWindowMinWidth
-				/* trigger for the current jquery version doesn't work - commenting until we update
-				var event = jQuery.Event("mousewheel");
-				event.originalEvent = { mouseWheel: 1320 };
-				$(".ui-igzoombar-mask").trigger(event);
-				strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.10", "zoombar does not let the width to be lowered below the minimum assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().__width.toFixed(2), "0.10", "zoombar does not let the width of the chart to be lowered below the minimum assert");
-				*/
-			});
-			test(testId_22, 8, function () {
-				zoom.igZoombar("zoom", 10, 50);
-				strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.10", "zoom method assings proper left for window assert");
-				strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.50", "zoom method assings proper width for window assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.10", "zoom method assings proper left to chart assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.50", "zoom method assings proper width to chart assert");
-				zoom.igZoombar("zoom", -100, 200);
-				strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.00", "zoom method assings proper left for window assert");
-				strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "1.00", "zoom method assings proper width for window assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.00", "zoom method assings proper left to chart assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "1.00", "zoom method assings proper width to chart assert");
-			});
-			test(testId_23, 6, function () {
-				stop();
-				ZoombarProviderDataChartCustom = $.ig.ZoombarProviderDataChart.extend({
-
-				});
-				setTimeout(function () {
-					zoom.igZoombar("destroy");
-					zoom.igZoombar({
-						provider: ZoombarProviderDataChartCustom,
-						providerCreated: function (evt, ui) {
-							ui.provider.targetObject($(".testclass").data("igDataChart"));
-						},
-						target: ".testclass",
-						clone: "none",
-						width: "600px",
-						height: "300px"
-					});
-					start();
-					notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
-					notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
-					strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "undefined", "clone none should not create a clone assert");
-					strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
-					strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
-					strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
-					zoom.igZoombar("destroy");
-				}, 500);
-			});
-			// test for issue #454
-			test(bugTest_1, 1, function () {
-				var cloneOpts, zi;
-				genericOpts.series[0].type = "line";
-				chart.igDataChart(genericOpts);
-				zoom.igZoombar({
-					target: chart,
-					zoomChanging: function () {
-						ok(true, "zoomChanging fires due to a change in zoom")
-					}
-				});
-				stop();
-				setTimeout(function () {
-					start();
-					zi = zoom.data("igZoombar");
-					// first should be processed
-					zi._zoom(0.6, 0.2, true, true);
-					// second shouldn't - only one event handling should be detected
-					zi._zoom(zi._cw.left, zi._cw.width, true, true);
-					chart.igDataChart("destroy");
-					zoom.igZoombar("destroy");
-				}, 500);
-			});
+			//module("igZoombar", {
+			//	setup: function() {
+			//		//pause testing until grids are initialized
+			//		if (!initialized) {
+			//			stop();
+			//			generateBasicDataSource();
+			//			setTimeout(function () { start(); }, 100);
+			//			initialized = true;
+			//		}
+			//	},
+			//	teardown: function() {
+			//	}
+			//});
+			//
+			//basicOpts = {
+			//	width: "500px",
+			//	height: "200px",
+			//	horizontalZoomable: true,
+			//	verticalZoomable: false,
+			//	windowResponse: "immediate"
+			//};
+			//$.extend(true, genericOpts, basicOpts, {
+			//	axes: [
+			//		{ name: "xAxis", type: "categoryX", label: "Label"},
+			//		{ name: "yAxis", type: "numericY" }
+			//	],
+			//	series: [{
+			//		name: "series3",
+			//		title: "Mazda",
+			//		type: "area",
+			//		xAxis: "xAxis",
+			//		yAxis: "yAxis",
+			//		valueMemberPath: "Value3",
+			//		showTooltip: false
+			//	}],
+			//});
+			//$.extend(true, barOpts, basicOpts, {
+			//	axes: [
+			//		{ name: "yAxis", type: "categoryY", label: "Label" },
+			//		{ name: "xAxis", type: "numericX" }
+			//	],
+			//	series: [{
+			//		name: "series1",
+			//		title: "Test Series",
+			//		type: "bar",
+			//		xAxis: "xAxis",
+			//		yAxis: "yAxis",
+			//		valueMemberPath: "Value1",
+			//		markerType: "circle",
+			//		showTooltip: true,
+			//		isHighlightingEnabled: true,
+			//		trendLineType: "linearFit",
+			//		trendLineBrush: "red"
+			//	}]
+			//});
+			//$.extend(true, rangeOpts, basicOpts, {
+			//	axes: [
+			//		{ name: "xAxis", type: "categoryX", label: "Label" },
+			//		{ name: "yAxis", type: "numericY" }
+			//	],
+			//	series: [{
+			//		name: "series1",
+			//		type: "rangeArea",
+			//		xAxis: "xAxis",
+			//		yAxis: "yAxis",
+			//		lowMemberPath: "Value1",
+			//		highMemberPath: "Value2"
+			//	}]
+			//});
+			//$.extend(true, scatterOpts, basicOpts, {
+			//	axes: [
+			//		{ name: "xAxis", type: "numericX" },
+			//		{ name: "yAxis", type: "numericY" }
+			//	],
+			//	series: [{
+			//		name: "series1",
+			//		type: "scatter",
+			//		xAxis: "xAxis",
+			//		yAxis: "yAxis",
+			//		xMemberPath: "Index",
+			//		yMemberPath: "Value1"
+			//	}]	
+			//});
+			//$.extend(true, finOpts, basicOpts, {
+			//	axes: [{
+			//		name: "xAxis",
+			//		type: "categoryX",
+			//		label: "DateString",
+			//		labelVisibility: "collapsed"
+			//	},
+			//	{
+			//		name: "yAxis",
+			//		type: "numericY",
+			//		labelVisibility: "collapsed"
+			//	}],
+			//	series: [{
+			//		name: "series1",
+			//		title: "Price Series",
+			//		type: "financial",
+			//		xAxis: "xAxis",
+			//		yAxis: "yAxis",
+			//		openMemberPath: "Open",
+			//		highMemberPath: "High",
+			//		lowMemberPath: "Low",
+			//		closeMemberPath: "Close",
+			//		showTooltip: true,
+			//		thickness: 2,
+			//		trendLineBrush: "rgba(68, 172, 214, .8)",
+			//		trendLineThickness: 5,
+			//		trendLineType: "exponentialAverage",
+			//		negativeBrush: "rgba(198, 45, 54, .8)",
+			//		displayType: "ohlc"
+			//	}]
+			//});
+			//
+			//// Rendering tests
+			//var testId_11 = "igZoombar test 1.1: init/destroy tests for area chart";
+			//var testId_12 = "igZoombar test 1.2: init/destroy tests for column chart";
+			//var testId_13 = "igZoombar test 1.3: init/destroy tests for line chart";
+			//var testId_14 = "igZoombar test 1.4: init/destroy tests for spline area chart";
+			//var testId_15 = "igZoombar test 1.5: init/destroy tests for spline chart";
+			//var testId_16 = "igZoombar test 1.6: init/destroy tests for step area chart";
+			//var testId_17 = "igZoombar test 1.7: init/destroy tests for step line chart";
+			//var testId_18 = "igZoombar test 1.8: init/destroy tests for waterfall chart";
+			//var testId_19 = "igZoombar test 1.9: init/destroy tests for bar chart";
+			//var testId_110 = "igZoombar test 1.10: init/destroy tests for range area chart";
+			//var testId_111 = "igZoombar test 1.11: init/destroy tests for range column chart";
+			//var testId_112 = "igZoombar test 1.12: init/destroy tests for scatter chart";
+			//var testId_113 = "igZoombar test 1.13: init/destroy tests for scatter line chart";
+			//var testId_114 = "igZoombar test 1.14: init/destroy tests for scatter spline chart";
+			//var testId_115 = "igZoombar test 1.15: init/destroy tests for bubble chart";
+			//var testId_116 = "igZoombar test 1.16: init/destroy tests for financial ohlc chart";
+			//var testId_117 = "igZoombar test 1.17: init tests for financial candlestick chart";
+			//// API tests
+			//var testId_21 = "igZoombar test 2.1: properties tests";
+			//var testId_22 = "igZoombar test 2.2: public api tests";
+			//var testId_23 = "igZoombar test 2.3: custom provider tests";
+			//// Bug automation
+			//var bugTest_1 = "igZoombar bug automation test 1: Zoom operation with the same zoom params shouldn't be processed";
+			//
+			//test(testId_11, 13, function () {
+			//	var cloneOpts;
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_12, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "column";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_13, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "line";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_14, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "splineArea";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_15, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "spline";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_16, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "stepArea";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_17, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "stepLine";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_18, 13, function () {
+			//	var cloneOpts;
+			//	genericOpts.series[0].type = "waterfall";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_19, 13, function () {
+			//	var cloneOpts;
+			//	chart.igDataChart(barOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_110, 13, function () {
+			//	var cloneOpts;
+			//	chart.igDataChart(rangeOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_111, 13, function () {
+			//	var cloneOpts;
+			//	rangeOpts.series[0].type = "rangeColumn";
+			//	chart.igDataChart(rangeOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_112, 13, function () {
+			//	var cloneOpts;
+			//	chart.igDataChart(scatterOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_113, 13, function () {
+			//	var cloneOpts;
+			//	scatterOpts.series[0].type = "scatterLine";
+			//	chart.igDataChart(scatterOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_114, 13, function () {
+			//	var cloneOpts;
+			//	scatterOpts.series[0].type = "scatterSpline";
+			//	chart.igDataChart(scatterOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_115, 13, function () {
+			//	var cloneOpts;
+			//	$.extend(true, bubbleOpts, scatterOpts, { 
+			//		series: [{
+			//			type: "bubble",
+			//			radiusMemberPath: "Value2",
+			//			fillMemberPath: "Value3",
+			//			labelMemberPath: "Value2",
+			//			markerType: "circle",
+			//			fillScale: {
+			//				type: "value",
+			//				brushes: ["red", "blue"],
+			//				minimumValue: 0,
+			//				maximumValue: 20
+			//			}
+			//		}]
+			//	});
+			//	chart.igDataChart(bubbleOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_116, 13, function () {
+			//	var cloneOpts;
+			//	chart.igDataChart(finOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//		strictEqual(typeof chart.data("igDataChart"), "undefined", "chart destroyed assert");
+			//		strictEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar destroyed assert");
+			//	}, 500);
+			//});
+			//test(testId_117, 11, function () {
+			//	var cloneOpts;
+			//	finOpts.series[0].dataSource = finData;
+			//	finOpts.axes[0].dataSource = finData;
+			//	finOpts.series[0].displayType = "candleStick";
+			//	chart.igDataChart(finOpts);
+			//	zoom.igZoombar({ target: chart });
+			//	notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//	notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//	cloneOpts = zoom.igZoombar("clone").data("igDataChart").options;
+			//	strictEqual(cloneOpts.gridMode, "none", "clone chart gridMode option assert");
+			//	strictEqual(cloneOpts.isSurfaceInteractionDisabled, false, "clone chart isSurfaceInteractionDisabled option assert");
+			//	strictEqual(cloneOpts.horizontalZoomable, false, "clone chart horizontalZoomable option assert");
+			//	strictEqual(cloneOpts.verticalZoomable, false, "clone chart verticalZoomable option assert");
+			//	strictEqual(cloneOpts.crosshairVisibility, "hidden", "clone chart crosshairVisibility option assert");
+			//	strictEqual(cloneOpts.series[0].showTooltip, false, "clone chart series tooltip assert");
+			//	strictEqual(cloneOpts.series[0].thickness, 1, "clone chart series thickness assert");
+			//	strictEqual(cloneOpts.axes[0].labelVisibility, "collapsed", "clone chart axes x labelVisibility assert");
+			//	strictEqual(cloneOpts.axes[1].labelVisibility, "collapsed", "clone chart axes y labelVisibility assert");
+			//});
+			//test(testId_21, 20, function () {
+			//	stop();
+			//	setTimeout(function () {
+			//		zoom.igZoombar("destroy");
+			//		zoom.igZoombar({
+			//			provider: $.ig.ZoombarProviderDataChart,
+			//			providerCreated: function (evt, ui) {
+			//				ui.provider.targetObject($(".testclass").data("igDataChart"));
+			//			},
+			//			target: ".testclass",
+			//			clone: "none",
+			//			width: "600px",
+			//			height: "300px"
+			//		});
+			//		notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//		notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//		strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "undefined", "clone none should not create a clone assert");
+			//		strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
+			//		strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
+			//		strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
+			//		setTimeout(function () {
+			//			start();
+			//			zoom.igZoombar("destroy");
+			//			zoom.igZoombar({
+			//				target: ".testclass",
+			//				zoomWindowMoveDistance: 20,
+			//				defaultZoomWindow: {
+			//					left: 40,
+			//					width: 20
+			//				},
+			//				zoomWindowMinWidth: 10,
+			//				windowPanDuration: 0
+			//			});
+			//			notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//			notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//			strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "object", "clone none should not create a clone assert");
+			//			strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
+			//			strictEqual(zoom.outerWidth(), 500, "zoombar assings proper width assert");
+			//			strictEqual(zoom.outerHeight(), 70, "zoombar assings proper height assert");
+			//			strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.40", "zoombar assings proper left for window assert");
+			//			strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.20", "zoombar assings proper width for window assert");
+			//			strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.40", "zoombar assings proper left to chart assert");
+			//			strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
+			//			// test zoomWindowMoveDistance
+			//			$("#tzoombar_zoombar_buttons_right").children().first().trigger("click");
+			//			strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.60", "zoombar assings proper left for window assert");
+			//			strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.20", "zoombar assings proper width for window assert");
+			//			strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.60", "zoombar assings proper left to chart assert");
+			//			strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
+			//		}, 500);
+			//	}, 500);
+			//	// test zoomWindowMinWidth
+			//	/* trigger for the current jquery version doesn't work - commenting until we update
+			//	var event = jQuery.Event("mousewheel");
+			//	event.originalEvent = { mouseWheel: 1320 };
+			//	$(".ui-igzoombar-mask").trigger(event);
+			//	strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.10", "zoombar does not let the width to be lowered below the minimum assert");
+			//	strictEqual(chart.data("igDataChart")._chart.windowRect().__width.toFixed(2), "0.10", "zoombar does not let the width of the chart to be lowered below the minimum assert");
+			//	*/
+			//});
+			//test(testId_22, 8, function () {
+			//	zoom.igZoombar("zoom", 10, 50);
+			//	strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.10", "zoom method assings proper left for window assert");
+			//	strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.50", "zoom method assings proper width for window assert");
+			//	strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.10", "zoom method assings proper left to chart assert");
+			//	strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.50", "zoom method assings proper width to chart assert");
+			//	zoom.igZoombar("zoom", -100, 200);
+			//	strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.00", "zoom method assings proper left for window assert");
+			//	strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "1.00", "zoom method assings proper width for window assert");
+			//	strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.00", "zoom method assings proper left to chart assert");
+			//	strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "1.00", "zoom method assings proper width to chart assert");
+			//});
+			//test(testId_23, 6, function () {
+			//	stop();
+			//	ZoombarProviderDataChartCustom = $.ig.ZoombarProviderDataChart.extend({
+//
+			//	});
+			//	setTimeout(function () {
+			//		zoom.igZoombar("destroy");
+			//		zoom.igZoombar({
+			//			provider: ZoombarProviderDataChartCustom,
+			//			providerCreated: function (evt, ui) {
+			//				ui.provider.targetObject($(".testclass").data("igDataChart"));
+			//			},
+			//			target: ".testclass",
+			//			clone: "none",
+			//			width: "600px",
+			//			height: "300px"
+			//		});
+			//		start();
+			//		notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+			//		notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+			//		strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "undefined", "clone none should not create a clone assert");
+			//		strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
+			//		strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
+			//		strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
+			//		zoom.igZoombar("destroy");
+			//	}, 500);
+			//});
+			//// test for issue #454
+			//test(bugTest_1, 1, function () {
+			//	var cloneOpts, zi;
+			//	genericOpts.series[0].type = "line";
+			//	chart.igDataChart(genericOpts);
+			//	zoom.igZoombar({
+			//		target: chart,
+			//		zoomChanging: function () {
+			//			ok(true, "zoomChanging fires due to a change in zoom")
+			//		}
+			//	});
+			//	stop();
+			//	setTimeout(function () {
+			//		start();
+			//		zi = zoom.data("igZoombar");
+			//		// first should be processed
+			//		zi._zoom(0.6, 0.2, true, true);
+			//		// second shouldn't - only one event handling should be detected
+			//		zi._zoom(zi._cw.left, zi._cw.width, true, true);
+			//		chart.igDataChart("destroy");
+			//		zoom.igZoombar("destroy");
+			//	}, 500);
+			//});
 		});
 	</script>
 </head>
