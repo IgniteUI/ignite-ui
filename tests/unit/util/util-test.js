@@ -406,3 +406,10 @@ QUnit.test('[ID19] Test arrayCopy1', function (assert) {
 	$.ig.util.arrayCopy1(arr, 0, target, 1, 4);
 	assert.deepEqual(target, [6,1,2,3,4], "Copy content to the end of another array");
 });
+
+QUnit.test('[ID20] Test OADate', function (assert) {
+	assert.expect(1);
+
+	var dt = new Date(2000, 1, 1);
+	assert.equal($.ig.Date.prototype.fromOADate(dt.toOADate()).getTime(), +dt,  "The date should roundtrip");
+});
