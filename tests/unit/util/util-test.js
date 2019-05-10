@@ -406,3 +406,17 @@ QUnit.test('[ID19] Test arrayCopy1', function (assert) {
 	$.ig.util.arrayCopy1(arr, 0, target, 1, 4);
 	assert.deepEqual(target, [6,1,2,3,4], "Copy content to the end of another array");
 });
+
+QUnit.test('[ID20] Test OADate', function (assert) {
+	assert.expect(7);
+
+	var dates = [new Date(2000, 1, 1), new Date(2004, 6, 30), new Date(2004, 0, 1, 11), new Date(2007, 12, 31, 11, 30), new Date("2011-10-10T14:48:00.000+09:00")];
+	for (var i = 0; i < dates.length; i++) {
+		var dt = dates[i];
+		assert.equal($.ig.Date.prototype.fromOADate(dt.toOADate()).getTime(), +dt,  "The date should roundtrip:" + dt);
+	}
+	
+	var d1 = new Date(1999, 6, 4, 12, 0, 0);
+	assert.equal(d1.toOADate(), 36345.5,  "toOADate for " + d1);
+	assert.equal($.ig.Date.prototype.fromOADate(36345.5).getTime(), +d1,  "fromOADate to " + d1);
+});
