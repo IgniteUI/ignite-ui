@@ -2340,7 +2340,7 @@
 			}
 		},
 		_calculateDropDownListOrientation: function () {
-			var containerOffset = this._editorContainer.offset(),
+			var containerOffset = this._editorContainer.igOffset(),
 				containerTop = containerOffset.top,
 				containerHeight = parseFloat(this._editorContainer.css("height")),
 				dropDownAndEditorHeight = parseInt(containerTop + containerHeight + this._listInitialHeight),
@@ -2360,7 +2360,7 @@
 			return orientation;
 		},
 		_positionDropDownList: function () {
-			var containerOffset = this._editorContainer.offset(),
+			var containerOffset = this._editorContainer.igOffset(),
 			containerTop = containerOffset.top,
 			containerLeft = containerOffset.left,
 			containerHeight = parseFloat(this._editorContainer.css("height")),
@@ -2648,6 +2648,11 @@
 			if (!target) {
 				return;
 			}
+
+			//	MV 23.11.18 #1846
+			//	ensure events are attached just once
+			this._detachButtonsEvents(target);
+
 			/* jshint -W083*/
 			target.on({
 				"mouseenter.button": function () {
@@ -2848,7 +2853,6 @@
 			}
 		},
 		_processValueChanging: function (value) { //TextEditor
-
 			if (value !== this.value()) {
 				if (!(this.value() === null && value === "")) {
 				this._triggerInternalValueChange(value);
@@ -3291,8 +3295,8 @@
 			return result;
 		},
 		_elementPositionInViewport: function (el) {
-				var areaTop = Math.ceil(el.parent().offset().top),
-					elementoffset = Math.ceil(el.offset().top),
+				var areaTop = Math.ceil(el.parent().igOffset().top),
+					elementoffset = Math.ceil(el.igOffset().top),
 					elementHeight = Math.ceil(el.outerHeight()),
 					listVisibleHeight = el.parent().outerHeight(), result;
 				if (elementoffset - areaTop < 0) {
@@ -3317,7 +3321,7 @@
 						newItem.outerHeight());
 				} else if (position === "bottom") {
 					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						newItem.position().top);
+						newItem.igPosition().top);
 				}
 				currentItem.removeClass(this.css.listItemActive,
 					this.options.listItemHoverDuration);
@@ -3339,7 +3343,7 @@
 						newItem.outerHeight());
 				} else if (position === "top") {
 					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						newItem.position().top);
+						newItem.igPosition().top);
 				}
 				currentItem.removeClass(this.css.listItemActive,
 					this.options.listItemHoverDuration);
@@ -3459,7 +3463,7 @@
 			}
 			if (this._elementPositionInViewport(activeItem) !== "inside") {
 				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						activeItem.position().top);
+						activeItem.igPosition().top);
 			}
 			activeItem.attr("data-active", true);
 		},
@@ -3776,7 +3780,10 @@
 			var self = this;
 			if (type === "spinUp") {
 				this._handleSpinUpEvent();
-				if (!target.attr("disabled")) {
+
+				//	MV 23.11.18 #1846
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinUpEvent();
@@ -3785,7 +3792,10 @@
 				}
 			} else if (type === "spinDown") {
 				this._handleSpinDownEvent();
-				if (!target.attr("disabled")) {
+
+				//	MV 23.11.18 #1846
+				//	we should call setTimeout just once
+				if (!target.attr("disabled") && !target._spinTimeOut) {
 					target._spinTimeOut = setTimeout(function () {
 						target._spinInterval = setInterval(function () {
 							self._handleSpinDownEvent();
@@ -3874,7 +3884,7 @@
 					position = this._elementPositionInViewport(newSelectedItem);
 					if (position !== "inside") {
 						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-							newSelectedItem.position().top);
+							newSelectedItem.igPosition().top);
 					}
 					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
@@ -4574,12 +4584,7 @@
 			return this.options[ name ] !== null ? this.options[ name ] : this._getRegionalValue(regName);
 		},
 		_setInitialValue: function (value) { // NumericEditor
-			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
-			if (!isNaN(this.options.minValue) && this.options.minValue > value) {
-				value = this.options.minValue;
-			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
-				value = this.options.maxValue;
-			}
+			value = this._getValueBetweenMinMax(value);
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
@@ -4677,6 +4682,19 @@
 				this._getOptionOrRegionalValue("maxDecimals")) {
 				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
+		},
+		_getValueBetweenMinMax: function(value) {
+
+			// N.A. 7 November 2018, Bug #1834, Initial value that is null, should not be overwritten by the min/max values.
+			if (!(this.options.allowNullValue && value === this.options.nullValue)) {
+				// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+				if (!isNaN(this.options.minValue) && this.options.minValue > value) {
+					value = this.options.minValue;
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
+					value = this.options.maxValue;
+				}
+			}
+			return value;
 		},
 		_setOption: function (option, value) { // igNumericEditor
 			/* igNumericEditor custom setOption goes here */
@@ -5326,13 +5344,7 @@
 				newValue = this.options.nullValue;
 			}
 
-			// D.P. nullValue does not override min/max
-			// If the min value is different from zero, we clear the value with the minimum value.
-			if (!isNaN(this.options.minValue) && this.options.minValue > newValue) {
-				newValue = this.options.minValue;
-			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < newValue) {
-				newValue = this.options.maxValue;
-			}
+			newValue = this._getValueBetweenMinMax(newValue);
 
 			//D.P. This handles both invalid nullValue and 0 not being in the list of items for #942
 			if (!this._validateValue(newValue)) {
@@ -7201,6 +7213,11 @@
 			if (this._validateValue(value) &&
 				(this.options.revertIfNotValid && this._validateRequiredPrompts(value) ||
 				!this.options.revertIfNotValid)) {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				this._updateValue(value);
 			} else {
 
@@ -9213,6 +9230,11 @@
 			if ($.type(value) === "date") {
 				parsedVal = value;
 			} else {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
 			parsedVal = this._getValueBetweenMinMax(parsedVal);
@@ -10335,7 +10357,7 @@
 
 			// N.A. 3/12/2016 Bug #215134: When we enter a value and spin before the date is created, we create a today date, cause everything is empty.
 			if (!this._dateObjectValue && mask.indexOf(unfilled) >= 0) {
-				mask = this._initEmptyMask(this._dateObjectValue);
+				mask = this._initEmptyMask(this._dateObjectValue, mask);
 				mask = mask.substring(0, time.startPosition) +
 					currentValueString +
 					mask.substring(time.endPosition, mask.length);
@@ -10371,15 +10393,15 @@
 			}
 			return mask;
 		},
-		_initEmptyMask: function (date) {
-			var mask = this._maskWithPrompts,
-				today = this._setNewDateMidnight(),
-				timeYear, timeMonth, timeDay, timeHours,
+		_initEmptyMask: function (date, mask) {
+			mask = mask || this._maskWithPrompts;
+			var	timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
 
 			if (!date) {
-				date = today;
+				// V.S. Apr 2nd 2018, #1902 If there is not previous value, get value from mask
+				date = this._parseDateFromMaskedValue(mask);
 			}
 
 			timeYear = this._createYearPosition();
@@ -10441,7 +10463,7 @@
 			if (mask === undefined) {
 				return;
 			} else if (mask === "" || mask === this._maskWithPrompts) {
-				mask = this._initEmptyMask(this._dateObjectValue);
+				mask = this._initEmptyMask(this._dateObjectValue, mask);
 			} else {
 				mask = this._updateTimeMask(mask, time, delta);
 			}
@@ -11127,7 +11149,7 @@
 
 			//V.S. March 7th 2018 - #1358 if no regional option is provided and a global regional is set, uses the global one
 			if ($.datepicker && typeof reg === "string") {
-				if (reg === "defaults" || reg === "en-US") {
+				if (reg === "defaults") {
 					if (typeof $.ig.util.regional === "string" && $.ig.util.regional) {
 						abbreviation = $.ig.util.regional;
 					}
@@ -12259,7 +12281,7 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
 			```*/
-			isLimitedToListValues: true,
+			isLimitedToListValues: false,
 			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
 				Note: The option does not perform device detection so its behavior is always active if enabled.
 				Note: When drop down is opened the only way to close it will be using the drop down button.
@@ -12655,12 +12677,14 @@
 			initDate.setSeconds(0);
 
 			this.options.listItems = [];
+			this.options.timeItems = [];
 
 			for (var i = startMinutes; i < dropDownItemsCount; i++) {
 				var date = new Date(initDate);
 				date.setMinutes(timeDeltaMinutes * i);
 				if (timeDeltaMinutes * i >= minValue && timeDeltaMinutes * i <= maxValue) {
 					this.options.listItems.push(date);
+					this.options.timeItems.push(date.toTimeString());
 				}
 			}
 		},
@@ -12721,6 +12745,12 @@
 				}
 				this._super(this._parseDateFromMaskedValue(currentVal));
 			}
+		},
+		_valueIndexInList: function (val) { //igTimePicker
+			if (!val && val !== 0) {
+				return -1;
+			}
+			return $.inArray(val.toTimeString(), this.options.timeItems);
 		},
 		_setBlur: function (event) { //igTimePicker
 			this._super(event);

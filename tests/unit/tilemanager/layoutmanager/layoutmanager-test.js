@@ -518,7 +518,7 @@ QUnit.test('[ID6] igLayoutManager grid layoutigLayoutManager grid layout with co
 		]
 	});
 	
-	offset = container.offset();
+	offset = container.igOffset();
 	gridLayout = lm.data("igLayoutManager")._opt.gridLayout;
 	firstElement = $(gridLayout.elements[0]);
 	secondElement = $(gridLayout.elements[1]);

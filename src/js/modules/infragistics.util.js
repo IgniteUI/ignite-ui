@@ -1260,10 +1260,11 @@
 			return new Date();
 		},
 		fromOADate: function (value) {
-			var result = new Date(+(new Date(1899, 11, 30)) + Math.round(value * 86400000));
+			var days = Math.floor(value);
+			var result = new Date(1899, 11, 30 + days);
 
-			if (result.dst && result.dst()) {
-				return $.ig.Date.prototype.addHours(result, -1);
+			if (value !== days) {
+				result = new Date(+result + Math.round((value - days) * 86400000));
 			}
 
 			return result;
@@ -1477,13 +1478,10 @@
 	}, true);
 
 	$.ig.extendNativePrototype(Date.prototype, "toOADate", function () {
-		var result = (this - new Date(1899, 11, 30)) / 86400000;
-
-		if (this.dst && this.dst()) {
-			return result + (1 / 24);
-		}
-
-		return result;
+		var u1 = Date.UTC(this.getFullYear(), this.getMonth(), this.getDate(),
+			this.getHours(), this.getMinutes(), this.getSeconds(), this.getMilliseconds());
+		var u2 = Date.UTC(1899, 11, 30);
+		return (u1 - u2) / 86400000;
 	});
 
 	$.ig.extendNativePrototype(Date.prototype, "kind", function () {
@@ -1530,6 +1528,20 @@
 		}
 
 		Date.prototype.toISOString = Date.prototype.toJSON;
+	}
+
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	function removePolyfillIE() {
+		return this.parentNode && this.parentNode.removeChild(this);
+	}
+
+	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
+	if (!Element.prototype.remove) {
+		Element.prototype.remove = removePolyfillIE;
+	}
+
+	if (Text && !Text.prototype.remove) {
+		Text.prototype.remove = removePolyfillIE;
 	}
 
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
@@ -1732,6 +1744,10 @@
 			type = $.ig.Boolean.prototype.$type;
 		} else if (obj instanceof Date) {
 			type = $.ig.Date.prototype.$type;
+		} else if (obj instanceof Array) {
+			if (targetType == $.ig.IEnumerable.prototype.$type) {
+				return obj;
+			}
 		}
 
 		if ($.ig.util.canAssignSimple(targetType, type)) {

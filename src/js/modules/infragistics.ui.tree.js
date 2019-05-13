@@ -2194,7 +2194,7 @@
 					.addClass(this.css.dropIndicator).html(this._helper);
 				this._helperDirty = true;
 			} else if (target.is("li[data-role=node]") && this._validationObject.valid) {
-				targetTop = target.offset().top + target.height() / 2;
+				targetTop = target.igOffset().top + target.height() / 2;
 				dragTop = ui.offset.top + this._const.dragCursorAt.top;
 				if (dragTop > targetTop) {
 					this._validationObject.dropAfter = true;

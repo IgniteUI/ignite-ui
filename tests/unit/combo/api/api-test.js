@@ -276,7 +276,7 @@ QUnit.test('[ID6] Header/footer templates', function (assert) {
 
 	// Header
 	$header = $dropDown.children('.ui-igcombo-header');
-	headerOffsetTop = $header.offset().top - $dropDown.offset().top;
+	headerOffsetTop = $header.igOffset().top - $dropDown.igOffset().top;
 
 	// Adding tolerance for inconsistencies between the running engine and real browsers
 	assert.ok($header.outerHeight() - 3 <= 21 && $header.outerHeight() + 3 >= 21, 21, 'Header height did not match')
@@ -285,7 +285,7 @@ QUnit.test('[ID6] Header/footer templates', function (assert) {
 
 	// Footer
 	$footer = $dropDown.children('.ui-igcombo-footer');
-	footerOffsetTop = $footer.offset().top - $dropDown.offset().top;
+	footerOffsetTop = $footer.igOffset().top - $dropDown.igOffset().top;
 	footerExpOffsetTop = $header.outerHeight() + $list.outerHeight();
 
 	// Adding tolerance for inconsistencies between the running engine and real browsers
@@ -591,7 +591,7 @@ QUnit.test('[ID19] DropDownOrientation auto', function (assert) {
 	assert.ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonBottom), 'Drop down opened to the bottom');
 
 	// And should be at position:
-	offset = $comboWrapper.find(".ui-igcombo-dropdown").offset();
+	offset = $comboWrapper.find(".ui-igcombo-dropdown").igOffset();
 	//ok((offset.top - 50 <= dropDownExpPosBottom && offset.top + 50 >= dropDownExpPosBottom) && (offset.left - 50 <= dropDownExpPosLeft && offset.left + 50 >= dropDownExpPosLeft), 'Drop down opened at the expected position');
 
 	$comboWrapper.igCombo("closeDropDown");
@@ -605,7 +605,7 @@ QUnit.test('[ID19] DropDownOrientation auto', function (assert) {
 	assert.ok($comboWrapper.find(".ui-igcombo-dropdown").hasClass(cssClassOrientaitonTop), 'Drop down opened to the top');
 
 	// And should be at position:
-	offset = $comboWrapper.find(".ui-igcombo-dropdown").offset();
+	offset = $comboWrapper.find(".ui-igcombo-dropdown").igOffset();
 	//ok((offset.top - 50 <= dropDownExpPosTop && offset.top + 50 >= dropDownExpPosTop) && (offset.left - 50 <= dropDownExpPosLeft && offset.left + 50 >= dropDownExpPosLeft), 'Drop down opened at the expected position');
 });
 

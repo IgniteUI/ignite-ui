@@ -56,7 +56,7 @@
 				// calculate position
 				//op = this.element.offsetParent();
 				//if (op.is('body')) {
-				offset = this.element.offset();
+				offset = this.element.igOffset();
 
 				//} else {
 				//	offset = op.position();
@@ -94,21 +94,21 @@
 			this._resId = null;
 		},
 		_resizeContainer: function () {
-			var offset = this.element.offset();
+			var offset = this.element.igOffset();
 			if (offset.top + this.element.innerHeight() / 2 - this._yShift !== this._indicator.css("top")) {
 				this.refreshPos();
 			}
 		},
         refreshPos: function () {
-			var offset = this.element.offset(), top = offset.top +
+			var offset = this.element.igOffset(), top = offset.top +
                 this.element.innerHeight() / 2 - this._yShift,
 				left = offset.left + this.element.innerWidth() / 2, verticalOffset, relativeOffset; // special offset in case the grid is taller than the browser window
-			if (this._hgrid.length > 0 && top > this._hgrid.offset().top + this._hgrid.height()) {
+			if (this._hgrid.length > 0 && top > this._hgrid.igOffset().top + this._hgrid.height()) {
 
 				// we don't want to show the loading indicator of child grids out of the area of their parent grids
 				return;
 			}
-			if (this._hgrid.length > 0 && left > this._hgrid.offset().left + this._hgrid.width()) {
+			if (this._hgrid.length > 0 && left > this._hgrid.igOffset().left + this._hgrid.width()) {
 				return;
 			}
 
@@ -485,7 +485,7 @@
 				width: this.element.outerWidth(),
 				height: this.element.outerHeight()
 			};
-			this.elementOffset = this.element.offset();
+			this.elementOffset = this.element.igOffset();
 
 			position = { x: event.pageX, y: event.pageY };
 			normValue = this._normValueFromMouse(position);
