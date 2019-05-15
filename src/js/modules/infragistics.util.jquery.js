@@ -36,7 +36,7 @@
 	window.$ig = window.$ig || $.ig;
 
 	$.ig.getWindow = function( elem ) {
-		return jQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
+		return $.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
 	};
 	$.fn.startsWith = function (str) {
 		return this[ 0 ].innerHTML.indexOf(str) === 0;
@@ -151,14 +151,14 @@
 			.replace(/'/g, "&#39;")
 			.replace(/"/g, "&#34;") : "";
 	};
-	jQuery.fn.extend( {
+	$.fn.extend( {
 		igOffset: function (options) {
 			// Preserve chaining for setter
 		if ( arguments.length ) {
 			return options === undefined ?
 				this :
 				this.each( function( i ) {
-					jQuery.offset.setOffset( this, options, i );
+					$.offset.setOffset( this, options, i );
 				} );
 		}
 
@@ -204,7 +204,7 @@
 
 			// Fixed elements are offset from window (parentOffset = {top:0, left: 0},
 			// because it is its only offset parent
-			if ( jQuery.css( elem, "position" ) === "fixed" ) {
+			if ( $.css( elem, "position" ) === "fixed" ) {
 
 				// we assume that getBoundingClientRect is available when computed position is fixed
 				offset = elem.getBoundingClientRect();
@@ -215,21 +215,21 @@
 
 				// Get correct offsets
 				offset = this.igOffset();
-				if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
+				if ( !$.nodeName( offsetParent[ 0 ], "html" ) ) {
 					parentOffset = offsetParent.igOffset();
 				}
 
 				// Add offsetParent borders
-				parentOffset.top  += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
-				parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
+				parentOffset.top  += $.css( offsetParent[ 0 ], "borderTopWidth", true );
+				parentOffset.left += $.css( offsetParent[ 0 ], "borderLeftWidth", true );
 			}
 
 			// Subtract parent offsets and element margins
 			// note: when an element has margin: auto the offsetLeft and marginLeft
 			// are the same in Safari causing offset.left to incorrectly be 0
 			return {
-				top:  offset.top  - parentOffset.top - jQuery.css( elem, "marginTop", true ),
-				left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
+				top:  offset.top  - parentOffset.top - $.css( elem, "marginTop", true ),
+				left: offset.left - parentOffset.left - $.css( elem, "marginLeft", true )
 			};
 		}
 	});
