@@ -790,6 +790,33 @@
             }, 1100);
         });
     });
+
+    test("#1916 Child dialog should not cause parent dialog to have scrollbars", function() {
+        $(`<div id="firstDialog">
+            <button id="open">open</button>
+            <div id="secondDialog"></div>
+          </div>`).appendTo("#dialog1");
+        $("#firstDialog").igDialog({
+            width: 500,
+            height: 400,
+            modal: true,
+        });
+        $("#open").on("click", function () {
+            $("#secondDialog").igDialog({
+                width: 300,
+                height: 200,
+                modal: true,
+            });
+        });
+        $("#open").click();
+        stop();
+        setTimeout(function() {
+            start();
+            ok($("iframe").height() === 1 && $("iframe").width() === 1, "iframe width and height should be equal to 1");
+            $("#firstDialog").remove();
+            $("#secondDialog").remove();
+        }, 1000);
+    });
     </script>
 </head>
 <body id="rootBody">
