@@ -792,10 +792,8 @@
     });
 
     test("#1916 Child dialog should not cause parent dialog to have scrollbars", function() {
-        $(`<div id="firstDialog">
-            <button id="open">open</button>
-            <div id="secondDialog"></div>
-          </div>`).appendTo("#dialog1");
+        $('<div id="firstDialog"><button id="open">open</button><div id="secondDialog"></div></div>')
+            .appendTo("#dialog1");
         $("#firstDialog").igDialog({
             width: 500,
             height: 400,
