@@ -2360,7 +2360,9 @@
 			// adjust modal DIV/IFRAME-shells
 			if (div) {
 				div.show();
-				self._doIframe(div);
+
+				// B.P. 6th June 2019 #1916 - Nested modal dialog shows a scrollbar on its parent
+				self._doIframe(div, 1);
 			}
 		},
 		_minHeaderWidth: function () {
