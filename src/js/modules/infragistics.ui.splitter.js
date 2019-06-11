@@ -1292,7 +1292,7 @@
                         resizeArea.right.options.max),
                     pos;
                 if (max > min) {
-                    pos = resizeArea.right.offset()[ this._getOrientation("dimention") ] -
+                    pos = resizeArea.right.igOffset()[ this._getOrientation("dimention") ] -
                         this._capturedElement[ this._getOrientation("outerSize") ](true);
                     return {
                         position: pos,
@@ -1317,7 +1317,7 @@
                 };
             },
             _getNextBoundary: function (panel) {
-                var size = panel.right.offset()[ this._getOrientation("dimention") ] +
+                var size = panel.right.igOffset()[ this._getOrientation("dimention") ] +
                     panel.right[ this._getOrientation("size") ]() -
                     this._capturedElement[ this._getOrientation("outerSize") ](true);
                 if (panel.right.options.collapsed) {
@@ -1326,7 +1326,7 @@
                 return size;
             },
             _getPreviousBoundary: function (panel) {
-                var size = panel.left.offset()[ this._getOrientation("dimention") ];
+                var size = panel.left.igOffset()[ this._getOrientation("dimention") ];
                 if (panel.left.options.collapsed) {
                     size += panel.left.options.min;
                 }
@@ -1629,6 +1629,18 @@
                     $panel2, size, sizeKey);
                 this._resolveRoundingConflictsOfCloneObject($panel2, $panel2.css(minSize),
                     $panel1, size, sizeKey);
+
+                if (this.options.orientation === "vertical") {
+                    // RMK: Dec 18, 2018 - git#1696
+                    // splitter orientation is vertical - panels are side by side
+                    // if there are left and/or right borders on the panels - subtract them from the panels' width
+                    var panel1BorderWidth =
+                        this._panels[ 0 ][ 0 ].offsetWidth - this._panels[ 0 ][ 0 ].clientWidth;
+                    $panel1[ sizeKey ]($panel1[ sizeKey ]() - panel1BorderWidth);
+                    var panel2BorderWidth =
+                        this._panels[ 1 ][ 0 ].offsetWidth - this._panels[ 1 ][ 0 ].clientWidth;
+                    $panel2[ sizeKey ]($panel2[ sizeKey ]() - panel2BorderWidth);
+                }
 
                 this._setPanelSize(this._panels[ 1 ], $panel2[ sizeKey ]());
 

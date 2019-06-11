@@ -2501,7 +2501,11 @@
 			this._removeVideoProperty(video, "autoplay");
 			this._removeVideoProperty(video, "preload");
 			this._removeVideoProperty(video, "loop");
-			this._removeVideoProperty(video, "poster");
+
+			// B.P. Dec 11th, 2018 Bug #1827 An error is thrown when igVideoPlayer is initialized on a video element
+			if (this._oldPoster !== "") {
+				this._removeVideoProperty(video, "poster");
+			}
 			this._removeVideoProperty(video, "controls");
 			this._removeVideoProperty(video, "src");
 		},
@@ -3161,7 +3165,7 @@
 			}
 
 			var comVideo = $("#" + this._id("_com_video")),
-				videoOffset = this.currentVideo.offset(),
+				videoOffset = this.currentVideo.igOffset(),
 				slider = $("#" + this._id("_ctrls_s")),
 				bookmarks = slider.data("igSlider").bookmarks,
 				bookmarkTitle = $("#" + this._id("_ctrls_s_tooltip"));
@@ -3389,7 +3393,7 @@
 				titleOption,
 				videoElem = video[ 0 ],
 				mainVideo = this._getMainVideo(),
-				videoOffset = video.offset(),
+				videoOffset = video.igOffset(),
 				options = this.options,
 				noCancel = true,
 				fsVideoH = 0;
@@ -4764,11 +4768,11 @@
 			$("#" + this._id("_ctrls_pb")).bind({
 				mousemove: function (e) {
 					if (control.options.showSeekTime && this.offsetWidth > 0) {
-						var relativeX = e.pageX - this.offsetLeft - $(this).offset().left,
+						var relativeX = e.pageX - this.offsetLeft - $(this).igOffset().left,
 							percentLocation = parseInt((relativeX / this.offsetWidth) * 100, 10),
 							duration = videoElem.duration,
 							seconds,
-							controlOffset = control.container.offset();
+							controlOffset = control.container.igOffset();
 						if (!isNaN(duration) && duration !== Infinity && !control._commercialPlaying) {
 							seconds = parseInt((percentLocation * duration) / 100, 10);
 							control._showSeekTimeToolTip(e.pageX - controlOffset.left,

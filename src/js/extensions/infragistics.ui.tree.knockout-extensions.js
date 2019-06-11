@@ -62,6 +62,8 @@
 			ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
 				$(element).igTree("destroy");
 			});
+			/* Prevent knockout 3.5 from recursively apply bindings to children */
+			return { "controlsDescendantBindings": true };
 		},
 		update: function (element, valueAccessor) {
 			var options = ko.utils.unwrapObservable(valueAccessor()),

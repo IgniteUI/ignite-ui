@@ -2340,7 +2340,7 @@
 			}
 		},
 		_calculateDropDownListOrientation: function () {
-			var containerOffset = this._editorContainer.offset(),
+			var containerOffset = this._editorContainer.igOffset(),
 				containerTop = containerOffset.top,
 				containerHeight = parseFloat(this._editorContainer.css("height")),
 				dropDownAndEditorHeight = parseInt(containerTop + containerHeight + this._listInitialHeight),
@@ -2360,7 +2360,7 @@
 			return orientation;
 		},
 		_positionDropDownList: function () {
-			var containerOffset = this._editorContainer.offset(),
+			var containerOffset = this._editorContainer.igOffset(),
 			containerTop = containerOffset.top,
 			containerLeft = containerOffset.left,
 			containerHeight = parseFloat(this._editorContainer.css("height")),
@@ -3296,8 +3296,8 @@
 			return result;
 		},
 		_elementPositionInViewport: function (el) {
-				var areaTop = Math.ceil(el.parent().offset().top),
-					elementoffset = Math.ceil(el.offset().top),
+				var areaTop = Math.ceil(el.parent().igOffset().top),
+					elementoffset = Math.ceil(el.igOffset().top),
 					elementHeight = Math.ceil(el.outerHeight()),
 					listVisibleHeight = el.parent().outerHeight(), result;
 				if (elementoffset - areaTop < 0) {
@@ -3322,7 +3322,7 @@
 						newItem.outerHeight());
 				} else if (position === "bottom") {
 					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						newItem.position().top);
+						newItem.igPosition().top);
 				}
 				currentItem.removeClass(this.css.listItemActive,
 					this.options.listItemHoverDuration);
@@ -3344,7 +3344,7 @@
 						newItem.outerHeight());
 				} else if (position === "top") {
 					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						newItem.position().top);
+						newItem.igPosition().top);
 				}
 				currentItem.removeClass(this.css.listItemActive,
 					this.options.listItemHoverDuration);
@@ -3464,7 +3464,7 @@
 			}
 			if (this._elementPositionInViewport(activeItem) !== "inside") {
 				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-						activeItem.position().top);
+						activeItem.igPosition().top);
 			}
 			activeItem.attr("data-active", true);
 		},
@@ -3885,7 +3885,7 @@
 					position = this._elementPositionInViewport(newSelectedItem);
 					if (position !== "inside") {
 						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-							newSelectedItem.position().top);
+							newSelectedItem.igPosition().top);
 					}
 					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
@@ -7214,6 +7214,11 @@
 			if (this._validateValue(value) &&
 				(this.options.revertIfNotValid && this._validateRequiredPrompts(value) ||
 				!this.options.revertIfNotValid)) {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				this._updateValue(value);
 			} else {
 
@@ -9226,6 +9231,11 @@
 			if ($.type(value) === "date") {
 				parsedVal = value;
 			} else {
+
+				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
+				if (value.length !== this._maskWithPrompts.length) {
+					value = this._parseValueByMask(value);
+				}
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
 			parsedVal = this._getValueBetweenMinMax(parsedVal);
@@ -10348,7 +10358,7 @@
 
 			// N.A. 3/12/2016 Bug #215134: When we enter a value and spin before the date is created, we create a today date, cause everything is empty.
 			if (!this._dateObjectValue && mask.indexOf(unfilled) >= 0) {
-				mask = this._initEmptyMask(this._dateObjectValue);
+				mask = this._initEmptyMask(this._dateObjectValue, mask);
 				mask = mask.substring(0, time.startPosition) +
 					currentValueString +
 					mask.substring(time.endPosition, mask.length);
@@ -10384,15 +10394,15 @@
 			}
 			return mask;
 		},
-		_initEmptyMask: function (date) {
-			var mask = this._maskWithPrompts,
-				today = this._setNewDateMidnight(),
-				timeYear, timeMonth, timeDay, timeHours,
+		_initEmptyMask: function (date, mask) {
+			mask = mask || this._maskWithPrompts;
+			var	timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
 
 			if (!date) {
-				date = today;
+				// V.S. Apr 2nd 2018, #1902 If there is not previous value, get value from mask
+				date = this._parseDateFromMaskedValue(mask);
 			}
 
 			timeYear = this._createYearPosition();
@@ -10454,7 +10464,7 @@
 			if (mask === undefined) {
 				return;
 			} else if (mask === "" || mask === this._maskWithPrompts) {
-				mask = this._initEmptyMask(this._dateObjectValue);
+				mask = this._initEmptyMask(this._dateObjectValue, mask);
 			} else {
 				mask = this._updateTimeMask(mask, time, delta);
 			}

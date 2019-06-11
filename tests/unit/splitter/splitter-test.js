@@ -871,7 +871,7 @@ QUnit.test('Test 15: igSplitter widget set panel sizes with percentages.', funct
 			assert.ok(this.equalSplitter(panel.height(), 400), 'igSplitter bar has wrong height. Expected: 400 Actual: ' + panel.height());
 		} else {
 			assert.ok(this.equalSplitter((panel.width() / container.width()) * 100, widths[i]), 'igSplitter panel has wrong width. Expected: ' + widths[i] + ' Actual: ' + (panel.width() / container.width()) * 100);
-			assert.ok(this.equalSplitter(panel.height(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
+			assert.ok(this.equalSplitter(panel.outerHeight(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
 		}
 	}
 

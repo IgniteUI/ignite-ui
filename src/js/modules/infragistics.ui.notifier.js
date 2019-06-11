@@ -453,7 +453,8 @@
 			}
 		},
 		isVisible: function () {
-			/* Returns true if the notification is currently visible
+			/* 	returnType="bool"
+				Returns true if the notification is currently visible
 				```
 				var isVisible = $( ".selector" ).igNotifier( "isVisible" );
 				```

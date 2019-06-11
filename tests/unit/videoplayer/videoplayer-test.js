@@ -14,6 +14,11 @@
 function createFixtureDiv(divId){
 	$.ig.TestUtil.appendToFixture('<div id=' + divId + '/>');
 }
+
+function createFixtureVideo(videoId) {
+	$.ig.TestUtil.appendToFixture(`<video id=${videoId}/>`);
+}
+
 // #player1 and #player2 with isAutoPlay and isMuted set to true
 function createBasicPlayer(divId, isAutoPlay = false, isMuted = false){
 
@@ -599,7 +604,7 @@ QUnit.test('seeking test - move slider and check currentTime test 13', function(
 		videoElem = $('#player1_video')[0],
 		currentTime = videoElem.currentTime,
 		mousemove = jQuery.Event("mousemove");
-	mousemove.pageX = handle.offset().left + 20;
+	mousemove.pageX = handle.igOffset().left + 20;
 	mousemove.button = 0;
 	handle.trigger('mousedown');
 	handle.trigger(mousemove);
@@ -1307,7 +1312,7 @@ QUnit.test('slider test 42', function(assert) {
 		mousedown = jQuery.Event("mousedown"),
 		mousemove = jQuery.Event("mousemove");
 	mousedown.which = 1;
-	mousemove.pageX = handle.offset().left - 20;
+	mousemove.pageX = handle.igOffset().left - 20;
 	mousemove.button = 0;
 	handle.trigger(mousedown);
 	handle.trigger(mousemove);
@@ -1722,7 +1727,7 @@ QUnit.test('Test entering fullscrren via double click test 52', function (assert
 					$("#player13").igVideoPlayerUnitTesting("pause");
 				checkElementClass(mark, 'ui-igslider-bookmark', assert);
 
-				var bmOffset = mark.offset(),
+				var bmOffset = mark.igOffset(),
 					bmWidth = mark.width(),
 					bmHeight = mark.height(),
 					x = bmOffset.left + bmWidth / 2,
@@ -1850,3 +1855,37 @@ QUnit.test('Test fullscreen option class when set to false test 56', function (a
 	assert.notOk(hasFullScreenClass, "The full-screen-mode class should be removed from body when the video player fullscreen option is set to false.");
 });
 
+QUnit.test('Test igVidioPlayer throws no errors when initialized on a video element test 57', function (assert) {
+	createFixtureVideo('player17');
+	try {
+		assert.ok($("#player17").igVideoPlayer());
+	} catch {
+		assert.ok(false, "igVideoPlayer threw an error upon initialization on a video element.");
+	}
+});
+
+
+QUnit.test('Test igVidioPlayer renders correctly on a video element test 58', function (assert) {
+	var playerId = 'player18';
+	createFixtureVideo(playerId);
+	$(`#${playerId}`).igVideoPlayer();
+	var container = $(`#${playerId}_container`), 
+		video = $(`#${playerId}`),
+		playButton = $(`#${playerId}_play`),
+		playerWaiting = $(`#${playerId}_waiting`),
+		seekToolTip = $(`#${playerId}_seek_tooltip`);
+
+
+	assert.ok(container !== null, 'igVideoPlayer container is rendered.');
+	assert.ok(video !== null, 'igVideoPlayer video is rendered.');
+	assert.ok(playButton !== null, 'igVideoPlayer play button is rendered.');
+	assert.ok(playerWaiting !== null, 'igVideoPlayer waiting state is rendered.');
+	assert.ok(seekToolTip !== null, 'igVideoPlayer seek tooltip is rendered.');
+
+
+	this.checkElementClass(container, 'ui-widget ui-igplayer', assert);
+	this.checkElementClass(video, 'ui-igplayer-video', assert);
+	this.checkElementClass(playButton, 'ui-state-default ui-igplayer-centerplaybutton-play', assert);
+	this.checkElementClass(playerWaiting, 'ui-state-default ui-igplayer-waiting', assert);
+	this.checkElementClass(seekToolTip, 'ui-widget ui-igpopover ui-igplayer-tooltip ui-igplayer-seektooltip', assert);
+});

@@ -66,7 +66,7 @@
 				if (pos.left < 0) {
 					pos.left = 0;
 				}
-				var p = $(this).css(pos).offset();
+				var p = $(this).css(pos).igOffset();
 				if (p.top < 0) {
 					$(this).css("top", pos.top - p.top);
 				}
@@ -2363,7 +2363,9 @@
 			// adjust modal DIV/IFRAME-shells
 			if (div) {
 				div.show();
-				self._doIframe(div);
+
+				// B.P. 6th June 2019 #1916 - Nested modal dialog shows a scrollbar on its parent
+				self._doIframe(div, 1);
 			}
 		},
 		_minHeaderWidth: function () {
