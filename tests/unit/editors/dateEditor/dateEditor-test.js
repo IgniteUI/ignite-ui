@@ -3877,7 +3877,7 @@ QUnit.test('Edge case testing', function (assert) {
 	});
 	$dtEditor.igDateEditor("option", "dataMode", "data");
 	$dtEditor.blur();
-	assert.equal($dtEditor.igDateEditor("displayValue"), "3/1/2015" , "Display value is not correct");
+	assert.equal($dtEditor.igDateEditor("displayValue"), "3/1/2015", "Display value is not correct");
 	assert.equal($dtEditor.igDateEditor("value").getTime(), new Date("3/1/2015").getTime(), "Display value is not correct");
 
 	$dtEditor.igDateEditor("value", null);
@@ -4554,4 +4554,51 @@ QUnit.test('Test plain values that are not containing mask values', function (as
 
 	assert.equal($dtEditor.igDateEditor("displayValue"), "1/1/2018 12:00 AM", 'The value is not as expected');
 	assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2018, 0, 1).getTime(), "Runtime time display format not applied");
+});
+
+QUnit.test('Should properly retain partial mask value on spin when w/ no prior valid value', function (assert) {
+	assert.expect(2);
+
+	var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
+		value: new Date(2017, 11, 8, 12, 45),
+		dataMode: "date",
+		dateInputFormat: "dateTime",
+		buttonType: "clear, spin"
+	}),
+		clearButton = $dtEditor.igDateEditor("clearButton"),
+		done = assert.async(),
+		util = this.util,
+		expectedValue;
+
+		var input = [48,50,48,50,50,48,49,50,49,50,50,48,39]; // 020220121210 + arrowright
+	
+	$dtEditor.igDateEditor("setFocus");
+
+	this.util.wait(100).then(function () {
+		$dtEditor.igDateEditor("field").parent().parent().css({ position: 'fixed', top: 12, left: 12, width: '400px'});
+		clearButton.click();
+		return util.wait(100);
+	}).then(function () {
+		var editor = $dtEditor.igDateEditor("field");
+		$dtEditor.igDateEditor("setFocus");
+		for (var i=0; i < input.length; i++) {
+			util.keyInteraction(input[i], editor);
+		}
+		return util.wait(100);
+	}).then(function () {
+		var selectionStart = $dtEditor.igDateEditor('field').val().length - 2;
+		$dtEditor.igDateEditor('field')[0].setSelectionRange(selectionStart, selectionStart + 1);
+		util.keyInteraction(40, $dtEditor.igDateEditor("field"));
+		return util.wait(100);
+	}).then(function () {
+		util.keyInteraction(13, editor = $dtEditor.igDateEditor("field"));
+		expectedValue = new Date(2012, 1, 2, 0, 20);
+		assert.equal($dtEditor.igDateEditor("option", "value").getTime(), expectedValue.getTime(), 'The initial value is not as expected');
+		assert.equal($dtEditor.igDateEditor("displayValue"), "2/2/2012 12:20 AM", 'The initial value is not as expected');
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
 });
