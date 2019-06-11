@@ -5039,11 +5039,9 @@
 					break;
 				case "width":
 					_options.$comboWrapper.outerWidth(value);
-					this.positionDropDown();
 					break;
 				case "height":
 					_options.$comboWrapper.outerHeight(value);
-					this.positionDropDown();
 					break;
 				case "headerTemplate":
 					this._renderHeaderTemplate(this.css, this.options, _options.$dropDownCont);
