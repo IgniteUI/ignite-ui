@@ -1084,9 +1084,11 @@ body .ui-tooltip {
   border: 0;
 }
 /* Bug #741 S.D. 20.04.2017 When bootstrap theme used with bootstrap css text in editor can't be seen when editor has focus*/
-.ui-state-focus input:focus {
+/* Bug #1930 P.M. 11.06.2019 When bootstrap theme used with bootstrap css text in TextEditor can't be seen when focused*/
+.ui-state-focus input:focus, .ui-state-focus textarea:focus {
   color: initial;
 }
+
 /* Interaction Cues
 ----------------------------------*/
 .ui-iggrid-colasc .ui-state-highlight {
