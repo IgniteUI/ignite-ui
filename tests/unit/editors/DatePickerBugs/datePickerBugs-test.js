@@ -545,3 +545,36 @@ QUnit.test("Issue 1733 - igDatePicker throws error, when selecting with displayM
 		throw er;
 	});
 });
+
+QUnit.test("Issue 1921 - Mouse over highlighting of dates does not work after the control is recreated", function (assert) {
+	const hover = "ui-state-hover",
+	selector = ".ui-datepicker-calendar",
+	self = this,
+	done = assert.async(),
+	tableRow = `${selector}>tbody>tr`;
+
+	// create and open the datepicker
+	this.editor = this.appendToFixture(this.divTag).igDatePicker();
+	this.editor.igDatePicker("showDropDown");
+	$.ig.TestUtil.wait(400).then(function () {
+		// destroy the datepicker
+		self.editor.igDatePicker("destroy");
+		// the jquery datepicker should not be destroyed
+		const datePickerDiv = $(selector);
+		assert.ok(datePickerDiv !== undefined && datePickerDiv !== null);
+		return $.ig.TestUtil.wait(400);
+	}).then(function() {
+		// recreate and reopen the datepicker
+		self.editor = self.appendToFixture(self.divTag).igDatePicker();
+		self.editor.igDatePicker("showDropDown");
+		return $.ig.TestUtil.wait(400);
+	}).then(function() {
+		// trigger "mouseover" on the second element of the second row
+		$($(tableRow)[1].childNodes[1].childNodes[0]).trigger("mouseover");
+		return $.ig.TestUtil.wait(400);
+	}).then(function() {
+		// the second element of the second row should have the ui-state-hover class
+		assert.ok($(tableRow)[1].childNodes[1].childNodes[0].classList.toString().includes(hover));
+		done();
+	});
+});

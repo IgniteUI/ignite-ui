@@ -11441,11 +11441,13 @@
 			this._editorInput.datepicker("hide");
 			this._editorInput.attr("aria-expanded", false);
 		},
-		// B.P. 12/06/2019 #1921 Mouse over highlighting of dates does not work after the control is recreated. 
+
+		// B.P. 12/06/2019 #1921 Mouse over highlighting of dates does not work after the control is recreated.
 		_deleteList: function () {
 			this._detachListEvents();
 			delete this._dropDownList;
 		},
+
 		// igDatePicker public methods
 		changeRegional: function() { //igDatePicker
 			/* changes the the regional settings of widget element to the language specified in [options.regional](ui.igdatepicker#options:regional)
