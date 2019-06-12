@@ -1187,6 +1187,33 @@ QUnit.module("igTree", {
 			]
 		}
 	],
+	contries: [
+		{
+			Continent: "Europe",
+			Contries: [
+				{
+					Name: "Germany"
+				},
+				{
+					Name: "Spain"
+				},
+				{
+					Name: "UK"
+				}
+			]
+		},
+		{
+			Continent: "North America",
+			Contries: [
+				{
+					Name: "USA"
+				},
+				{
+					Name: "Canada"
+				}
+			]
+		}
+	],
 	results2: [
 		{
 			Text: "Unit testing",
@@ -3956,6 +3983,94 @@ QUnit.test("[Client events 06] igTree node populating/populated events", functio
 	node = $container.igTree("nodeByPath", "0");
 	$container.igTree("toggle", node);
 });
+QUnit.test("[Client events 07] igTree node dropping/dropped events", function (assert) {
+	assert.expect(23);
+
+	var datasource = $.extend(true, [], this.results2),
+		bindings = {
+			textKey: "Text",
+			valueKey: "Value",
+			imageUrlKey: "ImageUrl",
+			navigateUrlKey: "URL",
+			childDataProperty: "Children",
+			nodeContentTemplate: "<span>${Text}: </span>${Value}",
+			bindings: {
+				textKey: "Text1",
+				valueKey: "Value1",
+				imageUrlKey: "ImageUrl1",
+				navigateUrlKey: "URL1",
+				childDataProperty: "Children1",
+				nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
+				bindings: {
+					textKey: "Text2",
+					valueKey: "Value2",
+					imageUrlKey: "ImageUrl2",
+					navigateUrlKey: "URL2",
+					childDataProperty: "Children2",
+					nodeContentTemplate: '<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
+					bindings: {
+						textKey: "Text3",
+						valueKey: "Value3"
+					}
+				}
+			}
+		},
+		tree1 = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0
+				},
+				bindings: bindings,
+				nodeDropping: function (event, args) {
+					assert.equal(args.owner, tree1.data("igTree"), "nodeDropping: Owner argument does not match");
+					assert.equal(args.path, "1", "nodeDropping: Path argument does not match");
+					assert.equal(args.element[0], dropNode[0], "nodeDropping: Node argument does not match");
+					assert.equal(args.binding, tree1.igTree("option", "bindings"), "nodeDropping: Binding argument does not match");
+					assert.equal(args.sourceNode, tree1.data("igTree")._sourceNode, "nodeDropping: SourceNode argument does not match");
+					assert.equal(args.sourceNode.data, tree1.data("igTree")._sourceNode.data, "nodeDropping: Data argument does not match");
+				},
+				nodeDropped: function (event, args) {
+					assert.equal(args.owner, tree1.data("igTree"), "nodeDropped: Owner argument does not match");
+					assert.equal(args.path, "1", "nodeDropped: Path argument does not match");
+					assert.equal(args.element[0], dropNode[0], "nodeDropped: Node argument does not match");
+					assert.equal(args.binding, tree1.igTree("option", "bindings"), "nodeDropped: Binding argument does not match");
+					assert.equal(args.sourceNode, tree1.data("igTree")._sourceNode, "nodeDropped: SourceNode argument does not match");
+					assert.equal(args.sourceNode.data, tree1.data("igTree")._sourceNode.data, "nodeDropped: Data argument does not match");
+				},
+				dragStart: function (event, args) {
+					assert.equal(args.owner, tree1.data("igTree"), "dragStart: Owner argument does not match");
+					assert.equal(args.path, "0", "dragStart: Path argument does not match");
+					assert.equal(args.element[0], node[0], "dragStart: Node argument does not match");
+					assert.equal(args.binding, tree1.igTree("option", "bindings"), "dragStart: Binding argument does not match");
+					assert.equal(args.data, nodeData, "dragStart: Data argument does not match");
+				},
+				drag: function (event, args) {
+					assert.equal(args.owner, tree1.data("igTree"), "drag: Owner argument does not match");
+					assert.equal(args.path, "0", "drag: Path argument does not match");
+					assert.equal(args.element[0], node[0], "drag: Node argument does not match");
+					assert.equal(args.binding, tree1.igTree("option", "bindings"), "drag: Binding argument does not match");
+					assert.equal(args.data, nodeData, "drag: Data argument does not match");
+				},
+				dragStop: function (event, args) {
+					assert.equal(args.owner, tree1.data("igTree"), "dragStop: Owner argument does not match");
+				},
+			}),
+		node = tree1.find("li[data-role=node]:first"),
+		nodeData = tree1.igTree( "nodeDataFor", "0" );
+		dropNode = tree1.find("ul:first > li[data-role=node]:eq(1)");
+
+	this.simulateDragStart(node);
+	this.simulateDrag(node, dropNode);
+	this.simulateDrop(tree1, dropNode);
+
+	// dragstop:
+	node = tree1.find("li[data-role=node]:first");
+	tree1.igTree("option", "dragStart", null);
+	this.simulateDragStart(node);
+	this.simulateDragStop(node);
+});
 /* ***************** END igTree Client events ***************** */
 
 /* ***************** igTree add/remove nodes ***************** */
@@ -4693,20 +4808,20 @@ QUnit.test("[Add/Remove nodes 14] Drag and Drop node header with script tag", fu
 	window.testVarDragAndDrop = 0;
 	var path = "0",
 		data = [
-		{ "Text": "Item1", "Value": "Item1" },
-		{ "Text": "Item2", "Value": "Item2" },
-		{ "Text": "&#x3C;script&#x3E;window.testVarDragAndDrop++;&#x3C;/script&#x3E;", "Value": "Item3"},
-		{ "Text": "Item4", "Value": "Item4"}, 
-		{ "Text": "Item5", "Value": "Item5"}
-	],
+			{ "Text": "Item1", "Value": "Item1" },
+			{ "Text": "Item2", "Value": "Item2" },
+			{ "Text": "&#x3C;script&#x3E;window.testVarDragAndDrop++;&#x3C;/script&#x3E;", "Value": "Item3" },
+			{ "Text": "Item4", "Value": "Item4" },
+			{ "Text": "Item5", "Value": "Item5" }
+		],
 		$container = this.util.appendToFixture(this.divTag)
 			.igTree({
-				dragAndDrop : true,
-                bindings: {
-                    textKey: 'Text',
-                    valueKey: 'Value'
-                },
-                dataSource: data
+				dragAndDrop: true,
+				bindings: {
+					textKey: 'Text',
+					valueKey: 'Value'
+				},
+				dataSource: data
 			}),
 		node = $container.igTree("nodeByPath", "2");
 	this.simulateDragStart(node);
@@ -5103,5 +5218,76 @@ QUnit.test("[Add/Remove nodes 13] removeAt until all children are gone", functio
 	$container.igTree("removeAt", path);
 	children = $container.igTree("children", node);
 	assert.equal(children.length, 0, "The first root node does not have 0 children.");
+});
+QUnit.test("[Add/Remove nodes 14] Drag and drop node with children", function (assert) {
+	assert.expect(3);
+	var datasource = $.extend(true, [], this.contries),
+		bindings = {
+			textKey: "Continent",
+			valueKey: "Continent",
+			childDataProperty: "Contries",
+			nodeContentTemplate: "<span>${Text}: </span>${Value}",
+			bindings: {
+				textKey: "Name",
+				valueKey: "Name",
+				nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}'
+			}
+		},
+		tree1 = this.util.appendToFixture(this.divTag)
+			.igTree({
+				dataSource: datasource,
+				dragAndDrop: true,
+				dragAndDropSettings: {
+					revertDuration: 0,
+					dragAndDropMode: "copy"
+				},
+				bindings: bindings
+			}),
+		tree2,
+		node = tree1.find("li[data-role=node]:first"),
+		that = this;
+
+	tree2 = that.util.appendToFixture(this.divTag)
+		.igTree({
+			dataSource: [
+				{
+					Continent: "South America",
+					Contries: [
+						{
+							Name: "Brazil"
+						},
+						{
+							Name: "Colombia"
+						}
+					]
+				}],
+			dragAndDrop: true,
+			dragAndDropSettings: {
+				revertDuration: 0,
+				dragAndDropMode: "copy",
+				allowDrop: true
+			},
+			bindings: bindings,
+			nodeDropping: function (event, ui) {
+				ui.sourceNode.data = $.extend(true, {}, ui.sourceNode.data);
+			}
+		});
+
+	// Drag and drop parent node
+	that.simulateDragStart(node);
+	that.simulateDrag(node, tree2);
+	that.simulateDrop(tree2, tree2);
+	var initialNodeChildren = tree1.igTree("option", "dataSource").root().data()[0]["Contries"];
+	var initialNodeChildrenCount = initialNodeChildren.length;
+	var tree2_nodeCount = tree2.find("li[data-role=node]").length;
+	assert.equal(tree2_nodeCount, 7, "Dragged node was not dropped.");
+
+	// Remove child node from dropped item - should not remove the node from source tree
+	tree2.igTree("removeAt", "1_1");
+
+	tree2_nodeCount = tree2.find("li[data-role=node]").length
+	assert.equal(tree2_nodeCount, 6, "Node was not removed.");
+	var nodeChildren = tree1.igTree("option", "dataSource").root().data()[0]["Contries"];
+	assert.equal(nodeChildren.length, initialNodeChildrenCount, "Dragged node was removed from source tree.");
 });
 /* ***************** END igTree add/remove nodes ***************** */
