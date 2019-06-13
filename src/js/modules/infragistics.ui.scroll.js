@@ -1011,26 +1011,28 @@
 		},
 
 		_getContentHeight: function () {
+		    var attached = !!this._content[ 0 ].parentNode;
 			if (this.options.scrollHeight !== null) {
 				return this.options.scrollHeight;
 			} else {
-				if ($.ig.util.isIE) {
+			    if ($.ig.util.isIE && attached) {
 					/* S.K. Fix for bug 224900 - On IE reaching the bottom flickers because the height can be not a round number */
-					return Math.ceil(this._content[ 0 ].getBoundingClientRect().height);
-				} else {
+			        return Math.ceil(this._content[ 0 ].getBoundingClientRect().height);
+			    } else {
 					return Math.ceil(this._content.outerHeight());
 				}
 			}
 		},
 
 		_getContentWidth: function () {
+		    var attached = !!this._content[ 0 ].parentNode;
 			if (this.options.scrollWidth !== null) {
 				return this.options.scrollWidth;
 			} else {
-				if ($.ig.util.isIE) {
+			    if ($.ig.util.isIE && attached) {
 					/* S.K. Fix for bug 224900 - - On IE the width could be not a round number */
-					return Math.ceil(this._content[ 0 ].getBoundingClientRect().width);
-				} else {
+			        return Math.ceil(this._content[ 0 ].getBoundingClientRect().width);
+			    } else {
 					return Math.ceil(this._content.outerWidth());
 				}
 			}
