@@ -575,6 +575,7 @@ QUnit.test("Issue 1921 - Mouse over highlighting of dates does not work after th
 	}).then(function() {
 		// the second element of the second row should have the ui-state-hover class
 		assert.ok($(tableRow)[1].childNodes[1].childNodes[0].classList.toString().includes(hover));
+		self.editor.igDatePicker("destroy");
 		done();
 	});
 });
