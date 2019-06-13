@@ -409,24 +409,24 @@ QUnit.test("[ID7] setting mainElement at runtime", function (assert) {
 
 QUnit.test("[ID19] destroy modal while animation is in progress", function (assert) {
 	assert.expect(5);
-	
+
 	var imgSrc = "https://www.igniteui.com/images/samples/dialog-window/content.jpg";
-	var $dialog = this.util.appendToFixture('<div id="dialogAnim">'+
-	'<img id="contentImg" class="content-image-class" style="width: 200px" src=' + imgSrc + ' />' +
-	'</div>').igDialog({
-		height: 250,
-		openAnimation: "slide",
-		closeAnimation: "explode",
-		modal: true
-	});
+	var $dialog = this.util.appendToFixture('<div id="dialogAnim">' +
+		'<img id="contentImg" class="content-image-class" style="width: 200px" src=' + imgSrc + ' />' +
+		'</div>').igDialog({
+			height: 250,
+			openAnimation: "slide",
+			closeAnimation: "explode",
+			modal: true
+		});
 
 	$dialog.igDialog("destroy");
-	
+
 	assert.equal($dialog.children().length, 1, "Content should be preserved after destroy");
 	assert.equal($dialog.children().first().attr("id"), "contentImg", "Content should retain ID");
-	assert.equal($dialog.children().first().attr("src"),imgSrc,"Content should retain tag properties");
+	assert.equal($dialog.children().first().attr("src"), imgSrc, "Content should retain tag properties");
 	assert.ok($dialog.children().first().hasClass("content-image-class"), "Content should retain class");
-	assert.equal($dialog.children().first().attr("class"),"content-image-class","Content should retain only initial class");
+	assert.equal($dialog.children().first().attr("class"), "content-image-class", "Content should retain only initial class");
 });
 
 QUnit.test("[ID8] modal Dialog with open Animation bug: 230989", function (assert) {
@@ -694,31 +694,31 @@ QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fi
 	var self = this;
 	var animationEventFlag = false;
 	var $dialog = this.util.appendToFixture("<div id='openAnimationDialog'><h1>Hello World!</h1></div>")
-	.igDialog({
-		state: 'open',
-		modal: true,
-		height: '400px',
-		width: '600px',
-		openAnimation: { effect: 'scale', duration: 1000 },
-		closeAnimation: { effect: 'explode', duration: 1000 },
-		stateChanged: function (evt, ui) {
-			if (ui.action === 'close') {
-				$dialog.remove();
+		.igDialog({
+			state: 'open',
+			modal: true,
+			height: '400px',
+			width: '600px',
+			openAnimation: { effect: 'scale', duration: 1000 },
+			closeAnimation: { effect: 'explode', duration: 1000 },
+			stateChanged: function (evt, ui) {
+				if (ui.action === 'close') {
+					$dialog.remove();
+				}
+				return true;
+			},
+			animationEnded: function () {
+				animationEventFlag = true;
 			}
-			return true;
-		},
-		animationEnded: function(){
-			animationEventFlag = true;
-		}
-	});
+		});
 	assert.ok(!animationEventFlag, "Animation flag should be false by default");
 	var done = assert.async();
-	self.util.wait(1100).then(function(){
+	self.util.wait(1100).then(function () {
 		assert.ok(animationEventFlag, "Animation flag should be true after openAnimation is completed");
 		$dialog.igDialog("close");
 		animationEventFlag = false;
 		return self.util.wait(1110);
-	}).then(function(){
+	}).then(function () {
 		assert.ok(animationEventFlag, "Animation flag should be true after closeAnimation is completed");
 		done();
 	});
@@ -727,24 +727,48 @@ QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fi
 QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", function (assert) {
 	assert.expect(1);
 	var $dialog = this.util.appendToFixture("<div id='openAnimationDialog'><h1>Hello World!</h1></div>")
-	.igDialog({
-		state: 'open',
-		modal: true,
-		height: '400px',
-		width: '600px',
-		openAnimation: { effect: 'scale', duration: 300 },
-		stateChanged: function (evt, ui) {
-			if (ui.action === 'close') {
+		.igDialog({
+			state: 'open',
+			modal: true,
+			height: '400px',
+			width: '600px',
+			openAnimation: { effect: 'scale', duration: 300 },
+			stateChanged: function (evt, ui) {
+				if (ui.action === 'close') {
+				}
+				return true;
 			}
-			return true;
-		}
-	});
+		});
 	var done = assert.async();
-	this.util.wait(320).then(function(){
+	this.util.wait(320).then(function () {
 		var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
 		assert.ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
 		done();
 	});
 });
 
-
+QUnit.test("[ID22] Stacking two dialogs within eachother should not create scrollbars", function (assert) {
+	this.util.appendToFixture(
+		` <div id="dialog1">
+			<button id="open">open</button>
+			<div id="dialog2"></div>
+		</div>`);
+	$("#dialog1").igDialog({
+		width: 500,
+		height: 400,
+		modal: true,
+	});
+	$("#open").on("click", function () {
+		$("#dialog2").igDialog({
+			width: 300,
+			height: 200,
+			modal: true,
+		});
+	});
+	$("#open").click();
+	var done = assert.async();
+	this.util.wait(300).then(function () {
+		assert.ok($("iframe").width() === 1 && $("iframe").height() === 1);
+		done();
+	});
+});
