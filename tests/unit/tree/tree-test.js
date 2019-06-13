@@ -4058,7 +4058,8 @@ QUnit.test("[Client events 07] igTree node dropping/dropped events", function (a
 				},
 			}),
 		node = tree1.find("li[data-role=node]:first"),
-		nodeData = tree1.igTree( "nodeDataFor", "0" );
+		nodeData = tree1.igTree( "nodeDataFor", "0" ),
+		done = assert.async();
 		dropNode = tree1.find("ul:first > li[data-role=node]:eq(1)");
 
 	this.simulateDragStart(node);
@@ -4070,6 +4071,7 @@ QUnit.test("[Client events 07] igTree node dropping/dropped events", function (a
 	tree1.igTree("option", "dragStart", null);
 	this.simulateDragStart(node);
 	this.simulateDragStop(node);
+	this.util.wait(10).then(function () { done(); });
 });
 /* ***************** END igTree Client events ***************** */
 
