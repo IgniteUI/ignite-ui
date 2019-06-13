@@ -8904,7 +8904,8 @@
 
 					// N.A. January 12th, 2018 #1525: When wrong input is entered the value should be reverted, if the option is set.
 					if (newValue === this._maskWithPrompts && this.options.revertIfNotValid) {
-						newValue = oldVal;
+						// 10 June 2019 Bug #1903 Cannot read property 'length' of null when a non-numeric Japanese text is selected
+						newValue = oldVal || "";
 					}
 				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
