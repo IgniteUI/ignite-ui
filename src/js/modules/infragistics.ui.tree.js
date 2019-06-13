@@ -1574,6 +1574,8 @@
 			```
 				//Bind after initialization
 				$(document).on("igtreedragstart", ".selector", function (evt, ui) {
+					//return reference to igTree
+					ui.owner;
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1598,6 +1600,7 @@
 				});
 			```
 				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
 				eventArgument="ui.path" argType="string" Gets the node data-path attrubte.
 				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
 				eventArgument="ui.data" argType="object" Gets the node data.
@@ -1612,6 +1615,8 @@
 			```
 				//Bind after initialization
 				$(document).on("igtreedrag", ".selector", function (evt, ui) {
+					//return reference to igTree
+					ui.owner;
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1637,6 +1642,7 @@
 
 			```
 				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
 				eventArgument="ui.path" argType="string" Gets the node data-path attrubte.
 				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
 				eventArgument="ui.data" argType="object" Gets the node data.
@@ -1651,6 +1657,9 @@
 			```
 				//Bind after initialization
 				$(document).on("igtreedragstop", ".selector", function (evt, ui) {
+					//return reference to igTree
+					ui.owner;
+					//return reference to the offset.
 					ui.offest;
 					//return to get a reference to the original position of the draggable element (the node).
 					ui.orginalPosition
@@ -1666,6 +1675,7 @@
 				});
 			```
 				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
 				eventArgument="ui.helper" argType="$" Gets a reference to the helper.
 				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
 				eventArgument="ui.orginalPosition" argType="object" Gets a reference to the original position of the draggable element (the node).
@@ -1676,6 +1686,8 @@
 			```
 				//Bind after initialization
 				$(document).on("igtreenodedropping", ".selector", function (evt, ui) {
+					//return reference to igTree
+					ui.owner;
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1692,6 +1704,8 @@
 					ui.path
 					//return reference to the current position of the draggable element.
 					ui.position
+					//return reference to the source node object about to be dropped.
+					ui.sourceNode;
 				});
 
 				//Initialize
@@ -1700,6 +1714,7 @@
 				});
 			```
 				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
 				eventArgument="ui.path" argType="string" Gets the target node data-path attribute.
 				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
 				eventArgument="ui.data" argType="object" Gets a reference to the target node data.
@@ -1708,12 +1723,15 @@
 				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
 				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
 				eventArgument="ui.draggable" argType="$" Gets a reference to the draggable element (the node).
+				eventArgument="ui.sourceNode" argType="object" Gets a reference to the source node object about to be dropped.
 			*/
 			nodeDropping: "nodeDropping",
 			/* cancel="false" Fired after a node is dropped.
 			```
 				//Bind after initialization
 				$(document).on("igtreenodedropped", ".selector", function (evt, ui) {
+					//return reference to igTree
+					ui.owner;
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
@@ -1732,6 +1750,8 @@
 					ui.path
 					//return reference to the current position of the draggable element.
 					ui.position
+					//return reference to the dropped source node object.
+					ui.sourceNode;
 				});
 
 				//Initialize
@@ -1740,6 +1760,7 @@
 				});
 			```
 				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
 				eventArgument="ui.path" argType="string" Gets the target node data-path attribute.
 				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
 				eventArgument="ui.data" argType="object" Gets a reference to the target node data.
@@ -1748,6 +1769,7 @@
 				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
 				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
 				eventArgument="ui.draggable" argType="$" Gets a reference to the draggable element (the node).
+				eventArgument="ui.sourceNode" argType="object" Gets a reference to the dropped source node object.
 			*/
 			nodeDropped: "nodeDropped"
 		},
@@ -4698,16 +4720,22 @@
 			var obj = this._constructNodeObject(node),
 				args = $.extend(false, obj, ui);
 
+			// P.M. June 12th, 2019 Bug #263216 Expose owner in the event args
+			args.owner = this;
 			return this._trigger(this.events.dragStart, event, args);
 		},
 		_triggerDrag: function (event, ui, node) {
 			var obj = this._constructNodeObject(node),
 				args = $.extend(false, obj, ui);
 
+			// P.M. June 12th, 2019 Bug #263216 Expose owner in the event args
+			args.owner = this;
 			return this._trigger(this.events.drag, event, args);
 		},
 		_triggerDragStop: function (event, ui) {
-			this._trigger(this.events.dragStop, event, ui);
+			// P.M. June 12th, 2019 Bug #263216 Expose owner in the event args
+			var args = $.extend({ owner: this }, ui);
+			this._trigger(this.events.dragStop, event, args);
 		},
 		_triggerNodeDropping: function (event, ui, node, targetIndex) {
 			var obj = this._constructNodeObject(node),
@@ -4723,11 +4751,19 @@
 			obj.targetIndex += indexDecrement;
 			args = $.extend(false, obj, ui);
 
+			// P.M. June 12th, 2019 Bug #263216 Expose owner and source node in the event args
+			args.owner = this;
+			args.sourceNode = this._sourceNode;
+
 			return this._trigger(this.events.nodeDropping, event, args);
 		},
 		_triggerNodeDropped: function (event, ui, node) {
 			var obj = this._constructNodeObject(node),
 				args = $.extend(false, obj, ui);
+
+			// P.M. June 12th, 2019 Bug #263216 Expose owner and source node in the event args
+			args.owner = this;
+			args.sourceNode = this._sourceNode;
 
 			this._trigger(this.events.nodeDropped, event, args);
 		},
