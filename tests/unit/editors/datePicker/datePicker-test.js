@@ -1,4 +1,4 @@
-QUnit.module("igDatePicker unit tests", {
+QUnit.module("igDatePicker unit tests", {	
 	divTag: '<div></div>',
 	inputTag: '<input></input>',
 	util: $.ig.TestUtil,
@@ -14,7 +14,7 @@ QUnit.module("igDatePicker unit tests", {
 		return this.editor.igDatePicker("field");
 	},
 	hiddenInput: function() {
-		return this.container().find("input:hidden")
+		return this.container().find("input:hidden");
 	},
 	container: function() {
 		return this.editor.igDatePicker("editorContainer");
@@ -23,7 +23,7 @@ QUnit.module("igDatePicker unit tests", {
 		return this.editor.igDatePicker("getCalendar");
 	},
 	calendarOptions: function() {
-		return this.editor.igDatePicker("option", "datepickerOptions")
+		return this.editor.igDatePicker("option", "datepickerOptions");
 	},
 	dropDownButton: function() {
 		return this.editor.igDatePicker("dropDownButton");
