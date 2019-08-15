@@ -140,6 +140,9 @@ module.exports = function (config) {
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,
     proxies: proxies,
+    browserDisconnectTolerance: 3,
+    browserDisconnectTimeout: 10000,
+    browserNoActivityTimeout: 20000,
 
     client: {
       clearContext: false,
@@ -148,7 +151,7 @@ module.exports = function (config) {
         autostart: false,
         //reorder: false,
         showUI: true,
-        testTimeout: 5000,
+        testTimeout: 10000,
         //fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
       }
     },
