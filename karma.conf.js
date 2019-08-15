@@ -7,28 +7,28 @@ const glob = require("glob");
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ["progress"];
+const reporters = ["spec"];
 let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
 let proxies = glob.sync("src/js/**/*.js")
   .map((x) => "/base/mock/" + x)
   .reduce((obj, val) => {
-      obj[val] = "/base/tests/unit/loader/empty.js";
-      return obj;
+    obj[val] = "/base/tests/unit/loader/empty.js";
+    return obj;
   }, {});
 
 const cssProxies = glob.sync("src/css/**/*.css")
   .map((x) => "/base/mock/" + x)
   .reduce((obj, val) => {
-      obj[val] = "/base/tests/unit/loader/empty.css";
-      return obj;
+    obj[val] = "/base/tests/unit/loader/empty.css";
+    return obj;
   }, {});
 
 proxies = Object.assign(proxies, cssProxies);
 
 
-module.exports = function(config) {
+module.exports = function (config) {
 
   if (config.singleRun) {
     // when running with `--singleRun=true` instrument:
@@ -59,7 +59,7 @@ module.exports = function(config) {
       // serve resources
       { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
-      { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${ config.singleRun ? ".min" : "" }.js`, included: true, watched: false },
+      { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
       { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
       { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
 
@@ -168,10 +168,10 @@ module.exports = function(config) {
 
     // https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
     coverageReporter: {
-      dir : "coverage/",
+      dir: "coverage/",
       reporters: [
         {
-          type : "lcov",
+          type: "lcov",
           subdir: "." // default outputs per-browser folders
         },
         { type: "text-summary" }
@@ -183,7 +183,13 @@ module.exports = function(config) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: reporters,
-
+    specReporter: {
+      maxLogLines: 15,              // limit number of lines logged per test
+      suppressErrorSummary: false,  // do not print error summary
+      suppressSkipped: false,       // do not print information about skipped tests
+      showSpecTiming: true,        // print the time elapsed for each spec
+      failFast: false               // test would finish on first fail
+    },
 
     // web server port
     port: 9876,
