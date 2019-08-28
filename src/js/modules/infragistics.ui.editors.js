@@ -6590,6 +6590,9 @@
 			// Don't use "text/plain" - IEs error out. Per spec the DataTransfer getData will:
 			// Convert to lower case and change "text" to "text/plain", making "Text" universal
 			data = dtObj && dtObj.getData("Text");
+
+			// I.G. August 1st, 2019 Bug #1972: Text from Excel cannot be pasted due to extra new line.
+			data = data.replace(/[\r\n]{1,2}$/g, "");
 			this._currentInputTextValue = this._editorInput.val();
 
 			this._timeouts.push(setTimeout(function () {
