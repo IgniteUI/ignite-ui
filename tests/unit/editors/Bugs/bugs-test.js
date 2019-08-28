@@ -1754,3 +1754,76 @@ QUnit.test('Bug 1776 Auto-fill does not update igTextEditor', function (assert) 
 	$editor.off("igtexteditortextchanged igtexteditorvaluechanged");
 	$editor.remove();
 }); // Bug 1776
+
+QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line characters on Paste value in datePicker/mask', function (assert) {
+	assert.expect(3);
+	var done = assert.async();
+	var newLineText = "201906\r\n",
+		expectedText = "2019-06",
+		e = jQuery.Event("paste");
+		e.originalEvent = {
+			clipboardData: {
+				getData: function getData(type) {
+					if(type === "Text") {
+						return newLineText;
+					}
+				}
+			}
+		};
+
+	newLineCharsEditor = $.ig.TestUtil.appendToFixture(this.inputTag, { type: "text" });
+	newLineCharsEditor.igMaskEditor({
+		inputMask: "0000-00"
+	});
+
+	newLineCharsDatePicker = $.ig.TestUtil.appendToFixture(this.inputTag, { type: "text" });
+	newLineCharsDatePicker.igDateEditor({
+		dateInputFormat: "yyyy/mm/dd"
+	});
+
+	var field = newLineCharsEditor.igMaskEditor("field");
+	field.focus();
+	field.select();
+	field.trigger(e);
+	field.val("201906");
+
+	this.util.wait(10).then(function () {
+		assert.equal(field.val(), expectedText, "Text should be pasted correctly with Windows line ending");
+
+		newLineText = "201511\n";
+		expectedText = "2015-11";
+		field.select();
+		field.trigger(e);
+		field.val("201511");
+
+		return $.ig.TestUtil.wait(10);
+	}).then(function () {
+		assert.equal(field.val(), expectedText, "Text should be pasted correctly with Linux line ending");
+
+		newLineText = "20190606\r\n";
+		expectedText = "2019/06/06";
+		dpField = newLineCharsDatePicker.igDateEditor("field");
+
+		// Use a different event for igDatePicker so it has correct new event.target
+		event = jQuery.Event("paste");
+		event.originalEvent = {
+			clipboardData: {
+				getData: function getData(type) {
+					if(type === "Text") {
+						return newLineText;
+					}
+				}
+			}
+		};
+
+		dpField.focus();
+		dpField.select();
+		dpField.trigger(event);
+		dpField.val("20190606");
+
+		return $.ig.TestUtil.wait(10);
+	}).then(function () {
+		assert.equal(dpField.val(), expectedText, "Text should be pasted correctly with Win line ending");
+		done();
+	});
+});
