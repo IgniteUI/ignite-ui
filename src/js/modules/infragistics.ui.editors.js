@@ -7219,7 +7219,7 @@
 				!this.options.revertIfNotValid)) {
 
 				// 12 December 2018 Bug #1853 When value is not formatted as a mask (Android devices).
-				if (value.length !== this._maskWithPrompts.length) {
+				if (value.length && value.length !== this._maskWithPrompts.length) {
 					value = this._parseValueByMask(value);
 				}
 				this._updateValue(value);
