@@ -504,7 +504,7 @@ QUnit.test('Destroy method reverts input state.', function (assert) {
 	assert.equal(document.getElementById(textEditorId).getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
 });
 
-QUnit.only('Set editor`s validator language', function (assert) {
+QUnit.test('Set editor`s validator language', function (assert) {
 	assert.expect(6);
 	var $textEditorNoLocale = this.util.appendToFixture(this.inputTag);
 	$textEditorNoLocale.igTextEditor(

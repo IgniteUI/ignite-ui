@@ -641,7 +641,9 @@
 		},
 		_setupValidator: function () {
 			if (this.element.igValidator) {
-				this._validator = this.element.igValidator(this.options.validatorOptions).data("igValidator");
+			// MV 9th Sep 2019 Bug #1901 Update validator's language and locale correctly
+			var validatorOptions = $.extend({}, { language: this.options.language, locale: this.options.locale}, this.options.validatorOptions);
+				this._validator = this.element.igValidator(validatorOptions).data("igValidator");
 				this._validator.owner = this;
 			}
 		},
@@ -1831,6 +1833,13 @@
 				notifier.notify(notifier.options.state, message);
 			}
 		},
+		// MV 9th Sep 2019 Bug #1901 Update validator's language and locale correctly
+		_changeLocaleForValidator: function () {
+			if (this._validator) {
+				this._validator.options.locale = this.options.locale;
+				this._validator.options.language = this.options.language;
+			}
+		},
 		changeLocale: function () {
 			/* changes the all locales into the widget element to the language specified in [options.language](ui.igtexteditor#options:language)
 			Note that this method is for rare scenarios, see [language](ui.igtexteditor#options:language) or [locale](ui.igtexteditor#options:locale) option setter
@@ -1840,6 +1849,8 @@
 			*/
 			this._superApply(arguments);
 			this._changeLocaleForNotifier();
+			// MV 9th Sep 2019 Bug #1901 Update validator's language and locale correctly
+			this._changeLocaleForValidator();
 		},
 		_setOption: function (option, value) { // igTextEditor
 			/* igTextEditor custom setOption goes here */
