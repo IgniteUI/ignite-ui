@@ -1077,8 +1077,8 @@ QUnit.test(testId_32, function (assert) {
     });
     this.scrollContainer(this.vhScrollId).mouseleave();
     this.testUtil.wait(2100).then(function () {
-        assert.equal(self.vDrag(self.vhScrollId).css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
-        assert.equal(self.hDrag(self.vhScrollId).css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+        assert.ok(self.vDrag(self.vhScrollId).css("opacity") < 0.5, "igScroll vertical scrollbar thumb is visible");
+        assert.ok(self.hDrag(self.vhScrollId).css("opacity") < 0.5, "igScroll horizontal scrollbar thumb is visible");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {
