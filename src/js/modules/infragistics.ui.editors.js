@@ -641,9 +641,8 @@
 		},
 		_setupValidator: function () {
 			if (this.element.igValidator) {
-
-			// MV 9th Sep 2019 Bug #1901 Update validator language and locale correctly
-			var validatorOptions = $.extend(
+				// MV 9th Sep 2019 Bug #1901 Update validator language and locale correctly
+				var validatorOptions = $.extend(
 					{},
 					{ language: this.options.language, locale: this.options.locale },
 					this.options.validatorOptions
