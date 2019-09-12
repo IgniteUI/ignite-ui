@@ -1516,9 +1516,9 @@
 
 				//V.S. 21 February, 2018 - #1204 animation chaining was not always calling moveToTop properly
 				if (typeof anim === "string") {
+					self.moveToTop(true);
 					elem.hide().show(anim, function () {
 						self._trigger("animationEnded", e, arg);
-						self.moveToTop(true);
 					});
 				} else {
 					if (typeof anim !== "object") {
@@ -1526,8 +1526,8 @@
 					}
 					anim.complete = function () {
 						self._trigger("animationEnded", e, arg);
-						self.moveToTop(true);
 					};
+					self.moveToTop(true);
 					elem.hide(0).show(anim);
 				}
 			} else {

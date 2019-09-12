@@ -503,3 +503,45 @@ QUnit.test('Destroy method reverts input state.', function (assert) {
 	//check the value attribute and see if it is restored
 	assert.equal(document.getElementById(textEditorId).getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
 });
+
+QUnit.test('Set editor`s validator language', function (assert) {
+	assert.expect(6);
+	var $textEditorNoLocale = this.util.appendToFixture(this.inputTag);
+	$textEditorNoLocale.igTextEditor(
+		{
+			validatorOptions : {
+				required: true
+			}
+		});
+
+	assert.equal($textEditorNoLocale.igValidator("option", "locale"), undefined, "Validator's locale should be undefined when editor has no locale");
+	assert.equal($textEditorNoLocale.igValidator("option", "language").language, undefined, "Validator's language should be undefined when editor has no language");
+
+	var $textEditorWithLocale = this.util.appendToFixture(this.inputTag);
+	$textEditorWithLocale.igTextEditor(
+		{
+			language: "fr",
+			locale: "bg",
+			validatorOptions : {
+				required: true
+			}
+		});
+
+	assert.equal($textEditorWithLocale.igValidator("option", "locale"), "bg", "Validator's locale should be 'bg' when editor has locale");
+	assert.equal($textEditorWithLocale.igValidator("option", "language"), "fr", "Validator's language should be 'fr when editor has language");
+
+	var $textEditorValidatorWithLocale = this.util.appendToFixture(this.inputTag);
+	$textEditorValidatorWithLocale.igTextEditor(
+		{
+			language: "fr",
+			locale: "bg",
+			validatorOptions : {
+				language: "es",
+				locale: "jp",
+				required: true
+			}
+		});
+
+		assert.equal($textEditorValidatorWithLocale.igValidator("option", "locale"), "jp", "Validator's language should be 'fr when validator has language");
+	assert.equal($textEditorValidatorWithLocale.igValidator("option", "language"), "es", "Validator's locale should be 'es' when validator has locale");
+});
