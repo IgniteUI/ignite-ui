@@ -797,6 +797,7 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_geometry" },
 			{ name: "_ig_dv_jquerydom" },
 			{ name: "_ig_dv_interactivity" },
+			{ name: "_ig_dv_visualdata" },
 			{ name: "igWidget" }
 		],
 		scripts: [
