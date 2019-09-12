@@ -724,11 +724,11 @@ QUnit.test("[ID20] Modal Open and Close animations, passed as objects, should fi
 	});
 });
 
-QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", function (assert) {
-	assert.expect(1);
+QUnit.test("[ID21] Modal openAnimation should display modal overlay on start", function (assert) {
+	assert.expect(2);
 	var $dialog = this.util.appendToFixture("<div id='openAnimationDialog'><h1>Hello World!</h1></div>")
 		.igDialog({
-			state: 'open',
+			state: 'closed',
 			modal: true,
 			height: '400px',
 			width: '600px',
@@ -739,12 +739,10 @@ QUnit.test("[ID21] Modal openAnimation should display modal overlay on end", fun
 				return true;
 			}
 		});
-	var done = assert.async();
-	this.util.wait(320).then(function () {
-		var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
-		assert.ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
-		done();
-	});
+	assert.notOk($dialog.data('igDialog')._modalDiv);
+	$dialog.igDialog('open');
+	var backgroundIndex = parseInt($dialog.data("igDialog")._modalDiv.css("zIndex"));
+	assert.ok(backgroundIndex > 0, "z-Index of overlay is not greater than 1");
 });
 
 QUnit.test("[ID22] Stacking two dialogs within eachother should not create scrollbars", function (assert) {
