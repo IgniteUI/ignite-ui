@@ -81,7 +81,9 @@ QUnit.test('[ID1] Validator init/destroy', function (assert) {
 		assert.ok(field.hasClass($.ui.igValidator.prototype.css.target) && field.data("igValidatorField") !== undefined, 'Validator field should be initialized with the ui-validator-target class');
 	}
 
-	assert.ok($._data($(this.fields[0].selector)[0], 'events').blur && $._data($(this.fields[0].selector)[0], 'events').blur[0].namespace == "validator", 'Field events should be attached to the input');
+	// P.M Since jQuery 3.4 native events for focus and blur are preserved in the events object
+	var blurEvt = ($._data($(this.fields[0].selector)[0], 'events').blur.length) === 1? $._data($(this.fields[0].selector)[0], 'events').blur[0] : $._data($(this.fields[0].selector)[0], 'events').blur[1];
+	assert.ok($._data($(this.fields[0].selector)[0], 'events').blur && blurEvt.namespace == "validator", 'Field events should be attached to the input');
 
 	var validationForm1 = $('<form id="validationForm1" action=""><p>Checkbox group</p><label for="check1">Form checkbox 1</label><input type="checkbox" name="checkboxname" value="check1" id="check1" /><label for="check2">Form checkbox 2</label><input type="checkbox" name="checkboxname" value="check2" id="check2" /> <input type="submit" value="Submit" /></form>');
 	$.ig.TestUtil.appendToFixture(validationForm1);
@@ -121,7 +123,7 @@ QUnit.test('[ID1] Validator init/destroy', function (assert) {
 	validationForm.igValidator("destroy");
 	assert.ok(validationForm.data("igValidator") === undefined, 'igValidator should destoy correctly on container');
 	assert.ok(!$(this.fields[1].selector).hasClass($.ui.igValidator.prototype.css.target) && $(this.fields[2].selector).data("igValidatorField") === undefined, 'Fields should be cleared after valiadtor destruction');
-	assert.ok(!($._data($(this.fields[0].selector)[0], 'events') && $._data($(this.fields[0].selector)[0], 'events').blur), 'Field events should be detached after validator destruction');
+	assert.ok(!($._data($(this.fields[0].selector)[0], 'events') && $._data($(this.fields[0].selector)[0], 'events').blur.length === 0), 'Field events should be detached after validator destruction');
 });
 
 
