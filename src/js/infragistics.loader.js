@@ -797,6 +797,7 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_geometry" },
 			{ name: "_ig_dv_jquerydom" },
 			{ name: "_ig_dv_interactivity" },
+			{ name: "_ig_dv_visualdata" },
 			{ name: "igWidget" }
 		],
 		scripts: [
@@ -1540,7 +1541,8 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_collections" },
 			{ name: "_ig_ext_web" },
 			{ name: "_ig_dv_geo" },
-			{ name: "Scatter" }
+			{ name: "Scatter" },
+			{ name: "Shape" }
 			],
 		scripts: [ "$path$/modules/infragistics.geographicmap_core.js",
 					"$path$/modules/infragistics.ui.map.js" ],

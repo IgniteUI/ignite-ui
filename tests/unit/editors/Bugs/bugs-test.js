@@ -1827,3 +1827,31 @@ QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line cha
 		done();
 	});
 });
+
+QUnit.test('Bug 1974: inputMask literals are visible for empty value after blur', function (assert) {
+	assert.expect(6);
+
+	var $editor1 = $.ig.TestUtil.appendToFixture(this.inputTag, { type: "text" });
+	$editor1.igMaskEditor({
+		inputMask: 'AaaL/aa'
+	});
+
+	var $editor2 = $.ig.TestUtil.appendToFixture(this.inputTag, { type: "text" });
+	$editor2.igMaskEditor({
+		inputMask: '(000) 000-000'
+	});
+
+	var field = $editor1.igMaskEditor("field");
+	field.focus();
+	assert.equal(field.val(), "____/__", "Mask should be visible");
+	field.blur();
+	assert.equal(field.val(), "", "Editor text field should remain empty");
+	assert.equal($editor1.igMaskEditor("value"), "", "Value should be empty");
+
+	field = $editor2.igMaskEditor("field");
+	field.focus();
+	assert.equal(field.val(), "(___) ___-___", "Mask should be visible");
+	field.blur();
+	assert.equal(field.val(), "", "Editor text field should remain empty");
+	assert.equal($editor1.igMaskEditor("value"), "", "Value should be empty");
+});
