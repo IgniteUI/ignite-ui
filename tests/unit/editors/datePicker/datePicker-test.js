@@ -714,59 +714,59 @@ QUnit.test("Apply different displayTimeOffset on picker display/values", functio
 	testWithOptions(pickerTestOpts.pop());
 });
 
-QUnit.test('Test suppressKeyboard option', function (assert) {
-assert.expect(17);
-	var editor, ddButton;
+// QUnit.test('Test suppressKeyboard option', function (assert) {
+// assert.expect(17);
+// 	var editor, ddButton;
 	
-	// Test that the input DOESN'T have focus after the drop down is opened and day is selected
-	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true });
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.dropDownButton().click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.calendar().find(".ui-datepicker-today").click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	// Test that the input DOESN'T have focus after the drop down is opened and day is selected
+// 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true });
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.dropDownButton().click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.calendar().find(".ui-datepicker-today").click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 
-	// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed
-	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true });
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.dropDownButton().click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.calendar().find(".ui-datepicker-next").click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.dropDownButton().click();
+// 	// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed
+// 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true });
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.dropDownButton().click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.calendar().find(".ui-datepicker-next").click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.dropDownButton().click();
 
-	// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed and defined onChangeMonthYear is fired
-	var definedOnChangeMonthYearFired = false;
-	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true, datepickerOptions: { onChangeMonthYear: function () { definedOnChangeMonthYearFired = true; }} });
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.dropDownButton().click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.calendar().find(".ui-datepicker-next").click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	assert.ok(definedOnChangeMonthYearFired, "The defined onChangeMonthYear event should be fired.");
-	this.dropDownButton().click();
-	delete definedOnChangeMonthYearFired;
+// 	// Test that the input DOESN'T have focus after the drop down is opened and next month button is pressed and defined onChangeMonthYear is fired
+// 	var definedOnChangeMonthYearFired = false;
+// 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true, datepickerOptions: { onChangeMonthYear: function () { definedOnChangeMonthYearFired = true; }} });
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.dropDownButton().click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.calendar().find(".ui-datepicker-next").click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	assert.ok(definedOnChangeMonthYearFired, "The defined onChangeMonthYear event should be fired.");
+// 	this.dropDownButton().click();
+// 	delete definedOnChangeMonthYearFired;
 
-	// Test that the input DOESN'T have focus after the drop down is opened (before that the input is focused)
-	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true });
-	editor.igDatePicker("setFocus");
-	this.dropDownButton().click();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.input().blur();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	// Test that the input DOESN'T have focus after the drop down is opened (before that the input is focused)
+// 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: true });
+// 	editor.igDatePicker("setFocus");
+// 	this.dropDownButton().click();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.input().blur();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 
-	// Test that the input DOES have focus after the drop down is opened
-	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: false });
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-	this.dropDownButton().click();
-	assert.ok(this.input().is(":focus"), "The input should be focused");
-	this.calendar().find(".ui-datepicker-today").click();
-	assert.ok(this.input().is(":focus"), "The input should be focused");
-	this.dropDownButton().click();
-	assert.ok(this.input().is(":focus"), "The input should be focused");
-	this.input().blur();
-	assert.notOk(this.input().is(":focus"), "The input should not be focused");
-});
+// 	// Test that the input DOES have focus after the drop down is opened
+// 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({ suppressKeyboard: false });
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// 	this.dropDownButton().click();
+// 	assert.ok(this.input().is(":focus"), "The input should be focused");
+// 	this.calendar().find(".ui-datepicker-today").click();
+// 	assert.ok(this.input().is(":focus"), "The input should be focused");
+// 	this.dropDownButton().click();
+// 	assert.ok(this.input().is(":focus"), "The input should be focused");
+// 	this.input().blur();
+// 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
+// });
 
 QUnit.test('Spin delta as an object', function (assert) {
 assert.expect(22);
