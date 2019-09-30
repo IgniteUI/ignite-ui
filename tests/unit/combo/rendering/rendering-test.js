@@ -257,55 +257,55 @@ QUnit.test('[ID3] igCombo span rendering', function (assert) {
 	this.testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
 });
 
-// QUnit.test('[ID4] igCombo input rendering', function (assert) {
-// 	assert.expect(119);
+QUnit.test('[ID4] igCombo input rendering', function (assert) {
+	assert.expect(119);
 
-// 	$.ig.TestUtil.appendToFixture('<div class="cont render_input"><input id=\'combo-input\' name="input-combo" /></div>');
-// 	var $comboElement = $('#combo-input'),
-// 		$hiddenInput,
-// 		width = 333,
-// 		height = 40,
-// 		itemsCount = 4,
-// 		comboElem = 'div',
-// 		itemsText = ['Tom', 'Jerry', 'Spiky', 'Bendji'];
+	$.ig.TestUtil.appendToFixture('<div class="cont render_input"><input id=\'combo-input\' name="input-combo" /></div>');
+	var $comboElement = $('#combo-input'),
+		$hiddenInput,
+		width = 333,
+		height = 40,
+		itemsCount = 4,
+		comboElem = 'div',
+		itemsText = ['Tom', 'Jerry', 'Spiky', 'Bendji'];
 
-// 	$comboElement
-// 		.igCombo({
-// 			width: width,
-// 			height: height,
-// 			valueKey: 'id',
-// 			textKey: 'name',
-// 			animationShowDuration: 0,
-// 			dropDownAttachedToBody: false,
-// 			dropDownOrientation: 'bottom',
-// 			dataSource: [{
-// 				id: '1',
-// 				name: 'Tom'
-// 			}, {
-// 				id: '2',
-// 				name: 'Jerry'
-// 			}, {
-// 				id: '3',
-// 				name: 'Spiky'
-// 			}, {
-// 				id: '4',
-// 				name: 'Bendji'
-// 			}]
-// 		})
-// 		.igCombo('openDropDown');
+	$comboElement
+		.igCombo({
+			width: width,
+			height: height,
+			valueKey: 'id',
+			textKey: 'name',
+			animationShowDuration: 0,
+			dropDownAttachedToBody: false,
+			dropDownOrientation: 'bottom',
+			dataSource: [{
+				id: '1',
+				name: 'Tom'
+			}, {
+				id: '2',
+				name: 'Jerry'
+			}, {
+				id: '3',
+				name: 'Spiky'
+			}, {
+				id: '4',
+				name: 'Bendji'
+			}]
+		})
+		.igCombo('openDropDown');
 
-// 	$comboWrapper = $('.render_input').find('.ui-igcombo-wrapper');
-// 	$hiddenInput = $(".render_input input.ui-igcombo-hidden-field");
-// 	this.assert = assert;
+	$comboWrapper = $('.render_input').find('.ui-igcombo-wrapper');
+	$hiddenInput = $(".render_input input.ui-igcombo-hidden-field");
+	this.assert = assert;
 
-// 	assert.equal($hiddenInput.attr("name"), "input-combo", "The name attribute was not transferred to the hidden input");
-// 	this.testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
+	assert.equal($hiddenInput.attr("name"), "input-combo", "The name attribute was not transferred to the hidden input");
+	this.testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
 
-// 	$comboElement.igCombo("destroy");
-// 	assert.equal($comboElement.closest(".igcombo-wrapper").length, 0, "The combo wrapper was not removed.");
-// 	assert.equal($comboElement.attr("name"), "input-combo", "The input name was not moved back to the input element after destroy.");
-// 	assert.equal($._data($comboElement[0], "events"), undefined, "The input events were not removed after destroy.");
-// });
+	$comboElement.igCombo("destroy");
+	assert.equal($comboElement.closest(".igcombo-wrapper").length, 0, "The combo wrapper was not removed.");
+	assert.equal($comboElement.attr("name"), "input-combo", "The input name was not moved back to the input element after destroy.");
+	assert.equal($._data($comboElement[0], "events"), undefined, "The input events were not removed after destroy.");
+});
 
 QUnit.test('[ID5] igCombo select rendering', function (assert) {
 	assert.expect(114);
