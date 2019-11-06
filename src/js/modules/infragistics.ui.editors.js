@@ -905,7 +905,7 @@
 					concatenatedAttr += (attr[ i ].name + " ") ;
 				}
 			}
-			element.removeAttr(concatenatedAttr.trim(" "));
+			element.removeAttr(concatenatedAttr.trim());
 		},
 		_setPropsDefaults: function () {
 			var element = this.element[ 0 ];
