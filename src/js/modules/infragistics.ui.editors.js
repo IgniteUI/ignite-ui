@@ -9366,7 +9366,7 @@
 			}
 		},
 		_getDateObjectFromValue: function (value) { //DateEditor
-			var date;$.type(value) === "date"
+			var date;
 			if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 			// V.A. December 4th, 2019 Bug: #2016 In igDateEditor with the intput and display format of HH:mm:ss.fff, millisecond part becomes 0 in display text and in value when the focus is blurred. 
