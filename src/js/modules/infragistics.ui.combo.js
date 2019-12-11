@@ -2586,7 +2586,7 @@
 				} else {
 					$listItem[0].children[i].innerHTML = item.innerHTML;
 				}
-			};
+			}
 		},
 		_$items: function (includeGroupHeaders) {
 			var selector = "." + this.css.listItem.split(" ", 1)[ 0 ];
@@ -3077,9 +3077,6 @@
 		_areItemsLowerInVir: function () {
 			return this.options.virtualization &&
 				this.options.dataSource.dataView().length <= this.options.visibleItemsCount;
-		},
-		_dropDownHeight: function (itemHeight, allItemsCount) {
-			return itemHeight * allItemsCount;
 		},
 		_itemHeight: function () {
 			return this._$items().first().outerHeight();
@@ -6469,7 +6466,7 @@
 				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [dropDownOpening](ui.igcombo#events:dropDownOpening) and [dropDownOpened](ui.igcombo#events:dropDownOpened) events.
 				returnType="object" Returns reference to this igCombo.
 			*/
-			var offset, itemHeight, noCancel, newAnimationStyle,
+			var offset, noCancel, newAnimationStyle,
 				_options = this._options,
 				borderWidth = parseInt(_options.$combo.css("borderTopWidth"), 10),
 
