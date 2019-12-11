@@ -2563,30 +2563,30 @@
 			}
 		},
 
-		// H.A. 11th December Bug #2015 - Scrolling a virtualized igCombo with itemTemplate barely moves the list.
+		// H.A. 11th December 2019 Bug #2015 - Scrolling a virtualized igCombo with itemTemplate barely moves the list.
 		// https://github.com/IgniteUI/ignite-ui/issues/2015
 		_updateMarkupForItem: function ($item, innerMarkup) {
 
 			// Update markup for item
-            var $listItem = $item;
-            if (this._checkBoxesEnabled()) {
-                $listItem = $item.find("." + this.css.listItemTextWithCheckbox);
-            }
+			var $listItem = $item;
+			if (this._checkBoxesEnabled()) {
+				$listItem = $item.find("." + this.css.listItemTextWithCheckbox);
+			}
 
-            var templateItems = jQuery.parseHTML(innerMarkup);
+			var templateItems = jQuery.parseHTML(innerMarkup);
 			this._setItemHTML(templateItems, $listItem);
 		},
 
 		// Parses the html recursively and set the innerHTMl for each html element
 		_setItemHTML:  function (templateItems, $listItem) {
-            for (var i = 0; i < templateItems.length; i++) {
-                var item = templateItems[i];
+			for (var i = 0; i < templateItems.length; i++) {
+				var item = templateItems[i];
 				if (item.childElementCount > 0) {
 					this._setItemHTML(item.children, $listItem.children());
 				} else {
-                    $listItem[0].children[i].innerHTML = item.innerHTML;
-                }
-            };
+					$listItem[0].children[i].innerHTML = item.innerHTML;
+				}
+			};
 		},
 		_$items: function (includeGroupHeaders) {
 			var selector = "." + this.css.listItem.split(" ", 1)[ 0 ];
