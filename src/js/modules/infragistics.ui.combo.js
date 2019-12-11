@@ -2573,12 +2573,12 @@
 				$listItem = $item.find("." + this.css.listItemTextWithCheckbox);
 			}
 
-            var templateItems = jQuery.parseHTML(innerMarkup);
-            if (templateItems[0].nodeName !== "#text") {
-                this._setItemHTML(templateItems, $listItem);
-            } else {
-                $listItem.html(innerMarkup);
-            }
+			var templateItems = jQuery.parseHTML(innerMarkup);
+			if (templateItems[0].nodeName !== "#text") {
+				this._setItemHTML(templateItems, $listItem);
+			} else {
+				$listItem.html(innerMarkup);
+			}
 		},
 
 		// Parses the html recursively and set the innerHTMl for each html element
