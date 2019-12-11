@@ -2578,13 +2578,13 @@
 		},
 
 		// Parses the html recursively and set the innerHTMl for each html element
-		_setItemHTML:  function (templateItems, $listItem) {
+		_setItemHTML: function (templateItems, $listItem) {
 			for (var i = 0; i < templateItems.length; i++) {
-				var item = templateItems[i];
-				if (item.childElementCount > 0) {
+				var item = templateItems[ i ];
+				if (item.childElementCount > 0 ) {
 					this._setItemHTML(item.children, $listItem.children());
 				} else {
-					$listItem[0].children[i].innerHTML = item.innerHTML;
+					$listItem[ 0 ].children[ i ].innerHTML = item.innerHTML;
 				}
 			}
 		},
@@ -4925,7 +4925,7 @@
 
 			this._callNextChunk($this, itemHeight);
 		},
-		
+
 		// S.T. 27th November 2015 Bug #208075: Use ceil instead parse int because sometimes dividing is float number.
 		// Function takes into consideration the containerRatio when calculating the items offset when scrolling.
 		// This way, the more items in the combo, the more items will be scrolled using the same touch gesture.
