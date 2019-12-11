@@ -2574,7 +2574,7 @@
 			}
 
 			var templateItems = jQuery.parseHTML(innerMarkup);
-			if (templateItems[0].nodeName !== "#text") {
+			if (templateItems[ 0 ].nodeName !== "#text") {
 				this._setItemHTML(templateItems, $listItem);
 			} else {
 				$listItem.html(innerMarkup);
