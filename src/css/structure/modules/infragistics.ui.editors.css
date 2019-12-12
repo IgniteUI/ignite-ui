@@ -226,3 +226,7 @@
 .ui-igedit-textarea {
 	resize: none;
 }
+
+.ui-state-focus.ui-state-default.ui-state-hover > .ui-icon, .ui-state-focus > .ui-icon {
+	color:#888;
+}
