@@ -2562,13 +2562,34 @@
 				$item.html(data[ this.options.grouping.key ]);
 			}
 		},
+
+		// H.A. 11th December 2019 Bug #2015 - Scrolling a virtualized igCombo with itemTemplate barely moves the list.
+		// https://github.com/IgniteUI/ignite-ui/issues/2015
 		_updateMarkupForItem: function ($item, innerMarkup) {
 
 			// Update markup for item
+			var $listItem = $item;
 			if (this._checkBoxesEnabled()) {
-				$item.find("." + this.css.listItemTextWithCheckbox).html(innerMarkup);
+				$listItem = $item.find("." + this.css.listItemTextWithCheckbox);
+			}
+
+			var templateItems = jQuery.parseHTML(innerMarkup);
+			if (templateItems[ 0 ].nodeName !== "#text") {
+				this._setItemHTML(templateItems, $listItem);
 			} else {
-				$item.html(innerMarkup);
+				$listItem.html(innerMarkup);
+			}
+		},
+
+		// Parses the html recursively and set the innerHTMl for each html element
+		_setItemHTML:  function (templateItems, $listItem) {
+			for (var i = 0; i < templateItems.length; i++) {
+				var item = templateItems[ i ];
+				if (item.childElementCount > 0) {
+					this._setItemHTML(item.children, $listItem.children());
+				} else {
+					$listItem[ 0 ].children[ i ].innerHTML = item.innerHTML;
+				}
 			}
 		},
 		_$items: function (includeGroupHeaders) {
@@ -3060,9 +3081,6 @@
 		_areItemsLowerInVir: function () {
 			return this.options.virtualization &&
 				this.options.dataSource.dataView().length <= this.options.visibleItemsCount;
-		},
-		_dropDownHeight: function (itemHeight, allItemsCount) {
-			return itemHeight * allItemsCount;
 		},
 		_itemHeight: function () {
 			return this._$items().first().outerHeight();
@@ -4897,7 +4915,7 @@
 			}
 
 			itemHeight = this._itemHeight();
-			offset = this._offsetItems(options.dataSource.dataView(), itemHeight);
+			offset = this._calculateOffset();
 			this._updateItems(offset);
 
 			options.dataSource.settings.callback = function (err, success, data) {
@@ -4911,27 +4929,19 @@
 
 			this._callNextChunk($this, itemHeight);
 		},
-		_offsetItems: function (dataView, itemHeight) {
-			var offset, containerRatio, itemRatio;
 
-			containerRatio = this.listScrollTop() /
-				this._options.$dropDownScrollCont.prop("scrollHeight");
-			itemRatio = itemHeight / this._dropDownHeight(itemHeight, dataView.length);
-
-			// S.T. 27th November 2015 Bug #208075: Use ceil instead parse int because sometimes dividing is float number.
-			offset = this._calculateOffset(containerRatio, itemRatio);
-
-			return offset;
-		},
-		_calculateOffset: function (containerRatio, itemRatio) {
+		// S.T. 27th November 2015 Bug #208075: Use ceil instead parse int because sometimes dividing is float number.
+		// Function takes into consideration the containerRatio when calculating the items offset when scrolling.
+		// This way, the more items in the combo, the more items will be scrolled using the same touch gesture.
+		_calculateOffset: function () {
 			var offset, offsetCeil, offsetFloor,
 				itemsLength = this.options.dataSource.dataView().length,
-				visibleItems = this.options.visibleItemsCount;
+				visibleItems = this.options.visibleItemsCount,
+				containerRatio = this.listScrollTop() / this._options.$dropDownScrollCont.prop("scrollHeight");
 
-			offset = containerRatio / itemRatio;
+			offset = containerRatio * itemsLength;
 			offsetCeil = Math.ceil(offset);
 
-			// S.T. 12th December 2015 Bug #208075: Asure that offset index does not exceed data items length.
 			if (visibleItems + offsetCeil > itemsLength) {
 				offsetFloor = Math.floor(offset);
 
@@ -6460,7 +6470,7 @@
 				paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [dropDownOpening](ui.igcombo#events:dropDownOpening) and [dropDownOpened](ui.igcombo#events:dropDownOpened) events.
 				returnType="object" Returns reference to this igCombo.
 			*/
-			var offset, itemHeight, noCancel, newAnimationStyle,
+			var offset, noCancel, newAnimationStyle,
 				_options = this._options,
 				borderWidth = parseInt(_options.$combo.css("borderTopWidth"), 10),
 
@@ -6537,9 +6547,7 @@
 								// S.T. April 27th, 2015 Bug #192899: The offset has to be calculated after animation is completed. Otherwise it's zero.
 								// If virtualization is enabled and scroll is moved, we need to go to scrolled items
 								if (self.options.virtualization) {
-									itemHeight = self._itemHeight();
-									offset = self._offsetItems(self.options
-										.dataSource.dataView(), itemHeight);
+									offset = self._calculateOffset();
 									self._updateItems(offset);
 								}
 
