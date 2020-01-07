@@ -2744,7 +2744,15 @@ body .ui-tooltip {
   border-top: 1px solid #01549b;
   border-right: 1px solid #01549b;
   background: #0275d8;
-  color: #fff; }
+  color: #fff;
+}
+
+/* V.A. 07/01/2020 Adding a fix for issue #1984 "igCheckboxEditor: Checked icon is invisible if the default bootstrap4 theme is applied." The fix is based on the suggested workaround in the bug description. */
+.ui-state-focus.ui-state-default.ui-state-hover > .ui-icon, .ui-state-focus > .ui-icon {
+  color:#888;
+}
+
+
 
 /**********/
 /* igGrid */
@@ -4291,10 +4299,5 @@ Spreadsheet colors
 
 .ui-progressbar.ui-widget-content {
   border: 0; }
-
+  
 /*# sourceMappingURL=infragistics.theme.css.map */
-
- /* V.A. 07/01/2020 Adding a fix for issue #1984 "igCheckboxEditor: Checked icon is invisible if the default bootstrap4 theme is applied." The fix is based on the suggested workaround in the bug description. */
- .ui-state-focus.ui-state-default.ui-state-hover > .ui-icon, .ui-state-focus > .ui-icon {
-	color:#888;
-}
