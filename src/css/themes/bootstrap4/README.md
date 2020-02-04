@@ -17,17 +17,17 @@ Bootstrap 4 Themes
 
 * **infragistics.theme.less** - The root file which import all partial files.
 
-* **Modules** - Contain all theme styles related to ignite ui modules.
+* **Modules** - Contain all theme styles related to Ignite UI for jQuery modules.
 
 * **Styles-guide** - In progress theme style guide
 
-* **framework.less** -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
+* **framework.less** -  Contain all styles, that are needed, in order to make Ignite UI for jQuery component's to work properly witch jQueryUI components.
 
 * **variables.less** - Theme variables.
 
 * **ignite-ui-variables.less** -Theme variables.
 
-* **mixins.less** - Contain all mixins related to Ignite UI components
+* **mixins.less** - Contain all mixins related to Ignite UI for jQuery components
 
 
 **Note:** the root file "infragistics-theme-scss" is the only file that needs to be compiled to .CSS
@@ -43,10 +43,10 @@ Bootstrap 4 Themes
 // Bootstrap Theme variables
 @import "variables";
 
-// Ignite UI variables
+// Ignite UI for jQuery variables
 @import "ignite-ui-variables";
 
-// Ignite UI Mixins
+// Ignite UI for jQuery Mixins
 @import "mixins";
 
 // Icons fonts
@@ -55,7 +55,7 @@ Bootstrap 4 Themes
 //JQuery UI
 @import "framework";
 
-//Ignite UI styles
+//Ignite UI for jQuery styles
 @import "modules/modules";
 ```
 
