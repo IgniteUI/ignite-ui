@@ -21,22 +21,22 @@
     "postinstall": "npm install -g grunt-cli"
   },
   "dependencies": {
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "jquery-ui": "^1.12.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
     "glob": "^7.1.2",
-    "grunt": "^1.0.3",
+    "grunt": "^1.0.4",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
-    "grunt-jscs": "^2.8.0",
+    "grunt-jscs": "^3.0.1",
     "jquery-mockjax": "^2.2.0",
-    "karma": "^2.0.4",
+    "karma": "^4.4.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",
     "karma-qunit": "^1.2.1",
