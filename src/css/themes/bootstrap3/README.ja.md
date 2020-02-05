@@ -17,17 +17,17 @@ https://bootswatch.com/
  
 * **infragistics.theme.less** - すべての部分ファイルをインポートするルート ファイル。
  
-* **Modules** - Ignite UI モジュールに関連するすべてのテーマ スタイルを含みます。
+* **Modules** - Ignite UI for jQuery モジュールに関連するすべてのテーマ スタイルを含みます。
 
 * **Styles-guide** - テーマのスタイル ガイド (作業中)。
 
-* **framework.less** -  Ignite UI コンポーネントを jQueryUI コンポーネントと正しく動作させるために必要なスタイルをすべて含みます。
+* **framework.less** -  Ignite UI for jQuery コンポーネントを jQueryUI コンポーネントと正しく動作させるために必要なスタイルをすべて含みます。
  
 * **variables.less** - テーマ変数。
  
 * **ignite-ui-variables.less** - テーマ変数。
  
-* **mixins.less** - Ignite UI コンポーネントに関連するすべての mixins を含みます。
+* **mixins.less** - Ignite UI for jQuery コンポーネントに関連するすべての mixins を含みます。
 
 
 
@@ -44,16 +44,16 @@ https://bootswatch.com/
 // Bootstrap Theme variables
 @import "variables.less";
 
-// Ignite UI Theme variables
+// Ignite UI for jQuery Theme variables
 @import "ignite-ui-variables";
 
-// Ignite UI Mixins
+// Ignite UI for jQuery Mixins
 @import "mixins.less";
 
 //JQuery UI
 @import "framework.less";
 
-//Ignite UI styles
+//Ignite UI for jQuery styles
 @import "modules/modules.less";
 
 // Font styles

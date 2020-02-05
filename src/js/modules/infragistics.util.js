@@ -54,7 +54,7 @@
 	}
 
 	// The base Class implementation (does nothing) or expects Class to already be defined as a function
-	// K.D. August 18, 2016 Bug #242 global scope Class object is overridden by Ignite UI Class object
+	// K.D. August 18, 2016 Bug #242 global scope Class object is overridden by Ignite UI for jQuery Class object
 	this.Class = this.Class || function () { };
 
 	// Create a new Class that inherits from this class
