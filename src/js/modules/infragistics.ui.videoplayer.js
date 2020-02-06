@@ -269,14 +269,14 @@
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
-						title: "Ignite UI"
+						title: "Ignite UI for jQuery"
 				});
 
 				//Get
 				var title = $(".selector").igVideoPlayer("option", "title");
 
 				//Set
-				$(".selector").igVideoPlayer("option", "title", "Ignite UI");
+				$(".selector").igVideoPlayer("option", "title", "Ignite UI for jQuery");
 			```
 			*/
 			title: "",

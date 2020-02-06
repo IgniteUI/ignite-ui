@@ -32,7 +32,7 @@
 }
 (function ($) {
 	/*
-		Base igWidget for all Ignite UI widgets.
+		Base igWidget for all Ignite UI for jQuery widgets.
 	*/
 	$.widget("ui.igWidget", {
 		localeWidgetName: null,

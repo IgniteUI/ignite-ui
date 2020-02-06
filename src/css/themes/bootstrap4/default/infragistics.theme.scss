@@ -1,5 +1,5 @@
 /******************************************/
-/* Infragistics Ignite UI Bootstrap theme */
+/* Infragistics Ignite UI for jQuery Bootstrap theme */
 /******************************************/
 
 // Icon sprites
@@ -12,10 +12,10 @@ $iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
 // Bootstrap Theme variables
 @import "variables";
 
-// Ignite UI variables
+// Ignite UI for jQuery variables
 @import "ignite-ui-variables";
 
-// Ignite UI Mixins
+// Ignite UI for jQuery Mixins
 @import "mixins";
 
 // Icons fonts
@@ -24,5 +24,5 @@ $iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
 // JQuery UI
 @import "framework";
 
-//Ignite UI styles
+//Ignite UI for jQuery styles
 @import "modules/modules";

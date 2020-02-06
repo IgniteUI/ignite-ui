@@ -1,4 +1,4 @@
-# Ignite UI  
+# Ignite UI for jQuery  
 [![Build Status](https://travis-ci.org/IgniteUI/ignite-ui.svg?branch=master)](https://travis-ci.org/IgniteUI/ignite-ui)
 [![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8707f9ff8ee94bba9e1f897ef40cd66e)](https://www.codacy.com/app/kdinev/ignite-ui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IgniteUI/ignite-ui&amp;utm_campaign=Badge_Grade)
@@ -7,15 +7,15 @@
 [![Bower version](https://badge.fury.io/bo/ignite-ui.svg)](https://badge.fury.io/bo/ignite-ui)
 
 
-Ignite UI™ helps you build powerful, high-performance web-based applications. Inside Ignite UI you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
+Ignite UI for jQuery™ helps you build powerful, high-performance web-based applications. Inside Ignite UI for jQuery you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
 
-## About  Ignite UI
+## About  Ignite UI for jQuery
 
-Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuery core model and conventions including all styling support via jQuery UI Theme Roller. Beyond jQuery Ignite UI features support for Bootstrap themes, AngularJS, Knockout and jQuery Mobile.
+Ignite UI for jQuery is built on jQuery and jQuery UI and ties in seamlessly with the jQuery core model and conventions including all styling support via jQuery UI Theme Roller. Beyond jQuery Ignite UI for jQuery features support for Bootstrap themes, AngularJS, Knockout and jQuery Mobile.
 
-## Available Features in Ignite UI open-source version
+## Available Features in Ignite UI for jQuery open-source version
 
-|Feature																	|Ignite UI OSS		|[Ignite UI Full](http://www.igniteui.com)	|[Infragistics Ultimate](http://www.infragistics.com/products/ultimate)	|Help 																																																																			|
+|Feature																	|Ignite UI for jQuery OSS		|[Ignite UI for jQuery Full](http://www.igniteui.com)	|[Infragistics Ultimate](http://www.infragistics.com/products/ultimate)	|Help 																																																																			|
 |---------------------------------------------------------------------------|:-----------------:|:-----------------------------------------:|:---------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |**Editors**																|					|											|																		|																																																																				|
 |[igCombo](http://www.igniteui.com/combo/overview)							|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2017.2/ui.igcombo)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/igcombo-igcombo)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/17.2/topics/02_Controls/igCombo)														|
@@ -134,8 +134,8 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 The package for this development repository is available on both [`npm`](https://www.npmjs.com/package/ignite-ui) and [`bower`](https://github.com/IgniteUI/ignite-ui-bower).
 To get started follow the respective package manager installation:
 
-#### Ignite UI CLI
-To get started with the Ignite UI CLI and Ignite UI:
+#### Ignite UI for jQuery CLI
+To get started with the Ignite UI for jQuery CLI and Ignite UI for jQuery:
 
 ```
 npm i -g igniteui-cli
@@ -155,12 +155,12 @@ npm install ignite-ui
 bower install ignite-ui
 ```
 
-Package contains similar files and structure to what you'd find in the [full version of Ignite UI](http://www.igniteui.com) with complete styles and lite versions of the combined script files:
+Package contains similar files and structure to what you'd find in the [full version of Ignite UI for jQuery](http://www.igniteui.com) with complete styles and lite versions of the combined script files:
 ```html
 <script src="<node_modules|bower_components>/ignite-ui/js/infragistics.core-lite.js" type="text/javascript"></script>
 <script src="<node_modules|bower_components>/ignite-ui/js/infragistics.lob-lite.js" type="text/javascript"></script>
 ```
-The full built content for both packages can be browsed at the [Ignite UI Bower Shim repository](https://github.com/IgniteUI/ignite-ui-bower).
+The full built content for both packages can be browsed at the [Ignite UI for jQuery Bower Shim repository](https://github.com/IgniteUI/ignite-ui-bower).
 
 ## Running demos locally
 
@@ -183,10 +183,10 @@ The html demos under `demos/<control>` can now be run directly from the file sys
 
 ## Getting Help
 
-* [Ignite UI help API](http://www.igniteui.com/help/api/2017.2/)
-* [Ignite UI help topics](http://www.igniteui.com/help/)
-* [Ignite UI online samples](http://www.igniteui.com/grid/overview)
-* [Ignite UI questions on StackOverflow](http://stackoverflow.com/questions/tagged/ignite-ui)
+* [Ignite UI for jQuery help API](http://www.igniteui.com/help/api/2017.2/)
+* [Ignite UI for jQuery help topics](http://www.igniteui.com/help/)
+* [Ignite UI for jQuery online samples](http://www.igniteui.com/grid/overview)
+* [Ignite UI for jQuery questions on StackOverflow](http://stackoverflow.com/questions/tagged/ignite-ui)
 
 ## Contributing
 You can find all guidelines on how to contribute on the wiki page.  
