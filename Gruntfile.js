@@ -23,18 +23,8 @@ module.exports = function (grunt) {
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
-		jscs: {
-			src: grunt.file.readJSON('build/config/all/jshint.json').config,
-			options: {
-				config: ".jscsrc",
-				force: false,
-				maxErrors: null,
-				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
-			}
-		},
 		clean: {
 			jshint: ["jshint"],
-			jscs: ["jscs"],
 			build: ["dist/**/*", "!dist/.git/**/*"]
 		},
 		copy: {
@@ -105,7 +95,6 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -136,34 +125,11 @@ module.exports = function (grunt) {
 		grunt.task.run("jshint:all");
 	});
 
-	grunt.task.registerTask("cs", "Task to run JSCS", function (control) {
-		var config, reporter, output, report = grunt.option('report');
-
-		if (!!control) {
-			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
-		} else {
-			config = grunt.file.readJSON('build/config/all/jshint.json').config;
-		}
-
-		if (report !== undefined) {
-			reporter = "build/ReporterJSCS.js";
-			output = "jscs/report.html";
-		} else {
-			reporter = output = undefined;
-		}
-
-		grunt.task.run("clean:jscs");
-		grunt.config("jscs.src", config);
-		grunt.config("jscs.options.reporter", reporter);
-		grunt.config("jscs.options.reporterOutput", output);
-		grunt.task.run("jscs");
-	});
-
-	grunt.task.registerTask("verify", "A sample task to run jshint, jscs, instrument files, run dev tests and produce coverage report.", function(control) {
+	grunt.task.registerTask("verify", "A sample task to run jshint, instrument files, run dev tests and produce coverage report.", function(control) {
 		if (!!control) {
 			grunt.task.run("hint:" + control, "cs:" + control);
 		} else {
-			grunt.task.run("hint", "jscs");
+			grunt.task.run("hint");
 		}
 	});
 

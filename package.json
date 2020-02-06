@@ -17,7 +17,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "karma start",
-    "cover": "grunt hint && grunt jscs && npm test -- --single-run",
+    "cover": "grunt hint && npm test -- --single-run",
     "postinstall": "npm install -g grunt-cli"
   },
   "dependencies": {
@@ -34,7 +34,6 @@
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
-    "grunt-jscs": "^3.0.1",
     "jquery-mockjax": "^2.2.0",
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^2.2.0",
