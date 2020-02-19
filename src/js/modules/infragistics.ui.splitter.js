@@ -1599,7 +1599,7 @@
                 // P.P. 06-July-2015 #201886: the panel drops down when has fixed size
                 // and the window is resized below this size
                 // P.P. 29-June-2015 #201887: when only panel1 is defined with fixed size
-                if ($panel2[ sizeKey ]() !== panel2RecalculatedSize ||
+                if (panel2Size !== panel2RecalculatedSize ||
                     panel2Size === undefined && panel1Size !== undefined) {
 
                     // When first panel and splitter size are undefined and only second panel is defined
@@ -1641,10 +1641,10 @@
                     $panel1[ sizeKey ](panel1Size - panel1BorderWidth);
                     var panel2BorderWidth =
                         this._panels[ 1 ][ 0 ].offsetWidth - this._panels[ 1 ][ 0 ].clientWidth;
-                    $panel2[ sizeKey ]($panel2[ sizeKey ]() - panel2BorderWidth);
+                    $panel2[ sizeKey ](panel2Size - panel2BorderWidth);
                 }
 
-                this._setPanelSize(this._panels[ 1 ], $panel2[ sizeKey ]());
+                this._setPanelSize(this._panels[ 1 ], panel2Size);
 
                 if ($panel2.css(minSize) &&
                     $panel2.css(minSize) !== "none" && !isAnyPanelCollapsed) {
