@@ -1513,12 +1513,11 @@
                     cssObj = {},
                     size = this._getSize(sizeKey),
                     barSize = this._getSplitBarSize(),
-                    panel1Size = cloneObjPanels[ 0 ].options.size,
-                    panel2Size = cloneObjPanels[ 1 ].options.size &&
-                        /%/.test(cloneObjPanels[ 1 ].options.size) ?
-                        size * cloneObjPanels[ 1 ].options.size.replace("%", "") / 100 -
-                        barSize :
-                        cloneObjPanels[ 1 ].options.size,
+                    panel1Size = cloneObjPanels[ 0 ].options.size &&
+                        /%/.test(cloneObjPanels[ 0 ].options.size) ?
+                        size * cloneObjPanels[ 0 ].options.size.replace("%", "") / 100 :
+                        cloneObjPanels[ 0 ].options.size,
+                    panel2Size = size - panel1Size - barSize,
                     isPanel1Collapsed = this._panels[ 0 ].options.collapsed,
                     isPanel2Collapsed = this._panels[ 1 ].options.collapsed,
                     isAnyPanelCollapsed = isPanel1Collapsed || isPanel2Collapsed;
