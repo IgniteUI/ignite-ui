@@ -730,6 +730,7 @@
 		assert.equal(params, "%24filter=startswith(tolower(ProductID)%2C'cr')%20eq%20true");
 	});
 
+	// After fix for https://github.com/IgniteUI/ignite-ui/issues/2048, encodeURIComponent is used for encoding, which encodes only CERTAIn characters, not all characters
 	QUnit.test("Ensure special characters in filtering expression are escaped when encoded to url. ", function (assert) {
 		assert.expect(1);
 		var ds =new $.ig.RemoteDataSource({ responseDataType: "json",
@@ -737,12 +738,14 @@
 		paging: {enabled: true, remote: true},
 		dataSource: "products123", schema: {searchField : "data.results", fields:[{name: "ProductID"}]}} ).dataBind();
 
+		var specialCharacter = "%EF%BC%93"; // FULLWIDTH DIGIT THREE, https://www.fileformat.info/info/unicode/char/ff13/index.htm
+		var expr = decodeURIComponent(specialCharacter);
 		ds.settings.filtering.expressions = [
-			{ fieldName: "ProductID", expr: "()", cond: "Contains" }
+			{ fieldName: "ProductID", expr: expr, cond: "Contains" }
 		];
 		ds.settings.paging = {};
 
 		ds.settings.filtering.filterExprUrlKey = "filter";
 		params = $.param(ds._encodeUrl());
-		assert.equal(params, "filter(ProductID)=Contains(%2528%2529)", "Filtering Expression Value should be escaped.");
+		assert.equal(params, "filter(ProductID)=Contains(%25EF%25BC%2593)", "Filtering Expression Value should be escaped.");
 	});
