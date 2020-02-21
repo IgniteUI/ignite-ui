@@ -444,7 +444,7 @@
 			" or ReleaseDate gt DateTime'" + $.ig.formatter(date, "date", "yyyy-MM-ddT23:59:59") + "' or ReleaseDate lt DateTime'" + $.ig.formatter(date, "date", "yyyy-MM-dd") +
 			"' or day(ReleaseDate) eq " + day + " and month(ReleaseDate) eq " + month + " and year(ReleaseDate) eq " + year + " or day(ReleaseDate) eq "+ day +
 			" and month(ReleaseDate) eq " + month + " and year(ReleaseDate) eq " + year + "&filterLogic=or";
-		assert.equal(unescape(params), result);
+		assert.equal(decodeURIComponent(params), result);
 
 		ds.settings.filtering.expressions = [
 			{fieldName: "ThisMonth", cond: "thisMonth", logic: "or"},
