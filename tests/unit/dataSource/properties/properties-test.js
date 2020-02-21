@@ -1035,7 +1035,7 @@ QUnit.module("igDataSource Properties", {
 			var nYear = nextMonthDate.getFullYear();
 			var prevMonthYear = prevMonthDate.getFullYear();
 
-			var params = unescape($.param(dsFilter._encodeUrl()));
+			var params = decodeURIComponent($.param(dsFilter._encodeUrl()));
 			assert.equal(params,
 				"$filter=day(Date) eq " + date.getDate().toString() + " and month(Date) eq " + currMonth.toString() + " and year(Date) eq " + date.getFullYear().toString() +
 				" and month(Date2) eq " + prevMonth.toString() + " and year(Date2) eq " + prevMonthYear.toString() + " and month(Date3) eq " +
