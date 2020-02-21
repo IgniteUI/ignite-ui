@@ -5025,7 +5025,7 @@
 							);
 							/* d = ffields[i].expr.getTime(); */
 						} else {
-							d = escape(ffields[ i ].expr);
+							d = encodeURIComponent(ffields[ i ].expr);
 						}
 						if (params.filteringParams[ key ] === undefined) {
 							params.filteringParams[ key ] = ffields[ i ].cond +
