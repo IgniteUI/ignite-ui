@@ -741,7 +741,7 @@
 		var specialCharacter = "%EF%BC%93"; // FULLWIDTH DIGIT THREE, https://www.fileformat.info/info/unicode/char/ff13/index.htm
 		var expr = decodeURIComponent(specialCharacter);
 		ds.settings.filtering.expressions = [
-			{ fieldName: "ProductID", expr: expr, cond: "Contains" }
+			{ fieldNgit puame: "ProductID", expr: expr, cond: "Contains" }
 		];
 		ds.settings.paging = {};
 
