@@ -1513,12 +1513,12 @@
                     cssObj = {},
                     size = this._getSize(sizeKey),
                     barSize = this._getSplitBarSize(),
-                    panel1Size = cloneObjPanels[ 0 ].options.size,
-                    panel2Size = cloneObjPanels[ 1 ].options.size &&
-                        /%/.test(cloneObjPanels[ 1 ].options.size) ?
-                        size * cloneObjPanels[ 1 ].options.size.replace("%", "") / 100 -
-                        barSize :
-                        cloneObjPanels[ 1 ].options.size,
+                    panel1Size = cloneObjPanels[ 0 ].options.size &&
+                        /%/.test(cloneObjPanels[ 0 ].options.size) ?
+                        size * cloneObjPanels[ 0 ].options.size.replace("%", "") / 100 :
+                        cloneObjPanels[ 0 ].options.size,
+
+                    panel2Size = size - panel1Size - barSize,
                     isPanel1Collapsed = this._panels[ 0 ].options.collapsed,
                     isPanel2Collapsed = this._panels[ 1 ].options.collapsed,
                     isAnyPanelCollapsed = isPanel1Collapsed || isPanel2Collapsed;
@@ -1573,12 +1573,15 @@
                     barSize + "px" : panel1Size;
                 $panel1.css(cssObj);
 
-                cloneObj.element[ sizeKey ](this.element[ sizeKey ]());
+                // H.A. 18-Feb-2020 #266999: Panels on the right hand side become invisible when a browser zoom level is changed.(Chrome only)
+                // The fix for #266999 is essentialy replacing using `panel1Size` in the calculations below instead of $panel1[ sizeKey ]()`
+                // because after appending cloneObj to the body, $panel1[ sizeKey ]() returns an improper value (incremented by 1, due to browser redenring issues)
+                cloneObj.element[ sizeKey ](size);
                 cloneObj.element.appendTo($("body"));
 
                 // Need to check panels and splitter sizes after they are placed in the clone object
                 sizeWithoutBarSize = size - barSize;
-                panel2RecalculatedSize = sizeWithoutBarSize - $panel1[ sizeKey ]();
+                panel2RecalculatedSize = sizeWithoutBarSize - panel1Size;
 
                 // P.P. 06-July-2015 #202331: Handle undefined panels resizing
                 // on window resize when splitter is defined in %s;
@@ -1587,7 +1590,7 @@
                     // Handle only first panel,
                     //the second one will be handled in the panel2 recalculate code block below
                     $panel1[ sizeKey ](this._opt.defaultPanelSize);
-                } else if ($panel1[ sizeKey ]() > sizeWithoutBarSize &&
+                } else if (panel1Size > sizeWithoutBarSize &&
                     !this._panels[ 1 ].options.size) {
                     // P.P. 06-July-2015 #202332: Handle panel1 resizing (on  window resize)
                     // when splitter is smaller than the panel and defined in %s
@@ -1597,7 +1600,7 @@
                 // P.P. 06-July-2015 #201886: the panel drops down when has fixed size
                 // and the window is resized below this size
                 // P.P. 29-June-2015 #201887: when only panel1 is defined with fixed size
-                if ($panel2[ sizeKey ]() !== panel2RecalculatedSize ||
+                if (panel2Size !== panel2RecalculatedSize ||
                     panel2Size === undefined && panel1Size !== undefined) {
 
                     // When first panel and splitter size are undefined and only second panel is defined
@@ -1636,13 +1639,13 @@
                     // if there are left and/or right borders on the panels - subtract them from the panels' width
                     var panel1BorderWidth =
                         this._panels[ 0 ][ 0 ].offsetWidth - this._panels[ 0 ][ 0 ].clientWidth;
-                    $panel1[ sizeKey ]($panel1[ sizeKey ]() - panel1BorderWidth);
+                    $panel1[ sizeKey ](panel1Size - panel1BorderWidth);
                     var panel2BorderWidth =
                         this._panels[ 1 ][ 0 ].offsetWidth - this._panels[ 1 ][ 0 ].clientWidth;
-                    $panel2[ sizeKey ]($panel2[ sizeKey ]() - panel2BorderWidth);
+                    $panel2[ sizeKey ](panel2Size - panel2BorderWidth);
                 }
 
-                this._setPanelSize(this._panels[ 1 ], $panel2[ sizeKey ]());
+                this._setPanelSize(this._panels[ 1 ], panel2Size);
 
                 if ($panel2.css(minSize) &&
                     $panel2.css(minSize) !== "none" && !isAnyPanelCollapsed) {
@@ -1660,7 +1663,7 @@
                     this._panels[ 1 ].css(maxSize, "");
                 }
 
-                this._setPanelSize(this._panels[ 0 ], $panel1[ sizeKey ]());
+                this._setPanelSize(this._panels[ 0 ], panel1Size);
 
                 if ($panel1.css(minSize) &&
                     $panel1.css(minSize) !== "none" && !isAnyPanelCollapsed) {
