@@ -2790,6 +2790,9 @@
 				text = data[ binding.textKey ];
 			}
 
+			// I.G. February 14th, 2020 Bug #2033 &lt; cannot be used in node attribute
+			text = $.ig.encode(text);
+
 			return "<a href='" + href + "' target='" + target + "' class='" +
 				this.css.nodeAnchor + "'>" + text + "</a>";
 		},
