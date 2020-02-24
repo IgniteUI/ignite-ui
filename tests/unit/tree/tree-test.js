@@ -5292,4 +5292,71 @@ QUnit.test("[Add/Remove nodes 14] Drag and drop node with children", function (a
 	var nodeChildren = tree1.igTree("option", "dataSource").root().data()[0]["Contries"];
 	assert.equal(nodeChildren.length, initialNodeChildrenCount, "Dragged node was removed from source tree.");
 });
+
+QUnit.test('Bug #2033 &lt; cannot be used in node attribute XML', function (assert) {
+	assert.expect(2);
+
+	var xmlDoc = '<OrgChart Name="&lt;All employees"></OrgChart>',
+
+	//Binding to XML requires a schema to define data fields
+	xmlSchema = new $.ig.DataSchema("xml", {
+		searchField: "OrgChart",
+		fields: [{
+			name: "Name",
+			xpath: "@Name"
+		}]
+	}),
+
+	//This creates an Infragistics datasource from the XML 
+	//and the Schema which can be consumed by the grid.
+	ds = new $.ig.DataSource({
+		type: "xml",
+		dataSource: xmlDoc,
+		schema: xmlSchema
+	}),
+
+	$container = this.util.appendToFixture(this.divTag),
+	node;
+
+	$container.igTree({
+		dataSource: ds,
+		dataSourceType: 'xml',
+		bindings: {
+			textKey: "Name"
+		}
+	});
+
+	node = $container.children("ul").children("li").first(),
+	anchor = node.children("a")[0],
+
+	assert.equal(anchor.innerText, "<All employees", "Anchor text and expected text differ");
+	assert.equal(anchor.innerHTML, "&lt;All employees", "Anchor text and expected text differ");
+});
+
+QUnit.test('Bug #2033 &lt; cannot be used in node attribute JSON', function (assert) {
+	assert.expect(3);
+
+	var ds = [
+		{ "Name": "<All employees" }, 
+		{ "Name": "&lt;All employees" },
+		{ "Name": "Good&Bad All employees" }
+	],
+
+	$container = this.util.appendToFixture(this.divTag);
+
+	$container.igTree({
+		dataSource: ds,
+		bindings: {
+			textKey: "Name",
+			valueKey: "Name"
+		}
+	});
+
+	anchors = $container.children("ul").find("li > a"),
+
+	assert.equal(anchors[0].innerText, "<All employees", "Anchor text and expected text differ");
+	assert.equal(anchors[1].innerText, "&lt;All employees", "Anchor text and expected text differ");
+	assert.equal(anchors[2].innerText, "Good&Bad All employees", "Anchor text and expected text differ");
+});
+
 /* ***************** END igTree add/remove nodes ***************** */
