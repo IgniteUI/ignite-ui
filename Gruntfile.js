@@ -127,7 +127,7 @@ module.exports = function (grunt) {
 
 	grunt.task.registerTask("verify", "A sample task to run jshint, instrument files, run dev tests and produce coverage report.", function(control) {
 		if (!!control) {
-			grunt.task.run("hint:" + control, "cs:" + control);
+			grunt.task.run("hint:" + control);
 		} else {
 			grunt.task.run("hint");
 		}
