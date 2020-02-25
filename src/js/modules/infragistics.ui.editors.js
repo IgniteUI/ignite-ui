@@ -11012,6 +11012,7 @@
 			if (this._shouldNotFocusInput) {
 				event.target.blur();
 				delete this._shouldNotFocusInput;
+				event.preventDefault();
 				return;
 			}
 			this._super(event);
