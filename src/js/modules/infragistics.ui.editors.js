@@ -11012,6 +11012,8 @@
 			if (this._shouldNotFocusInput) {
 				event.target.blur();
 				delete this._shouldNotFocusInput;
+
+				// N.A. 25th Feb 2020 #2002 Because of a change in jQuery 3.4.0, prevent default focus behavior.
 				event.preventDefault();
 				return;
 			}
