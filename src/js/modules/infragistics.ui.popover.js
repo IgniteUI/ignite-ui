@@ -1083,7 +1083,7 @@
 		},
 		_rightPosition: function (trg) {
 			var right = $.ig.util.offset(trg).left + trg.outerWidth(),
-				parentRight = $.ig.util.offset(trg.offsetParent()).right + trg.outerWidth();
+				parentRight = $.ig.util.offset(trg.offsetParent()).left + trg.offsetParent().outerWidth();
 			if (right > parentRight) {
 				right = parentRight;
 			}
@@ -1103,7 +1103,7 @@
 			leftBoundary = win.scrollLeft();
 			topBoundary = win.scrollTop();
 			$containment = this.options.containment;
-			if (this.options.containment) {
+			if ($containment) {
 				if (leftBoundary < $.ig.util.offset($containment).left) {
 					leftBoundary = $.ig.util.offset($containment).left;
 				}
@@ -1129,6 +1129,12 @@
 				}
 				if (top < topBoundary) {
 					top = topBoundary;
+				}
+				/* Try to fit the popover within the contaiment if poosible */
+				if (this.oDir === "right" &&
+					$containment &&
+					left + trg.outerWidth() > rightBoundary) {
+						left = rightBoundary - trg.outerWidth();
 				}
 			}
 			/*D.K. 7 Apr 2015 Fix for bug #190611: When direction is right and mouse over the last column popover is shown to the cell on the left
