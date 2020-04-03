@@ -3686,6 +3686,7 @@
 						}
 					}
 						break;
+
 					//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
 					// "browserDefault" should not manage selection and caret positions at all and leave this to each browser on its own.
 					case "browserDefault": {}
