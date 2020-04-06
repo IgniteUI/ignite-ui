@@ -3574,11 +3574,13 @@
 			return result;
 		},
 		_enterEditMode: function () { //TextEditor
-			var val = this._valueInput.val();
+			var val = this._valueInput.val(),
+				selection = this._getSelection(this._editorInput[ 0 ]);
+
 			this._editMode = true;
 			this._currentInputTextValue = this._editorInput.val();
 			this._editorInput.val(this._getEditModeValue(val));
-			this._positionCursor();
+			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
 		},
 		_getEditModeValue: function (val) { //igTextEditor
@@ -3624,7 +3626,7 @@
 				range.select();
 			}
 		},
-		_positionCursor: function () {
+		_positionCursor: function (startPostion, endPosition) {
 			if (this._dragging) {
 				return;
 			}
@@ -3671,8 +3673,37 @@
 						break;
 
 					//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
-					// "browserDefault" should not manage selection and caret positions at all and leave this to each browser on its own.
-					case "browserDefault": {}
+					case "browserDefault": {
+						if (startPostion) {
+							if (endPosition) {
+								if (endPosition > currentValue.length) {
+									endPosition = currentValue.length;
+								}
+							} else {
+								endPosition = startPostion;
+							}
+							if ($.ig.util.isChrome || $.ig.util.isSafari) {
+								this._timeouts.push(setTimeout(function () {
+									self._setSelectionRange(self._editorInput[ 0 ],
+										startPostion, endPosition);
+								}, 100));
+							} else {
+								this._setSelectionRange(this._editorInput[ 0 ],
+									startPostion, endPosition);
+							}
+						} else {
+
+							// If there is no startSelection we use default behavior selectAll
+							if ($.ig.util.isChrome || $.ig.util.isSafari) {
+								this._timeouts.push(setTimeout(function () {
+									self._setSelectionRange(self._editorInput[ 0 ], 0,
+									currentValue.length);
+								}, 100));
+							} else {
+								this._editorInput.select();
+							}
+						}
+					}
 						break;
 					default:
 						break;
