@@ -3671,11 +3671,11 @@
 						}
 					}
 						break;
-
-					//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
 					case "browserDefault": {
 						if (startPostion) {
 							if (endPosition) {
+
+								//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
 								if (endPosition > currentValue.length) {
 									endPosition = currentValue.length;
 								}
