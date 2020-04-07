@@ -525,7 +525,7 @@
 			/* igWidget constructor goes here */
 			this._initialize();
 			this._readAttributes();
-			this._saveDOMConent();
+			this._saveDOMContent();
 			this._render();
 			this.localeContainer = this._editorContainer;
 		},
@@ -589,7 +589,7 @@
 			}
 			delete this._definedOptions;
 		},
-		_saveDOMConent: function () {
+		_saveDOMContent: function () {
 			if (this.element.children().length > 0) {
 
 				// We use clone because we will preserve event binding to the elements(if any) if binging is through javascript.
@@ -2361,10 +2361,10 @@
 				containerTop = containerOffset.top,
 				containerHeight = parseFloat(this._editorContainer.css("height")),
 				dropDownAndEditorHeight = parseInt(containerTop + containerHeight + this._listInitialHeight),
-				widndowHeight = $(window).height(),
+				windowHeight = $(window).height(),
 				orientation;
 			if (this.options.dropDownOrientation === "auto") {
-				if (dropDownAndEditorHeight < widndowHeight + $(window).scrollTop()) {
+				if (dropDownAndEditorHeight < windowHeight + $(window).scrollTop()) {
 					orientation = "bottom";
 				} else if ((containerTop - this._listInitialHeight) > 0) {
 					orientation = "top";
@@ -2802,7 +2802,7 @@
 						}
 					}
 					self._compositionStartValue = self._editorInput.val();
-					self._copositionStartIndex = self._getCursorPosition();
+					self._compositionStartIndex = self._getCursorPosition();
 
 					// 207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 					self._inComposition = true;
@@ -2821,8 +2821,8 @@
 							case "igMaskEditor":
 								{
 									value = self._replaceStringRange(self._compositionStartValue,
-										self._currentCompositionValue, self._copositionStartIndex,
-										self._copositionStartIndex + self._currentCompositionValue.length - 1);
+										self._currentCompositionValue, self._compositionStartIndex,
+										self._compositionStartIndex + self._currentCompositionValue.length - 1);
 								}
 								break;
 							default: {
@@ -2835,18 +2835,18 @@
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
-						delete self._copositionStartIndex;
+						delete self._compositionStartIndex;
 						delete self._currentCompositionValue;
 						delete self._compositionStartValue;
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
-					if (typeof self._copositionStartIndex === "undefined") {
+					if (typeof self._compositionStartIndex === "undefined") {
 						//D.P. Chrome on Android will not fire compositionstart if replacing the entire selection
 						//In this case patch start index and value:
 						var startIndex = self._getCursorPosition();
 						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
-						self._copositionStartIndex = startIndex;
+						self._compositionStartIndex = startIndex;
 						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
 					}
 					setTimeout(function () {
@@ -2854,7 +2854,7 @@
 							$(evt.target)
 							.val()
 							.toString()
-							.substring(self._copositionStartIndex, self._getCursorPosition());
+							.substring(self._compositionStartIndex, self._getCursorPosition());
 					}, 0);
 				}
 			});
@@ -3643,7 +3643,7 @@
 				range.select();
 			}
 		},
-		_positionCursor: function (startPostion, endPosition) {
+		_positionCursor: function (startPosition, endPosition) {
 			if (this._dragging) {
 				return;
 			}
@@ -3688,25 +3688,25 @@
 						}
 					}
 						break;
-
-					//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
 					case "browserDefault": {
-						if (startPostion) {
+						if (startPosition) {
 							if (endPosition) {
+
+								//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
 								if (endPosition > currentValue.length) {
 									endPosition = currentValue.length;
 								}
 							} else {
-								endPosition = startPostion;
+								endPosition = startPosition;
 							}
 							if ($.ig.util.isChrome || $.ig.util.isSafari) {
 								this._timeouts.push(setTimeout(function () {
 									self._setSelectionRange(self._editorInput[ 0 ],
-										startPostion, endPosition);
+										startPosition, endPosition);
 								}, 100));
 							} else {
 								this._setSelectionRange(this._editorInput[ 0 ],
-									startPostion, endPosition);
+									startPosition, endPosition);
 							}
 						} else {
 
@@ -3847,9 +3847,9 @@
 			}
 		},
 		_getSelection: function (editor) {
-			var startPostion = 0, endPosition = 0;
+			var startPosition = 0, endPosition = 0;
 			if (editor.selectionStart !== undefined) {
-				startPostion = editor.selectionStart;
+				startPosition = editor.selectionStart;
 				endPosition = editor.selectionEnd;
 			} else if (document.selection) {
 
@@ -3865,13 +3865,13 @@
 
 					// Select text up to the selection:
 					rangeClone.setEndPoint("EndToStart", range);
-					startPostion = rangeClone.text.length;
+					startPosition = rangeClone.text.length;
 
 					// Move end index with the start offset
-					endPosition += startPostion;
+					endPosition += startPosition;
 				}
 			}
-			return { start: startPostion, end: endPosition };
+			return { start: startPosition, end: endPosition };
 		},
 		_listItems: function () {
 			return this._dropDownList.children(".ui-igedit-listitem");
@@ -5309,7 +5309,7 @@
 			return result;
 		},
 		_insert: function (newValue, previousValue, selection) { //NumericEditor
-			var newLenght = newValue.length, diff;
+			var newLength = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
@@ -5345,7 +5345,7 @@
 				this._editorInput.val(this._getEditModeValue(newValue));
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
-					diff = newLenght - newValue.toString().length;
+					diff = newLength - newValue.toString().length;
 					selection.start -= diff;
 					selection.end -= diff;
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
@@ -6179,7 +6179,7 @@
 			this._numericType = "percent";
 		},
 		_insert: function (newValue, previousValue, selection) { // Percent Editor
-			var newLenght = newValue.length,
+			var newLength = newValue.length,
 				displayFactor = this._getOptionOrRegionalValue("displayFactor"), diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
@@ -6217,7 +6217,7 @@
 				this._editorInput.val(newValue);
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
-					diff = newLenght - newValue.toString().length;
+					diff = newLength - newValue.toString().length;
 					selection.start -= diff;
 					selection.end -= diff;
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
@@ -6244,7 +6244,7 @@
 		_getOptionOrRegionalValue: function(name) {
 			var regionalValue = this._super(name);
 
-			// This is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
+			// This is needed, cause when value(20.34) is divided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
 			if (name === "maxDecimals" && this.options.displayFactor === 100) {
 				regionalValue += 2;
 			}
@@ -6656,7 +6656,7 @@
 			for (; i < previousValue.length && j < newValue.length; i++, j++) {
 				currentChar = previousValue.charAt(i);
 				newChar = newValue.charAt(j);
-				if ($.inArray(i, this._literalIndeces) !== -1) {
+				if ($.inArray(i, this._literalIndices) !== -1) {
 					if (currentChar !== newChar) {
 						//skip over literal and extend selection
 						selection.end++;
@@ -6689,9 +6689,9 @@
 		},
 		_getMaskLiteralsAndRequiredPositions: function() {
 			// This method returns array of indexes which represent literals into edit mode.
-			var mask, literalIndeces = [], requiredFieldsIndeces = [],
+			var mask, literalIndices = [], requiredFieldsIndices = [],
 				maskFlagsArray = this._maskFlagsArray, output, maskChar, unescapedMask, i, j,
-			isToLower = false, isToUpper = false, toLowerIndeces = [], toUpperIndeces = [];
+			isToLower = false, isToUpper = false, toLowerIndices = [], toUpperIndices = [];
 
 			output = unescapedMask = mask = this.options.inputMask;
 
@@ -6703,27 +6703,27 @@
 					// Get required chars
 					// #364 In case of digit mask char, toLower and toUpper flags should be ignored
 					if (isToLower && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
-						toLowerIndeces.push(j);
+						toLowerIndices.push(j);
 					} else if (isToUpper && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
-						toUpperIndeces.push(j);
+						toUpperIndices.push(j);
 					}
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
-						requiredFieldsIndeces.push(j);
+						requiredFieldsIndices.push(j);
 					} else if (maskChar === ">") {
 						if (!isToUpper) {
 							isToUpper = true;
 
-							// toUpperIndeces.push(j);
+							// toUpperIndices.push(j);
 							if (isToLower) {
 								isToLower = false;
-								toLowerIndeces.pop();
+								toLowerIndices.pop();
 							}
 						} else {
 
 							// If there are two flags < all between characters are converted toUpper
 							isToUpper = false;
-							toUpperIndeces.pop();
+							toUpperIndices.pop();
 						}
 
 						// We need to remove the symbol < from the unescaped mask
@@ -6733,14 +6733,14 @@
 						if (!isToLower) {
 							isToLower = true;
 
-							// toLowerIndeces.push(j);
+							// toLowerIndices.push(j);
 							if (isToUpper) {
 								isToUpper = false;
-								toUpperIndeces.pop();
+								toUpperIndices.pop();
 							}
 						} else {
 							isToLower = false;
-							toLowerIndeces.pop();
+							toLowerIndices.pop();
 						}
 						unescapedMask = this._replaceCharAt(unescapedMask, j, "");
 						j--;
@@ -6750,17 +6750,17 @@
 						unescapedMask = this._replaceCharAt(unescapedMask, j, "");
 						i++;
 					}
-					literalIndeces.push(j);
+					literalIndices.push(j);
 				} else {
 
 					// Literal add it.
-					literalIndeces.push(j);
+					literalIndices.push(j);
 				}
 			}
-			this._literalIndeces = literalIndeces;
-			this._requiredIndeces = requiredFieldsIndeces;
-			this._toLowerIndeces = toLowerIndeces;
-			this._toUpperIndeces = toUpperIndeces;
+			this._literalIndices = literalIndices;
+			this._requiredIndices = requiredFieldsIndices;
+			this._toLowerIndices = toLowerIndices;
+			this._toUpperIndices = toUpperIndices;
 
 			// We need the mask into this format to be sure we have the right index when the key is pressed.
 			this._unescapedMask = unescapedMask;
@@ -6792,7 +6792,7 @@
 				}
 				for (i = 0, j = 0; i < length; i++, j++) {
 					ch = value.charAt(j);
-					if (this._validateCharOnPostion(ch, i) === null) {
+					if (this._validateCharOnPosition(ch, i) === null) {
 
 						// Move to next char on the mask
 						// We need to detect Escaped chars
@@ -6812,12 +6812,12 @@
 
 						// In case passed value contains both literals and filled prompts we try to parse the value.
 						// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
-						else if ($.inArray(i, this._literalIndeces) !== -1) {
+						else if ($.inArray(i, this._literalIndices) !== -1) {
 							if (mask.charAt(i) !== ch) {
 								j--;
 							}
 						}
-					} else if (this._validateCharOnPostion(ch, i) === true) {
+					} else if (this._validateCharOnPosition(ch, i) === true) {
 						if (ch === this.options.unfilledCharsPrompt) {
 							outputVal = this._replaceCharAt(outputVal, i, tempChar);
 						} else {
@@ -6840,7 +6840,7 @@
 					} else if (ch === "<" || ch === ">") {
 						outputVal = this._replaceCharAt(outputVal, i, "");
 						i--;
-					} else if ($.inArray(i, this._toLowerIndeces) !== -1) {
+					} else if ($.inArray(i, this._toLowerIndices) !== -1) {
 						if (ch === tempChar) {
 							outputVal = this._replaceCharAt(outputVal, i,
 								this.options.unfilledCharsPrompt);
@@ -6848,7 +6848,7 @@
 						}
 						outputVal = this
 							._replaceCharAt(outputVal, i, outputVal.charAt(i).toLocaleLowerCase());
-					} else if ($.inArray(i, this._toUpperIndeces) !== -1) {
+					} else if ($.inArray(i, this._toUpperIndices) !== -1) {
 						outputVal = this
 							._replaceCharAt(outputVal, i, outputVal.charAt(i).toLocaleUpperCase());
 						if (ch === tempChar) {
@@ -6886,7 +6886,7 @@
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
 						if (ch === this.options.unfilledCharsPrompt) {
-							if ($.inArray(i, this._requiredIndeces) !== -1) {
+							if ($.inArray(i, this._requiredIndices) !== -1) {
 								ch = this.options.emptyChar;
 							} else {
 								ch = "";
@@ -6907,7 +6907,7 @@
 						ch = maskedVal.charAt(i);
 
 						// We ensure current char is not literal and it's filled (not unfilledCharsPrompt)
-						if ($.inArray(i, this._literalIndeces) === -1 &&
+						if ($.inArray(i, this._literalIndices) === -1 &&
 							ch !== this.options.unfilledCharsPrompt) {
 							if (this._promptCharsIndices.length > 0 && ch === tempChar) {
 								dataModeValue += this.options.unfilledCharsPrompt;
@@ -6924,9 +6924,9 @@
 						ch = maskedVal.charAt(i);
 
 						// We ensure current char is not literal and it's filled (not unfilledCharsPrompt)
-						if ($.inArray(i, this._literalIndeces) === -1) {
+						if ($.inArray(i, this._literalIndices) === -1) {
 							if (ch === this.options.unfilledCharsPrompt) {
-								if ($.inArray(i, this._requiredIndeces) !== -1) {
+								if ($.inArray(i, this._requiredIndices) !== -1) {
 									dataModeValue += this.options.emptyChar;
 								}
 							} else {
@@ -6944,7 +6944,7 @@
 					dataModeValue = "";
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
-						if ($.inArray(i, this._literalIndeces) === -1) {
+						if ($.inArray(i, this._literalIndices) === -1) {
 							if (ch === this.options.unfilledCharsPrompt) {
 								dataModeValue += this.options.emptyChar;
 							} else {
@@ -6980,11 +6980,11 @@
 						ch = maskedVal.charAt(i);
 
 						// We ensure current char is not literal and it's filled (not unfilledCharsPrompt)
-						if ($.inArray(i, this._literalIndeces) === -1) {
+						if ($.inArray(i, this._literalIndices) === -1) {
 							if (ch === this.options.unfilledCharsPrompt) {
 
 								// Non filled required
-								if ($.inArray(i, this._requiredIndeces) !== -1) {
+								if ($.inArray(i, this._requiredIndices) !== -1) {
 									dataModeValue += this.options.emptyChar;
 								}
 							} else {
@@ -7011,7 +7011,7 @@
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
 						if (ch === this.options.unfilledCharsPrompt) {
-							if ($.inArray(i, this._requiredIndeces) !== -1) {
+							if ($.inArray(i, this._requiredIndices) !== -1) {
 								ch = this.options.emptyChar;
 							} else {
 								ch = "";
@@ -7156,7 +7156,7 @@
 					// D.P. 24th Aug 2016 #264 Position tweaks before unfilledCharsPrompt skip, literals match unescapedMask
 					// In case passed value contains both literals and filled prompts we try to parse the value.
 					// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
-					if ($.inArray(i, this._literalIndeces) !== -1) {
+					if ($.inArray(i, this._literalIndices) !== -1) {
 						if (mask.charAt(i) !== ch) {
 							j--;
 						}
@@ -7164,7 +7164,7 @@
 					}
 
 					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
-						this._validateCharOnPostion(ch, i, mask) === false) {
+						this._validateCharOnPosition(ch, i, mask) === false) {
 						return false;
 					}
 				}
@@ -7218,11 +7218,11 @@
 				// D.P. Ignore empty value
 				return true;
 			}
-			for (i = 0; i < this._requiredIndeces.length; i++) {
-				var ch = value.charAt(this._requiredIndeces[ i ]);
+			for (i = 0; i < this._requiredIndices.length; i++) {
+				var ch = value.charAt(this._requiredIndices[ i ]);
 				if (ch === this.options.unfilledCharsPrompt) {
 					if (this._promptCharsIndices.length > 0 &&
-						$.inArray(this._requiredIndeces[ i ], this._promptCharsIndices) !== -1) {
+						$.inArray(this._requiredIndices[ i ], this._promptCharsIndices) !== -1) {
 						continue;
 					} else {
 						return false;
@@ -7278,7 +7278,7 @@
 				} else if (key === 46) { // Delete
 					this._handleDeleteKey();
 					event.preventDefault();
-				} else if (($.inArray(cursorStartPosition, this._toUpperIndeces) !== -1) &&
+				} else if (($.inArray(cursorStartPosition, this._toUpperIndices) !== -1) &&
 					this._inComposition !== true) {
 					if (!event.ctrlKey && !event.altKey && ((key > 46 && key < 91) || (key > 145))) {
 
@@ -7292,7 +7292,7 @@
 							event.preventDefault();
 						}
 					}
-				} else if (($.inArray(cursorStartPosition, this._toLowerIndeces) !== -1) &&
+				} else if (($.inArray(cursorStartPosition, this._toLowerIndices) !== -1) &&
 					this._inComposition !== true) {
 					if (!event.ctrlKey && !event.altKey && ((key > 46 && key < 91) || (key > 145))) {
 
@@ -7348,12 +7348,12 @@
 					if (cursorPosition === -1) {
 
 						// In case all the text is selected we set the cursor to 0, so we can continue correctly with the indexes.
-						this._editSelectAllStartied = true;
+						this._editSelectAllStarted = true;
 						this._editorValueBeforeClear = this._editorInput.val();
 						this._editorInput.val(this._maskWithPrompts);
 						cursorPosition++;
 					}
-					while ($.inArray(cursorPosition, this._literalIndeces) !== -1 ||
+					while ($.inArray(cursorPosition, this._literalIndices) !== -1 ||
 						cursorPosition === this._maskWithPrompts.length) {
 						cursorPosition++;
 					}
@@ -7369,7 +7369,7 @@
 								cursorPosition, cursorPosition - 1);
 						} else {
 
-							// If the key is valid, we selec the next char so we don't extend the value but delete the prompt char.
+							// If the key is valid, we select the next char so we don't extend the value but delete the prompt char.
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition + 1);
 						}
@@ -7378,14 +7378,14 @@
 			} else {
 				result = false;
 			}
-			if (result === false && this._editSelectAllStartied) {
+			if (result === false && this._editSelectAllStarted) {
 				this._editorInput.val(this._editorValueBeforeClear);
 				this._editorInput.select();
-				delete this._editSelectAllStartied;
+				delete this._editSelectAllStarted;
 				delete this._editorValueBeforeClear;
 			}
-			if (result === true && this._editSelectAllStartied) {
-				delete this._editSelectAllStartied;
+			if (result === true && this._editSelectAllStarted) {
+				delete this._editSelectAllStarted;
 				delete this._editorValueBeforeClear;
 			}
 			return result;
@@ -7400,18 +7400,18 @@
 				isValid = false;
 			} else {
 
-				if (this._validateCharOnPostion(ch, cursorPosition, mask) === null) {
+				if (this._validateCharOnPosition(ch, cursorPosition, mask) === null) {
 
 					// In that case we need to move to next char on the mask
 					isValid = this._validateKeyCharAgainstMask(ch, cursorPosition + 1);
 
 				} else {
-					isValid = this._validateCharOnPostion(ch, cursorPosition, mask);
+					isValid = this._validateCharOnPosition(ch, cursorPosition, mask);
 				}
 			}
 			return isValid;
 		},
-		_validateCharOnPostion: function (ch, position, inputMask) {
+		_validateCharOnPosition: function (ch, position, inputMask) {
 			var maskSymbol, mask, isValid,
 				regex,
 				inputChar = ch,
@@ -7512,14 +7512,14 @@
 		_handleBackSpaceKey: function () {
 			// Get selection
 			var selection = this._getSelection(this._editorInput[ 0 ]),
-				startPostion = selection.start,
+				startPosition = selection.start,
 				endPosition = selection.end, index = endPosition;
-			if (startPostion === endPosition) {
-				startPostion--;
+			if (startPosition === endPosition) {
+				startPosition--;
 			}
 			index--;
-			for (index; index > startPostion - 1; index--) {
-				while ($.inArray(index, this._literalIndeces) !== -1 || index === -1) {
+			for (index; index > startPosition - 1; index--) {
+				while ($.inArray(index, this._literalIndices) !== -1 || index === -1) {
 					index--;
 				}
 				if (index > -1) {
@@ -7532,16 +7532,16 @@
 		_handleDeleteKey: function (skipCursorPosition) { //MaskEditor
 			// Get selection
 			var selection = this._getSelection(this._editorInput[ 0 ]),
-				startPostion = selection.start,
-				endPosition = selection.end, index = startPostion;
-			if (startPostion === endPosition) {
+				startPosition = selection.start,
+				endPosition = selection.end, index = startPosition;
+			if (startPosition === endPosition) {
 
 				// In that case we don't have selection, but cursor set and we increase the endCursor so we can enter the loop.
 				endPosition++;
 			}
 			for (index; index < endPosition; index++) {
 
-				while ($.inArray(index, this._literalIndeces) !== -1 &&
+				while ($.inArray(index, this._literalIndices) !== -1 &&
 					index <= this._maskWithPrompts.length) {
 					index++;
 				}
@@ -8890,7 +8890,7 @@
 
 				if (result === null) {
 					cursorPosition++;
-					while ($.inArray(cursorPosition, this._literalIndeces) !== -1 ||
+					while ($.inArray(cursorPosition, this._literalIndices) !== -1 ||
 						cursorPosition === this._maskWithPrompts.length) {
 						cursorPosition++;
 					}
@@ -11128,9 +11128,9 @@
 				};
 			}
 			if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
-				var isbeforeShow = regional.beforeShow;
+				var isBeforeShow = regional.beforeShow;
 				options.beforeShow = function (input) {
-					isbeforeShow.call(this);
+					isBeforeShow.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
 						self.options.datepickerOptions.beforeShow.call(this, input);
 					}
@@ -11447,7 +11447,7 @@
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
 					if (pickerInst) {
-						// D.P. 19th Dec 2017 #1453 Pprevent further parsing from messing with selection
+						// D.P. 19th Dec 2017 #1453 Prevent further parsing from messing with selection
 						pickerInst.lastVal = currentInputValue;
 					}
 				}
