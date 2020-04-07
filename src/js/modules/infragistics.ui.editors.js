@@ -3674,8 +3674,10 @@
 					case "browserDefault": {
 						if (startPostion) {
 							if (endPosition) {
-								if (endPosition > currentValue.length - 1) {
-									endPosition = currentValue.length - 1;
+
+								//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
+								if (endPosition > currentValue.length) {
+									endPosition = currentValue.length;
 								}
 							} else {
 								endPosition = startPostion;
@@ -3705,6 +3707,7 @@
 					}
 						break;
 					default:
+						break;
 				}
 			} else {
 				this._editorInput.select();
