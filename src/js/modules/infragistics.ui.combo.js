@@ -5924,7 +5924,7 @@
 
 		// Checks whether touch device is used with mode different than editable in order not to focus in the input element
 		_focusInInputWhenUsingTouchDevice: function () {
-			return !($.ig.util.isTouchDevice() && this.options.mode !== "editable");
+			return !("ontouchstart" in window && this.options.mode !== "editable");
 		},
 		_triggerItemsRendering: function () {
 			var args = {
