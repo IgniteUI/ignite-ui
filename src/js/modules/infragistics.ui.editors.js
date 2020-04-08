@@ -525,7 +525,7 @@
 			/* igWidget constructor goes here */
 			this._initialize();
 			this._readAttributes();
-			this._saveDOMConent();
+			this._saveDOMContent();
 			this._render();
 			this.localeContainer = this._editorContainer;
 		},
@@ -589,7 +589,7 @@
 			}
 			delete this._definedOptions;
 		},
-		_saveDOMConent: function () {
+		_saveDOMContent: function () {
 			if (this.element.children().length > 0) {
 
 				// We use clone because we will preserve event binding to the elements(if any) if binging is through javascript.
@@ -924,7 +924,7 @@
 							this._initialAttributes[ i ].attrValue);
 
 						// I.G. 11/4/2016 Fix for #487 [igBaseEditor] input value property is not restored when destroy method is called
-						// Restore the initial value property as it was before the widget initialization, so it is aggain displayed in the input
+						// Restore the initial value property as it was before the widget initialization, so it is again displayed in the input
 						if (this._initialAttributes[ i ].name === "value" &&
 							(this.element.is("input"))) {
 							$(this.element).val(this._initialAttributes[ i ].attrValue);
@@ -978,7 +978,7 @@
 		_disableEditor: function (applyDisabledClass) {
 
 			//T.P. 9th Dec 2015 Bug 211010
-			//applyDisabledClass parameter is flag wheather the ui-state-disabled class is applied to the both _editorInput and _valueInput
+			//applyDisabledClass parameter is flag whether the ui-state-disabled class is applied to the both _editorInput and _valueInput
 			//In both readOnly and disabled state we have similar logic for making the editor disabled/readonly (detach event and remove classes)
 			if (applyDisabledClass) {
 				this._editorContainer.addClass(this.css.disabled);
@@ -1315,7 +1315,7 @@
 			```
 			*/
 			listItemHoverDuration: 0,
-			/* type="bool" Gets wheather the drop-down list element is attached to the body of the document, or to the editor container element.
+			/* type="bool" Gets whether the drop-down list element is attached to the body of the document, or to the editor container element.
 				If the option is set to false the editor will attach the drop-down list element to the editor container
 				If the option is set to true the editor will attach its drop-down list to as a child of the body.
 				Note! This option can not be set runtime.
@@ -1441,9 +1441,9 @@
 					//Set
 					$(".selector").%%WidgetName%%("option", "selectionOnFocus", "selectAll");
 					```
-					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets enetered.
-					atStart type="string" Setting this option will move the cursor at the begining the text into the editor when the edit mode gets enetered.
-					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets enetered.
+					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets entered.
+					atStart type="string" Setting this option will move the cursor at the beginning the text into the editor when the edit mode gets entered.
+					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets entered.
 					browserDefault type="string" Setting this option won't do any extra logic, but proceed with the browser default behavior.
 				*/
 			selectionOnFocus: "selectAll",
@@ -1492,7 +1492,7 @@
 				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
 			```*/
 			isLimitedToListValues: false,
-			/* type="bool" Gets/Sets if the editor should revert it's value to the previously valid value in case the value on blur, or enter key is not valid. If the opiton is set to false, editor calls clear functionality.
+			/* type="bool" Gets/Sets if the editor should revert it's value to the previously valid value in case the value on blur, or enter key is not valid. If the option is set to false, editor calls clear functionality.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1507,7 +1507,7 @@
 			```
 			*/
 			revertIfNotValid: true,
-			/* type="bool" Gets/Sets if the editor should prevent form submition when enter key is pressed.
+			/* type="bool" Gets/Sets if the editor should prevent form submit when enter key is pressed.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1542,7 +1542,7 @@
 			*/
 			dropDownOrientation: "auto",
 			/* type="number" Gets/Sets the maximum length of a text which can be entered by the user.
-				Negative values or 0 disables that behavior. If set at runtime the editor doesn't apply the option to the cuurent value.
+				Negative values or 0 disables that behavior. If set at runtime the editor doesn't apply the option to the current value.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1559,7 +1559,7 @@
 			*/
 			maxLength: null,
 			/* type="bool" Gets the ability to limit the editor to be used only as a dropdown list. When set to true the editor input is not editable.
-				Note! In case there are no list items - the editor will reamin readonly
+				Note! In case there are no list items - the editor will remain readonly
 				Note! This option can not be set runtime.
 				```
 				//Initialize
@@ -1673,7 +1673,7 @@
 			buttonHover: "ui-igedit-buttonhover ui-state-hover",
 			/* Classes applied to the SPAN element of button in pressed state. Default value is 'ui-igedit-buttonpressed ui-state-highlight' */
 			buttonPressed: "ui-igedit-buttonpressed ui-state-highlight",
-			/* Class applied to the visible input in case of plaseHolder option set. This class is related only to the placeHolder styling. Default value is 'ui-igedit-placeholder'*/
+			/* Class applied to the visible input in case of placeHolder option set. This class is related only to the placeHolder styling. Default value is 'ui-igedit-placeholder'*/
 			placeHolder: "ui-igedit-placeholder",
 			/* Class applied to the visible textarea element in case of textMode set to 'multiline'*/
 			textArea: "ui-igedit-textarea"
@@ -1697,7 +1697,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListOpening: "dropDownListOpening",
 			/* cancel="true" Fired after the drop down is opened.
@@ -1717,7 +1717,7 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListOpened: "dropDownListOpened",
 			/* cancel="true" Fired when the drop down is closing.
@@ -1738,7 +1738,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListClosing: "dropDownListClosing",
 			/* cancel="false" Fired after the drop down is closed.
@@ -1759,7 +1759,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListClosed: "dropDownListClosed",
 			/* cancel="true" Fired when an item in the drop down list is being selected.
@@ -1780,7 +1780,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is about to be selected.
 			*/
 			dropDownItemSelecting: "dropDownItemSelecting",
@@ -1801,7 +1801,7 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
 			*/
 			dropDownItemSelected: "dropDownItemSelected",
@@ -1925,7 +1925,7 @@
 				throw new Error(this._getLocaleValue("setOptionError") + option);
 			default:
 
-				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				//In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
@@ -1986,7 +1986,7 @@
 			this._applyPlaceHolder();
 		},
 		_render: function () {
-			//We asume the base renderer has already been invoked
+			//We assume the base renderer has already been invoked
 			var editorElementWrapper, editorElement, tempTimeStamp;
 			this._triggerRendering();
 			if (this.element.attr("id") !== undefined) {
@@ -2178,7 +2178,7 @@
 		},
 		_disableEditor: function (applyDisabledClass) { //TextEditor
 			//T.P. 9th Dec 2015 Bug 211010
-			//applyDisabledClass parameter is flag wheather the ui-state-disabled class is applied to the both _editorInput and _valueInput
+			//applyDisabledClass parameter is flag whether the ui-state-disabled class is applied to the both _editorInput and _valueInput
 			//In both readOnly and disabled state we have similar logic for making the editor disabled/readonly (detach event and remove classes)
 			if (this.options.dropDownOnReadOnly) {
 				if (applyDisabledClass) {
@@ -2274,7 +2274,7 @@
 			}
 		},
 
-		// replaces characted at a specific position
+		// replaces character at a specific position
 		_replaceCharAt: function (stringValue, index, ch) {
 			if (stringValue !== undefined) {
 				return stringValue.substring(0, index) + ch + stringValue.substring(index + 1);
@@ -2361,10 +2361,10 @@
 				containerTop = containerOffset.top,
 				containerHeight = parseFloat(this._editorContainer.css("height")),
 				dropDownAndEditorHeight = parseInt(containerTop + containerHeight + this._listInitialHeight),
-				widndowHeight = $(window).height(),
+				windowHeight = $(window).height(),
 				orientation;
 			if (this.options.dropDownOrientation === "auto") {
-				if (dropDownAndEditorHeight < widndowHeight + $(window).scrollTop()) {
+				if (dropDownAndEditorHeight < windowHeight + $(window).scrollTop()) {
 					orientation = "bottom";
 				} else if ((containerTop - this._listInitialHeight) > 0) {
 					orientation = "top";
@@ -2773,7 +2773,7 @@
 				},
 				"keydown.editor": function (event) {
 
-					//T.P. In case of backspace and delete we need to trigger textchanged eved directly
+					//T.P. In case of backspace and delete we need to trigger textchanged event directly
 					if ((event.keyCode === 8 || event.keyCode === 46) &&
 						self._editorInput.val() !== self._currentInputTextValue) {
 						self._processTextChanged();
@@ -2802,7 +2802,7 @@
 						}
 					}
 					self._compositionStartValue = self._editorInput.val();
-					self._copositionStartIndex = self._getCursorPosition();
+					self._compositionStartIndex = self._getCursorPosition();
 
 					// 207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 					self._inComposition = true;
@@ -2821,8 +2821,8 @@
 							case "igMaskEditor":
 								{
 									value = self._replaceStringRange(self._compositionStartValue,
-										self._currentCompositionValue, self._copositionStartIndex,
-										self._copositionStartIndex + self._currentCompositionValue.length - 1);
+										self._currentCompositionValue, self._compositionStartIndex,
+										self._compositionStartIndex + self._currentCompositionValue.length - 1);
 								}
 								break;
 							default: {
@@ -2835,18 +2835,18 @@
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
-						delete self._copositionStartIndex;
+						delete self._compositionStartIndex;
 						delete self._currentCompositionValue;
 						delete self._compositionStartValue;
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
-					if (typeof self._copositionStartIndex === "undefined") {
-						//D.P. Chrome on Adroid will not fire compositionstart if replacing the entire selection
+					if (typeof self._compositionStartIndex === "undefined") {
+						//D.P. Chrome on Android will not fire compositionstart if replacing the entire selection
 						//In this case patch start index and value:
 						var startIndex = self._getCursorPosition();
 						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
-						self._copositionStartIndex = startIndex;
+						self._compositionStartIndex = startIndex;
 						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
 					}
 					setTimeout(function () {
@@ -2854,7 +2854,7 @@
 							$(evt.target)
 							.val()
 							.toString()
-							.substring(self._copositionStartIndex, self._getCursorPosition());
+							.substring(self._compositionStartIndex, self._getCursorPosition());
 					}, 0);
 				}
 			});
@@ -2981,7 +2981,7 @@
 								if (activeItem.length > 0 && !activeItem.is(":first-child")) {
 									this._hoverPreviousDropDownListItem();
 								} else {
-									//Close DropDonw
+									//Close DropDown
 									this._toggleDropDown();
 								}
 
@@ -3035,7 +3035,7 @@
 			this._trigger(this.events.keyup, event, args);
 		},
 		_validateNonCharacter: function (event) {
-			// We need this method only in firefox, as all other browsers handle nonChar keyboard iteractions and doesn't fire keypress events.
+			// We need this method only in firefox, as all other browsers handle nonChar keyboard interactions and doesn't fire keypress events.
 			if ($.ig.util.isFF) {
 				var e = event;
 
@@ -3192,7 +3192,7 @@
 						if (!this._editMode) {
 							this._clearValue();
 
-							// D.P. 19th Mar 2018 Bug 251229 / #1666 Premtive text check in case clear resets text
+							// D.P. 19th Mar 2018 Bug 251229 / #1666 Primitive text check in case clear resets text
 							this._processTextChanged();
 							this._exitEditMode();
 							this._triggerValueChanged();
@@ -3380,7 +3380,7 @@
 				self._insert(newValue, previousValue, selection);
 				if (drop) {
 					if (self._editorInput.is(":focus")) {
-						// fire focus if it was ignored initally
+						// fire focus if it was ignored initially
 						self._triggerFocus(e);
 					} else {
 						self._processValueChanging(newValue);
@@ -3614,7 +3614,7 @@
 			this._processTextChanged();
 		},
 
-		// This method is used to get the display value according to masks, displayFactor and all the properties related to the value displayed when editor is blured.
+		// This method is used to get the display value according to masks, displayFactor and all the properties related to the value displayed when editor is blurred.
 		_getDisplayValue: function () { //igTextEditor
 			return this._valueInput.val();
 		},
@@ -3643,7 +3643,7 @@
 				range.select();
 			}
 		},
-		_positionCursor: function (startPostion, endPosition) {
+		_positionCursor: function (startPosition, endPosition) {
 			if (this._dragging) {
 				return;
 			}
@@ -3651,7 +3651,7 @@
 
 			if (currentValue && currentValue.length > 0) {
 
-				// Proceed acording to the options.
+				// Proceed according to the options.
 				switch (this.options.selectionOnFocus) {
 					case "selectAll": {
 						if ($.ig.util.isChrome || $.ig.util.isSafari) {
@@ -3689,7 +3689,7 @@
 					}
 						break;
 					case "browserDefault": {
-						if (startPostion) {
+						if (startPosition) {
 							if (endPosition) {
 
 								//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
@@ -3697,16 +3697,16 @@
 									endPosition = currentValue.length;
 								}
 							} else {
-								endPosition = startPostion;
+								endPosition = startPosition;
 							}
 							if ($.ig.util.isChrome || $.ig.util.isSafari) {
 								this._timeouts.push(setTimeout(function () {
 									self._setSelectionRange(self._editorInput[ 0 ],
-										startPostion, endPosition);
+										startPosition, endPosition);
 								}, 100));
 							} else {
 								this._setSelectionRange(this._editorInput[ 0 ],
-									startPostion, endPosition);
+									startPosition, endPosition);
 							}
 						} else {
 
@@ -3720,7 +3720,6 @@
 								this._editorInput.select();
 							}
 						}
-
 					}
 						break;
 					default:
@@ -3843,14 +3842,14 @@
 				return -1;
 			} else {
 
-				// If multiple selection is done we use the beginig of the selection as metric.
+				// If multiple selection is done we use the beginning of the selection as metric.
 				return selection.start;
 			}
 		},
 		_getSelection: function (editor) {
-			var startPostion = 0, endPosition = 0;
+			var startPosition = 0, endPosition = 0;
 			if (editor.selectionStart !== undefined) {
-				startPostion = editor.selectionStart;
+				startPosition = editor.selectionStart;
 				endPosition = editor.selectionEnd;
 			} else if (document.selection) {
 
@@ -3866,13 +3865,13 @@
 
 					// Select text up to the selection:
 					rangeClone.setEndPoint("EndToStart", range);
-					startPostion = rangeClone.text.length;
+					startPosition = rangeClone.text.length;
 
 					// Move end index with the start offset
-					endPosition += startPostion;
+					endPosition += startPosition;
 				}
 			}
-			return { start: startPostion, end: endPosition };
+			return { start: startPosition, end: endPosition };
 		},
 		_listItems: function () {
 			return this._dropDownList.children(".ui-igedit-listitem");
@@ -4066,7 +4065,7 @@
 		getSelectionStart: function () {
 			/* Gets the start index of the selected text in the editor.
 			```
-			var intex = $(".selector").%%WidgetName%%("getSelectionStart");
+			var index = $(".selector").%%WidgetName%%("getSelectionStart");
 			```
 				returnType="number" Start index of the selected text in the editor.*/
 			return this._getSelection(this._editorInput[ 0 ]).start;
@@ -4074,7 +4073,7 @@
 		getSelectionEnd: function () {
 			/* Gets the end index of the selected text in the editor.
 			```
-			var intex = $(".selector").%%WidgetName%%("getSelectionEnd");
+			var index = $(".selector").%%WidgetName%%("getSelectionEnd");
 			```
 				returnType="number" End index of the selected text in the editor.*/
 			return this._getSelection(this._editorInput[ 0 ]).end;
@@ -4161,7 +4160,7 @@
 			listItems: null,
 			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) options.
 				```
 					//Initialize
@@ -4179,7 +4178,7 @@
 			negativeSign: null,
 			/* type="string" Gets/Sets the string, which is used as negative pattern. The "n" flag represents the value of number. The "-" and "()" flags are static part of pattern.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4196,7 +4195,7 @@
 			negativePattern: null,
 			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
@@ -4215,7 +4214,7 @@
 			/* type="string" Gets/Sets the character, which is used as separator for groups (like thousands).
 				That option has effect only in display mode(no focus).
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				Note: This option's value should not be equal to the value of [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
@@ -4238,7 +4237,7 @@
 				That option has effect only in display mode(no focus).
 				Note: The numbers in the array must be positive integers.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4256,7 +4255,7 @@
 			/* type="number" Gets/Sets the maximum number of decimal places supported by the editor.
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
@@ -4276,7 +4275,7 @@
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
@@ -4508,7 +4507,7 @@
 		},
 		_create: function () { //Numeric Editor
 
-			// We need this option internaly for parsing the value, set this option via method so we can overwrite it.
+			// We need this option internally for parsing the value, set this option via method so we can overwrite it.
 			$.ui.igTextEditor.prototype._create.call(this);
 
 			//TODO - make this as an option for using native input
@@ -4829,7 +4828,7 @@
 
 			default:
 
-				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				// In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
@@ -4902,7 +4901,7 @@
 						if (this.options.revertIfNotValid) {
 							value = this._valueInput.val();
 						} else {
-							value = 0; // TODO VERIFY!!! If value is "" and allowNullValue and revertIfNotValid is false, then becasue it is numeric editor we set it to 0. right?
+							value = 0; // TODO VERIFY!!! If value is "" and allowNullValue and revertIfNotValid is false, then because it is numeric editor we set it to 0. right?
 							if (this.options.minValue > 0) {
 								value = this.options.minValue;
 							} else if (this.options.maxValue < 0) {
@@ -5054,7 +5053,7 @@
 			}
 		},
 		_setMinMaxValues: function (typeMinValue, typeMaxValue) {
-			//Set bounderies based on the type
+			//Set boundaries based on the type
 			if (this.options.minValue === null || this.options.minValue < typeMinValue) {
 				this.options.minValue = typeMinValue;
 			}
@@ -5103,7 +5102,7 @@
 					if (value < 1) {
 						if (!this.options.scientificFormat) {
 							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
-							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
+							// If scientific value when not enabled, expand to fixed-point notation and carry on with processing
 							stringValue = value.toFixed(this._getOptionOrRegionalValue("maxDecimals") + 1);
 						} else {
 							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
@@ -5177,7 +5176,7 @@
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 
-			// Values MUST be numeric, precision is optoinal
+			// Values MUST be numeric, precision is optional
 			// TODO: verify, test with 0.57 * 100[00] or (0.1, 0.2), might be overdone
 			var fractionalDigits, fractionalDigits2, result;
 			if (!precision) {
@@ -5310,7 +5309,7 @@
 			return result;
 		},
 		_insert: function (newValue, previousValue, selection) { //NumericEditor
-			var newLenght = newValue.length, diff;
+			var newLength = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
@@ -5346,7 +5345,7 @@
 				this._editorInput.val(this._getEditModeValue(newValue));
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
-					diff = newLenght - newValue.toString().length;
+					diff = newLength - newValue.toString().length;
 					selection.start -= diff;
 					selection.end -= diff;
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
@@ -5439,13 +5438,13 @@
 			// Min decimals check.
 			if (dataMode === "double" || dataMode === "float") {
 
-				// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
+				// There are edge cases where the value after conversion still contains scientific format. In that case we just pass that value.
 				if (stringValue.indexOf("e") !== -1) {
 					displayValue = stringValue;
 				} else {
 
 					// In that case we need to validate the value against the constraints.
-					// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
+					// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hidden input, which is Number, so the decimalSeparator is dot.
 					if (stringValue.indexOf(decimalPoint) !== -1) {
 						fractionalDigits = stringValue
 							.substring(stringValue.indexOf(decimalPoint) + 1);
@@ -5639,7 +5638,7 @@
 					}
 				}
 
-				// We need to call to fixed only in case current fractional lenth is less than it originally was.
+				// We need to call to fixed only in case current fractional length is less than it originally was.
 				if (currentValue.toString().substring(currentValue
 					.toString().indexOf(".") + 1).length < fractional.length) {
 					currentValue = currentValue.toFixed(toFixedVal);
@@ -6017,7 +6016,7 @@
 		options: {
 			/* type="string" Gets/Sets the string, which is used as positive pattern. The "n" flag represents the value of number.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are implicitly set.
 				```
 					//Initialize
 					$(".selector").igCurrencyEditor({
@@ -6180,7 +6179,7 @@
 			this._numericType = "percent";
 		},
 		_insert: function (newValue, previousValue, selection) { // Percent Editor
-			var newLenght = newValue.length,
+			var newLength = newValue.length,
 				displayFactor = this._getOptionOrRegionalValue("displayFactor"), diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
@@ -6218,7 +6217,7 @@
 				this._editorInput.val(newValue);
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
-					diff = newLenght - newValue.toString().length;
+					diff = newLength - newValue.toString().length;
 					selection.start -= diff;
 					selection.end -= diff;
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
@@ -6245,7 +6244,7 @@
 		_getOptionOrRegionalValue: function(name) {
 			var regionalValue = this._super(name);
 
-			// This is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
+			// This is needed, cause when value(20.34) is divided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
 			if (name === "maxDecimals" && this.options.displayFactor === 100) {
 				regionalValue += 2;
 			}
@@ -6273,7 +6272,7 @@
 				break;
 			default:
 
-				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				// In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
@@ -6459,7 +6458,7 @@
 				```
 				*/
 			excludeKeys: null,
-			/* type="bool" @Ignored@ Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side.*/
+			/* type="bool" @Ignored@ Gets/Sets the ability of the editor to automatically change the hovered item into the opened dropdown list to its opposite side.*/
 			spinWrapAround: false,
 			/* type="array" @Ignored@ Sets gets list of items which are used for drop-down list.
 				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
@@ -6469,7 +6468,7 @@
 			listWidth: 0,
 			/* type="number" @Ignored@ Sets the hover/unhover animation duration. */
 			listItemHoverDuration: 0,
-			/* type="bool" @Ignored@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
+			/* type="bool" @Ignored@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blurred, or enter key is pressed*/
 			isLimitedToListValues: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOrientation: "auto",
@@ -6532,7 +6531,7 @@
 			this._super();
 			if (this.options.maxLength) {
 
-				// In case of explicidly set length as an option, we remove it because that option is controlled by the mask
+				// In case of explicitly set length as an option, we remove it because that option is controlled by the mask
 				this.options.maxLength = null;
 			}
 			if (this.options.listItems) {
@@ -6551,7 +6550,7 @@
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
 
-			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
+			// In case value is not set we need to use the setInitialValue method to store mask, required field indices, prompt indices etc.
 			this._super();
 			/*if (this.options.value === null) {
 				if (this.options.allowNullValue) {
@@ -6640,7 +6639,7 @@
 
 				if (drop) {
 					if (self._editorInput.is(":focus")) {
-						// fire focus if it was ignored initally
+						// fire focus if it was ignored initially
 						self._triggerFocus(e);
 					} else {
 						self._processValueChanging(newValue);
@@ -6657,7 +6656,7 @@
 			for (; i < previousValue.length && j < newValue.length; i++, j++) {
 				currentChar = previousValue.charAt(i);
 				newChar = newValue.charAt(j);
-				if ($.inArray(i, this._literalIndeces) !== -1) {
+				if ($.inArray(i, this._literalIndices) !== -1) {
 					if (currentChar !== newChar) {
 						//skip over literal and extend selection
 						selection.end++;
@@ -6690,9 +6689,9 @@
 		},
 		_getMaskLiteralsAndRequiredPositions: function() {
 			// This method returns array of indexes which represent literals into edit mode.
-			var mask, literalIndeces = [], requiredFieldsIndeces = [],
+			var mask, literalIndices = [], requiredFieldsIndices = [],
 				maskFlagsArray = this._maskFlagsArray, output, maskChar, unescapedMask, i, j,
-			isToLower = false, isToUpper = false, toLowerIndeces = [], toUpperIndeces = [];
+			isToLower = false, isToUpper = false, toLowerIndices = [], toUpperIndices = [];
 
 			output = unescapedMask = mask = this.options.inputMask;
 
@@ -6701,30 +6700,30 @@
 				maskChar = mask.charAt(i);
 				if ($.inArray(maskChar, maskFlagsArray) !== -1) {
 
-					// Get requred chars
+					// Get required chars
 					// #364 In case of digit mask char, toLower and toUpper flags should be ignored
 					if (isToLower && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
-						toLowerIndeces.push(j);
+						toLowerIndices.push(j);
 					} else if (isToUpper && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
-						toUpperIndeces.push(j);
+						toUpperIndices.push(j);
 					}
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
-						requiredFieldsIndeces.push(j);
+						requiredFieldsIndices.push(j);
 					} else if (maskChar === ">") {
 						if (!isToUpper) {
 							isToUpper = true;
 
-							// toUpperIndeces.push(j);
+							// toUpperIndices.push(j);
 							if (isToLower) {
 								isToLower = false;
-								toLowerIndeces.pop();
+								toLowerIndices.pop();
 							}
 						} else {
 
 							// If there are two flags < all between characters are converted toUpper
 							isToUpper = false;
-							toUpperIndeces.pop();
+							toUpperIndices.pop();
 						}
 
 						// We need to remove the symbol < from the unescaped mask
@@ -6734,14 +6733,14 @@
 						if (!isToLower) {
 							isToLower = true;
 
-							// toLowerIndeces.push(j);
+							// toLowerIndices.push(j);
 							if (isToUpper) {
 								isToUpper = false;
-								toUpperIndeces.pop();
+								toUpperIndices.pop();
 							}
 						} else {
 							isToLower = false;
-							toLowerIndeces.pop();
+							toLowerIndices.pop();
 						}
 						unescapedMask = this._replaceCharAt(unescapedMask, j, "");
 						j--;
@@ -6751,17 +6750,17 @@
 						unescapedMask = this._replaceCharAt(unescapedMask, j, "");
 						i++;
 					}
-					literalIndeces.push(j);
+					literalIndices.push(j);
 				} else {
 
 					// Literal add it.
-					literalIndeces.push(j);
+					literalIndices.push(j);
 				}
 			}
-			this._literalIndeces = literalIndeces;
-			this._requiredIndeces = requiredFieldsIndeces;
-			this._toLowerIndeces = toLowerIndeces;
-			this._toUpperIndeces = toUpperIndeces;
+			this._literalIndices = literalIndices;
+			this._requiredIndices = requiredFieldsIndices;
+			this._toLowerIndices = toLowerIndices;
+			this._toUpperIndices = toUpperIndices;
 
 			// We need the mask into this format to be sure we have the right index when the key is pressed.
 			this._unescapedMask = unescapedMask;
@@ -6793,7 +6792,7 @@
 				}
 				for (i = 0, j = 0; i < length; i++, j++) {
 					ch = value.charAt(j);
-					if (this._validateCharOnPostion(ch, i) === null) {
+					if (this._validateCharOnPosition(ch, i) === null) {
 
 						// Move to next char on the mask
 						// We need to detect Escaped chars
@@ -6813,12 +6812,12 @@
 
 						// In case passed value contains both literals and filled prompts we try to parse the value.
 						// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
-						else if ($.inArray(i, this._literalIndeces) !== -1) {
+						else if ($.inArray(i, this._literalIndices) !== -1) {
 							if (mask.charAt(i) !== ch) {
 								j--;
 							}
 						}
-					} else if (this._validateCharOnPostion(ch, i) === true) {
+					} else if (this._validateCharOnPosition(ch, i) === true) {
 						if (ch === this.options.unfilledCharsPrompt) {
 							outputVal = this._replaceCharAt(outputVal, i, tempChar);
 						} else {
@@ -6833,7 +6832,7 @@
 					}
 				}
 
-				// We need to loop throught the value and remove escape chars
+				// We need to loop through the value and remove escape chars
 				for (i = 0; i < outputVal.length; i++) {
 					ch = outputVal.charAt(i);
 					if (ch === "\\" && $.inArray(outputVal.charAt(i + 1), maskFlagsArray) !== -1) {
@@ -6841,7 +6840,7 @@
 					} else if (ch === "<" || ch === ">") {
 						outputVal = this._replaceCharAt(outputVal, i, "");
 						i--;
-					} else if ($.inArray(i, this._toLowerIndeces) !== -1) {
+					} else if ($.inArray(i, this._toLowerIndices) !== -1) {
 						if (ch === tempChar) {
 							outputVal = this._replaceCharAt(outputVal, i,
 								this.options.unfilledCharsPrompt);
@@ -6849,7 +6848,7 @@
 						}
 						outputVal = this
 							._replaceCharAt(outputVal, i, outputVal.charAt(i).toLocaleLowerCase());
-					} else if ($.inArray(i, this._toUpperIndeces) !== -1) {
+					} else if ($.inArray(i, this._toUpperIndices) !== -1) {
 						outputVal = this
 							._replaceCharAt(outputVal, i, outputVal.charAt(i).toLocaleUpperCase());
 						if (ch === tempChar) {
@@ -6887,7 +6886,7 @@
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
 						if (ch === this.options.unfilledCharsPrompt) {
-							if ($.inArray(i, this._requiredIndeces) !== -1) {
+							if ($.inArray(i, this._requiredIndices) !== -1) {
 								ch = this.options.emptyChar;
 							} else {
 								ch = "";
@@ -6908,7 +6907,7 @@
 						ch = maskedVal.charAt(i);
 
 						// We ensure current char is not literal and it's filled (not unfilledCharsPrompt)
-						if ($.inArray(i, this._literalIndeces) === -1 &&
+						if ($.inArray(i, this._literalIndices) === -1 &&
 							ch !== this.options.unfilledCharsPrompt) {
 							if (this._promptCharsIndices.length > 0 && ch === tempChar) {
 								dataModeValue += this.options.unfilledCharsPrompt;
@@ -6925,9 +6924,9 @@
 						ch = maskedVal.charAt(i);
 
 						// We ensure current char is not literal and it's filled (not unfilledCharsPrompt)
-						if ($.inArray(i, this._literalIndeces) === -1) {
+						if ($.inArray(i, this._literalIndices) === -1) {
 							if (ch === this.options.unfilledCharsPrompt) {
-								if ($.inArray(i, this._requiredIndeces) !== -1) {
+								if ($.inArray(i, this._requiredIndices) !== -1) {
 									dataModeValue += this.options.emptyChar;
 								}
 							} else {
@@ -6945,7 +6944,7 @@
 					dataModeValue = "";
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
-						if ($.inArray(i, this._literalIndeces) === -1) {
+						if ($.inArray(i, this._literalIndices) === -1) {
 							if (ch === this.options.unfilledCharsPrompt) {
 								dataModeValue += this.options.emptyChar;
 							} else {
@@ -6981,11 +6980,11 @@
 						ch = maskedVal.charAt(i);
 
 						// We ensure current char is not literal and it's filled (not unfilledCharsPrompt)
-						if ($.inArray(i, this._literalIndeces) === -1) {
+						if ($.inArray(i, this._literalIndices) === -1) {
 							if (ch === this.options.unfilledCharsPrompt) {
 
 								// Non filled required
-								if ($.inArray(i, this._requiredIndeces) !== -1) {
+								if ($.inArray(i, this._requiredIndices) !== -1) {
 									dataModeValue += this.options.emptyChar;
 								}
 							} else {
@@ -7012,7 +7011,7 @@
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
 						if (ch === this.options.unfilledCharsPrompt) {
-							if ($.inArray(i, this._requiredIndeces) !== -1) {
+							if ($.inArray(i, this._requiredIndices) !== -1) {
 								ch = this.options.emptyChar;
 							} else {
 								ch = "";
@@ -7157,7 +7156,7 @@
 					// D.P. 24th Aug 2016 #264 Position tweaks before unfilledCharsPrompt skip, literals match unescapedMask
 					// In case passed value contains both literals and filled prompts we try to parse the value.
 					// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
-					if ($.inArray(i, this._literalIndeces) !== -1) {
+					if ($.inArray(i, this._literalIndices) !== -1) {
 						if (mask.charAt(i) !== ch) {
 							j--;
 						}
@@ -7165,7 +7164,7 @@
 					}
 
 					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
-						this._validateCharOnPostion(ch, i, mask) === false) {
+						this._validateCharOnPosition(ch, i, mask) === false) {
 						return false;
 					}
 				}
@@ -7219,11 +7218,11 @@
 				// D.P. Ignore empty value
 				return true;
 			}
-			for (i = 0; i < this._requiredIndeces.length; i++) {
-				var ch = value.charAt(this._requiredIndeces[ i ]);
+			for (i = 0; i < this._requiredIndices.length; i++) {
+				var ch = value.charAt(this._requiredIndices[ i ]);
 				if (ch === this.options.unfilledCharsPrompt) {
 					if (this._promptCharsIndices.length > 0 &&
-						$.inArray(this._requiredIndeces[ i ], this._promptCharsIndices) !== -1) {
+						$.inArray(this._requiredIndices[ i ], this._promptCharsIndices) !== -1) {
 						continue;
 					} else {
 						return false;
@@ -7279,7 +7278,7 @@
 				} else if (key === 46) { // Delete
 					this._handleDeleteKey();
 					event.preventDefault();
-				} else if (($.inArray(cursorStartPosition, this._toUpperIndeces) !== -1) &&
+				} else if (($.inArray(cursorStartPosition, this._toUpperIndices) !== -1) &&
 					this._inComposition !== true) {
 					if (!event.ctrlKey && !event.altKey && ((key > 46 && key < 91) || (key > 145))) {
 
@@ -7293,7 +7292,7 @@
 							event.preventDefault();
 						}
 					}
-				} else if (($.inArray(cursorStartPosition, this._toLowerIndeces) !== -1) &&
+				} else if (($.inArray(cursorStartPosition, this._toLowerIndices) !== -1) &&
 					this._inComposition !== true) {
 					if (!event.ctrlKey && !event.altKey && ((key > 46 && key < 91) || (key > 145))) {
 
@@ -7349,12 +7348,12 @@
 					if (cursorPosition === -1) {
 
 						// In case all the text is selected we set the cursor to 0, so we can continue correctly with the indexes.
-						this._editSelectAllStartied = true;
+						this._editSelectAllStarted = true;
 						this._editorValueBeforeClear = this._editorInput.val();
 						this._editorInput.val(this._maskWithPrompts);
 						cursorPosition++;
 					}
-					while ($.inArray(cursorPosition, this._literalIndeces) !== -1 ||
+					while ($.inArray(cursorPosition, this._literalIndices) !== -1 ||
 						cursorPosition === this._maskWithPrompts.length) {
 						cursorPosition++;
 					}
@@ -7362,7 +7361,7 @@
 						cursorPosition, this._unescapedMask);
 					if (result === true) {
 
-						// In firefow when key is held down triggers keypress and on rightArrow we need to manually move the cursor to the left.
+						// In firefox when key is held down triggers keypress and on rightArrow we need to manually move the cursor to the left.
 						if ($.ig.util.isFF && event.keyCode === 37) {
 
 							// Bug 206039
@@ -7370,7 +7369,7 @@
 								cursorPosition, cursorPosition - 1);
 						} else {
 
-							// If the key is valid, we selec the next char so we don't extend the value but delete the prompt char.
+							// If the key is valid, we select the next char so we don't extend the value but delete the prompt char.
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition + 1);
 						}
@@ -7379,20 +7378,20 @@
 			} else {
 				result = false;
 			}
-			if (result === false && this._editSelectAllStartied) {
+			if (result === false && this._editSelectAllStarted) {
 				this._editorInput.val(this._editorValueBeforeClear);
 				this._editorInput.select();
-				delete this._editSelectAllStartied;
+				delete this._editSelectAllStarted;
 				delete this._editorValueBeforeClear;
 			}
-			if (result === true && this._editSelectAllStartied) {
-				delete this._editSelectAllStartied;
+			if (result === true && this._editSelectAllStarted) {
+				delete this._editSelectAllStarted;
 				delete this._editorValueBeforeClear;
 			}
 			return result;
 		},
 
-		// We use this method both in edit mode and when validte value
+		// We use this method both in edit mode and when validate value
 		_validateKeyCharAgainstMask: function (ch, cursorPosition, inputMask) {
 			var mask = inputMask || this.options.inputMask, isValid;//,
 			if (cursorPosition >= this._maskWithPrompts.length) {
@@ -7401,18 +7400,18 @@
 				isValid = false;
 			} else {
 
-				if (this._validateCharOnPostion(ch, cursorPosition, mask) === null) {
+				if (this._validateCharOnPosition(ch, cursorPosition, mask) === null) {
 
 					// In that case we need to move to next char on the mask
 					isValid = this._validateKeyCharAgainstMask(ch, cursorPosition + 1);
 
 				} else {
-					isValid = this._validateCharOnPostion(ch, cursorPosition, mask);
+					isValid = this._validateCharOnPosition(ch, cursorPosition, mask);
 				}
 			}
 			return isValid;
 		},
-		_validateCharOnPostion: function (ch, position, inputMask) {
+		_validateCharOnPosition: function (ch, position, inputMask) {
 			var maskSymbol, mask, isValid,
 				regex,
 				inputChar = ch,
@@ -7504,23 +7503,23 @@
 				throw new Error(this._getLocaleValue("setOptionError") + option);
 			default:
 
-				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				// In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
 			}
 		},
 		_handleBackSpaceKey: function () {
-			// Get setlection
+			// Get selection
 			var selection = this._getSelection(this._editorInput[ 0 ]),
-				startPostion = selection.start,
+				startPosition = selection.start,
 				endPosition = selection.end, index = endPosition;
-			if (startPostion === endPosition) {
-				startPostion--;
+			if (startPosition === endPosition) {
+				startPosition--;
 			}
 			index--;
-			for (index; index > startPostion - 1; index--) {
-				while ($.inArray(index, this._literalIndeces) !== -1 || index === -1) {
+			for (index; index > startPosition - 1; index--) {
+				while ($.inArray(index, this._literalIndices) !== -1 || index === -1) {
 					index--;
 				}
 				if (index > -1) {
@@ -7531,18 +7530,18 @@
 			}
 		},
 		_handleDeleteKey: function (skipCursorPosition) { //MaskEditor
-			// Get setlection
+			// Get selection
 			var selection = this._getSelection(this._editorInput[ 0 ]),
-				startPostion = selection.start,
-				endPosition = selection.end, index = startPostion;
-			if (startPostion === endPosition) {
+				startPosition = selection.start,
+				endPosition = selection.end, index = startPosition;
+			if (startPosition === endPosition) {
 
 				// In that case we don't have selection, but cursor set and we increase the endCursor so we can enter the loop.
 				endPosition++;
 			}
 			for (index; index < endPosition; index++) {
 
-				while ($.inArray(index, this._literalIndeces) !== -1 &&
+				while ($.inArray(index, this._literalIndices) !== -1 &&
 					index <= this._maskWithPrompts.length) {
 					index++;
 				}
@@ -8036,7 +8035,7 @@
 				this._convertDateMaskToDigitMask(this._inputFormat);
 			this._setNumericType();
 
-			// RegEx for /Date(milisecond)/
+			// RegEx for /Date(millisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (offset !== null && (offset > 840 || offset < -720)) {
 				throw new Error(this._getLocaleValue("dateEditorOffsetRange"));
@@ -8107,7 +8106,7 @@
 				break;
 			default:
 
-				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				// In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
@@ -8369,7 +8368,7 @@
 
 			// This is special case, when a date is pasted, but the new pasted string is not fully formatted date, and doesn't contain leading zeros (e.g. 11/3/2015 3:24 PM).
 			// In such case, we add underscore in order to fully format date. The date is transformed to 11/_3/2015 _3:24 PM.
-			// But we do this only in cases, when the selection starts from the beginning of the editor, оtherwise it cannot be predicted, how to format the date.
+			// But we do this only in cases, when the selection starts from the beginning of the editor, otherwise it cannot be predicted, how to format the date.
 			if (selection.start === 0) {
 				newValue = this._formatDateString(newValue.toString());
 			}
@@ -8385,7 +8384,7 @@
 			dateMask = this._parseValueByMask(value);
 
 			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
-			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
+			// Then we format each chunk to be valid date period - if it is needed we precede it with underscore.
 			if (dateMask.indexOf(prompt) >= 0) {
 				for (periodName in this._dateIndices) {
 					startIndex = this._dateIndices[ periodName ];
@@ -8431,7 +8430,7 @@
 		},
 		_updateMaskedValue: function (newDate, returnValue) {
 
-			// This method updated maskwith prompts according to te set new date value
+			// This method updated mask with prompts according to te set new date value
 			var currentMaskValue = this._maskWithPrompts ?
 					this._maskWithPrompts :
 					this._parseValueByMask(""),
@@ -8449,7 +8448,7 @@
 					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
 
-						// T.P. 29th Jan 2016 Bug #212642 When the year is 3 digit for example (111) we need to add extra zero in fron of the value, so in edit mode it's displayed correctly
+						// T.P. 29th Jan 2016 Bug #212642 When the year is 3 digit for example (111) we need to add extra zero in from of the value, so in edit mode it's displayed correctly
 						if (year.toString().length < 4) {
 							while (year.toString().length < 4) {
 								year = "0" + year;
@@ -8833,7 +8832,7 @@
 				cursorPosition = this._getCursorPosition();
 
 				// TODO add all needed checks for indices /left
-				// For every pair we check if the current index is in the array for month fields, or the previous index is in the array. if we have dd, as a mask and we have alredy entered 1, when we type 5 - current cursor position is not in the list so we check if the previous one is in the list and pass the validation to month validateion.
+				// For every pair we check if the current index is in the array for month fields, or the previous index is in the array. if we have dd, as a mask and we have already entered 1, when we type 5 - current cursor position is not in the list so we check if the previous one is in the list and pass the validation to month validation.
 				if (cursorPosition === this._dateIndices.MM ||
 					(cursorPosition - 1) === this._dateIndices.MM) {
 
@@ -8857,7 +8856,7 @@
 				} else if (cursorPosition === this._dateIndices.ss ||
 					(cursorPosition - 1) === this._dateIndices.ss) {
 
-					// ValidateSeconsInput
+					// ValidateSecondsInput
 					result = this._validateSecondsInput(event, cursorPosition);
 				} else if (cursorPosition === this._dateIndices.tt ||
 					(cursorPosition - 1) === this._dateIndices.tt) {
@@ -8891,7 +8890,7 @@
 
 				if (result === null) {
 					cursorPosition++;
-					while ($.inArray(cursorPosition, this._literalIndeces) !== -1 ||
+					while ($.inArray(cursorPosition, this._literalIndices) !== -1 ||
 						cursorPosition === this._maskWithPrompts.length) {
 						cursorPosition++;
 					}
@@ -8899,7 +8898,7 @@
 					result = this._validateKey(event);
 				}
 
-				// In case the key is valid according to te parent method the symbol after the cursor position gets selected and if the key is not valid we are setting the cursor position to remain the same without seelection
+				// In case the key is valid according to te parent method the symbol after the cursor position gets selected and if the key is not valid we are setting the cursor position to remain the same without selection
 				if (result === false) {
 					this._setCursorPosition(cursorPosition);
 				}
@@ -8919,7 +8918,7 @@
 				oldVal = this._dateObjectValue;
 
 				// N.A. January 8th, 2018 #1417: In some browsers (like IE 11 and Firefox) blur event (therefore _parseDateFromMaskedValue) is fired before compositionend one.
-				// In that case we need to properly parse full width char symblols.
+				// In that case we need to properly parse full width char symbols.
 				if (this._inComposition === true) {
 					newValue = $.ig.util.IMEtoNumberString(newValue, $.ig.util.IMEtoENNumbersMapping());
 					newValue = this._parseValueByMask(newValue);
@@ -8932,7 +8931,7 @@
 				}
 				convertedDate = this._parseDateFromMaskedValue(newValue);
 
-				// #206308 in case newValiue == maskWithPrompts it's either clear value, or just exiting edit mode without entering value.
+				// #206308 in case newValue == maskWithPrompts it's either clear value, or just exiting edit mode without entering value.
 				if (newValue === this._maskWithPrompts) {
 					if (oldVal) {
 						this._processValueChanging(newValue);
@@ -9085,7 +9084,7 @@
 				}
 			} else {
 
-				// In that case we are in the second pair and we can't distinguish what the user wants to enter as the second letter is alwayas "m" (am/pm). so the result is null and the cursor will be moved to the next possible position
+				// In that case we are in the second pair and we can't distinguish what the user wants to enter as the second letter is always "m" (am/pm). so the result is null and the cursor will be moved to the next possible position
 				result = null;
 			}
 			return result;
@@ -9393,7 +9392,7 @@
 			if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 
-			// V. A. December 4th, 2019 Bug: #2016 In igDateEditor with the intput and display format of HH:mm:ss.fff, millisecond part becomes 0 in display text and in value when the focus is blurred.
+			// V. A. December 4th, 2019 Bug: #2016 In igDateEditor with the input and display format of HH:mm:ss.fff, millisecond part becomes 0 in display text and in value when the focus is blurred.
 			} else if ($.type(value) === "date") {
 				date = new Date(value.getTime());
 			} else {
@@ -9957,14 +9956,14 @@
 				// N.A. August 29th, 2017 #1141: When delta for hours = 24, then it should stay as 24, not delta % 24, which is 0
 				newHour = currentHour + (Math.abs(delta) === 24 ? delta : (delta % 24));
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
-				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
+				wrapDownHours = newHour < 0; // The minimum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
 
 				// N.A. August 29th, 2017 #1141: When delta for hours = 12, then it should stay as 12, not delta % 12, which is 0
 				newHour = currentHour + (Math.abs(delta) === 12 ? delta : (delta % 12));
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
-				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
+				wrapDownHours = newHour < 1; // The minimum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
 			}
 
@@ -10980,7 +10979,7 @@
 		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010
-			//applyDisabledClass parameter is flag wheather the ui-state-disabled class is applied to the both _editorInput and _valueInput
+			//applyDisabledClass parameter is flag whether the ui-state-disabled class is applied to the both _editorInput and _valueInput
 			//In both readOnly and disabled state we have similar logic for making the editor disabled/readonly (detach event and remove classes)
 			if (this.options.dropDownOnReadOnly) {
 				if (applyDisabledClass) {
@@ -11042,7 +11041,7 @@
 					var date, dateFromPicker = $(this).datepicker("getDate");
 					if (self._dateObjectValue) {
 
-						// Date comming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
+						// Date coming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
 						if (self.options.displayTimeOffset !== null) {
 
 							// use display values to set picker result and reset before processing
@@ -11129,9 +11128,9 @@
 				};
 			}
 			if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
-				var isbeforeShow = regional.beforeShow;
+				var isBeforeShow = regional.beforeShow;
 				options.beforeShow = function (input) {
-					isbeforeShow.call(this);
+					isBeforeShow.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
 						self.options.datepickerOptions.beforeShow.call(this, input);
 					}
@@ -11239,7 +11238,7 @@
 			}
 		},
 
-		// I.G. 09/08/2017 #1037 [igDatePicker] initialization optimization - call overided _positionDropDownList.
+		// I.G. 09/08/2017 #1037 [igDatePicker] initialization optimization - call overridden _positionDropDownList.
 		_positionDropDownList: function () { // igDatePicker
 		},
 		_setOption: function (option, value) { // igDatePicker
@@ -11311,7 +11310,7 @@
 				break;
 			default:
 
-				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				//In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
@@ -11362,7 +11361,7 @@
 			var noCancel;
 
 			// Close dropdown
-			//T.P. 15th March 2016. When there are two editors and the drpdown is opened - when we click the dropwodn button
+			//T.P. 15th March 2016. When there are two editors and the dropdown is opened - when we click the dropdown button
 			//of the other editor - click event is triggered prior to blur of the previous editor
 			//M.S. 26th June 2016. Closing the dropdown with dropdown button if "readOnly: true, dropDownOnReadOnly : true"
 			//Adding internal flag for calendar visibility.
@@ -11448,7 +11447,7 @@
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
 					if (pickerInst) {
-						// D.P. 19th Dec 2017 #1453 Pprevent further parsing from messing with selection
+						// D.P. 19th Dec 2017 #1453 Prevent further parsing from messing with selection
 						pickerInst.lastVal = currentInputValue;
 					}
 				}
@@ -12400,7 +12399,7 @@
 			```
 			*/
 			listItemHoverDuration: 0,
-			/* type="bool" Gets wheather the drop-down list element is attached to the body of the document, or to the timepicker container element.
+			/* type="bool" Gets whether the drop-down list element is attached to the body of the document, or to the timepicker container element.
 				If the option is set to false the timepicker will attach the drop-down list element to the timepicker container
 				If the option is set to true the timepicker will attach its drop-down list to as a child of the body.
 				Note! This option can not be set runtime.
@@ -12496,7 +12495,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListOpening: "dropDownListOpening",
 			/* cancel="true" Fired after the drop down is opened.
@@ -12516,7 +12515,7 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListOpened: "dropDownListOpened",
 			/* cancel="true" Fired when the drop down is closing.
@@ -12537,7 +12536,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListClosing: "dropDownListClosing",
 			/* cancel="false" Fired after the drop down is closed.
@@ -12558,7 +12557,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 			*/
 			dropDownListClosed: "dropDownListClosed",
 			/* cancel="true" Fired when an item in the drop down list is being selected.
@@ -12579,7 +12578,7 @@
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editor" argType="object" Gets a reference to the editor container.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is about to be selected.
 			*/
 			dropDownItemSelecting: "dropDownItemSelecting",
@@ -12600,7 +12599,7 @@
 				eventArgument="evt" argType="event" jQuery event object.
 				eventArgument="ui.owner" argType="object" Gets a reference to the editor.
 				eventArgument="ui.editorInput" argType="object" Gets a reference to the editable input.
-				eventArgument="ui.list" argType="object" Gets a reference to the list contaier.
+				eventArgument="ui.list" argType="object" Gets a reference to the list container.
 				eventArgument="ui.item" argType="object" Gets a reference to the list item which is selected.
 			*/
 			dropDownItemSelected: "dropDownItemSelected"
@@ -12754,7 +12753,7 @@
 					throw new Error(this._getLocaleValue("setOptionError") + option);
 				default:
 
-				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				// In case no property matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
