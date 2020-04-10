@@ -4579,8 +4579,7 @@
 								return;
 							}
 
-							self.openDropDown(null,
-								self._focusInInputWhenUsingTouchDevice(), event);
+							self.openDropDown(null, true, event);
 						}
 					}
 
