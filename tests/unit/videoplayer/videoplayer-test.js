@@ -12,11 +12,11 @@
 }(jQuery));
 
 function createFixtureDiv(divId){
-	$.ig.TestUtil.appendToFixture('<div id=' + divId + '/>');
+	$.ig.TestUtil.appendToFixture('<div id=' + divId + '></div>');
 }
 
 function createFixtureVideo(videoId) {
-	$.ig.TestUtil.appendToFixture(`<video id=${videoId}/>`);
+	$.ig.TestUtil.appendToFixture(`<video id=${videoId}></video>`);
 }
 
 // #player1 and #player2 with isAutoPlay and isMuted set to true
