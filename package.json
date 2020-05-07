@@ -22,7 +22,7 @@
     "postinstall": "npm install -g grunt-cli"
   },
   "dependencies": {
-    "jquery": "^3.5.0",
+    "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1"
   },
   "devDependencies": {
