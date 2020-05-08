@@ -269,7 +269,7 @@ QUnit.test('[ID3] igLayoutManager flow layout', function (assert) {
 	assert.notOk(layoutManagerElement.hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
 	assert.notOk(layoutManagerElement.hasClass('ig-layout-flow'), 'The ig-layout class was not removed on destroy,');
 	assert.equal(layoutManagerElement.children().length, 0, 'The items were not correctly cleared on destroy.');
-	layoutManagerElement.append('<div /><div /><div /><div /><div /><div />').igLayoutManager({
+	layoutManagerElement.append('<div></div><div></div><div></div><div></div><div></div><div></div>').igLayoutManager({
 		layoutMode: "flow"
 	});
 	assert.equal(layoutManagerElement.children().length, 6, 'The five items were not rendered in the flow container.');
@@ -351,7 +351,7 @@ QUnit.test('[ID4] igLayoutManager vertical layout', function (assert) {
 	assert.notOk(layoutManagerElement.hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
 	assert.notOk(layoutManagerElement.hasClass('ig-layout-vertical'), 'The ig-layout class was not removed on destroy,');
 	assert.equal(layoutManagerElement.children().length, 0, 'The items were not correctly cleared on destroy.');
-	layoutManagerElement.append('<div /><div /><div /><div /><div /><div />').igLayoutManager({
+	layoutManagerElement.append('<div></div><div></div><div></div><div></div><div></div><div></div>').igLayoutManager({
 		layoutMode: "vertical"
 	});
 	assert.equal(layoutManagerElement.children().length, 6, 'The five items were not rendered in the vertical container.');
