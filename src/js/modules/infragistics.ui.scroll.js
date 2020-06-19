@@ -2421,8 +2421,6 @@
 			this._offsetDirection = 0;
 
 			this._igScollTouchPrevented = false;
-
-			this._showScrollbars(true);
 		},
 
 		_onTouchMoveContainer: function (event) {
@@ -2510,11 +2508,12 @@
 			}
 
 			if (scrolledXY.x === 0 && scrolledXY.y === 0) {
-			    this._igScollTouchPrevented = true;
+				this._igScollTouchPrevented = true;
 			}
 
 			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
 			if (!this._igScollTouchPrevented && event.cancelable) {
+				this._showScrollbars(true);
 				event.preventDefault();
 			}
 		},
