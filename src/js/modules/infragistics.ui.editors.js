@@ -3689,7 +3689,8 @@
 					}
 						break;
 					case "browserDefault": {
-						if (startPosition) {
+						//P.M. 25/06/2020 #2076 'igTextEditor selects all the text when the browser window gets focused again'
+						if (startPosition >= 0) {
 							if (endPosition) {
 
 								//I.G. 03/04/2020 #2056 'Caret position is placed one character before the last one, when the right side of the last character is clicked'
