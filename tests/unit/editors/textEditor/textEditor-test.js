@@ -12,56 +12,56 @@ QUnit.module("igTextEditor unit tests", {
 		}
 		return $(element, options).appendTo($qunitFixture);
 	},
-	input: function() {
+	input: function () {
 		return this.editor.igTextEditor("field");
 	},
-	hiddenInput: function() {
+	hiddenInput: function () {
 		return this.container().find("input:hidden")
 	},
-	container: function() {
+	container: function () {
 		return this.editor.igTextEditor("editorContainer");
 	},
-	dropDownContainer: function() {
+	dropDownContainer: function () {
 		return this.editor.igTextEditor("dropDownContainer");
 	},
-	dropDownButton: function() {
+	dropDownButton: function () {
 		return this.editor.igTextEditor("dropDownButton");
 	},
-	clearButton: function() {
+	clearButton: function () {
 		return this.editor.igTextEditor("clearButton");
 	},
-	firstItem: function() {
+	firstItem: function () {
 		return this.editor.data("igTextEditor")._getListItemByIndex(0);
 	},
-	lastItem: function() {
+	lastItem: function () {
 		return this.editor.data("igTextEditor")._getListItemByIndex(2);
 	},
-	spinUpButton: function() {
+	spinUpButton: function () {
 		return this.editor.igTextEditor("spinUpButton");
 	},
-	spinDownButton: function() {
+	spinDownButton: function () {
 		return this.editor.igTextEditor("spinDownButton");
 	},
 	flag: false,
 	assert: null,
-	pressOk: function(char) {
+	pressOk: function (char) {
 		this.util.keyPressChar(char.charCodeAt(0), this.input());
 		this.assert.ok(this.flag, char + " char SHOULD be typed, because it is included key");
 		this.flag = false;
 	},
-	pressNotOk: function(char) {
+	pressNotOk: function (char) {
 		this.util.keyPressChar(char.charCodeAt(0), this.input());
 		this.assert.notOk(this.flag, char + " char SHOULD NOT be typed, because it is excluded key");
 		this.flag = false;
 	},
-	testSelection: function(input, start, end) {
+	testSelection: function (input, start, end) {
 		this.assert.equal(input[0].selectionStart, start, "The selection doesn't start from index" + start);
 		this.assert.equal(input[0].selectionEnd, end, "The selection doesn't end at index " + end);
 	},
 	beforeEach: function () { $.fx.off = true; },
 	afterEach: function () { $.fx.off = false; }
 });
-	
+
 QUnit.test("IncludeKeys/excludeKeys Tests.", function (assert) {
 	this.assert = assert;
 	assert.expect(54);
@@ -121,7 +121,7 @@ QUnit.test("IncludeKeys/excludeKeys Tests.", function (assert) {
 	this.pressOk("d");
 	this.pressOk("e");
 	this.pressOk("f");
-	
+
 
 	this.editor = this.appendToFixture(this.inputTag).igTextEditor({
 		excludeKeys: "~!@#$%^&*(){}[]\\'*\"",
@@ -180,7 +180,7 @@ QUnit.test("Options/Method tests", function (assert) {
 		maxLength: 3
 	});
 	assert.equal(this.input().attr("placeHolder"), undefined, "The placeHolder attribute should not be set");
-	assert.equal(editor.igTextEditor("option","maxLength"), 3, "The maxLength attribure is not set correctly.");
+	assert.equal(editor.igTextEditor("option", "maxLength"), 3, "The maxLength attribure is not set correctly.");
 	assert.equal(editor.igTextEditor("option", "value"), "Max", "The value is not set properly after the maxLength.");
 	editor.igTextEditor("inputName", "fName");
 	assert.equal(editor.igTextEditor("inputName"), "fName", "name is not properly set");
@@ -341,7 +341,7 @@ QUnit.test("Events testing", function (assert) {
 		dropDownAttachedToBody: true,
 		value: "item1",
 		selectionOnFocus: "atEnd",
-		textChanged: function(evt, args) {
+		textChanged: function (evt, args) {
 			assert.equal(args.text, text, "Text changed event is not fired with correct new value");
 			textChanged++;
 		}
@@ -472,7 +472,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 
 	var expectedItems = ["item1", "item2", "item3"], items = editor.igTextEditor("option", "listItems");
 	assert.ok(expectedItems.length === items.length &&
-		expectedItems.every(function(v,i) { return v === items[i]}), "List items did not match expected result after init.")
+		expectedItems.every(function (v, i) { return v === items[i] }), "List items did not match expected result after init.")
 
 	//selectedListIndex
 	editor.igTextEditor("selectedListIndex", 2);
@@ -502,7 +502,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	this.util.keyInteraction(13, this.input());
 	assert.equal(editor.igTextEditor("value"), "item3", "Value should match the list item");
 	assert.equal(editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
-	
+
 	// isLimitedToListValues (casing)
 	editor.igTextEditor("option", "isLimitedToListValues", true);
 	editor.igTextEditor("value", "ITEM1"); //casing
@@ -548,7 +548,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	this.util.keyPressChar(65, this.input());
 	this.util.keyUpChar(65, this.input());
 	assert.equal(editor.igTextEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
-	assert.equal(editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");		
+	assert.equal(editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");
 	this.util.keyInteraction(13, this.input());
 	assert.equal(editor.igTextEditor("value"), "item1a", "Value not set correctly on enter without list selection.");
 	assert.ok(!editor.igTextEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
@@ -611,7 +611,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	this.util.mouseEvent(this.spinUpButton(), "mouseup");
 	this.util.mouseEvent(this.spinUpButton(), "mousedown");
 	this.util.mouseEvent(this.spinUpButton(), "mouseup");
-	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin button with open dropdown.");
+	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length - 1], "Selection not changed on spin button with open dropdown.");
 	this.util.mouseEvent(this.spinDownButton(), "mousedown");
 	this.util.mouseEvent(this.spinDownButton(), "mouseup");
 	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[0], "Selection not changed on spin button with open dropdown.");
@@ -621,15 +621,15 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	editor.igTextEditor("option", "spinWrapAround", true);
 	this.util.mouseEvent(this.spinUpButton(), "mousedown");
 	this.util.mouseEvent(this.spinUpButton(), "mouseup");
-	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin with spinWrapAround.");
+	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length - 1], "Selection not changed on spin with spinWrapAround.");
 
 	// clearing value in edit mode and selecting the same item
 	editor.blur(); //set last value
 	this.dropDownButton().click();
 	editor.igTextEditor("clearButton").click();
 	editor.igTextEditor("dropDownContainer").children(".ui-igedit-listitem").last().click();
-	assert.equal(this.input().val(), listItems[listItems.length-1], "Selection not reflected in edit field after clear");
-	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed after re-selecting cleared item.");
+	assert.equal(this.input().val(), listItems[listItems.length - 1], "Selection not reflected in edit field after clear");
+	assert.equal(editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length - 1], "Selection not changed after re-selecting cleared item.");
 
 	// readOnly spin
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
@@ -715,9 +715,9 @@ QUnit.test("Keyboard/Mouse testing", function (assert) {
 	editor.igTextEditor("value", "newValueto");
 	this.util.keyInteraction(56, this.input());
 	assert.ok(this.container().hasClass($.ui.igNotifier.prototype.css.warningState) &&
-		this.container().igNotifier( "isVisible" ), "MaxLength reached message not shown.");
+		this.container().igNotifier("isVisible"), "MaxLength reached message not shown.");
 	assert.equal(this.container().igNotifier("container").text(),
-			$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 10), "MaxLength reached message not correct.");
+		$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 10), "MaxLength reached message not correct.");
 
 	// maxLength with dropDown key handling:
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
@@ -729,8 +729,8 @@ QUnit.test("Keyboard/Mouse testing", function (assert) {
 	this.input().focus();
 	this.util.keyInteraction(65, this.input());
 	assert.ok(this.container().hasClass($.ui.igNotifier.prototype.css.warningState) &&
-		this.container().igNotifier( "isVisible" ), "MaxLength reached message not shown.");
-	assert.equal(this.container().igNotifier( "container" ).text(),
+		this.container().igNotifier("isVisible"), "MaxLength reached message not shown.");
+	assert.equal(this.container().igNotifier("container").text(),
 		$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 5), "MaxLength reached message not correct.");
 
 	this.util.mouseEvent(this.input(), "mouseover");
@@ -759,7 +759,7 @@ QUnit.test("Keyboard/Mouse testing", function (assert) {
 
 	this.dropDownButton().click();
 	this.clearButton().click();
-	
+
 	assert.equal(this.input().val(), "", "the item 1 should be cleared");
 	this.input().blur();
 	assert.equal(editor.igTextEditor("value"), "", "the item 1 value should be cleared");
@@ -899,6 +899,38 @@ QUnit.test("SelectionOnFocus", function (assert) {
 	});
 });
 
+// Bug #2076 igTextEditor selects all the text when the browser window gets focused again
+QUnit.test("browserDefault selectionOnFocus should preserve caret position when blurred", function (assert) {
+	this.assert = assert;
+	assert.expect(4);
+
+	var done = assert.async(), self = this, editor, item;
+
+	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
+		selectionOnFocus: "browserDefault",
+		value: "abc"
+	});
+	editor.igTextEditor("select", 0, 0);
+	this.input().blur();
+	editor.igTextEditor("setFocus");
+	this.util.wait(100).then(function () {
+		self.testSelection(self.input(), 0, 0);
+
+		editor.igTextEditor("select", 0, 1);
+		this.input().blur();
+		editor.igTextEditor("setFocus");
+
+		return self.util.wait(100);
+	}).then(function () {
+		self.testSelection(self.input(), 0, 1);
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
+
 QUnit.test("SetOption", function (assert) {
 	assert.expect(23);
 
@@ -931,28 +963,28 @@ QUnit.test("SetOption", function (assert) {
 	editor.igTextEditor("option", "value", "");
 	assert.equal(editor.igTextEditor("option", "value"), "", "Value should be empty string");
 
-	assert.throws( function() {
-			editor.igTextEditor("option", "visibleItemsCount", 3);
-		},
-		function(err) {
+	assert.throws(function () {
+		editor.igTextEditor("option", "visibleItemsCount", 3);
+	},
+		function (err) {
 			return err.message === $.ig.Editor.locale.setOptionError + "visibleItemsCount";
 		},
 		"Should not set dynamically visibleItemsCount"
 	);
 
-	assert.throws( function() {
-			editor.igTextEditor("option", "buttonType", "spin");
-		},
-		function(err) {
+	assert.throws(function () {
+		editor.igTextEditor("option", "buttonType", "spin");
+	},
+		function (err) {
 			return err.message === $.ig.Editor.locale.setOptionError + "buttonType";
 		},
 		"Should not set dynamically buttonType"
 	);
-	
-	assert.throws( function() {
-			editor.igTextEditor("option", "dropDownAttachedToBody", true);
-		},
-		function(err) {
+
+	assert.throws(function () {
+		editor.igTextEditor("option", "dropDownAttachedToBody", true);
+	},
+		function (err) {
 			return err.message === $.ig.Editor.locale.setOptionError + "dropDownAttachedToBody"
 		},
 		"Should not set dynamically dropDownAttachedToBody"
@@ -964,7 +996,7 @@ QUnit.test("SetOption", function (assert) {
 			buttonType: "clear",
 			width: 300,
 			height: 70
-	});
+		});
 	assert.ok(this.input().prop("disabled"), "readonly attribute is missing");
 	assert.ok(this.hiddenInput().prop("disabled"), "readonly attribute is missing");
 	// Enable a editor that is not readonly
@@ -1043,7 +1075,7 @@ QUnit.test("Check width/height", function (assert) {
 			buttonType: "clear",
 			width: 300,
 			height: 70
-	});
+		});
 	// Style set from the options
 	assert.equal(this.container().css("width"), "300px", "Width is not correct");
 	assert.equal(this.container().css("height"), "70px", "Height is not correct");
@@ -1080,7 +1112,7 @@ QUnit.test("ToUpper and ToLower", function (assert) {
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
 		toUpper: true,
-		keypress: function (evt,args) {
+		keypress: function (evt, args) {
 			keyCode = args.key;
 		}
 	});
@@ -1097,7 +1129,7 @@ QUnit.test("ToUpper and ToLower", function (assert) {
 
 		self.editor = editor = self.appendToFixture(self.inputTag).igTextEditor({
 			toLower: true,
-			keypress: function (evt,args) {
+			keypress: function (evt, args) {
 				keyCode = args.key;
 			}
 		});
@@ -1127,7 +1159,7 @@ QUnit.test("Paste", function (assert) {
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
 		value: "ade"
 	});
-	
+
 	editor.igTextEditor("setFocus");
 	this.util.wait(100).then(function () {
 		self.input()[0].setSelectionRange(1, 1);
@@ -1144,7 +1176,7 @@ QUnit.test("Paste", function (assert) {
 	});
 });
 
-QUnit.test("Clear button dynamic show/hide", function(assert) {
+QUnit.test("Clear button dynamic show/hide", function (assert) {
 	assert.expect(4);
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
@@ -1188,7 +1220,7 @@ QUnit.test('Check destroy', function (assert) {
 			buttonType: "clear",
 			width: 300,
 			height: 70
-	});
+		});
 	editor.igTextEditor("destroy");
 	assert.equal(editor.data("igTextEditor"), undefined, 'Error destroying igCheckboxEditor in an input');
 	assert.equal(editor.html(), "", 'Content should be empty');
@@ -1197,20 +1229,20 @@ QUnit.test('Check destroy', function (assert) {
 	assert.ok(editor.attr("class") === undefined, "Some classes are still not removed");
 });
 
-QUnit.test("Test set options runtime", function(assert) {
+QUnit.test("Test set options runtime", function (assert) {
 	assert.expect(8);
 
 	var editor, item;
 
 	editor = this.appendToFixture(this.inputTag).igTextEditor({
-		dropDownAttachedToBody : true,
+		dropDownAttachedToBody: true,
 		listItems: ["item1", "item2", "item3"]
 	});
-	editor.igTextEditor("option", "placeHolder", "Test set options");		
+	editor.igTextEditor("option", "placeHolder", "Test set options");
 	editor.igTextEditor("option", "listWidth", "400px");
 	editor.igTextEditor("option", "includeKeys", "abc");
 	editor.igTextEditor("option", "textAlign", "center");
-	assert.equal(editor.igTextEditor("option", "placeHolder"),"Test set options", "The placeHolder option is not set correctly runtime.");
+	assert.equal(editor.igTextEditor("option", "placeHolder"), "Test set options", "The placeHolder option is not set correctly runtime.");
 	assert.equal(editor.igTextEditor("option", "listWidth"), "400px", "The listWidth option is not set correctly runtime.");
 	assert.equal(editor.igTextEditor("option", "includeKeys"), "abc", "The includeKeys is not set correctly runtime.");
 	assert.equal(editor.igTextEditor("option", "textAlign"), "center", "The textAlign is not set correctly runtime.");
@@ -1238,11 +1270,11 @@ QUnit.test("Test set options runtime", function(assert) {
 	assert.equal(editor.igTextEditor("option", "value"), "item1", "The value is not set when dropDownOnReadOnly is set to true.");
 });
 
-QUnit.test("Test insert method.", function(assert) {
+QUnit.test("Test insert method.", function (assert) {
 	assert.expect(1);
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
-		blur: function(evt, ui){
+		blur: function (evt, ui) {
 			ui.owner.insert("test");
 		},
 		excludeKeys: "t"
@@ -1252,28 +1284,28 @@ QUnit.test("Test insert method.", function(assert) {
 	assert.equal(editor.igTextEditor("option", "value"), "es", "The _replaceCharAt is not working correctly.");
 });
 
-QUnit.test("Class selector.", function(assert) {
+QUnit.test("Class selector.", function (assert) {
 	assert.expect(1);
 
 	editor = this.appendToFixture(this.inputTag).igTextEditor({
 		textMode: "text"
 	});
-	
+
 	assert.notEqual(editor.data("igTextEditor").id, undefined, "The id is not set.");
 });
 
-QUnit.test("NullValue set on init.", function(assert) {
+QUnit.test("NullValue set on init.", function (assert) {
 	assert.expect(5);
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
 		allowNullValue: true,
 		nullValue: 0
 	});
-	
-	assert.equal(editor.igTextEditor("value"), 0 , "The value is not set to the nullValue");
+
+	assert.equal(editor.igTextEditor("value"), 0, "The value is not set to the nullValue");
 	editor.igTextEditor("value", "hey");
 	editor.igTextEditor("value", null);
-	assert.equal(editor.igTextEditor("value"), "0" , "The value is not set to the nullValue");
+	assert.equal(editor.igTextEditor("value"), "0", "The value is not set to the nullValue");
 
 	//invalid null value:
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
@@ -1283,94 +1315,94 @@ QUnit.test("NullValue set on init.", function(assert) {
 		listItems: ["a", "b", "c"],
 		buttonType: "clear"
 	});
-	
-	assert.strictEqual(editor.igTextEditor("value"), "" , "Initial value should ignore wrong nullValue");
+
+	assert.strictEqual(editor.igTextEditor("value"), "", "Initial value should ignore wrong nullValue");
 	editor.igTextEditor("value", "a");
 	editor.igTextEditor("value", null);
-	assert.strictEqual(editor.igTextEditor("value"), "" , "Value set should ignore wrong nullValue");
+	assert.strictEqual(editor.igTextEditor("value"), "", "Value set should ignore wrong nullValue");
 	editor.igTextEditor("value", "a");
 	this.clearButton().trigger("click");
-	assert.strictEqual(editor.igTextEditor("value"), "" , "Clear should ignore wrong nullValue");
+	assert.strictEqual(editor.igTextEditor("value"), "", "Clear should ignore wrong nullValue");
 });
 
 
-QUnit.test("Test creating on wrong field or wrong options combinations.", function(assert) {
+QUnit.test("Test creating on wrong field or wrong options combinations.", function (assert) {
 	assert.expect(7);
 
-	assert.throws(function() {
+	assert.throws(function () {
 		this.appendToFixture(this.inputTag).igTextEditor({
 			buttonType: "dropdownbutton"
 		});
 	},
-	Error($.ig.Editor.locale.btnValueNotSupported),
-	"Unsupported/Wrong button value is set.");
+		Error($.ig.Editor.locale.btnValueNotSupported),
+		"Unsupported/Wrong button value is set.");
 
-	assert.throws(function() {
+	assert.throws(function () {
 		this.appendToFixture("<img />").igTextEditor();
 	},
-	Error($.ig.Editor.locale.targetNotSupported),
-	"The editor should not be created on img.");
+		Error($.ig.Editor.locale.targetNotSupported),
+		"The editor should not be created on img.");
 
-	assert.throws(function() {
+	assert.throws(function () {
 		this.appendToFixture("<textarea />").igTextEditor();
 	},
-	Error($.ig.Editor.locale.multilineErrMsg),
-	"Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.");
-	
-	assert.throws(function() {
+		Error($.ig.Editor.locale.multilineErrMsg),
+		"Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.");
+
+	assert.throws(function () {
 		this.appendToFixture(this.inputTag).igTextEditor({
 			buttonType: "spin"
 		})
 	},
-	function(err){
-		return err.message === $.ig.Editor.locale.noListItemsNoButton;
-	},
-	"The spinUp/spinDown buttons are not supposed to be rendered without listItems.");
-	
-	assert.throws(function() {
+		function (err) {
+			return err.message === $.ig.Editor.locale.noListItemsNoButton;
+		},
+		"The spinUp/spinDown buttons are not supposed to be rendered without listItems.");
+
+	assert.throws(function () {
 		this.appendToFixture(this.inputTag).igTextEditor({
 			buttonType: "dropdown"
 		});
 	},
-	function(err) {
-		return err.message === $.ig.Editor.locale.noListItemsNoButton;
-	},
-	"The dropdown button is not supposed to be rendered without listItems.");
+		function (err) {
+			return err.message === $.ig.Editor.locale.noListItemsNoButton;
+		},
+		"The dropdown button is not supposed to be rendered without listItems.");
 
-	assert.throws(function() {
+	assert.throws(function () {
 		this.appendToFixture(this.inputTag).igTextEditor({
 			listItems: [],
 			buttonType: "spin"
 		});
 	},
-	function(err){
-		return err.message === $.ig.Editor.locale.noListItemsNoButton;
-	},
-	"The spinUp/spinDown buttons are not supposed to be rendered with listItems with length 0.")
+		function (err) {
+			return err.message === $.ig.Editor.locale.noListItemsNoButton;
+		},
+		"The spinUp/spinDown buttons are not supposed to be rendered with listItems with length 0.")
 
-	assert.throws(function() {
+	assert.throws(function () {
 		this.appendToFixture(this.inputTag).igTextEditor({
 			listItems: [],
 			buttonType: "dropdown"
 		});
 	},
-	function(err){
-		return err.message === $.ig.Editor.locale.noListItemsNoButton;
-	},
-	"The dropdown button is not supposed to be rendered with listItems with length 0.");
+		function (err) {
+			return err.message === $.ig.Editor.locale.noListItemsNoButton;
+		},
+		"The dropdown button is not supposed to be rendered with listItems with length 0.");
 });
 
-QUnit.test("Test the undefined.", function(assert) {
+QUnit.test("Test the undefined.", function (assert) {
 	assert.expect(1);
 
 	var editor = this.appendToFixture(this.inputTag).igTextEditor();
 	assert.notOk(editor.data("igTextEditor")._validateValue(undefined), "The validation rule for undefined in not working.");
 });
 
-QUnit.test("Test nullValue on initialization", function(assert) {
+QUnit.test("Test nullValue on initialization", function (assert) {
 	assert.expect(4);
 
-	var editor = this.appendToFixture(this.inputTag).igTextEditor({ allowNullValue: false});
+	var editor = this.appendToFixture(this.inputTag).igTextEditor({ allowNullValue: false });
 	//Get null Value
 	assert.equal(editor.igTextEditor("value"), "", "The value is not an empty string");
 	//Set null Value
@@ -1398,8 +1430,8 @@ QUnit.test('Clear button state', function (assert) {
 QUnit.test('maxLength is respected', function (assert) {
 	assert.expect(1);
 
-	var editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ maxLength : 3 });
-	this.util.type("abc s",  this.input());
+	var editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ maxLength: 3 });
+	this.util.type("abc s", this.input());
 	assert.ok(editor.parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
 });
 
@@ -1415,9 +1447,9 @@ QUnit.test("Setting listItems on run time", function (assert) {
 
 QUnit.test("Set text dynamically with maxLength defined", function (assert) {
 	assert.expect(1);
-	
+
 	var editor = this.appendToFixture(this.inputTag).igTextEditor({ maxLength: 5, value: "ade" });
-	editor.igTextEditor("value","abcdefg");
+	editor.igTextEditor("value", "abcdefg");
 	assert.equal(editor.igTextEditor("value"), "abcde", "Value is not trimmed properly");
 });
 
@@ -1427,11 +1459,11 @@ QUnit.test('Testing key code event arguments', function (assert) {
 	var done = assert.async(), editor, keyD, keyP, keyU;
 
 	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({
-		keydown: function(e, args) { keyD = args.key; },
-		keypress: function(e, args) { keyP = args.key; },
-		keyup: function(e, args) { keyU = args.key; }
+		keydown: function (e, args) { keyD = args.key; },
+		keypress: function (e, args) { keyP = args.key; },
+		keyup: function (e, args) { keyU = args.key; }
 	});
-	
+
 	this.util.type("s", this.input());
 	this.util.wait(100).then(function () {
 		assert.ok(keyD === "s".charCodeAt(0), "Key code is not correct in keyDown event");
@@ -1449,7 +1481,7 @@ QUnit.test('Test suppressKeyboard option', function (assert) {
 	assert.expect(10);
 
 	var editor;
-	
+
 	// Test that the input DOESN'T have focus after the drop down is opened
 	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["a", "b", "c"], suppressKeyboard: true });
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
@@ -1492,28 +1524,28 @@ QUnit.test("Scrollbar is not visible when not needed", function (assert) {
 	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three"], width: 98, height: 58, button: "dropdown" });
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
-	assert.ok(this.dropDownContainer()[0].clientHeight >= this.dropDownContainer()[0].scrollHeight, "Scrollbar is visible!");	
+	assert.ok(this.dropDownContainer()[0].clientHeight >= this.dropDownContainer()[0].scrollHeight, "Scrollbar is visible!");
 
-	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six", "seven"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six", "seven"], width: 98, height: 58, button: "dropdown", visibleItemsCount: 7 });
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
-	assert.ok(this.dropDownContainer()[0].clientHeight >= this.dropDownContainer()[0].scrollHeight, "Scrollbar is not visible!");	
+	assert.ok(this.dropDownContainer()[0].clientHeight >= this.dropDownContainer()[0].scrollHeight, "Scrollbar is not visible!");
 
-	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"], width: 98, height: 58, button: "dropdown", visibleItemsCount: 7 });
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
-	assert.ok(this.dropDownContainer()[0].clientHeight < this.dropDownContainer()[0].scrollHeight, "Scrollbar is not visible!");	
+	assert.ok(this.dropDownContainer()[0].clientHeight < this.dropDownContainer()[0].scrollHeight, "Scrollbar is not visible!");
 
-	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+	editor = this.editor = this.appendToFixture(this.inputTag).igTextEditor({ listItems: ["one", "two", "three", "four", "five", "six"], width: 98, height: 58, button: "dropdown", visibleItemsCount: 7 });
 	lastItem = editor.igTextEditor("dropDownContainer").last();
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
-	assert.ok(((this.dropDownContainer().igOffset().top + this.dropDownContainer().outerHeight(true)) - (lastItem.igOffset().top + lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");	
+	assert.ok(((this.dropDownContainer().igOffset().top + this.dropDownContainer().outerHeight(true)) - (lastItem.igOffset().top + lastItem.outerHeight(true))) <= 3, "Too much empty space below the last list item!");
 
 	//Test with custom dropdown container border-width
 	style = $('<style> #scrollTest .ui-igedit-dropdown {border-width: 30px 30px 30px 30px;} </style>').appendTo("head");
 	scrollContainer = $('<div id="scrollTest"></div>').appendTo('#qunit-fixture');
-	editor = this.editor = $(this.inputTag).appendTo(scrollContainer).igTextEditor({ listItems: ["one", "two", "three"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 7 });
+	editor = this.editor = $(this.inputTag).appendTo(scrollContainer).igTextEditor({ listItems: ["one", "two", "three"], width: 98, height: 58, button: "dropdown", visibleItemsCount: 7 });
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
 	assert.ok(this.dropDownContainer()[0].clientHeight >= this.dropDownContainer()[0].scrollHeight, "Scrollbar is visible!");
@@ -1532,7 +1564,7 @@ QUnit.test("Scrollbar is not visible when not needed", function (assert) {
 
 	style = $('<style> #scrollTest .ui-igedit-listitem {border-width: 20px 20px 5px 10px;} </style>').appendTo("head");
 	scrollContainer = $('<div id="scrollTest"></div>').appendTo('#qunit-fixture');
-	editor = this.editor = $(this.inputTag).appendTo(scrollContainer).igTextEditor({ listItems: ["one", "two", "three", "four", "five"], width: 98, height: 58, button: "dropdown", visibleItemsCount : 3 });
+	editor = this.editor = $(this.inputTag).appendTo(scrollContainer).igTextEditor({ listItems: ["one", "two", "three", "four", "five"], width: 98, height: 58, button: "dropdown", visibleItemsCount: 3 });
 	assert.notOk(this.input().is(":focus"), "The input should not be focused");
 	this.dropDownButton().click();
 	assert.ok(this.dropDownContainer()[0].clientHeight < this.dropDownContainer()[0].scrollHeight, "Scrollbar is not visible!");
@@ -1543,18 +1575,18 @@ QUnit.test("Scrollbar is not visible when not needed", function (assert) {
 QUnit.test("Keydown event bubbling when maxLength is set", function (assert) {
 	assert.expect(1);
 
-	var editor = this.appendToFixture(this.inputTag, {id: 'keydownBubblingTest'}).igTextEditor({ maxLength : 1 });
+	var editor = this.appendToFixture(this.inputTag, { id: 'keydownBubblingTest' }).igTextEditor({ maxLength: 1 });
 	var text = "test", eventRaisedCounter = 0;
-	var keydownEventHandler = function(event) {
+	var keydownEventHandler = function (event) {
 		var targetId = event.target.id;
-		if(targetId === 'keydownBubblingTest'){
+		if (targetId === 'keydownBubblingTest') {
 			eventRaisedCounter++;
 		}
 		//$(this).off("keydown", keydownEventHandler);
 	};
-	
-	$( "body" ).on( "keydown", editor, keydownEventHandler);
+
+	$("body").on("keydown", editor, keydownEventHandler);
 	$.ig.TestUtil.type(text, editor);
 	assert.equal(eventRaisedCounter, text.length, "Keydown event should bubble up when the input text exceeds the maxLength");
-	$( "body" ).off( "keydown", keydownEventHandler);
+	$("body").off("keydown", keydownEventHandler);
 });
