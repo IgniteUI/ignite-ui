@@ -70,9 +70,9 @@
 		copyPasteToolbar: "コピー/貼り付けツールバー",
 		fontNames: {
 			win: [
-				{ text: "メイリオ", value: "Meiryo" },
-				{ text: "MSゴシック", value: "MSゴシック" },
-				{ text: "MS明朝", value: "MS明朝" },
+				{ text: "メイリオ", value: "メイリオ" },
+				{ text: "ＭＳ ゴシック", value: "ＭＳ ゴシック" },
+				{ text: "ＭＳ 明朝", value: "ＭＳ 明朝" },
 				{ text: "Times New Roman", value: "Times New Roman" },
 				{ text: "Arial", value: "Arial" },
 				{ text: "Arial Black", value: "Arial Black" },
