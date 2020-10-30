@@ -1486,7 +1486,7 @@
 
                 // D.U. 09/05/2014 Bug 171139 [ HtmlEditor ] Option value cannot be changed with set value
             } else if (name === "value") {
-                this.setContent(value, "text");
+				this.setContent(value, "text");
             }
 
             this._super(name, value);
@@ -1718,16 +1718,16 @@
                         } else {
                             command = null;
                         }
-
+                        
                         if (command) {
-
-                            if (command === argsCommands.selectedFormat) {
-
-                                // Transform the selectedFormat option e.g. "h3"
+							
+							if (command === argsCommands.selectedFormat) {
+								
+								// Transform the selectedFormat option e.g. "h3"
                                 // into execCommand option "<h3>"
                                 args = "<" + args + ">";
                             }
-
+							
                             this._initialSelectionSetup();
                             this._execCommand(command, args);
                             this._emptyAndCollapseSelection();
@@ -1737,31 +1737,27 @@
             }
         },
         _initialSelectionSetup: function () {
-            var lastNode = $(this.contentDocument()).find(":not(br)").last(),
+			// var lastNode = $(this.contentDocument()).find(":not(br)").last(),
+			var lastNode = $(this.contentEditable()),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
-
-            // Add &nbsp; to execute the initial commands on it
-            lastNode.html("&nbsp;");
-
             // Set the selection to the dummy element
             range.selectNode(lastNode[ 0 ]);
             sel.removeAllRanges();
-            sel.addRange(range);
+			sel.addRange(range);
         },
         _emptyAndCollapseSelection: function () {
-            var lastNode = $(this.contentDocument()).find(":not(br)").last(),
+			// var lastNode = $(this.contentDocument()).find(":not(br)").last(),
+			var lastNode = $(this.contentEditable()),
+			// firstNode = $(this.contentDocument()).find(":not(br)").first(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
 
-            // Remove the dummy text and add <br> to make the element selectable
-            lastNode.html("<br>");
-
             // Collapse the selection
             if (lastNode.length > 0) {
-                range.setStart(lastNode[ 0 ], 0);
+				range.setStart(lastNode[ 0 ], 0);
                 range.setEnd(lastNode[ 0 ], 0);
-                range.collapse(true);
+				range.collapse(true);
 
                 sel.removeAllRanges();
                 sel.addRange(range);
@@ -2313,9 +2309,9 @@
             ```
             */
             if (format === "text") {
-                $(this.workspace).contents().find("body").text(content);
+				$(this.workspace).contents().find("body").text(content);
             } else if (format === "html") {
-                $(this.workspace).contents().find("body").html(content);
+				$(this.workspace).contents().find("body").html(content);
             }
 
             // K.D. October 2nd, 2012 Bug #123366 Encoding the content before setting the value
