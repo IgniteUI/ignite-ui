@@ -1,5 +1,5 @@
 /*!@license
- * Infragistics.Web.ClientUI HtmlEditor <build_number>
+  * Infragistics.Web.ClientUI HtmlEditor <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
  * <Licensing info>
@@ -1486,7 +1486,7 @@
 
                 // D.U. 09/05/2014 Bug 171139 [ HtmlEditor ] Option value cannot be changed with set value
             } else if (name === "value") {
-				this.setContent(value, "text");
+                this.setContent(value, "text");
             }
 
             this._super(name, value);
@@ -1737,22 +1737,20 @@
             }
         },
         _initialSelectionSetup: function () {
-			// var lastNode = $(this.contentDocument()).find(":not(br)").last(),
-			var lastNode = $(this.contentEditable()),
+			var lastNode = $(this.contentDocument()).find(":not(br)").last(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
+                lastNode.html("&nbsp;");
             // Set the selection to the dummy element
             range.selectNode(lastNode[ 0 ]);
             sel.removeAllRanges();
 			sel.addRange(range);
         },
         _emptyAndCollapseSelection: function () {
-			// var lastNode = $(this.contentDocument()).find(":not(br)").last(),
-			var lastNode = $(this.contentEditable()),
-			// firstNode = $(this.contentDocument()).find(":not(br)").first(),
+			var lastNode = $(this.contentDocument()).find(":not(br)").last(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
-
+                lastNode.html("<br>");
             // Collapse the selection
             if (lastNode.length > 0) {
 				range.setStart(lastNode[ 0 ], 0);
@@ -3145,7 +3143,6 @@
             this._window = window;
             this._document = this._window.document;
             this._selection = this._window.getSelection();
-            this._window.setTimeout(function () {
                 self._range = (self._getSelection().rangeCount === 0) ?
                     self._document.createRange() : self._selection.getRangeAt(0);
 
@@ -3156,7 +3153,6 @@
                 if ($.isFunction(callback)) {
                     callback.call(self);
                 }
-            }, 50);
         },
         _getSelection: function () {
             return this._selection;
