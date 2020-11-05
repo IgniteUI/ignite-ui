@@ -1742,7 +1742,7 @@
                 range = this._selectionWrapperSaved._getRange();
 
             // Add &nbsp; to execute the initial commands on it	
-            lastNode.html("&nbsp;")
+            lastNode.html("&nbsp;");
 
             // Set the selection to the dummy element
             range.selectNode(lastNode[ 0 ]);
