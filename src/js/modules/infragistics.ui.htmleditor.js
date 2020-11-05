@@ -1,5 +1,5 @@
 /*!@license
-  * Infragistics.Web.ClientUI HtmlEditor <build_number>
+ * Infragistics.Web.ClientUI HtmlEditor <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
  * <Licensing info>
@@ -1718,16 +1718,16 @@
                         } else {
                             command = null;
                         }
-                        
+
                         if (command) {
-							
-							if (command === argsCommands.selectedFormat) {
-								
-								// Transform the selectedFormat option e.g. "h3"
+
+                            if (command === argsCommands.selectedFormat) {
+
+                                // Transform the selectedFormat option e.g. "h3"
                                 // into execCommand option "<h3>"
                                 args = "<" + args + ">";
                             }
-							
+
                             this._initialSelectionSetup();
                             this._execCommand(command, args);
                             this._emptyAndCollapseSelection();
@@ -1737,25 +1737,25 @@
             }
         },
         _initialSelectionSetup: function () {
-			var lastNode = $(this.contentDocument()).find(":not(br)").last(),
+            var lastNode = $(this.contentDocument()).find(":not(br)").last(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
-                lastNode.html("&nbsp;");
+
             // Set the selection to the dummy element
             range.selectNode(lastNode[ 0 ]);
             sel.removeAllRanges();
-			sel.addRange(range);
+            sel.addRange(range);
         },
         _emptyAndCollapseSelection: function () {
-			var lastNode = $(this.contentDocument()).find(":not(br)").last(),
+            var lastNode = $(this.contentDocument()).find(":not(br)").last(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
-                lastNode.html("<br>");
+
             // Collapse the selection
             if (lastNode.length > 0) {
-				range.setStart(lastNode[ 0 ], 0);
+                range.setStart(lastNode[ 0 ], 0);
                 range.setEnd(lastNode[ 0 ], 0);
-				range.collapse(true);
+                range.collapse(true);
 
                 sel.removeAllRanges();
                 sel.addRange(range);
@@ -2307,9 +2307,9 @@
             ```
             */
             if (format === "text") {
-				$(this.workspace).contents().find("body").text(content);
+                $(this.workspace).contents().find("body").text(content);
             } else if (format === "html") {
-				$(this.workspace).contents().find("body").html(content);
+                $(this.workspace).contents().find("body").html(content);
             }
 
             // K.D. October 2nd, 2012 Bug #123366 Encoding the content before setting the value
