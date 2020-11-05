@@ -3802,8 +3802,7 @@
 
             // K.D. November 1st, 2012 Bug #125724 The combo values do not contain ' or " so they need to be removed before sending the value
             fontName = fontName.replace(/'|"/g, "");
-            this._setComboValue(combo, $.ig.util.getLocaleValue("HtmlEditor", "fontNames")
-                [ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
+            this._setComboValue(combo, combo.igCombo("option", "dataSource").data(), fontName);
         },
         _onFontSize: function () {
 
