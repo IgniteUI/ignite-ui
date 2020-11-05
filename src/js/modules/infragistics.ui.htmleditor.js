@@ -1741,6 +1741,9 @@
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
 
+            // Add &nbsp; to execute the initial commands on it	
+            lastNode.html("&nbsp;")
+
             // Set the selection to the dummy element
             range.selectNode(lastNode[ 0 ]);
             sel.removeAllRanges();
@@ -1750,6 +1753,9 @@
             var lastNode = $(this.contentDocument()).find(":not(br)").last(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
+
+            // Remove the dummy text and add <br> to make the element selectable	
+            lastNode.html("<br>");
 
             // Collapse the selection
             if (lastNode.length > 0) {
