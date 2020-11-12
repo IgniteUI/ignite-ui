@@ -1756,13 +1756,13 @@
 
             // Remove the dummy text and add <br> to make the element selectable
             lastNode.html("<br>");
-
+            
             // Collapse the selection
             if (lastNode.length > 0) {
                 range.setStart(lastNode[ 0 ], 0);
                 range.setEnd(lastNode[ 0 ], 0);
                 range.collapse(true);
-
+                
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
@@ -2321,6 +2321,7 @@
             // K.D. October 2nd, 2012 Bug #123366 Encoding the content before setting the value
             // D.A. March 23, 2015 Bug #189760 Special characters (; , / ? : @ & = + $) are not encoded properly. Change encodeURI to encodeURIComponent
             this.sourceWindow.val(encodeURIComponent(content));
+            this.workspace.blur();
         },
         destroy: function () {
             /* Destroys the widget.
