@@ -3150,7 +3150,6 @@
             this._window = window;
             this._document = this._window.document;
             this._selection = this._window.getSelection();
-            this._window.setTimeout(function () {
                 self._range = (self._getSelection().rangeCount === 0) ?
                     self._document.createRange() : self._selection.getRangeAt(0);
 
@@ -3161,7 +3160,6 @@
                 if ($.isFunction(callback)) {
                     callback.call(self);
                 }
-            }, 50);
         },
         _getSelection: function () {
             return this._selection;
