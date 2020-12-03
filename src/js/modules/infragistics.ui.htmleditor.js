@@ -1741,7 +1741,7 @@
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
 
-            // Add &nbsp; to execute the initial commands on it	
+            // Add &nbsp; to execute the initial commands on it
             lastNode.html("&nbsp;");
 
             // Set the selection to the dummy element
@@ -1754,15 +1754,15 @@
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
 
-            // Remove the dummy text and add <br> to make the element selectable	
+            // Remove the dummy text and add <br> to make the element selectable
             lastNode.html("<br>");
-            
+
             // Collapse the selection
             if (lastNode.length > 0) {
                 range.setStart(lastNode[ 0 ], 0);
                 range.setEnd(lastNode[ 0 ], 0);
                 range.collapse(true);
-                
+
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
