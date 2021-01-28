@@ -21,8 +21,8 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
     $.ig.locale['zh-tw'].Toolbar = {
-			collapseButtonTitle: 'Collapse {0}',
-			expandButtonTitle: 'Expand {0}'
+			collapseButtonTitle: '折疊 {0}',
+			expandButtonTitle: '展開 {0}'
 	}
 		
 	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale['zh-tw'].Toolbar;

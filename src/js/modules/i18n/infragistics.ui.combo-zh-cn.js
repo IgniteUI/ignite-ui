@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale['zh-cn'].Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: '未找到匹配项',
+			dropDownButtonTitle: '显示下拉菜单',
+			clearButtonTitle: '清除值',
+			placeHolder: '选择...',
+			notSuported: '不支持该操作。',
+			errorNoSupportedTextsType: "需要不同的筛选文本。提供的值可以是字符串，也可以是字符串数组。",
+			errorUnrecognizedHighlightMatchesMode: "需要使用不同的突出显示匹配模式。在 'multi'，'contains'，'startsWith'，'full' 和 'null' 之间选择一个值。",
+			errorIncorrectGroupingKey: "分组密钥不正确。"
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale['zh-cn'].Combo;

@@ -21,8 +21,8 @@
 		$.ig.locale.it = $.ig.locale.it || {};
 
 	    $.ig.locale.it.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'L\'elemento da collegare non esiste.',
+		        errorNoScrollbarLink: 'L\'elemento della barra di scorrimento da collegare non esiste.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.it.Scroll;

@@ -21,10 +21,10 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	$.ig.locale['zh-tw'].Zoombar = {
-				zoombarTargetNotSpecified: "igZoombar requires a valid target to attach to!",
-				zoombarTypeNotSupported: "The type of widget the Zoombar is trying to attach to is not supported!",
-				zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
-				optionChangeNotSupported: "Changing the following option after the igZoombar has been created is not supported:"
+				zoombarTargetNotSpecified: "igZoombar 需要附加有效目標！",
+				zoombarTypeNotSupported: "不支援 Zoombar 嘗試附加的小工具類型！",
+				zoombarProviderNotRecognized: "igZoombar 無法從指定的類別或傳遞的值不是類別，來初始化提供者。",
+				optionChangeNotSupported: "不支援在創建 igZoombar 之後更改以下選項:"
 	}
 
 	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale['zh-tw'].Zoombar;
