@@ -21,8 +21,8 @@
 	$.ig.Popover = $.ig.Popover || {};
 	
 	$.ig.locale['zh-cn'].Popover = {
-		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+		popoverOptionChangeNotSupported: "不支持在初始化 igPopover 之后更改以下选项:",
+		popoverShowMethodWithoutTarget: "当使用选择器选项时，show 函数的目标参数是强制性的"
 	};
 
 $.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale['zh-cn'].Popover;

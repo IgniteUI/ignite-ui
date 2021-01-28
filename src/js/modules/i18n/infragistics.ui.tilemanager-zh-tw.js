@@ -21,9 +21,9 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	$.ig.locale['zh-tw'].TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "未成功擷取或解析資料。",
+		    setOptionItemsLengthError: "項目設定的長度與磁貼數量不符。",
+			setOptionError: "此選項不允許運行時變更。"
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale['zh-tw'].TileManager;

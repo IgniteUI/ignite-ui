@@ -21,7 +21,7 @@
 	$.ig.locale['zh-cn'] = $.ig.locale['zh-cn'] || {};
 	
 	$.ig.locale['zh-cn'].Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: '以下选项不允许运行时更改: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale['zh-cn'].Rating;

@@ -21,49 +21,49 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	$.ig.locale['zh-tw'].Upload = {
-			    labelUploadButton: "Upload File",
-			    labelAddButton: "Add",
-			    labelClearAllButton: "Clear Uploaded",
+			    labelUploadButton: "上載檔案",
+			    labelAddButton: "新增",
+			    labelClearAllButton: "清除已上傳",
 			    // M.H. 13 May 2011 - fix bug 75042
-			    labelSummaryTemplate: "{0} of {1} uploaded",
+			    labelSummaryTemplate: "已上傳 {1} 中的 {0}",
 			    labelSummaryProgressBarTemplate: "{0}/{1}",
-			    labelShowDetails: "Show Details",
-			    labelHideDetails: "Hide Details",
-			    labelSummaryProgressButtonCancel: "Cancel",
+			    labelShowDetails: "顯示詳細資訊",
+			    labelHideDetails: "隱藏詳細資料",
+			    labelSummaryProgressButtonCancel: "取消",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    labelSummaryProgressButtonContinue: "Upload",
-			    labelSummaryProgressButtonDone: "Done",
+			    labelSummaryProgressButtonContinue: "上傳",
+			    labelSummaryProgressButtonDone: "完成",
 			    labelProgressBarFileNameContinue: "...",
 
 			    //error messages
-			    errorMessageFileSizeExceeded: "Max file size exceeded.",
-			    errorMessageGetFileStatus: "Could not get your current file status! Probably connection dropped.",
-			    errorMessageCancelUpload: "Could not send to server command to cancel upload! Probably connection dropped.",
-			    errorMessageNoSuchFile: "The file you requested could not be found. Probably this file is too big.",
-			    errorMessageOther: "There is internal error uploading file. Error code: {0}.",
-			    errorMessageValidatingFileExtension: "File extension validation failed.",
-			    errorMessageAJAXRequestFileSize: "AJAX error while trying to get file size.",
-			    errorMessageMaxUploadedFiles: "Maximum count of uploading files exceeded.",
-			    errorMessageMaxSimultaneousFiles: "Value of maxSimultaneousFilesUploads is incorrect. It should be more than 0 or null.",
-			    errorMessageTryToRemoveNonExistingFile: "You are trying to remove non-existing file with id {0}.",
-			    errorMessageTryToStartNonExistingFile: "You are trying to start non-existing file with id {0}.",
-				errorMessageDropMultipleFilesWhenSingleModel: "It is not allowed to drop more than 1 file when mode is single",
+			    errorMessageFileSizeExceeded: "超出最大檔案大小。",
+			    errorMessageGetFileStatus: "無法求取您的當前檔案狀態！可能是連線中斷。",
+			    errorMessageCancelUpload: "無法發送至伺服器指令以取消上傳！可能是連線中斷。",
+			    errorMessageNoSuchFile: "找不到您要求的檔案。可能是這個檔案太大。",
+			    errorMessageOther: "上傳檔案有內部錯誤。錯誤代碼: {0}。",
+			    errorMessageValidatingFileExtension: "文件擴展名驗證失敗。",
+			    errorMessageAJAXRequestFileSize: "嘗試求取檔案大小時出現 AJAX 錯誤。",
+			    errorMessageMaxUploadedFiles: "已超過上傳檔案的最大數量。",
+			    errorMessageMaxSimultaneousFiles: "maxSimultaneousFilesUploads 的值不正確。它應大於 0 或為空值。",
+			    errorMessageTryToRemoveNonExistingFile: "您正在嘗試移除 id 為 {0} 的不存在的檔案。",
+			    errorMessageTryToStartNonExistingFile: "您正在嘗試啟動 id 為 {0} 的不存在的檔案。",
+				errorMessageDropMultipleFilesWhenSingleModel: "單一模式下，最多只能刪除 1 個檔案",
 
 			    // M.H. 12 May 2011 - fix bug 74763: add title to all buttons
 			    // title attributes            
-			    titleUploadFileButtonInit: "Upload File",
-			    titleAddFileButton: "Add",
-			    titleCancelUploadButton: "Cancel",
+			    titleUploadFileButtonInit: "上載檔案",
+			    titleAddFileButton: "新增",
+			    titleCancelUploadButton: "取消",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSummaryProgressButtonContinue: "Upload",
-			    titleClearUploaded: "Clear Uploaded",
-			    titleShowDetailsButton: "Show Details",
-			    titleHideDetailsButton: "Hide Details",
-			    titleSummaryProgressButtonCancel: "Cancel",
-			    titleSummaryProgressButtonDone: "Done",
+			    titleSummaryProgressButtonContinue: "上傳",
+			    titleClearUploaded: "清除已上傳",
+			    titleShowDetailsButton: "顯示詳細資訊",
+			    titleHideDetailsButton: "隱藏詳細資料",
+			    titleSummaryProgressButtonCancel: "取消",
+			    titleSummaryProgressButtonDone: "完成",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSingleUploadButtonContinue: "Upload",
-			    titleClearAllButton: "Clear Uploaded"
+			    titleSingleUploadButtonContinue: "上傳",
+			    titleClearAllButton: "清除已上傳"
 	}
 		
 	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale['zh-tw'].Upload;

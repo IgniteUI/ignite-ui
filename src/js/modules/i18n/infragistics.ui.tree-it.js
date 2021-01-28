@@ -21,21 +21,21 @@
 	$.ig.locale.it = $.ig.locale.it || {};
 
 	$.ig.locale.it.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Tipo di argomento non valido fornito.',
+			    errorOnRequest: 'Si è verificato un errore durante il recupero dei dati: ',
+			    noDataSourceUrl: 'Il controllo igTree richiede un dataSourceUrl fornito per avviare una richiesta di dati a tale URL.',
+			    incorrectPath: 'Impossibile trovare un nodo nel percorso fornito: ',
+			    incorrectNodeObject: 'L\'argomento fornito non è un elemento nodo jQuery.',
+			    setOptionError: 'Le modifiche di runtime non sono consentite per la seguente opzione: ',
+			    moveTo: '<strong>Sposta in</strong> {0}',
+			    moveBetween: '<strong>Sposta tra</strong> {0} e {1}',
+			    moveAfter: '<strong>Sposta dopo</strong> {0}',
+			    moveBefore: '<strong>Sposta prima di</strong> {0}',
+			    copyTo: '<strong>Copia in</strong> {0}',
+			    copyBetween: '<strong>Copia tra</strong> {0} e {1}',
+			    copyAfter: '<strong>Copia dopo</strong> {0}',
+			    copyBefore: '<strong>Copia prima di </strong> {0}',
+			    and: 'e'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.it.Tree;

@@ -21,7 +21,7 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale['zh-cn'].Templating = {
-			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			undefinedArgument: '尝试检索数据源属性时出现错误: '
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale['zh-cn'].Templating;

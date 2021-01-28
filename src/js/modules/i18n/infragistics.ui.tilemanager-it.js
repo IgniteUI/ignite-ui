@@ -21,9 +21,9 @@
 	$.ig.locale.it = $.ig.locale.it || {};
 
 	$.ig.locale.it.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Dati non recuperati o analizzati correttamente.",
+		    setOptionItemsLengthError: "La lunghezza delle configurazioni degli elementi non corrisponde al numero dei riquadri.",
+			setOptionError: "Le modifiche al runtime non sono consentite per questa opzione."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.it.TileManager;

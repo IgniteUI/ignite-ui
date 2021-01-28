@@ -21,21 +21,21 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	$.ig.locale['zh-tw'].Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: '提供了無效的引數類型。',
+			    errorOnRequest: '擷取資料時出錯: ',
+			    noDataSourceUrl: 'igTree 控件需要提供 dataSourceUrl，以便向該 URL 發起資料請求。',
+			    incorrectPath: '在提供的路徑中未找到節點: ',
+			    incorrectNodeObject: '提供的引數不是 jQuery 節點元素。',
+			    setOptionError: '以下選項不允許執行階段變更: ',
+			    moveTo: '<strong>移至</strong> {0}',
+			    moveBetween: '在 {0} 和 {1} <strong>之間移動</strong>',
+			    moveAfter: '在 {0} <strong>之後移動</strong>',
+			    moveBefore: '在 {0} <strong>之前移動</strong>',
+			    copyTo: '<strong>複製到</strong> {0}',
+			    copyBetween: '在 {0} 和 {1} <strong>之間複製</strong>',
+			    copyAfter: '在 {0} <strong>之後復制</strong>',
+			    copyBefore: '在 {0} <strong>之前複製</strong>',
+			    and: '和'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale['zh-tw'].Tree;

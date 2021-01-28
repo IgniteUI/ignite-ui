@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale.it.Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "Chiudi",
+			minimizeButtonTitle: "Riduci a icona",
+			maximizeButtonTitle: "Ingrandisci",
+			pinButtonTitle: "Aggiungi",
+			unpinButtonTitle: "Deseleziona",
+			restoreButtonTitle: "Ripristina",
+			setOptionError: 'Le modifiche di runtime non sono consentite per la seguente opzione: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.it.Dialog;
