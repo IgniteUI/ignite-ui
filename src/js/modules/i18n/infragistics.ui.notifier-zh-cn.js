@@ -21,12 +21,12 @@
 	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale['zh-cn'].Notifier = {
-		successMsg: "Success",
-		errorMsg: "Error",
-		warningMsg: "Warning",
-		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		successMsg: "成功",
+		errorMsg: "错误",
+		warningMsg: "警告",
+		infoMsg: "信息",
+		notSupportedState: "不支持的通知状态！使用支持的 'success'，'info'，'warning'，'error' 状态之一",
+		notSupportedMode: "不支持的通知模式！使用支持的 'auto'，'popover'，'inline' 模式之一"
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale['zh-cn'].Notifier;

@@ -34,8 +34,8 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	$.ig.locale['zh-tw'].util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "當前瀏覽器不支援 HTML5 canvas 元素。<br/>嘗試升級至以下任何版本:",
+			    currentBrowser: "當前瀏覽器: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
@@ -43,14 +43,14 @@
 			    opera11: "Opera V 11+",
 			    ieDownload: "http://www.microsoft.com/windows/internet-explorer/default.aspx",
 			    operaDownload: "http://www.opera.com/download/",
-			    chromeDownload: "http://www.google.com/chrome",
-			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/",
-			    defaultSummaryMethodLabelMin: "Min = ",
-			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
-			    defaultSummaryMethodLabelCount: "Count = "
+			    chromeDownload: "https://www.google.com/intl/zh-TW/chrome/",
+			    firefoxDownload: "https://www.mozilla.org/zh-TW/firefox/",
+			    safariDownload: "https://www.apple.com/tw/safari/",
+			    defaultSummaryMethodLabelMin: "最小值 = ",
+			    defaultSummaryMethodLabelMax: "最大值 = ",
+			    defaultSummaryMethodLabelSum: "總和= ",
+			    defaultSummaryMethodLabelAvg: "平均 = ",
+			    defaultSummaryMethodLabelCount: "計數 = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale['zh-tw'].util;

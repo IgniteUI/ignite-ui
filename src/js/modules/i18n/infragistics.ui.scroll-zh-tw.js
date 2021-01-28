@@ -21,8 +21,8 @@
 		$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	    $.ig.locale['zh-tw'].Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: '所連結的元素不存在。',
+		        errorNoScrollbarLink: '所連結的捲動條元素不存在。'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale['zh-tw'].Scroll;

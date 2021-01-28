@@ -21,8 +21,8 @@
 	$.ig.locale.it = $.ig.locale.it || {};
 
 	    $.ig.locale.it.Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'Il numero di pannelli non deve essere superiore a due.',
+		        errorSettingOption: 'Opzione impostazione errore.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.it.Splitter;

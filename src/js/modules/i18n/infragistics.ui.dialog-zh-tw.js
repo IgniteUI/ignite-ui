@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale['zh-tw'].Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "關閉",
+			minimizeButtonTitle: "最小化",
+			maximizeButtonTitle: "最大化",
+			pinButtonTitle: "釘選",
+			unpinButtonTitle: "取消釘選",
+			restoreButtonTitle: "恢復",
+			setOptionError: '以下選項不允許執行階段變更: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale['zh-tw'].Dialog;

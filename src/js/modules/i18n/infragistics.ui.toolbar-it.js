@@ -21,8 +21,8 @@
 	$.ig.locale.it = $.ig.locale.it || {};
 
     $.ig.locale.it.Toolbar = {
-			collapseButtonTitle: 'Collapse {0}',
-			expandButtonTitle: 'Expand {0}'
+			collapseButtonTitle: 'Comprimi {0}',
+			expandButtonTitle: 'Espandi {0}'
 	}
 		
 	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.it.Toolbar;

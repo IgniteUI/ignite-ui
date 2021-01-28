@@ -21,8 +21,8 @@
 	$.ig.locale['zh-tw'] = $.ig.locale['zh-tw'] || {};
 
 	    $.ig.locale['zh-tw'].Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: '面板的數量不得超過兩個。',
+		        errorSettingOption: '設定選項時出錯。'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale['zh-tw'].Splitter;
