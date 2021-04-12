@@ -147,6 +147,66 @@ QUnit.module("igUpload unit tests", {
 	}
 });
 
+QUnit.test('[ID15] igUpload MULTIPLE MODE test cancel multiple files while uploading', function (assert) {
+	assert.expect(25);
+
+	// MULTIPLE UPLOAD test Cancel multiple upload
+	var uploaderId = "igUpload15",
+		uploader = $.ig.TestUtil.appendToFixture(this.divTag, { id: uploaderId }),
+		click = jQuery.Event("click"),
+		innerData, filesInfo,
+		self = this,
+		done = assert.async();
+
+	uploader.igUpload({
+		mode: 'multiple', //Multiple
+		autostartupload: true,
+		progressUrl: 'http://localhost/asdfasdf'
+	});
+
+	this.assert = assert;
+	click.button = 0;
+	this.uploadNewFile(uploaderId, true);
+	this.uploadNewFile(uploaderId);
+	this.uploadNewFile(uploaderId);
+
+	$.ig.TestUtil.wait(300).then(function () {
+		var buttonSummaryCancel = $('#' + uploaderId + '_spbtncncl');
+		buttonSummaryCancel.trigger(click);
+		return $.ig.TestUtil.wait(100);
+	}).then(function () {
+		assert.equal($('#' + uploaderId + '_spbtncncl').igButton('option', 'disabled'), true, 'Cancel button should be disabled because all files are uploaded.');
+
+		innerData = uploader.data('igUpload').fileInfoData;
+
+		self.checkCancelFile(uploaderId, 1);
+		self.checkFormDestroyed(uploaderId, 1);
+
+		self.checkCancelFile(uploaderId, 2);
+		self.checkFormDestroyed(uploaderId, 2);
+
+		self.checkCancelFile(uploaderId, 3);
+		self.checkFormDestroyed(uploaderId, 3);
+
+		filesInfo = innerData.filesInfo;
+		assert.equal(innerData.countUploadingFiles, innerData.countTotalFiles, 'Inner data count total files should be the same as uploaded files');
+		assert.equal(innerData.fileSizeUploaded, innerData.fileSizeTotal, 'Inner data total file size should be the same as uploaded file size.');
+		l = filesInfo.length;
+		assert.equal(filesInfo[0].status, 4, 'Last file should be with status canceled.');
+		assert.equal(filesInfo[1].status, 4, 'Last file should be with status canceled.');
+		assert.equal(filesInfo[2].status, 4, 'Last file should be with status canceled.');
+
+		self.checkFileSizeUploaded(innerData.fileSizeUploaded, innerData.fileSizeTotal, filesInfo);
+		self.checkFileCountUploaded(innerData.countTotalFiles, filesInfo);
+		uploader.igUpload("destroy");
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
+});
+
 QUnit.test('[ID1] igUpload test init browse button - width and label', function (assert) {
 	assert.expect(1);
 
@@ -457,65 +517,7 @@ QUnit.test('[ID14] igUpload MULTIPLE MODE test show/hide details', function (ass
 	});
 });
 
-QUnit.test('[ID15] igUpload MULTIPLE MODE test cancel multiple files while uploading', function (assert) {
-	assert.expect(25);
 
-	// MULTIPLE UPLOAD test Cancel multiple upload
-	var uploaderId = "igUpload15",
-		uploader = $.ig.TestUtil.appendToFixture(this.divTag, { id: uploaderId }),
-		click = jQuery.Event("click"),
-		innerData, filesInfo,
-		self = this,
-		done = assert.async();
-
-	uploader.igUpload({
-		mode: 'multiple', //Multiple
-		autostartupload: true,
-		progressUrl: 'http://localhost/asdfasdf'
-	});
-
-	this.assert = assert;
-	click.button = 0;
-	this.uploadNewFile(uploaderId, true);
-	this.uploadNewFile(uploaderId);
-	this.uploadNewFile(uploaderId);
-
-	$.ig.TestUtil.wait(300).then(function () {
-		var buttonSummaryCancel = $('#' + uploaderId + '_spbtncncl');
-		buttonSummaryCancel.trigger(click);
-		return $.ig.TestUtil.wait(100);
-	}).then(function () {
-		assert.equal($('#' + uploaderId + '_spbtncncl').igButton('option', 'disabled'), true, 'Cancel button should be disabled because all files are uploaded.');
-
-		innerData = uploader.data('igUpload').fileInfoData;
-
-		self.checkCancelFile(uploaderId, 1);
-		self.checkFormDestroyed(uploaderId, 1);
-
-		self.checkCancelFile(uploaderId, 2);
-		self.checkFormDestroyed(uploaderId, 2);
-
-		self.checkCancelFile(uploaderId, 3);
-		self.checkFormDestroyed(uploaderId, 3);
-
-		filesInfo = innerData.filesInfo;
-		assert.equal(innerData.countUploadingFiles, innerData.countTotalFiles, 'Inner data count total files should be the same as uploaded files');
-		assert.equal(innerData.fileSizeUploaded, innerData.fileSizeTotal, 'Inner data total file size should be the same as uploaded file size.');
-		l = filesInfo.length;
-		assert.equal(filesInfo[0].status, 4, 'Last file should be with status canceled.');
-		assert.equal(filesInfo[1].status, 4, 'Last file should be with status canceled.');
-		assert.equal(filesInfo[2].status, 4, 'Last file should be with status canceled.');
-
-		self.checkFileSizeUploaded(innerData.fileSizeUploaded, innerData.fileSizeTotal, filesInfo);
-		self.checkFileCountUploaded(innerData.countTotalFiles, filesInfo);
-		uploader.igUpload("destroy");
-		done();
-	}).catch(function (er) {
-		assert.pushResult({ result: false, message: er.message });
-		done();
-		throw er;
-	});
-});
 
 QUnit.test('[ID16] igUpload MULTIPLE MODE - NOT AUTOSTARTUPLOAD test file selecting', function (assert) {
 	assert.expect(5);
