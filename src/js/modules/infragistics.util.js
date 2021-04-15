@@ -6138,12 +6138,10 @@
 
 				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
 				if (caller !== undefined && caller !== null) {
-					if (typeof caller === "function") {
-						return caller(data, dataType, fullData);
+					if (typeof caller === "string" && typeof window[ caller ] === "function") {
+						caller = window[ caller ];
 					}
-					if (typeof caller === "string") {
-						/*jshint evil:true */
-						caller = eval(caller);
+					if (typeof caller === "function") {
 						return caller(data, dataType, fullData);
 					}
 				} else {
