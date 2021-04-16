@@ -3819,7 +3819,6 @@ QUnit.test("[Client events 04] igTree expanding and collapsing events", function
 				assert.equal(args.node.element.attr("data-path"), "2", "Expanding node element event argument is not null");
 				assert.equal(args.node.data, $container.igTree("option", "dataSource").root().data()[2], "Expanding node data event argument is not null");
 				assert.equal(args.node.binding, $container.igTree("option", "bindings"), "Expanding node binding event argument is not null");
-				done();
 			}
 		},
 		nodeCollapsing: function (event, args) {
@@ -3850,18 +3849,22 @@ QUnit.test("[Client events 04] igTree expanding and collapsing events", function
 
 	node = $container.igTree("nodeByPath", "1");
 	node.children(".ui-igtree-expander:first").click();
-	node = $container.igTree("nodeByPath", "2");
-	node.children(".ui-igtree-expander:first").click();
-	// check that no errors are thrown on checkbox API with checkboxMode="off" which is default
-	try {
-		$container.igTree("toggleCheckstate", node);
-		var nodeObj = $container.igTree("nodeFromElement", node);
-		$container.igTree("checkNode", nodeObj);
-		$container.igTree("uncheckNode", nodeObj);
-		$container.igTree("partiallyCheckNode", nodeObj);
-	} catch (e) {
-		assert.ok(false, e.message);
-	}
+	this.util.wait(50).then(function () {
+		node = $container.igTree("nodeByPath", "2");
+		node.children(".ui-igtree-expander:first").click();
+		// check that no errors are thrown on checkbox API with checkboxMode="off" which is default
+		try {
+			$container.igTree("toggleCheckstate", node);
+			var nodeObj = $container.igTree("nodeFromElement", node);
+			$container.igTree("checkNode", nodeObj);
+			$container.igTree("uncheckNode", nodeObj);
+			$container.igTree("partiallyCheckNode", nodeObj);
+		} catch (e) {
+			assert.ok(false, e.message);
+		}
+		done();
+	 });
+	
 });
 QUnit.test("[Client events 05] igTree checkstateChanging/Changed events", function (assert) {
 	assert.expect(34);
