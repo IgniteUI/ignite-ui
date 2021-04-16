@@ -114,7 +114,7 @@ QUnit.test('[ID5] Test calcSummaries function by specifying summary name', funct
 });
 
 QUnit.test('[ID6] Test calcSummaries function by specifying summary function directly', function (assert) {
-	assert.expect(14);
+	assert.expect(16);
 
 	var data = [ 114601, 82742, 63895, 27186, 63198, 73758 ];
 	
@@ -142,6 +142,11 @@ QUnit.test('[ID6] Test calcSummaries function by specifying summary function dir
 	
 	assert.equal($.ig.calcSummaries("random", [], $.ig.util.summaries.count), null, "Count function returns null when the summary name is not starting with custom");
 	assert.equal($.ig.calcSummaries("custom", []), null, "Count function returns null when the custom summary function is not defined");
+
+	window.CustomCount = function(){ return 1;};
+	assert.equal($.ig.calcSummaries("custom", [], "CustomCount"), 1, "Custom function should return correct result when passed as string.");
+	assert.equal($.ig.calcSummaries("custom", [], window.CustomCount), 1 , "Custom function should return correct result when passed as function.");
+	window.CustomCount = undefined;
 });
 
 QUnit.test('[ID7] Test Complex Generic TypeArguments', function (assert) {
