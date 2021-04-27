@@ -28,3 +28,4 @@ jobs:
     - run: npm ci
     - run: grunt build
     - run: npm run cover
+
