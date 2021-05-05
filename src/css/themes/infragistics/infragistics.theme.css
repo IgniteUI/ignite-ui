@@ -24,153 +24,156 @@
   color: #444444;
 }
 .chartPalette1 {
-  background-color: #7446B9 !important;
-  border: 1px solid #7446B9 !important;
+  background-color: #8bdc5c !important;
+  border: 1px solid #8bdc5c !important;
 }
 .chartPalette2 {
-  background-color: #9FB328 !important;
-  border: 1px solid #9FB328 !important;
+  background-color: #8b5bb1 !important;
+  border: 1px solid #8b5bb1 !important;
 }
 .chartPalette3 {
-  background-color: #F96232 !important;
-  border: 1px solid #F96232 !important;
+  background-color: #6db1ff !important;
+  border: 1px solid #6db1ff !important;
 }
 .chartPalette4 {
-  background-color: #2E9CA6 !important;
-  border: 1px solid #2E9CA6 !important;
+  background-color: #f8a15f !important;
+  border: 1px solid #f8a15f !important;
 }
 .chartPalette5 {
-  background-color: #DC3F76 !important;
-  border: 1px solid #DC3F76 !important;
+  background-color: #ee5879 !important;
+  border: 1px solid #ee5879 !important;
 }
 .chartPalette6 {
-  background-color: #FF9800 !important;
-  border: 1px solid #FF9800 !important;
+  background-color: #735656 !important;
+  border: 1px solid #735656 !important;
 }
 .chartPalette7 {
-  background-color: #3F51B5 !important;
-  border: 1px solid #3F51B5 !important;
+  background-color: #f7d262 !important;
+  border: 1px solid #f7d262 !important;
 }
 .chartPalette8 {
-  background-color: #439C47 !important;
-  border: 1px solid #439C47 !important;
+  background-color: #8ce7d9 !important;
+  border: 1px solid #8ce7d9 !important;
 }
 .chartPalette9 {
-  background-color: #795548 !important;
-  border: 1px solid #795548 !important;
+  background-color: #e051a9 !important;
+  border: 1px solid #e051a9 !important;
 }
 .chartPalette10 {
-  background-color: #9A9A9A !important;
-  border: 1px solid #9A9A9A !important;
+  background-color: #a8a8b7 !important;
+  border: 1px solid #a8a8b7 !important;
 }
-.chartPalette11 {
-  background-color: #C62828 !important;
-  border: 1px solid #C62828 !important;
+/* NOTE: charts use a palette only with 10 colors */
+/* .chartPalette11 {
+  background-color: #a8a8b7 !important;
+  border: 1px solid #a8a8b7 !important;
 }
 .chartPalette12 {
   background-color: #9f725f !important;
   border: 1px solid #9f725f !important;
-}
+} */
 .chartMarkerPalette1 {
   background-color: #fff !important;
-  border: 1px solid #7446B9 !important;
+  border: 1px solid #8bdc5c !important;
 }
 .chartMarkerPalette2 {
   background-color: #fff !important;
-  border: 1px solid #9FB328 !important;
+  border: 1px solid #8b5bb1 !important;
 }
 .chartMarkerPalette3 {
   background-color: #fff !important;
-  border: 1px solid #F96232 !important;
+  border: 1px solid #6db1ff !important;
 }
 .chartMarkerPalette4 {
   background-color: #fff !important;
-  border: 1px solid #2E9CA6 !important;
+  border: 1px solid #f8a15f !important;
 }
 .chartMarkerPalette5 {
   background-color: #fff !important;
-  border: 1px solid #DC3F76 !important;
+  border: 1px solid #ee5879 !important;
 }
 .chartMarkerPalette6 {
   background-color: #fff !important;
-  border: 1px solid #FF9800 !important;
+  border: 1px solid #735656 !important;
 }
 .chartMarkerPalette7 {
   background-color: #fff !important;
-  border: 1px solid #3F51B5 !important;
+  border: 1px solid #f7d262 !important;
 }
 .chartMarkerPalette8 {
   background-color: #fff !important;
-  border: 1px solid #439C47 !important;
+  border: 1px solid #8ce7d9 !important;
 }
 .chartMarkerPalette9 {
   background-color: #fff !important;
-  border: 1px solid #795548 !important;
+  border: 1px solid #e051a9 !important;
 }
 .chartMarkerPalette10 {
   background-color: #fff !important;
-  border: 1px solid #9A9A9A !important;
+  border: 1px solid #a8a8b7 !important;
 }
-.chartMarkerPalette11 {
+/* NOTE: charts use a palette only with 10 colors */
+/* .chartMarkerPalette11 {
   background-color: #fff !important;
   border: 1px solid #C62828 !important;
 }
 .chartMarkerPalette12 {
   background-color: #fff !important;
   border: 1px solid #9f725f !important;
-}
+} */
 .chartPaletteNegative {
-  background-color: #c33d4a !important;
-  border: 1px solid #892a34 !important;
+  background-color: #ee5879 !important;
+  border: 1px solid #ee5879 !important;
 }
 .doughnutPalette1 {
-  background-color: #7446B9 !important;
+  background-color: #8bdc5c !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette2 {
-  background-color: #9FB328 !important;
+  background-color: #8b5bb1 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette3 {
-  background-color: #F96232 !important;
+  background-color: #6db1ff !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette4 {
-  background-color: #2E9CA6 !important;
+  background-color: #f8a15f !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette5 {
-  background-color: #DC3F76 !important;
+  background-color: #ee5879 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette6 {
-  background-color: #FF9800 !important;
+  background-color: #735656 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette7 {
-  background-color: #3F51B5 !important;
+  background-color: #f7d262 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette8 {
-  background-color: #439C47 !important;
+  background-color: #8ce7d9 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette9 {
-  background-color: #795548 !important;
+  background-color: #e051a9 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette10 {
-  background-color: #9A9A9A !important;
+  background-color: #a8a8b7 !important;
   border: 1px solid #fff !important;
 }
-.doughnutPalette11 {
+/* NOTE: charts use a palette only with 10 colors */
+/* .doughnutPalette11 {
   background-color: #C62828 !important;
   border: 1px solid #fff !important;
 }
 .doughnutPalette12 {
   background-color: #9f725f !important;
   border: 1px solid #fff !important;
-}
+} */
 .boxShadow {
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
 }
@@ -2155,44 +2158,44 @@ input.ui-igbutton {
   border: 1px solid #9f725f !important;
 } */
 .ui-chart-maker-palette-1 {
-  background-color: #8bdc5c !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #8bdc5c !important;
 }
 .ui-chart-maker-palette-2 {
-  background-color: #8b5bb1 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #8b5bb1 !important;
 }
 .ui-chart-maker-palette-3 {
-  background-color: #6db1ff !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #6db1ff !important;
 }
 .ui-chart-maker-palette-4 {
-  background-color: #f8a15f !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #f8a15f !important;
 }
 .ui-chart-maker-palette-5 {
-  background-color: #ee5879 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ee5879 !important;
 }
 .ui-chart-maker-palette-6 {
-  background-color: #735656 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #735656 !important;
 }
 .ui-chart-maker-palette-7 {
-  background-color: #f7d262 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #f7d262 !important;
 }
 .ui-chart-maker-palette-8 {
-  background-color: #8ce7d9 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #8ce7d9 !important;
 }
 .ui-chart-maker-palette-9 {
-  background-color: #e051a9 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e051a9 !important;
 }
 .ui-chart-maker-palette-10 {
-  background-color: #a8a8b7 !important;
-  border: 1px solid #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #a8a8b7 !important;
 }
 /* NOTE: charts use a palette only with 10 colors */
 /* .ui-chart-maker-palette-11 {
