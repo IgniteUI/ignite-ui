@@ -670,20 +670,6 @@ QUnit.test("Keyboard/Mouse testing", function (assert) {
 		isLimitedToListValues: true
 	});
 
-	this.util.keyInteraction(38, this.input());
-	this.util.keyInteraction(40, this.input());
-	this.util.keyInteraction(40, this.input());
-	this.util.keyInteraction(40, this.input());
-	this.util.keyInteraction(40, this.input());
-	this.util.keyInteraction(40, this.input());
-	this.util.keyInteraction(40, this.input());
-	this.util.keyInteraction(38, this.input());
-	this.util.keyInteraction(38, this.input());
-	this.util.keyInteraction(38, this.input());
-	this.util.keyInteraction(38, this.input());
-	this.util.keyInteraction(38, this.input());
-	this.util.keyInteraction(38, this.input());
-
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
 		listItems: ["item1", "item2", "item3"],
 		buttonType: "dropdown"
@@ -723,6 +709,7 @@ QUnit.test("Keyboard/Mouse testing", function (assert) {
 	this.editor = editor = this.appendToFixture(this.inputTag).igTextEditor({
 		maxLength: 5,
 		buttonType: "dropdown",
+		selectionOnFocus: "atStart",
 		listItems: ["1", "2", "3"]
 	});
 	editor.igTextEditor("value", "12345");

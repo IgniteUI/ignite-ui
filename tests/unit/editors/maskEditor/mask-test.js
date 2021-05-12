@@ -169,7 +169,6 @@ QUnit.test('[ID5] Mask editor dataMode option', function (assert) {
 	editor2.igMaskEditor("option", "dataMode", "rawText");
 	editor2.igMaskEditor("setFocus");
 	editor2.igMaskEditor("field").val("abcd______");
-	$.ig.TestUtil.keyInteraction(67, editor2);
 	assert.equal(editor2.igMaskEditor("field").val(), "abcd______", "rawText dataMode - edit value should be abcd______");
 	editor2.igMaskEditor("field").blur();
 	assert.equal(editor2.igMaskEditor("displayValue"), "abcd", "rawText dataMode - editor display value should be abcd");
@@ -178,7 +177,6 @@ QUnit.test('[ID5] Mask editor dataMode option', function (assert) {
 	editor2.igMaskEditor("option", "dataMode", "rawTextWithRequiredPrompts");
 	editor2.igMaskEditor("setFocus");
 	editor2.igMaskEditor("field").val("abcd______");
-	$.ig.TestUtil.keyInteraction(67, editor2);
 	assert.equal(editor2.igMaskEditor("field").val(), "abcd______", "rawTextWithRequiredPrompts dataMode - edit value should be abcd______");
 	editor2.igMaskEditor("field").blur();
 	assert.equal(editor2.igMaskEditor("displayValue"), "abcd", "rawTextWithRequiredPrompts dataMode - editor display value should be abcd");
@@ -187,7 +185,6 @@ QUnit.test('[ID5] Mask editor dataMode option', function (assert) {
 	editor2.igMaskEditor("option", "dataMode", "rawTextWithAllPrompts");
 	editor2.igMaskEditor("setFocus");
 	editor2.igMaskEditor("field").val("abcd______");
-	$.ig.TestUtil.keyInteraction(67, editor2);
 	assert.equal(editor2.igMaskEditor("field").val(), "abcd______", "rawTextWithAllPrompts dataMode - edit value should be abcd______");
 	editor2.igMaskEditor("field").blur();
 	assert.equal(editor2.igMaskEditor("displayValue"), "abcd", "rawTextWithAllPrompts dataMode - editor display value should be abcd");
@@ -196,7 +193,6 @@ QUnit.test('[ID5] Mask editor dataMode option', function (assert) {
 	editor2.igMaskEditor("option", "dataMode", "rawTextWithLiterals");
 	editor2.igMaskEditor("setFocus");
 	editor2.igMaskEditor("field").val("abcd______");
-	$.ig.TestUtil.keyInteraction(67, editor2);
 	assert.equal(editor2.igMaskEditor("field").val(), "abcd______", "rawTextWithLiterals dataMode - edit value should be abcd______");
 	editor2.igMaskEditor("field").blur();
 	assert.equal(editor2.igMaskEditor("displayValue"), "abcd", "rawTextWithLiterals dataMode - editor display value should be abcd");
@@ -205,7 +201,6 @@ QUnit.test('[ID5] Mask editor dataMode option', function (assert) {
 	editor2.igMaskEditor("option", "dataMode", "rawTextWithRequiredPromptsAndLiterals");
 	editor2.igMaskEditor("setFocus");
 	editor2.igMaskEditor("field").val("abcd______");
-	$.ig.TestUtil.keyInteraction(67, editor2);
 	assert.equal(editor2.igMaskEditor("field").val(), "abcd______", "rawTextWithRequiredPromptsAndLiterals dataMode - edit value should be abcd______");
 	editor2.igMaskEditor("field").blur();
 	assert.equal(editor2.igMaskEditor("displayValue"), "abcd", "rawTextWithRequiredPromptsAndLiterals - editor display value should be abcd");
