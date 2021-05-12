@@ -380,7 +380,7 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 	var done = assert.async(),
 		today = target = new Date(),
 		targetString, targetKeys, tomorrow = true,
-		todayString = this.getDDmmYYYY(today, "-"), editor, self = this;
+		editor, self = this;
 
 		this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
 			dateInputFormat: "dd-MMM-yyyy"
@@ -402,7 +402,6 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 	targetString = this.getDDmmYYYY(target, "-");
 	targetKeys = targetString.replace(/-/g, "");
 
-	this.input().focus();
 	editor.igDatePicker("showDropDown");
 
 	$.ig.TestUtil.wait(400).then(function () {
@@ -465,8 +464,7 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 QUnit.test("Issue 1453 pt2 - Enter date w/ format and displayModeText dataMode", function (assert) {
 	assert.expect(5);
 	var done = assert.async(),
-		today = target = new Date(),
-		targetString, targetKeys, tomorrow = true,
+		today = target = new Date(), targetKeys,
 		todayString = this.getDDmmYYYY(today, "-"),
 		$editor = this.appendToFixture(this.inputTag).igDatePicker({
 			dateInputFormat: "dd-MM-yyyy",
@@ -476,7 +474,6 @@ QUnit.test("Issue 1453 pt2 - Enter date w/ format and displayModeText dataMode",
 
 	targetKeys = todayString.replace(/-/g, "");
 
-	$editor.igDatePicker("field").focus();
 	$editor.igDatePicker("showDropDown");
 
 	$.ig.TestUtil.wait(400).then(function () {
