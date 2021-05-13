@@ -29,3 +29,10 @@ jobs:
     - run: grunt build
     - run: npm run cover
 
+    - name: Publish to coveralls.io
+      if: github.repository == 'IgniteUI/ignite-ui' && matrix.node-version == '14.x'
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+          path-to-lcov: ./coverage/lcov.info
+          github-token: ${{ github.token }}
+
