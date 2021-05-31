@@ -41,7 +41,7 @@
     "karma-coverage": "^1.1.2",
     "karma-qunit": "^1.2.1",
     "karma-spec-reporter": "0.0.32",
-    "knockout": "^3.4.2",
+    "knockout": "^3.5.1",
     "qunitjs": "^2.4.1"
   }
 }
