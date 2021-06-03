@@ -40,7 +40,7 @@
 		ariaCalendarButton: 'Kalendarz',
 		datePickerButtonTitle: 'Pokaż kalendarz',
 		updateModeUnsupportedValue: 'Właściwość updateMode wymaga innej konfiguracji. Wybierz wartość "onChange" lub "immediate".',
-		updateModeNotSupported: 'W przypadku rozszerzeń igMaskEditor, igDateEditor i igDatePicker właściwość updateMode obsługuje wyłącznie tryb 'onchange'.',
+		updateModeNotSupported: 'W przypadku rozszerzeń igMaskEditor, igDateEditor i igDatePicker właściwość updateMode obsługuje wyłącznie tryb "onchange".',
 		renderErrMsg: "Nie można bezpośrednio utworzyć wystąpienia edytora podstawowego. Spróbuj użyć edytora tekstu, liczb, daty lub innego edytora.",
 		multilineErrMsg: 'Właściwość textArea wymaga innej konfiguracji. Właściwość TextMode należy ustawić na "multiline".',
 		targetNotSupported: "Ten element docelowy nie jest obsługiwany.",

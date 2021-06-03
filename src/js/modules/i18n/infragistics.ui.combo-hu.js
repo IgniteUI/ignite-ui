@@ -27,7 +27,7 @@
 			placeHolder: 'kiválasztás…',
 			notSuported: 'A művelet nem támogatott.',
 			errorNoSupportedTextsType: "Más szöveges szűrőt kell megadni. Olyan értéket adjon meg, amely vagy karakterlánc, vagy karakterlánc-tömb.",
-			errorUnrecognizedHighlightMatchesMode: "Más kiemelési módot kell kiválasztani a találatok kiemelésére. Válasszon egyet a 'multi', 'contains', 'startsWith', 'full' és "null" közül.",
+			errorUnrecognizedHighlightMatchesMode: "Más kiemelési módot kell kiválasztani a találatok kiemelésére. Válasszon egyet a 'multi', 'contains', 'startsWith', 'full' és 'null' közül.",
 			errorIncorrectGroupingKey: "A csoportosítási kulcs nem megfelelő."
 	};
 

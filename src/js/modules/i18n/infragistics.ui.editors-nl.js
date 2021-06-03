@@ -58,7 +58,7 @@
 		maxValExceededWrappedAroundErrMsg: "Invoer overschreed de maximale waarde van {0} en werd ingesteld op de minimaal toegestane waarde",
 		minValExceededWrappedAroundErrMsg: "Invoer was lager dan de minimumwaarde van {0} en is ingesteld op de maximaal toegestane waarde",
 		btnValueNotSupported: 'Een andere knopwaarde is vereist. Kies een waarde tussen "dropdown", "clear" en "spin".',
-		scientificFormatErrMsg: 'Een ander wetenschappelijk formaat is vereist. Kies een waarde tussen "E", "e", "E +" en "e +".',
+		scientificFormatErrMsg: 'Een ander wetenschappelijk formaat is vereist. Kies een waarde tussen "E", "e", "E+" en "e+".',
 		spinDeltaIsOfTypeNumber: "Een ander type spinDelta is vereist. Er moet een positief getal worden ingevoerd.",
 		spinDeltaIsOfTypeNumberForPeriod: "Een ander type spinDelta is vereist voor de {0}. Er moet een positief getal tussen {1} en {2} worden ingevoerd.",
 		spinDeltaIsOfTypeNumberOrObject: "Een ander type spinDelta is vereist. Een positief getal of een object dat verschillende delta's voor de tijdsperiode definieert, moet worden ingevoerd.",
