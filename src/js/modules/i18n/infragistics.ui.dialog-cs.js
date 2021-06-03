@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale.cs.Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "Zavřít",
+			minimizeButtonTitle: "Minimalizovat",
+			maximizeButtonTitle: "Maximalizovat",
+			pinButtonTitle: "Kolík",
+			unpinButtonTitle: "Odepnout",
+			restoreButtonTitle: "Obnovit",
+			setOptionError: 'Změny za běhu nejsou povoleny pro následující možnost: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.cs.Dialog;

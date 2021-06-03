@@ -21,9 +21,9 @@
 	$.ig.locale.tr = $.ig.locale.tr || {};
 
 	$.ig.locale.tr.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Veriler başarıyla alınmadı veya ayrıştırılmadı.",
+		    setOptionItemsLengthError: "Öğe yapılandırmalarının uzunluğu, kutucuk sayısıyla eşleşmiyor.",
+			setOptionError: "Bu seçenek için çalışma zamanı değişikliklerine izin verilmez."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.tr.TileManager;

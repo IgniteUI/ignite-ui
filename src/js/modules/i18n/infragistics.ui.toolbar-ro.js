@@ -21,8 +21,8 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
     $.ig.locale.ro.Toolbar = {
-			collapseButtonTitle: 'Collapse {0}',
-			expandButtonTitle: 'Expand {0}'
+			collapseButtonTitle: 'Restrângeți {0}',
+			expandButtonTitle: 'Extindeți {0}'
 	}
 		
 	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.ro.Toolbar;

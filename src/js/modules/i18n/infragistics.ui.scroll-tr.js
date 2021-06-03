@@ -21,8 +21,8 @@
 		$.ig.locale.tr = $.ig.locale.tr || {};
 
 	    $.ig.locale.tr.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Bağlanan öğe mevcut değil.',
+		        errorNoScrollbarLink: 'Bağlanan kaydırma çubuğu öğesi mevcut değil.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.tr.Scroll;

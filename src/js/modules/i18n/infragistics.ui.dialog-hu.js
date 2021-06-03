@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale.hu.Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "Bezárás",
+			minimizeButtonTitle: "Kis méret",
+			maximizeButtonTitle: "Teljes méret",
+			pinButtonTitle: "Rögzítés",
+			unpinButtonTitle: "Rögzítés feloldása",
+			restoreButtonTitle: "Visszaállítás",
+			setOptionError: 'A következő opció esetében nem engedélyezettek a futásidejű változtatások: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.hu.Dialog;

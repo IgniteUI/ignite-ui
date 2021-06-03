@@ -21,21 +21,21 @@
 	$.ig.locale.cs = $.ig.locale.cs || {};
 
 	$.ig.locale.cs.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Byl zadán neplatný typ argumentu.',
+			    errorOnRequest: 'Při načítání dat došlo k chybě: ',
+			    noDataSourceUrl: 'Ovládací prvek igTree vyžaduje poskytnutý dataSourceUrl, aby bylo možné zahájit požadavek na data na danou adresu URL.',
+			    incorrectPath: 'Na zadané cestě nebyl nalezen uzel: ',
+			    incorrectNodeObject: 'Zadaný argument není prvkem uzlu jQuery.',
+			    setOptionError: 'Změny za běhu nejsou povoleny pro následující možnost: ',
+			    moveTo: '<strong>Přesunout do</strong> {0}',
+			    moveBetween: '<strong>Přesun mezi</strong> {0} a {1}',
+			    moveAfter: '<strong>Přesunout po</strong> {0}',
+			    moveBefore: '<strong>Přesunout před</strong> {0}',
+			    copyTo: '<strong>Zkopírovat do</strong> {0}',
+			    copyBetween: '<strong>Kopírovat mezi</strong> {0} a {1}',
+			    copyAfter: '<strong>Kopírovat po</strong> {0}',
+			    copyBefore: '<strong>Kopírovat před</strong> {0}',
+			    and: 'a'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.cs.Tree;

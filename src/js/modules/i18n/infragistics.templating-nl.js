@@ -21,7 +21,7 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.nl.Templating = {
-			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			undefinedArgument: 'Er is een fout opgetreden bij het ophalen van de eigenschap van de gegevensbron: '
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.nl.Templating;

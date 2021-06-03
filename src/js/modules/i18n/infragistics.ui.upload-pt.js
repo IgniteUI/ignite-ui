@@ -21,49 +21,49 @@
 	$.ig.locale.pt = $.ig.locale.pt || {};
 
 	$.ig.locale.pt.Upload = {
-			    labelUploadButton: "Upload File",
-			    labelAddButton: "Add",
-			    labelClearAllButton: "Clear Uploaded",
+			    labelUploadButton: "Carregar ficheiro",
+			    labelAddButton: "Adicionar",
+			    labelClearAllButton: "Limpar carregamento",
 			    // M.H. 13 May 2011 - fix bug 75042
-			    labelSummaryTemplate: "{0} of {1} uploaded",
+			    labelSummaryTemplate: "{0} de {1} carregou",
 			    labelSummaryProgressBarTemplate: "{0}/{1}",
-			    labelShowDetails: "Show Details",
-			    labelHideDetails: "Hide Details",
-			    labelSummaryProgressButtonCancel: "Cancel",
+			    labelShowDetails: "Mostrar detalhes",
+			    labelHideDetails: "Ocultar detalhes",
+			    labelSummaryProgressButtonCancel: "Cancelar",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    labelSummaryProgressButtonContinue: "Upload",
-			    labelSummaryProgressButtonDone: "Done",
+			    labelSummaryProgressButtonContinue: "Carregar",
+			    labelSummaryProgressButtonDone: "Concluído",
 			    labelProgressBarFileNameContinue: "...",
 
 			    //error messages
-			    errorMessageFileSizeExceeded: "Max file size exceeded.",
-			    errorMessageGetFileStatus: "Could not get your current file status! Probably connection dropped.",
-			    errorMessageCancelUpload: "Could not send to server command to cancel upload! Probably connection dropped.",
-			    errorMessageNoSuchFile: "The file you requested could not be found. Probably this file is too big.",
-			    errorMessageOther: "There is internal error uploading file. Error code: {0}.",
-			    errorMessageValidatingFileExtension: "File extension validation failed.",
-			    errorMessageAJAXRequestFileSize: "AJAX error while trying to get file size.",
-			    errorMessageMaxUploadedFiles: "Maximum count of uploading files exceeded.",
-			    errorMessageMaxSimultaneousFiles: "Value of maxSimultaneousFilesUploads is incorrect. It should be more than 0 or null.",
-			    errorMessageTryToRemoveNonExistingFile: "You are trying to remove non-existing file with id {0}.",
-			    errorMessageTryToStartNonExistingFile: "You are trying to start non-existing file with id {0}.",
-				errorMessageDropMultipleFilesWhenSingleModel: "It is not allowed to drop more than 1 file when mode is single",
+			    errorMessageFileSizeExceeded: "Tamanho máximo do ficheiro excedido.",
+			    errorMessageGetFileStatus: "Não foi possível obter o estado atual do ficheiro! Provavelmente a ligação caiu.",
+			    errorMessageCancelUpload: "Não foi possível enviar ao comando do servidor para cancelar o carregamento! Provavelmente a ligação caiu.",
+			    errorMessageNoSuchFile: "Não foi possível encontrar o ficheiro que solicitou. Provavelmente este ficheiro é demasiado grande.",
+			    errorMessageOther: "Ocorreu um erro interno ao carregar o ficheiro. Código do erro: {0}.",
+			    errorMessageValidatingFileExtension: "Falha na validação da extensão do ficheiro.",
+			    errorMessageAJAXRequestFileSize: "Erro AJAX ao tentar obter o tamanho do ficheiro.",
+			    errorMessageMaxUploadedFiles: "Contagem máxima de ficheiros carregados excedida.",
+			    errorMessageMaxSimultaneousFiles: "O valor de máx.DeCarregamentosDeFicheirosSimultâneos está incorreto. Deve ser maior que 0 ou nulo.",
+			    errorMessageTryToRemoveNonExistingFile: "Está a tentar remover um ficheiro inexistente com o ID {0}.",
+			    errorMessageTryToStartNonExistingFile: "Está a tentar iniciar um ficheiro inexistente com o ID {0}.",
+				errorMessageDropMultipleFilesWhenSingleModel: "Não é permitido largar mais de 1 ficheiro quando o modo é único",
 
 			    // M.H. 12 May 2011 - fix bug 74763: add title to all buttons
 			    // title attributes            
-			    titleUploadFileButtonInit: "Upload File",
-			    titleAddFileButton: "Add",
-			    titleCancelUploadButton: "Cancel",
+			    titleUploadFileButtonInit: "Carregar ficheiro",
+			    titleAddFileButton: "Adicionar",
+			    titleCancelUploadButton: "Cancelar",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSummaryProgressButtonContinue: "Upload",
-			    titleClearUploaded: "Clear Uploaded",
-			    titleShowDetailsButton: "Show Details",
-			    titleHideDetailsButton: "Hide Details",
-			    titleSummaryProgressButtonCancel: "Cancel",
-			    titleSummaryProgressButtonDone: "Done",
+			    titleSummaryProgressButtonContinue: "Carregar",
+			    titleClearUploaded: "Limpar carregamento",
+			    titleShowDetailsButton: "Mostrar detalhes",
+			    titleHideDetailsButton: "Ocultar detalhes",
+			    titleSummaryProgressButtonCancel: "Cancelar",
+			    titleSummaryProgressButtonDone: "Concluído",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSingleUploadButtonContinue: "Upload",
-			    titleClearAllButton: "Clear Uploaded"
+			    titleSingleUploadButtonContinue: "Carregar",
+			    titleClearAllButton: "Limpar carregamento"
 	}
 		
 	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.pt.Upload;

@@ -21,49 +21,49 @@
 	$.ig.locale.cs = $.ig.locale.cs || {};
 
 	$.ig.locale.cs.Upload = {
-			    labelUploadButton: "Upload File",
-			    labelAddButton: "Add",
-			    labelClearAllButton: "Clear Uploaded",
+			    labelUploadButton: "Nahrát soubor",
+			    labelAddButton: "Přidat",
+			    labelClearAllButton: "Vymazat nahrané",
 			    // M.H. 13 May 2011 - fix bug 75042
-			    labelSummaryTemplate: "{0} of {1} uploaded",
+			    labelSummaryTemplate: "Nahráno: {0} z {1}",
 			    labelSummaryProgressBarTemplate: "{0}/{1}",
-			    labelShowDetails: "Show Details",
-			    labelHideDetails: "Hide Details",
-			    labelSummaryProgressButtonCancel: "Cancel",
+			    labelShowDetails: "Ukázat detaily",
+			    labelHideDetails: "Skrýt detaily",
+			    labelSummaryProgressButtonCancel: "Zrušení",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    labelSummaryProgressButtonContinue: "Upload",
-			    labelSummaryProgressButtonDone: "Done",
+			    labelSummaryProgressButtonContinue: "Nahrát",
+			    labelSummaryProgressButtonDone: "Hotovo",
 			    labelProgressBarFileNameContinue: "...",
 
 			    //error messages
-			    errorMessageFileSizeExceeded: "Max file size exceeded.",
-			    errorMessageGetFileStatus: "Could not get your current file status! Probably connection dropped.",
-			    errorMessageCancelUpload: "Could not send to server command to cancel upload! Probably connection dropped.",
-			    errorMessageNoSuchFile: "The file you requested could not be found. Probably this file is too big.",
-			    errorMessageOther: "There is internal error uploading file. Error code: {0}.",
-			    errorMessageValidatingFileExtension: "File extension validation failed.",
-			    errorMessageAJAXRequestFileSize: "AJAX error while trying to get file size.",
-			    errorMessageMaxUploadedFiles: "Maximum count of uploading files exceeded.",
-			    errorMessageMaxSimultaneousFiles: "Value of maxSimultaneousFilesUploads is incorrect. It should be more than 0 or null.",
-			    errorMessageTryToRemoveNonExistingFile: "You are trying to remove non-existing file with id {0}.",
-			    errorMessageTryToStartNonExistingFile: "You are trying to start non-existing file with id {0}.",
-				errorMessageDropMultipleFilesWhenSingleModel: "It is not allowed to drop more than 1 file when mode is single",
+			    errorMessageFileSizeExceeded: "Byla překročena maximální velikost souboru.",
+			    errorMessageGetFileStatus: "Nelze zjistit aktuální stav souboru! Pravděpodobně spojení přerušeno.",
+			    errorMessageCancelUpload: "Nelze odeslat příkaz na server a zrušit nahrávání! Pravděpodobně spojení přerušeno.",
+			    errorMessageNoSuchFile: "Požadovaný soubor nebyl nalezen. Pravděpodobně je tento soubor příliš velký.",
+			    errorMessageOther: "Při nahrávání souboru došlo k vnitřní chybě. Kód chyby: {0}.",
+			    errorMessageValidatingFileExtension: "Ověření přípony souboru se nezdařilo.",
+			    errorMessageAJAXRequestFileSize: "Chyba AJAX při pokusu o získání velikosti souboru.",
+			    errorMessageMaxUploadedFiles: "Byl překročen maximální počet nahrávaných souborů.",
+			    errorMessageMaxSimultaneousFiles: "Hodnota maxSimallelousFilesUploads je nesprávná. Mělo by to být více než 0 nebo null.",
+			    errorMessageTryToRemoveNonExistingFile: "Snažíte se odstranit neexistující soubor s ID {0}.",
+			    errorMessageTryToStartNonExistingFile: "Snažíte se spustit neexistující soubor s ID {0}.",
+				errorMessageDropMultipleFilesWhenSingleModel: "Je-li režim jediný, není povoleno přetažení více než 1 souboru",
 
 			    // M.H. 12 May 2011 - fix bug 74763: add title to all buttons
 			    // title attributes            
-			    titleUploadFileButtonInit: "Upload File",
-			    titleAddFileButton: "Add",
-			    titleCancelUploadButton: "Cancel",
+			    titleUploadFileButtonInit: "Nahrát soubor",
+			    titleAddFileButton: "Přidat",
+			    titleCancelUploadButton: "Zrušení",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSummaryProgressButtonContinue: "Upload",
-			    titleClearUploaded: "Clear Uploaded",
-			    titleShowDetailsButton: "Show Details",
-			    titleHideDetailsButton: "Hide Details",
-			    titleSummaryProgressButtonCancel: "Cancel",
-			    titleSummaryProgressButtonDone: "Done",
+			    titleSummaryProgressButtonContinue: "Nahrát",
+			    titleClearUploaded: "Vymazat nahrané",
+			    titleShowDetailsButton: "Ukázat detaily",
+			    titleHideDetailsButton: "Skrýt detaily",
+			    titleSummaryProgressButtonCancel: "Zrušení",
+			    titleSummaryProgressButtonDone: "Hotovo",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSingleUploadButtonContinue: "Upload",
-			    titleClearAllButton: "Clear Uploaded"
+			    titleSingleUploadButtonContinue: "Nahrát",
+			    titleClearAllButton: "Vymazat nahrané"
 	}
 		
 	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.cs.Upload;

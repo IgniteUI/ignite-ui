@@ -21,8 +21,8 @@
 		$.ig.locale.ro = $.ig.locale.ro || {};
 
 	    $.ig.locale.ro.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Elementul care este legat nu există.',
+		        errorNoScrollbarLink: 'Elementul barei de derulare care este conectat nu există.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.ro.Scroll;

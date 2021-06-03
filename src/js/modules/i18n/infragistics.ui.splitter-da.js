@@ -21,8 +21,8 @@
 	$.ig.locale.da = $.ig.locale.da || {};
 
 	    $.ig.locale.da.Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'Antallet af paneler skal ikke være mere end to.',
+		        errorSettingOption: 'Fejlindstillingsmulighed.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.da.Splitter;

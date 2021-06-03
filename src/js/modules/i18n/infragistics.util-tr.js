@@ -34,8 +34,8 @@
 	$.ig.locale.tr = $.ig.locale.tr || {};
 
 	$.ig.locale.tr.util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "Mevcut tarayıcı HTML5 canvas öğesini desteklemiyor. <br/>Aşağıdaki sürümlerden herhangi birine yükseltmeyi deneyin:",
+			    currentBrowser: "Mevcut tarayıcı: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",

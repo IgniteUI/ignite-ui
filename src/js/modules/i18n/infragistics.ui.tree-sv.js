@@ -21,21 +21,21 @@
 	$.ig.locale.sv = $.ig.locale.sv || {};
 
 	$.ig.locale.sv.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Ogiltig argumenttyp tillhandahålls.',
+			    errorOnRequest: 'Ett fel har inträffat vid hämtning av data: ',
+			    noDataSourceUrl: 'IgTree-kontrollen kräver en dataSourceUrl tillhandahållen för att initiera en begäran om data till den URL: n.',
+			    incorrectPath: 'En nod hittades inte vid den angivna sökvägen: ',
+			    incorrectNodeObject: 'Argumentet som tillhandahålls är inte ett jQuery-nodelement.',
+			    setOptionError: 'Runtime-ändringar är inte tillåtna för följande alternativ: ',
+			    moveTo: '<strong>Flytta till</strong> {0}',
+			    moveBetween: '<strong>Flytta mellan</strong> {0} och {1}',
+			    moveAfter: '<strong>Flytta efter</strong> {0}',
+			    moveBefore: '<strong>Flytta före</strong> {0}',
+			    copyTo: '<strong>Kopiera till</strong> {0}',
+			    copyBetween: '<strong>Kopiera mellan</strong> {0} och {1}',
+			    copyAfter: '<strong>Kopiera efter</strong> {0}',
+			    copyBefore: '<strong>Kopiera före</strong> {0}',
+			    and: 'och'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.sv.Tree;

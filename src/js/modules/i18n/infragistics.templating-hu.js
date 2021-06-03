@@ -21,7 +21,7 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.hu.Templating = {
-			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			undefinedArgument: 'Hiba történt az adatforrás tulajdonságának lekérése közben: '
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.hu.Templating;

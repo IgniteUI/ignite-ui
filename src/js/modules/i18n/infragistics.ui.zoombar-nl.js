@@ -21,10 +21,10 @@
 	$.ig.locale.nl = $.ig.locale.nl || {};
 
 	$.ig.locale.nl.Zoombar = {
-				zoombarTargetNotSpecified: "igZoombar requires a valid target to attach to!",
-				zoombarTypeNotSupported: "The type of widget the Zoombar is trying to attach to is not supported!",
-				zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
-				optionChangeNotSupported: "Changing the following option after the igZoombar has been created is not supported:"
+				zoombarTargetNotSpecified: "igZoombar vereist een geldig doel om aan te koppelen!",
+				zoombarTypeNotSupported: "Het type widget waaraan de zoombalk probeert te koppelen, wordt niet ondersteund!",
+				zoombarProviderNotRecognized: "igZoombar kon een provider niet initialiseren vanuit de opgegeven klasse of de doorgegeven waarde is geen klasse.",
+				optionChangeNotSupported: "Het wijzigen van de volgende optie nadat de igZoombar is gemaakt, wordt niet ondersteund:"
 	}
 
 	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.nl.Zoombar;

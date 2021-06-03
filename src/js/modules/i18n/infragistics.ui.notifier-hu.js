@@ -21,12 +21,12 @@
 	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale.hu.Notifier = {
-		successMsg: "Success",
-		errorMsg: "Error",
-		warningMsg: "Warning",
-		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		successMsg: "Sikeres",
+		errorMsg: "Hiba",
+		warningMsg: "Figyelmeztetés",
+		infoMsg: "Információ",
+		notSupportedState: "Nem támogatott értesítési állapot! Használja a támogatott állapotok egyikét (success', 'info', 'warning', 'error')",
+		notSupportedMode: "Nem támogatott értesítési mód! Használja a támogatott módok egyikét ('auto', 'popover', 'inline')"
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.hu.Notifier;

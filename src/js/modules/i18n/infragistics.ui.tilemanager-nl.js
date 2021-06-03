@@ -21,9 +21,9 @@
 	$.ig.locale.nl = $.ig.locale.nl || {};
 
 	$.ig.locale.nl.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Gegevens zijn niet opgehaald of geparseerd.",
+		    setOptionItemsLengthError: "De lengte van de itemconfiguraties komt niet overeen met het aantal tegels.",
+			setOptionError: "Runtime-wijzigingen zijn niet toegestaan voor deze optie."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.nl.TileManager;

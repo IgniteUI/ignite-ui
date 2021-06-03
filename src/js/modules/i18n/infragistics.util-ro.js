@@ -34,8 +34,8 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
 	$.ig.locale.ro.util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "Browserul actual nu acceptă elementul HTML5 canvas. <br/>Încercați să faceți upgrade la oricare dintre următoarele versiuni:",
+			    currentBrowser: "Browser curent: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
