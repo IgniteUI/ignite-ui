@@ -121,12 +121,12 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
+				{ text: "h1", value: "Overskrift 1" },
+				{ text: "h2", value: "Overskrift 2" },
+				{ text: "h3", value: "Overskrift 3" },
+				{ text: "h4", value: "Overskrift 4" },
+				{ text: "h5", value: "Overskrift 5" },
+				{ text: "h6", value: "Overskrift 6" },
 				{ text: "p", value: "Normal" }
 			]
 };

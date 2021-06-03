@@ -67,7 +67,7 @@
 		textToolbar: "verktygsfält för textmanipulering",
 		formattingToolbar: "verktygsfält för textformatering",
 		insertObjectToolbar: "verktygsfält för insättning av objekt",
-		copyPasteToolbar: "kopiera / klistra in verktygsfält",
+		copyPasteToolbar: "kopiera/klistra in verktygsfält",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -121,12 +121,12 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
+				{ text: "h1", value: "Rubrik 1" },
+				{ text: "h2", value: "Rubrik 2" },
+				{ text: "h3", value: "Rubrik 3" },
+				{ text: "h4", value: "Rubrik 4" },
+				{ text: "h5", value: "Rubrik 5" },
+				{ text: "h6", value: "Rubrik 6" },
 				{ text: "p", value: "Normal" }
 			]
 };

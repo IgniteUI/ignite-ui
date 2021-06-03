@@ -49,8 +49,8 @@
 			    defaultSummaryMethodLabelMin: "Min = ",
 			    defaultSummaryMethodLabelMax: "Max = ",
 			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Gennemsnit = ",
-			    defaultSummaryMethodLabelCount: "Tæl = "
+			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelCount: "Count = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.da.util;

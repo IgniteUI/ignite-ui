@@ -48,9 +48,9 @@
 			    safariDownload: "http://www.apple.com/safari/download/",
 			    defaultSummaryMethodLabelMin: "Min = ",
 			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Som = ",
-			    defaultSummaryMethodLabelAvg: "Gem = ",
-			    defaultSummaryMethodLabelCount: "Aantal = "
+			    defaultSummaryMethodLabelSum: "Sum = ",
+			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelCount: "Count = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.nl.util;

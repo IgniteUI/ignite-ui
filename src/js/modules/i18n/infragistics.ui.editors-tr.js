@@ -65,7 +65,7 @@
 		spinDeltaShouldBeInRange: "{0} için spinDelta seçeneği {1} ile {2} arasında olmalıdır",
 		spinDeltaCouldntBeNegative: "SpinDelta seçeneği negatif olamaz. Pozitif bir sayı girilmelidir.",
 		spinDeltaContainsExceedsMaxDecimals: "SpinDelta için izin verilen maksimum kesirler {0} olarak ayarlandı. Ya MaxDecimals'ı değiştirin ya da değerinizi küçültmeyi deneyin.",
-		spinDeltaIncorrectFloatingPoint: 'Kayan noktalı spinDelta, farklı bir yapılandırma gerektirir. Düzenleyicinin dataMode değerini "double" veya "float" olarak ayarlayın veya spinDelta'yı tamsayı olarak ayarlayın.',
+		spinDeltaIncorrectFloatingPoint: 'Kayan noktalı spinDelta, farklı bir yapılandırma gerektirir. Düzenleyicinin dataMode değerini "double" veya "float" olarak ayarlayın veya spinDelta\'yı tamsayı olarak ayarlayın.',
 		numericEditorNoSuchMethod: "Sayısal düzenleyici bu yöntemi desteklemiyor.",
 		numericEditorNoSuchOption: "Sayısal düzenleyici bu seçeneği desteklemiyor.",
 		displayFactorIsOfTypeNumber: "displayFactor farklı bir değer gerektiriyor. Değeri, sayı olarak 1 veya 100 olarak ayarlanmalıdır.",

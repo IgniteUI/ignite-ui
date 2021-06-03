@@ -47,10 +47,10 @@
 			    firefoxDownload: "http://www.mozilla.com/",
 			    safariDownload: "http://www.apple.com/safari/download/",
 			    defaultSummaryMethodLabelMin: "Min = ",
-			    defaultSummaryMethodLabelMax: "Maks = ",
-			    defaultSummaryMethodLabelSum: "Toplam = ",
-			    defaultSummaryMethodLabelAvg: "Ort = ",
-			    defaultSummaryMethodLabelCount: "Sayı = "
+			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelSum: "Sum = ",
+			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelCount: "Count = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.tr.util;

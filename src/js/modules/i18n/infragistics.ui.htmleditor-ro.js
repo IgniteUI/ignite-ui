@@ -24,7 +24,7 @@
 		boldButtonTitle: 'Îngroșat',
 		italicButtonTitle: 'Cursiv',
 		underlineButtonTitle: 'Subliniați',
-		strikethroughButtonTitle: 'Strikethrough',
+		strikethroughButtonTitle: 'Tăiere text cu o linie',
 		increaseFontSizeButtonTitle: 'Măriți dimensiunea fontului',
 		decreaseFontSizeButtonTitle: 'Reduceți dimensiunea fontului',
 		alignTextLeftButtonTitle: 'Aliniați textul la stânga',
@@ -67,7 +67,7 @@
 		textToolbar: "bara de instrumente de manipulare a textului",
 		formattingToolbar: "bara de instrumente de formatare a textului",
 		insertObjectToolbar: "bara de instrumente pentru inserarea obiectelor",
-		copyPasteToolbar: "bara de instrumente copiere / lipire",
+		copyPasteToolbar: "bara de instrumente copiere/lipire",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -121,12 +121,12 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
+				{ text: "h1", value: "Titlu 1" },
+				{ text: "h2", value: "Titlu 2" },
+				{ text: "h3", value: "Titlu 3" },
+				{ text: "h4", value: "Titlu 4" },
+				{ text: "h5", value: "Titlu 5" },
+				{ text: "h6", value: "Titlu 6" },
 				{ text: "p", value: "Normal" }
 			]
 };

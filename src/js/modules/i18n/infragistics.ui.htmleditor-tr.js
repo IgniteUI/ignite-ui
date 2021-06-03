@@ -51,11 +51,11 @@
 		pasteButtonTitle: 'Yapıştır',
 		undoButtonTitle: 'Geri Al',
 		redoButtonTitle: 'Yinele',
-		imageUrlDialogText: 'Resim URL'si:',
+		imageUrlDialogText: 'Resim URL\'si:',
 		imageAlternativeTextDialogText: 'Alternatif Metin:',
 		imageWidthDialogText: 'Resim Genişliği:',
 		imageHeihgtDialogText: 'Resim Yüksekliği:',
-		linkNavigateToUrlDialogText: 'URL'ye gidin:',
+		linkNavigateToUrlDialogText: 'URL\'ye gidin:',
 		linkDisplayTextDialogText: 'Ekran Metni:',
 		linkOpenInDialogText: 'Şurada Aç:',
 		linkTargetNewWindowDialogText: 'Yeni Pencere',
@@ -121,12 +121,12 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
+				{ text: "h1", value: "Başlık 1" },
+				{ text: "h2", value: "Başlık 2" },
+				{ text: "h3", value: "Başlık 3" },
+				{ text: "h4", value: "Başlık 4" },
+				{ text: "h5", value: "Başlık 5" },
+				{ text: "h6", value: "Başlık 6" },
 				{ text: "p", value: "Normal" }
 			]
 };

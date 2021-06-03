@@ -23,7 +23,7 @@
 	$.ig.locale.tr.Tree = {
 			    invalidArgumentType: 'Geçersiz bağımsız değişken türü sağlandı.',
 			    errorOnRequest: 'Veriler alınırken bir hata oluştu: ',
-			    noDataSourceUrl: 'İgTree kontrolü, söz konusu URL'ye veri talebi başlatmak için sağlanan bir dataSourceUrl gerektirir.',
+			    noDataSourceUrl: 'İgTree kontrolü, söz konusu URL\'ye veri talebi başlatmak için sağlanan bir dataSourceUrl gerektirir.',
 			    incorrectPath: 'Sağlanan yolda bir düğüm bulunamadı: ',
 			    incorrectNodeObject: 'Sağlanan bağımsız değişken bir jQuery düğüm öğesi değil.',
 			    setOptionError: 'Aşağıdaki seçenek için çalışma zamanı değişikliklerine izin verilmez: ',

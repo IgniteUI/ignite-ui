@@ -67,7 +67,7 @@
 		textToolbar: "werkbalk voor tekstmanipulatie",
 		formattingToolbar: "werkbalk voor tekstopmaak",
 		insertObjectToolbar: "werkbalk voor het invoegen van objecten",
-		copyPasteToolbar: "werkbalk kopiëren / plakken",
+		copyPasteToolbar: "werkbalk kopiëren/plakken",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -121,13 +121,13 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
-				{ text: "p", value: "Normal" }
+				{ text: "h1", value: "Kop 1" },
+				{ text: "h2", value: "Kop 2" },
+				{ text: "h3", value: "Kop 3" },
+				{ text: "h4", value: "Kop 4" },
+				{ text: "h5", value: "Kop 5" },
+				{ text: "h6", value: "Kop 6" },
+				{ text: "p", value: "Normaal" }
 			]
 };
 

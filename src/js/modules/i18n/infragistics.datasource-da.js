@@ -37,7 +37,7 @@
 			errorRemoteRequest: "Fjernanmodningen om at hente data mislykkedes: ",
 			errorSchemaMismatch: "Indtastningsdataene stemmer ikke overens med skemaet, følgende felt kunne ikke kortlægges: ",
 			errorSchemaFieldCountMismatch: "Indtastningsdataene stemmer ikke overens med skemaet med hensyn til antal felter. ",
-			errorUnrecognizedResponseType: "Reaktionstypen blev enten ikke indstillet korrekt, eller det var ikke muligt at registrere den automatisk. Indstil settings.responseDataType og / eller settings.responseContentType.",
+			errorUnrecognizedResponseType: "Reaktionstypen blev enten ikke indstillet korrekt, eller det var ikke muligt at registrere den automatisk. Indstil settings.responseDataType og/eller settings.responseContentType.",
 			hierarchicalTablesNotSupported: "Tabeller understøttes ikke for HierarchicalSchema",
 			cannotBuildTemplate: "JQuery-skabelonen kunne ikke bygges. Der er ingen poster til stede i datakilden, og der er ikke angivet nogen kolonner.",
 			unrecognizedCondition: "Ukendt filtreringsbetingelse i følgende udtryk: ",

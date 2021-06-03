@@ -46,11 +46,11 @@
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
 			    safariDownload: "http://www.apple.com/safari/download/",
-			    defaultSummaryMethodLabelMin: "Mín = ",
-			    defaultSummaryMethodLabelMax: "Máx = ",
-			    defaultSummaryMethodLabelSum: "Soma = ",
-			    defaultSummaryMethodLabelAvg: "Média = ",
-			    defaultSummaryMethodLabelCount: "Contagem = "
+			    defaultSummaryMethodLabelMin: "Min = ",
+			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelSum: "Sum = ",
+			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelCount: "Count = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.pt.util;

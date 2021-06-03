@@ -121,13 +121,13 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
-				{ text: "p", value: "Normal" }
+				{ text: "h1", value: "Címsor 1" },
+				{ text: "h2", value: "Címsor 2" },
+				{ text: "h3", value: "Címsor 3" },
+				{ text: "h4", value: "Címsor 4" },
+				{ text: "h5", value: "Címsor 5" },
+				{ text: "h6", value: "Címsor 6" },
+				{ text: "p", value: "Normál" }
 			]
 };
 

@@ -67,7 +67,7 @@
 		textToolbar: "panel nástrojů pro manipulaci s textem",
 		formattingToolbar: "panel nástrojů pro formátování textu",
 		insertObjectToolbar: "panel nástrojů pro vkládání objektů",
-		copyPasteToolbar: "panel nástrojů kopírování / vkládání",
+		copyPasteToolbar: "panel nástrojů kopírování/vkládání",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -121,13 +121,13 @@
 			{ text: "7", value: "36 pt"}
 		],
 		formatsList: [
-				{ text: "h1", value: "Heading 1" },
-				{ text: "h2", value: "Heading 2" },
-				{ text: "h3", value: "Heading 3" },
-				{ text: "h4", value: "Heading 4" },
-				{ text: "h5", value: "Heading 5" },
-				{ text: "h6", value: "Heading 6" },
-				{ text: "p", value: "Normal" }
+				{ text: "h1", value: "Záhlaví  1" },
+				{ text: "h2", value: "Záhlaví  2" },
+				{ text: "h3", value: "Záhlaví  3" },
+				{ text: "h4", value: "Záhlaví  4" },
+				{ text: "h5", value: "Záhlaví  5" },
+				{ text: "h6", value: "Záhlaví  6" },
+				{ text: "p", value: "Normální" }
 			]
 };
 
