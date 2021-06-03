@@ -52,7 +52,7 @@
 			    adMessageNoDuration: 'Advertentie: video wordt hervat na de reclame.',
 			    adNewWindowTip: 'Advertentie: klik om advertentie-inhoud in een nieuw venster te openen.',
 			    nonDivException: 'De Infragistics HTML5-videospeler kan alleen worden geïnstantieerd op een DIV-tag.',
-			    relatedVideos: 'VERWANTE VIDEO'S',
+			    relatedVideos: 'VERWANTE VIDEO\'S',
 			    replayButton: 'Opnieuw afspelen',
 			    replayTooltip: 'Klik om de laatste video af te spelen.',
 				noCommercials: 'Browserbediening ondersteunt geen reclame'
