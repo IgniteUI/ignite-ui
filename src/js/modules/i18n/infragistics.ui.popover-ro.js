@@ -21,8 +21,8 @@
 	$.ig.Popover = $.ig.Popover || {};
 	
 	$.ig.locale.ro.Popover = {
-		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+		popoverOptionChangeNotSupported: "Modificarea următoarei opțiuni după inițializarea igPopover nu este acceptată:",
+		popoverShowMethodWithoutTarget: "Parametrul țintă al funcției de afișare este obligatoriu atunci când este utilizată opțiunea de selectare"
 	};
 
 $.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.ro.Popover;

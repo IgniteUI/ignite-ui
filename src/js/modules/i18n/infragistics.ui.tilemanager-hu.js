@@ -21,9 +21,9 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 
 	$.ig.locale.hu.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Az adatokat nem sikerült lekérni vagy elemezni.",
+		    setOptionItemsLengthError: "Az elemkonfigurációk hossza nem egyezik meg a lapok számával.",
+			setOptionError: "A futásidejű változtatások nem engedélyezettek ennél az opciónál."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.hu.TileManager;

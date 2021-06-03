@@ -21,7 +21,7 @@
 	$.ig.locale.sv = $.ig.locale.sv || {};
 	
 	$.ig.locale.sv.Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: 'Runtime-ändringar är inte tillåtna för följande alternativ: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.sv.Rating;

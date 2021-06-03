@@ -21,8 +21,8 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 
     $.ig.locale.hu.Toolbar = {
-			collapseButtonTitle: 'Collapse {0}',
-			expandButtonTitle: 'Expand {0}'
+			collapseButtonTitle: '{0} összecsukása',
+			expandButtonTitle: '{0} kibontása'
 	}
 		
 	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.hu.Toolbar;

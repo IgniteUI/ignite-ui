@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale.hu.Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: 'Nincs találat',
+			dropDownButtonTitle: 'Legördülő lista megjelenítése',
+			clearButtonTitle: 'Érték törlése',
+			placeHolder: 'kiválasztás…',
+			notSuported: 'A művelet nem támogatott.',
+			errorNoSupportedTextsType: "Más szöveges szűrőt kell megadni. Olyan értéket adjon meg, amely vagy karakterlánc, vagy karakterlánc-tömb.",
+			errorUnrecognizedHighlightMatchesMode: "Más kiemelési módot kell kiválasztani a találatok kiemelésére. Válasszon egyet a 'multi', 'contains', 'startsWith', 'full' és "null" közül.",
+			errorIncorrectGroupingKey: "A csoportosítási kulcs nem megfelelő."
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.hu.Combo;

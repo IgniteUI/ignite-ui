@@ -21,7 +21,7 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.ro.Templating = {
-			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			undefinedArgument: 'A apărut o eroare la încercarea de recuperare a proprietății sursei de date: '
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.ro.Templating;

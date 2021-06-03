@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale.tr.Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "Kapat",
+			minimizeButtonTitle: "Simge Durumuna Küçült",
+			maximizeButtonTitle: "Ekranı Kapla",
+			pinButtonTitle: "Sabitle",
+			unpinButtonTitle: "Sabitlemeyi Kaldır",
+			restoreButtonTitle: "Geri Yükle",
+			setOptionError: 'Aşağıdaki seçenek için çalışma zamanı değişikliklerine izin verilmez: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.tr.Dialog;

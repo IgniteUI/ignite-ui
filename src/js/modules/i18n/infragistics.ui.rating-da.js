@@ -21,7 +21,7 @@
 	$.ig.locale.da = $.ig.locale.da || {};
 	
 	$.ig.locale.da.Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: 'Kørselsændringer er ikke tilladt for følgende indstilling: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.da.Rating;

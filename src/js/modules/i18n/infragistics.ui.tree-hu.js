@@ -21,21 +21,21 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 
 	$.ig.locale.hu.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Érvénytelen paramétertípus lett megadva.',
+			    errorOnRequest: 'Hiba történt az adatok lekérése közben: ',
+			    noDataSourceUrl: 'Az igTree vezérléshez egy dataSourceUrl szükséges, hogy az adott URL-re adatkérést kezdeményezhessen.',
+			    incorrectPath: 'A megadott elérési útvonalon nem található csomópont: ',
+			    incorrectNodeObject: 'A megadott paraméter nem jQuery csomópontelem.',
+			    setOptionError: 'A következő opció esetében nem engedélyezettek a futásidejű változtatások: ',
+			    moveTo: '<strong>Áthelyezés ide:</strong> {0}',
+			    moveBetween: '<strong>Áthelyezés</strong> {0} és {1} közé',
+			    moveAfter: '<strong>Áthelyezés</strong> {0} után',
+			    moveBefore: '<strong>Áthelyezés</strong> {0} elé',
+			    copyTo: '<strong>Másolás ide:</strong> {0}',
+			    copyBetween: '<strong>Másolás</strong> {0} és {1} közé',
+			    copyAfter: '<strong>Másolás</strong> {0} után',
+			    copyBefore: '<strong>Másolás</strong> {0} elé',
+			    and: 'és'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.hu.Tree;

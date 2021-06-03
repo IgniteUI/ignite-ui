@@ -21,9 +21,9 @@
 	$.ig.locale.cs = $.ig.locale.cs || {};
 
 	$.ig.locale.cs.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Data nebyla úspěšně načtena nebo analyzována.",
+		    setOptionItemsLengthError: "Délka konfigurací položek neodpovídá počtu dlaždic.",
+			setOptionError: "Změny za běhu nejsou pro tuto možnost povoleny."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.cs.TileManager;
