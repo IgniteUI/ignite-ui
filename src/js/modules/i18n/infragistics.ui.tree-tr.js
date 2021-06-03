@@ -21,21 +21,21 @@
 	$.ig.locale.tr = $.ig.locale.tr || {};
 
 	$.ig.locale.tr.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Geçersiz bağımsız değişken türü sağlandı.',
+			    errorOnRequest: 'Veriler alınırken bir hata oluştu: ',
+			    noDataSourceUrl: 'İgTree kontrolü, söz konusu URL'ye veri talebi başlatmak için sağlanan bir dataSourceUrl gerektirir.',
+			    incorrectPath: 'Sağlanan yolda bir düğüm bulunamadı: ',
+			    incorrectNodeObject: 'Sağlanan bağımsız değişken bir jQuery düğüm öğesi değil.',
+			    setOptionError: 'Aşağıdaki seçenek için çalışma zamanı değişikliklerine izin verilmez: ',
+			    moveTo: '{0} konumuna <strong>taşı</strong>',
+			    moveBetween: '{0} ve {1} <strong>arasında taşı</strong>',
+			    moveAfter: '{0} <strong>sonrasına taşı</strong>',
+			    moveBefore: '{0} <strong>öncesine taşı</strong>',
+			    copyTo: '{0} konumuna <strong>kopyala</strong>',
+			    copyBetween: '{0} ve {1} <strong>arasına kopyala</strong>',
+			    copyAfter: '{0} <strong>sonrasına kopyala</strong>',
+			    copyBefore: '{0} tarihinden <strong>öncesine kopyala</strong>',
+			    and: 've'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.tr.Tree;

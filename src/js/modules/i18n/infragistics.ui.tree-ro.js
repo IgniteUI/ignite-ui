@@ -21,21 +21,21 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
 	$.ig.locale.ro.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Tip de argument nevalid furnizat.',
+			    errorOnRequest: 'A apărut o eroare la preluarea datelor: ',
+			    noDataSourceUrl: 'Controlul igTree necesită un dataSourceUrl furnizat pentru a iniția o cerere de date către adresa URL respectivă.',
+			    incorrectPath: 'Nu a fost găsit un nod la calea furnizată: ',
+			    incorrectNodeObject: 'Argumentul furnizat nu este un element nod jQuery.',
+			    setOptionError: 'Modificările în timpul rulării nu sunt permise pentru următoarea opțiune: ',
+			    moveTo: '<strong>Mutați la</strong> {0}',
+			    moveBetween: '<strong>Mutați între</strong> {0} și {1}',
+			    moveAfter: '<strong>Mutați după</strong> {0}',
+			    moveBefore: '<strong>Mutați înainte de</strong> {0}',
+			    copyTo: '<strong>Copiați în</strong> {0}',
+			    copyBetween: '<strong>Copiați între</strong> {0} și {1}',
+			    copyAfter: '<strong>Copiază după</strong> {0}',
+			    copyBefore: '<strong>Copiați înainte de</strong> {0}',
+			    and: 'și'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.ro.Tree;

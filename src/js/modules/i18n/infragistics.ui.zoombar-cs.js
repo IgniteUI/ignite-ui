@@ -21,10 +21,10 @@
 	$.ig.locale.cs = $.ig.locale.cs || {};
 
 	$.ig.locale.cs.Zoombar = {
-				zoombarTargetNotSpecified: "igZoombar requires a valid target to attach to!",
-				zoombarTypeNotSupported: "The type of widget the Zoombar is trying to attach to is not supported!",
-				zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
-				optionChangeNotSupported: "Changing the following option after the igZoombar has been created is not supported:"
+				zoombarTargetNotSpecified: "igZoombar vyžaduje k připojení platný cíl!",
+				zoombarTypeNotSupported: "Typ widgetu, ke kterému se Zoombar pokouší připojit, není podporován!",
+				zoombarProviderNotRecognized: "igZoombar nemohl inicializovat poskytovatele ze zadané třídy nebo předaná hodnota není třídou.",
+				optionChangeNotSupported: "Změna následující možnosti po vytvoření igZoombar není podporována:"
 	}
 
 	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.cs.Zoombar;

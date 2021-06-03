@@ -21,7 +21,7 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.pt.Templating = {
-			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			undefinedArgument: 'Ocorreu um erro ao tentar recuperar a propriedade da origem de dados: '
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.pt.Templating;

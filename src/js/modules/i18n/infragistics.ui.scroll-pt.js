@@ -21,8 +21,8 @@
 		$.ig.locale.pt = $.ig.locale.pt || {};
 
 	    $.ig.locale.pt.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'O elemento que está a ser vinculado não existe.',
+		        errorNoScrollbarLink: 'O elemento da barra de deslocamento que está a ser vinculado não existe.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.pt.Scroll;

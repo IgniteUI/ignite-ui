@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale.pl.Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: 'Nie znaleziono dopasowań',
+			dropDownButtonTitle: 'Pokaż rozwijane',
+			clearButtonTitle: 'Wyczyść wartość',
+			placeHolder: 'wybierz...',
+			notSuported: 'Operacja nie jest obsługiwana.',
+			errorNoSupportedTextsType: "Wymagany jest inny tekst filtrowania. Podaj wartość, która jest ciągiem lub tablicą ciągów.",
+			errorUnrecognizedHighlightMatchesMode: "Wymagany jest inny tryb podświetlenia dopasowań. Wybierz wartość spośród 'multi', 'contains', 'startsWith', 'full' i "null".",
+			errorIncorrectGroupingKey: "Klucz grupowania jest nieprawidłowy."
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.pl.Combo;

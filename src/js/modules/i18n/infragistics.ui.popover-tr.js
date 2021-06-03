@@ -21,8 +21,8 @@
 	$.ig.Popover = $.ig.Popover || {};
 	
 	$.ig.locale.tr.Popover = {
-		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+		popoverOptionChangeNotSupported: "igPopover başlatıldıktan sonra aşağıdaki seçeneğin değiştirilmesi desteklenmez:",
+		popoverShowMethodWithoutTarget: "Seçiciler seçeneği kullanıldığında, göster işlevinin hedef parametresi zorunludur"
 	};
 
 $.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.tr.Popover;

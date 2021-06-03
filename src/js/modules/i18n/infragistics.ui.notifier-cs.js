@@ -21,12 +21,12 @@
 	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale.cs.Notifier = {
-		successMsg: "Success",
-		errorMsg: "Error",
-		warningMsg: "Warning",
-		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		successMsg: "Úspěch",
+		errorMsg: "Chyba",
+		warningMsg: "Varování",
+		infoMsg: "Informace",
+		notSupportedState: "Nepodporovaný stav oznámení! Použijte jeden z podporovaných stavů 'success', 'info', 'warning', 'error'.",
+		notSupportedMode: "Nepodporovaný režim oznámení! Použijte jeden z podporovaných režimů 'auto', 'popover', 'inline'."
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.cs.Notifier;

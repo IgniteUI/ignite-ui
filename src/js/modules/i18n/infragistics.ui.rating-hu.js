@@ -21,7 +21,7 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 	
 	$.ig.locale.hu.Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: 'A következő opció esetében nem engedélyezettek a futásidejű változtatások: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.hu.Rating;

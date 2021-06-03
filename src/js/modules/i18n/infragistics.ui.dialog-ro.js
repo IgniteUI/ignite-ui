@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale.ro.Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "Închide",
+			minimizeButtonTitle: "Minimizează",
+			maximizeButtonTitle: "Maximizează",
+			pinButtonTitle: "Fixați",
+			unpinButtonTitle: "Anulați fixarea",
+			restoreButtonTitle: "Restabili",
+			setOptionError: 'Modificările în timpul rulării nu sunt permise pentru următoarea opțiune: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.ro.Dialog;

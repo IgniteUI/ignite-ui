@@ -34,8 +34,8 @@
 	$.ig.locale.pl = $.ig.locale.pl || {};
 
 	$.ig.locale.pl.util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "Bieżąca przeglądarka nie obsługuje elementu canvas języka HTML5. <br/>Spróbuj uaktualnić do dowolnej z następujących wersji:",
+			    currentBrowser: "Bieżąca przeglądarka: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
@@ -46,11 +46,11 @@
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
 			    safariDownload: "http://www.apple.com/safari/download/",
-			    defaultSummaryMethodLabelMin: "Min = ",
-			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
-			    defaultSummaryMethodLabelCount: "Count = "
+			    defaultSummaryMethodLabelMin: "Min. = ",
+			    defaultSummaryMethodLabelMax: "Maks. = ",
+			    defaultSummaryMethodLabelSum: "Suma = ",
+			    defaultSummaryMethodLabelAvg: "Śr. = ",
+			    defaultSummaryMethodLabelCount: "Liczba = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.pl.util;

@@ -21,8 +21,8 @@
 		$.ig.locale.nl = $.ig.locale.nl || {};
 
 	    $.ig.locale.nl.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Element dat wordt gekoppeld, bestaat niet.',
+		        errorNoScrollbarLink: 'Schuifbalkelement dat wordt gekoppeld, bestaat niet.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.nl.Scroll;

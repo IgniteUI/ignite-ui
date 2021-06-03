@@ -21,49 +21,49 @@
 	$.ig.locale.tr = $.ig.locale.tr || {};
 
 	$.ig.locale.tr.Upload = {
-			    labelUploadButton: "Upload File",
-			    labelAddButton: "Add",
-			    labelClearAllButton: "Clear Uploaded",
+			    labelUploadButton: "Dosya yükleme",
+			    labelAddButton: "Ekle",
+			    labelClearAllButton: "Yüklenenleri Temizle",
 			    // M.H. 13 May 2011 - fix bug 75042
-			    labelSummaryTemplate: "{0} of {1} uploaded",
+			    labelSummaryTemplate: "{0}/{1} yüklendi",
 			    labelSummaryProgressBarTemplate: "{0}/{1}",
-			    labelShowDetails: "Show Details",
-			    labelHideDetails: "Hide Details",
-			    labelSummaryProgressButtonCancel: "Cancel",
+			    labelShowDetails: "Detayları Göster",
+			    labelHideDetails: "Detayları Gizle",
+			    labelSummaryProgressButtonCancel: "İptal",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    labelSummaryProgressButtonContinue: "Upload",
-			    labelSummaryProgressButtonDone: "Done",
+			    labelSummaryProgressButtonContinue: "Yükle",
+			    labelSummaryProgressButtonDone: "Bitti",
 			    labelProgressBarFileNameContinue: "...",
 
 			    //error messages
-			    errorMessageFileSizeExceeded: "Max file size exceeded.",
-			    errorMessageGetFileStatus: "Could not get your current file status! Probably connection dropped.",
-			    errorMessageCancelUpload: "Could not send to server command to cancel upload! Probably connection dropped.",
-			    errorMessageNoSuchFile: "The file you requested could not be found. Probably this file is too big.",
-			    errorMessageOther: "There is internal error uploading file. Error code: {0}.",
-			    errorMessageValidatingFileExtension: "File extension validation failed.",
-			    errorMessageAJAXRequestFileSize: "AJAX error while trying to get file size.",
-			    errorMessageMaxUploadedFiles: "Maximum count of uploading files exceeded.",
-			    errorMessageMaxSimultaneousFiles: "Value of maxSimultaneousFilesUploads is incorrect. It should be more than 0 or null.",
-			    errorMessageTryToRemoveNonExistingFile: "You are trying to remove non-existing file with id {0}.",
-			    errorMessageTryToStartNonExistingFile: "You are trying to start non-existing file with id {0}.",
-				errorMessageDropMultipleFilesWhenSingleModel: "It is not allowed to drop more than 1 file when mode is single",
+			    errorMessageFileSizeExceeded: "Maksimum dosya boyutu aşıldı.",
+			    errorMessageGetFileStatus: "Mevcut dosya durumunuz alınamadı! Muhtemelen bağlantı kesildi.",
+			    errorMessageCancelUpload: "Yüklemeyi iptal etmek için sunucuya komut gönderilemedi! Muhtemelen bağlantı kesildi.",
+			    errorMessageNoSuchFile: "İstediğiniz dosya bulunamadı. Muhtemelen bu dosya çok büyük.",
+			    errorMessageOther: "Dosya yüklenirken dahili hata oluştu. Hata kodu: {0}.",
+			    errorMessageValidatingFileExtension: "Dosya uzantısı doğrulaması başarısız oldu.",
+			    errorMessageAJAXRequestFileSize: "Dosya boyutunu almaya çalışırken AJAX hatası.",
+			    errorMessageMaxUploadedFiles: "Maksimum yükleme dosyası sayısı aşıldı.",
+			    errorMessageMaxSimultaneousFiles: "MaxSimultaneousFilesUploads değeri yanlış. 0'dan büyük veya boş olmalıdır.",
+			    errorMessageTryToRemoveNonExistingFile: "{0} kimliğine sahip olmayan bir dosyayı kaldırmaya çalışıyorsunuz.",
+			    errorMessageTryToStartNonExistingFile: "Mevcut olmayan dosyayı {0} kimliğiyle başlatmaya çalışıyorsunuz.",
+				errorMessageDropMultipleFilesWhenSingleModel: "Mod tek olduğunda 1'den fazla dosya düşürmeye izin verilmez",
 
 			    // M.H. 12 May 2011 - fix bug 74763: add title to all buttons
 			    // title attributes            
-			    titleUploadFileButtonInit: "Upload File",
-			    titleAddFileButton: "Add",
-			    titleCancelUploadButton: "Cancel",
+			    titleUploadFileButtonInit: "Dosya yükleme",
+			    titleAddFileButton: "Ekle",
+			    titleCancelUploadButton: "İptal",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSummaryProgressButtonContinue: "Upload",
-			    titleClearUploaded: "Clear Uploaded",
-			    titleShowDetailsButton: "Show Details",
-			    titleHideDetailsButton: "Hide Details",
-			    titleSummaryProgressButtonCancel: "Cancel",
-			    titleSummaryProgressButtonDone: "Done",
+			    titleSummaryProgressButtonContinue: "Yükle",
+			    titleClearUploaded: "Yüklenenleri Temizle",
+			    titleShowDetailsButton: "Detayları Göster",
+			    titleHideDetailsButton: "Detayları Gizle",
+			    titleSummaryProgressButtonCancel: "İptal",
+			    titleSummaryProgressButtonDone: "Bitti",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSingleUploadButtonContinue: "Upload",
-			    titleClearAllButton: "Clear Uploaded"
+			    titleSingleUploadButtonContinue: "Yükle",
+			    titleClearAllButton: "Yüklenenleri Temizle"
 	}
 		
 	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.tr.Upload;

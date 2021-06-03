@@ -21,8 +21,8 @@
 		$.ig.locale.da = $.ig.locale.da || {};
 
 	    $.ig.locale.da.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Element, der linkes, findes ikke.',
+		        errorNoScrollbarLink: 'Rullepanelelement, der linkes, findes ikke.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.da.Scroll;

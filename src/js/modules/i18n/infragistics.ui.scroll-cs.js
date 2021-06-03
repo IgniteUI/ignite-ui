@@ -21,8 +21,8 @@
 		$.ig.locale.cs = $.ig.locale.cs || {};
 
 	    $.ig.locale.cs.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Prvek, na který se odkazuje, neexistuje.',
+		        errorNoScrollbarLink: 'Prvek posuvníku, který je propojen, neexistuje.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.cs.Scroll;

@@ -21,9 +21,9 @@
 	$.ig.locale.da = $.ig.locale.da || {};
 
 	$.ig.locale.da.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Data blev ikke hentet eller parset.",
+		    setOptionItemsLengthError: "Længden af elementkonfigurationerne svarer ikke til antallet af felter.",
+			setOptionError: "Kørselsændringer er ikke tilladt for denne tilstand."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.da.TileManager;

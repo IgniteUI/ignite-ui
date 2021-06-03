@@ -21,10 +21,10 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 
 	$.ig.locale.hu.Zoombar = {
-				zoombarTargetNotSpecified: "igZoombar requires a valid target to attach to!",
-				zoombarTypeNotSupported: "The type of widget the Zoombar is trying to attach to is not supported!",
-				zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
-				optionChangeNotSupported: "Changing the following option after the igZoombar has been created is not supported:"
+				zoombarTargetNotSpecified: "Az igZoombarhoz érvényes célpontot kell csatolni!",
+				zoombarTypeNotSupported: "Az a típusú widget, amelyhez a Zoombar csatlakozni próbál, nem támogatott!",
+				zoombarProviderNotRecognized: "Az igZoombar nem tudta inicializálni a szolgáltatót a megadott osztályból, vagy az átadott érték nem osztály.",
+				optionChangeNotSupported: "A következő opció nem módosítható az igZoombar létrehozása után:"
 	}
 
 	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.hu.Zoombar;

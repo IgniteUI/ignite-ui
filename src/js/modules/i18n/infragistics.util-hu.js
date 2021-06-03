@@ -34,8 +34,8 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 
 	$.ig.locale.hu.util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "A jelenlegi böngésző nem támogatja a HTML5 vászon elemet. <br/>Próbáljon meg frissíteni a következő verziók egyikére:",
+			    currentBrowser: "Jelenlegi böngésző: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
@@ -48,9 +48,9 @@
 			    safariDownload: "http://www.apple.com/safari/download/",
 			    defaultSummaryMethodLabelMin: "Min = ",
 			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
-			    defaultSummaryMethodLabelCount: "Count = "
+			    defaultSummaryMethodLabelSum: "Szum = ",
+			    defaultSummaryMethodLabelAvg: "Átlag = ",
+			    defaultSummaryMethodLabelCount: "Darab = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.hu.util;

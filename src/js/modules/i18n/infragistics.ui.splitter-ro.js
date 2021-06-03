@@ -21,8 +21,8 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
 	    $.ig.locale.ro.Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'Numărul de panouri nu trebuie să fie mai mare de două.',
+		        errorSettingOption: 'Opțiunea de setare a erorii.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.ro.Splitter;

@@ -21,12 +21,12 @@
 	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale.tr.Notifier = {
-		successMsg: "Success",
-		errorMsg: "Error",
-		warningMsg: "Warning",
-		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		successMsg: "Başarılı",
+		errorMsg: "Hata",
+		warningMsg: "Uyarı",
+		infoMsg: "Bilgi",
+		notSupportedState: "Desteklenmeyen bildirim durumu! Desteklenen 'success', 'info', 'warning', 'error' durumlarından birini kullanın",
+		notSupportedMode: "Desteklenmeyen bildirim modu! Desteklenen 'auto', 'popover', 'inline' modlarından birini kullanın"
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.tr.Notifier;

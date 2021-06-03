@@ -21,49 +21,49 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
 	$.ig.locale.ro.Upload = {
-			    labelUploadButton: "Upload File",
-			    labelAddButton: "Add",
-			    labelClearAllButton: "Clear Uploaded",
+			    labelUploadButton: "Încarcă fișier",
+			    labelAddButton: "Adăuga",
+			    labelClearAllButton: "Ștergeți fișierele încărcate",
 			    // M.H. 13 May 2011 - fix bug 75042
-			    labelSummaryTemplate: "{0} of {1} uploaded",
+			    labelSummaryTemplate: "{0} din {1} încărcate",
 			    labelSummaryProgressBarTemplate: "{0}/{1}",
-			    labelShowDetails: "Show Details",
-			    labelHideDetails: "Hide Details",
-			    labelSummaryProgressButtonCancel: "Cancel",
+			    labelShowDetails: "Arata detaliile",
+			    labelHideDetails: "Ascunde detaliile",
+			    labelSummaryProgressButtonCancel: "Anulare",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    labelSummaryProgressButtonContinue: "Upload",
-			    labelSummaryProgressButtonDone: "Done",
+			    labelSummaryProgressButtonContinue: "Încărcare",
+			    labelSummaryProgressButtonDone: "Terminat",
 			    labelProgressBarFileNameContinue: "...",
 
 			    //error messages
-			    errorMessageFileSizeExceeded: "Max file size exceeded.",
-			    errorMessageGetFileStatus: "Could not get your current file status! Probably connection dropped.",
-			    errorMessageCancelUpload: "Could not send to server command to cancel upload! Probably connection dropped.",
-			    errorMessageNoSuchFile: "The file you requested could not be found. Probably this file is too big.",
-			    errorMessageOther: "There is internal error uploading file. Error code: {0}.",
-			    errorMessageValidatingFileExtension: "File extension validation failed.",
-			    errorMessageAJAXRequestFileSize: "AJAX error while trying to get file size.",
-			    errorMessageMaxUploadedFiles: "Maximum count of uploading files exceeded.",
-			    errorMessageMaxSimultaneousFiles: "Value of maxSimultaneousFilesUploads is incorrect. It should be more than 0 or null.",
-			    errorMessageTryToRemoveNonExistingFile: "You are trying to remove non-existing file with id {0}.",
-			    errorMessageTryToStartNonExistingFile: "You are trying to start non-existing file with id {0}.",
-				errorMessageDropMultipleFilesWhenSingleModel: "It is not allowed to drop more than 1 file when mode is single",
+			    errorMessageFileSizeExceeded: "Dimensiunea maximă a fișierului a fost depășită.",
+			    errorMessageGetFileStatus: "Nu s-a putut obține starea fișierului curent! Probabil că conexiunea a căzut.",
+			    errorMessageCancelUpload: "Nu s-a putut trimite la server comanda pentru a anula încărcarea! Probabil că conexiunea a căzut.",
+			    errorMessageNoSuchFile: "Fișierul pe care l-ați solicitat nu a putut fi găsit. Probabil că acest fișier este prea mare.",
+			    errorMessageOther: "Există o eroare internă la încărcarea fișierului. Cod de eroare: {0}.",
+			    errorMessageValidatingFileExtension: "Validarea extensiei de fișier nu a reușit.",
+			    errorMessageAJAXRequestFileSize: "Eroare AJAX în timp ce încercați să obțineți dimensiunea fișierului.",
+			    errorMessageMaxUploadedFiles: "Numărul maxim de încărcări de fișiere a fost depășit.",
+			    errorMessageMaxSimultaneousFiles: "Valoarea maxSimultaneousFilesUploads este incorectă. Ar trebui să fie mai mare de 0 sau nul.",
+			    errorMessageTryToRemoveNonExistingFile: "Încercați să eliminați fișierul inexistent cu codul {0}.",
+			    errorMessageTryToStartNonExistingFile: "Încercați să porniți fișierul inexistent cu codul {0}.",
+				errorMessageDropMultipleFilesWhenSingleModel: "Nu este permis să renunțați la mai mult de 1 fișier atunci când modul este unic",
 
 			    // M.H. 12 May 2011 - fix bug 74763: add title to all buttons
 			    // title attributes            
-			    titleUploadFileButtonInit: "Upload File",
-			    titleAddFileButton: "Add",
-			    titleCancelUploadButton: "Cancel",
+			    titleUploadFileButtonInit: "Încarcă fișier",
+			    titleAddFileButton: "Adăuga",
+			    titleCancelUploadButton: "Anulare",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSummaryProgressButtonContinue: "Upload",
-			    titleClearUploaded: "Clear Uploaded",
-			    titleShowDetailsButton: "Show Details",
-			    titleHideDetailsButton: "Hide Details",
-			    titleSummaryProgressButtonCancel: "Cancel",
-			    titleSummaryProgressButtonDone: "Done",
+			    titleSummaryProgressButtonContinue: "Încărcare",
+			    titleClearUploaded: "Ștergeți fișierele încărcate",
+			    titleShowDetailsButton: "Arata detaliile",
+			    titleHideDetailsButton: "Ascunde detaliile",
+			    titleSummaryProgressButtonCancel: "Anulare",
+			    titleSummaryProgressButtonDone: "Terminat",
 			    // M.H. 1 June 2011 Fix bug #77532
-			    titleSingleUploadButtonContinue: "Upload",
-			    titleClearAllButton: "Clear Uploaded"
+			    titleSingleUploadButtonContinue: "Încărcare",
+			    titleClearAllButton: "Ștergeți fișierele încărcate"
 	}
 		
 	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.ro.Upload;

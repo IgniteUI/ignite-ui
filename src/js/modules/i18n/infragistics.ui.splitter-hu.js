@@ -21,8 +21,8 @@
 	$.ig.locale.hu = $.ig.locale.hu || {};
 
 	    $.ig.locale.hu.Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'A panelek száma nem lehet nagyobb, mint kettő.',
+		        errorSettingOption: 'Hiba az opció beállításakor.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.hu.Splitter;

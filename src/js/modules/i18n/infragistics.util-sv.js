@@ -34,8 +34,8 @@
 	$.ig.locale.sv = $.ig.locale.sv || {};
 
 	$.ig.locale.sv.util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "Den aktuella webbläsaren stöder inte HTML5-canvaselement. <br/>Försök att uppgradera till någon av följande versioner:",
+			    currentBrowser: "Aktuell webbläsare: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
@@ -48,9 +48,9 @@
 			    safariDownload: "http://www.apple.com/safari/download/",
 			    defaultSummaryMethodLabelMin: "Min = ",
 			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
-			    defaultSummaryMethodLabelCount: "Count = "
+			    defaultSummaryMethodLabelSum: "Summa = ",
+			    defaultSummaryMethodLabelAvg: "Genomsnitt = ",
+			    defaultSummaryMethodLabelCount: "Räkna = "
 	}
 	
 	$.ig.util.locale = $.ig.util.locale || $.ig.locale.sv.util;

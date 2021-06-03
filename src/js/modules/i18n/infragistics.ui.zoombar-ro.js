@@ -21,10 +21,10 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
 	$.ig.locale.ro.Zoombar = {
-				zoombarTargetNotSpecified: "igZoombar requires a valid target to attach to!",
-				zoombarTypeNotSupported: "The type of widget the Zoombar is trying to attach to is not supported!",
-				zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
-				optionChangeNotSupported: "Changing the following option after the igZoombar has been created is not supported:"
+				zoombarTargetNotSpecified: "igZoombar necesită o țintă validă la care să se atașeze!",
+				zoombarTypeNotSupported: "Tipul de widget pe care Zoombar încearcă să îl atașeze nu este acceptat!",
+				zoombarProviderNotRecognized: "igZoombar nu a putut inițializa un furnizor din clasa specificată sau valoarea trecută nu este o clasă.",
+				optionChangeNotSupported: "Modificarea următoarei opțiuni după crearea igZoombar nu este acceptată:"
 	}
 
 	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.ro.Zoombar;
