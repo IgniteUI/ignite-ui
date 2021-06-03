@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale.tr.Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: 'Hiçbir sonuç bulunamadı',
+			dropDownButtonTitle: 'Açılır menüyü göster',
+			clearButtonTitle: 'Değeri temizle',
+			placeHolder: 'seçin…',
+			notSuported: 'İşlem desteklenmiyor.',
+			errorNoSupportedTextsType: "Farklı bir filtreleme metni gereklidir. Bir dize veya dizelerden oluşan bir değer sağlayın.",
+			errorUnrecognizedHighlightMatchesMode: "Farklı bir vurgu eşleşmeleri modu gereklidir. 'Multi', 'contains', 'beginWith', 'full' ve 'null' arasında bir değer seçin.",
+			errorIncorrectGroupingKey: "Gruplama anahtarı doğru değil."
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.tr.Combo;

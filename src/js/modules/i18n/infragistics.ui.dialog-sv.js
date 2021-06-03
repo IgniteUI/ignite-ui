@@ -21,13 +21,13 @@
 	$.ig.Dialog = $.ig.Dialog || {};
 	
 	$.ig.locale.sv.Dialog = {
-			closeButtonTitle: "Close",
-			minimizeButtonTitle: "Minimize",
-			maximizeButtonTitle: "Maximize",
-			pinButtonTitle: "Pin",
-			unpinButtonTitle: "Unpin",
-			restoreButtonTitle: "Restore",
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			closeButtonTitle: "Stäng",
+			minimizeButtonTitle: "Minimera",
+			maximizeButtonTitle: "Maximera",
+			pinButtonTitle: "Nåla",
+			unpinButtonTitle: "Lossa",
+			restoreButtonTitle: "Återställ",
+			setOptionError: 'Runtime-ändringar är inte tillåtna för följande alternativ: '
 	};
 
 	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.sv.Dialog;

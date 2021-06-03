@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale.cs.Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: 'Nebyly nalezeny žádné shody',
+			dropDownButtonTitle: 'Zobrazit rozevírací nabídku',
+			clearButtonTitle: 'Vymazat hodnotu',
+			placeHolder: 'vybrat...',
+			notSuported: 'Provoz není podporován.',
+			errorNoSupportedTextsType: "Je vyžadován jiný text pro filtrování. Zadejte hodnotu, která je buď řetězcem, nebo polem řetězců.",
+			errorUnrecognizedHighlightMatchesMode: "Je vyžadován jiný režim shod zvýraznění. Vyberte hodnotu mezi 'multi', 'contains', 'startsWith', 'full' a 'null'.",
+			errorIncorrectGroupingKey: "Seskupovací klíč není správný."
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.cs.Combo;

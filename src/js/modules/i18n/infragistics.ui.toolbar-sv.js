@@ -21,8 +21,8 @@
 	$.ig.locale.sv = $.ig.locale.sv || {};
 
     $.ig.locale.sv.Toolbar = {
-			collapseButtonTitle: 'Collapse {0}',
-			expandButtonTitle: 'Expand {0}'
+			collapseButtonTitle: 'Dölj {0}',
+			expandButtonTitle: 'Expandera {0}'
 	}
 		
 	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.sv.Toolbar;

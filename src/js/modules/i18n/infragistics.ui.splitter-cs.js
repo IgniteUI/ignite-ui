@@ -21,8 +21,8 @@
 	$.ig.locale.cs = $.ig.locale.cs || {};
 
 	    $.ig.locale.cs.Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'Počet panelů nesmí být větší než dva.',
+		        errorSettingOption: 'Možnost nastavení chyby.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.cs.Splitter;

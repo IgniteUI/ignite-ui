@@ -21,12 +21,12 @@
 	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale.ro.Notifier = {
-		successMsg: "Success",
-		errorMsg: "Error",
-		warningMsg: "Warning",
-		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		successMsg: "Succes",
+		errorMsg: "Eroare",
+		warningMsg: "Avertizare",
+		infoMsg: "Informație",
+		notSupportedState: "Stare de notificare neacceptată! Utilizați una dintre stările acceptate 'success', 'info', 'warning', 'error'.",
+		notSupportedMode: "Mod de notificare neacceptat! Utilizați unul dintre modurile acceptate "auto", "popover", "inline"."
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.ro.Notifier;

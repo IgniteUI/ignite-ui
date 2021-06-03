@@ -21,9 +21,9 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 
 	$.ig.locale.ro.TileManager = {
-			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
-			setOptionError: "Runtime changes are not allowed for this option."
+			renderDataError: "Datele nu au fost recuperate sau analizate cu succes.",
+		    setOptionItemsLengthError: "Lungimea configurațiilor articolelor nu se potrivește cu numărul de dale.",
+			setOptionError: "Modificările în timpul rulării nu sunt permise pentru această opțiune."
 	}
 	
 	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.ro.TileManager;

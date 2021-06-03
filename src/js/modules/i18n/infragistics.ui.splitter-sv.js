@@ -21,8 +21,8 @@
 	$.ig.locale.sv = $.ig.locale.sv || {};
 
 	    $.ig.locale.sv.Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'Antalet paneler måste vara högst två.',
+		        errorSettingOption: 'Felinställningsalternativ.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.sv.Splitter;

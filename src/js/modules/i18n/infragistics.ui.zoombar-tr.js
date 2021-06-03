@@ -21,10 +21,10 @@
 	$.ig.locale.tr = $.ig.locale.tr || {};
 
 	$.ig.locale.tr.Zoombar = {
-				zoombarTargetNotSpecified: "igZoombar requires a valid target to attach to!",
-				zoombarTypeNotSupported: "The type of widget the Zoombar is trying to attach to is not supported!",
-				zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
-				optionChangeNotSupported: "Changing the following option after the igZoombar has been created is not supported:"
+				zoombarTargetNotSpecified: "igZoombar, bağlanmak için geçerli bir hedef gerektirir!",
+				zoombarTypeNotSupported: "Zoombar'ın eklemeye çalıştığı widget türü desteklenmiyor!",
+				zoombarProviderNotRecognized: "igZoombar, belirtilen sınıftan bir sağlayıcıyı başlatamadı veya aktarılan değer bir sınıf değil.",
+				optionChangeNotSupported: "İgZoombar oluşturulduktan sonra aşağıdaki seçeneğin değiştirilmesi desteklenmez:"
 	}
 
 	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.tr.Zoombar;

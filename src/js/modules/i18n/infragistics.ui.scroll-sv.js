@@ -21,8 +21,8 @@
 		$.ig.locale.sv = $.ig.locale.sv || {};
 
 	    $.ig.locale.sv.Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Elementet som länkas finns inte.',
+		        errorNoScrollbarLink: 'Scrollbar-element som länkas finns inte.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.sv.Scroll;

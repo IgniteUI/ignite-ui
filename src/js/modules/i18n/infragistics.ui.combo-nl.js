@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale.nl.Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: 'Geen overeenkomsten gevonden',
+			dropDownButtonTitle: 'Vervolgkeuzelijst weergeven',
+			clearButtonTitle: 'Waarde wissen',
+			placeHolder: 'selecteren ...',
+			notSuported: 'Bewerking wordt niet ondersteund.',
+			errorNoSupportedTextsType: "Een andere filtertekst is vereist. Geef een waarde op die ofwel een tekenreeks of een matrix tekenreeksen is.",
+			errorUnrecognizedHighlightMatchesMode: "Een andere modus voor het aanduiden van matches is vereist. Kies een waarde tussen 'multi', 'contains', 'startsWith', 'full' en 'null'.",
+			errorIncorrectGroupingKey: "Groeperingssleutel is niet correct."
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.nl.Combo;

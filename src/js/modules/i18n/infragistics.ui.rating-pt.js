@@ -21,7 +21,7 @@
 	$.ig.locale.pt = $.ig.locale.pt || {};
 	
 	$.ig.locale.pt.Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: 'As alterações ao tempo de execução não são permitidas para a seguinte opção: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.pt.Rating;

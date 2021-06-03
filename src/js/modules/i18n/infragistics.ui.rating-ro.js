@@ -21,7 +21,7 @@
 	$.ig.locale.ro = $.ig.locale.ro || {};
 	
 	$.ig.locale.ro.Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: 'Modificările în timpul rulării nu sunt permise pentru următoarea opțiune: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.ro.Rating;

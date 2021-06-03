@@ -21,12 +21,12 @@
 	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale.da.Notifier = {
-		successMsg: "Success",
-		errorMsg: "Error",
-		warningMsg: "Warning",
+		successMsg: "Succes",
+		errorMsg: "Fejl",
+		warningMsg: "Advarsel",
 		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		notSupportedState: "Ikke understøttet underretningstilstand! Brug en af de understøttede tilstande 'success', 'info', 'warning', 'error'",
+		notSupportedMode: "Ikke understøttet underretningstilstand! Brug en af de understøttede tilstande 'auto', 'popover', 'inline'"
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.da.Notifier;

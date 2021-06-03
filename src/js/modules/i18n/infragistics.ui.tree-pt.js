@@ -21,21 +21,21 @@
 	$.ig.locale.pt = $.ig.locale.pt || {};
 
 	$.ig.locale.pt.Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Tipo de argumento inválido fornecido.',
+			    errorOnRequest: 'Ocorreu um erro ao obter dados: ',
+			    noDataSourceUrl: 'O controlo igTree requer um dataSourceUrl fornecido para iniciar um pedido de dados para esse URL.',
+			    incorrectPath: 'Um nó não foi encontrado no caminho fornecido: ',
+			    incorrectNodeObject: 'O argumento fornecido não é um elemento do nó jQuery.',
+			    setOptionError: 'As alterações ao tempo de execução não são permitidas para a seguinte opção: ',
+			    moveTo: '<strong>Mover para</strong> {0}',
+			    moveBetween: '<strong>Mover entre</strong> {0} e {1}',
+			    moveAfter: '<strong>Mover após</strong> {0}',
+			    moveBefore: '<strong>Mover antes de</strong> {0}',
+			    copyTo: '<strong>Copiar para</strong> {0}',
+			    copyBetween: '<strong>Copiar entre</strong> {0} e {1}',
+			    copyAfter: '<strong>Copiar após</strong> {0}',
+			    copyBefore: '<strong>Copiar antes de</strong> {0}',
+			    and: 'e'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.pt.Tree;

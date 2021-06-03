@@ -34,8 +34,8 @@
 	$.ig.locale.cs = $.ig.locale.cs || {};
 
 	$.ig.locale.cs.util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "Aktuální prohlížeč nepodporuje prvek plátna HTML5. <br/>Zkuste upgradovat na některou z následujících verzí:",
+			    currentBrowser: "Aktuální prohlížeč: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
