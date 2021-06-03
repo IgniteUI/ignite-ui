@@ -26,7 +26,7 @@
 		warningMsg: "Avertizare",
 		infoMsg: "Informație",
 		notSupportedState: "Stare de notificare neacceptată! Utilizați una dintre stările acceptate 'success', 'info', 'warning', 'error'.",
-		notSupportedMode: "Mod de notificare neacceptat! Utilizați unul dintre modurile acceptate "auto", "popover", "inline"."
+		notSupportedMode: "Mod de notificare neacceptat! Utilizați unul dintre modurile acceptate 'auto', 'popover', 'inline'."
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.ro.Notifier;

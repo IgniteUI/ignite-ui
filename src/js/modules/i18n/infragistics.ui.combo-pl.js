@@ -27,7 +27,7 @@
 			placeHolder: 'wybierz...',
 			notSuported: 'Operacja nie jest obsługiwana.',
 			errorNoSupportedTextsType: "Wymagany jest inny tekst filtrowania. Podaj wartość, która jest ciągiem lub tablicą ciągów.",
-			errorUnrecognizedHighlightMatchesMode: "Wymagany jest inny tryb podświetlenia dopasowań. Wybierz wartość spośród 'multi', 'contains', 'startsWith', 'full' i "null".",
+			errorUnrecognizedHighlightMatchesMode: "Wymagany jest inny tryb podświetlenia dopasowań. Wybierz wartość spośród 'multi', 'contains', 'startsWith', 'full' i 'null'.",
 			errorIncorrectGroupingKey: "Klucz grupowania jest nieprawidłowy."
 	};
 

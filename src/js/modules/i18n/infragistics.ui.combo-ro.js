@@ -27,7 +27,7 @@
 			placeHolder: 'Selectați...',
 			notSuported: 'Operația nu este acceptată.',
 			errorNoSupportedTextsType: "Este necesar un text de filtrare diferit. Furnizați o valoare care este fie un șir, fie o matrice de șiruri.",
-			errorUnrecognizedHighlightMatchesMode: "Este necesar un mod diferit de potrivire a evidențierii. Alegeți o valoare între 'multi', 'contains', 'startsWith', 'full' și "null".",
+			errorUnrecognizedHighlightMatchesMode: "Este necesar un mod diferit de potrivire a evidențierii. Alegeți o valoare între 'multi', 'contains', 'startsWith', 'full' și 'null'.",
 			errorIncorrectGroupingKey: "Cheia de grupare nu este corectă."
 	};
 
