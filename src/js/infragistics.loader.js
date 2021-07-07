@@ -5,7 +5,7 @@
 * http://www.infragistics.com/
 *
 */
-
+"use strict";
 if (typeof jQuery !== "function") {
 	throw new Error("jQuery is undefined");
 }
