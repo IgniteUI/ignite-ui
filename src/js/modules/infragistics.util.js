@@ -20,6 +20,7 @@
 // Inspired by base2 and Prototype
 
 /*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, $, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -55,7 +56,7 @@
 
 	// The base Class implementation (does nothing) or expects Class to already be defined as a function
 	// K.D. August 18, 2016 Bug #242 global scope Class object is overridden by Ignite UI for jQuery Class object
-	this.Class = this.Class || function () { };
+	window.Class = window.Class || function () { };
 
 	// Create a new Class that inherits from this class
 	Class.extend = function (prop, doAugment) {
@@ -1531,17 +1532,26 @@
 	}
 
 	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
-	function removePolyfillIE() {
-		return this.parentNode && this.parentNode.removeChild(this);
+	if (!Element.hasOwnProperty("remove")) {
+		Object.defineProperty(Element, 'remove', {
+			configurable: true,
+			enumerable: true,
+			writable: true,
+			value: function remove() {
+			  	this.parentNode.removeChild(this);
+			}
+		});
 	}
 
-	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
-	if (!Element.prototype.remove) {
-		Element.prototype.remove = removePolyfillIE;
-	}
-
-	if (Text && !Text.prototype.remove) {
-		Text.prototype.remove = removePolyfillIE;
+	if (Text && !Text.hasOwnProperty("remove")) {
+		Object.defineProperty(Text, 'remove', {
+			configurable: true,
+			enumerable: true,
+			writable: true,
+			value: function remove() {
+			  	this.parentNode.removeChild(this);
+			}
+		});
 	}
 
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
