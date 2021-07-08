@@ -12,7 +12,7 @@
 *	infragistics.util.js
 *   infragistics.util.jquery.js
 */
-
+"use strict";
 (function (factory) {
     if (typeof define === "function" && define.amd) {
 

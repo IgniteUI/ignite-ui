@@ -19,7 +19,7 @@
  *  infragistics.ui.widget.js
  *	infragistics.ui.tree-en.js
  */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

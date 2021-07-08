@@ -1071,7 +1071,7 @@ QUnit.test('[ID2] igTileManager initialize on markup. Default config', function 
 });
 
 
-QUnit.test('[ID3] iigTileManager initialize on markup. ColumnWidth and columnHeight in px', function (assert) {
+QUnit.test('[ID3] igTileManager initialize on markup. ColumnWidth and columnHeight in px', function (assert) {
 	assert.expect(660);
 	this.assert = assert;
 

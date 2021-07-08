@@ -18,7 +18,7 @@
  *   infragistics.ui.splitbutton.js
  *   infragistics.ui.colorpicker.js
  */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

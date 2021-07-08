@@ -13,7 +13,7 @@
  *  infragistics.util.jquery.js
  *	infragistics.ui.shared.js
  */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

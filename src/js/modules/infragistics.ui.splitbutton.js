@@ -15,7 +15,7 @@
  *   infragistics.ui.shared.js
  *   infragistics.ui.toolbarbutton.js
  */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

@@ -27,6 +27,7 @@
  */
 
 /*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
