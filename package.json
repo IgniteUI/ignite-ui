@@ -19,7 +19,8 @@
   "scripts": {
     "test": "karma start",
     "cover": "grunt hint && npm test -- --single-run",
-    "postinstall": "npm install -g grunt-cli"
+    "postinstall": "npm install -g grunt-cli",
+    "build": "grunt build"
   },
   "dependencies": {
     "jquery": "^3.5.1",

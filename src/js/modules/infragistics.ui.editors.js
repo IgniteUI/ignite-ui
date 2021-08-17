@@ -15,7 +15,7 @@
  *  infragistics.ui.notifier.js
  *	infragistics.ui.validator.js
  */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

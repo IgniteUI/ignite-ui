@@ -18,7 +18,7 @@
  *	infragistics.ui.layoutmanager.js
  *	infragistics.ui.tilemanager-en.js
  */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
