@@ -25,7 +25,7 @@
 *	</script>
 *	<div id="dialog1"></div>
 */
-
+"use strict";
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
