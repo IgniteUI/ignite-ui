@@ -1734,7 +1734,7 @@ QUnit.test(testId_57, function (assert) {
             scrollbarPixelContentRatio = (self.vhScroll().height() / (contentHeight - scrollContainerHeight)) * (vTrackHeight - vDragHeight),
             expectedPosY = self.getTransform3dValueY(self.vDrag(self.vhScrollId));
 
-        assert.equal(expectedPosY.toFixed(4), scrollbarPixelContentRatio.toFixed(4), "igScroll did not scroll properly");
+        assert.equal(expectedPosY.toFixed(2), scrollbarPixelContentRatio.toFixed(2), "igScroll did not scroll properly");
         self.vhScroll().remove();
         done();
     }).catch(function (er) {

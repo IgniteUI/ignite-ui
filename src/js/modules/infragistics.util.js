@@ -1533,23 +1533,23 @@
 
 	// polyfill for IE11+. ChildNode.remove() is not supported by IE11+.
 	if (!Element.hasOwnProperty("remove")) {
-		Object.defineProperty(Element, 'remove', {
+		Object.defineProperty(Element, "remove", {
 			configurable: true,
 			enumerable: true,
 			writable: true,
 			value: function remove() {
-			  	this.parentNode.removeChild(this);
+				this.parentNode.removeChild(this);
 			}
 		});
 	}
 
 	if (Text && !Text.hasOwnProperty("remove")) {
-		Object.defineProperty(Text, 'remove', {
+		Object.defineProperty(Text, "remove", {
 			configurable: true,
 			enumerable: true,
 			writable: true,
 			value: function remove() {
-			  	this.parentNode.removeChild(this);
+				this.parentNode.removeChild(this);
 			}
 		});
 	}
