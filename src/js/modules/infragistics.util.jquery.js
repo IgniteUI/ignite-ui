@@ -9,7 +9,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- * jquery-1.9.1.js
+ * jquery.js
  * modernizr.js (Optional)
  * infragistics.util.js
  *
