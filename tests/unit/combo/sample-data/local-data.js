@@ -2,6 +2,9 @@ window.localData = [{
     "id": 0,
     "name": "magna"
 }, {
+    "id": 0.5,
+    "name": "アイテム"
+}, {
     "id": 1,
     "name": "non"
 }, {
@@ -115,7 +118,4 @@ window.localData = [{
 }, {
     "id": 38,
     "name": "exercitation"
-}, {
-    "id": 39,
-    "name": "labore"
 }];
