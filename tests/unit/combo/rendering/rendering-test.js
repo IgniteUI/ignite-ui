@@ -491,7 +491,7 @@ QUnit.test('[ID7] igCombo scrolling tests', function (assert) {
 });
 
 QUnit.test('[ID8] igCombo virtualization tests', function (assert) {
-	assert.expect(43);
+	assert.expect(44);
 
 	var combo, $list, $dropDownCont, $scrollCont, $scroll,
 		done = assert.async(),
@@ -545,6 +545,8 @@ QUnit.test('[ID8] igCombo virtualization tests', function (assert) {
 	$listItems.each(function (i) {
 		assert.ok($(this).text() === localData[i + itemsIncrement].name, "The item value " + $(this).text() + " should be equal to data source value: " + localData[i].name);
 	});
+
+	assert.ok($($listItems[0]).outerHeight() === $($listItems[1]).outerHeight(), "The first and second items height should be equal to: " + $($listItems[0]).outerHeight());
 
 	combo.listScrollTop(860);
 
