@@ -6,7 +6,7 @@
 * http://www.infragistics.com/
 *
 * Depends on:
-*	jquery-1.9.1.js
+*	jquery.js
 *	ig.util.js
 *	ig.dataSource.js
 */
