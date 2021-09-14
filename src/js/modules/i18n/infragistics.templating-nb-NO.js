@@ -21,7 +21,7 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale['nb-NO'].Templating = {
-			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			undefinedArgument: 'Det har oppstått en feil under forsøket på å hente datakildegenskapen: '
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale['nb-NO'].Templating;

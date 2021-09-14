@@ -21,21 +21,21 @@
 	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
 
 	$.ig.locale['nb-NO'].Tree = {
-			    invalidArgumentType: 'Invalid argument type provided.',
-			    errorOnRequest: 'An error has occurred while retrieving data: ',
-			    noDataSourceUrl: 'The igTree control requires a dataSourceUrl provided in order to initiate a request for data to that URL.',
-			    incorrectPath: 'A node was not found at the provided path: ',
-			    incorrectNodeObject: 'The provided argument is not a jQuery node element.',
-			    setOptionError: 'Runtime changes are not allowed for the following option: ',
-			    moveTo: '<strong>Move to</strong> {0}',
-			    moveBetween: '<strong>Move between</strong> {0} and {1}',
-			    moveAfter: '<strong>Move after</strong> {0}',
-			    moveBefore: '<strong>Move before</strong> {0}',
-			    copyTo: '<strong>Copy to</strong> {0}',
-			    copyBetween: '<strong>Copy between</strong> {0} and {1}',
-			    copyAfter: '<strong>Copy after</strong> {0}',
-			    copyBefore: '<strong>Copy before</strong> {0}',
-			    and: 'and'
+			    invalidArgumentType: 'Ugyldig argumenttype er oppgitt.',
+			    errorOnRequest: 'Det har oppstått en feil under henting av data: ',
+			    noDataSourceUrl: 'IgTree-kontrollen krever en dataSourceUrl for å starte en forespørsel om data til denne URL-adressen.',
+			    incorrectPath: 'Det ble ikke funnet en node på den angitte banen: ',
+			    incorrectNodeObject: 'Det oppgitte argumentet er ikke et jQuery-nodelement.',
+			    setOptionError: 'Kjøretidsendringer er ikke tillatt for følgende alternativ: ',
+			    moveTo: '<strong>Flytt til</strong> {0}',
+			    moveBetween: '<strong>Flytt mellom</strong> {0} og {1}',
+			    moveAfter: '<strong>Flytt etter</strong> {0}',
+			    moveBefore: '<strong>Flytt før</strong> {0}',
+			    copyTo: '<strong>Kopier til</strong> {0}',
+			    copyBetween: '<strong>Kopier mellom</strong> {0} og {1}',
+			    copyAfter: '<strong>Kopier etter</strong> {0}',
+			    copyBefore: '<strong>Kopier før</strong> {0}',
+			    and: 'og'
 	}
 		
 	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale['nb-NO'].Tree;

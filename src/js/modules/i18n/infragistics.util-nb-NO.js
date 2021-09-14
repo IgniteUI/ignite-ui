@@ -34,8 +34,8 @@
 	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
 
 	$.ig.locale['nb-NO'].util = {
-			    unsupportedBrowser: "The current browser does not support HTML5 canvas element. <br/>Try upgrading to any of the following versions:",
-			    currentBrowser: "Current browser: {0}",
+			    unsupportedBrowser: "Den nåværende nettleseren støtter ikke HTML5-lerretelement. <br/>Prøv å oppgradere til en av følgende versjoner:",
+			    currentBrowser: "Nåværende nettleser: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
 			    chrome8: "Google Chrome V 8+",
 			    firefox36: "Mozilla Firefox V 3.6+",
@@ -47,9 +47,9 @@
 			    firefoxDownload: "http://www.mozilla.com/",
 			    safariDownload: "http://www.apple.com/safari/download/",
 			    defaultSummaryMethodLabelMin: "Min = ",
-			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelMax: "Maks = ",
 			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelAvg: "Gj.sn. = ",
 			    defaultSummaryMethodLabelCount: "Count = "
 	}
 	
