@@ -21,8 +21,8 @@
 	$.ig.Popover = $.ig.Popover || {};
 	
 	$.ig.locale['nb-NO'].Popover = {
-		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+		popoverOptionChangeNotSupported: "Det er ikke mulig å endre følgende alternativ etter at igPopover er initialisert:",
+		popoverShowMethodWithoutTarget: "Målparameteren for visningsfunksjonen er obligatorisk når alternativet velgere brukes"
 	};
 
 $.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale['nb-NO'].Popover;
