@@ -21,8 +21,8 @@
 	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
 
     $.ig.locale['nb-NO'].Toolbar = {
-			collapseButtonTitle: 'Collapse {0}',
-			expandButtonTitle: 'Expand {0}'
+			collapseButtonTitle: 'Skjul {0}',
+			expandButtonTitle: 'Utvid {0}'
 	}
 		
 	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale['nb-NO'].Toolbar;

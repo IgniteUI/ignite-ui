@@ -25,8 +25,8 @@
 		errorMsg: "Error",
 		warningMsg: "Warning",
 		infoMsg: "Information",
-		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		notSupportedState: "Ikke støttet varslingstilstand! Bruk en av de støttede tilstandene 'success', 'info', 'warning', 'error'",
+		notSupportedMode: "Ikke støttet varslingsmodus! Bruk en av de støttede modusene 'auto', 'popover', 'inline'"
 };
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale['nb-NO'].Notifier;

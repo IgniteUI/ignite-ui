@@ -21,7 +21,7 @@
 	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
 	
 	$.ig.locale['nb-NO'].Rating = {
-			setOptionError: 'Runtime changes are not allowed for the following option: '
+			setOptionError: 'Kjøretidsendringer er ikke tillatt for følgende alternativ: '
 	}
 	
 	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale['nb-NO'].Rating;

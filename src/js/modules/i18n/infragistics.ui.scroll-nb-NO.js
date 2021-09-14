@@ -21,8 +21,8 @@
 		$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
 
 	    $.ig.locale['nb-NO'].Scroll = {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Element som blir koblet, eksisterer ikke.',
+		        errorNoScrollbarLink: 'Rullefeltelementet som blir koblet, eksisterer ikke.'
 		}
 
 		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale['nb-NO'].Scroll;
