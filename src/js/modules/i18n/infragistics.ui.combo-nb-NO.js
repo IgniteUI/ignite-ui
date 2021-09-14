@@ -21,14 +21,14 @@
 	$.ig.Combo = $.ig.Combo || {};
 	
 	$.ig.locale['nb-NO'].Combo = {
-			noMatchFoundText: 'No matches found',
-			dropDownButtonTitle: 'Show drop-down',
-			clearButtonTitle: 'Clear value',
-			placeHolder: 'select...',
-			notSuported: 'Operation is not supported.',
-			errorNoSupportedTextsType: "A different filtering text is required. Provide a value that is either a string or an array of strings.",
-			errorUnrecognizedHighlightMatchesMode: "A different highlight matches mode is required. Choose a value between 'multi', 'contains', 'startsWith', 'full' and 'null'.",
-			errorIncorrectGroupingKey: "Grouping key is not correct."
+			noMatchFoundText: 'Ingen treff funnet',
+			dropDownButtonTitle: 'Vis rullegardinmeny',
+			clearButtonTitle: 'Fjern verdi',
+			placeHolder: 'plukke ut...',
+			notSuported: 'Drift støttes ikke.',
+			errorNoSupportedTextsType: "En annen filtreringstekst er nødvendig. Angi en verdi som enten er en streng eller en rekke strenger.",
+			errorUnrecognizedHighlightMatchesMode: "En annen høydepunktsmatch-modus er nødvendig. Velg en verdi mellom 'multi', 'contains', 'startsWith', 'full' og 'null'.",
+			errorIncorrectGroupingKey: "Grupperingsnøkkelen er ikke korrekt."
 	};
 
 	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale['nb-NO'].Combo;

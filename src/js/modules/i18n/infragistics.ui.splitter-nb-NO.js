@@ -21,8 +21,8 @@
 	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
 
 	    $.ig.locale['nb-NO'].Splitter = {
-		        errorPanels: 'The number of panels have to be no more than two.',
-		        errorSettingOption: 'Error setting option.'
+		        errorPanels: 'Antall paneler må ikke være mer enn to.',
+		        errorSettingOption: 'Feil ved innstilling.'
 		}
 		
 		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale['nb-NO'].Splitter;
