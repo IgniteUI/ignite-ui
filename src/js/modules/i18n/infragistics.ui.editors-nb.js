@@ -18,9 +18,9 @@
 	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].Editor = {
+	$.ig.locale.nb.Editor = {
 		spinUpperTitle: 'Økning',
 		spinLowerTitle: 'Nedgang',
 		buttonTitle: 'Vis liste',
@@ -91,6 +91,6 @@
 		timePickerNoSuchMethod: "Tidsvelgeren støtter ikke denne metoden."
 	};
 
-	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale['nb-NO'].Editor;
-	return $.ig.locale['nb-NO'].Editor;
+	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.nb.Editor;
+	return $.ig.locale.nb.Editor;
 }));// REMOVE_FROM_COMBINED_FILES

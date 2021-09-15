@@ -17,10 +17,10 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
 	
-	$.ig.locale['nb-NO'].HtmlEditor = {
+	$.ig.locale.nb.HtmlEditor = {
 		boldButtonTitle: 'Bold',
 		italicButtonTitle: 'Kursiv',
 		underlineButtonTitle: 'Understrek',
@@ -131,6 +131,6 @@
 			]
 };
 
-$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale['nb-NO'].HtmlEditor;
-return $.ig.locale['nb-NO'].HtmlEditor;
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.nb.HtmlEditor;
+return $.ig.locale.nb.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

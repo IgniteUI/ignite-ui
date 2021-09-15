@@ -17,12 +17,12 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.SharedLocale = $.ig.SharedLocale || {};
 	
-	$.ig.locale['nb-NO'].SharedLocale = {
+	$.ig.locale.nb.SharedLocale = {
 
 	};
-$.ig.SharedLocale.locale = $.ig.SharedLocale.locale || $.ig.locale['nb-NO'].SharedLocale;
-return $.ig.locale['nb-NO'].SharedLocale;
+$.ig.SharedLocale.locale = $.ig.SharedLocale.locale || $.ig.locale.nb.SharedLocale;
+return $.ig.locale.nb.SharedLocale;
 }));// REMOVE_FROM_COMBINED_FILES

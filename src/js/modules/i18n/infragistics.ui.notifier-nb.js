@@ -17,10 +17,10 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.Notifier = $.ig.Notifier || {};
 	
-	$.ig.locale['nb-NO'].Notifier = {
+	$.ig.locale.nb.Notifier = {
 		successMsg: "Success",
 		errorMsg: "Error",
 		warningMsg: "Warning",
@@ -29,6 +29,6 @@
 		notSupportedMode: "Ikke støttet varslingsmodus! Bruk en av de støttede modusene 'auto', 'popover', 'inline'"
 };
 
-$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale['nb-NO'].Notifier;
-return $.ig.locale['nb-NO'].Notifier;
+$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.nb.Notifier;
+return $.ig.locale.nb.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES
