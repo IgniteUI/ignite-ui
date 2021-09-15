@@ -18,9 +18,9 @@
 	$.ig = $.ig || {};
 	$.ig.Upload = $.ig.Upload || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].Upload = {
+	$.ig.locale.nb.Upload = {
 			    labelUploadButton: "Last opp fil",
 			    labelAddButton: "Legge til",
 			    labelClearAllButton: "Slett Lastet opp",
@@ -66,6 +66,6 @@
 			    titleClearAllButton: "Slett Lastet opp"
 	}
 		
-	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale['nb-NO'].Upload;
-	return $.ig.locale['nb-NO'].Upload;
+	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.nb.Upload;
+	return $.ig.locale.nb.Upload;
 }));// REMOVE_FROM_COMBINED_FILES

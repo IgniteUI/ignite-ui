@@ -17,13 +17,13 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.Templating = $.ig.Templating || {};
 	
-	$.ig.locale['nb-NO'].Templating = {
+	$.ig.locale.nb.Templating = {
 			undefinedArgument: 'Det har oppstått en feil under forsøket på å hente datakildegenskapen: '
 	};
 
-	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale['nb-NO'].Templating;
-	return $.ig.locale['nb-NO'].Templating;
+	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.nb.Templating;
+	return $.ig.locale.nb.Templating;
 }));// REMOVE_FROM_COMBINED_FILES

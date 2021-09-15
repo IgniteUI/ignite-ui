@@ -17,10 +17,10 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.Dialog = $.ig.Dialog || {};
 	
-	$.ig.locale['nb-NO'].Dialog = {
+	$.ig.locale.nb.Dialog = {
 			closeButtonTitle: "Lukk",
 			minimizeButtonTitle: "Minimer",
 			maximizeButtonTitle: "Maksimer",
@@ -30,6 +30,6 @@
 			setOptionError: 'Kjøretidsendringer er ikke tillatt for følgende alternativ: '
 	};
 
-	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale['nb-NO'].Dialog;
-	return $.ig.locale['nb-NO'].Dialog;
+	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.nb.Dialog;
+	return $.ig.locale.nb.Dialog;
 }));// REMOVE_FROM_COMBINED_FILES

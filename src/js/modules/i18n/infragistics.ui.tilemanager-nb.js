@@ -18,14 +18,14 @@
 	$.ig = $.ig || {};
 	$.ig.TileManager = $.ig.TileManager || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].TileManager = {
+	$.ig.locale.nb.TileManager = {
 			renderDataError: "Dataene ble ikke hentet eller analysert.",
 		    setOptionItemsLengthError: "Lengden på elementkonfigurasjonene stemmer ikke overens med antall fliser.",
 			setOptionError: "Kjøretidsendringer er ikke tillatt for dette alternativet."
 	}
 	
-	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale['nb-NO'].TileManager;
-	return $.ig.locale['nb-NO'].TileManager;
+	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.nb.TileManager;
+	return $.ig.locale.nb.TileManager;
 }));// REMOVE_FROM_COMBINED_FILES

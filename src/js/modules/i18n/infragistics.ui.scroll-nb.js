@@ -18,13 +18,13 @@
 	$.ig = $.ig || {};
 		$.ig.Scroll = $.ig.Scroll || {};
 		$.ig.locale = $.ig.locale || {};
-		$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+		$.ig.locale.nb = $.ig.locale.nb || {};
 
-	    $.ig.locale['nb-NO'].Scroll = {
+	    $.ig.locale.nb.Scroll = {
 		        errorNoElementLink: 'Element som blir koblet, eksisterer ikke.',
 		        errorNoScrollbarLink: 'Rullefeltelementet som blir koblet, eksisterer ikke.'
 		}
 
-		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale['nb-NO'].Scroll;
-		return $.ig.locale['nb-NO'].Scroll;
+		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.nb.Scroll;
+		return $.ig.locale.nb.Scroll;
 }));// REMOVE_FROM_COMBINED_FILES
