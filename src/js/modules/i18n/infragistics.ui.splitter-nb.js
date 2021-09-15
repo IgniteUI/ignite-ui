@@ -18,13 +18,13 @@
 	$.ig = $.ig || {};
 	$.ig.Splitter = $.ig.Splitter || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	    $.ig.locale['nb-NO'].Splitter = {
+	    $.ig.locale.nb.Splitter = {
 		        errorPanels: 'Antall paneler må ikke være mer enn to.',
 		        errorSettingOption: 'Feil ved innstilling.'
 		}
 		
-		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale['nb-NO'].Splitter;
-		return $.ig.locale['nb-NO'].Splitter;
+		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.nb.Splitter;
+		return $.ig.locale.nb.Splitter;
 }));// REMOVE_FROM_COMBINED_FILES

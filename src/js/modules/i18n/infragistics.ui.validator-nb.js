@@ -18,9 +18,9 @@
 	$.ig = $.ig || {};
 	$.ig.Validator = $.ig.Validator || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].Validator = {
+	$.ig.locale.nb.Validator = {
 		        defaultMessage: 'Dette feltet trenger oppmerksomhet',
 		        selectMessage: 'En verdi bør velges',
 		        rangeSelectMessage: 'Du må velge minst {0} men ikke mer enn {1} elementer',
@@ -45,6 +45,6 @@
 		        optionalString: '(valgfri)'
 	}
 		
-	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale['nb-NO'].Validator;
-	return $.ig.locale['nb-NO'].Validator;
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.nb.Validator;
+	return $.ig.locale.nb.Validator;
 }));// REMOVE_FROM_COMBINED_FILES

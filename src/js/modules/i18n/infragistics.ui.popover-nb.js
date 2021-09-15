@@ -17,14 +17,14 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.Popover = $.ig.Popover || {};
 	
-	$.ig.locale['nb-NO'].Popover = {
+	$.ig.locale.nb.Popover = {
 		popoverOptionChangeNotSupported: "Det er ikke mulig å endre følgende alternativ etter at igPopover er initialisert:",
 		popoverShowMethodWithoutTarget: "Målparameteren for visningsfunksjonen er obligatorisk når alternativet velgere brukes"
 	};
 
-$.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale['nb-NO'].Popover;
-return $.ig.locale['nb-NO'].Popover;
+$.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.nb.Popover;
+return $.ig.locale.nb.Popover;
 }));// REMOVE_FROM_COMBINED_FILES

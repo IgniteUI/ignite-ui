@@ -17,10 +17,10 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
 	
-	$.ig.locale['nb-NO'].DataSourceLocale = {
+	$.ig.locale.nb.DataSourceLocale = {
 			invalidDataSource: "Den oppgitte datakilden er ugyldig. Det er tilfeldigvis en skalar.",
 			unknownDataSource: "Kan ikke fastslå datakildetypen. Oppgi om det er JSON- eller XML-data.",
 			errorParsingArrays: "Det oppstod en feil under analyse av matrisedata og bruk av det definerte dataskjemaet: ",
@@ -48,6 +48,6 @@
 			errorUnexpectedCustomFilterFunction: "Det ble gitt en uventet verdi for en tilpasset filtreringsfunksjon. En funksjon eller streng forventes."
 	};
 	
-	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale['nb-NO'].DataSourceLocale;
-	return $.ig.locale['nb-NO'].DataSourceLocale;
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.nb.DataSourceLocale;
+	return $.ig.locale.nb.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

@@ -18,9 +18,9 @@
 	$.ig = $.ig || {};
 	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].VideoPlayer = {
+	$.ig.locale.nb.VideoPlayer = {
 			    liveStream: "Live video",
 			    live: "Bo",
 			    paused: "Pauset",
@@ -58,6 +58,6 @@
 				noCommercials: 'Nettleserkontroller støtter ikke reklame'
 	}
 
-	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale['nb-NO'].VideoPlayer;
-	return $.ig.locale['nb-NO'].VideoPlayer;
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.nb.VideoPlayer;
+	return $.ig.locale.nb.VideoPlayer;
 }));// REMOVE_FROM_COMBINED_FILES
