@@ -18,12 +18,12 @@
 	$.ig = $.ig || {};
 	$.ig.Rating = $.ig.Rating || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	
-	$.ig.locale['nb-NO'].Rating = {
+	$.ig.locale.nb.Rating = {
 			setOptionError: 'Kjøretidsendringer er ikke tillatt for følgende alternativ: '
 	}
 	
-	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale['nb-NO'].Rating;
-	return $.ig.locale['nb-NO'].Rating;
+	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.nb.Rating;
+	return $.ig.locale.nb.Rating;
 }));// REMOVE_FROM_COMBINED_FILES

@@ -31,9 +31,9 @@
 	$.ig = $.ig || {};
 	$.ig.util = $.ig.util || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].util = {
+	$.ig.locale.nb.util = {
 			    unsupportedBrowser: "Den nåværende nettleseren støtter ikke HTML5-lerretelement. <br/>Prøv å oppgradere til en av følgende versjoner:",
 			    currentBrowser: "Nåværende nettleser: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -53,6 +53,6 @@
 			    defaultSummaryMethodLabelCount: "Count = "
 	}
 	
-	$.ig.util.locale = $.ig.util.locale || $.ig.locale['nb-NO'].util;
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.nb.util;
 	return igRoot;
 }));// REMOVE_FROM_COMBINED_FILES

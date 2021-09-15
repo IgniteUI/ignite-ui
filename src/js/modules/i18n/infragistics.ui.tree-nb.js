@@ -18,9 +18,9 @@
 	$.ig = $.ig || {};
 	$.ig.Tree = $.ig.Tree || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-	$.ig.locale['nb-NO'].Tree = {
+	$.ig.locale.nb.Tree = {
 			    invalidArgumentType: 'Ugyldig argumenttype er oppgitt.',
 			    errorOnRequest: 'Det har oppstått en feil under henting av data: ',
 			    noDataSourceUrl: 'IgTree-kontrollen krever en dataSourceUrl for å starte en forespørsel om data til denne URL-adressen.',
@@ -38,6 +38,6 @@
 			    and: 'og'
 	}
 		
-	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale['nb-NO'].Tree;
-	return $.ig.locale['nb-NO'].Tree;
+	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.nb.Tree;
+	return $.ig.locale.nb.Tree;
 }));// REMOVE_FROM_COMBINED_FILES

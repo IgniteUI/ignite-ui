@@ -17,10 +17,10 @@
 (function ($) {
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 	$.ig.Combo = $.ig.Combo || {};
 	
-	$.ig.locale['nb-NO'].Combo = {
+	$.ig.locale.nb.Combo = {
 			noMatchFoundText: 'Ingen treff funnet',
 			dropDownButtonTitle: 'Vis rullegardinmeny',
 			clearButtonTitle: 'Fjern verdi',
@@ -31,6 +31,6 @@
 			errorIncorrectGroupingKey: "Grupperingsnøkkelen er ikke korrekt."
 	};
 
-	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale['nb-NO'].Combo;
-	return $.ig.locale['nb-NO'].Combo;
+	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.nb.Combo;
+	return $.ig.locale.nb.Combo;
 }));// REMOVE_FROM_COMBINED_FILES

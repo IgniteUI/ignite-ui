@@ -18,13 +18,13 @@
 	$.ig = $.ig || {};
 	$.ig.Toolbar = $.ig.Toolbar || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale['nb-NO'] = $.ig.locale['nb-NO'] || {};
+	$.ig.locale.nb = $.ig.locale.nb || {};
 
-    $.ig.locale['nb-NO'].Toolbar = {
+    $.ig.locale.nb.Toolbar = {
 			collapseButtonTitle: 'Skjul {0}',
 			expandButtonTitle: 'Utvid {0}'
 	}
 		
-	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale['nb-NO'].Toolbar;
-	return $.ig.locale['nb-NO'].Toolbar;
+	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.nb.Toolbar;
+	return $.ig.locale.nb.Toolbar;
 }));// REMOVE_FROM_COMBINED_FILES
