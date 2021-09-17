@@ -2,7 +2,7 @@
  * Prepare bundles for each localization
  */
 function buildLocaleBundles () {
-    var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"],
+    var locales = ["bg", "cs", "da", "de", "en", "es", "fr", "hu", "it", "ja", "nb", "nl", "pl", "pt", "ro", "ru", "sv", "tr", "zh-Hans", "zh-Hant"],
     newFiles = {}, i;
 
     for (i = 0; i < locales.length; i++) {
