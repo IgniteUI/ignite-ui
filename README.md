@@ -1,7 +1,7 @@
 # Ignite UI for jQuery  
-[![Build Status](https://travis-ci.org/IgniteUI/ignite-ui.svg?branch=master)](https://travis-ci.org/IgniteUI/ignite-ui)
+[![Node.js CI](https://github.com/IgniteUI/ignite-ui/actions/workflows/node.js.yml/badge.svg)](https://github.com/IgniteUI/ignite-ui/actions/workflows/node.js.yml)
 [![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8707f9ff8ee94bba9e1f897ef40cd66e)](https://www.codacy.com/app/kdinev/ignite-ui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IgniteUI/ignite-ui&amp;utm_campaign=Badge_Grade)
+[![CodeQL](https://github.com/IgniteUI/ignite-ui/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/IgniteUI/ignite-ui/actions/workflows/codeql-analysis.yml)
 
 [![npm version](https://badge.fury.io/js/ignite-ui.svg)](https://badge.fury.io/js/ignite-ui)
 [![Bower version](https://badge.fury.io/bo/ignite-ui.svg)](https://badge.fury.io/bo/ignite-ui)

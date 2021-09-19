@@ -565,9 +565,9 @@ QUnit.test('[ID13] Paste and insert', function (assert) {
 	});
 
 	editorInput11.igPercentEditor("field").focus();
-	editorInput11.igPercentEditor("insert", "1");
+	editorInput11.igPercentEditor("insert", "301");
 	var done = assert.async();
-
+	
 	$.ig.TestUtil.wait(200).then(function () {
 		assert.equal(editorInput11.parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
 		//#287: Percent/Currency insert method not working with existing value outside edit mode
