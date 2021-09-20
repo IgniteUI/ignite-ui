@@ -2,7 +2,7 @@
 [![Node.js CI](https://github.com/IgniteUI/ignite-ui/actions/workflows/node.js.yml/badge.svg)](https://github.com/IgniteUI/ignite-ui/actions/workflows/node.js.yml)
 [![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
 [![CodeQL](https://github.com/IgniteUI/ignite-ui/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/IgniteUI/ignite-ui/actions/workflows/codeql-analysis.yml)
-![Discord](https://img.shields.io/discord/836634487483269200)
+[![Discord](https://img.shields.io/discord/836634487483269200?logo=discord&logoColor=ffffff)](https://discord.gg/39MjrTRqds)
 
 [![npm version](https://badge.fury.io/js/ignite-ui.svg)](https://badge.fury.io/js/ignite-ui)
 [![Bower version](https://badge.fury.io/bo/ignite-ui.svg)](https://badge.fury.io/bo/ignite-ui)
