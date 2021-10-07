@@ -59,10 +59,10 @@
     text-align:center;
 }
 
-.ui-chart-toolbar ul 
+.ui-chart-toolbar ul
 {
 }
-.ui-chart-toolbar li 
+.ui-chart-toolbar li
 {
     list-style: none;
     /*float: left;*/
@@ -70,15 +70,15 @@
     vertical-align: middle;
 }
 .ui-chart-slider {
-    width: 40px; 
-    padding:5px 9px; 
+    width: 40px;
+    padding:5px 9px;
 }
 .ui-chart-opd-button {
     position: absolute !important; top: 5px; right: 5px;
 }
 
 .ui-chart-toolbar
-{  
+{
 }
 .ui-chart-toolbar button
 {
@@ -127,7 +127,7 @@
 }
 .igTouch .ui-chart-slider
 {
- width:90%;    
+ width:90%;
  padding: 0 30px;
 }
 .igTouch .ui-chart-toolbar .ui-slider-handle
@@ -141,7 +141,7 @@
     font-size: 16px;
     color: #666;
     margin: 5px 0px 5px 0px;
-}  
+}
 
 .ui-chart-subtitle {
     font-family: Arial, Helvetica, sans-serif;
@@ -213,4 +213,4 @@
 .ui-chart-legend
 {
     overflow: auto;
-}   
+}
