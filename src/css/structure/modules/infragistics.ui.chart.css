@@ -7,8 +7,8 @@
 
 .ui-chart-axis
 {
-    border-color: rgba(0, 0, 0, 0.38);
-    background-color: rgba(0, 0, 0, 0.38);
+    border-color: #9e9e9e;
+    background-color: #9e9e9e;
 }
 
 .ui-chart-legend-items-list
@@ -193,7 +193,7 @@
 
 .ui-chart-category-axis-tick {
     height: 8px;
-    color: rgba(0, 0, 0, 0.38);
+    color: #9e9e9e;
 }
 .ui-chart-area-fill-opacity {
     opacity: 0.7;
