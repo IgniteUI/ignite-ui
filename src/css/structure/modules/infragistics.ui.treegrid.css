@@ -6,6 +6,7 @@
 	margin: 0 6px 0 0px;
 	min-width: 16px;
 	cursor: pointer;
+	box-sizing: content-box;
 }
 
 .ui-igtreegrid-expansion-indicator
