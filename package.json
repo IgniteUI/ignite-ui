@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "jquery": "^3.6.0",
-    "jquery-ui": "^1.12.1"
+    "jquery-ui": "^1.13.0"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",
@@ -37,10 +37,10 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "jquery-mockjax": "^2.6.0",
-    "karma": "^4.4.1",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.2",
-    "karma-qunit": "^1.2.1",
+    "karma": "^6.3.8",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.3",
+    "karma-qunit": "^4.1.2",
     "karma-spec-reporter": "0.0.32",
     "knockout": "^3.5.1",
     "qunitjs": "^2.4.1"
