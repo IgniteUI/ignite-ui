@@ -7,7 +7,7 @@ const glob = require("glob");
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ["spec"];
+const reporters = ["spec", "coverage"];
 let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
@@ -51,7 +51,8 @@ module.exports = function (config) {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ["qunit"],
-
+    
+    plugins: ['karma-qunit', 'karma-coverage', 'karma-spec-reporter', 'karma-chrome-launcher'],
 
     // list of files / patterns to load in the browser
     files: [
