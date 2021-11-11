@@ -59,7 +59,7 @@ module.exports = function (config) {
       // serve resources
       { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
-      { pattern: `http://code.jquery.com/ui/1.12.1/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
+      { pattern: `http://code.jquery.com/ui/1.13.0/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
       { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
       { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
 
