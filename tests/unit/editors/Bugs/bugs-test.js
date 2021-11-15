@@ -654,10 +654,8 @@ QUnit.test('Bug 207546', function (assert) {
 		// datepicker handles mousedown for external click detection:
 		$button.mousedown().mouseup().click();
 
-		return util.wait(waidDuration + 100);
+		return util.wait(waidDuration + 1000);
 	}).then(function () {
-		debugger;
-
 		// wait for animation (show + hide...) :
 		assert.notOk($editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 		assert.ok(flag, "Value changed should not be fired.");
