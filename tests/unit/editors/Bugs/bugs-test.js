@@ -573,7 +573,7 @@ QUnit.test('Bug 876', function (assert) {
 
 	$editor.igDatePicker("dropDownButton").click();
 
-	this.util.wait(400).then(function () { //This timeout is need because the test requires calendar which needs focus
+	this.util.wait(500).then(function () { //This timeout is need because the test requires calendar which needs focus
 		$editor.igDatePicker("getCalendar").find(".ui-datepicker-today").find("a").click();
 		assert.equal($editor.igDatePicker("value").getTime(), todayDate.getTime(), "Max value not selected");
 		assert.notOk($editor.igDatePicker("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message should not be shown");
@@ -654,7 +654,7 @@ QUnit.test('Bug 207546', function (assert) {
 		// datepicker handles mousedown for external click detection:
 		$button.mousedown().mouseup().click();
 
-		return util.wait(waidDuration + 1000);
+		return util.wait(waidDuration);
 	}).then(function () {
 		// wait for animation (show + hide...) :
 		assert.notOk($editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
