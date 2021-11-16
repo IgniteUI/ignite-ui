@@ -308,7 +308,7 @@ QUnit.test('[ID2] Locale lowercase fallback', function (assert) {
 });
 
 QUnit.test('[ID3] Changing language globally', function (assert) {
-	assert.expect(10);
+	assert.expect(9);
 
 	var $datePicker = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "datepicker" }),
 		$numericEditor = $.ig.TestUtil.appendToFixture(this.inputTag, { id: "numeric" }),
@@ -363,11 +363,11 @@ QUnit.test('[ID3] Changing language globally', function (assert) {
 	$tree.igTree({
 		dataSource: this.results
 	});
-	$tilemanager.igTileManager({
-		animationDuration: 0,
-		width: 1000,
-		height: 1000
-	});
+	// $tilemanager.igTileManager({
+	// 	animationDuration: 0,
+	// 	width: 1000,
+	// 	height: 1000
+	// });
 
 	var locale = $.ig.locale.bg.Editor;
 	$numericEditor.igNumericEditor("option", "locale", locale);
@@ -381,7 +381,7 @@ QUnit.test('[ID3] Changing language globally', function (assert) {
 	assert.equal($dateEditor.data("igDateEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
 	assert.equal($maskEditor.data("igMaskEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
 	assert.equal($tree.data("igTree")._getLocaleValue("invalidArgumentType"), $.ig.locale.de.Tree.invalidArgumentType, "_getLocaleValue returned wrong after setting global language.");
-	assert.equal($tilemanager.data("igTileManager")._getLocaleValue("setOptionItemsLengthError"), $.ig.locale.de.TileManager.setOptionItemsLengthError, "_getLocaleValue returned wrong after setting global language.");
+	// assert.equal($tilemanager.data("igTileManager")._getLocaleValue("setOptionItemsLengthError"), $.ig.locale.de.TileManager.setOptionItemsLengthError, "_getLocaleValue returned wrong after setting global language.");
 });
 
 QUnit.test('[ID4] Change language - combo ui tests', function (assert) {
