@@ -645,16 +645,16 @@ QUnit.test('Bug 207546', function (assert) {
 		}),
 		$button = this.util.appendToFixture(this.buttonTag).text("Click Me"),
 		flag = true,
-		done = assert.async(),
-		util = this.util,
-		waidDuration = 20 + ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/);
+		done = assert.async();
 
 	$editor.igDatePicker("dropDownButton").click();
-	this.util.wait(waidDuration + 100).then(function () {
+	this.util.wait(10).then(function () {
 		// datepicker handles mousedown for external click detection:
-		$button.mousedown().mouseup().click();
-
-		return util.wait(waidDuration);
+		$button.mousedown();
+		return $.ig.TestUtil.wait(3000);
+	}).then(function () {
+		$button.mouseup().click();
+		return $.ig.TestUtil.wait(1000);
 	}).then(function () {
 		// wait for animation (show + hide...) :
 		assert.notOk($editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
