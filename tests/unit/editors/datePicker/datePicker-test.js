@@ -260,6 +260,7 @@ QUnit.test('Apply datepicker options', function (assert) {
 	assert.ok(currentDay.prev().hasClass(disabledClass), "Previous day not disabled");
 	assert.notOk(currentDay.next().hasClass(disabledClass), "Nexy day (9) should be selectable");
 	assert.ok(currentDay.next().next().hasClass(disabledClass), "The day of 10th should be disabled");
+	this.dropDownButton().click();
 });
 
 QUnit.test('Apply datepicker options', function (assert) {
