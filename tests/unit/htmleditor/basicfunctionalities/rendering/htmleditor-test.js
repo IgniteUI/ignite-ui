@@ -305,7 +305,7 @@ QUnit.module("igHTMLEditor unit tests", {
 
 		$("#" + toolabrCollapseButton).click();
 
-		$.ig.TestUtil.wait(300).then(function () {
+		$.ig.TestUtil.wait(400).then(function () {
 			self.assert.ok(self.equalWithEpsilon(toolbar.width(), toolbar.height(), epsilon), "The " + toolbarId + " toolbar is collapsed.");
 			done();
 		}).catch(function (er) {
