@@ -12024,10 +12024,10 @@
 		_removeDOM: function () {
 			if (this.element.is("div")) {
 				this.element.empty();
-			} else if (this.element.is("input")) {
+			} else if (this.element.is("input") && this._editorInput) {
 				this._editorInput.remove();
 				this.element.unwrap();
-			} else if (this.element.is("span")) {
+			} else if (this.element.is("span") && this._valueInput) {
 				this._valueInput.remove();
 				this.element.unwrap();
 			}
