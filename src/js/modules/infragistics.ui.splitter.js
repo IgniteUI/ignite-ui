@@ -2282,7 +2282,7 @@
                 $(".selector").igSplitter("destroy");
                 ```
                 */
-                var evtHandlers = this._opt.eventHandlers,
+                var evtHandlers = this._opt ? this._opt.eventHandlers : null,
                     i, splitters, index;
                 this._removeEventHandlers();
                 this._removeClasses();
@@ -2298,9 +2298,11 @@
                 $.data(document.body, "ig-splitters", splitters);
 
                 // D.A. 24th October 2013 Remove the attached events to window and document
-                $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
-                $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
-                $(window).unbind("resize", evtHandlers.windowResize);
+                if (evtHandlers) {
+                    $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
+                    $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
+                    $(window).unbind("resize", evtHandlers.windowResize);
+                }
                 this._superApply(arguments);
                 this._opt = null;
                 return this;

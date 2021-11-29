@@ -11,19 +11,19 @@ QUnit.module("igDatePicker(Bugs) unit tests", {
 		}
 		return $(element, options).appendTo($qunitFixture);
 	},
-	input: function() {
+	input: function () {
 		return this.editor.igDatePicker("field");
 	},
-	container: function() {
+	container: function () {
 		return this.editor.igDatePicker("editorContainer");
 	},
-	calendar: function() {
+	calendar: function () {
 		return this.editor.igDatePicker("getCalendar");
 	},
-	dropDownButton: function() {
+	dropDownButton: function () {
 		return this.editor.igDatePicker("dropDownButton");
 	},
-	getDDmmYYYYHHSS: function(date) {
+	getDDmmYYYYHHSS: function (date) {
 		var result = "", day, month, minutes, hours;
 		if (typeof date.getTime !== "function") {
 			return;
@@ -119,7 +119,7 @@ QUnit.module("igDatePicker(Bugs) unit tests", {
 
 QUnit.test('Bug 221368', function (assert) {
 	assert.expect(5);
-	
+
 	var done = assert.async(), self = this;
 
 	this.editor = editor1 = this.appendToFixture(this.inputTag).igDatePicker({
@@ -134,7 +134,7 @@ QUnit.test('Bug 221368', function (assert) {
 		editor2 = $(self.inputTag).appendTo($('#qunit-fixture')).igDatePicker();
 		editor2.igDatePicker("dropDownButton").click();
 		return $.ig.TestUtil.wait(400);
-	}).then(function() {
+	}).then(function () {
 		self.dropDownButton().click();
 		assert.ok(editor1.igDatePicker("dropDownVisible"), "The calendar of the readOnly editor should be visible");
 		self.dropDownButton().click();
@@ -153,11 +153,11 @@ QUnit.test('Bug 221368', function (assert) {
 QUnit.test('Bug 213900', function (assert) {
 	assert.expect(4);
 
-	this.editor = this.appendToFixture(this.divTag).attr({ id: "igDatePicker1"}).igDatePicker();
+	this.editor = this.appendToFixture(this.divTag).attr({ id: "igDatePicker1" }).igDatePicker();
 	assert.equal(this.input().attr("id"), "igDatePicker1EditingInput", "The id of the input should be igDatePicker1editingInput");
 	assert.equal(this.container().attr("id"), "igDatePicker1", "The id of the span should be igDatePicker1");
 
-	this.editor = this.appendToFixture(this.spanTag).attr({ id: "igDatePicker2"}).igDatePicker();
+	this.editor = this.appendToFixture(this.spanTag).attr({ id: "igDatePicker2" }).igDatePicker();
 	assert.equal(this.input().attr("id"), "igDatePicker2EditingInput", "The id of the input should be igDatePicker2editingInput");
 	assert.equal(this.input().parent().attr("id"), "igDatePicker2", "The id of the span should be igDatePicker2");
 });
@@ -223,7 +223,7 @@ QUnit.test('Bug 215046', function (assert) {
 	var done = assert.async();
 
 	editor1 = this.appendToFixture(this.inputTag).igDatePicker();
-	editor2 =  this.appendToFixture(this.inputTag).igDatePicker();
+	editor2 = this.appendToFixture(this.inputTag).igDatePicker();
 	editor1.igDatePicker("dropDownButton").click();
 	editor2.igDatePicker("dropDownButton").click();
 	$.ig.TestUtil.wait(20).then(function () {
@@ -265,12 +265,12 @@ QUnit.test('Issue 84', function (assert) {
 	assert.notOk(editor.igDatePicker("dropDownVisible"), "The dropdown container is visible, but it shouldn't be.");
 });
 
-QUnit.test( 'Issue 89', function (assert) {
+QUnit.test('Issue 89', function (assert) {
 	assert.expect(4);
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
 		datepickerOptions: {
-			minDate : new Date(2016, 06, 12),
+			minDate: new Date(2016, 06, 12),
 			maxDate: new Date(2016, 06, 31)
 		}
 	});
@@ -289,9 +289,9 @@ QUnit.test( 'Issue 89', function (assert) {
 QUnit.test('Issue 174', function (assert) {
 	assert.expect(9);
 
-	var editor1, editor2, calendar, nextMonth, yearSelect;
+	var yearSelect, self = this, done = assert.async();
 
-	editor1 = this.appendToFixture(this.inputTag).igDatePicker({
+	$editor1 = this.appendToFixture(this.inputTag).igDatePicker({
 		dateDisplayFormat: "dd/MM/yyyy",
 		dateInputFormat: "dateTime",
 		validatorOptions: {
@@ -305,7 +305,7 @@ QUnit.test('Issue 174', function (assert) {
 			}
 		}
 	});
-	editor2 = this.appendToFixture(this.inputTag).igDatePicker({
+	$editor2 = this.appendToFixture(this.inputTag).igDatePicker({
 		datepickerOptions: {
 			changeYear: true,
 			beforeShow: function (input, inst) {
@@ -319,37 +319,46 @@ QUnit.test('Issue 174', function (assert) {
 				mode: "popover"
 			}
 		}
-	});		
-	calendar = editor1.igDatePicker("getCalendar"),
-	editor1.igDatePicker("dropDownButton").click();
+	});
+	$calendar = $editor1.igDatePicker("getCalendar");
+	$editor1.igDatePicker("dropDownButton").click();
 
-	assert.ok(calendar.is(":visible"), "The calendar did not open");
-	assert.notOk(editor1.igDatePicker("validator").isMessageDisplayed(), "There should be no initial error message.");
-	
-	nextMonth = calendar.find( "[data-handler='next']");
-	assert.ok(nextMonth.length > 0, "There should be next month link.");
+	$.ig.TestUtil.wait(400).then(function () {
+		assert.ok($calendar.is(":visible"), "The calendar did not open");
+		assert.notOk($editor1.igDatePicker("validator").isMessageDisplayed(), "There should be no initial error message.");
 
-	nextMonth.click();
-	assert.notOk(editor1.igDatePicker("validator").isMessageDisplayed(), "There should be no error message after month change.");
-	
-	editor2.igDatePicker("dropDownButton").click();
+		var nextMonth = $calendar.find("[data-handler='next']");
+		assert.ok(nextMonth.length > 0, "There should be next month link.");
 
-	// verify message is shown now that the first editor lost focus:
-	assert.equal(editor1.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
-	
-	assert.ok(calendar.is(":visible"), "The calendar should be visible again");
-	assert.equal(editor2.data("beforeShow"), "triggered",  "external beforeShow option got called");
-	assert.notOk(editor2.igDatePicker("validator").isMessageDisplayed(), "There should be no initial error message.");
+		nextMonth.click();
+		assert.notOk($editor1.igDatePicker("validator").isMessageDisplayed(), "There should be no error message after month change.");
 
-	yearSelect = calendar.find( "[data-handler='selectYear']");
-	yearSelect.val("2015");
-	yearSelect.trigger(yearSelect.attr( "data-handler" ));
+		$editor2.igDatePicker("dropDownButton").click();
+		return $.ig.TestUtil.wait(500);
+	}).then(function () {
 
-	editor1.igDatePicker("dropDownButton").click();
-	assert.equal(editor2.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
-	// Breaks other tests as the $.datepicker._datepickerShowing remains true even after focusing another field.. call hide to help it work...
-	editor1.datepicker("hide");
-	editor2.datepicker("hide");
+		// verify message is shown now that the first editor lost focus:
+		assert.equal($editor1.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
+
+		assert.ok($calendar.is(":visible"), "The calendar should be visible again");
+		assert.equal($editor2.data("beforeShow"), "triggered", "external beforeShow option got called");
+		assert.notOk($editor2.igDatePicker("validator").isMessageDisplayed(), "There should be no initial error message.");
+
+		var yearSelect = $calendar.find("[data-handler='selectYear']");
+		yearSelect.val("2015");
+		yearSelect.trigger(yearSelect.attr("data-handler"));
+
+		$editor1.igDatePicker("dropDownButton").click();
+		assert.equal($editor2.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
+		// Breaks other tests as the $.datepicker._datepickerShowing remains true even after focusing another field.. call hide to help it work...
+		$editor1.datepicker("hide");
+		$editor2.datepicker("hide");
+		done();
+	}).catch(function (er) {
+		assert.pushResult({ result: false, message: er.message });
+		done();
+		throw er;
+	});
 });
 
 QUnit.test('Issue 432 - Popup is displayed when Enter key is pressed if the editor has no values.', function (assert) {
@@ -359,14 +368,14 @@ QUnit.test('Issue 432 - Popup is displayed when Enter key is pressed if the edit
 
 	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
 		//max in the past
-		maxValue : new Date(2016, 9, 10),
-		width : '120px',
-		dataMode : 'editModeText'
+		maxValue: new Date(2016, 9, 10),
+		width: '120px',
+		dataMode: 'editModeText'
 	});
 	editor.on("igdatepickervaluechanging", function () {
 		valueChangedCounter++;
 	});
-	editor.igDatePicker("setFocus");				
+	editor.igDatePicker("setFocus");
 	this.util.type(String.fromCharCode(13), this.input()); // Enter
 	assert.equal(this.container().data("igNotifier"), undefined, "There should be no initial notifier.");
 	assert.equal(this.input().val(), "__/__/____", "Text should remain the mask");
@@ -382,9 +391,9 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 		targetString, targetKeys, tomorrow = true,
 		editor, self = this;
 
-		this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
-			dateInputFormat: "dd-MMM-yyyy"
-		});
+	this.editor = editor = this.appendToFixture(this.inputTag).igDatePicker({
+		dateInputFormat: "dd-MMM-yyyy"
+	});
 
 	function nextInMonth(date, skipDays) {
 		var target = new Date(date.getTime());
@@ -408,10 +417,10 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 		// picker opens with today as default
 		assert.strictEqual(self.calendar().find(".ui-datepicker-current-day").length, 0, "Calendar should have no initial selection");
 		//type in the date +/- a day, control check what's typed:
-		$.ig.TestUtil.type(targetKeys.substring(0, targetKeys.length -1), self.input());
+		$.ig.TestUtil.type(targetKeys.substring(0, targetKeys.length - 1), self.input());
 		assert.strictEqual(self.calendar().find(".ui-datepicker-current-day").length, 0, "Calendar selection should not update until date if completed");
-		
-		$.ig.TestUtil.type(targetKeys.substring(targetKeys.length -1), self.input());
+
+		$.ig.TestUtil.type(targetKeys.substring(targetKeys.length - 1), self.input());
 		assert.equal(self.input().val(), targetString, "Typed text should match");
 		assert.equal(self.calendar().find(".ui-datepicker-current-day").text(), target.getDate(), "Calendar selection should be updated with typed in date");
 
@@ -422,7 +431,7 @@ QUnit.test("Issue 1453 - Entered date is converted to today's date when pressing
 		// force-reopen the calendar
 		editor.igDatePicker("showDropDown");
 		return $.ig.TestUtil.wait(400);
-	}).then(function() {
+	}).then(function () {
 		var newTarget;
 		if (!(newTarget = nextInMonth(today, 2))) {
 			tomorrow = false;
@@ -511,7 +520,7 @@ QUnit.test("Issue 1733 - igDatePicker throws error, when selecting with displayM
 
 	value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
 	todayString = this.getDDmmYYYY(value, "-").split("-").reverse().join("-");
-	
+
 
 	$editor.igDatePicker("field").focus();
 	$editor.igDatePicker("showDropDown");
@@ -526,29 +535,29 @@ QUnit.test("Issue 1733 - igDatePicker throws error, when selecting with displayM
 		return $.ig.TestUtil.wait(400);
 		done();
 	})
-	.then(function () {
-		// select 15th or 16th depending on date
-		value.setDate(value.getDate() === 15 ? 16 : 15);
-		targetString = self.getDDmmYYYY(value, "-").split("-").reverse().join("-");
+		.then(function () {
+			// select 15th or 16th depending on date
+			value.setDate(value.getDate() === 15 ? 16 : 15);
+			targetString = self.getDDmmYYYY(value, "-").split("-").reverse().join("-");
 
-		$calendar.find(".ui-datepicker-today").find("a").click();
-		assert.equal($editor.val(), todayString, "Editor display text not updated with picked value");
-		assert.equal($editor.igDatePicker("value"), todayString, "Editor value not updated with picked one");
-		done();
-	})	
-	.catch(function (er) {
-		assert.pushResult({ result: false, message: er.message });
-		done();
-		throw er;
-	});
+			$calendar.find(".ui-datepicker-today").find("a").click();
+			assert.equal($editor.val(), todayString, "Editor display text not updated with picked value");
+			assert.equal($editor.igDatePicker("value"), todayString, "Editor value not updated with picked one");
+			done();
+		})
+		.catch(function (er) {
+			assert.pushResult({ result: false, message: er.message });
+			done();
+			throw er;
+		});
 });
 
 QUnit.test("Issue 1921 - Mouse over highlighting of dates does not work after the control is recreated", function (assert) {
 	const hover = "ui-state-hover",
-	selector = ".ui-datepicker-calendar",
-	self = this,
-	done = assert.async(),
-	tableRow = `${selector}>tbody>tr`;
+		selector = ".ui-datepicker-calendar",
+		self = this,
+		done = assert.async(),
+		tableRow = `${selector}>tbody>tr`;
 
 	// create and open the datepicker
 	this.editor = this.appendToFixture(this.divTag).igDatePicker();
@@ -560,16 +569,16 @@ QUnit.test("Issue 1921 - Mouse over highlighting of dates does not work after th
 		const datePickerDiv = $(selector);
 		assert.ok(datePickerDiv !== undefined && datePickerDiv !== null);
 		return $.ig.TestUtil.wait(400);
-	}).then(function() {
+	}).then(function () {
 		// recreate and reopen the datepicker
 		self.editor = self.appendToFixture(self.divTag).igDatePicker();
 		self.editor.igDatePicker("showDropDown");
 		return $.ig.TestUtil.wait(400);
-	}).then(function() {
+	}).then(function () {
 		// trigger "mouseover" on the second element of the second row
 		$($(tableRow)[1].childNodes[1].childNodes[0]).trigger("mouseover");
 		return $.ig.TestUtil.wait(400);
-	}).then(function() {
+	}).then(function () {
 		// the second element of the second row should have the ui-state-hover class
 		assert.ok($(tableRow)[1].childNodes[1].childNodes[0].classList.toString().includes(hover));
 		self.editor.igDatePicker("destroy");

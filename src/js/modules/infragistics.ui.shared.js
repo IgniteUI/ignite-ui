@@ -671,8 +671,8 @@
 					this._marksHit.push({ value: b[ i ].value, index: i });
 				}
 			}
-			this._marksHit.sort(this._sortBookmarksJSON);
-			this._marksHit = $.extend(true, [], this._marksHit);
+			this._marksHit.sort($.proxy(this._sortBookmarksJSON, this));
+			this._marksHit = $.extend(true, [], $.proxy(this._marksHit, this));
 		},
 
 		_sortBookmarksJSON: function (a, b) {

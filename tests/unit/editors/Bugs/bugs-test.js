@@ -577,7 +577,7 @@ QUnit.test('Bug 876', function (assert) {
 		$editor.igDatePicker("getCalendar").find(".ui-datepicker-today").find("a").click();
 		assert.equal($editor.igDatePicker("value").getTime(), todayDate.getTime(), "Max value not selected");
 		assert.notOk($editor.igDatePicker("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message should not be shown");
-		$editor.remove();
+		$editor.html();
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
@@ -645,18 +645,17 @@ QUnit.test('Bug 207546', function (assert) {
 		}),
 		$button = this.util.appendToFixture(this.buttonTag).text("Click Me"),
 		flag = true,
-		done = assert.async(),
-		util = this.util,
-		waidDuration = 20 + ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/);
+		done = assert.async();
 
 	$editor.igDatePicker("dropDownButton").click();
-	this.util.wait(waidDuration + 100).then(function () {
+	this.util.wait(10).then(function () {
 		// datepicker handles mousedown for external click detection:
-		$button.mousedown().mouseup().click();
-
-		return util.wait(waidDuration);
+		$button.mousedown();
+		return $.ig.TestUtil.wait(3000);
 	}).then(function () {
-
+		$button.mouseup().click();
+		return $.ig.TestUtil.wait(1000);
+	}).then(function () {
 		// wait for animation (show + hide...) :
 		assert.notOk($editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 		assert.ok(flag, "Value changed should not be fired.");
@@ -674,9 +673,9 @@ QUnit.test('Bug 207321', function (assert) {
 
 	var $editor = this.util.appendToFixture(this.inputTag)
 		.igMaskEditor(
-		{
-			value: "value1"
-		});
+			{
+				value: "value1"
+			});
 
 	$editor.igMaskEditor("field").focus();
 	$editor.data("igMaskEditor")._handleDeleteKey();
@@ -1568,10 +1567,10 @@ QUnit.test('Bug 1205 Decimal numbers are rounded when the editor is blurred', fu
 
 	// value not matching mask (fails validation)
 	var $editor = this.util.appendToFixture(this.inputTag)
-			.igNumericEditor({
-				minDecimals: 10,
-				maxDecimals: 10
-			});
+		.igNumericEditor({
+			minDecimals: 10,
+			maxDecimals: 10
+		});
 
 	$editor.trigger("focus").val("0.0000005880").blur();
 	assert.equal($editor.val(), "0.0000005880", "(wrong value) Numeric editor display value is not: 0.0000005880.");
@@ -1618,11 +1617,11 @@ QUnit.test('Bug 1205 Decimal numbers are rounded when the editor is blurred', fu
 QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', function (assert) {
 	assert.expect(8);
 	var $editor = this.util.appendToFixture(this.inputTag).igTextEditor({
-			value: "some text",
-			buttonType: "clear",
-			allowNullValue: true
-		}),
-		$clearButton =  $editor.igTextEditor("clearButton"),
+		value: "some text",
+		buttonType: "clear",
+		allowNullValue: true
+	}),
+		$clearButton = $editor.igTextEditor("clearButton"),
 		textChangedFired = false, valueChangedFired = false;
 
 	$editor.one("igtexteditortextchanged.test", function (evt, ui) {
@@ -1643,12 +1642,12 @@ QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', fu
 
 	// numeric editor
 	$editor = this.util.appendToFixture(this.inputTag).igNumericEditor({
-			value: 357,
-			buttonType: "clear",
-			allowNullValue: true
-		});
-	$clearButton =  $editor.igNumericEditor("clearButton"),
-	textChangedFired = false;
+		value: 357,
+		buttonType: "clear",
+		allowNullValue: true
+	});
+	$clearButton = $editor.igNumericEditor("clearButton"),
+		textChangedFired = false;
 	valueChangedFired = false;
 
 	$editor.one("ignumericeditortextchanged", function (evt, ui) {
@@ -1663,14 +1662,14 @@ QUnit.test('Bug 1666 - textChanged not triggered on clear w/ allowNullValue', fu
 	assert.ok(valueChangedFired, "igNumericEditor valueChanged event not fired");
 	assert.strictEqual($editor.igNumericEditor("value"), null, "igNumericEditor value did not clear");
 	assert.strictEqual($editor.igNumericEditor("field").val(), "", "igNumericEditor text did not clear");
-	
+
 	$editor.remove();
 });
 
 QUnit.test('Bug 256852: textChanged not fired on Safari on MacOS (Grid filtering)', function (assert) {
 	assert.expect(2);
 	var done = assert.async(),
-		$editor =  this.util.appendToFixture(this.inputTag).igTextEditor(),
+		$editor = this.util.appendToFixture(this.inputTag).igTextEditor(),
 		$field = $editor.igTextEditor("field"),
 		textChangedArgs = [];
 
@@ -1696,21 +1695,21 @@ QUnit.test('Bug 256852: textChanged not fired on Safari on MacOS (Grid filtering
 	assert.equal(textChangedArgs.pop().text, "d", "textChanged arg should be correct");
 
 	$.ig.TestUtil.wait(0) //compositionupdate handler
-	.then(function () {
-		$editor.off("igtexteditortextchanged");
-		$editor.remove();
-		done();
-	});
+		.then(function () {
+			$editor.off("igtexteditortextchanged");
+			$editor.remove();
+			done();
+		});
 });
 QUnit.test('Bug 1695 Uncaught TypeError is thrown when IME is enabled and a number is typed', function (assert) {
 	assert.expect(4);
 	var done = assert.async(),
 		$editor = this.util.appendToFixture(this.inputTag).igDatePicker({
 			regional: "ja",
-			dataMode:"editModeText"
+			dataMode: "editModeText"
 		}),
 		textChangedArgs = [];
-	 $editor.trigger("focus");
+	$editor.trigger("focus");
 	$editor.on("igdatepickertextchanged", function (evt, args) {
 		textChangedArgs.push(args);
 	});
@@ -1721,32 +1720,32 @@ QUnit.test('Bug 1695 Uncaught TypeError is thrown when IME is enabled and a numb
 	$editor.val("２" + $editor.val());
 	$.ig.TestUtil.keyUpChar(50, $editor);
 	assert.ok(true, "Text change processing did not throw.");
-	 assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+	assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
 	assert.equal(textChangedArgs.pop().text, "２____/__/__", "textChanged arg should be correct");
 	$editor[0].setSelectionRange(1, 1);
 	$editor.trigger(jQuery.Event("compositionend"));
 	$.ig.TestUtil.wait(0) //composition handlers
-	.then(function () {
-		assert.equal($editor.val(), "2___/__/__", "IME value not converted and applied to mask.");
-		$editor.off("igdatepickertextchanged");
-		$editor.remove();
-		done();
-	});
+		.then(function () {
+			assert.equal($editor.val(), "2___/__/__", "IME value not converted and applied to mask.");
+			$editor.off("igdatepickertextchanged");
+			$editor.remove();
+			done();
+		});
 }); // Bug 1695
 QUnit.test('Bug 1776 Auto-fill does not update igTextEditor', function (assert) {
 	assert.expect(5);
 	var $editor = this.util.appendToFixture(this.inputTag).igTextEditor(),
 		textChangedArgs = [], valueChangedArgs = [];
-	 $editor.on("igtexteditortextchanged", function (evt, args) {
+	$editor.on("igtexteditortextchanged", function (evt, args) {
 		textChangedArgs.push(args);
 	});
 	$editor.on("igtexteditorvaluechanged", function (evt, args) {
 		valueChangedArgs.push(args);
 	});
-	 // no focus, immediate change like auto-fill:
+	// no focus, immediate change like auto-fill:
 	$editor.val("username");
 	$editor.trigger(jQuery.Event("input"));
-	  assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
+	assert.equal(textChangedArgs.length, 1, "textChanged should be triggered");
 	assert.equal(textChangedArgs.pop().text, "username", "textChanged arg should be correct");
 	assert.equal(valueChangedArgs.length, 1, "valueChanged should be triggered");
 	assert.equal(valueChangedArgs.pop().newValue, "username", "valueChanged arg should be correct");
@@ -1761,15 +1760,15 @@ QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line cha
 	var newLineText = "201906\r\n",
 		expectedText = "2019-06",
 		e = jQuery.Event("paste");
-		e.originalEvent = {
-			clipboardData: {
-				getData: function getData(type) {
-					if(type === "Text") {
-						return newLineText;
-					}
+	e.originalEvent = {
+		clipboardData: {
+			getData: function getData(type) {
+				if (type === "Text") {
+					return newLineText;
 				}
 			}
-		};
+		}
+	};
 
 	newLineCharsEditor = $.ig.TestUtil.appendToFixture(this.inputTag, { type: "text" });
 	newLineCharsEditor.igMaskEditor({
@@ -1809,7 +1808,7 @@ QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line cha
 		event.originalEvent = {
 			clipboardData: {
 				getData: function getData(type) {
-					if(type === "Text") {
+					if (type === "Text") {
 						return newLineText;
 					}
 				}
