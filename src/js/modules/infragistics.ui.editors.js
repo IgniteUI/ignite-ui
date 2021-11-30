@@ -2347,7 +2347,6 @@
 				this._clearButton.removeClass(this.css.disabled);
 				this._attachButtonsEvents("clear", this._clearButton);
 			}
-			debugger;
 			if (this._spinUpButton && this.options.value !== this.options.maxValue) {
 				this._spinUpButton.removeClass(this.css.disabled);
 				this._attachButtonsEvents("spinUp", this._spinUpButton);
