@@ -2347,11 +2347,11 @@
 				this._clearButton.removeClass(this.css.disabled);
 				this._attachButtonsEvents("clear", this._clearButton);
 			}
-			if (this._spinUpButton) {
+			if (this._spinUpButton && val !== this._maxValue) {
 				this._spinUpButton.removeClass(this.css.disabled);
 				this._attachButtonsEvents("spinUp", this._spinUpButton);
 			}
-			if (this._spinDownButton) {
+			if (this._spinDownButton && val !== this._minValue) {
 				this._spinDownButton.removeClass(this.css.disabled);
 				this._attachButtonsEvents("spinDown", this._spinDownButton);
 			}
