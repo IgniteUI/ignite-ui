@@ -2590,11 +2590,8 @@
 				} else {
 					// V.D. 21th January 2022 Bug #2169 - If virtualization is TRUE and itemTemplate is set, the list of open combos is fixed and does not scroll
 					// https://github.com/IgniteUI/ignite-ui/issues/2169
-					if ($listItem[ 0 ].children[ i ].defaultValue) {
-						$listItem[ 0 ].children[ i ].defaultValue = item.defaultValue;
-					} else {
-						$listItem[ 0 ].children[ i ].innerHTML = item.innerHTML;
-					}
+					$listItem[ 0 ].children[ i ].defaultValue = item.defaultValue;
+					$listItem[ 0 ].children[ i ].innerHTML = item.innerHTML;
 				}
 			}
 		},
