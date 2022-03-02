@@ -37,7 +37,7 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "jquery-mockjax": "^2.6.0",
-    "karma": "^4.4.1",
+    "karma": "^6.3.16",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",
     "karma-qunit": "^1.2.1",
