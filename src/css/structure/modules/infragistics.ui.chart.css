@@ -1,6 +1,6 @@
 .ui-chart-container {
     font-family: "Segoe UI",Arial,sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     border-width: 0px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -32,10 +32,10 @@
     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.6);
     box-shadow: 0 0 2px rgba(0,0,0,0.6);
     padding: 5px 8px;
-    font-size: 12px;
+    font-size: 14px;
     font-family:"Segoe UI", Arial, sans-serif;
 	background:#fff;
-	color:#666;
+	color:#4E4E4E;
 }
 
 .ui-chart-default-tooltip-content {
