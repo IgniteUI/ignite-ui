@@ -452,7 +452,7 @@ $.ig.dependencies = [
 		widget: "igChartLegend",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_legend" }, { name: "igWidget" }, { name: "_ig_dv_commonwidget" }  ],
-		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js" ],
+		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js", "$path$/modules/infragistics.ui.datalegend.js" ],
 		description: $.ig.loaderClass.locale.descriptions.chartLegendDescription
 	},
 	{
