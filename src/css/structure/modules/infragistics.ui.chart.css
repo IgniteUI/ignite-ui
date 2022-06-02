@@ -1,6 +1,6 @@
 .ui-chart-container {
     font-family: "Segoe UI",Arial,sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     border-width: 0px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -32,7 +32,7 @@
     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.6);
     box-shadow: 0 0 2px rgba(0,0,0,0.6);
     padding: 5px 8px;
-    font-size: 14px;
+    font-size: 13px;
     font-family:"Segoe UI", Arial, sans-serif;
 	background:#fff;
 	color:#4E4E4E;
@@ -152,21 +152,21 @@
 
 .ui-chart-horizontal-axis-title {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     color: rgb(78,78,78);
     margin: 0px 0px 5px 0px;
 }
 
 .ui-chart-vertical-axis-title {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     color: rgb(78,78,78);
     margin: 0px 0px 0px 5px;
 }
 
 .ui-horizontal-axis-labels {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     vertical-align: top;
     margin: 5px 0px 5px 0px;
     color: rgb(78,78,78);
@@ -174,7 +174,7 @@
 
 .ui-vertical-axis-labels {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     text-align: right;
     margin: 0px 5px 0px 5px;
     color: rgb(78,78,78);
