@@ -478,7 +478,7 @@ QUnit.test('[ID7] igCombo scrolling tests', function (assert) {
 	assert.equal(combo.listScrollTop(), 200, "When value is undefined, then scroll top is returned.");
 	assert.equal($dropDownCont.prop('scrollTop'), 200, "Drop down container should be equal to set top scroll.");
 
-	scrollHeight = $dropDownCont.prop('scrollHeight') - $dropDownCont.innerHeight();
+	scrollHeight = Math.round($dropDownCont.prop('scrollHeight') - $dropDownCont.innerHeight());
 
 	// set invalid scroll height
 	combo.listScrollTop(scrollHeight + 200);
