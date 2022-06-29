@@ -124,8 +124,6 @@
     cursor: default;
 	white-space: nowrap;
     background-image: none;
-    /* M.A. August 31th, 2021 Bug #2119 & #2124 Add default height */
-    height: 1.3125rem;
 }
 
 .ui-igcombo-listitemtextwithcheckbox {
