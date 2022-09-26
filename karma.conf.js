@@ -7,7 +7,7 @@ const glob = require("glob");
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ["spec"];
+const reporters = ["progress"];
 let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
@@ -49,7 +49,6 @@ module.exports = function (config) {
 
     plugins: [
       require('karma-coverage'),
-      require('karma-spec-reporter'),
       require('karma-chrome-launcher'),
       require('karma-qunit')
     ],
@@ -223,7 +222,8 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        flags: ['--no-sandbox', '--disable-gpu'],
+        debug: false
       }
     },
     // Continuous Integration mode
