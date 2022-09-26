@@ -47,6 +47,12 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: ".",
 
+    plugins: [
+      require('karma-coverage'),
+      require('karma-spec-reporter'),
+      require('karma-chrome-launcher'),
+      require('karma-qunit')
+    ],
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
