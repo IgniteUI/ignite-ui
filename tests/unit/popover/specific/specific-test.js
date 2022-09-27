@@ -81,9 +81,9 @@ QUnit.test("Test popover when containment, direction and position are specified"
 			var containmentRect = $('#containment')[0].getBoundingClientRect();
 			assert.ok(popover.length > 0 && popover.closest(document.documentElement).length > 0 && popover.is(":visible"), "Popover element should exist and should be visible");
 			assert.ok(popover.position().left > containmentRect.left, "Popover is positioned correctly");
-			assert.ok(popover.position().left + popover.outerWidth() < containmentRect.width(), `Popover is positioned correctly - left + width: ${popover.position().left + popover.outerWidth()}, containment width: ${containmentRect.width}`);
+			assert.ok(popover.position().left + popover.outerWidth() < containmentRect.width, `Popover is positioned correctly - left + width: ${popover.position().left + popover.outerWidth()}, containment width: ${containmentRect.width}`);
 			assert.ok(popover.position().top > containmentRect.top, "Popover is positioned correctly");
-			assert.ok(popover.position().top + popover.outerHeight() < containmentRect.height(), `Popover is positioned correctly - top + height: ${popover.position().top + popover.outerHeight()}, containment height: ${containmentRect.height}`);
+			assert.ok(popover.position().top + popover.outerHeight() < containmentRect.height, `Popover is positioned correctly - top + height: ${popover.position().top + popover.outerHeight()}, containment height: ${containmentRect.height}`);
 		});
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
