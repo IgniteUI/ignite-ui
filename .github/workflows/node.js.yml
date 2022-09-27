@@ -27,6 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - run: npm i -g karma-cli
     - run: grunt build
     - run: npm run cover
 
