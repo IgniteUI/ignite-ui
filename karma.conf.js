@@ -7,7 +7,7 @@ const glob = require("glob");
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ["progress"];
+const reporters = ["progress", "coverage"];
 let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
@@ -45,7 +45,7 @@ module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: ".",
+    basePath: "",
 
     plugins: [
       require('karma-coverage'),
@@ -140,7 +140,7 @@ module.exports = function (config) {
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      `tests/${testPath}/*-test?(s).js`
+      { pattern: `tests/${testPath}/*-test?(s).js`, included: true }
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,
@@ -153,8 +153,8 @@ module.exports = function (config) {
       clearContext: false,
       qunit: {
         // https://api.qunitjs.com/config/QUnit.config
-        autostart: false,
-        //reorder: false,
+        // autostart: false,
+        // reorder: false,
         showUI: true,
         testTimeout: 10000,
         //fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
@@ -169,9 +169,9 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/js/infragistics.loader.js": "coverage",
-      "src/js/modules/*.js": "coverage",
-      "src/js/extensions/*.js": "coverage"
+      "src/js/infragistics.loader.js": ["coverage"],
+      "src/js/modules/*.js": ["coverage"],
+      "src/js/extensions/*.js": ["coverage"]
     },
 
     // https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
@@ -191,13 +191,13 @@ module.exports = function (config) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: reporters,
-    specReporter: {
-      maxLogLines: 15,              // limit number of lines logged per test
-      suppressErrorSummary: false,  // do not print error summary
-      suppressSkipped: false,       // do not print information about skipped tests
-      showSpecTiming: true,        // print the time elapsed for each spec
-      failFast: false               // test would finish on first fail
-    },
+    // specReporter: {
+    //   maxLogLines: 15,              // limit number of lines logged per test
+    //   suppressErrorSummary: false,  // do not print error summary
+    //   suppressSkipped: false,       // do not print information about skipped tests
+    //   showSpecTiming: true,        // print the time elapsed for each spec
+    //   failFast: false               // test would finish on first fail
+    // },
 
     // web server port
     port: 9876,
