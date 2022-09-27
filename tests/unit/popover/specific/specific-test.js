@@ -77,13 +77,13 @@ QUnit.test("Test popover when containment, direction and position are specified"
 		$("#right").trigger("focus");
 		self.testUtil.wait(100).then(function () {
 			done();
-			popover = $('#right').data().igPopover.popover;
+			popover = $('#right').data("igPopover").popover;
 			var containmentRect = $('#containment')[0].getBoundingClientRect();
 			assert.ok(popover.length > 0 && popover.closest(document.documentElement).length > 0 && popover.is(":visible"), "Popover element should exist and should be visible");
 			assert.ok(popover.position().left > containmentRect.left, "Popover is positioned correctly");
-			assert.ok(popover.position().left + popover.outherWidth() < containmentRect.right, "Popover is positioned correctly");
+			assert.ok(popover.position().left + popover.outerWidth() < containmentRect.right, "Popover is positioned correctly");
 			assert.ok(popover.position().top > containmentRect.top, "Popover is positioned correctly");
-			assert.ok(popover.position().top + popover.outherHeight() < containmentRect.bottom, "Popover is positioned correctly");
+			assert.ok(popover.position().top + popover.outerHeight() < containmentRect.bottom, "Popover is positioned correctly");
 		});
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });

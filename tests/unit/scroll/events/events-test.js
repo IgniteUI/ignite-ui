@@ -264,7 +264,7 @@ QUnit.test("ThumbDragMove event is fired and its event arguments are correct.", 
 		assert.equal(evtArgs.owner, self.vhScroll().data("igScroll"), "'owner' event argument should be the igScroll instance.");
 		assert.equal(evtArgs.horizontal, false, "'horizontal' event argument should be the false.");
 		assert.equal(evtArgs.stepX, 0, "'stepX' event argument should be 0.");
-		assert.notOk(totalScrollY >= 190, "'stepY' event argument should more than 190.");
+		assert.notOk(totalScrollY >= 190, "'stepY' event argument should more than 190, but is " + totalScrollY);
 		done();
 	}).catch(function (er) {
         assert.pushResult({ result: false, message: er.message });
