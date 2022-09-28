@@ -159,11 +159,7 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 		$combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-ddmode" }),
 		itemHeight = 29,
 		border = 1,
-		dropDownExpHeight = 3 * itemHeight + border,
-		listItemExpWidth = 198,
-		listItemExpHeight = itemHeight,
-		listItemExpPosLeft = $combo.igOffset().left + 1,
-		listItemExpPosTop = $combo.igOffset().top + 30;
+		dropDownExpHeight = 3 * itemHeight + border;
 
 	$combo.igCombo({
 		width: 200,
@@ -184,7 +180,7 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 
 	$.ig.TestUtil.click($input);
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight,
+	assert.strictEqual($dropDown.outerHeight(), dropDownExpHeight,
 		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
@@ -195,7 +191,6 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 	assert.notOk($item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
 
 	$.ig.TestUtil.mouseEvent($input, "click"); // click on input
-	$dropDown = $combo.find('.ui-igcombo-dropdown');
 	assert.strictEqual($dropDown.outerHeight(), 0, 'Drop down height is incorrect');
 });
 
@@ -236,10 +231,7 @@ QUnit.test('[ID4] Readonlylist mode', function (assert) {
 
 	var $input, $item, $item1, $hiddenInput, $dropDown,
 		$combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-rolmode" }),
-		listItemExpWidth = 198,
 		listItemExpHeight = 29,
-		listItemExpPosLeft = $combo.igOffset().left + 1,
-		listItemExpPosTop = $combo.igOffset().top + 30,
 		dropDownExpHeight = 3 * listItemExpHeight + 1;
 
 	$combo.igCombo({
@@ -264,7 +256,7 @@ QUnit.test('[ID4] Readonlylist mode', function (assert) {
 
 	$.ig.TestUtil.click($input);
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight,
+	assert.strictEqual($dropDown.outerHeight(), dropDownExpHeight,
 		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
