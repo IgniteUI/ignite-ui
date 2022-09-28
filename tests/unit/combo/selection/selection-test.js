@@ -180,7 +180,7 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 
 	$.ig.TestUtil.click($input);
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.strictEqual($dropDown.outerHeight(), dropDownExpHeight,
+	assert.ok(dropDownExpHeight - 10 <= $dropDown.outerHeight() && dropDownExpHeight + 10 >= $dropDown.outerHeight(),
 		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
@@ -256,7 +256,7 @@ QUnit.test('[ID4] Readonlylist mode', function (assert) {
 
 	$.ig.TestUtil.click($input);
 	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.strictEqual($dropDown.outerHeight(), dropDownExpHeight,
+	assert.ok(dropDownExpHeight - 10 <= $dropDown.outerHeight() && dropDownExpHeight + 10 >= $dropDown.outerHeight(),
 		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
 	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
