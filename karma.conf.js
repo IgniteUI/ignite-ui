@@ -7,7 +7,7 @@ const glob = require("glob");
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ["progress", "coverage"];
+const reporters = ["progress"];
 let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
@@ -45,7 +45,7 @@ module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: "",
+    basePath: ".",
 
     plugins: [
       require('karma-coverage'),
