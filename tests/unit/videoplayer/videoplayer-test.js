@@ -1403,7 +1403,7 @@ QUnit.test('Test screenshot of the current vidio frame test 47', function(assert
 	var paused = $("#video2").igVideoPlayerUnitTesting("paused");
 	assert.ok(paused, true);
 	$("#video2").igVideoPlayerUnitTesting("play");
-	this.util.wait(500).then(function () {
+	$.ig.TestUtil.wait(500).then(function () {
 		var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
 		assert.equal(screen.tagName, 'CANVAS');
 		done();
