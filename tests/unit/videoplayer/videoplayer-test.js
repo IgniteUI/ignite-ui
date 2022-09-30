@@ -1397,28 +1397,18 @@ QUnit.test('Test screenshot of the current vidio frame test 47', function(assert
 		width: 800,
 		height: 340,
 		muted:false,
-		disabled: false,
-		playing: function (event, ui) {
-			event.preventDefault();
-
-			var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
-			// assert.equal(screen.tagName, 'CANVAS');
-			$("#video2").igVideoPlayerUnitTesting("pause");
-		}
+		disabled: false
 	});
 
 	var paused = $("#video2").igVideoPlayerUnitTesting("paused");
-
-	if (paused)
-	{
-		assert.ok(paused, true)
-		$("#video2").igVideoPlayerUnitTesting("play");
-		setTimeout(function(){
-			var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
-			assert.equal(screen.tagName, 'CANVAS');
-			done();
-		},500);
-	}
+	assert.ok(paused, true);
+	document.click();
+	$("#video2").igVideoPlayerUnitTesting("play");
+	this.util.wait(500).then(function () {
+		var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
+		assert.equal(screen.tagName, 'CANVAS');
+		done();
+	});
 });
 
 QUnit.test('Test seeking, ended and duration methods return correct values test 48', function(assert){
