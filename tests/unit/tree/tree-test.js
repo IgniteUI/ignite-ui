@@ -3849,7 +3849,7 @@ QUnit.test("[Client events 04] igTree expanding and collapsing events", function
 
 	node = $container.igTree("nodeByPath", "1");
 	node.children(".ui-igtree-expander:first").click();
-	this.util.wait(50).then(function () {
+	this.util.wait(50).then(() => {
 		node = $container.igTree("nodeByPath", "2");
 		node.children(".ui-igtree-expander:first").click();
 		// check that no errors are thrown on checkbox API with checkboxMode="off" which is default
