@@ -62,11 +62,11 @@ module.exports = function (config) {
     files: [
       // http://karma-runner.github.io/1.0/config/files.html
       // serve resources
-      { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
+      { pattern: "node_modules/jquery/dist/jquery.min.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.13.0/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
       { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
-      { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
+      { pattern: "node_modules/knockout/build/output/knockout-latest.js", included: true, watched: false },
 
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
@@ -163,6 +163,7 @@ module.exports = function (config) {
 
     // list of files to exclude
     exclude: [
+      "tests/unit/validator/validator-tests.js"
     ],
 
 
