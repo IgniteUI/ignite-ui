@@ -911,6 +911,8 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		textEditor.one("igvalidatorvalidating", function (evt, ui) {
 			assert.equal(ui.value, "3333333333", "Input: Paste handler  failed to validate proper value");
 		}).val("3333333333").trigger("paste");
+		return $.ig.TestUtil.wait(20);
+	}).then(function () {
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });

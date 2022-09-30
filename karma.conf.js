@@ -163,7 +163,6 @@ module.exports = function (config) {
 
     // list of files to exclude
     exclude: [
-      "tests/unit/validator/validator-tests.js"
     ],
 
 
