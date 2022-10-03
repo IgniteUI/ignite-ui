@@ -1409,7 +1409,7 @@ QUnit.test('Test screenshot of the current vidio frame test 47', function(assert
 });
 
 QUnit.test('Test seeking, ended and duration methods return correct values test 48', function(assert){
-	assert.expect(9);
+	assert.expect(11);
 	this.assert = assert;
 	var done = assert.async();
 	createFixtureDiv('player11');
@@ -1417,10 +1417,9 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 	let checkElementNotClass = this.checkElementNotClass;
 
 	var video = $("#player11").igVideoPlayerUnitTesting({
-		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
-				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
-				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
-				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+		sources: ["https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.h264.mp4",
+				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.webmvp8.webm",
+				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.theora.ogv"],
 		width: 800,
 		muted: false,
 		height: 340,
@@ -1464,38 +1463,36 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 	assert.equal(video.igVideoPlayerUnitTesting("duration"), 260);
 
 	var ended = video.igVideoPlayerUnitTesting("ended");
-	if (!ended)
-	{
-		setTimeout(function(){
-			video.igVideoPlayerUnitTesting("changeLocale");
-			assert.ok($('#player11_ad_msg_c').is(':visible'));
-			checkElementClass($('#player11_ad_msg_c'), 'ui-igplayer-ad-msg-container', assert);
+	assert.notOk(ended);
 
-			var close = $('#player11_ad_msg_close_picn').is(':visible');
-			if (close)
-			{
-				$('#player11_play').trigger(click);
-				assert.equal(counter, 1);
+	$.ig.TestUtil.wait(300).then(() => {
+		video.igVideoPlayerUnitTesting("changeLocale");
+		assert.ok($('#player11_ad_msg_c').is(':visible'));
+		checkElementClass($('#player11_ad_msg_c'), 'ui-igplayer-ad-msg-container', assert);
 
-				$('#player11_ad_msg_c').trigger('mouseover');
-				checkElementClass($('#player11_ad_msg_c'), 'ui-state-hover', assert);
+		var close = $('#player11_ad_msg_close_picn').is(':visible');
+		assert.ok(close);
 
-				$('#player11_ad_msg_c').trigger('mouseout');
-				checkElementNotClass($('#player11_ad_msg_c'), 'ui-state-hover', assert);
+		$('#player11_play').trigger(click);
+		assert.equal(counter, 1);
 
-				$('#player11_ad_msg_close_picn').trigger(click);
+		$('#player11_ad_msg_c').trigger('mouseover');
+		checkElementClass($('#player11_ad_msg_c'), 'ui-state-hover', assert);
 
-				setTimeout(function(){
-					assert.equal(video.igVideoPlayerUnitTesting("paused"), true);
+		$('#player11_ad_msg_c').trigger('mouseout');
+		checkElementNotClass($('#player11_ad_msg_c'), 'ui-state-hover', assert);
 
-					assert.ok($('#player11_ad_msg_c').is(':visible'));
+		$('#player11_ad_msg_close_picn').trigger(click);
 
-					$("#player11").igVideoPlayerUnitTesting("resetCommercialsShow");
-					done();
-				}, 500);
-			}
-		}, 300);
-	}
+		return $.ig.TestUtil.wait(500);
+	}).then(() => {
+		assert.equal(video.igVideoPlayerUnitTesting("paused"), true);
+
+		assert.ok($('#player11_ad_msg_c').is(':visible'));
+
+		$("#player11").igVideoPlayerUnitTesting("resetCommercialsShow");
+		return $.ig.TestUtil.wait(10);
+	}).then(() => done());
 });
 
 QUnit.test('Test changing currentTime on a paused video test 49', function(assert){

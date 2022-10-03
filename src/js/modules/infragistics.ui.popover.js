@@ -449,7 +449,7 @@
 			this._positions = [ "balanced", "start", "end" ];
 			this._visible = false;
 			this._useDocumentBoundary = false;
-			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
+			$( window ).on("resize.popover", this._resizeHandler.bind(this));
 		},
 		_createWidget: function (options, element) {
 			// initialization performance will be better if we don't try to normalize the defaults
@@ -639,7 +639,7 @@
 				if (this.options.headerTemplate.closeButton) {
 					var closeBtn = $("<div></div>")
 						.addClass(this.css.closeButtonClass)
-						.bind("click.popover", $.proxy(this._closeBtnClick, this))
+						.bind("click.popover", this._closeBtnClick.bind(this))
 						.appendTo(cnt);
 					if (this.id()) {
 						closeBtn.attr("id", this.id() + "_popover_closeBtn");
@@ -865,8 +865,8 @@
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
-				$(t).unbind(showEvt).bind(showEvt, $.proxy(targetShowEvt, this));
-				$(t).unbind(hideEvt).bind(hideEvt, $.proxy(targetHideEvt, this));
+				$(t).unbind(showEvt).bind(showEvt, targetShowEvt.bind(this));
+				$(t).unbind(hideEvt).bind(hideEvt, targetHideEvt.bind(this));
 			} else if (this.options.selectors && showEvt) {
 				this.element.find(self.options.selectors).addBack().each(function () {
 					var target = $(this)[ 0 ];
@@ -874,8 +874,8 @@
 					if (target === self.element[ 0 ]) {
 						return;
 					}
-					$(target).unbind(showEvt).bind(showEvt, $.proxy(targetShowEvt, self));
-					$(target).unbind(hideEvt).bind(hideEvt, $.proxy(targetHideEvt, self));
+					$(target).unbind(showEvt).bind(showEvt, targetShowEvt);
+					$(target).unbind(hideEvt).bind(hideEvt, targetHideEvt);
 				});
 			}
 		},

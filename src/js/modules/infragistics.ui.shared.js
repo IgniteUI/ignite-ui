@@ -83,7 +83,7 @@
 			if (this._resId) {
 				clearInterval(this._resId);
 			}
-			this._resId = setInterval($.proxy(this._resizeContainer, this), 300);
+			this._resId = setInterval(this._resizeContainer.bind(this), 300);
 			this._indicator.css("display", "").css("visibility", "visible");
 		},
 		hide: function () {
@@ -671,8 +671,8 @@
 					this._marksHit.push({ value: b[ i ].value, index: i });
 				}
 			}
-			this._marksHit.sort($.proxy(this._sortBookmarksJSON, this));
-			this._marksHit = $.extend(true, [], $.proxy(this._marksHit, this));
+			this._marksHit.sort(this._sortBookmarksJSON.bind(this));
+			this._marksHit = $.extend(true, [], this._marksHit.bind(this));
 		},
 
 		_sortBookmarksJSON: function (a, b) {
@@ -1763,7 +1763,7 @@
 		_createWidget: function (options, element) {
 			this._callbacks = [];
 			this._element = element;
-			this._pollerHandler = $.proxy(this._pollerTick, this);
+			this._pollerHandler = this._pollerTick.bind(this);
 			this._startPoller();
 			this._width = this._getCurrentWidth();
 			this._height = this._getCurrentHeight();

@@ -842,31 +842,31 @@
 			this._moving = false;
 
 			this._evts = {
-				scroll: $.proxy(this._onScrollContainer, this),
-				wheel: $.proxy(this._onWheelContainer, this),
-				DOMMouseScroll: $.proxy(this._onWheelContainer, this),
+				scroll: this._onScrollContainer.bind(this),
+				wheel: this._onWheelContainer.bind(this),
+				DOMMouseScroll: this._onWheelContainer.bind(this),
 
-				pointerdown: $.proxy(this._onPointerDownContainer, this),
-				pointerup: $.proxy(this._onPointerUpContainer, this),
-				MSPointerDown: $.proxy(this._onPointerDownContainer, this),
-				MSGestureStart: $.proxy(this._onMSGestureStartContainer, this),
-				MSGestureChange: $.proxy(this._onMSGestureChangeContainer, this),
-				MSGestureEnd: $.proxy(this._onMSGestureEndContainer, this),
+				pointerdown: this._onPointerDownContainer.bind(this),
+				pointerup: this._onPointerUpContainer.bind(this),
+				MSPointerDown: this._onPointerDownContainer.bind(this),
+				MSGestureStart: this._onMSGestureStartContainer.bind(this),
+				MSGestureChange: this._onMSGestureChangeContainer.bind(this),
+				MSGestureEnd: this._onMSGestureEndContainer.bind(this),
 
-				touchstart: $.proxy(this._onTouchStartContainer, this),
-				touchmove: $.proxy(this._onTouchMoveContainer, this),
-				touchend: $.proxy(this._onTouchEndContainer, this),
+				touchstart: this._onTouchStartContainer.bind(this),
+				touchmove: this._onTouchMoveContainer.bind(this),
+				touchend: this._onTouchEndContainer.bind(this),
 
-				mouseenter: $.proxy(this._onMouseEnterContainer, this),
-				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
+				mouseenter: this._onMouseEnterContainer.bind(this),
+				mouseleave: this._onMouseLeaveContainer.bind(this),
 
-				keydown: $.proxy(this._onKeyDown, this)
+				keydown: this._onKeyDown.bind(this)
 			};
 			this._container.on(this._evts);
-			$(window).on("resize.igscroll_" + this.element[ 0 ].id, $.proxy(this._onDimensionsChange, this));
+			$(window).on("resize.igscroll_" + this.element[ 0 ].id, this._onDimensionsChange.bind(this));
 
 			if (typeof MutationObserver === "function") {
-				this._observer = new MutationObserver($.proxy(this._onElementMutation, this));
+				this._observer = new MutationObserver(this._onElementMutation.bind(this));
 				this._observer.observe(this.element[ 0 ], { attributes: true });
 			}
 
@@ -2873,56 +2873,56 @@
 
 			if (this._vBarArrowUp)  {
 				this._vBarArrowUp.on({
-					mousedown: $.proxy(this._onMouseDownArrowUp, this),
-					mouseup: $.proxy(this._onMouseUpArrowUp, this),
-					mouseover: $.proxy(this._onMouseOverArrowUp, this),
+					mousedown: this._onMouseDownArrowUp.bind(this),
+					mouseup: this._onMouseUpArrowUp.bind(this),
+					mouseover: this._onMouseOverArrowUp.bind(this),
 
-					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					mouseout: this._onMouseOutScrollbarArrow.bind(this),
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._vBarArrowDown) {
 				this._vBarArrowDown.on({
-					mousedown: $.proxy(this._onMouseDownArrowDown, this),
-					mouseup: $.proxy(this._onMouseUpArrowDown, this),
-					mouseover: $.proxy(this._onMouseOverArrowDown, this),
+					mousedown: this._onMouseDownArrowDown.bind(this),
+					mouseup: this._onMouseUpArrowDown.bind(this),
+					mouseover: this._onMouseOverArrowDown.bind(this),
 
-					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					mouseout: this._onMouseOutScrollbarArrow.bind(this),
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._vBarDrag) {
 				this._vBarDrag.on({
-					mousedown: $.proxy(this._onMouseDownVDrag, this),
+					mousedown: this._onMouseDownVDrag.bind(this),
 
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._vBarTrack) {
 				this._vBarTrack.on({
-					mousedown: $.proxy(this._onMouseDownVTrack, this),
-					mousemove: $.proxy(this._onMouseMoveVTrack, this),
-					mouseup: $.proxy(this._onMouseUpVTrack, this),
-					mouseout: $.proxy(this._onMouseOutVTrack, this),
+					mousedown: this._onMouseDownVTrack.bind(this),
+					mousemove: this._onMouseMoveVTrack.bind(this),
+					mouseup: this._onMouseUpVTrack.bind(this),
+					mouseout: this._onMouseOutVTrack.bind(this),
 
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._vBarContainer) {
 				this._vBarContainer.on({
-					dragstart: $.proxy(this._onDragStartElem, this),
-					wheel: $.proxy(this._onWheelContainer, this),
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
+					dragstart: this._onDragStartElem.bind(this),
+					wheel: this._onWheelContainer.bind(this),
+					mouseenter: this._onMouseEnterScrollbarElem.bind(this),
+					mouseleave: this._onMouseLeaveScrollbarElem.bind(this)
 				});
 			}
 
-			this._onMouseMoveVDragHandler = $.proxy(this._onMouseMoveVDrag, this);
-			this._onMouseUpVScrollbarHandler = $.proxy(this._onMouseUpVScrollbar, this);
+			this._onMouseMoveVDragHandler = this._onMouseMoveVDrag.bind(this);
+			this._onMouseUpVScrollbarHandler = this._onMouseUpVScrollbar.bind(this);
 			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
 			$("body").on("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveVDragHandler);
 			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
@@ -3374,56 +3374,56 @@
 
 			if (this._hBarArrowLeft) {
 				this._hBarArrowLeft.on({
-					mousedown: $.proxy(this._onMouseDownArrowLeft, this),
-					mouseup: $.proxy(this._onMouseUpArrowLeft, this),
-					mouseover: $.proxy(this._onMouseOverArrowLeft, this),
+					mousedown: this._onMouseDownArrowLeft.bind(this),
+					mouseup: this._onMouseUpArrowLeft.bind(this),
+					mouseover: this._onMouseOverArrowLeft.bind(this),
 
-					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					mouseout: this._onMouseOutScrollbarArrow.bind(this),
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._hBarArrowRight) {
 				this._hBarArrowRight.on({
-					mousedown: $.proxy(this._onMouseDownArrowRight, this),
-					mouseup: $.proxy(this._onMouseUpArrowRight, this),
-					mouseover: $.proxy(this._onMouseOverArrowRight, this),
+					mousedown: this._onMouseDownArrowRight.bind(this),
+					mouseup: this._onMouseUpArrowRight.bind(this),
+					mouseover: this._onMouseOverArrowRight.bind(this),
 
-					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					mouseout: this._onMouseOutScrollbarArrow.bind(this),
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._hBarDrag) {
 				this._hBarDrag.on({
-					mousedown: $.proxy(this._onMouseDownHDrag, this),
+					mousedown: this._onMouseDownHDrag.bind(this),
 
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._hBarTrack) {
 				this._hBarTrack.on({
-					mousedown: $.proxy(this._onMouseDownHTrack, this),
-					mousemove: $.proxy(this._onMouseMoveHTrack, this),
-					mouseup: $.proxy(this._onMouseUpHTrack, this),
-					mouseout: $.proxy(this._onMouseOutHTrack, this),
+					mousedown: this._onMouseDownHTrack.bind(this),
+					mousemove: this._onMouseMoveHTrack.bind(this),
+					mouseup: this._onMouseUpHTrack.bind(this),
+					mouseout: this._onMouseOutHTrack.bind(this),
 
-					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
+					touchstart: this._onTouchStartScrollbarElem.bind(this)
 				});
 			}
 
 			if (this._hBarContainer) {
 				this._hBarContainer.on({
-					dragstart: $.proxy(this._onDragStartElem, this),
-					wheel: $.proxy(this._onWheelContainer, this),
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
+					dragstart: this._onDragStartElem.bind(this),
+					wheel: this._onWheelContainer.bind(this),
+					mouseenter: this._onMouseEnterScrollbarElem.bind(this),
+					mouseleave: this._onMouseLeaveScrollbarElem.bind(this)
 				});
 			}
 
-			this._onMouseMoveHDragHandler = $.proxy(this._onMouseMoveHDrag, this);
-			this._onMouseUpHScrollbarHandler = $.proxy(this._onMouseUpHScrollbar, this);
+			this._onMouseMoveHDragHandler = this._onMouseMoveHDrag.bind(this);
+			this._onMouseUpHScrollbarHandler = this._onMouseUpHScrollbar.bind(this);
 			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
 			$("body").on("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveHDragHandler);
 			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */

@@ -120,12 +120,9 @@
         },
         _attachEvents: function () {
             $.ui.igSplitButton.prototype._attachEvents.call(this);
-            this._options.itemsList.on("igcolorpickercolorselected",
-                $.proxy(this._onColorSelect, this));
-            this._options.defaultButton.on("igtoolbarbuttonclick",
-                $.proxy(this._onDefaultButtonClick, this));
-            this._options.itemsList.parent().parent().on("mousedown",
-                $.proxy(this._preventCollapsing, this));
+            this._options.itemsList.on("igcolorpickercolorselected", this._onColorSelect.bind(this));
+            this._options.defaultButton.on("igtoolbarbuttonclick", this._onDefaultButtonClick.bind(this));
+            this._options.itemsList.parent().parent().on("mousedown", this._preventCollapsing.bind(this));
         },
         _onItemClick: function () {
             return false;
