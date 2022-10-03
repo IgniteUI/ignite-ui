@@ -1810,7 +1810,7 @@
                     igtoolbarexpanded: this.events.toolbarExpanded
                 };
 
-            this._toolbars.delegate(":ui-igToolbar", events,
+            this._toolbars.on(events, ":ui-igToolbar",
                 function _onToolbarItemClick(e, ui) {
                     var scope = ui.scope,
                         handler = ui.handler,
@@ -2852,7 +2852,7 @@
                 rows = tablePreview.find("tr"),
                 self = this;
 
-            tablePreview.delegate("td", "mouseover", function (e) {
+            tablePreview.on("mouseover", "td", function (e) {
                 var target = $(e.target),
                     currentRowNumber = target.parent().index() + 1,
                     currentColumnNumber = $(this).index() + 1,
@@ -2868,7 +2868,7 @@
                 self.columnsNumField.val(currentColumnNumber);
             });
 
-            tablePreview.delegate("td", "click", function (e) {
+            tablePreview.on("click", "td", function (e) {
                 var target = $(e.target),
                     currentRowNumber = target.parent().index() + 1,
                     currentColumnNumber = $(this).index() + 1;
