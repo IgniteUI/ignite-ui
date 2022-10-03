@@ -2440,7 +2440,7 @@
 				this._attachEvents(video);
 				this._renderSources(o.sources, video);
 				this._analyzeSource(video);
-				setTimeout($.proxy(this._onVideoStateChange, this), this._const.VIDEO_STATE_TIMEOUT);
+				setTimeout(this._onVideoStateChange.bind(this), this._const.VIDEO_STATE_TIMEOUT);
 
 				this._createBigPlayButton();
 				this._createWaitingIndicator();
@@ -2831,7 +2831,7 @@
 			var continueScrolling = this._isScrolling && this._rvScrollOnce();
 			if (continueScrolling) {
 				this._scrollingTimoutId =
-				setTimeout($.proxy(this._rvDoScroll, this), this._const.SCROLL_TIMEOUT);
+				setTimeout(this._rvDoScroll.bind(this), this._const.SCROLL_TIMEOUT);
 			} else {
 				this._rvStopScroll();
 			}
@@ -3086,7 +3086,7 @@
 			}
 
 			if (msgOpt.autoHide) {
-				this._adHideTimeout = setTimeout($.proxy(this.hideAdMessage, this), msgOpt.hideDelay);
+				this._adHideTimeout = setTimeout(this.hideAdMessage.bind(this), msgOpt.hideDelay);
 			}
 		},
 
@@ -3761,7 +3761,7 @@
 					this._showCenterPlayButton().removeClass(this.css.centerPlayButtonClass)
 					.addClass(this.css.centerPauseButtonClass);
 				}
-				setTimeout($.proxy(this._hideCenterPlayButton, this), o.centerButtonHideDelay);
+				setTimeout(this._hideCenterPlayButton.bind(this), o.centerButtonHideDelay);
 				this._prepareForPlay();
 				this._lastPausedState = videoElem.paused;
 			}
@@ -3771,7 +3771,7 @@
 			this._refreshDuration();
 
 			this._onVideoStateChangeId =
-			setTimeout($.proxy(this._onVideoStateChange, this), this._const.VIDEO_STATE_TIMEOUT);
+			setTimeout(this._onVideoStateChange.bind(this), this._const.VIDEO_STATE_TIMEOUT);
 		},
 
 		_updateTitleControlsTimeString: function (timeString, title) {
@@ -4324,7 +4324,7 @@
 					.removeClass(css.centerPlayButtonClass)
 					.addClass(css.centerPauseButtonClass);
 			}
-			setTimeout($.proxy(this._hideCenterPlayButton, this), o.centerButtonHideDelay);
+			setTimeout(this._hideCenterPlayButton.bind(this), o.centerButtonHideDelay);
 		},
 
 		_hideCenterPlayButton: function () {
@@ -4568,7 +4568,7 @@
 				});
 				if (this.options.height) {
 					this.currentVideo.css("height", this.container.height() - bookmarkArea.height());
-					this._resizeBookmarkAreaTimeoutId = setTimeout($.proxy(this._onPlayerResize, this), 500);
+					this._resizeBookmarkAreaTimeoutId = setTimeout(this._onPlayerResize.bind(this), 500);
 				}
 			}
 		},
@@ -4587,7 +4587,7 @@
 				this._oldContainerHeight = containerH;
 				this._oldContainerWidth = containerW;
 			}
-			this._resizeBookmarkAreaTimeoutId = setTimeout($.proxy(this._onPlayerResize, this), 250);
+			this._resizeBookmarkAreaTimeoutId = setTimeout(this._onPlayerResize.bind(this), 250);
 		},
 
 		// S.S. June 24th, 2011 Bug #74601 Before rendering our controls we need to be sure the correct
@@ -4799,7 +4799,7 @@
 					if (!$.contains(event.currentTarget, event.relatedTarget) &&
 						event.currentTarget !== event.relatedTarget) {
 						control._volumeSliderTimeoutId =
-							setTimeout($.proxy(control._hideVolumeSlider, control),
+							setTimeout(control._hideVolumeSlider.bind(control),
 										control.options.volumeAutohideDelay);
 					}
 				},
@@ -4827,7 +4827,7 @@
 				mouseout: function () {
 					if (!control._userSlidingVolume) {
 						control._volumeSliderTimeoutId =
-							setTimeout($.proxy(control._hideVolumeSlider, control),
+							setTimeout(control._hideVolumeSlider.bind(control),
 									control.options.volumeAutohideDelay);
 					}
 					control._volumeSliderMouseOut = true;
@@ -4854,7 +4854,7 @@
 			$("#" + this._id("_ctrls_vs")).data("igSlider").handle.attr("tabIndex", -1).bind({
 				blur: function () {
 					control._volumeSliderTimeoutId =
-						setTimeout($.proxy(control._hideVolumeSlider, control), control.options.volumeAutohideDelay);
+						setTimeout(control._hideVolumeSlider.bind(control), control.options.volumeAutohideDelay);
 				}
 			});
 

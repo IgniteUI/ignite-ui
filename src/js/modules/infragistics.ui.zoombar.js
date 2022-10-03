@@ -1165,7 +1165,7 @@
 			// refreshes the current window based on internal window in percentage
 			var wnd = this._cw, sbtw, lfw, self = this;
 			animate = animate && this.options.windowPanDuration > 0;
-			func = func ? $.proxy(func, this) : function () { self._sliding = false; };
+			func = func ? func.bind(this) : function () { self._sliding = false; };
 			/* update thumb */
 			if (animate) {
 				this._sliding = true;
@@ -1330,20 +1330,20 @@
 			this._acc = this._acc + 0.1;
 		},
 		_createHandlers: function () {
-			this._leftRightButtonHandler = $.proxy(this._leftRightButtonClicked, this);
-			this._zoombarMouseWheelHandler = $.proxy(this._mouseWheel, this);
-			this._zoombarTouchStartHandler = $.proxy(this._touchStart, this);
-			this._zoombarTouchMoveHandler = $.proxy(this._touchMove, this);
-			this._zoombarTouchEndHandler = $.proxy(this._touchEnd, this);
-			this._zoombarMouseDownHandler = $.proxy(this._mouseDown, this);
-			this._zoombarMouseMoveHandler = $.proxy(this._mouseMove, this);
-			this._zoombarMouseUpHandler = $.proxy(this._mouseUp, this);
-			this._targetWindowChangedHandler = $.proxy(this._targetWindowChanged, this);
-			this._containerResizedHandler = $.proxy(this._containerResized, this);
-			this._scrollbarThumbMouseEnterHandler = $.proxy(this._scrollBarMouseEnter, this);
-			this._scrollbarThumbMouseLeaveHandler = $.proxy(this._scrollBarMouseLeave, this);
-			this._windowKeyDownHandler = $.proxy(this._windowKeyDown, this);
-			this._windowKeyUpHandler = $.proxy(this._windowKeyUp, this);
+			this._leftRightButtonHandler = this._leftRightButtonClicked.bind(this);
+			this._zoombarMouseWheelHandler = this._mouseWheel.bind(this);
+			this._zoombarTouchStartHandler = this._touchStart.bind(this);
+			this._zoombarTouchMoveHandler = this._touchMove.bind(this);
+			this._zoombarTouchEndHandler = this._touchEnd.bind(this);
+			this._zoombarMouseDownHandler = this._mouseDown.bind(this);
+			this._zoombarMouseMoveHandler = this._mouseMove.bind(this);
+			this._zoombarMouseUpHandler = this._mouseUp.bind(this);
+			this._targetWindowChangedHandler = this._targetWindowChanged.bind(this);
+			this._containerResizedHandler = this._containerResized.bind(this);
+			this._scrollbarThumbMouseEnterHandler = this._scrollBarMouseEnter.bind(this);
+			this._scrollbarThumbMouseLeaveHandler = this._scrollBarMouseLeave.bind(this);
+			this._windowKeyDownHandler = this._windowKeyDown.bind(this);
+			this._windowKeyUpHandler = this._windowKeyUp.bind(this);
 		},
 		_registerEvents: function () {
 			var wnd = $(window),
@@ -1596,8 +1596,7 @@
 		_bind: function () {
 			var t = this.settings.targetObject;
 			if (t && t.element && t.element.length) {
-				t.element.on("igdatachartwindowrectchanged.zoombar",
-					$.proxy(this._windowRectChanged, this));
+				t.element.on("igdatachartwindowrectchanged.zoombar", this._windowRectChanged.bind(this));
 			}
 		},
 		_unbind: function () {

@@ -1081,25 +1081,21 @@
             var toolbarItemsEvents =
                 "igtoolbarbuttonclick igsplitbuttonclick igcolorpickersplitbuttoncolorselected";
 
-            this.element
-                .delegate(".ui-widget", toolbarItemsEvents,
-                    $.proxy(this._onToolbarItemInteraction, this));
+            this.element.on(toolbarItemsEvents, ".ui-widget", this._onToolbarItemInteraction.bind(this));
 
             // Here we bind to igCombo items on click.
             // D.A. 3 Sep. 2013 Bug#150671 Custom combo handler is not called when clicked on the list item.
             // Bound to igcomboselectionchanged event instead of click, because
             // click was not fired when cliking on the list item's text node.
             this.element
-                .delegate(":ui-igCombo", "igcomboselectionchanged",
-                    $.proxy(this._onComboListItemClick, this))
-                .delegate(":ui-igCombo", "igcombodropdownclosed",
-                    $.proxy(this._onComboDropDownClose, this));
+                .on("igcomboselectionchanged", ":ui-igCombo", this._onComboListItemClick.bind(this))
+                .on("igcombodropdownclosed", ":ui-igCombo", this._onComboDropDownClose.bind(this));
 
             this.collapseBtn
-                .bind("igtoolbarbuttonclick", $.proxy(this._onCollapse, this));
+                .on("igtoolbarbuttonclick", this._onCollapse.bind(this));
 
             // D.U. 30.04.2014 Implementing resizing functionality on window resize
-            $(window).on("resize", $.proxy(this._onResize, this));
+            $(window).on("resize", this._onResize.bind(this));
         },
         _onToolbarItemInteraction: function (e, ui) {
             var selectedItemValue,
