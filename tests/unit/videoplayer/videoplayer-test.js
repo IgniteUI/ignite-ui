@@ -1389,36 +1389,23 @@ QUnit.test('Test screenshot of the current vidio frame test 47', function(assert
 	$('#custDiv').append('<video id="video2"/>')
 	var done = assert.async();
 
-	$("#video2").igVideoPlayerUnitTesting({
-		sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
-				  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
-				  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
-				  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+	$("#video2").igVideoPlayer({
+		sources: ['https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.h264.mp4',
+				'https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.webmvp8.webm',
+				'https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.theora.ogv'],
 		width: 800,
 		height: 340,
-		muted:false,
-		disabled: false,
-		playing: function (event, ui) {
-			event.preventDefault();
-
-			var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
-			// assert.equal(screen.tagName, 'CANVAS');
-			$("#video2").igVideoPlayerUnitTesting("pause");
-		}
+		disabled: false
 	});
 
-	var paused = $("#video2").igVideoPlayerUnitTesting("paused");
-
-	if (paused)
-	{
-		assert.ok(paused, true)
-		$("#video2").igVideoPlayerUnitTesting("play");
-		setTimeout(function(){
-			var screen = $("#video2").igVideoPlayerUnitTesting("screenshot");
-			assert.equal(screen.tagName, 'CANVAS');
-			done();
-		},500);
-	}
+	var paused = $("#video2").igVideoPlayer("paused");
+	assert.ok(paused, true);
+	$("#video2").igVideoPlayer("play");
+	$.ig.TestUtil.wait(500).then(function () {
+		var screen = $("#video2").igVideoPlayer("screenshot");
+		assert.equal(screen.tagName, 'CANVAS');
+		done();
+	});
 });
 
 QUnit.test('Test seeking, ended and duration methods return correct values test 48', function(assert){

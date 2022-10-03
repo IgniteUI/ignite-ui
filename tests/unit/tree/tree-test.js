@@ -3849,7 +3849,7 @@ QUnit.test("[Client events 04] igTree expanding and collapsing events", function
 
 	node = $container.igTree("nodeByPath", "1");
 	node.children(".ui-igtree-expander:first").click();
-	this.util.wait(50).then(function () {
+	this.util.wait(50).then(() => {
 		node = $container.igTree("nodeByPath", "2");
 		node.children(".ui-igtree-expander:first").click();
 		// check that no errors are thrown on checkbox API with checkboxMode="off" which is default
@@ -3862,9 +3862,10 @@ QUnit.test("[Client events 04] igTree expanding and collapsing events", function
 		} catch (e) {
 			assert.ok(false, e.message);
 		}
+		return this.util.wait(20);
+	}).then(function () {
 		done();
-	 });
-	
+	});
 });
 QUnit.test("[Client events 05] igTree checkstateChanging/Changed events", function (assert) {
 	assert.expect(34);
@@ -4605,7 +4606,7 @@ QUnit.test("[Add/Remove nodes 08] igTree simulate drag events", function (assert
 		tree5,
 		treeobj = tree1.data("igTree"),
 		node = tree1.find("li[data-role=node]:first"),
-		x, y, validateCustom,
+		x, y,
 		done = assert.async(),
 		that = this;
 

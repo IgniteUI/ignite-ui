@@ -98,7 +98,7 @@
 				$(this).trigger('progress', { buffered: this.buffered });
 
 				if (endArr[endArr.length - 1] <= this.duration) {
-					setTimeout($.proxy(this._buffer, this), 500 * this._connectionSpeed);
+					setTimeout(this._buffer.bind(this), 500 * this._connectionSpeed);
 				}
 			};
 			
@@ -183,12 +183,12 @@
 							this.play();
 						}
 					} else {
-						setTimeout($.proxy(this._play, this), 1000);
+						setTimeout(this._play.bind(this), 1000);
 					}
 				} else {
 					// we are waiting for data
 					$(this).trigger('waiting');
-					setTimeout($.proxy(this._play, this), 1000);
+					setTimeout(this._play.bind(this), 1000);
 				}
 			};
 			

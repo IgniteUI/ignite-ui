@@ -768,7 +768,7 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 	assert.ok(checkboxInput.igValidator("isValid"), "Validator should return true when checkbox is checked");
 
 	//HTML checkboxes
-	var validationForm = $.ig.TestUtil.appendToFixture('<form id="validationForm" action=""><input type="text" id="rulesInput" /><input type="text" id="textEditor"/><p> checkbox group, (2 required, onsubmit)</p><label for="check1"> Form checkbox 1</label><input type="checkbox" name="checkboxname" value="check1" id="check1" /><label for="check2"> Form checkbox 2</label><input type="checkbox" name="checkboxname" value="check2" id="check2" /><p> select (required onblur, onsubmit)</p><select id="singleSelect"><option value="" selected=selected>select..</option><option value="1">one</option><option value="2">two</option><option value="3">three</option><option value="4">four</option></select><p> multi-select, 2-3 selcted (onblur, not required)</p><select id="multipleSelect" multiple=multiple><option value="1">one</option><option value="2">two</option><option value="3">three</option><option value="4">four</option></select><input type="submit" value="Submit" /></form>');
+	$.ig.TestUtil.appendToFixture('<form id="validationForm" action=""><input type="text" id="rulesInput" /><input type="text" id="textEditor"/><p> checkbox group, (2 required, onsubmit)</p><label for="check1"> Form checkbox 1</label><input type="checkbox" name="checkboxname" value="check1" id="check1" /><label for="check2"> Form checkbox 2</label><input type="checkbox" name="checkboxname" value="check2" id="check2" /><p> select (required onblur, onsubmit)</p><select id="singleSelect"><option value="" selected=selected>select..</option><option value="1">one</option><option value="2">two</option><option value="3">three</option><option value="4">four</option></select><p> multi-select, 2-3 selcted (onblur, not required)</p><select id="multipleSelect" multiple=multiple><option value="1">one</option><option value="2">two</option><option value="3">three</option><option value="4">four</option></select><input type="submit" value="Submit" /></form>');
 	var checkbox1 = $("#check1");
 	var checkbox2 = $("#check2");
 	checkbox2.igValidator({
@@ -777,14 +777,14 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		lengthRange: [2]
 	});
 
-	checkbox1.click();
+	checkbox1.trigger("click");
 	assert.equal(checkbox2.igValidator("getErrorMessages")[0], "At least 2 item(s) should be selected", "Validation on group checkboxes interaction");
-	checkbox2.focus();
+	checkbox2.trigger("focus");
 	$.ig.TestUtil.keyInteraction(32, checkbox2); // space to toggle
 	checkbox2.attr("checked", true);
 	$.ig.TestUtil.keyInteraction(9, checkbox2); // tab (should be ignored)
 	assert.equal(checkbox2.igValidator("getErrorMessages").length, 1, "Checkbox validation should be triggered on tab without blur");
-	checkbox2.blur();
+	checkbox2.trigger("blur");
 	assert.equal(checkbox2.igValidator("getErrorMessages").length, 0, "Checkbox validation on group interaction");
 
 	// Radio options
@@ -812,7 +812,7 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		assert.equal(ui.valid, true, "Required select should be valid after selection");
 		assert.equal(ui.value, "3", "Select group value should be 3");
 	});
-	selectInput.val("3").blur();
+	selectInput.val("3").trigger("blur");
 
 	//Multiselect
 	var multipleSelect = $("#multipleSelect");
@@ -824,11 +824,11 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		assert.ok(ui.valid, "Multi-Select: range 2-3 select should be valid with 2 selections");
 		assert.equal(ui.value[1], "3", "Multi-Select: group value should be 3");
 	});
-	multipleSelect.val([2, 3]).blur();
+	multipleSelect.val([2, 3]).trigger("blur");
 	multipleSelect.one("igvalidatorvalidated", function (evt, ui) {
 		assert.notOk(ui.valid, "Multi-Select: range 2-3 select should not be valid with 4 selections");
 	});
-	multipleSelect.val([2, 3, 1, 4]).blur();
+	multipleSelect.val([2, 3, 1, 4]).trigger("blur");
 
 	//Text area
 	var validationContainer = $.ig.TestUtil.appendToFixture('<div id="validationContainer"><textarea id="areaInput">line,\r\nline2</textarea></div>');
@@ -844,7 +844,7 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 	validationContainer.on("igvalidatorvalidated", function (evt, ui) {
 		assert.equal(ui.value, "line,\r\nline2", "Textarea value validation");
 	});
-	$("#areaInput").blur();
+	$("#areaInput").trigger("blur");
 
 	//Input, keyup, blur
 	var textEditor = $('#textEditor');
@@ -857,8 +857,8 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		assert.equal(ui.value, "2", "Text editor value on validation should be equal to 2");
 	});
 
-	textEditor.val("2").blur();
-	textEditor.val("").focus();
+	textEditor.val("2").trigger("blur");
+	textEditor.val("").trigger("focus");
 	$.ig.TestUtil.keyInteraction(50, textEditor);
 	textEditor.off("igvalidatorvalidating");
 
@@ -911,6 +911,8 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		textEditor.one("igvalidatorvalidating", function (evt, ui) {
 			assert.equal(ui.value, "3333333333", "Input: Paste handler  failed to validate proper value");
 		}).val("3333333333").trigger("paste");
+		return $.ig.TestUtil.wait(20);
+	}).then(function () {
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });

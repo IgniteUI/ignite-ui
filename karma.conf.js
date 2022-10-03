@@ -7,7 +7,7 @@ const glob = require("glob");
 
 // https://github.com/karma-runner/karma-qunit/issues/92
 
-const reporters = ["spec"];
+const reporters = ["progress"];
 let testPath = "**";
 
 // proxy entries need to be full file paths (no glob support)
@@ -47,6 +47,11 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: ".",
 
+    plugins: [
+      require('karma-coverage'),
+      require('karma-chrome-launcher'),
+      require('karma-qunit')
+    ],
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -57,11 +62,11 @@ module.exports = function (config) {
     files: [
       // http://karma-runner.github.io/1.0/config/files.html
       // serve resources
-      { pattern: "node_modules/jquery/dist/jquery.js", included: true, watched: false },
+      { pattern: "node_modules/jquery/dist/jquery.min.js", included: true, watched: false },
       // TODO: because.. jquery-ui package has no bundle
       { pattern: `http://code.jquery.com/ui/1.13.0/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
       { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
-      { pattern: "node_modules/knockout/build/output/knockout-latest.debug.js", included: true, watched: false },
+      { pattern: "node_modules/knockout/build/output/knockout-latest.js", included: true, watched: false },
 
       "src/css/themes/infragistics/infragistics.theme.css",
       "src/css/structure/modules/*.css",
@@ -135,7 +140,7 @@ module.exports = function (config) {
 
       // Test files:
       //"tests/unit/**/*test*.htm*"
-      `tests/${testPath}/*-test?(s).js`
+      { pattern: `tests/${testPath}/*-test?(s).js`, included: true }
     ],
     // https://github.com/karma-runner/karma/issues/421#issuecomment-336284122
     crossOriginAttribute: false,
@@ -148,8 +153,8 @@ module.exports = function (config) {
       clearContext: false,
       qunit: {
         // https://api.qunitjs.com/config/QUnit.config
-        autostart: false,
-        //reorder: false,
+        // autostart: false,
+        // reorder: false,
         showUI: true,
         testTimeout: 10000,
         //fixture: "#qunit-fixture" //https://github.com/karma-runner/karma-qunit/issues/18
@@ -164,9 +169,9 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/js/infragistics.loader.js": "coverage",
-      "src/js/modules/*.js": "coverage",
-      "src/js/extensions/*.js": "coverage"
+      "src/js/infragistics.loader.js": ["coverage"],
+      "src/js/modules/*.js": ["coverage"],
+      "src/js/extensions/*.js": ["coverage"]
     },
 
     // https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
@@ -186,13 +191,13 @@ module.exports = function (config) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: reporters,
-    specReporter: {
-      maxLogLines: 15,              // limit number of lines logged per test
-      suppressErrorSummary: false,  // do not print error summary
-      suppressSkipped: false,       // do not print information about skipped tests
-      showSpecTiming: true,        // print the time elapsed for each spec
-      failFast: false               // test would finish on first fail
-    },
+    // specReporter: {
+    //   maxLogLines: 15,              // limit number of lines logged per test
+    //   suppressErrorSummary: false,  // do not print error summary
+    //   suppressSkipped: false,       // do not print information about skipped tests
+    //   showSpecTiming: true,        // print the time elapsed for each spec
+    //   failFast: false               // test would finish on first fail
+    // },
 
     // web server port
     port: 9876,
@@ -217,7 +222,8 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        flags: ['--no-sandbox', '--disable-gpu', '--autoplay-policy=no-user-gesture-required'],
+        debug: false
       }
     },
     // Continuous Integration mode
