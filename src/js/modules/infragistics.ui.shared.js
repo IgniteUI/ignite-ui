@@ -672,7 +672,7 @@
 				}
 			}
 			this._marksHit.sort(this._sortBookmarksJSON.bind(this));
-			this._marksHit = $.extend(true, [], this._marksHit.bind(this));
+			this._marksHit = $.extend(true, [], this._marksHit);
 		},
 
 		_sortBookmarksJSON: function (a, b) {
