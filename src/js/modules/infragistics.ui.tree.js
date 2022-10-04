@@ -2622,7 +2622,7 @@
 				self.toggleCheckstate($(event.target).closest("li[data-role=node]"), event);
 			});
 			this.element.on("mouseover", "span[data-role=checkbox] > span", function (event) {
-				$(event.target).closest("span[data-role=checkbox]").addClass(css.nodeHovered)
+				$(event.target).closest("span[data-role=checkbox]").addClass(css.nodeHovered);
 			});
 			this.element.on("mouseout", "span[data-role=checkbox] > span", function (event) {
 				$(event.target).closest("span[data-role=checkbox]").removeClass(css.nodeHovered);
