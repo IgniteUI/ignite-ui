@@ -1640,23 +1640,23 @@
 
 			// Event handlers
 			this._handlers = {
-				windowResize: $.proxy(this._windowResize, this),
-				documentMouseUp: $.proxy(this._documentMouseUp, this),
-				inputFocus: $.proxy(this._inputFocus, this),
-				inputBlur: $.proxy(this._inputBlur, this),
-				inputClick: $.proxy(this._inputClick, this),
-				inputKeyDown: $.proxy(this._inputKeyDown, this),
-				inputPaste: $.proxy(this._inputPaste, this),
-				inputKeyUp: $.proxy(this._inputKeyUp, this),
-				inputKeyPress: $.proxy(this._inputKeyPress, this),
-				inputMouseDown: $.proxy(this._inputMouseDown, this),
+				windowResize: this._windowResize.bind(this),
+				documentMouseUp: this._documentMouseUp.bind(this),
+				inputFocus: this._inputFocus.bind(this),
+				inputBlur: this._inputBlur.bind(this),
+				inputClick: this._inputClick.bind(this),
+				inputKeyDown: this._inputKeyDown.bind(this),
+				inputPaste: this._inputPaste.bind(this),
+				inputKeyUp: this._inputKeyUp.bind(this),
+				inputKeyPress: this._inputKeyPress.bind(this),
+				inputMouseDown: this._inputMouseDown.bind(this),
 
 				// P.P 02-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
-				inputCompositionUpdate: $.proxy(this._inputCompositionUpdate, this),
+				inputCompositionUpdate: this._inputCompositionUpdate.bind(this),
 
 				// P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
-				inputCompositionEnd: $.proxy(this._inputCompositionEnd, this),
-				inputInput: $.proxy(this._inputInputHandler, this)
+				inputCompositionEnd: this._inputCompositionEnd.bind(this),
+				inputInput: this._inputInputHandler.bind(this)
 			};
 
 			this._analyzeOptions();
@@ -5224,8 +5224,7 @@
 					options.dataSource.settings.dataSource = url;
 					options.dataSource.settings.type = "remoteUrl";
 					options.dataSource._runtimeType = options.dataSource.analyzeDataSource();
-					options.dataSource.settings.urlParamsEncoded =
-						$.proxy(function (data, params) {
+					options.dataSource.settings.urlParamsEncoded = function (data, params) {
 						params = params ? params.filteringParams : null;
 
 						// set flag used by Mvc remote filtering
@@ -5241,7 +5240,7 @@
 								params.compact = "1";
 							}
 						}
-					}, this);
+					}.bind(this);
 				}
 
 				// S.T. Feb 27th, 2015 Bug #189554: Support for loadOnDemand coming from Mvc

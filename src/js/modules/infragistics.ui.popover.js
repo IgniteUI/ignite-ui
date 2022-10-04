@@ -449,7 +449,7 @@
 			this._positions = [ "balanced", "start", "end" ];
 			this._visible = false;
 			this._useDocumentBoundary = false;
-			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
+			$( window ).on("resize.popover", this._resizeHandler.bind(this));
 		},
 		_createWidget: function (options, element) {
 			// initialization performance will be better if we don't try to normalize the defaults
@@ -639,7 +639,7 @@
 				if (this.options.headerTemplate.closeButton) {
 					var closeBtn = $("<div></div>")
 						.addClass(this.css.closeButtonClass)
-						.bind("click.popover", $.proxy(this._closeBtnClick, this))
+						.bind("click.popover", this._closeBtnClick.bind(this))
 						.appendTo(cnt);
 					if (this.id()) {
 						closeBtn.attr("id", this.id() + "_popover_closeBtn");
@@ -834,20 +834,20 @@
 				case "click":
 					showEvt = "click.popover";
 					hideEvt = "blur.popover";
-					targetShowEvt = self._targetClick;
-					targetHideEvt = self._targetBlur;
+					targetShowEvt = this._targetClick.bind(this);
+					targetHideEvt = this._targetBlur.bind(this);
 					break;
 				case "focus":
 					showEvt = "focusin.popover";
 					hideEvt = "focusout.popover";
-					targetShowEvt = self._focusin;
-					targetHideEvt = self._focusout;
+					targetShowEvt = this._focusin.bind(this);
+					targetHideEvt = this._focusout.bind(this);
 					break;
 				case "mouseenter":
 					showEvt = "mouseenter.popover";
 					hideEvt = "mouseleave.popover";
-					targetShowEvt = self._targetMouseMove;
-					targetHideEvt = self._targetMouseLeave;
+					targetShowEvt = this._targetMouseMove.bind(this);
+					targetHideEvt = this._targetMouseLeave.bind(this);
 					break;
 				default:
 
@@ -865,23 +865,23 @@
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
-				$(t).unbind(showEvt).bind(showEvt, $.proxy(targetShowEvt, this));
-				$(t).unbind(hideEvt).bind(hideEvt, $.proxy(targetHideEvt, this));
+				$(t).unbind(showEvt).bind(showEvt, targetShowEvt);
+				$(t).unbind(hideEvt).bind(hideEvt, targetHideEvt);
 			} else if (this.options.selectors && showEvt) {
-				this.element.find(self.options.selectors).addBack().each(function () {
+				this.element.find(this.options.selectors).addBack().each(function () {
 					var target = $(this)[ 0 ];
 					/* verify that no popover should be shown for the original div */
 					if (target === self.element[ 0 ]) {
 						return;
 					}
-					$(target).unbind(showEvt).bind(showEvt, $.proxy(targetShowEvt, self));
-					$(target).unbind(hideEvt).bind(hideEvt, $.proxy(targetHideEvt, self));
+					$(target).unbind(showEvt).bind(showEvt, targetShowEvt);
+					$(target).unbind(hideEvt).bind(hideEvt, targetHideEvt);
 				});
 			}
 		},
 		_detachEventsFromTarget: function () {
 			/* T.G Sep 23th, 2013 Bug #152943 destroy of igPopover */
-			var t = this._target, self = this;
+			var t = this._target;
 			/* K.D. July 18th, 2012 Bug #117374 The HTMLElement object is natively not defined in IE <= 8
 			Abstain from referring to "natively" defined objects as we're not sure in what cases they would
 			actually be undefined. Add to check if is jQuery object*/
@@ -894,7 +894,7 @@
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
 				$(t).unbind(".popover");
 			} else if (this.options.selectors) {
-				this.element.find(self.options.selectors).addBack().each(function () {
+				this.element.find(this.options.selectors).addBack().each(function () {
 					var target = $(this);
 					$(target).unbind(".popover");
 				});

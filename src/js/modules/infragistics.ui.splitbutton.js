@@ -257,15 +257,14 @@
         _attachEvents: function () {
             var _opt = this._options;
 
-            _opt.defaultButton.on("igtoolbarbuttonclick", $.proxy(this._onDefaultBtnClick, this));
-            _opt.expandButton.on("focus", $.proxy(this._onExpandBtnFocus, this));
-            _opt.expandButton.on("blur", $.proxy(this._onExpandBtnBlur, this));
-            _opt.expandButton.on("igtoolbarbuttonclick", $.proxy(this._onExpandBtnClick, this));
-            _opt.itemsList.on("igtoolbarbuttonclick", "a", $.proxy(this._onItemClick, this));
+            _opt.defaultButton.on("igtoolbarbuttonclick", this._onDefaultBtnClick.bind(this));
+            _opt.expandButton.on("focus", this._onExpandBtnFocus.bind(this));
+            _opt.expandButton.on("blur", this._onExpandBtnBlur.bind(this));
+            _opt.expandButton.on("igtoolbarbuttonclick", this._onExpandBtnClick.bind(this));
+            _opt.itemsList.on("igtoolbarbuttonclick", "a", this._onItemClick.bind(this));
 
-            this.element.on("keypress", $.proxy(this._onEnterKeypress, this));
-            this.element.hover($.proxy(this._onMouseEnter, this),
-                $.proxy(this._onMouseLeave, this));
+            this.element.on("keypress", this._onEnterKeypress.bind(this));
+            this.element.hover(this._onMouseEnter.bind(this), this._onMouseLeave.bind(this));
         },
         _onDefaultBtnClick: function (e) {
             var self = this;

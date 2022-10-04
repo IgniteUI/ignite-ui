@@ -4651,7 +4651,7 @@
 			var o, s;
 			/* trigger the call */
 			if (this.settings.responseDataType === "jsonp") {
-				/* $.getJSON(options.url, options.data, $.proxy(this._jsonpFilter, this)); */
+				/* $.getJSON(options.url, options.data, this._jsonpFilter.bind(this)); */
 				/* M.H. 29 Aug 2013 Fix for bug #150723: When dataSource is remote and it is used JSONP
 				then in Chrome and Firefox it is thrown exception and grid is not loaded */
 				/* M.H. 19 Sep 2013 Fix for bug #151600: [Templating] Row Template with Images doesn't load */
@@ -4660,8 +4660,8 @@
 					type: "GET",
 					url: options.url,
 					data: options.data,
-					success: $.proxy(this._jsonpFilter, this),
-					error: $.proxy(this._errorCallback, this)
+					success: this._jsonpFilter.bind(this),
+					error: this._errorCallback.bind(this)
 				};
 				/* M.H. 19 Sep 2013 Fix for bug #151600: [Templating] Row Template with Images doesn't load */
 				s = this.settings;
@@ -8612,9 +8612,9 @@
 		_createHttpHandlers: function () {
 			// Adding only success related handlers
 			//  handle errors accurately
-			this._okHandler = $.proxy(this._responseOk, this);
-			this._createdHandler = $.proxy(this._responseCreated, this);
-			this._noContentHandler = $.proxy(this._responseNoContent, this);
+			this._okHandler = this._responseOk.bind(this);
+			this._createdHandler = this._responseCreated.bind(this);
+			this._noContentHandler = this._responseNoContent.bind(this);
 			this._httpHandlers = {
 				"POST": {
 					"201": this._createdHandler
@@ -9469,7 +9469,7 @@
 			/* necessary to push all of the layout children props
 			this._rootopts.schema.fields.push({name: this.settings.defaultChildrenDataProperty});
 			depending on the value of initialDataBindDepth, we need to encode the URL so that load on demand works */
-			this._rootopts.urlParamsEncoded = $.proxy(this._encodeHierarchicalUrlParams, this);
+			this._rootopts.urlParamsEncoded = this._encodeHierarchicalUrlParams.bind(this);
 			/* K.D. April 22nd, 2014 Bug #169669 instanceof does not work in an iframe. */
 			if (this._rootopts.dataSource && typeof this._rootopts.dataSource._xmlToArray === "function" &&
 					typeof this._rootopts.dataSource._encodePkParams === "function") {
@@ -9842,7 +9842,7 @@
 		},
 		_applySchema: function (forceApply) {
 			var s = this.schema();
-			s.transform = $.proxy(this._transformSchema, this);
+			s.transform = this._transformSchema.bind(this);
 			this._checkGeneratedSchema();
 			this._super(forceApply);
 			this.generateFlatDataView();
@@ -9881,8 +9881,8 @@
 				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
 				if (!this._transformCallback) {
-					this._transformCallback = $.proxy(s.transform, s);
-					s.transform = $.proxy(this._transformSchema, this);
+					this._transformCallback = s.transform.bind(s);
+					s.transform = this._transformSchema.bind(this);
 				}
 			}
 			this._flatDataView = [];
@@ -10744,7 +10744,7 @@
 						func = window[ func ];
 					}
 					if ($.type(func) !== "function") {
-						func = $.proxy(this._requestData, this);
+						func = this._requestData.bind(this);
 					}
 					func(record, expand, callbackArgs);
 					return;

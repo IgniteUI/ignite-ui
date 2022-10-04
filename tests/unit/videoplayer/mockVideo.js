@@ -84,7 +84,7 @@
 						this.play();
 					}
 				}
-				setTimeout($.proxy(this._srcTimer, this), 500);
+				setTimeout(this._srcTimer.bind(this), 500);
 			};
 			
 			div._buffer = function () {

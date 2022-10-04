@@ -283,7 +283,7 @@
                 }
             });
 
-            this.element.on("keypress", $.proxy(this._onEnterKey, this));
+            this.element.on("keypress", this._onEnterKey.bind(this));
         },
         toggle: function () {
             /* Toggle toolbar button

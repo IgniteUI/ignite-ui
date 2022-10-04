@@ -3511,10 +3511,10 @@
 			try {
 				$(this._dropDownList).show("blind", { direction: direction },
 					this.options.dropDownAnimationDuration,
-					$.proxy(this._triggerDropDownOpened, this));
+					this._triggerDropDownOpened.bind(this));
 			} catch (ex) {
 				$(this._dropDownList).show(this.options.dropDownAnimationDuration,
-					$.proxy(this._triggerDropDownOpened, this));
+					this._triggerDropDownOpened.bind(this));
 			}
 			this._editorInput.attr("aria-expanded", true);
 			this._markDropDownHoverActiveItem();
@@ -3530,10 +3530,10 @@
 			try {
 				$(this._dropDownList).hide("blind", { direction: direction },
 					this.options.dropDownAnimationDuration,
-					$.proxy(this._triggerDropDownClosed, this));
+					this._triggerDropDownClosed.bind(this));
 			} catch (ex) {
 				$(this._dropDownList).hide(this.options.dropDownAnimationDuration,
-					$.proxy(this._triggerDropDownClosed, this));
+					this._triggerDropDownClosed.bind(this));
 			}
 			this._editorInput.attr("aria-expanded", false);
 			this._clearDropDownHoverActiveItem();

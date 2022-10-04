@@ -1928,16 +1928,16 @@
 			this.fileInfoData = data;
 			this._renderStartupBrowseButton();
 			this.container()
-				.bind("drop", $.proxy(this._dropFiles, this))
+				.on("drop", this._dropFiles.bind(this))
 				.width(this.options.width)
 				.height(this.options.height);
 			this._attachFakeIframe();
 			/* M.H. 27 Jul 2011 - fix bug 77162 - analyze file extension icons array */
 			this._analyzeFileExtensionIcons();
 			/* M.H. 12 Dec 2012 Fix for bug #129351 */
-			$(document).bind("dragenter." + this.element[ 0 ].id, $.proxy(this._docEnter, this));
-			$(document).bind("dragover." + this.element[ 0 ].id, $.proxy(this._docOver, this));
-			$(document).bind("dragleave." + this.element[ 0 ].id, $.proxy(this._docLeave, this));
+			$(document).bind("dragenter." + this.element[ 0 ].id, this._docEnter.bind(this));
+			$(document).bind("dragover." + this.element[ 0 ].id, this._docOver.bind(this));
+			$(document).bind("dragleave." + this.element[ 0 ].id, this._docLeave.bind(this));
 		},
 		_dropFiles: function (e) {
 			var isInit = $("#" + this._id("_ibb")).is(":visible"),

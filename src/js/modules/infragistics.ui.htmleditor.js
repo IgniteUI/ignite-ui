@@ -1943,7 +1943,7 @@
                 }
             });
 
-            $(window).on("resize", $.proxy(this._resizeWorkspaceHandler, this));
+            $(window).on("resize", this._resizeWorkspaceHandler.bind(this));
 
         },
         _viewSource: function () {
