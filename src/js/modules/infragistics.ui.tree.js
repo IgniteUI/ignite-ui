@@ -1802,7 +1802,7 @@
 			}
 		},
 		_setOption: function (option, value) {
-			var elements, prevValue = this.options[ option ];
+			var elements, css = this.css, prevValue = this.options[ option ];
 			this._super(option, value);
 
 			switch (option) {
@@ -1872,8 +1872,12 @@
 				if (value) {
 
 					// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-					this.element.on("mouseover", "a", (event) => $(event.target).addClass(this.css.nodeHovered));
-					this.element.on("mouseout", "a", (event) =>$(event.target).removeClass(this.css.nodeHovered));
+					this.element.on("mouseover", "a", function (event) {
+						$(event.target).addClass(css.nodeHovered);
+					});
+					this.element.on("mouseout", "a", function (event) {
+						$(event.target).removeClass(css.nodeHovered);
+					});
 				} else {
 
 					// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
@@ -2566,20 +2570,22 @@
 			}
 		},
 		_attachEvents: function () {
-			var noCancel, target;
+			var self = this, css = this.css, noCancel, target;
 
 			// Bind expander
 			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-			this.element.on("click", "span[data-role=expander]", (event) => this.toggle($(event.target).closest("li[data-role=node]"), event));
+			this.element.on("click", "span[data-role=expander]", function (event) {
+				self.toggle($(event.target).closest("li[data-role=node]"), event);
+			});
 
 			// Bind anchor
 			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-			this.element.on("click", "a", (event) => {
+			this.element.on("click", "a", function (event) {
 				target = $(event.target).closest("a");
-				noCancel = this._triggerNodeClick(event, target.parent());
+				noCancel = self._triggerNodeClick(event, target.parent());
 
 				if (noCancel) {
-					this.select(target.parent(), event);
+					self.select(target.parent(), event);
 					if ($.ig.util.isWebKit) {
 						target.focus();
 					}
@@ -2587,24 +2593,40 @@
 					event.preventDefault();
 				}
 			});
-			this.element.on("dblclick", "a", (event) => {
+			this.element.on("dblclick", "a", function (event) {
 				event.preventDefault();
-				this._triggerNodeDoubleClick(event, $(event.target.parentNode));
+				self._triggerNodeDoubleClick(event, $(event.target.parentNode));
 			});
-			this.element.on("keydown", "a", (event) => this._kbNavigation(event));
-			this.element.on("focus", "a", (event) => this._focusNode(event));
-			this.element.on("blur", "a", (event) => this._blurNode(event));
+			this.element.on("keydown", "a", function (event) {
+				self._kbNavigation(event);
+			});
+			this.element.on("focus", "a", function (event) {
+				self._focusNode(event);	
+			});
+			this.element.on("blur", "a", function (event) {
+				self._blurNode(event);
+			});
 
 			if (this.options.hotTracking) {
-				this.element.on("mouseover", "a", (event) => $(event.target).addClass(this.css.nodeHovered));
-				this.element.on("mouseout", "a", (event) => $(event.target).removeClass(this.css.nodeHovered));
+				this.element.on("mouseover", "a", function (event) {
+					$(event.target).addClass(css.nodeHovered);
+				});
+				this.element.on("mouseout", "a", function (event) {
+					$(event.target).removeClass(css.nodeHovered);
+				});
 			}
 
 			// Bind checkbox
 			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-			this.element.on("click", "span[data-role=checkbox] > span", (event) => this.toggleCheckstate($(event.target).closest("li[data-role=node]"), event));
-			this.element.on("mouseover", "span[data-role=checkbox] > span", (event) => $(event.target).closest("span[data-role=checkbox]").addClass(this.css.nodeHovered));
-			this.element.on("mouseout", "span[data-role=checkbox] > span", (event) =>$(event.target).closest("span[data-role=checkbox]").removeClass(this.css.nodeHovered));
+			this.element.on("click", "span[data-role=checkbox] > span", function (event) {
+				self.toggleCheckstate($(event.target).closest("li[data-role=node]"), event);
+			});
+			this.element.on("mouseover", "span[data-role=checkbox] > span", function (event) {
+				$(event.target).closest("span[data-role=checkbox]").addClass(css.nodeHovered)
+			});
+			this.element.on("mouseout", "span[data-role=checkbox] > span", function (event) {
+				$(event.target).closest("span[data-role=checkbox]").removeClass(css.nodeHovered);
+			});
 		},
 		_initChildrenRecursively: function (path, data, depth, indexFeed) {
 			var childUl, opt = this.options, childPath, binding, value, display,
