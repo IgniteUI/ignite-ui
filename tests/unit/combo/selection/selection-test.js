@@ -154,6 +154,7 @@ QUnit.test('[ID1] Item selection', function (assert) {
 
 QUnit.test('[ID2] Drop down mode', function (assert) {
 	assert.expect(6);
+	var done = assert.async();
 
 	var $input, $item,
 		$combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-ddmode" }),
@@ -178,20 +179,25 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 	assert.strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
 	assert.strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
 
-	$.ig.TestUtil.click($input);
-	// Adding tolerance for inconsistencies between the running engine and real browsers
-	assert.ok(dropDownExpHeight - 10 <= $dropDown.outerHeight() && dropDownExpHeight + 10 >= $dropDown.outerHeight(),
-		`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
-	//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
+	$.ig.TestUtil.click($input)
+	$.ig.TestUtil.wait(16).then(() => {
+		// Adding tolerance for inconsistencies between the running engine and real browsers
+		assert.ok(dropDownExpHeight - 10 <= $dropDown.outerHeight() && dropDownExpHeight + 10 >= $dropDown.outerHeight(),
+			`Drop down height is incorrect: ${$dropDown.outerHeight()}, exp: ${dropDownExpHeight}`);
+		//strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
 
-	$.ig.TestUtil.mouseEvent($item, "mouseover"); // Hover item
-	assert.ok($item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
+		$.ig.TestUtil.mouseEvent($item, "mouseover"); // Hover item
+		assert.ok($item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
 
-	$.ig.TestUtil.mouseEvent($item, "mouseout");
-	assert.notOk($item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
+		$.ig.TestUtil.mouseEvent($item, "mouseout");
+		assert.notOk($item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
 
-	$.ig.TestUtil.mouseEvent($input, "click"); // click on input
-	assert.strictEqual($dropDown.outerHeight(), 0, 'Drop down height is incorrect');
+		$.ig.TestUtil.mouseEvent($input, "click"); // click on input
+		return $.ig.TestUtil.wait(16);
+	}).then(() => {
+		assert.strictEqual($dropDown.outerHeight(), 0, 'Drop down height is incorrect');
+		done();
+	});
 });
 
 QUnit.test('[ID3] Readonly mode', function (assert) {

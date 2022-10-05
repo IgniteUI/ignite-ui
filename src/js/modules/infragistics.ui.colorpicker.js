@@ -180,7 +180,7 @@
         },
         _bindEvents: function () {
             var self = this;
-            this._colorTable.delegate("." + this.css.colorpickerColor, "click", function (e) {
+            this._colorTable.on("click", "." + this.css.colorpickerColor, function (e) {
                 var target = $(e.target);
                 e.preventDefault();
 

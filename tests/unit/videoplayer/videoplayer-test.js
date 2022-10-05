@@ -1416,7 +1416,7 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 	let checkElementClass = this.checkElementClass;
 	let checkElementNotClass = this.checkElementNotClass;
 
-	var video = $("#player11").igVideoPlayerUnitTesting({
+	var video = $("#player11").igVideoPlayer({
 		sources: ["https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.h264.mp4",
 				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.webmvp8.webm",
 				"https://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.theora.ogv"],
@@ -1428,21 +1428,21 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 			linkedCommercials: [
 			{
 				sources: [
-				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
-				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
-				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
-			],
-				startTime: 0,
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				],
+				startTime: 1,
 				endTime: 5,
 				title: "Quince Presentation p1",
 				link: "http://quince.infragistics.com/"
 			},
 			{
 				sources: [
-				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
-				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
-				"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
-			],
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				],
 				startTime: 10,
 				title: "Quince Presentation p3",
 				link: "http://quince.infragistics.com/"
@@ -1457,16 +1457,16 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 		counter++;
 	});
 
-	video.data('igVideoPlayerUnitTesting').togglePlay();
-
-	assert.equal(video.igVideoPlayerUnitTesting("seeking"), false);
-	assert.equal(video.igVideoPlayerUnitTesting("duration"), 260);
-
-	var ended = video.igVideoPlayerUnitTesting("ended");
-	assert.notOk(ended);
-
-	$.ig.TestUtil.wait(300).then(() => {
-		video.igVideoPlayerUnitTesting("changeLocale");
+	video.data('igVideoPlayer').play().then(() => {
+		assert.equal(video.igVideoPlayer("seeking"), false);
+		assert.equal(video.igVideoPlayer("duration"), 111.745);
+	
+		var ended = video.igVideoPlayer("ended");
+		assert.notOk(ended);
+	
+		return $.ig.TestUtil.wait(2000);
+	}).then(() => {
+		video.igVideoPlayer("changeLocale");
 		assert.ok($('#player11_ad_msg_c').is(':visible'));
 		checkElementClass($('#player11_ad_msg_c'), 'ui-igplayer-ad-msg-container', assert);
 
@@ -1486,12 +1486,12 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 
 		return $.ig.TestUtil.wait(500);
 	}).then(() => {
-		assert.equal(video.igVideoPlayerUnitTesting("paused"), true);
+		assert.equal(video.igVideoPlayer("paused"), true);
 
 		assert.ok($('#player11_ad_msg_c').is(':visible'));
 
-		$("#player11").igVideoPlayerUnitTesting("resetCommercialsShow");
-		return $.ig.TestUtil.wait(10);
+		$("#player11").igVideoPlayer("resetCommercialsShow");
+		return $.ig.TestUtil.wait(16);
 	}).then(() => done());
 });
 

@@ -1802,7 +1802,7 @@
 			}
 		},
 		_setOption: function (option, value) {
-			var css = this.css, elements, prevValue = this.options[ option ];
+			var elements, css = this.css, prevValue = this.options[ option ];
 			this._super(option, value);
 
 			switch (option) {
@@ -1872,22 +1872,20 @@
 				if (value) {
 
 					// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-					this.element.delegate("a", {
-						"mouseover": function (event) {
-							$(event.target).addClass(css.nodeHovered);
-						},
-						"mouseout": function (event) {
-							$(event.target).removeClass(css.nodeHovered);
-						}
+					this.element.on("mouseover", "a", function (event) {
+						$(event.target).addClass(css.nodeHovered);
+					});
+					this.element.on("mouseout", "a", function (event) {
+						$(event.target).removeClass(css.nodeHovered);
 					});
 				} else {
 
 					// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-					this.element.undelegate("a", "mouseover");
-					this.element.undelegate("a", "mouseout");
+					this.element.off("mouseover", "a");
+					this.element.off("mouseout", "a");
 				}
 				break;
-				case "checkboxMode":
+			case "checkboxMode":
 
 				// K.D. February 10th, 2014 Bug #163522 When the igTree is initialized with checkboxMode = off setting its value to biState is not possible
 				if (value.toLowerCase() === "off") {
@@ -2519,7 +2517,7 @@
 				this.element.droppable(dropOptions);
 
 				// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-				this.element.delegate("a", "mousedown", function () {
+				this.element.on("mousedown", "a", function () {
 					$(this).focus();
 				});
 			} else {
@@ -2530,7 +2528,7 @@
 		_destroyDragAndDrop: function () {
 			this.element.find("li[data-role=node]").draggable("destroy");
 			this.element.droppable("destroy");
-			this.element.undelegate("a", "mousedown");
+			this.element.off( "mousedown", "a");
 		},
 		_constructFromData: function () {
 			var ul, data = this.options.dataSource.root().data();
@@ -2576,64 +2574,58 @@
 
 			// Bind expander
 			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-			this.element.delegate("span[data-role=expander]", "click", function (event) {
+			this.element.on("click", "span[data-role=expander]", function (event) {
 				self.toggle($(event.target).closest("li[data-role=node]"), event);
 			});
 
 			// Bind anchor
 			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-			this.element.delegate("a", {
-				"click": function (event) {
-					target = $(event.target).closest("a");
-					noCancel = self._triggerNodeClick(event, target.parent());
+			this.element.on("click", "a", function (event) {
+				target = $(event.target).closest("a");
+				noCancel = self._triggerNodeClick(event, target.parent());
 
-					if (noCancel) {
-						self.select(target.parent(), event);
-						if ($.ig.util.isWebKit) {
-							target.focus();
-						}
-					} else {
-						event.preventDefault();
+				if (noCancel) {
+					self.select(target.parent(), event);
+					if ($.ig.util.isWebKit) {
+						target.focus();
 					}
-				},
-				"dblclick": function (event) {
+				} else {
 					event.preventDefault();
-					self._triggerNodeDoubleClick(event, $(event.target.parentNode));
-				},
-				"keydown": function (event) {
-					self._kbNavigation(event);
-				},
-				"focus": function (event) {
-					self._focusNode(event);
-				},
-				"blur": function (event) {
-					self._blurNode(event);
 				}
+			});
+			this.element.on("dblclick", "a", function (event) {
+				event.preventDefault();
+				self._triggerNodeDoubleClick(event, $(event.target.parentNode));
+			});
+			this.element.on("keydown", "a", function (event) {
+				self._kbNavigation(event);
+			});
+			this.element.on("focus", "a", function (event) {
+				self._focusNode(event);	
+			});
+			this.element.on("blur", "a", function (event) {
+				self._blurNode(event);
 			});
 
 			if (this.options.hotTracking) {
-				this.element.delegate("a", {
-					"mouseover": function (event) {
-						$(event.target).addClass(css.nodeHovered);
-					},
-					"mouseout": function (event) {
-						$(event.target).removeClass(css.nodeHovered);
-					}
+				this.element.on("mouseover", "a", function (event) {
+					$(event.target).addClass(css.nodeHovered);
+				});
+				this.element.on("mouseout", "a", function (event) {
+					$(event.target).removeClass(css.nodeHovered);
 				});
 			}
 
 			// Bind checkbox
 			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-			this.element.delegate("span[data-role=checkbox] > span", {
-				"click": function (event) {
-					self.toggleCheckstate($(event.target).closest("li[data-role=node]"), event);
-				},
-				"mouseover": function (event) {
-					$(event.target).closest("span[data-role=checkbox]").addClass(css.nodeHovered);
-				},
-				"mouseout": function (event) {
-					$(event.target).closest("span[data-role=checkbox]").removeClass(css.nodeHovered);
-				}
+			this.element.on("click", "span[data-role=checkbox] > span", function (event) {
+				self.toggleCheckstate($(event.target).closest("li[data-role=node]"), event);
+			});
+			this.element.on("mouseover", "span[data-role=checkbox] > span", function (event) {
+				$(event.target).closest("span[data-role=checkbox]").addClass(css.nodeHovered);
+			});
+			this.element.on("mouseout", "span[data-role=checkbox] > span", function (event) {
+				$(event.target).closest("span[data-role=checkbox]").removeClass(css.nodeHovered);
 			});
 		},
 		_initChildrenRecursively: function (path, data, depth, indexFeed) {
