@@ -5137,7 +5137,7 @@
 						"data-localeattr": "title"
 					});
 				}
-				videoElem.play();
+				return videoElem.play();
 			} else {
 				// K.D. June 3rd, 2011 Bug #75771 The title of the play/pause button has to be updated
 				if (!this.options.browserControls) {
@@ -5170,7 +5170,7 @@
 						"data-localeattr": "title"
 					});
 				}
-				videoElem.play();
+				return videoElem.play();
 			}
 		},
 
