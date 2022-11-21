@@ -267,7 +267,7 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_collections" } ],
 		internal: true,
-		scripts: [ "$path$/modules/infragistics.ext_collectionsextended.js" ]
+		scripts: [ "$path$/modules/infragistics.ext_collectionsExtended.js" ]
 	},
 	{
 		widget: "_ig_ext_text",
