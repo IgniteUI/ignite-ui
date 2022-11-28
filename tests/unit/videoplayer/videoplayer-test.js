@@ -1459,7 +1459,7 @@ QUnit.test('Test seeking, ended and duration methods return correct values test 
 
 	video.data('igVideoPlayer').play().then(() => {
 		assert.equal(video.igVideoPlayer("seeking"), false);
-		assert.equal(video.igVideoPlayer("duration"), 111.745);
+		assert.equal(video.igVideoPlayer("duration").toFixed(3), 111.745);
 	
 		var ended = video.igVideoPlayer("ended");
 		assert.notOk(ended);
