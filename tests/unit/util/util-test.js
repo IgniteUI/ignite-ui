@@ -425,3 +425,11 @@ QUnit.test('[ID20] Test OADate', function (assert) {
 	assert.equal(d1.toOADate(), 36345.5,  "toOADate for " + d1);
 	assert.equal($.ig.Date.prototype.fromOADate(36345.5).getTime(), +d1,  "fromOADate to " + d1);
 });
+
+QUnit.test('[ID21] Test String.concat', function (assert) {
+	assert.expect(2);
+
+	var arr = ["abc", "123"];
+	assert.equal(String.concat(arr[0], arr[1]), "abc123",  "Default w/ Separate arguments");
+	assert.equal(String.concat(arr), "abc123",  "Default w/ single argument");
+});
