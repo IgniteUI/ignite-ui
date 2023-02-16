@@ -3836,36 +3836,32 @@
 		return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, "").replace(/\s+/g, " ");
 	};
 
-	String.prototype.trimStart = function () {
+	var getParamsArray = function(a) {
 		var args = [ " " ];
-		if (arguments.length > 0) {
-			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
-				if (arguments[ 0 ].length > 0) {
-					args = arguments[ 0 ];
+		if (a && a.length > 0) {
+			if (a.length == 1 && Array.isArray(a[ 0 ])) {
+				if (a[ 0 ].length > 0) {
+					args = a[ 0 ];
 				}
 			} else {
-				args = Array.prototype.slice.call(arguments);
+				args = Array.prototype.slice.call(a);
 			}
 		}
+		
+		return args;
+	};
+	String.prototype.trimStart = function () {
 		if (this.length === 0) {
 			return this;
 		}
+		var args = getParamsArray(arguments);
 		var i = 0;
 		for (; i < this.length && args.indexOf(this.charAt(i)) > -1; i++) { }
 		return this.substring(i);
 	};
 
 	String.prototype.trimEnd = function () {
-		var args = [ " " ];
-		if (arguments.length > 0) {
-			if (arguments.length == 1 && Array.isArray(arguments[ 0 ])) {
-				if (arguments[ 0 ].length > 0) {
-					args = arguments[ 0 ];
-				}
-			} else {
-				args = Array.prototype.slice.call(arguments);
-			}
-		}
+		var args = getParamsArray(arguments);
 		var i = this.length - 1;
 		for (; i >= 0 && args.indexOf(this.charAt(i)) > -1; i--) { }
 		return this.substring(0, i + 1);
@@ -3875,7 +3871,7 @@
 	String.isNullOrEmpty = function (s) { return !s || s.length < 1; };
 	String.isNullOrWhiteSpace = function (s) { return !s || s.trim().length < 1; };
 	String.empty = function () { return ""; };
-	String.concat = function () { return [ ].join.call(arguments, ""); };
+	String.concat = function () { return [ ].join.call(getParamsArray(arguments), ""); };
 	String.concat1 = function (o1, o2) { return [ ].join.call(arguments, ""); };
 	String.concat2 = function (s1, s2) { return [ ].join.call(arguments, ""); };
 	String.concat3 = function () { return [ ].join.call(arguments, ""); };
