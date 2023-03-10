@@ -34,8 +34,8 @@
     padding: 5px 8px;
     font-size: 13px;
     font-family:"Segoe UI", Arial, sans-serif;
-	background:#fff;
-	color:#4E4E4E;
+    background:#fff;
+    color:#4E4E4E;
 }
 
 .ui-chart-default-tooltip-content {
@@ -127,8 +127,8 @@
 }
 .igTouch .ui-chart-slider
 {
- width:90%;
- padding: 0 30px;
+    width:90%;
+    padding: 0 30px;
 }
 .igTouch .ui-chart-toolbar .ui-slider-handle
 {
