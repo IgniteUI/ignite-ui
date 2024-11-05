@@ -127,7 +127,7 @@
 				Use $.ig.regExp.sub.exec(tmpl) in order to get the substitution element in the tmpl string
 			*/
 			nonEncodeSub: /\{\{html\s+([^\s{}]+(\.|\s)?[^\s{}]*)+\}\}/,
-			forSub: /\$\{(([\w\$]+\.[\w\$]*)+)\}/,
+			forSub: /\$\{([\w\$]+\.[\w\$]+(?:\.[\w\$]+)*)\}/,
 			arg: /args\[\d+\](?!.*\+)/,
 			/* type="RegExp" Matches any block directive in the template
 				Use $.ig.regExp.block.exec(tmpl) in order to get the block directive in the tmpl string
