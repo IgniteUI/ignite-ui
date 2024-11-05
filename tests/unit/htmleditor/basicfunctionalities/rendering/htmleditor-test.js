@@ -716,7 +716,7 @@ QUnit.module("igHTMLEditor unit tests", {
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
 			htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("bold", null);
 
-			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<i style=\"font-weight: bold;\">Some content</i><br>', "Content remains the same");
+			self.assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), '<i style=\"font-weight: bold;\">Some content</i>', "Content remains the same");
 			return $.ig.TestUtil.wait(300);
 		}).then(function () {
 			htmlEditor.igHtmlEditor("setContent", "<div id='div1'>Some content1<div>Some content2<div>Some content3<div><div><div>", "html");
