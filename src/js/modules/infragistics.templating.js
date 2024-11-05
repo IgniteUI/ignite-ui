@@ -126,7 +126,7 @@
 			/* type="RegExp" Matches any substitution element in the template that is to be rendered as it is
 				Use $.ig.regExp.sub.exec(tmpl) in order to get the substitution element in the tmpl string
 			*/
-			nonEncodeSub: /\{\{html\s+([^\s{}]+(?:\.[^\s{}]+)*)\}\}/,
+			nonEncodeSub: /\{\{html\s+([^\s{}]+(?:\.[^\s{}]+?)*)\}\}/,
 			forSub: /\$\{([\w\$]+\.[\w\$]+(?:\.[\w\$]+)*)\}/,
 			arg: /args\[\d+\](?!.*\+)/,
 			/* type="RegExp" Matches any block directive in the template
