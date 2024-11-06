@@ -122,7 +122,7 @@
 			/* type="RegExp" Matches any substitution element in the template that is to be encoded before rendering
 				Use $.ig.regExp.sub.exec(tmpl) in order to get the substitution element in the tmpl string
 			*/
-			sub: /\$\{(([\w\$\-]+(\.|\s)?[\w\$\-]*)+)\}/,
+			sub: /\$\{([\w\$\-]+(?:\.[\w\$\-]+|\s[\w\$\-]+)*)\}/,
 			/* type="RegExp" Matches any substitution element in the template that is to be rendered as it is
 				Use $.ig.regExp.sub.exec(tmpl) in order to get the substitution element in the tmpl string
 			*/
