@@ -23,8 +23,8 @@
     "build": "grunt build"
   },
   "dependencies": {
-    "jquery": "^3.6.1",
-    "jquery-ui": "^1.13.2"
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.14.1"
   },
   "devDependencies": {
     "coveralls": "^3.1.1",
@@ -37,11 +37,11 @@
     "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.2.2",
     "jquery-mockjax": "^2.6.0",
-    "karma": "^6.4.1",
-    "karma-chrome-launcher": "^3.1.1",
-    "karma-coverage": "^2.2.0",
-    "karma-qunit": "^4.1.2",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-qunit": "^4.2.1",
     "knockout": "^3.5.1",
-    "qunitjs": "^2.4.1"
+    "qunit": "^2.22.0"
   }
 }
