@@ -683,7 +683,16 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     margin     : 0;
     border     : 0 none;
     border-top : none;
-    height     : 1.6em;
+    min-height     : 1.6em;
+    
+    &::before {
+        content: 'Column label';
+        /* TODO USE THIS ONE AFTER ADDING THE data-column-label attr */
+        /*content: attr(data-column-label);*/
+        font-weight: bold;
+        font-size: 11px;
+        padding-inline-start: 4px;
+    }
 }
 
 .ui-iggrid-filtercell input {
@@ -778,10 +787,10 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 /* Filtering icons */
 /*.ui-iggrid-filterbutton
 {
-    background: url(../images/igGrid/filter-icons-333333.png) no-repeat -32px 0!important;  
+    background: url(../images/igGrid/filter-icons-333333.png) no-repeat -32px 0!important;
     border: 1px solid transparent;
 }
-.ui-iggrid th .ui-iggrid-filterbutton, .ui-iggrid-filterbuttonright 
+.ui-iggrid th .ui-iggrid-filterbutton, .ui-iggrid-filterbuttonright
 {
     background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -32px 0!important;
 }*/
@@ -1289,7 +1298,7 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
 .ui-iggrid-summaries-headerbuttoncontainer {
     float  : right;
     border : 1px solid transparent;
-    /*width:16px; 
+    /*width:16px;
     height:16px;*/
 }
 
