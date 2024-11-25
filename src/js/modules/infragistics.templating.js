@@ -186,8 +186,9 @@
 				    splitName = tempToken[ 1 ].split(".");
 
 					// K.D. September 25th, 2012 Bug #122463 The property can contain $ in its name.
-					template = template.replace(new RegExp("\\$\\{" + tempToken[ 1 ].replace(/\$/g, "\\$") + "\\}", "g"), "");
-					tempToken[ 3 ] = new RegExp("\\$\\{" + tempToken[ 1 ].replace(/\$/g, "\\$")  + "\\}", "g");
+					tempToken[ 1 ] = tempToken[ 1 ].replace(/\\/g, "\\\\").replace(/\$/g, "\\$");
+					template = template.replace(new RegExp("\\$\\{" + tempToken[ 1 ] + "\\}", "g"), "");
+					tempToken[ 3 ] = new RegExp("\\$\\{" + tempToken[ 1 ] + "\\}", "g");
 					tempToken[ 1 ] = splitName;
 					tempToken[ 2 ] = true;
 					this.tokens.push(tempToken);
@@ -200,8 +201,9 @@
 				    splitName = tempToken[ 1 ].split(".");
 
 					// K.D. September 25th, 2012 Bug #122463 The property can contain $ in its name.
-					template = template.replace(new RegExp("\\{\\{html\\s+" + tempToken[ 1 ].replace(/\$/g, "\\$") + "\\}\\}", "g"), "");
-					tempToken[ 3 ] = new RegExp("\\{\\{html\\s+" + tempToken[ 1 ].replace(/\$/g, "\\$") + "\\}\\}", "g");
+					tempToken[ 1 ] = tempToken[ 1 ].replace(/\\/g, "\\\\").replace(/\$/g, "\\$");
+					template = template.replace(new RegExp("\\{\\{html\\s+" + tempToken[ 1 ] + "\\}\\}", "g"), "");
+					tempToken[ 3 ] = new RegExp("\\{\\{html\\s+" + tempToken[ 1 ] + "\\}\\}", "g");
 					tempToken[ 1 ] = splitName;
 					tempToken[ 2 ] = false;
 					this.tokens.push(tempToken);
