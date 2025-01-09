@@ -730,3 +730,9 @@
 .ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom: 1px solid @table-border-color;
 }
+
+.ui-iggrid td.ui-iggrid-filtercell {
+  &::before {
+    color: @text-color;
+  }
+}
