@@ -684,10 +684,12 @@ body[dir="rtl"] .ui-iggrid-featurechoosericoncontainer {
     border     : 0 none;
     border-top : none;
     min-height     : 1.6em;
-    
+}
+
+.ui-iggrid td.ui-iggrid-filtercell[data-column-label] {
     &::before {
-        content: 'Column label';
-        /* TODO USE THIS ONE AFTER ADDING THE data-column-label attr */
+        content: 'replace me';
+        /* TODO: Uncomment this after implementing the data-column-label attr and remove the one above  */
         /*content: attr(data-column-label);*/
         font-weight: bold;
         font-size: 11px;
