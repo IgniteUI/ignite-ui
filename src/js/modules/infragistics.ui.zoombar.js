@@ -871,11 +871,11 @@
 			if (this._dragStart($(evt.target), evt.pageX || evt.originalEvent.clientX, evt)) {
 				// we will bind to move events only after dragStart is detected
 				if (window.navigator.pointerEnabled) {
-					$(evt.currentTarget).bind("pointermove.zoombar", this._zoombarMouseMoveHandler);
+					$(evt.currentTarget).on("pointermove.zoombar", this._zoombarMouseMoveHandler);
 				} else if (window.navigator.msPointerEnabled) {
-					$(evt.currentTarget).bind("MSPointerMove.zoombar", this._zoombarMouseMoveHandler);
+					$(evt.currentTarget).on("MSPointerMove.zoombar", this._zoombarMouseMoveHandler);
 				} else {
-					$(evt.currentTarget).bind("mousemove.zoombar", this._zoombarMouseMoveHandler);
+					$(evt.currentTarget).on("mousemove.zoombar", this._zoombarMouseMoveHandler);
 				}
 				evt.stopPropagation();
 				evt.preventDefault();
@@ -1352,29 +1352,29 @@
 				te = {}, pe = {}, me = {}, we = {};
 			te[ "touchstart." + this.id() ] = this._zoombarTouchStartHandler;
 			te[ "touchend." + this.id() ] = this._zoombarTouchEndHandler;
-			wnd.bind(te);
+			wnd.on(te);
 			this.container()[ 0 ].addEventListener("touchmove", this._zoombarTouchMoveHandler);
 			if (window.navigator.pointerEnabled) {
 				pe[ "pointerdown." + this.id() ] = this._zoombarMouseDownHandler;
 				pe[ "pointerup." + this.id() ] = this._zoombarMouseUpHandler;
-				wnd.bind(pe);
+				wnd.on(pe);
 			} else if (window.navigator.msPointerEnabled) {
 				pe[ "MSPointerDown." + this.id() ] = this._zoombarMouseDownHandler;
 				pe[ "MSPointerUp." + this.id() ] = this._zoombarMouseUpHandler;
-				wnd.bind(pe);
+				wnd.on(pe);
 			} else {
 				me[ "mousedown." + this.id() ] = this._zoombarMouseDownHandler;
 				me[ "mouseup." + this.id() ] = this._zoombarMouseUpHandler;
-				wnd.bind(me);
+				wnd.on(me);
 			}
 			we[ "mousewheel." + this.id() ] = this._zoombarMouseWheelHandler;
 			we[ "DOMMouseScroll." + this.id() ] = this._zoombarMouseWheelHandler;
-			wnd.bind(we);
-			this._sbt.bind({
+			wnd.on(we);
+			this._sbt.on({
 				"mouseenter.zoombar": this._scrollbarThumbMouseEnterHandler,
 				"mouseleave.zoombar": this._scrollbarThumbMouseLeaveHandler
 			});
-			zwe.bind({
+			zwe.on({
 				"keydown": this._windowKeyDownHandler,
 				"keyup": this._windowKeyUpHandler
 			});

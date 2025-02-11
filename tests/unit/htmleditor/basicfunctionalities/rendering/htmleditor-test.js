@@ -404,7 +404,7 @@ QUnit.module("igHTMLEditor unit tests", {
 					animationHideDuration: 0
 				});
 
-		combo.bind("igcombodropdownopened", function () {
+		combo.on("igcombodropdownopened", function () {
 			combo.igCombo('index', index, null, true);
 		});
 
@@ -1567,7 +1567,7 @@ QUnit.test('[ID65] igHtmlEditor rendering tests - Adjust domPathToolbar width wh
 				animationHideDuration: 0
 			});
 
-	combo.bind("igcombodropdownopened", function () {
+	combo.on("igcombodropdownopened", function () {
 		combo.igCombo('index', 3, null, true);
 	});
 

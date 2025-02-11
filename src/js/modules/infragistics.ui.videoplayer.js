@@ -2473,7 +2473,7 @@
 			/* if rendered, move it to be always last element in the widget */
 
 			// K.D. June 8th, 2011 Bug #78401 Preventing default action on click
-			$("#" + this._id("_detectError")).appendTo(this.container).bind({
+			$("#" + this._id("_detectError")).appendTo(this.container).on({
 				click: function (event) {
 					event.preventDefault();
 				}
@@ -2656,7 +2656,7 @@
 				"title": this._getLocaleValue("enterFullscreen"),
 				"data-localeid": "enterFullscreen",
 				"data-localeattr": "title"
-			}).addClass(css.fullScreenClass).bind({
+			}).addClass(css.fullScreenClass).on({
 				click: function (event) {
 					event.preventDefault();
 					control._setOption("fullscreen", !control.options.fullscreen);
@@ -2672,7 +2672,7 @@
 				"title": this._getLocaleValue("replayTooltip"),
 				"data-localeid": "replayButton",
 				"data-localeattr": "title"
-			}).bind({
+			}).on({
 				click: function (event) {
 					event.preventDefault();
 					if (!$(this).igButton("option", "disabled")) {
@@ -2749,7 +2749,7 @@
 					ulContainer.width(ulContainerWidth);
 				}
 
-				this.relatedScrollers = $("a", scrollContainer).bind({
+				this.relatedScrollers = $("a", scrollContainer).on({
 					mouseover: function () {
 						if (!control._isScrolling) {
 							control._isScrolling = true;
@@ -2766,7 +2766,7 @@
 					.each(function (i) {
 						$(this).data("related-index", i);
 					})
-					.bind({
+					.on({
 						mouseover: function () {
 							$(this).addClass(control.css.relatedVideoHoverClass).children().filter("div").show();
 						},
@@ -2883,7 +2883,7 @@
 
 			$("<div></div>").appendTo(relatedImg.parent()).css("position", "absolute").hide();
 
-			relatedImg.bind({
+			relatedImg.on({
 				load: function () {
 					self._imageLoaded(this);
 				},
@@ -2978,7 +2978,7 @@
 			if (com.length > 0) {
 				video = this._createVideoElement(this._id("_com_video")).attr("preload", "auto")
 				.appendTo(this.container).addClass(this.css.videoClass)
-				.bind({
+				.on({
 					ended: function () {
 						var slider = $("#" + control._id("_ctrls_s")),
 							bookmarks = slider.data("igSlider").bookmarks;
@@ -3041,7 +3041,7 @@
 				onlyIcons: true,
 				icons: { primary: this.css.adMsgCloseIconClass },
 				link: { href: this._const.HREF }
-			}).addClass(this.css.adMsgCloseClass).bind("click", function (event) {
+			}).addClass(this.css.adMsgCloseClass).on("click", function (event) {
 				event.preventDefault();
 				event.stopPropagation();
 				control.hideAdMessage();
@@ -3054,7 +3054,7 @@
 					container;
 
 				container = $("<div></div>").attr("id", this._id("_ad_msg_c"))
-					.addClass(css.adMsgContainerClass).prependTo(this.container).bind({
+					.addClass(css.adMsgContainerClass).prependTo(this.container).on({
 						mouseover: function () {
 							$(this).addClass("ui-state-hover");
 						},
@@ -3254,7 +3254,7 @@
 				onlyIcons: true,
 				icons: { primary: css.bannerCloseIconClass },
 				link: { href: this._const.HREF }
-			}).bind("click", function (event) {
+			}).on("click", function (event) {
 				event.preventDefault();
 				event.stopPropagation();
 				control.hideBanner($(this).parent().parent().data("banner-index"));
@@ -3291,7 +3291,7 @@
 				container.addClass(banner.css);
 			}
 
-			container.bind("click", function (event) {
+			container.on("click", function (event) {
 				var noCancel = true,
 					args = {
 
@@ -3929,7 +3929,7 @@
 				}
 			};
 
-			video.bind(this._videoEvents);
+			video.on(this._videoEvents);
 		},
 
 		_onVideoClick: function (allowPlay) {
@@ -3981,7 +3981,7 @@
 				}
 			};
 
-			$(document).bind(this._documentEvts);
+			$(document).on(this._documentEvts);
 
 			if (!this.options.browserControls) {
 				// B.P. August 21st, 2018 #1722 currentTime moves as expected
@@ -3994,9 +3994,9 @@
 						control._onControlMouseOut(event);
 					}
 				};
-				this.container.bind(this._controlsEvts);
+				this.container.on(this._controlsEvts);
 			}
-			this.container.bind(this._generalEvts);
+			this.container.on(this._generalEvts);
 		},
 
 		_handleKbNavigation: function (event) {
@@ -4258,7 +4258,7 @@
 			this._createButton(this._id("_play"),
 								css.centerPlayButtonClass,
 								css.centerPlayButtonIconClass,
-								"").bind({
+								"").on({
 				click: function (event) {
 					event.preventDefault();
 					if (event.button === 0) {
@@ -4285,7 +4285,7 @@
 				.attr("href", this._const.HREF).attr("tabIndex", -1)
 				.addClass("ui-state-default").addClass(buttonClass)
 				.appendTo(this.container));
-			return $("#" + buttonId).bind({
+			return $("#" + buttonId).on({
 				mouseover: function () {
 					$(this).addClass("ui-state-hover");
 				},
@@ -4405,7 +4405,7 @@
 				controlsDiv.parent().css("width", this.options.width);
 			}
 
-			$("#" + this._id("_title_ctrls_play")).bind({
+			$("#" + this._id("_title_ctrls_play")).on({
 				click: function (event) {
 					event.preventDefault();
 					if (event.button === 0 && !control.options.disabled) {
@@ -4546,7 +4546,7 @@
 					$(this).data("bookmark-sec-value", bookmarks[ i ].secondsValue);
 				});
 
-				this.bookmarkElements.bind({
+				this.bookmarkElements.on({
 					click: function (event) {
 						var index = $(this).data("bookmark-index"),
 							mark = control.options.bookmarks[ index ];
@@ -4681,7 +4681,7 @@
 			this.controls = $(controlsArray);
 			titleOption = autoPlay ? "playing" : "paused";
 			/* bind events */
-			$("#" + this._id("_ctrls_play")).bind({
+			$("#" + this._id("_ctrls_play")).on({
 				click: function (event) {
 					event.preventDefault();
 					if (!$(this).igButton("option", "disabled")) {
@@ -4698,7 +4698,7 @@
 					"data-localeattr": "title"
 				});
 
-			$("#" + this._id("_ctrls_fs_btn")).bind({
+			$("#" + this._id("_ctrls_fs_btn")).on({
 				click: function (event) {
 					event.preventDefault();
 					control._setOption("fullscreen", !control.options.fullscreen);
@@ -4765,7 +4765,7 @@
 				endValue: 0
 			});
 
-			$("#" + this._id("_ctrls_pb")).bind({
+			$("#" + this._id("_ctrls_pb")).on({
 				mousemove: function (e) {
 					if (control.options.showSeekTime && this.offsetWidth > 0) {
 						var relativeX = e.pageX - this.offsetLeft - $(this).igOffset().left,
@@ -4785,13 +4785,13 @@
 				}
 			});
 
-			$("#" + this._id("_ctrls_pl")).bind({
+			$("#" + this._id("_ctrls_pl")).on({
 				click: function (event) {
 					event.preventDefault();
 				}
 			});
 
-			$("#" + this._id("_ctrls_vc_btn")).bind({
+			$("#" + this._id("_ctrls_vc_btn")).on({
 				mouseover: function () {
 					control._showVolumeSlider();
 				},
@@ -4819,7 +4819,7 @@
 				"data-localeattr": "title"
 			});
 
-			$("#" + this._id("_ctrls_vs")).hide().bind({
+			$("#" + this._id("_ctrls_vs")).hide().on({
 				mouseover: function () {
 					control._volumeSliderMouseOut = false;
 					clearTimeout(control._volumeSliderTimeoutId);
@@ -4851,7 +4851,7 @@
 				orientation: "vertical",
 				value: (this.options.muted ? 0 : this.options.volume * 100)
 			});
-			$("#" + this._id("_ctrls_vs")).data("igSlider").handle.attr("tabIndex", -1).bind({
+			$("#" + this._id("_ctrls_vs")).data("igSlider").handle.attr("tabIndex", -1).on({
 				blur: function () {
 					control._volumeSliderTimeoutId =
 						setTimeout(control._hideVolumeSlider.bind(control), control.options.volumeAutohideDelay);
@@ -4866,7 +4866,7 @@
 			this.controlButtons.each(function (i) {
 				$(this).data("index.control-button", i);
 			});
-			this.controlButtons.bind({
+			this.controlButtons.on({
 				keydown: function (event) {
 					control._handleKbNavigation(event);
 				},
@@ -4877,7 +4877,7 @@
 					control._handleBlurKb(event);
 				}
 			});
-			$("#" + this._id("_ctrls_vc_btn")).bind({
+			$("#" + this._id("_ctrls_vc_btn")).on({
 				focus: function () {
 					control._showVolumeSlider();
 				},
@@ -4896,7 +4896,7 @@
 					}
 				}
 			});
-			$("#" + control._id("_ctrls_vs")).data("igSlider").handle.bind({
+			$("#" + control._id("_ctrls_vs")).data("igSlider").handle.on({
 				keydown: function (event) {
 					if (event.keyCode === $.ui.keyCode.TAB) {
 						event.preventDefault();

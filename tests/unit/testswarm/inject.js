@@ -196,7 +196,7 @@
   // Screw.Unit
   // git://github.com/nathansobo/screw-unit.git
 	} else if ( typeof Screw !== "undefined" && typeof jQuery !== 'undefined' && Screw && Screw.Unit ) {
-    $(Screw).bind("after", function() {
+    $(Screw).on("after", function() {
      var passed = $('.passed').length;
      var failed = $('.failed').length;
      submit({
@@ -206,10 +206,10 @@
       });
     });
 
-    $(Screw).bind("loaded", function() {
+    $(Screw).on("loaded", function() {
       $('.it')
-        .bind("passed", window.TestSwarm.heartbeat)
-        .bind("failed", window.TestSwarm.heartbeat);
+        .on("passed", window.TestSwarm.heartbeat)
+        .on("failed", window.TestSwarm.heartbeat);
       window.TestSwarm.heartbeat();
     });
 

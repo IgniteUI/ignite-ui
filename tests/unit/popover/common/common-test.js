@@ -441,7 +441,7 @@ QUnit.test(testId_32, function (assert) {
 		},
 		showOn: "mouseenter"
 	});
-	$("#img1").bind({
+	$("#img1").on({
 		igpopovershowing: function (event, ui) {
 			if (this.cancelS === false) {
 				return true;
@@ -534,7 +534,7 @@ QUnit.test(testId_34, function (assert) {
 		},
 		showOn: "mouseenter"
 	});
-	$("#img1").bind({
+	$("#img1").on({
 		igpopoverhiding: function (event, ui) {
 			if (cancelH === false) {
 				return true;

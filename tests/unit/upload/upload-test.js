@@ -79,7 +79,7 @@ QUnit.module("igUpload unit tests", {
 			//totalCountUploadedFiles++;
 			this.assert.equal(uploadedBytes, totalSize, 'Uploaded bytes should be equal to total size when status is finished.');
 			//equal (totalCountUploadedFiles, innerData.countUploadingFiles, 'Count of uploading files should be equal to the inner data.');
-			$('#' + uploaderId).bind("iguploadfileuploaded", function (event, data) {
+			$('#' + uploaderId).on("iguploadfileuploaded", function (event, data) {
 				self.checkUploadedData(uploaderId, fileId);
 				$('#' + uploaderId).unbind("iguploadfileuploaded");
 			});
@@ -267,7 +267,7 @@ QUnit.test('[ID4] igUpload SINGLE MODE resource test finish file', function (ass
 		progressUrl: 'http://localhost/asdfasdf'
 	});
 
-	uploader.bind("iguploadfileuploaded", function (event, data) {
+	uploader.on("iguploadfileuploaded", function (event, data) {
 		innerData = uploader.data('igUpload').fileInfoData;
 		self.checkUploadedData(uploaderId, 0);
 		assert.equal($('#' + uploaderId + '_bb').igBrowseButton('option', 'disabled'), false, 'Browse button should be enabled when file is uploaded.');

@@ -639,7 +639,7 @@
 				if (this.options.headerTemplate.closeButton) {
 					var closeBtn = $("<div></div>")
 						.addClass(this.css.closeButtonClass)
-						.bind("click.popover", this._closeBtnClick.bind(this))
+						.on("click.popover", this._closeBtnClick.bind(this))
 						.appendTo(cnt);
 					if (this.id()) {
 						closeBtn.attr("id", this.id() + "_popover_closeBtn");
@@ -865,8 +865,8 @@
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
-				$(t).unbind(showEvt).bind(showEvt, targetShowEvt);
-				$(t).unbind(hideEvt).bind(hideEvt, targetHideEvt);
+				$(t).unbind(showEvt).on(showEvt, targetShowEvt);
+				$(t).unbind(hideEvt).on(hideEvt, targetHideEvt);
 			} else if (this.options.selectors && showEvt) {
 				this.element.find(this.options.selectors).addBack().each(function () {
 					var target = $(this)[ 0 ];
@@ -874,8 +874,8 @@
 					if (target === self.element[ 0 ]) {
 						return;
 					}
-					$(target).unbind(showEvt).bind(showEvt, targetShowEvt);
-					$(target).unbind(hideEvt).bind(hideEvt, targetHideEvt);
+					$(target).unbind(showEvt).on(showEvt, targetShowEvt);
+					$(target).unbind(hideEvt).on(hideEvt, targetHideEvt);
 				});
 			}
 		},

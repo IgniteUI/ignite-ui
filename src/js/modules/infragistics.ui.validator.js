@@ -1248,7 +1248,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			},
 			"blur.validator": function (e) { self._validateInternal(element, e, true); }
 		};
-		element.bind(evts);
+		element.on(evts);
 	},
 	_ensureNotifier: function (options, reinit) {
 		/* Checks for and/or initializes igNotifier */
@@ -1268,7 +1268,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					this.options.notificationOptions,
 					options.notificationOptions
 				))
-				.bind({
+				.on({
 					"ignotifiershowing.validator": function (evt, ui) {
 						return args.owner._handleNotifierEvent(evt, ui, "Showing", args);
 					},
@@ -1359,7 +1359,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 
 		if (!this._form._igValidators || !this._form._igValidators.length) {
 			this._form._igValidators = [];
-			$(this._form).bind("submit.validator", function (e) {
+			$(this._form).on("submit.validator", function (e) {
 				this._igErrorShown = false;
 				var summaryResult = true, current;
 				for (var i = 0; i < this._igValidators.length; i++) {

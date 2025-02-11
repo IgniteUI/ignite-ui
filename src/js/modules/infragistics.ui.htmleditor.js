@@ -1880,7 +1880,7 @@
                     }
                 };
 
-            $workspaceDocument.find("html").bind("click", function (e) {
+            $workspaceDocument.find("html").on("click", function (e) {
                 var target = $(e.target);
 
                 if (target.is("html")) {
@@ -1889,12 +1889,12 @@
                 self._isDirty = true;
                 self._hideDialogs();
                 e.stopPropagation();
-            }).bind("mouseup", function () {
+            }).on("mouseup", function () {
                 self._onSelectionChange();
             });
 
             // K.D. July 17th, 2012 Bug #112076 Need to bind on keydown not keypress in order for it to work in IE/Webkit
-            $workspaceDocument.bind("keydown", function (e) {
+            $workspaceDocument.on("keydown", function (e) {
                 var $children,
                     $firstChild;
 
@@ -1922,11 +1922,11 @@
                 self._onSelectionChange();
             });
 
-            $workspaceDocument.bind("cut copy paste", function (e) {
+            $workspaceDocument.on("cut copy paste", function (e) {
                 self._trigger(e.type, e, { owner: self });
             });
 
-            this.element.bind("ightmleditoractionexecuted", function (e, ui) {
+            this.element.on("ightmleditoractionexecuted", function (e, ui) {
                 if (ui.actionName.toLowerCase() === self.events.undo ||
                     ui.actionName.toLowerCase() === self.events.redo) {
                     self._trigger(ui.actionName.toLowerCase(), e, { owner: self });
@@ -2755,12 +2755,12 @@
                     self.hide();
                 }
             });
-            this.poContent.bind("keypress", function (e) {
+            this.poContent.on("keypress", function (e) {
                 if (e.keyCode === $.ui.keyCode.ESCAPE) {
                     self.hide();
                 }
             });
-            this.element.bind("igpopovershown", function () {
+            this.element.on("igpopovershown", function () {
                 self.poContent.find("#" + self._id("_linkHref")).focus();
             });
         },
@@ -2885,7 +2885,7 @@
                 self.hide();
             });
 
-            tablePreview.bind("mouseout", function () {
+            tablePreview.on("mouseout", function () {
                 cells.removeClass("ui-state-hover");
                 self.rowsNumField.val(null);
                 self.columnsNumField.val(null);
@@ -3591,7 +3591,7 @@
                     })
                 };
 
-            toolbars.bind("igtoolbartoolbarbuttonclick", function (e, ui) {
+            toolbars.on("igtoolbartoolbarbuttonclick", function (e, ui) {
                 if (alignButtons.hasOwnProperty(ui.name)) {
                     $.each(alignButtons, function (buttonName, button) {
                         if (buttonName !== ui.name &&

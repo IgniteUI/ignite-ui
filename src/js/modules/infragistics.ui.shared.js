@@ -237,7 +237,7 @@
 			// TODO we should think of a different way to find the handle as the class can be changed by the user
 			// and it may not be just one class
 			this.handles = $(".ui-igslider-handle", this.element)
-                .addClass("ui-state-default" + " ui-corner-all").bind({
+                .addClass("ui-state-default" + " ui-corner-all").on({
 				click: function (event) {
 					event.preventDefault();
 				},
@@ -370,7 +370,7 @@
                         ((mark.value - o.min) / (o.max - o.min) * 100) + "%" : "0%");
 				}
 
-				this.bookmarks = $(".ui-igslider-bookmark", this.element).addClass("ui-state-default").bind({
+				this.bookmarks = $(".ui-igslider-bookmark", this.element).addClass("ui-state-default").on({
 					mousedown: function (event) {
 						var noCancel = true,
 							bookmarkIndex = $(this).data("index.ui-igslider-bookmark");
@@ -522,7 +522,7 @@
 			// A.Y. June 6, 2011 Bug# 73864 - the ui.mouse plugin that we extend is not firing _mouseStop unless there is a slide
 			// in which case it fires _mouseStart and then _mouseStop, so we should handle the mouseUp event
 			// unless _mouseStart is fired before that
-			$(document).bind("mouseup." + this.widgetName, this._mouseUpHandler);
+			$(document).on("mouseup." + this.widgetName, this._mouseUpHandler);
 
 			return true;
 		},
@@ -1540,7 +1540,7 @@
 					self._onKeyDown(e);
 				}
             };
-            e.bind(this._events);
+            e.on(this._events);
         },
 
         /************** Helper Functions *******************/

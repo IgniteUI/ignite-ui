@@ -214,7 +214,7 @@
 			else
 				$("#webMVideo").html($("#webMVideo").html() + '<span class="red">NO</span>');
 
-			$("#videoPlayer1").igVideoPlayer().bind({
+			$("#videoPlayer1").igVideoPlayer().on({
 				igvideoplayerplaying: function () {
 					playing = true;
 					$('#btnPlay span').html("Pause");
@@ -248,7 +248,7 @@
 					$("#videoPlayer1").igVideoPlayer("play");
 			});
 
-			$("#slider").slider({ value: 50 }).bind("slide", function (event, ui) {
+			$("#slider").slider({ value: 50 }).on("slide", function (event, ui) {
 				var value = ui.value;
 				$("#videoPlayer1").igVideoPlayer("option", "volume", value / 100);
 			});

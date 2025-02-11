@@ -60,7 +60,7 @@
 			if (this.options.disabled === true) {
 				this._enableFilePicker(true);
 			} else {
-				this.element.bind({
+				this.element.on({
 					/* M.H. 27 Jul 2011 - fix bug 77323 */
 					click: function (e) {
 						e.preventDefault();
@@ -138,7 +138,7 @@
 					self._attachMouseMove(true);
 				}
 			};
-			self.element.bind(this._internalEvents);
+			self.element.on(this._internalEvents);
 			/* attach onchange property to input type="file" element */
 			self._filePickerBindChange();
 		},
@@ -172,7 +172,7 @@
 					}
 				}
 			};
-			filePicker.bind(self._filePickerEvents);
+			filePicker.on(self._filePickerEvents);
 		},
 		attachFilePicker: function (e, isHidden) {
 			var self = this, right, bottom, t, l, relativeOffset,
@@ -276,7 +276,7 @@
 		},
 		_attachMouseMove: function (isToAttach) {
 			if (isToAttach) {
-				$(document).bind(this.mouseMoveEvent);
+				$(document).on(this.mouseMoveEvent);
 			} else {
 				$(document).unbind(this.mouseMoveEvent);
 			}
@@ -306,7 +306,7 @@
 				/* filePicker.removeAttr("disabled"); */
 				this._attachMouseMove(true);
 				/* IE9 fix - unbind mouse over event */
-				this.element.bind(this._internalEvents).mouseover();
+				this.element.on(this._internalEvents).mouseover();
 			} else {
 				/*filePicker.attr("disabled", "true"); */
 				this._attachMouseMove(false);
@@ -1935,9 +1935,9 @@
 			/* M.H. 27 Jul 2011 - fix bug 77162 - analyze file extension icons array */
 			this._analyzeFileExtensionIcons();
 			/* M.H. 12 Dec 2012 Fix for bug #129351 */
-			$(document).bind("dragenter." + this.element[ 0 ].id, this._docEnter.bind(this));
-			$(document).bind("dragover." + this.element[ 0 ].id, this._docOver.bind(this));
-			$(document).bind("dragleave." + this.element[ 0 ].id, this._docLeave.bind(this));
+			$(document).on("dragenter." + this.element[ 0 ].id, this._docEnter.bind(this));
+			$(document).on("dragover." + this.element[ 0 ].id, this._docOver.bind(this));
+			$(document).on("dragleave." + this.element[ 0 ].id, this._docLeave.bind(this));
 		},
 		_dropFiles: function (e) {
 			var isInit = $("#" + this._id("_ibb")).is(":visible"),
@@ -4004,7 +4004,7 @@
 				.appendTo($("#" + this._id("_summpbar_progress"))
 				.addClass(css.summaryProgressBarInnerProgress));
 
-			$("#" + showHideDetailsId).bind({
+			$("#" + showHideDetailsId).on({
 				click: function (event) {
 					event.preventDefault();
 					self._onShowHideDetailsClick();

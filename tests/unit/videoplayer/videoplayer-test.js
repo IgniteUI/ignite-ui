@@ -919,7 +919,7 @@ QUnit.test('destroy test 27', function(assert) {
 	var a = 0,
 		click = jQuery.Event("click"),
 		player1 = $('#player1');
-	player1.bind('click', function () {
+	player1.on('click', function () {
 		a = 1;
 	});
 	player1.igVideoPlayerUnitTesting('destroy');
