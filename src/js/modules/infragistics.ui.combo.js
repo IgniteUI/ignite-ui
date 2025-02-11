@@ -5157,7 +5157,7 @@
 
 				// Analyze the schema only when the data source is array or function
 				if (!schema && options.dataSource && ($.isArray(options.dataSource) ||
-					$.isFunction(options.dataSource))) {
+					typeof options.dataSource === "function")) {
 
 					// N.A. 5/18/2015 Bug #193129: Unwrap before extracting the schema from the first field element.
 					schema = this._initSchema(this._unwrapData(options.dataSource)[ 0 ]);

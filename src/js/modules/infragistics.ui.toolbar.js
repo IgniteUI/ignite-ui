@@ -80,7 +80,7 @@
             return this.settings.localeProperties;
         },
         callbackRenderer: function () {
-            if (this.settings.callbackRenderer && $.isFunction(this.settings.callbackRenderer)) {
+            if (this.settings.callbackRenderer && typeof this.settings.callbackRenderer === "function") {
                 return this.settings.callbackRenderer();
             }
         },
@@ -945,7 +945,7 @@
                 },
                 tbItemsPropsTraversing = function (key, property) {
                     var scope = o.items[ i ].scope || self;
-                    if (property.action !== undefined && $.isFunction(scope[ property.action ])) {
+                    if (property.action !== undefined && typeof scope[ property.action ] === "function") {
                         scope[ property.action ](newItem, property, itemProps);
                         return;
                     }

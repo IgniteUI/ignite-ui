@@ -35,7 +35,7 @@
 	window.$ig = window.$ig || $.ig;
 
 	$.ig.getWindow = function( elem ) {
-		return $.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
+		return elem != null && elem === elem.window ? elem : elem.nodeType === 9 && elem.defaultView;
 	};
 	$.fn.startsWith = function (str) {
 		return this[ 0 ].innerHTML.indexOf(str) === 0;
@@ -1221,7 +1221,7 @@
 		var beforeSend = function (jqXHR, options) {
 			if (requestOptions) {
 
-				if ($.isFunction(requestOptions.beforeSend)) {
+				if (typeof requestOptions.beforeSend === "function") {
 					jqXHR.setRequestHeader("Content-Type", contentType);
 					requestOptions.beforeSend.call(this, jqXHR, options, requestOptions);
 				}
