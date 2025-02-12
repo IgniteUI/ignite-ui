@@ -858,19 +858,19 @@
                     // D.P. If _create threw this._splitter is not assigned
                     return;
                 }
-                $(this._splitter.bar).unbind(this._getEvent("focus"),
+                $(this._splitter.bar).off(this._getEvent("focus"),
                     this._getEvent("blur"),
                     this._getEvent("keydown"));
-                $(this._splitter.bar.children()[ 0 ]).unbind(this._getEvent("mousedown"));
-                $(this._splitter.bar.children()[ 1 ]).unbind(this._getEvent("mousedown"));
+                $(this._splitter.bar.children()[ 0 ]).off(this._getEvent("mousedown"));
+                $(this._splitter.bar.children()[ 1 ]).off(this._getEvent("mousedown"));
 
                 //T.P. Bug #155452 fix _removeEventHandlers so when under mobile devices mouseenter and mouseleave are not unbinded
                 if (!this._isTouch()) {
-                    $(this._splitter.bar).unbind(this._getEvent("mouseenter"),
+                    $(this._splitter.bar).off(this._getEvent("mouseenter"),
                         this._getEvent("mouseleave"));
-                    $(this._splitter.bar.children()[ 0 ]).unbind(this._getEvent("mouseenter"),
+                    $(this._splitter.bar.children()[ 0 ]).off(this._getEvent("mouseenter"),
                         this._getEvent("mouseleave"));
-                    $(this._splitter.bar.children()[ 1 ]).unbind(this._getEvent("mouseenter"),
+                    $(this._splitter.bar.children()[ 1 ]).off(this._getEvent("mouseenter"),
                         this._getEvent("mouseleave"));
                 }
             },
@@ -2299,9 +2299,9 @@
 
                 // D.A. 24th October 2013 Remove the attached events to window and document
                 if (evtHandlers) {
-                    $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
-                    $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
-                    $(window).unbind("resize", evtHandlers.windowResize);
+                    $(document).off(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
+                    $(document).off(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
+                    $(window).off("resize", evtHandlers.windowResize);
                 }
                 this._superApply(arguments);
                 this._opt = null;

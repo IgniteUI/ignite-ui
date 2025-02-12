@@ -4976,8 +4976,8 @@
 				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
-				this._options.$input.removeAttr("disabled");
-				this._options.$hiddenInput.removeAttr("disabled");
+				this._options.$input.remoteProp("disabled");
+				this._options.$hiddenInput.removeProp("disabled");
 			}
 		},
 		changeLocale: function () {

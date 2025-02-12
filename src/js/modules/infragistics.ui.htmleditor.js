@@ -2331,7 +2331,7 @@
             ```
             */
             this._superApply(arguments);
-            $(this.workspace.contentWindow).undelegate();
+            $(this.workspace.contentWindow).off();
             this._destroyPopovers();
             this._viewSourceBtn.igButton("destroy");
             this.element.removeClass(this.css.htmlEditor)

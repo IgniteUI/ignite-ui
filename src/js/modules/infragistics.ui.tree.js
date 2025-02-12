@@ -4851,7 +4851,7 @@
 			this._superApply(arguments);
 
 			// K.D. February 17th, 2014 Bug #164398 Attaching events only on create as delegate is used instead of bind now.
-			this.element.undelegate();
+			this.element.off();
 			this.element.removeClass(this.css.tree);
 			this.element.removeClass(this.css.treeCollection);
 			this.element.removeClass(this.css.treeRoot);

@@ -1112,7 +1112,7 @@
 			}
 			this.validator(1);
 			if (this._foc) {
-				this._foc.unbind().remove();
+				this._foc.off().remove();
 			}
 			this._elem.remove();
 			if (o.theme) {

@@ -5390,10 +5390,10 @@
 			if (this._oldHeight) {
 				this.element.css("height", this._oldHeight);
 			}
-			this.container.unbind(this._generalEvts);
-			$(document).unbind(this._documentEvts);
+			this.container.off(this._generalEvts);
+			$(document).off(this._documentEvts);
 			if (this._controlsEvts) {
-				this.container.unbind(this._controlsEvts);
+				this.container.off(this._controlsEvts);
 			}
 			this.container.removeClass(css.baseClasses);
 
@@ -5422,7 +5422,7 @@
 
 			// Will recursively call, unbind(), removeData() and remove() on all children!
 			if (this.element.is("video")) {
-				this.element.unbind(this._videoEvents);
+				this.element.off(this._videoEvents);
 				this.element.removeClass(css.videoClass);
 				this._restoreExistingVideoProperties(this.element);
 				$(":not(video)", this.container).remove();
@@ -5440,7 +5440,7 @@
 		},
 		_destroyBookmarks: function () {
 			if (this.bookmarkElements && this.bookmarkElements.length > 0) {
-				this.bookmarkElements.unbind();
+				this.bookmarkElements.off();
 				this.bookmarkElements.removeData();
 				delete this.bookmarkElements;
 				$("#" + this._id("_bookmarks")).remove();

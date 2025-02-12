@@ -898,7 +898,7 @@
 			}
 			if (this._dragEnd(evt)) {
 				target.removeClass(this.css.windowGrabbingClass);
-				$(evt.currentTarget).unbind({
+				$(evt.currentTarget).off({
 					"mousemove.zoombar": this._zoombarMouseMoveHandler,
 					"pointermove.zoombar": this._zoombarMouseMoveHandler,
 					"MSPointerMove.zoombar": this._zoombarMouseMoveHandler
@@ -1386,29 +1386,29 @@
 				te = {}, pe = {}, me = {}, we = {};
 			te[ "touchstart." + this.id() ] = this._zoombarTouchStartHandler;
 			te[ "touchend." + this.id() ] = this._zoombarTouchEndHandler;
-			wnd.unbind(te);
+			wnd.off(te);
 			this.container()[ 0 ].removeEventListener("touchmove", this._zoombarTouchMoveHandler);
 			if (window.navigator.pointerEnabled) {
 				pe[ "pointerdown." + this.id() ] = this._zoombarMouseDownHandler;
 				pe[ "pointerup." + this.id() ] = this._zoombarMouseUpHandler;
-				wnd.unbind(pe);
+				wnd.off(pe);
 			} else if (window.navigator.msPointerEnabled) {
 				pe[ "MSPointerDown." + this.id() ] = this._zoombarMouseDownHandler;
 				pe[ "MSPointerUp." + this.id() ] = this._zoombarMouseUpHandler;
-				wnd.unbind(pe);
+				wnd.off(pe);
 			} else {
 				me[ "mousedown." + this.id() ] = this._zoombarMouseDownHandler;
 				me[ "mouseup." + this.id() ] = this._zoombarMouseUpHandler;
-				wnd.unbind(me);
+				wnd.off(me);
 			}
 			we[ "mousewheel." + this.id() ] = this._zoombarMouseWheelHandler;
 			we[ "DOMMouseScroll." + this.id() ] = this._zoombarMouseWheelHandler;
-			wnd.unbind(we);
-			this._sbt.unbind({
+			wnd.off(we);
+			this._sbt.off({
 				"mouseenter.zoombar": this._scrollbarThumbMouseEnterHandler,
 				"mouseleave.zoombar": this._scrollbarThumbMouseLeaveHandler
 			});
-			zwe.unbind({
+			zwe.off({
 				"keydown": this._windowKeyDownHandler,
 				"keyup": this._windowKeyUpHandler
 			});

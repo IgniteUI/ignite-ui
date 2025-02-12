@@ -421,7 +421,7 @@
 					" ui-igslider-vertical" +
 					" ui-igslider-disabled")
 				.removeData("slider")
-				.unbind(".slider");
+				.off(".slider");
 
 			this._mouseDestroy();
 
@@ -531,7 +531,7 @@
 
 			// A.Y. June 6, 2011 Bug# 73864 - _mouseStart is fired so we can unbind our mauseUp handler
 			// as we know now that _mouseStop will be fired
-			$(document).unbind("mouseup." + this.widgetName, this._mouseUpHandler);
+			$(document).off("mouseup." + this.widgetName, this._mouseUpHandler);
 
 			return this._start(event, this._handleIndex);
 		},
@@ -720,7 +720,7 @@
 					this.handles.attr("disabled", "disabled");
 					this.element.addClass("ui-disabled");
 				} else {
-					this.handles.removeAttr("disabled");
+					this.handles.removeProp("disabled");
 					this.element.removeClass("ui-disabled");
 				}
 				break;
@@ -884,7 +884,7 @@
 					" ui-widget-content" +
 					" ui-corner-all")
 				.removeData("igProgressBar")
-				.unbind(".igProgressBar");
+				.off(".igProgressBar");
 			$("#" + this._id("_progress")).remove();
 			return this;
 		},
@@ -1192,7 +1192,7 @@
             if (e.hasClass(o.css.buttonDisabledClass)) {
                 e.removeClass(o.css.buttonDisabledClass);
             }
-            e.removeAttr("disabled");
+            e.removeProp("disabled");
             if (e.is("a") === true) {
                 self._setLinkOptions(true);
             }
@@ -1381,7 +1381,7 @@
 
         _dettachEvents: function () {
             this._attached = false;
-            this.element.unbind(this._events);
+            this.element.off(this._events);
         },
 
         /* Event Functions */

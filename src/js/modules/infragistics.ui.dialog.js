@@ -1170,7 +1170,7 @@
 			this.element.stop(true, true);
 			this._doClose(null, true);
 			if (self._winResize) {
-				$(window).unbind("resize", self._winResize);
+				$(window).off("resize", self._winResize);
 			}
 			this.element.children(".ui-igdialog-header").remove();
 			this.element.children(".ui-igdialog-footer").remove();
@@ -1186,7 +1186,7 @@
 			if (this.options.resizable) {
 				this.element.resizable("destroy");
 			}
-			this.element.unbind();
+			this.element.off();
 
 			// if (next && next.parentNode === dad) {
 				// dad.insertBefore(elem0, next);
@@ -1951,7 +1951,7 @@
 			}
 			if (remove) {
 				if (self._focBind) {
-					self._focBind.unbind(focusEvt);
+					self._focBind.off(focusEvt);
 					delete self._focBind;
 				}
 				return;

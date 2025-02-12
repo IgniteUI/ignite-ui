@@ -278,7 +278,7 @@
 			if (isToAttach) {
 				$(document).on(this.mouseMoveEvent);
 			} else {
-				$(document).unbind(this.mouseMoveEvent);
+				$(document).off(this.mouseMoveEvent);
 			}
 		},
 		_setOption: function (key, value) {
@@ -303,7 +303,7 @@
 
 			if (isDisabled === false) {
 				this.isVisibleFilePicker = false;
-				/* filePicker.removeAttr("disabled"); */
+				/* filePicker.removeProp("disabled"); */
 				this._attachMouseMove(true);
 				/* IE9 fix - unbind mouse over event */
 				this.element.on(this._internalEvents).mouseover();
@@ -314,15 +314,15 @@
 					width: "1px",
 					height: "1px"
 				});
-				this.element.unbind(this._internalEvents);
+				this.element.off(this._internalEvents);
 			}
 		},
 		destroy: function () {
 			/*
 				$(".selector").igUpload("destroy");
 			*/
-			this.element.unbind(this._internalEvents);
-			this.element.unbind(this.mouseMoveEvent);
+			this.element.off(this._internalEvents);
+			this.element.off(this.mouseMoveEvent);
 			this._superApply(arguments);
 			/* M.H. 10 May 2011 - fix bug 75039: remove unnecessary comment and unnecessary line of code */
 			$.ui.igButton.prototype.destroy.apply(this);

@@ -184,7 +184,7 @@ $.extend( $.simulate.prototype, {
 			element.trigger( focusinEvent );
 			element.triggerHandler( "focus" );
 		}
-		element.unbind( "focus", trigger );
+		element.off( "focus", trigger );
 	},
 
 	simulateBlur: function() {
@@ -214,7 +214,7 @@ $.extend( $.simulate.prototype, {
 				element.trigger( focusoutEvent );
 				element.triggerHandler( "blur" );
 			}
-			element.unbind( "blur", trigger );
+			element.off( "blur", trigger );
 		}, 1 );
 	}
 });

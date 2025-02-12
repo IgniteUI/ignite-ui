@@ -1360,9 +1360,7 @@
             */
 
             // D.U. #177516 12th of August [ igToolbar ] Method destroy remover the toolbar container
-            this.element
-                .undelegate()
-                .unbind();
+            this.element.off();
 
             this.collapseBtn
                 .igToolbarButton("destroy")

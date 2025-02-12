@@ -572,7 +572,7 @@
 				}
 			}
 			if (disabled) {
-				element.removeAttr("disabled");
+				element.removeProp("disabled");
 
 				// If we have 'disabled' attribute, then it is applied only when 'disabled' options is not defined.
 				if (this._definedOptions === undefined || this._definedOptions.disabled === undefined) {
@@ -2240,7 +2240,7 @@
 		_enableSpinButton: function (target, type) {
 			if (target && target.attr("disabled")) {
 				target.removeClass(this.css.disabled);
-				target.removeAttr("disabled");
+				target.removeProp("disabled");
 				target.prop("disabled", false);
 				this._attachButtonsEvents(type, target);
 			}
