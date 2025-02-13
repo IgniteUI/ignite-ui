@@ -990,8 +990,8 @@
 			//Default value we don't do anything unless we implement setOption related to that.
 			this._editorInput.prop("readonly", false);
 			this._valueInput.prop("readonly", false);
-			this._editorInput[0].removeAttribute("disabled");
-			this._valueInput[0].removeAttribute("disabled");
+			this._editorInput.prop("disabled", false);
+			this._valueInput.prop("disabled", false);
 			this._editorContainer.removeClass(this.css.disabled);
 			this._attachEvents();
 		},
@@ -1001,8 +1001,8 @@
 				this._valueInput.prop("disabled", true);
 				this._disableEditor(true);
 			} else {
-				this._editorInput[0].removeAttribute("disabled");
-				this._valueInput[0].removeAttribute("disabled");
+				this._editorInput.prop("disabled", false);
+				this._valueInput.prop("disabled", false);
 				if (!this.options.readOnly) {
 					this._setEditableMode();
 				}
@@ -2241,7 +2241,7 @@
 			if (target && target.attr("disabled")) {
 				target.removeClass(this.css.disabled);
 				target[0].removeAttribute("disabled");
-				target[0].removeAttribute("disabled");
+				target.prop("disabled", false);
 				this._attachButtonsEvents(type, target);
 			}
 		},
