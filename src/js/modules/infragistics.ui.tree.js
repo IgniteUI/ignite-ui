@@ -1966,7 +1966,7 @@
 				}
 			} else if (!this.options.dataSource && this.options.dataSourceUrl) {
 				this.options.dataSource = this.options.dataSourceUrl;
-			} else if ($.type(this.options.dataSource) === "object" &&
+			} else if ($.ig.util.getType(this.options.dataSource) === "object" &&
 						typeof this.options.dataSource._encodeHierarchicalUrlParams !== "function" &&
 						typeof this.options.dataSource._xmlToArray !== "function" &&
 						!this.options.dataSourceType) {
@@ -3422,14 +3422,14 @@
 						find(".ui-igtree-noderoot").length ||
 						this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if (dataIndex === 0) {
-							if ($.type(data) === "array") {
+							if ($.ig.util.getType(data) === "array") {
 								this.options.dataSource.root()._data = data.concat(this.options.dataSource.root()._data);
 							} else {
 								this.options.dataSource.root()._data = [ data ]
 									.concat(this.options.dataSource.root()._data);
 							}
 						} else if (!dataIndex) {
-							if ($.type(data) === "array") {
+							if ($.ig.util.getType(data) === "array") {
 								for (i = 0; i < data.length; i++) {
 									this.options.dataSource.root()._data.push(data[ i ]);
 								}
@@ -3445,11 +3445,11 @@
 
 						// K.D. November 14th, 2014 Bug #185180 In some cases the child data prop is an empty object and it should be made an array.
 						if (!originalData.hasOwnProperty(binding.childDataProperty) ||
-							$.type(originalData[ binding.childDataProperty ]) !== "array") {
+							$.ig.util.getType(originalData[ binding.childDataProperty ]) !== "array") {
 							originalData[ binding.childDataProperty ] = [];
 						}
 						if (dataIndex === 0) {
-							if ($.type(data) === "array") {
+							if ($.ig.util.getType(data) === "array") {
 								originalData[ binding.childDataProperty ] =
 									data.concat(originalData[ binding.childDataProperty ]);
 							} else {
@@ -3490,7 +3490,7 @@
 					if (this.options.dataSource.root()._data.length <=
 						this.element.find(".ui-igtree-noderoot").length ||
 						this.element.find(".ui-igtree-noderoot").length <= 0) {
-						if ($.type(data) === "array") {
+						if ($.ig.util.getType(data) === "array") {
 							for (i = 0; i < data.length; i++) {
 								this.options.dataSource.root()._data.push(data[ i ]);
 							}
@@ -3503,7 +3503,7 @@
 
 						// K.D. November 14th, 2014 Bug #185180 In some cases the child data prop is an empty object and it should be made an array.
 						if (!originalData.hasOwnProperty(binding.childDataProperty) ||
-							$.type(originalData[ binding.childDataProperty ]) !== "array") {
+							$.ig.util.getType(originalData[ binding.childDataProperty ]) !== "array") {
 							originalData[ binding.childDataProperty ] = [];
 						}
 						originalData[ binding.childDataProperty ] =

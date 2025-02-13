@@ -1606,7 +1606,7 @@
 			}
 		},
 		_windowRectChanged: function (evt, ui) {
-			if ($.type(this.settings.zoomChangedCallback) === "function") {
+			if ($.ig.util.getType(this.settings.zoomChangedCallback) === "function") {
 				this.settings.zoomChangedCallback(evt, ui);
 			}
 		},

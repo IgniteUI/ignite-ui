@@ -5242,7 +5242,7 @@
 			   ```
 			   paramType="number" min="0.0" max="1.0" optional="true" Specify scale factor between 0 and 1.
 			   returnType="canvasType" Returns HTML5 canvas element that represents the captured screenshot. */
-			if (!scaleFactor || $.type(scaleFactor) !== "number") {
+			if (!scaleFactor || $.ig.util.getType(scaleFactor) !== "number") {
 				scaleFactor = 1;
 			}
 			var videoElem = this.currentVideo[ 0 ],

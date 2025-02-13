@@ -303,7 +303,7 @@
 
 			if (isDisabled === false) {
 				this.isVisibleFilePicker = false;
-				/* filePicker.removeProp("disabled"); */
+				/* filePicker[0].removeAttribute("disabled"); */
 				this._attachMouseMove(true);
 				/* IE9 fix - unbind mouse over event */
 				this.element.on(this._internalEvents).mouseover();
@@ -2441,7 +2441,7 @@
 						currentFileSize = currentFile.size;
 					}
 
-					if ($.type(currentFileSize) === "number") {
+					if ($.ig.util.getType(currentFileSize) === "number") {
 						fileSize += currentFileSize;
 					}
 
@@ -2470,8 +2470,8 @@
 					self._trigger(self.events.onFormDataSubmit, null, eventArgs);
 				}
 
-				if ($.type(o.maxFileSize) === "number" &&
-					$.type(fileSize) === "number" &&
+				if ($.ig.util.getType(o.maxFileSize) === "number" &&
+					$.ig.util.getType(fileSize) === "number" &&
 					o.maxFileSize > -1 &&
 					fileSize > o.maxFileSize) {
 					self._setError( fileId,
@@ -2580,7 +2580,7 @@
 				$(".selector").igUpload("addDataField", ui.formData, { "name": "Parameter Name", "value": "Value" });
 			```
 			*/
-			if (!field || $.type(field) !== "object") {
+			if (!field || $.ig.util.getType(field) !== "object") {
 				return;
 			}
 			this.addDataFields(formData, [ field ]);
@@ -2593,7 +2593,7 @@
 				$(".selector").igUpload("addDataFields", ui.formData, [{ "name": "Parameter Name 1", "value": "Value 1" }, { "name": "Parameter Name 2", "value": "Value 2" }]);
 			```
 			*/
-			if (!formData || $.type(fields) !== "array" || !fields.length) {
+			if (!formData || $.ig.util.getType(fields) !== "array" || !fields.length) {
 				return;
 			}
 			var i, len = fields.length, f, isHTMLForm;
@@ -2605,7 +2605,7 @@
 			}
 			for (i = 0; i < len; i++) {
 				f = fields[ i ];
-				if (!f.name || $.type(f.value) !== "string") {
+				if (!f.name || $.ig.util.getType(f.value) !== "string") {
 					continue;
 				}
 				if (isHTMLForm) {
@@ -3038,8 +3038,8 @@
 			if (file) {
 				fileSize = file.size;
 			}
-			if ($.type(o.maxFileSize) === "number" &&
-				$.type(fileSize) === "number" &&
+			if ($.ig.util.getType(o.maxFileSize) === "number" &&
+				$.ig.util.getType(fileSize) === "number" &&
 				o.maxFileSize > -1 &&
 				fileSize > o.maxFileSize) {
 				self._removeUploadSetError(formNumber,
