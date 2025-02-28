@@ -3158,7 +3158,7 @@
                 // and select formatting option, the text on the whole row gets updated
                 self._selectClosestTextNode();
 
-                if (typeof callback === "function") {
+                if ($.ig.util.getType(callback) === "function") {
                     callback.call(self);
                 }
         },
@@ -3349,9 +3349,9 @@
                 }
             }
 
-            if (typeof customCommand === "function" && browser === null) {
+            if ($.ig.util.getType(customCommand) === "function" && browser === null) {
                 customCommand.call(this, name, args);
-            } else if (typeof customCommand === "function" && isCommandSupported) {
+            } else if ($.ig.util.getType(customCommand) === "function" && isCommandSupported) {
                 customCommand.apply(this, customCommandArgs);
             } else {
                 this._document.execCommand(name, false, args);
@@ -3670,8 +3670,8 @@
 
             $.each(this._callbackMap, function (isTrueFunc, callback) {
                 var isTrueRes = self[ isTrueFunc ](el);
-                if (typeof self[ isTrueFunc ] === "function" && isTrueRes &&
-                    typeof self[ callback ] === "function") {
+                if ($.ig.util.getType(self[ isTrueFunc ]) === "function" && isTrueRes &&
+                    $.ig.util.getType(self[ callback ]) === "function") {
                     self[ callback ](el, isTrueRes);
 
                     // Bug #184142 In IE justify left button is not active by default

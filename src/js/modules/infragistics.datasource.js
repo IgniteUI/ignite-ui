@@ -3993,7 +3993,7 @@
 			/* fire the data binding event */
 			args = { cancel: false };
 
-			if (typeof p.dataBinding === "function") {
+			if ($.ig.util.getType(p.dataBinding) === "function") {
 				noCancel = p.dataBinding(this, args);
 				if (noCancel === undefined) {
 					noCancel = true;
@@ -4256,7 +4256,7 @@
 		},
 		_internalDataBound: function (callDatabound) {
 			// M.H. 18 Aug 2014 Fix for bug #177147: The dataBound event is called before the JSON file is returned
-			if (callDatabound && typeof this.settings.dataBound === "function") {
+			if (callDatabound && $.ig.util.getType(this.settings.dataBound) === "function") {
 				this.settings.dataBound(this);
 			}
 		},
@@ -4827,7 +4827,7 @@
 				"extraParams": extraParams,
 				"pkParams": pkParams
 			};
-			if (typeof props.urlParamsEncoding === "function") {
+			if ($.ig.util.getType(props.urlParamsEncoding) === "function") {
 				//args = props.urlParamsEncoding(this, params);
 				noCancel = props.urlParamsEncoding(this, params);
 			}
@@ -4847,7 +4847,7 @@
 					this.settings.encodeExtraParams(this, params);
 				}
 
-				if (typeof props.urlParamsEncoded === "function") {
+				if ($.ig.util.getType(props.urlParamsEncoded) === "function") {
 					props.urlParamsEncoded(this, params);
 				}
 			}
@@ -5661,7 +5661,7 @@
 					direction = "";
 				}
 				/* check if a custom conversion function is set */
-				if (typeof s.customConvertFunc === "function") {
+				if ($.ig.util.getType(s.customConvertFunc) === "function") {
 					convertFunc = s.customConvertFunc;
 				}
 				/*else {
@@ -10967,7 +10967,7 @@
 					};
 				}
 				/* check if a custom conversion function is set */
-				if (typeof s.customConvertFunc === "function") {
+				if ($.ig.util.getType(s.customConvertFunc) === "function") {
 					convertFunc = s.customConvertFunc;
 				}
 				/* else {

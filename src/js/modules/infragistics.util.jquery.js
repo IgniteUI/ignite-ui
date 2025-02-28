@@ -1221,7 +1221,7 @@
 		var beforeSend = function (jqXHR, options) {
 			if (requestOptions) {
 
-				if (typeof requestOptions.beforeSend === "function") {
+				if ($.ig.util.getType(requestOptions.beforeSend) === "function") {
 					jqXHR.setRequestHeader("Content-Type", contentType);
 					requestOptions.beforeSend.call(this, jqXHR, options, requestOptions);
 				}

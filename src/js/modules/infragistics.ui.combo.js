@@ -5131,6 +5131,7 @@
 				options = this.options,
 				isStringDataSource = $.ig.util.getType(options.dataSource) === "string",
 				url = options.dataSourceUrl;
+				dataSourceType = $.ig.util.getType(options.dataSource);
 
 			// Set the data source that should be used
 			if (!options.dataSource && this.element.is("select")) {
@@ -5144,7 +5145,7 @@
 			}
 
 			// P.P. 29-June-2015 Bug #201942: We need to unwrap the data here, because of the following logic.
-			if ($.ig.util.getType(options.dataSource) === "function") {
+			if (dataSourceType === "function") {
 				options.dataSource = options.dataSource();
 			}
 
@@ -5156,8 +5157,8 @@
 				this._convertToArrayOfObjects(options);
 
 				// Analyze the schema only when the data source is array or function
-				if (!schema && options.dataSource && ($.isArray(options.dataSource) ||
-					typeof options.dataSource === "function")) {
+				if (!schema && options.dataSource && (dataSourceType === "array" ||
+					dataSourceType === "function")) {
 
 					// N.A. 5/18/2015 Bug #193129: Unwrap before extracting the schema from the first field element.
 					schema = this._initSchema(this._unwrapData(options.dataSource)[ 0 ]);
@@ -5208,7 +5209,7 @@
 				}
 
 				// S.T. Feb 24th, 2015 Bug #189447: Handle when data source is JSONP.
-				if ($.ig.util.getType(options.dataSource) === "string" &&
+				if (dataSourceType === "string" &&
 					!options.dataSourceType &&
 					$.ig.util.isJsonpUrl(options.dataSource)) {
 
