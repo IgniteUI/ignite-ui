@@ -1170,7 +1170,7 @@
 			this.element.stop(true, true);
 			this._doClose(null, true);
 			if (self._winResize) {
-				$(window).unbind("resize", self._winResize);
+				$(window).off("resize", self._winResize);
 			}
 			this.element.children(".ui-igdialog-header").remove();
 			this.element.children(".ui-igdialog-footer").remove();
@@ -1186,7 +1186,7 @@
 			if (this.options.resizable) {
 				this.element.resizable("destroy");
 			}
-			this.element.unbind();
+			this.element.off();
 
 			// if (next && next.parentNode === dad) {
 				// dad.insertBefore(elem0, next);
@@ -1653,7 +1653,7 @@
 				}
 				if (id) {
 					button = $("<a />").addClass(css.headerButton + " " + css[ id ]).attr("data-id", id)
-						.attr("href", "#").attr("role", "button").bind(evts).appendTo(header);
+						.attr("href", "#").attr("role", "button").on(evts).appendTo(header);
 					$("<span />").addClass(css[ id + "Icon" ]).appendTo(button);
 
 					// i=order of buttons in header:pin,min,max,close
@@ -1951,7 +1951,7 @@
 			}
 			if (remove) {
 				if (self._focBind) {
-					self._focBind.unbind(focusEvt);
+					self._focBind.off(focusEvt);
 					delete self._focBind;
 				}
 				return;
@@ -1970,7 +1970,7 @@
 						elems = elem.find("*").not(old);
 						if (elems.length) {
 							self._focBind = old.add(elems);
-							elems.bind(focusEvt);
+							elems.on(focusEvt);
 						}
 					}
 					self._hasFocus = foc;
@@ -2003,7 +2003,7 @@
 				focusEvt = self._focusEvt = { focus: focusEvt, blur: focusEvt };
 			}
 			if (track && elem) {
-				self._focBind = elem.find("*").add(elem).bind(focusEvt);
+				self._focBind = elem.find("*").add(elem).on(focusEvt);
 			}
 		},
 
@@ -2088,7 +2088,7 @@
 					}
 				}
 			};
-			elem.bind({
+			elem.on({
 				touchstart: function (e) { evt(e, "start"); },
 				touchmove: function (e) { evt(e, "move"); },
 				touchend: function (e) { evt(e); }
@@ -2339,7 +2339,7 @@
 		_onResize: function () {
 			var self = this, div = self.isTopModal() ? self._modalDiv : null;
 			if (!self._winResize) {
-				$(window).bind("resize", self._winResize = function () {
+				$(window).on("resize", self._winResize = function () {
 					setTimeout(function () {
 						self._onResize();
 					}, 50);

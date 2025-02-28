@@ -55,7 +55,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igtexteditorvaluechanged", function (event, args) {
+				editor.on("igtexteditorvaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.newValue);
 					} else {
@@ -65,7 +65,7 @@
 			} else {
 
 				//In that case the model is updated on textChanged event
-				editor.bind("igtexteditortextchanged", function (event, args) {
+				editor.on("igtexteditortextchanged", function (event, args) {
 					// N.A. December 9th, 2016 #577 Don't update editor value, while typing. It is updated only on blur.
 					editor.data("igTextEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
@@ -77,7 +77,7 @@
 				if (options.listItems !== undefined) {
 
 					//In that case the model is updated dropDownItemSelecting event
-					editor.bind("igtexteditordropdownitemselecting", function (event, args) {
+					editor.on("igtexteditordropdownitemselecting", function (event, args) {
 						if (ko.isObservable(valueAccessor().value) && args.item !== undefined) {
 							valueAccessor().value(args.item.innerText);
 						} else if (args.item !== undefined) {
@@ -115,7 +115,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igdatepickervaluechanged", function (event, args) {
+				editor.on("igdatepickervaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 
 						//T.P. #153479 Fix to use value instead of text, because editor sets date value and we should rely on that date, but not text.
@@ -187,7 +187,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igdateeditorvaluechanged", function (event, args) {
+				editor.on("igdateeditorvaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 
 						//T.P. #153479 Fix to use value instead of text, because editor sets date value and we should rely on that date, but not text.
@@ -259,7 +259,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("ignumericeditorvaluechanged", function (event, args) {
+				editor.on("ignumericeditorvaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.newValue);
 					} else {
@@ -269,7 +269,7 @@
 			} else {
 
 				//In that case the model is updated on textChanged event
-				editor.bind("ignumericeditortextchanged", function (event, args) {
+				editor.on("ignumericeditortextchanged", function (event, args) {
 					args.owner._processValueChanging(args.text);
 					editor.data("igNumericEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
@@ -323,7 +323,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igcurrencyeditorvaluechanged", function (event, args) {
+				editor.on("igcurrencyeditorvaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.newValue);
 					} else {
@@ -333,7 +333,7 @@
 			} else {
 
 				//In that case the model is updated on textChanged event
-				editor.bind("igcurrencyeditortextchanged", function (event, args) {
+				editor.on("igcurrencyeditortextchanged", function (event, args) {
 					args.owner._processValueChanging(args.text);
 					editor.data("igCurrencyEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
@@ -385,7 +385,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igpercenteditorvaluechanged", function (event, args) {
+				editor.on("igpercenteditorvaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.newValue);
 					} else {
@@ -395,7 +395,7 @@
 			} else {
 
 				//In that case the model is updated on textChanged event
-				editor.bind("igpercenteditortextchanged", function (event, args) {
+				editor.on("igpercenteditortextchanged", function (event, args) {
 					args.owner._processValueChanging(args.text);
 					editor.data("igPercentEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
@@ -447,7 +447,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igmaskeditorvaluechanged", function (event, args) {
+				editor.on("igmaskeditorvaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.newValue);
 					} else {
@@ -486,7 +486,7 @@
 			}
 
 			//In that case the model is updated on valueChanged event
-			editor.bind("igcheckboxeditorvaluechanged", function (event, args) {
+			editor.on("igcheckboxeditorvaluechanged", function (event, args) {
 				if (ko.isObservable(valueAccessor().checked)) {
 					valueAccessor().checked(args.newState);
 				} else {
@@ -528,7 +528,7 @@
 			if (options.updateMode.toLowerCase() === "onchange") {
 
 				//In that case the model is updated on valueChanged event
-				editor.bind("igtimepickervaluechanged", function (event, args) {
+				editor.on("igtimepickervaluechanged", function (event, args) {
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.owner.value());
 					} else {

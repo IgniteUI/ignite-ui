@@ -35,7 +35,7 @@
 	window.$ig = window.$ig || $.ig;
 
 	$.ig.getWindow = function( elem ) {
-		return $.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
+		return elem != null && elem === elem.window ? elem : elem.nodeType === 9 && elem.defaultView;
 	};
 	$.fn.startsWith = function (str) {
 		return this[ 0 ].innerHTML.indexOf(str) === 0;
@@ -128,7 +128,7 @@
 		if (!reg) {
 			return $.ig.regional.defaults || {};
 		}
-		return (($.type(reg) === "string") ?
+		return (($.ig.util.getType(reg) === "string") ?
 			$.ig.regional[ reg ] : reg) || {};
 	};
 	$.ig.getRegionalValue = function (key, reg) {
@@ -1036,11 +1036,11 @@
 
 	$.ig.util.invokeCallback = function (callback, args) {
 		if (callback) {
-			if ($.type(callback) === "string" &&
-				window[ callback ] && $.type(window[ callback ]) === "function") {
+			if ($.ig.util.getType(callback) === "string" &&
+				window[ callback ] && $.ig.util.getType(window[ callback ]) === "function") {
 				callback = window[ callback ];
 			}
-			if ($.type(callback) === "function") {
+			if ($.ig.util.getType(callback) === "function") {
 				callback.apply(window, args);
 			}
 		}
@@ -1221,7 +1221,7 @@
 		var beforeSend = function (jqXHR, options) {
 			if (requestOptions) {
 
-				if ($.isFunction(requestOptions.beforeSend)) {
+				if ($.ig.util.getType(requestOptions.beforeSend) === "function") {
 					jqXHR.setRequestHeader("Content-Type", contentType);
 					requestOptions.beforeSend.call(this, jqXHR, options, requestOptions);
 				}
@@ -1316,5 +1316,12 @@
 		},
 		$type: new $.ig.Type("jQueryDomRenderer", $.ig.Object.prototype.$type)
 	}, true);
+
+	// replaces the deprecated $.type for most common cases
+	$.ig.util.getType = function (value) {
+		if (value === null) return "null";
+		if (value === undefined) return "undefined";
+		return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+	};
 
 }));// REMOVE_FROM_COMBINED_FILES

@@ -441,7 +441,7 @@ QUnit.test(testId_32, function (assert) {
 		},
 		showOn: "mouseenter"
 	});
-	$("#img1").bind({
+	$("#img1").on({
 		igpopovershowing: function (event, ui) {
 			if (this.cancelS === false) {
 				return true;
@@ -465,7 +465,7 @@ QUnit.test(testId_32, function (assert) {
 	this.testUtil.wait(1000).then(function () {
 		done();
 		assert.ok($('#img1_popover').css("display") === "none", "Showing cancel failed");
-		$("#img1").unbind("igpopovershowing");
+		$("#img1").off("igpopovershowing");
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
 		done();
@@ -534,7 +534,7 @@ QUnit.test(testId_34, function (assert) {
 		},
 		showOn: "mouseenter"
 	});
-	$("#img1").bind({
+	$("#img1").on({
 		igpopoverhiding: function (event, ui) {
 			if (cancelH === false) {
 				return true;
@@ -564,7 +564,7 @@ QUnit.test(testId_34, function (assert) {
 		$(target).trigger(event);
 		self.testUtil.wait(1000).then(function () {
 			assert.ok($('#img1_popover').css("display") !== "none", "Cancel hiding failed!");
-			$("#img1").unbind("igpopoverhiding");
+			$("#img1").off("igpopoverhiding");
 			done();
 		});
 	}).catch(function (er) {

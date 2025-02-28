@@ -79,9 +79,9 @@ QUnit.module("igUpload unit tests", {
 			//totalCountUploadedFiles++;
 			this.assert.equal(uploadedBytes, totalSize, 'Uploaded bytes should be equal to total size when status is finished.');
 			//equal (totalCountUploadedFiles, innerData.countUploadingFiles, 'Count of uploading files should be equal to the inner data.');
-			$('#' + uploaderId).bind("iguploadfileuploaded", function (event, data) {
+			$('#' + uploaderId).on("iguploadfileuploaded", function (event, data) {
 				self.checkUploadedData(uploaderId, fileId);
-				$('#' + uploaderId).unbind("iguploadfileuploaded");
+				$('#' + uploaderId).off("iguploadfileuploaded");
 			});
 			//equal( $('#' + uploaderId + '_clrabtn').igButton('option', 'disabled'), false, 'When the file is uploaded Clear All button should be enabled.');
 		}
@@ -267,7 +267,7 @@ QUnit.test('[ID4] igUpload SINGLE MODE resource test finish file', function (ass
 		progressUrl: 'http://localhost/asdfasdf'
 	});
 
-	uploader.bind("iguploadfileuploaded", function (event, data) {
+	uploader.on("iguploadfileuploaded", function (event, data) {
 		innerData = uploader.data('igUpload').fileInfoData;
 		self.checkUploadedData(uploaderId, 0);
 		assert.equal($('#' + uploaderId + '_bb').igBrowseButton('option', 'disabled'), false, 'Browse button should be enabled when file is uploaded.');
@@ -275,7 +275,7 @@ QUnit.test('[ID4] igUpload SINGLE MODE resource test finish file', function (ass
 		assert.equal(data.fileId, 0, 'Data passed to the event handler should be correct - check id is 0.');
 		assert.equal(data.filePath, '', 'FilePath should be empty because it is not specified.');
 		self.checkFormDestroyed(uploaderId, 0);
-		uploader.unbind("iguploadfileuploaded");
+		uploader.off("iguploadfileuploaded");
 	});
 
 	this.uploadNewFile(uploaderId, true);
@@ -443,7 +443,7 @@ QUnit.test('[ID10] igUpload MULTIPLE MODE - AUTOSTARTUPLOAD event handling uploa
 		self.checkUploading(data, uploaderId);
 		assert.ok(data.uploadedBytes <= data.totalSize, "Event argument uploadedBytes should be less than totalSize");
 		if (innerData.countUploadingFiles === innerData.countTotalFiles) {
-			uploader.unbind("iguploadfileuploading", fileUploaderHandler);
+			uploader.off("iguploadfileuploading", fileUploaderHandler);
 			$.ig.TestUtil.wait(500).then(function () {
 				assert.equal($('#' + uploaderId + '_summpbar').igProgressBar('option', 'value'), 100, 'Summary progress bar should be 100%.');
 				assert.equal(innerData.countTotalFiles, 3, 'Count total files should be 3');

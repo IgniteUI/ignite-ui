@@ -421,7 +421,7 @@
 
 			// flag if control should use hover-css. Bit 1-has mouse, Bit 2-has focus.
 			me._hasHov = 0;
-			elem = me._elem = $("<div/>").css(sto).addClass(css.normal).appendTo(elem0).bind(me._evts = {
+			elem = me._elem = $("<div/>").css(sto).addClass(css.normal).appendTo(elem0).on(me._evts = {
 				mousedown: function (e) { me._doEvt(e, 1); },
 				mousemove: function (e) { me._doEvt(e, 2); },
 				mouseleave: function (e) { me._doEvt(e, 3); }
@@ -643,7 +643,7 @@
 				overflow: "visible"
 			};
 			while (++i < count) {
-				span = $("<span />").addClass(css.vote).css(cssV).appendTo(div).bind(touch);
+				span = $("<span />").addClass(css.vote).css(cssV).appendTo(div).on(touch);
 				if (o.disabled) {
 					span.addClass(css.voteDisabled);
 				}
@@ -653,7 +653,7 @@
 				}
 				span[ 0 ]._i = i;
 				span = $("<span />").addClass(css.vote).addClass(css.voteSelected)
-							.css(cssV).appendTo(sel).bind(touch);
+							.css(cssV).appendTo(sel).on(touch);
 				if (o.disabled) {
 					span.addClass(css.voteDisabledSelected);
 				}
@@ -665,7 +665,7 @@
 					me._selSwap = span;
 				}
 				span = $("<span />").addClass(css.vote).addClass(css.voteHover)
-							.css(cssV).appendTo(hov).bind(touch);
+							.css(cssV).appendTo(hov).on(touch);
 				if (cssi && cssi[ 2 ]) {
 					span.addClass(cssi[ 2 ]);
 				}
@@ -1112,7 +1112,7 @@
 			}
 			this.validator(1);
 			if (this._foc) {
-				this._foc.unbind().remove();
+				this._foc.off().remove();
 			}
 			this._elem.remove();
 			if (o.theme) {

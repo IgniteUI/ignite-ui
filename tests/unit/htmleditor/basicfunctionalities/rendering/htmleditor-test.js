@@ -183,7 +183,7 @@ QUnit.module("igHTMLEditor unit tests", {
 	buttonCombinationsTest: function () {
 		var i, buttonsNames = arguments;
 		for (i = 0; i < buttonsNames.length; i++) {
-			if ($.isFunction(this[buttonsNames[i]])) {
+			if ($.ig.util.getType(this[buttonsNames[i]]) === "function") {
 				this[buttonsNames[i]]();
 			}
 		}
@@ -355,7 +355,7 @@ QUnit.module("igHTMLEditor unit tests", {
 			self.htmlEditor.igHtmlEditor('executeAction', actionName, param);
 
 			var condition = false;
-			if ($.isFunction(conditionCallBack)) {
+			if ($.ig.util.getType(conditionCallBack) === "function") {
 				condition = conditionCallBack.call(p, self.editorBody);
 			}
 			self.assert.ok(condition, 'Execute action ' + actionName + " combo.");
@@ -383,7 +383,7 @@ QUnit.module("igHTMLEditor unit tests", {
 			self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
 			button.trigger("click");
 			var condition = false;
-			if ($.isFunction(conditionCallBack)) {
+			if ($.ig.util.getType(conditionCallBack) === "function") {
 				condition = conditionCallBack.call(p, self.editorBody);
 			}
 			self.assert.ok(condition, buttonName + " combo.");
@@ -404,7 +404,7 @@ QUnit.module("igHTMLEditor unit tests", {
 					animationHideDuration: 0
 				});
 
-		combo.bind("igcombodropdownopened", function () {
+		combo.on("igcombodropdownopened", function () {
 			combo.igCombo('index', index, null, true);
 		});
 
@@ -415,7 +415,7 @@ QUnit.module("igHTMLEditor unit tests", {
 			return $.ig.TestUtil.wait(200);
 		}).then(function () {
 			var condition = false;
-			if ($.isFunction(conditionCallBack)) {
+			if ($.ig.util.getType(conditionCallBack) === "function") {
 				condition = conditionCallBack.call(p, self.editorBody);
 			}
 			combo.igCombo("closeDropDown");
@@ -1567,7 +1567,7 @@ QUnit.test('[ID65] igHtmlEditor rendering tests - Adjust domPathToolbar width wh
 				animationHideDuration: 0
 			});
 
-	combo.bind("igcombodropdownopened", function () {
+	combo.on("igcombodropdownopened", function () {
 		combo.igCombo('index', 3, null, true);
 	});
 

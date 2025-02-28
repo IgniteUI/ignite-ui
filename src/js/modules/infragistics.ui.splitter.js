@@ -858,19 +858,19 @@
                     // D.P. If _create threw this._splitter is not assigned
                     return;
                 }
-                $(this._splitter.bar).unbind(this._getEvent("focus"),
+                $(this._splitter.bar).off(this._getEvent("focus"),
                     this._getEvent("blur"),
                     this._getEvent("keydown"));
-                $(this._splitter.bar.children()[ 0 ]).unbind(this._getEvent("mousedown"));
-                $(this._splitter.bar.children()[ 1 ]).unbind(this._getEvent("mousedown"));
+                $(this._splitter.bar.children()[ 0 ]).off(this._getEvent("mousedown"));
+                $(this._splitter.bar.children()[ 1 ]).off(this._getEvent("mousedown"));
 
                 //T.P. Bug #155452 fix _removeEventHandlers so when under mobile devices mouseenter and mouseleave are not unbinded
                 if (!this._isTouch()) {
-                    $(this._splitter.bar).unbind(this._getEvent("mouseenter"),
+                    $(this._splitter.bar).off(this._getEvent("mouseenter"),
                         this._getEvent("mouseleave"));
-                    $(this._splitter.bar.children()[ 0 ]).unbind(this._getEvent("mouseenter"),
+                    $(this._splitter.bar.children()[ 0 ]).off(this._getEvent("mouseenter"),
                         this._getEvent("mouseleave"));
-                    $(this._splitter.bar.children()[ 1 ]).unbind(this._getEvent("mouseenter"),
+                    $(this._splitter.bar.children()[ 1 ]).off(this._getEvent("mouseenter"),
                         this._getEvent("mouseleave"));
                 }
             },
@@ -928,12 +928,12 @@
                 };
 
                 $(document)
-                    .bind(this._getEvent("mouseup") + "." + this.element.attr("id"),
+                    .on(this._getEvent("mouseup") + "." + this.element.attr("id"),
                     this._opt.eventHandlers.documentMouseUp)
-                    .bind(this._getEvent("mousemove") + "." + this.element.attr("id"),
+                    .on(this._getEvent("mousemove") + "." + this.element.attr("id"),
                     this._opt.eventHandlers.documentMouseMove);
 
-                $(window).bind("resize." + this.element.attr("id"),
+                $(window).on("resize." + this.element.attr("id"),
                     this._opt.eventHandlers.windowResize);
 
                 this._addBarHandlers();
@@ -956,10 +956,10 @@
                     options = this.options;
 
                 splitter.bar
-                    .bind(this._getEvent("mousedown"), {
+                    .on(this._getEvent("mousedown"), {
                         self: this
                     }, this._startDrag)
-                    .bind(this._getEvent("mousedown"), function () {
+                    .on(this._getEvent("mousedown"), function () {
 
                         // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                         if (options.disabled) {
@@ -971,17 +971,17 @@
 
                 this._splitter.bar.find("." + this.css.resizeHandler +
                     "-" + this.options.orientation)
-                    .bind(this._getEvent("mousedown"), {
+                    .on(this._getEvent("mousedown"), {
                         self: this
                     }, this._startDrag);
 
-                splitter.bar.bind(this._getEvent("keydown"), {
+                splitter.bar.on(this._getEvent("keydown"), {
                     self: this
                 }, this._kbNavigation);
 
                 //T.P. Bug #155452 fix _addBarHandlers so when under mobile devices mouseenter and mouseleave are not binded
                 if (!this._isTouch()) {
-                    splitter.bar.bind(this._getEvent("mouseenter"), function () {
+                    splitter.bar.on(this._getEvent("mouseenter"), function () {
 
                         // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                         if (options.disabled) {
@@ -990,7 +990,7 @@
 
                         $(this).addClass(self.css.barHover);
                     });
-                    splitter.bar.bind(this._getEvent("mouseleave"), function () {
+                    splitter.bar.on(this._getEvent("mouseleave"), function () {
 
                         // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                         if (options.disabled) {
@@ -1000,7 +1000,7 @@
                         $(this).removeClass(self.css.barHover);
                     });
                 }
-                splitter.bar.bind(this._getEvent("focus"), function () {
+                splitter.bar.on(this._getEvent("focus"), function () {
 
                     // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                     if (options.disabled) {
@@ -1009,7 +1009,7 @@
 
                     $(this).addClass(self.css.barActive);
                 });
-                splitter.bar.bind(this._getEvent("blur"), function () {
+                splitter.bar.on(this._getEvent("blur"), function () {
 
                     // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                     if (options.disabled) {
@@ -1209,7 +1209,7 @@
                 var self = this,
                     options = this.options;
 
-                button.bind(this._getEvent("mouseenter"), function (e) {
+                button.on(this._getEvent("mouseenter"), function (e) {
                     // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                     if (options.disabled) {
                         return;
@@ -1225,7 +1225,7 @@
                     }
                     return false;
                 });
-                button.bind(this._getEvent("mouseleave"), function () {
+                button.on(this._getEvent("mouseleave"), function () {
                     // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                     if (options.disabled) {
                         return;
@@ -1234,7 +1234,7 @@
                     $($(this).parent()).addClass(self.css.barHover);
                     $(this).removeClass(self.css.collapseButtonHover);
                 });
-                button.bind("mousedown touchstart", function (e) {
+                button.on("mousedown touchstart", function (e) {
                     // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
                     if (options.disabled) {
                         return;
@@ -2299,9 +2299,9 @@
 
                 // D.A. 24th October 2013 Remove the attached events to window and document
                 if (evtHandlers) {
-                    $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
-                    $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
-                    $(window).unbind("resize", evtHandlers.windowResize);
+                    $(document).off(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
+                    $(document).off(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
+                    $(window).off("resize", evtHandlers.windowResize);
                 }
                 this._superApply(arguments);
                 this._opt = null;

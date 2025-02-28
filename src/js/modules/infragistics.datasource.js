@@ -1893,10 +1893,10 @@
 			/* merge defaults with passed-in values */
 			if (options) {
 				tempSource = options.dataSource;
-				if (tempSource && ($.type(tempSource) === "array" || $.type(tempSource) === "object")) {
+				if (tempSource && ($.ig.util.getType(tempSource) === "array" || $.ig.util.getType(tempSource) === "object")) {
 					/* L.A. 28 August 2012 Fixing bug #119626 When the hierarchical grid is bound to remote data (without load on demand),
 					expanding a root grid row causes an error and no child layouts are shown */
-					if (($.type(tempSource) === "object") && options.responseDataKey && options.type !== "json") {
+					if (($.ig.util.getType(tempSource) === "object") && options.responseDataKey && options.type !== "json") {
 						/* M.H. 14 Sep 2012 Fix for bug #121209: we should preserve metadata */
 						metadata = tempSource.Metadata;
 						options.dataSource = $.ig.findPath(tempSource, options.responseDataKey);
@@ -1917,7 +1917,7 @@
 				/* M.H. 15 May 2013 Fix for bug 141609: Cell value is split into single character when a flat grid is shown after a hierarchical grid has been expanded */
 				if (arrayAlready) {
 					this.settings.type = "array";
-				} else if (tempSource && ($.type(tempSource) === "array" || $.type(tempSource) === "object")) {
+				} else if (tempSource && ($.ig.util.getType(tempSource) === "array" || $.ig.util.getType(tempSource) === "object")) {
 					options.dataSource = tempSource;
 					this.settings.dataSource = tempSource;
 				}
@@ -2089,19 +2089,19 @@
 			if (ds === undefined || ds === null) {
 				return "empty";
 			}
-			if ($.type(ds) === "function") {
+			if ($.ig.util.getType(ds) === "function") {
 				// function
 				return "function";
 			}
-			if ($.type(ds) === "array") {
+			if ($.ig.util.getType(ds) === "array") {
 				// string, assume JSON by default and eval it
 				return "array";
 			}
-			if ($.type(ds) === "number" || $.type(ds) === "boolean" || $.type(ds) === "date") {
+			if ($.ig.util.getType(ds) === "number" || $.ig.util.getType(ds) === "boolean" || $.ig.util.getType(ds) === "date") {
 				// data source is either boolean, number date, etc.
 				return "invalid";
 			}
-			if ($.type(ds) === "string") { //string or object
+			if ($.ig.util.getType(ds) === "string") { //string or object
 				ds = $.trim(ds);
 				if (ds.startsWith("/")) {
 					return "remoteUrl";
@@ -2805,7 +2805,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowUpdated) === "function") {
+			if ($.ig.util.getType(this.settings.rowUpdated) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowUpdated.apply(this.settings.callee,
 						[ { rowIndex: rowIndex, newRow: rowObject, oldRow: oldRow }, this ]);
@@ -2862,7 +2862,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowAdded) === "function") {
+			if ($.ig.util.getType(this.settings.rowAdded) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowAdded.apply(this.settings.callee, [ { rowId: rowId, row: rowObject }, this ]);
 				} else {
@@ -2929,7 +2929,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowInserted) === "function") {
+			if ($.ig.util.getType(this.settings.rowInserted) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowInserted.apply(this.settings.callee,
 						[ { rowId: rowId, row: rowObject, rowIndex: rowIndex }, this ]);
@@ -3012,7 +3012,7 @@
 				if (autoCommit === true) {
 					this.commit(rowId);
 				}
-				if ($.type(this.settings.rowDeleted) === "function") {
+				if ($.ig.util.getType(this.settings.rowDeleted) === "function") {
 					if (this.settings.callee) {
 						this.settings.rowDeleted.apply(this.settings.callee,
 							[ { rowId: rowId, row: row, rowIndex: rowIndex }, this ]);
@@ -3068,7 +3068,7 @@
 			paramType="object" a transaction object
 			returnType="object" a copy of a record from the data source
 			*/
-			var o = $.type(this._data[ 0 ]) === "array" ? [] : {}, i, originalRec;
+			var o = $.ig.util.getType(this._data[ 0 ]) === "array" ? [] : {}, i, originalRec;
 
 			if (this.settings.primaryKey === null) {
 				originalRec = this._data[ parseInt(t.rowId, 10) ];
@@ -3076,7 +3076,7 @@
 				originalRec = this.findRecordByKey(t.rowId);
 			}
 			/* o = $.extend(true, {}, originalRec); */
-			if ($.type(this._data[ 0 ]) !== "array") {
+			if ($.ig.util.getType(this._data[ 0 ]) !== "array") {
 				for (i in originalRec) {
 					if (originalRec.hasOwnProperty(i)) {
 						o[ i ] = originalRec[ i ];
@@ -3093,7 +3093,7 @@
 			}
 			/* merge objects or arrays
 			return $.extend(true, {}, o, t.row); */
-			if ($.type(o) !== "array") {
+			if ($.ig.util.getType(o) !== "array") {
 				for (i in t.row) {
 					if (t.row.hasOwnProperty(i)) {
 						o[ i ] = t.row[ i ];
@@ -3502,7 +3502,7 @@
 			}
 		},
 		_serializeDate: function (date) {
-			if ($.type(date) !== "date") {
+			if ($.ig.util.getType(date) !== "date") {
 				//if the value is not a date don't handle it
 				return date;
 			}
@@ -3610,7 +3610,7 @@
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
 					newRow = row;
-					if (origDs && data !== origDs && $.type(row) === "object") {
+					if (origDs && data !== origDs && $.ig.util.getType(row) === "object") {
 						newRow = $.extend(true, {}, row);
 					}
 					if (index >= 0 && index < data.length) {
@@ -3641,7 +3641,7 @@
 					}
 				}
 			} else if (t.type === "row") {
-				if ($.type(t.row) === "array") {
+				if ($.ig.util.getType(t.row) === "array") {
 					for (j = 0; j < records.length; j++) {
 						rec = records[ j ];
 						if (rec) {
@@ -3843,7 +3843,7 @@
 					} else if (t.type === "row" || t.type === "insertrow" || t.type === "newrow") {
 						for (prop in t.row) {
 							if (t.row.hasOwnProperty(prop)) {
-								if ($.type(t.row[ prop ]) === "date") {
+								if ($.ig.util.getType(t.row[ prop ]) === "date") {
 									t.row[ prop ] =
 										this._serializeDate(t.row[ prop ]);
 								} else {
@@ -3993,7 +3993,7 @@
 			/* fire the data binding event */
 			args = { cancel: false };
 
-			if ($.isFunction(p.dataBinding)) {
+			if ($.ig.util.getType(p.dataBinding) === "function") {
 				noCancel = p.dataBinding(this, args);
 				if (noCancel === undefined) {
 					noCancel = true;
@@ -4008,7 +4008,7 @@
 				} else if (this._runtimeType === "json") {// if datasource is indeed url
 					// M.H. 9 Oct 2013 Fix for bug #139006: dataSourceType should be set explicitly when invoke dataBind with remote operations
 					ds = this.dataSource();
-					if ($.type(ds) === "string") { //string or object
+					if ($.ig.util.getType(ds) === "string") { //string or object
 						ds = $.trim(ds);
 						/* N.A. 02/10/2014 Bug #162293 Add support for https requests. */
 						if (ds.startsWith("/") || ds.startsWith("http://") || ds.startsWith("https://")) {
@@ -4088,7 +4088,7 @@
 							/* there are two cases:
 							1. string which is either JSON objects or XML string
 							2. object - already parsed, or XML document element */
-							if ($.type(this.dataSource()) === "string") {
+							if ($.ig.util.getType(this.dataSource()) === "string") {
 								if (p.type === "json") {
 									dsObj = this.stringToJSONObject(this.dataSource());
 								} else {
@@ -4247,8 +4247,8 @@
 				ds = $.ig.findPath(ds, this.settings.responseDataKey);
 			}
 			if (typeof (field.mapper) === "function" &&
-				$.type(ds) === "array" && ds.length > 0) {
-				type = $.type(field.mapper(ds[ 0 ]));
+				$.ig.util.getType(ds) === "array" && ds.length > 0) {
+				type = $.ig.util.getType(field.mapper(ds[ 0 ]));
 			} else {
 				type = field.type;
 			}
@@ -4256,7 +4256,7 @@
 		},
 		_internalDataBound: function (callDatabound) {
 			// M.H. 18 Aug 2014 Fix for bug #177147: The dataBound event is called before the JSON file is returned
-			if (callDatabound && $.isFunction(this.settings.dataBound)) {
+			if (callDatabound && $.ig.util.getType(this.settings.dataBound) === "function") {
 				this.settings.dataBound(this);
 			}
 		},
@@ -4348,7 +4348,7 @@
 								if (offsets[ key ].hasOwnProperty(func)) {
 									offset = offsets[ key ][ func ];
 									obj = this._dataSummaries[ key ][ func ];
-									if ($.type(obj) === "string") {
+									if ($.ig.util.getType(obj) === "string") {
 										this._dataSummaries[ key ][ func ] = new Date(obj);
 									}
 								}
@@ -4367,7 +4367,7 @@
 			if (schema && schema.fields && schema.fields().length > 0 &&
 				(this.settings.localSchemaTransform || forceApply)) {
 				this._origDs = this._data;
-				schema._type = $.type(this._data);
+				schema._type = $.ig.util.getType(this._data);
 				ds = schema.transform(this._data);
 				this._data = ds;
 				this._dataView = this._data;
@@ -4469,7 +4469,7 @@
 					schema._type = "json";
 				}
 				/* data may be already a parsed JSON object */
-				if ($.type(data) === "string") {
+				if ($.ig.util.getType(data) === "string") {
 					rawData = JSON.parse(data);
 				} else {
 					rawData = data;
@@ -4497,8 +4497,8 @@
 					}
 				}
 				/* try to analyze and detect automatically */
-				data = $.type(data) === "string" ? $.trim(data) : data;
-				if ((data && $.type(data) === "string" && (data.startsWith("<?xml") ||
+				data = $.ig.util.getType(data) === "string" ? $.trim(data) : data;
+				if ((data && $.ig.util.getType(data) === "string" && (data.startsWith("<?xml") ||
 					data.startsWith("<"))) || t === "xml") {
 					/* assume XML */
 					if (schema) {
@@ -4508,7 +4508,7 @@
 					ds = this.context._processXmlResponse(
 						this.context.stringToXmlObject(data), false, this.context
 					);
-				} else if ((data && $.type(data) === "string" && data.startsWith("[")) ||
+				} else if ((data && $.ig.util.getType(data) === "string" && data.startsWith("[")) ||
 						(t === "json" || t === "array")) {
 					if (schema) {
 						schema._type = "json";
@@ -4516,7 +4516,7 @@
 					/* ds = this.context._processJsonResponse(eval(data), this.context); */
 					/* A.T. 20 Jan 2011 - fix for bug #62124 - igDataSource JSON string binding error */
 					ds = this.context._processJsonResponse(JSON.parse(data), this.context);
-				} else if ((data && $.type(data) === "string" && data.startsWith("{")) ||
+				} else if ((data && $.ig.util.getType(data) === "string" && data.startsWith("{")) ||
 						t === "json") {
 					if (schema) {
 						schema._type = "json";
@@ -4542,7 +4542,7 @@
 			if (this.context._isPagingReq || this.context._isFilteringReq) {
 			key = this.context.settings.responseTotalRecCountKey;
 			if (rawData && rawData[key]) {
-			if ($.type(rawData[key]) === "number") {
+			if ($.ig.util.getType(rawData[key]) === "number") {
 			this.context.totalRecordsCount(rawData[key]);
 			} else {
 			// try parse
@@ -4696,7 +4696,7 @@
 			var resp, x;
 			this.context = this;
 			resp = this._dataFilter(data, "json");
-			if (!resp.length && $.type(resp) === "object") {
+			if (!resp.length && $.ig.util.getType(resp) === "object") {
 				resp = [ resp ];
 			}
 			if (this._data.length >= 0 && this.settings.paging &&
@@ -4827,7 +4827,7 @@
 				"extraParams": extraParams,
 				"pkParams": pkParams
 			};
-			if ($.isFunction(props.urlParamsEncoding)) {
+			if ($.ig.util.getType(props.urlParamsEncoding) === "function") {
 				//args = props.urlParamsEncoding(this, params);
 				noCancel = props.urlParamsEncoding(this, params);
 			}
@@ -4843,11 +4843,11 @@
 				this._encodePkParams(params);
 				/* this should be implemented by any external features that are not
 				direclly mapped as data source features such as group by summaries */
-				if ($.isFunction(this.settings.encodeExtraParams)) {
+				if (typeof this.settings.encodeExtraParams === "function") {
 					this.settings.encodeExtraParams(this, params);
 				}
 
-				if ($.isFunction(props.urlParamsEncoded)) {
+				if ($.ig.util.getType(props.urlParamsEncoded) === "function") {
 					props.urlParamsEncoded(this, params);
 				}
 			}
@@ -4969,7 +4969,7 @@
 					// we do not want to encode one and the same keyvalue pair twice
 					// M.H. 9 Jan 2014 Fix for bug #158808: When using LoadOnDemand with remote GroupBy for the second child layout, the grouped rows are not properly sorted.
 					url = this.settings.dataSource;
-					if (url && $.type(url) === "string" && url.indexOf("layout=" + hlayout) >= 0) {
+					if (url && $.ig.util.getType(url) === "string" && url.indexOf("layout=" + hlayout) >= 0) {
 						url = url.substr(url.indexOf("?") + 1);
 						urlQS = url.split("&");
 						for (i = 0; i < urlQS.length; i++) {
@@ -5016,7 +5016,7 @@
 							key = f.filterExprUrlKey + "(" + fieldName + ")";
 						}
 
-						if ($.type(ffields[ i ].expr) === "date") {
+						if ($.ig.util.getType(ffields[ i ].expr) === "date") {
 							d = Date.UTC(
 								ffields[ i ].expr.getFullYear(),
 								ffields[ i ].expr.getMonth(),
@@ -5047,7 +5047,7 @@
 						}
 						/* M.H. 5 Sep 2013 Fix for bug #150774: OData Request ignores Case Sensitivity */
 						expr = ffields[ i ].expr;
-						if ($.type(expr) === "string") {
+						if ($.ig.util.getType(expr) === "string") {
 							if (!f.caseSensitive) {
 								fieldName = "tolower(" + fieldName + ")";
 								expr = expr.toLowerCase();
@@ -5078,7 +5078,7 @@
 
 						} else if (ffields[ i ].cond === "equals") {
 
-							if ($.type(ffields[ i ].expr) === "string") {
+							if ($.ig.util.getType(ffields[ i ].expr) === "string") {
 								params.filteringParams.$filter +=
 									fieldName + " eq " + "'" + expr + "'";
 							} else {
@@ -5093,7 +5093,7 @@
 								ffields[ i ].fieldName + " eq false";
 						} else if (ffields[ i ].cond === "doesNotEqual") {
 
-							if ($.type(ffields[ i ].expr) === "string") {
+							if ($.ig.util.getType(ffields[ i ].expr) === "string") {
 								params.filteringParams.$filter +=
 									fieldName + " ne " + "'" + expr + "'";
 							} else {
@@ -5631,7 +5631,7 @@
 				p = this.settings.paging, data, resetPaging = false;
 			/* we allow the developer to provide a single string of sort expressions, in the following format:
 			"col1 asc, col2 desc, col3 asc" ...  */
-			if ($.type(fields) === "string") {
+			if ($.ig.util.getType(fields) === "string") {
 				fields = this._parseSortExpressions(fields);
 			}
 			if (fields === undefined || fields === null) {
@@ -5653,7 +5653,7 @@
 			} else {
 				data = this.dataView();
 			}
-			if ($.type(s.customFunc) === "function") {
+			if ($.ig.util.getType(s.customFunc) === "function") {
 				// call the function, passing the data to be sorted, the fields, and the direction
 				data = s.customFunc(data, fields, direction);
 			} else {
@@ -5661,7 +5661,7 @@
 					direction = "";
 				}
 				/* check if a custom conversion function is set */
-				if ($.isFunction(s.customConvertFunc)) {
+				if ($.ig.util.getType(s.customConvertFunc) === "function") {
 					convertFunc = s.customConvertFunc;
 				}
 				/*else {
@@ -5672,7 +5672,7 @@
 
 				/* we allow the developer to provide a single string of sort expressions, in the following format:
 				"col1 asc, col2 desc, col3 asc" ...  */
-				if ($.type(fields) === "string") {
+				if ($.ig.util.getType(fields) === "string") {
 					fields = this._parseSortExpressions(fields);
 				}
 				/* A.T. 21 Jan Fix for bug #63146 - reversing of sorting should be the other
@@ -5698,7 +5698,7 @@
 					this._allDataSorted = (data === this.data());
 					if (data.length > 1) {
 						/* check if a custom compare function is set */
-						if ($.type(s.compareFunc) === "function") {
+						if ($.ig.util.getType(s.compareFunc) === "function") {
 							data.sort(s.compareFunc(fields,
 									this.settings.schema,
 									direction.toLowerCase().startsWith("asc") ? false : true,
@@ -5969,17 +5969,17 @@
 			if (schema === null || schema === undefined) {
 				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "filteringNoSchema"));
 			}
-			if ($.type(fieldExpressions) === "string") {
+			if ($.ig.util.getType(fieldExpressions) === "string") {
 				expr = fieldExpressions;
 			}
-			if ($.type(fieldExpressionsOnStrings) === "string") {
+			if ($.ig.util.getType(fieldExpressionsOnStrings) === "string") {
 				allFieldsExpr = fieldExpressionsOnStrings;
-			} else if ($.type(fieldExpressionsOnStrings) === "undefined") {
+			} else if ($.ig.util.getType(fieldExpressionsOnStrings) === "undefined") {
 				fieldExpressionsOnStrings = [];
 			}
-			if ($.type(fieldExpressions) === "array" &&
+			if ($.ig.util.getType(fieldExpressions) === "array" &&
 				fieldExpressions.length === 0 &&
-				$.type(fieldExpressionsOnStrings) === "array" &&
+				$.ig.util.getType(fieldExpressionsOnStrings) === "array" &&
 				fieldExpressionsOnStrings.length === 0) {
 				return;
 			}
@@ -5998,7 +5998,7 @@
 					data = this._cachedDataView;
 				}
 			}
-			if ($.type(f.customFunc) === "function") {
+			if ($.ig.util.getType(f.customFunc) === "function") {
 				/* call the function, passing the filterExpression object which contains field names/indices,
 				the current expression for the field, as well as condition for the field */
 				data = f.customFunc(fieldExpressions, data);
@@ -6061,7 +6061,7 @@
 							fieldExpressions[ j ].logic : boolLogic;
 						/* A.T. 18 Jan. 2011 fix for bug 62126 -
 						igDataSource local filtering expressions: the OR operator does not work */
-						if (tmpbool === undefined || tmpbool === null || $.type(tmpbool) !== "string") {
+						if (tmpbool === undefined || tmpbool === null || $.ig.util.getType(tmpbool) !== "string") {
 							tmpbool = "and";
 						}
 						if (skipRec && tmpbool.toLowerCase() === "and") {
@@ -6109,7 +6109,7 @@
 								fieldExpressionsOnStrings[ j ].logic : boolLogic;
 							/* A.T. 18 Jan. 2011 fix for bug 62126 -
 							igDataSource local filtering expressions: the OR operator does not work */
-							if (tmpbool === undefined || tmpbool === null || $.type(tmpbool) !== "string") {
+							if (tmpbool === undefined || tmpbool === null || $.ig.util.getType(tmpbool) !== "string") {
 								tmpbool = "and";
 							}
 							if (skipRec && tmpbool.toLowerCase() === "and") {
@@ -6336,13 +6336,13 @@
 
 			val = this.getCellValue(colKey, rec);
 			/* N.A. 2/27/2015 Task #188905: If val is observable, unwrap it. */
-			if ($.type(val) === "function") {
+			if ($.ig.util.getType(val) === "function") {
 				val = val();
 			}
 			if (custConds &&
 					(f = (custConds[ cond ] || custConds[ colKey + "_" + cond ]))) {
 				func = f.filterFunc;
-				if ($.type(func) === "function") {
+				if ($.ig.util.getType(func) === "function") {
 					f = func;
 				} else if (window[ func ] && typeof window[ func ] === "function") {
 					f = window[ func ];
@@ -6359,7 +6359,7 @@
 
 			tmpExpr = $.trim(expr);
 			/*if (t === null || t === undefined) {
-				t = $.type(expr);
+				t = $.ig.util.getType(expr);
 			} */
 			if (t === "regexp" || (t === "string" && tmpExpr.startsWith("/") && tmpExpr.endsWith("/"))) {
 				if (t === "regexp") {
@@ -6367,7 +6367,7 @@
 				}
 				return this._findRegExpMatch(val, tmpExpr.substring(1, tmpExpr.length - 1), true);
 			}
-			if (($.type(val) === "date" && (t === undefined || t === null)) || t === "date") {
+			if (($.ig.util.getType(val) === "date" && (t === undefined || t === null)) || t === "date") {
 				// parse expr
 				try {
 					expr = this._parser.toDate(expr);
@@ -6385,11 +6385,11 @@
 				}
 				return this._findTimeMatch(val, expr, cond);
 			}
-			if (($.type(val) === "boolean" && (t === undefined || t === null)) ||
+			if (($.ig.util.getType(val) === "boolean" && (t === undefined || t === null)) ||
 				(t === "boolean" || t === "bool")) {
 				return this._findBoolMatch(val, cond);
 			}
-			if (($.type(val) === "number" && (t === undefined || t === null)) || t === "number") {
+			if (($.ig.util.getType(val) === "number" && (t === undefined || t === null)) || t === "number") {
 				return this._findNumericMatch(val, expr, cond);
 			}
 			return this._findStringMatch(val, expr, ignoreCase, cond);
@@ -6450,7 +6450,7 @@
 		/* Equals, DoesNotEqual, GreaterThan, LessThan, GreaterThanOrEqualTo, LEssThanOrEqualTo */
 		_findNumericMatch: function (val, expr, cond) {
 			// if expr is not numeric, convert it
-			if ($.type(expr) !== "number") {
+			if ($.ig.util.getType(expr) !== "number") {
 				expr = this._parser.toNumber(expr);
 			}
 			if (cond === "equals") {
@@ -6513,7 +6513,7 @@
 		_getDateParts: function (date) {
 			// returns object containing parts of the data like year, month, day, hours, etc.
 			// if enableUTCDates is true then returns UTC representation of the date object
-			if (!date || $.type(date) !== "date") {
+			if (!date || $.ig.util.getType(date) !== "date") {
 				return null;
 			}
 			var yrs, day, mdate, mins, hrs, month;
@@ -6559,7 +6559,7 @@
 				yrs1 = valDateParts.year;
 				month1 = valDateParts.month;
 			}
-			if ($.type(expr) === "date") {
+			if ($.ig.util.getType(expr) === "date") {
 				exprDateParts = this._getDateParts(expr);
 				day2 = exprDateParts.day;
 				mday2 = exprDateParts.mdate;
@@ -6679,7 +6679,7 @@
 				hs1 = valDateParts.hours;
 				mins1 = valDateParts.mins;
 			}
-			if ($.type(expr) === "date") {
+			if ($.ig.util.getType(expr) === "date") {
 				exprDateParts = this._getDateParts(expr);
 				hs2 = exprDateParts.hours;
 				mins2 = exprDateParts.mins;
@@ -6767,7 +6767,7 @@
 						}
 					}
 					if (dsObj && rec !== undefined && rec !== null) {
-						if ($.type(rec) === "number") {
+						if ($.ig.util.getType(rec) === "number") {
 							this._recCount = rec;
 						} else {
 							// try parse
@@ -7498,7 +7498,7 @@
 			this._vgbData = [];
 			this._gbDataView = [];
 			this._gbCollapsed = collapsedRows || this._gbCollapsed;
-			if ($.type(gbExprs) !== "array" || !gbExprs.length) {
+			if ($.ig.util.getType(gbExprs) !== "array" || !gbExprs.length) {
 				return data;
 			}
 			for (i = 0; i < gbExprs.length; i++) {
@@ -7565,10 +7565,10 @@
 		},
 		toDate: function (obj) {
 			/* L.A. 18 June 2012 Fixing bug #113265 Column 'date' shows empty values as 'NaN' */
-			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
+			if (this.isNullOrUndefined(obj) || obj === "" || $.ig.util.getType(obj) === "function") {
 				return null;
 			}
-			if ($.type(obj) === "date") {
+			if ($.ig.util.getType(obj) === "date") {
 				return obj;
 			}
 			var d;
@@ -7580,10 +7580,10 @@
 			return d;
 		},
 		toTime: function (obj) {
-			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
+			if (this.isNullOrUndefined(obj) || obj === "" || $.ig.util.getType(obj) === "function") {
 				return null;
 			}
-			if ($.type(obj) === "date") {
+			if ($.ig.util.getType(obj) === "date") {
 				return obj;
 			}
 			var d = new Date();
@@ -7595,11 +7595,11 @@
 			return result;
 		},
 		toNumber: function (obj) {
-			return (this.isNullOrUndefined(obj) || $.type(obj) === "function") ? null : obj * this.num();
+			return (this.isNullOrUndefined(obj) || $.ig.util.getType(obj) === "function") ? null : obj * this.num();
 		},
 		toBool: function (obj) {
 			// M.H. 25 Jul 2013 Fix for bug #144944: Error gets thrown during data transformation of the values for an unbound column
-			var typeObj = $.type(obj);
+			var typeObj = $.ig.util.getType(obj);
 			if (typeObj === "boolean") {
 				return obj;
 			}
@@ -7825,7 +7825,7 @@
 			/* optionally, a developer may decide to set all contents directly in the output object */
 			results = this._setResKey(resKey, out);
 			/* object is empty and is not an array */
-			if (this.isObjEmpty(results) && $.type(results) !== "array") {
+			if (this.isObjEmpty(results) && $.ig.util.getType(results) !== "array") {
 				results = [];
 				out = results;
 			}
@@ -7844,7 +7844,7 @@
 				*/
 
 				if (data.length > 0) {
-					hasArrays = $.type(data[ 0 ]) === "array";
+					hasArrays = $.ig.util.getType(data[ 0 ]) === "array";
 				}
 				for (i = 0; i < data.length; i++) {
 					/* L.A. 23 May 2012 - Fixed bug #112518 The grid cannot bind to an
@@ -7891,7 +7891,7 @@
 				}
 				/* L.A. 14 January 2013 - Fixing bug #130634 -
 				JS errors when having a second child layout and using knockout. */
-				if (!root && $.type(data) === "array") {
+				if (!root && $.ig.util.getType(data) === "array") {
 					root = data;
 				}
 			}
@@ -7931,7 +7931,7 @@
 				if (root === undefined || this.isEmpty(this.schema.searchField)) {
 					root = data;
 				}
-				if (!root.length && $.type(root) === "object") {
+				if (!root.length && $.ig.util.getType(root) === "object") {
 					root = [ root ];
 				}
 				/* traverse root */
@@ -9187,7 +9187,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowUpdated) === "function") {
+			if ($.ig.util.getType(this.settings.rowUpdated) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowUpdated.apply(this.settings.callee, [ {
 						rowIndex: rowIndex, newRow: rowObject, oldRow: oldRow
@@ -9259,7 +9259,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowAdded) === "function") {
+			if ($.ig.util.getType(this.settings.rowAdded) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowAdded.apply(this.settings.callee, [ {
 						rowId: rowId, row: rowObject
@@ -9339,7 +9339,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowInserted) === "function") {
+			if ($.ig.util.getType(this.settings.rowInserted) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowInserted.apply(this.settings.callee, [ {
 						rowId: rowId, row: rowObject, rowIndex: rowIndex
@@ -9481,7 +9481,7 @@
 				}
 				this._rootds.settings.schema.layouts = this.settings.schema.layouts;
 			} else {
-				if ($.type(this._rootopts.dataSource) === "string" &&
+				if ($.ig.util.getType(this._rootopts.dataSource) === "string" &&
 					this._rootopts.dataSource.indexOf("$callback=?") !== -1) {
 					this._rootds = new $.ig.JSONPDataSource(this._rootopts);
 				} else if (this._rootopts.restSettings &&
@@ -9547,7 +9547,7 @@
 								this.root().schema().schema ?
 									this.root().schema().schema.searchField : searchField;
 							if (cd && paths.length > 1 && i < paths.length - 1 &&
-								$.type(cd) !== "array" && cd[ searchField ]) {
+								$.ig.util.getType(cd) !== "array" && cd[ searchField ]) {
 								cd = cd[ searchField ];
 							}
 							break;
@@ -9603,7 +9603,7 @@
 				lc++;
 				/*
 				for (name in layouts) {
-				if (layouts.hasOwnProperty(name) && $.type(layouts[name]) !== "function") {
+				if (layouts.hasOwnProperty(name) && $.ig.util.getType(layouts[name]) !== "function") {
 				tmp = layouts[name].key;
 				currentLayout = layouts[name];
 				while (currentLayout.columnLayouts) {
@@ -9626,7 +9626,7 @@
 				*/
 				for (name in layouts) {
 					if (layouts.hasOwnProperty(name)) {
-						if ($.type(layouts[ name ]) !== "function") {
+						if ($.ig.util.getType(layouts[ name ]) !== "function") {
 							if (name.startsWith("/")) {
 								name = name.substring(1, name.length - 1);
 							}
@@ -9811,7 +9811,7 @@
 			}
 			var i, schema = this.schema().schema,
 				fields = schema.fields;
-			if ($.type(fields) !== "array") {
+			if ($.ig.util.getType(fields) !== "array") {
 				return;
 			}
 			for (i = 0; i < fields.length; i++) {
@@ -9901,7 +9901,7 @@
 			if (dataRow === undefined || dataRow === null) {
 				return [];
 			}
-			if ($.type(dataRow) === "object") {
+			if ($.ig.util.getType(dataRow) === "object") {
 				search = data && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
 				key = dataRow[ search ];
 				if (key === undefined || key === null) {
@@ -9911,7 +9911,7 @@
 				key = dataRow;
 			}
 			if (this._metadata &&
-				$.type(this._metadata.ancestors) === "array") {
+				$.ig.util.getType(this._metadata.ancestors) === "array") {
 				prows = this._metadata.ancestors;
 				propL = this.settings.treeDS.dataLevelKey;
 				res = [];
@@ -9991,7 +9991,7 @@
 			if (level > this._dataBoundDepth) {
 				this._dataBoundDepth = level;
 			}
-			if ($.type(data) === "array") {
+			if ($.ig.util.getType(data) === "array") {
 				dataLen = data.length;
 
 				//data = this._transformCallback(data);
@@ -10000,7 +10000,7 @@
 					if (!dataRow) {
 						continue;
 					}
-					if (dataRow && $.type(dataRow[ layoutKey ]) === "array" &&
+					if (dataRow && $.ig.util.getType(dataRow[ layoutKey ]) === "array" &&
 									dataRow[ layoutKey ].length) {
 						this._getDataBoundDepthRecursive(dataRow[ layoutKey ], level + 1);
 					}
@@ -10033,7 +10033,7 @@
 			paramType="object" optional="false" The flat data that will be transformed to hierarchical
 			returnType="object" the transformed data source.
 			*/
-			if ($.type(data) !== "array") {
+			if ($.ig.util.getType(data) !== "array") {
 				return data;
 			}
 			var i, rowData, nData,
@@ -10146,7 +10146,7 @@
 			if (!data) {
 				data = this.data();
 			}
-			if ($.type(data) === "object") {
+			if ($.ig.util.getType(data) === "object") {
 				data = s._getDataBySearchField(data);
 			}
 			if (!level) {
@@ -10167,7 +10167,7 @@
 			if (!data) {
 				return data;
 			}
-			if ($.type(data) === "array") {
+			if ($.ig.util.getType(data) === "array") {
 				if (!this._dataBoundDepth) {
 					this._dataBoundDepth = 0;
 				}
@@ -10192,7 +10192,7 @@
 						}
 						this._flatData.push(dataRow);
 						nData.push(dataRow);
-						hasChildren = $.type(layout) === "array";
+						hasChildren = $.ig.util.getType(layout) === "array";
 						lLen = -1;
 						if (hasChildren) {
 							lLen = layout.length;
@@ -10290,7 +10290,7 @@
 			if (!level) {
 				level = 0;
 			}
-			if ($.type(data) === "array") {
+			if ($.ig.util.getType(data) === "array") {
 				dataLen = data.length;
 				for (i = 0; i < dataLen; i++) {
 					dataRow = data[ i ];
@@ -10322,7 +10322,7 @@
 						obj.visibleRecordsCount++;
 					}
 					if (dataRow &&
-						$.type(dataRow[ layoutKey ]) === "array" &&
+						$.ig.util.getType(dataRow[ layoutKey ]) === "array" &&
 						dataRow[ layoutKey ].length) {
 						this._generateFlatDataRecursive(
 							dataRow[ layoutKey ], level + 1, obj, !exp || parentCollapsed
@@ -10502,7 +10502,7 @@
 		_requestDataSuccess: function (requestArgs, data) {
 			var layoutKey = this.settings.treeDS.childDataKey, layoutData,
 				level, record, callbackArgs, expand;
-			if ($.type(data) === "object") {
+			if ($.ig.util.getType(data) === "object") {
 				record = requestArgs.record;
 				callbackArgs = requestArgs.callbackArgs;
 				expand = requestArgs.expand;
@@ -10606,7 +10606,7 @@
 			url = s.dataSourceUrl + "?" + this._encodeUrlPath(path, record[ s.dataLevelKey ]);
 			func = s.customEncodeUrlFunc;
 			if (func) {
-				if ($.type(func) !== "function") {
+				if ($.ig.util.getType(func) !== "function") {
 					if (window[ func ] && typeof window[ func ] === "function") {
 						func = window[ func ];
 					} else {
@@ -10624,7 +10624,7 @@
 				success: function (data, textStatus, jqXHR) {
 					var func = s.requestDataErrorCallback,
 						noCancel = true;
-					if ($.type(func) === "function") {
+					if ($.ig.util.getType(func) === "function") {
 						noCancel = func(args, data, textStatus, jqXHR);
 					}
 					if (noCancel) {
@@ -10633,7 +10633,7 @@
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
 					var func = s.requestDataErrorCallback;
-					if ($.type(func) === "function") {
+					if ($.ig.util.getType(func) === "function") {
 						func(args, jqXHR, textStatus, errorThrown);
 					}
 				}
@@ -10649,7 +10649,7 @@
 				expand = resObj.expand,
 				callback = callbackArgs.callback,
 				args = callbackArgs.args;
-			if (!callback || $.type(callback) !== "function") {
+			if (!callback || $.ig.util.getType(callback) !== "function") {
 				return;
 			}
 			callback(rec, expand, res, args);
@@ -10737,13 +10737,13 @@
 			if (expand && treeSettings.enableRemoteLoadOnDemand) {
 				layout = record[ layoutKey ];
 				if (layout === true ||
-					($.type(layout) === "array" && !layout.length)) {
+					($.ig.util.getType(layout) === "array" && !layout.length)) {
 					// async call
 					func = treeSettings.requestDataCallback;
-					if ($.type(func) === "string") {
+					if ($.ig.util.getType(func) === "string") {
 						func = window[ func ];
 					}
-					if ($.type(func) !== "function") {
+					if ($.ig.util.getType(func) !== "function") {
 						func = this._requestData.bind(this);
 					}
 					func(record, expand, callbackArgs);
@@ -10844,7 +10844,7 @@
 			var s = this.settings.sorting, schema, sortF, convertFunc, settings = this.settings, self = this;
 
 			/* check if there is a custom function defined */
-			if ($.type(s.customFunc) === "function") {
+			if ($.ig.util.getType(s.customFunc) === "function") {
 				// call the function, passing the data to be sorted, the fields, and the direction
 				data = s.customFunc(data, fields, direction);
 			} else {
@@ -10860,7 +10860,7 @@
 					direction = "";
 				}
 				/* check if a custom compare function is set */
-				if ($.type(s.compareFunc) === "function") {
+				if ($.ig.util.getType(s.compareFunc) === "function") {
 					sortF = s.compareFunc;
 				} else {
 					sortF = function (grid, fields, schema, reverse, convertf, caseSensitive) {
@@ -10870,7 +10870,7 @@
 								// L.A. 11 January 2013 - Fixing bug #130576
 								// L.A. 09 August 2012 - Fixing bug #118640 When the grid is bound to UTC dates
 								// (remote or local data), grouping a time-formatted date column produces incorrect groups
-								if ($.type(x) === "date" && $.type(y) === "date") {
+								if ($.ig.util.getType(x) === "date" && $.ig.util.getType(y) === "date") {
 									if (format === "time" || format === "timeLong" || format === "h:mm:ss tt") {
 										// Create date objects with fake year
 										// M.H. 23 Oct 2013 Fix for bug #155639: Unable to sort date column when format is "h:mm:ss tt"
@@ -10967,7 +10967,7 @@
 					};
 				}
 				/* check if a custom conversion function is set */
-				if ($.isFunction(s.customConvertFunc)) {
+				if ($.ig.util.getType(s.customConvertFunc) === "function") {
 					convertFunc = s.customConvertFunc;
 				}
 				/* else {
@@ -10978,7 +10978,7 @@
 
 				// we allow the developer to provide a single string of sort expressions, in the following format:
 				// "col1 asc, col2 desc, col3 asc" ...
-				if ($.type(fields) === "string") {
+				if ($.ig.util.getType(fields) === "string") {
 					fields = this._parseSortExpressions(fields);
 				}
 				/* A.T. 21 Jan Fix for bug #63146 - reversing of sorting should be the
@@ -11133,21 +11133,21 @@
 			if (schema === null || schema === undefined) {
 				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "filteringNoSchema"));
 			}
-			if ($.type(fieldExpressions) === "string") {
+			if ($.ig.util.getType(fieldExpressions) === "string") {
 				expr = fieldExpressions;
 			}
-			if ($.type(fieldExpressionsOnStrings) === "string") {
+			if ($.ig.util.getType(fieldExpressionsOnStrings) === "string") {
 				allFieldsExpr = fieldExpressionsOnStrings;
-			} else if ($.type(fieldExpressionsOnStrings) === "undefined") {
+			} else if ($.ig.util.getType(fieldExpressionsOnStrings) === "undefined") {
 				fieldExpressionsOnStrings = [];
 			}
-			if ($.type(fieldExpressions) === "array" &&
+			if ($.ig.util.getType(fieldExpressions) === "array" &&
 				fieldExpressions.length === 0 &&
-				$.type(fieldExpressionsOnStrings) === "array" &&
+				$.ig.util.getType(fieldExpressionsOnStrings) === "array" &&
 				fieldExpressionsOnStrings.length === 0) {
 				return;
 			}
-			if ($.type(f.customFunc) === "function") {
+			if ($.ig.util.getType(f.customFunc) === "function") {
 				/* call the function, passing the filterExpression object which contains field names/indices,
 				the current expression for the field, as well as condition for the field */
 				filteredData = f.customFunc(fieldExpressions, data);
@@ -11220,7 +11220,7 @@
 							fieldExpressions[ j ].logic : boolLogic;
 						/* A.T. 18 Jan. 2011 fix for bug 62126 - igDataSource
 						local filtering expressions: the OR operator does not work */
-						if (tmpbool === undefined || tmpbool === null || $.type(tmpbool) !== "string") {
+						if (tmpbool === undefined || tmpbool === null || $.ig.util.getType(tmpbool) !== "string") {
 							tmpbool = "and";
 						}
 						if (skipRec && tmpbool.toLowerCase() === "and") {
@@ -11269,7 +11269,7 @@
 								fieldExpressionsOnStrings[ j ].logic : boolLogic;
 							/* A.T. 18 Jan. 2011 fix for bug 62126 - igDataSource
 							local filtering expressions: the OR operator does not work */
-							if (tmpbool === undefined || tmpbool === null || $.type(tmpbool) !== "string") {
+							if (tmpbool === undefined || tmpbool === null || $.ig.util.getType(tmpbool) !== "string") {
 								tmpbool = "and";
 							}
 							if (skipRec && tmpbool.toLowerCase() === "and") {
@@ -11438,7 +11438,7 @@
 			var data = this._data, resRecord, search, key, objPath = { path: "" },
 				path, len = data ? data.length : 0;
 			search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
-			if ($.type(record) !== "object") {
+			if ($.ig.util.getType(record) !== "object") {
 				key = record;
 			} else {
 				key = record[ search ];
@@ -11688,7 +11688,7 @@
 			if (autoCommit === true) {
 				this.commit(rowId);
 			}
-			if ($.type(this.settings.rowInserted) === "function") {
+			if ($.ig.util.getType(this.settings.rowInserted) === "function") {
 				if (this.settings.callee) {
 					this.settings.rowInserted.apply(this.settings.callee,
 						[ { rowId: rowId, row: rowObject, parentRowId: parentRowId, rowIndex: rowIndex }, this ]);
@@ -11769,7 +11769,7 @@
 			}
 			if (!this._isHierarchicalDataSource &&
 				data === origDs) {
-				if ($.type(row) === "object") {
+				if ($.ig.util.getType(row) === "object") {
 					newRow = $.extend(true, {}, row);
 				}
 				if (this.settings.treeDS.foreignKey !== null) {

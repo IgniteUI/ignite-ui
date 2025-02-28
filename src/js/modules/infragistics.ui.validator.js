@@ -1044,7 +1044,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			case "onchange":
 			case "onblur":
 				if (!this.options.fields && !this.options._control) { // TODO: ignore?
-					this.element.unbind(".validator");
+					this.element.off(".validator");
 					this._attachFieldEvents(this.element);
 				}
 				break;
@@ -1248,12 +1248,12 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			},
 			"blur.validator": function (e) { self._validateInternal(element, e, true); }
 		};
-		element.bind(evts);
+		element.on(evts);
 	},
 	_ensureNotifier: function (options, reinit) {
 		/* Checks for and/or initializes igNotifier */
 		if (reinit && options.notifyTarget.data("igNotifier")) {
-			options.notifyTarget.igNotifier("destroy").unbind(".validator");
+			options.notifyTarget.igNotifier("destroy").off(".validator");
 		}
 		if (!options.notifyTarget.data("igNotifier")) {
 			var args = {
@@ -1268,7 +1268,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 					this.options.notificationOptions,
 					options.notificationOptions
 				))
-				.bind({
+				.on({
 					"ignotifiershowing.validator": function (evt, ui) {
 						return args.owner._handleNotifierEvent(evt, ui, "Showing", args);
 					},
@@ -1359,7 +1359,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 
 		if (!this._form._igValidators || !this._form._igValidators.length) {
 			this._form._igValidators = [];
-			$(this._form).bind("submit.validator", function (e) {
+			$(this._form).on("submit.validator", function (e) {
 				this._igErrorShown = false;
 				var summaryResult = true, current;
 				for (var i = 0; i < this._igValidators.length; i++) {
@@ -1382,7 +1382,7 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 			this._form._igValidators.splice(index, 1);
 			if (!this._form._igValidators.length) {
 				//also detach handler if all validators are destroyed
-				$(this._form).unbind("submit.validator");
+				$(this._form).off("submit.validator");
 			}
 		}
 	},
@@ -1765,9 +1765,9 @@ $.widget("ui.igValidator",  $.ui.igWidget, {
 	},
 	_cleanupField: function (options) {
 		var element = this._targetFromOptions(options || this.options);
-		element.unbind(".validator");
+		element.off(".validator");
 		if (options.notifyTarget && options.notifyTarget.data("igNotifier")) {
-			options.notifyTarget.igNotifier("destroy").unbind(".validator");
+			options.notifyTarget.igNotifier("destroy").off(".validator");
 		}
 		this._clearMessageTarget(options);
 		if (element.data("igValidatorField")) {

@@ -572,7 +572,7 @@
 				}
 			}
 			if (disabled) {
-				element.removeAttr("disabled");
+				element[0].removeAttribute("disabled");
 
 				// If we have 'disabled' attribute, then it is applied only when 'disabled' options is not defined.
 				if (this._definedOptions === undefined || this._definedOptions.disabled === undefined) {
@@ -2240,7 +2240,7 @@
 		_enableSpinButton: function (target, type) {
 			if (target && target.attr("disabled")) {
 				target.removeClass(this.css.disabled);
-				target.removeAttr("disabled");
+				target[0].removeAttribute("disabled");
 				target.prop("disabled", false);
 				this._attachButtonsEvents(type, target);
 			}
@@ -5072,7 +5072,7 @@
 				return value;
 			}
 
-			if ($.type(value) !== "number") {
+			if ($.ig.util.getType(value) !== "number") {
 
 				// In case of IME input digits we need to convert
 				// value = $.ig.util.replaceJpToEnNumbers(value);
@@ -8048,9 +8048,9 @@
 		_setOption: function (option, value) { // igDateEditor
 			/* igDateEditor custom setOption goes here */
 			var prevValue = this.options[ option ], date;
-			if ($.type(prevValue) === "date") {
+			if ($.ig.util.getType(prevValue) === "date") {
 				date = this._getDateObjectFromValue(value);
-				if ($.type(date) === "date" && (prevValue.getTime() === date.getTime())) {
+				if ($.ig.util.getType(date) === "date" && (prevValue.getTime() === date.getTime())) {
 					return;
 				}
 			} else if (prevValue === value) {
@@ -9251,7 +9251,7 @@
 				}
 				return;
 			}
-			if ($.type(value) === "date") {
+			if ($.ig.util.getType(value) === "date") {
 				parsedVal = value;
 			} else {
 
@@ -9394,7 +9394,7 @@
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 
 			// V. A. December 4th, 2019 Bug: #2016 In igDateEditor with the input and display format of HH:mm:ss.fff, millisecond part becomes 0 in display text and in value when the focus is blurred.
-			} else if ($.type(value) === "date") {
+			} else if ($.ig.util.getType(value) === "date") {
 				date = new Date(value.getTime());
 			} else {
 				date = new Date(value);
@@ -9467,7 +9467,7 @@
 				midDayStartIndex = this._dateIndices.tt,
 				millisecondsStartIndex = this._dateIndices.ff,
 				extractedDate = "";
-			if (value === "" || value === null || $.type(value) === "date") {
+			if (value === "" || value === null || $.ig.util.getType(value) === "date") {
 
 				// That case is when in the process value changing the value is equal to the empty mask. We don"t have any user input.
 				return extractedDate;
@@ -12682,7 +12682,7 @@
 			return $.ui.igTextEditor.prototype.selectedListIndex.call(this, index);
 		},
 		_getEditModeValue: function (val) { // igTimePicker
-			if ($.type(val) === "date") {
+			if ($.ig.util.getType(val) === "date") {
 				return this._updateMaskedValue(val, true);
 			} else {
 				return this._super();
@@ -12761,7 +12761,7 @@
 			}
 		},
 		value: function (newValue) { //igTimePicker
-			if (newValue === undefined || $.type(newValue) === "date") {
+			if (newValue === undefined || $.ig.util.getType(newValue) === "date") {
 				return this._super(newValue);
 			} else {
 				return this._super(this._parseDateFromMaskedValue(newValue));
@@ -12774,7 +12774,7 @@
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTimePicker
-			if ($.type(currentVal) === "date") {
+			if ($.ig.util.getType(currentVal) === "date") {
 				this._super(currentVal);
 			} else {
 				if (this.options.dataMode === "displayModeText") {
@@ -12796,7 +12796,7 @@
 			}
 		},
 		_applyOptions: function () { // igTimePicker
-			if ($.type(this.options.value) !== "date" && this.options.value !== null) {
+			if ($.ig.util.getType(this.options.value) !== "date" && this.options.value !== null) {
 				// S.S. April 23rd, 2018 #1701 igTimePicker with JSON date format does not display the value
 				var convertedValue = this._getDateObjectFromValue(this.options.value);
 				if (!isNaN(convertedValue)) {

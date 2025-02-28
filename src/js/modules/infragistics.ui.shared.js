@@ -237,7 +237,7 @@
 			// TODO we should think of a different way to find the handle as the class can be changed by the user
 			// and it may not be just one class
 			this.handles = $(".ui-igslider-handle", this.element)
-                .addClass("ui-state-default" + " ui-corner-all").bind({
+                .addClass("ui-state-default" + " ui-corner-all").on({
 				click: function (event) {
 					event.preventDefault();
 				},
@@ -370,7 +370,7 @@
                         ((mark.value - o.min) / (o.max - o.min) * 100) + "%" : "0%");
 				}
 
-				this.bookmarks = $(".ui-igslider-bookmark", this.element).addClass("ui-state-default").bind({
+				this.bookmarks = $(".ui-igslider-bookmark", this.element).addClass("ui-state-default").on({
 					mousedown: function (event) {
 						var noCancel = true,
 							bookmarkIndex = $(this).data("index.ui-igslider-bookmark");
@@ -421,7 +421,7 @@
 					" ui-igslider-vertical" +
 					" ui-igslider-disabled")
 				.removeData("slider")
-				.unbind(".slider");
+				.off(".slider");
 
 			this._mouseDestroy();
 
@@ -522,7 +522,7 @@
 			// A.Y. June 6, 2011 Bug# 73864 - the ui.mouse plugin that we extend is not firing _mouseStop unless there is a slide
 			// in which case it fires _mouseStart and then _mouseStop, so we should handle the mouseUp event
 			// unless _mouseStart is fired before that
-			$(document).bind("mouseup." + this.widgetName, this._mouseUpHandler);
+			$(document).on("mouseup." + this.widgetName, this._mouseUpHandler);
 
 			return true;
 		},
@@ -531,7 +531,7 @@
 
 			// A.Y. June 6, 2011 Bug# 73864 - _mouseStart is fired so we can unbind our mauseUp handler
 			// as we know now that _mouseStop will be fired
-			$(document).unbind("mouseup." + this.widgetName, this._mouseUpHandler);
+			$(document).off("mouseup." + this.widgetName, this._mouseUpHandler);
 
 			return this._start(event, this._handleIndex);
 		},
@@ -720,7 +720,7 @@
 					this.handles.attr("disabled", "disabled");
 					this.element.addClass("ui-disabled");
 				} else {
-					this.handles.removeAttr("disabled");
+					this.handles[0].removeAttribute("disabled");
 					this.element.removeClass("ui-disabled");
 				}
 				break;
@@ -884,7 +884,7 @@
 					" ui-widget-content" +
 					" ui-corner-all")
 				.removeData("igProgressBar")
-				.unbind(".igProgressBar");
+				.off(".igProgressBar");
 			$("#" + this._id("_progress")).remove();
 			return this;
 		},
@@ -1192,7 +1192,7 @@
             if (e.hasClass(o.css.buttonDisabledClass)) {
                 e.removeClass(o.css.buttonDisabledClass);
             }
-            e.removeAttr("disabled");
+            e[0].removeAttribute("disabled");
             if (e.is("a") === true) {
                 self._setLinkOptions(true);
             }
@@ -1381,7 +1381,7 @@
 
         _dettachEvents: function () {
             this._attached = false;
-            this.element.unbind(this._events);
+            this.element.off(this._events);
         },
 
         /* Event Functions */
@@ -1540,7 +1540,7 @@
 					self._onKeyDown(e);
 				}
             };
-            e.bind(this._events);
+            e.on(this._events);
         },
 
         /************** Helper Functions *******************/

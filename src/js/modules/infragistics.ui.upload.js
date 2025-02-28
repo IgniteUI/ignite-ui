@@ -60,7 +60,7 @@
 			if (this.options.disabled === true) {
 				this._enableFilePicker(true);
 			} else {
-				this.element.bind({
+				this.element.on({
 					/* M.H. 27 Jul 2011 - fix bug 77323 */
 					click: function (e) {
 						e.preventDefault();
@@ -138,7 +138,7 @@
 					self._attachMouseMove(true);
 				}
 			};
-			self.element.bind(this._internalEvents);
+			self.element.on(this._internalEvents);
 			/* attach onchange property to input type="file" element */
 			self._filePickerBindChange();
 		},
@@ -172,7 +172,7 @@
 					}
 				}
 			};
-			filePicker.bind(self._filePickerEvents);
+			filePicker.on(self._filePickerEvents);
 		},
 		attachFilePicker: function (e, isHidden) {
 			var self = this, right, bottom, t, l, relativeOffset,
@@ -276,9 +276,9 @@
 		},
 		_attachMouseMove: function (isToAttach) {
 			if (isToAttach) {
-				$(document).bind(this.mouseMoveEvent);
+				$(document).on(this.mouseMoveEvent);
 			} else {
-				$(document).unbind(this.mouseMoveEvent);
+				$(document).off(this.mouseMoveEvent);
 			}
 		},
 		_setOption: function (key, value) {
@@ -303,10 +303,10 @@
 
 			if (isDisabled === false) {
 				this.isVisibleFilePicker = false;
-				/* filePicker.removeAttr("disabled"); */
+				/* filePicker[0].removeAttribute("disabled"); */
 				this._attachMouseMove(true);
 				/* IE9 fix - unbind mouse over event */
-				this.element.bind(this._internalEvents).mouseover();
+				this.element.on(this._internalEvents).mouseover();
 			} else {
 				/*filePicker.attr("disabled", "true"); */
 				this._attachMouseMove(false);
@@ -314,15 +314,15 @@
 					width: "1px",
 					height: "1px"
 				});
-				this.element.unbind(this._internalEvents);
+				this.element.off(this._internalEvents);
 			}
 		},
 		destroy: function () {
 			/*
 				$(".selector").igUpload("destroy");
 			*/
-			this.element.unbind(this._internalEvents);
-			this.element.unbind(this.mouseMoveEvent);
+			this.element.off(this._internalEvents);
+			this.element.off(this.mouseMoveEvent);
 			this._superApply(arguments);
 			/* M.H. 10 May 2011 - fix bug 75039: remove unnecessary comment and unnecessary line of code */
 			$.ui.igButton.prototype.destroy.apply(this);
@@ -1935,9 +1935,9 @@
 			/* M.H. 27 Jul 2011 - fix bug 77162 - analyze file extension icons array */
 			this._analyzeFileExtensionIcons();
 			/* M.H. 12 Dec 2012 Fix for bug #129351 */
-			$(document).bind("dragenter." + this.element[ 0 ].id, this._docEnter.bind(this));
-			$(document).bind("dragover." + this.element[ 0 ].id, this._docOver.bind(this));
-			$(document).bind("dragleave." + this.element[ 0 ].id, this._docLeave.bind(this));
+			$(document).on("dragenter." + this.element[ 0 ].id, this._docEnter.bind(this));
+			$(document).on("dragover." + this.element[ 0 ].id, this._docOver.bind(this));
+			$(document).on("dragleave." + this.element[ 0 ].id, this._docLeave.bind(this));
 		},
 		_dropFiles: function (e) {
 			var isInit = $("#" + this._id("_ibb")).is(":visible"),
@@ -2441,7 +2441,7 @@
 						currentFileSize = currentFile.size;
 					}
 
-					if ($.type(currentFileSize) === "number") {
+					if ($.ig.util.getType(currentFileSize) === "number") {
 						fileSize += currentFileSize;
 					}
 
@@ -2470,8 +2470,8 @@
 					self._trigger(self.events.onFormDataSubmit, null, eventArgs);
 				}
 
-				if ($.type(o.maxFileSize) === "number" &&
-					$.type(fileSize) === "number" &&
+				if ($.ig.util.getType(o.maxFileSize) === "number" &&
+					$.ig.util.getType(fileSize) === "number" &&
 					o.maxFileSize > -1 &&
 					fileSize > o.maxFileSize) {
 					self._setError( fileId,
@@ -2580,7 +2580,7 @@
 				$(".selector").igUpload("addDataField", ui.formData, { "name": "Parameter Name", "value": "Value" });
 			```
 			*/
-			if (!field || $.type(field) !== "object") {
+			if (!field || $.ig.util.getType(field) !== "object") {
 				return;
 			}
 			this.addDataFields(formData, [ field ]);
@@ -2593,7 +2593,7 @@
 				$(".selector").igUpload("addDataFields", ui.formData, [{ "name": "Parameter Name 1", "value": "Value 1" }, { "name": "Parameter Name 2", "value": "Value 2" }]);
 			```
 			*/
-			if (!formData || $.type(fields) !== "array" || !fields.length) {
+			if (!formData || $.ig.util.getType(fields) !== "array" || !fields.length) {
 				return;
 			}
 			var i, len = fields.length, f, isHTMLForm;
@@ -2605,7 +2605,7 @@
 			}
 			for (i = 0; i < len; i++) {
 				f = fields[ i ];
-				if (!f.name || $.type(f.value) !== "string") {
+				if (!f.name || $.ig.util.getType(f.value) !== "string") {
 					continue;
 				}
 				if (isHTMLForm) {
@@ -3038,8 +3038,8 @@
 			if (file) {
 				fileSize = file.size;
 			}
-			if ($.type(o.maxFileSize) === "number" &&
-				$.type(fileSize) === "number" &&
+			if ($.ig.util.getType(o.maxFileSize) === "number" &&
+				$.ig.util.getType(fileSize) === "number" &&
 				o.maxFileSize > -1 &&
 				fileSize > o.maxFileSize) {
 				self._removeUploadSetError(formNumber,
@@ -4004,7 +4004,7 @@
 				.appendTo($("#" + this._id("_summpbar_progress"))
 				.addClass(css.summaryProgressBarInnerProgress));
 
-			$("#" + showHideDetailsId).bind({
+			$("#" + showHideDetailsId).on({
 				click: function (event) {
 					event.preventDefault();
 					self._onShowHideDetailsClick();

@@ -349,7 +349,7 @@
 		},
 		_populateTemplate: function (template, data) {
 			var i, j, result = "", temp;
-			if ($.type(data) !== "array") {
+			if ($.ig.util.getType(data) !== "array") {
 				for (i = 0; i < this.tokens.length; i++) {
 					template = this._populateArgumentValue(data, this.tokens[ i ], template);
 				}
@@ -373,7 +373,7 @@
 		},
 		_compileTemplate: function (template, data) {
 			var i, j, k, result = "", temp, tempArgs = [ ], arg = "", f;
-			if ($.type(data) !== "array") {
+			if ($.ig.util.getType(data) !== "array") {
 				for (j = 0; j < this.args.length; j++) {
 					arg = this.args[ j ];
 					for (i = 0; i < this.tokens.length; i++) {

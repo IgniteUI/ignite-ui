@@ -1705,7 +1705,7 @@
 			if (!options.textKey) {
 				if (options.valueKey) {
 					options.textKey = options.valueKey;
-				} else if (firstDataItem && $.type(firstDataItem) === "object") {
+				} else if (firstDataItem && $.ig.util.getType(firstDataItem) === "object") {
 
 					// Use first data source column
 					for (key in firstDataItem) {
@@ -2067,7 +2067,7 @@
 		_formatItem: function (item) {
 			if ($.ig && $.ig.formatter) {
 				if (this.options.format === "auto" &&
-					($.type(item) === "date" || $.type(item) === "number")) {
+					($.ig.util.getType(item) === "date" || $.ig.util.getType(item) === "number")) {
 					item = $.ig.formatter({
 						"val": item,
 						"reg": $.ig.regional[ this.options.regional ]
@@ -2523,15 +2523,15 @@
 		_convertToArrayOfObjects: function (options) {
 			var curData, len, i, ds;
 
-			if ($.type(options.dataSource) === "object" && (options.dataSource._data !== null &&
+			if ($.ig.util.getType(options.dataSource) === "object" && (options.dataSource._data !== null &&
 				options.dataSource._data !== undefined)) {
 				ds = options.dataSource._data;
 			} else {
 				ds = options.dataSource;
 			}
 
-			if ($.type(ds) === "array" && ($.type(ds[ 0 ]) === "number" ||
-				$.type(ds[ 0 ]) === "string" || $.type(ds[ 0 ]) === "date")) {
+			if ($.ig.util.getType(ds) === "array" && ($.ig.util.getType(ds[ 0 ]) === "number" ||
+				$.ig.util.getType(ds[ 0 ]) === "string" || $.ig.util.getType(ds[ 0 ]) === "date")) {
 				for (i = 0, len = ds.length; i < len; i++) {
 					curData = ds[ i ];
 
@@ -2624,7 +2624,7 @@
 			$items = $items || this._$items();
 
 			// Handle data as array
-			if ($.type(data) !== "array") {
+			if ($.ig.util.getType(data) !== "array") {
 				data = [ data ];
 			}
 
@@ -2647,7 +2647,7 @@
 			$items = $items || this._$items();
 
 			// Handle value as array
-			if ($.type(value) !== "array") {
+			if ($.ig.util.getType(value) !== "array") {
 				value = [ value ];
 			}
 
@@ -2671,7 +2671,7 @@
 			var i,
 				result = $();
 
-			if ($.type(items) !== "array") {
+			if ($.ig.util.getType(items) !== "array") {
 				items = [ items ];
 			}
 
@@ -2714,11 +2714,11 @@
 			var data2Len,
 				self = this;
 
-			if ($.type(data1) !== "array") {
+			if ($.ig.util.getType(data1) !== "array") {
 				data1 = [ data1 ];
 			}
 
-			if ($.type(data2) !== "array") {
+			if ($.ig.util.getType(data2) !== "array") {
 				data2 = [ data2 ];
 			}
 
@@ -2807,7 +2807,7 @@
 			}
 
 			// Handle item as array
-			if ($.type(item) !== "array") {
+			if ($.ig.util.getType(item) !== "array") {
 				item = [ item ];
 			}
 
@@ -2840,7 +2840,7 @@
 			var data, i, len,
 				result = [ ];
 
-			if ($.type(value) !== "array") {
+			if ($.ig.util.getType(value) !== "array") {
 				value = [ value ];
 			}
 
@@ -2887,7 +2887,7 @@
 				result = [ ];
 
 			// Handle data as array
-			if ($.type(data) !== "array") {
+			if ($.ig.util.getType(data) !== "array") {
 				data = [ data ];
 			}
 
@@ -3019,7 +3019,7 @@
 				mode = this.options.mode;
 
 			// Handle selectedItems option
-			if ($.type(selItems) === "array") {
+			if ($.ig.util.getType(selItems) === "array") {
 				for (i = 0; i < selItems.length; i++) {
 					curSelItem = selItems[ i ];
 					curIndex = curSelItem.index;
@@ -4976,8 +4976,8 @@
 				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
-				this._options.$input.removeAttr("disabled");
-				this._options.$hiddenInput.removeAttr("disabled");
+				this._options.$input[0].removeAttribute("disabled");
+				this._options.$hiddenInput[0].removeAttribute("disabled");
 			}
 		},
 		changeLocale: function () {
@@ -5129,8 +5129,9 @@
 				self = this,
 				lod = this.options.loadOnDemandSettings,
 				options = this.options,
-				isStringDataSource = $.type(options.dataSource) === "string",
-				url = options.dataSourceUrl;
+				isStringDataSource = $.ig.util.getType(options.dataSource) === "string",
+				url = options.dataSourceUrl,
+				dataSourceType = $.ig.util.getType(options.dataSource);
 
 			// Set the data source that should be used
 			if (!options.dataSource && this.element.is("select")) {
@@ -5144,7 +5145,7 @@
 			}
 
 			// P.P. 29-June-2015 Bug #201942: We need to unwrap the data here, because of the following logic.
-			if ($.type(options.dataSource) === "function") {
+			if (dataSourceType === "function") {
 				options.dataSource = options.dataSource();
 			}
 
@@ -5156,8 +5157,8 @@
 				this._convertToArrayOfObjects(options);
 
 				// Analyze the schema only when the data source is array or function
-				if (!schema && options.dataSource && ($.isArray(options.dataSource) ||
-					$.isFunction(options.dataSource))) {
+				if (!schema && options.dataSource && (dataSourceType === "array" ||
+					dataSourceType === "function")) {
 
 					// N.A. 5/18/2015 Bug #193129: Unwrap before extracting the schema from the first field element.
 					schema = this._initSchema(this._unwrapData(options.dataSource)[ 0 ]);
@@ -5208,7 +5209,7 @@
 				}
 
 				// S.T. Feb 24th, 2015 Bug #189447: Handle when data source is JSONP.
-				if ($.type(options.dataSource) === "string" &&
+				if (dataSourceType === "string" &&
 					!options.dataSourceType &&
 					$.ig.util.isJsonpUrl(options.dataSource)) {
 
@@ -5316,7 +5317,7 @@
 				if (firstDsRow.hasOwnProperty(field)) {
 					schema.fields.push({
 						name: field,
-						type: $.type(firstDsRow[ field ])
+						type: $.ig.util.getType(firstDsRow[ field ])
 					});
 				}
 			}
@@ -5329,7 +5330,7 @@
 		_generateExpressions: function (texts) {
 			var i, expressions = [ ];
 
-			if ($.type(texts) === "string") {
+			if ($.ig.util.getType(texts) === "string") {
 
 				// K.D. March 3rd, 2015 Bug #189365 When clearing the filter leave the array empty.
 				if (texts.length > 0 || (this._options.expression &&
@@ -5345,9 +5346,9 @@
 						cond: this._filteringCondition()
 					});
 				}
-			} else if ($.type(texts) === "array") {
+			} else if ($.ig.util.getType(texts) === "array") {
 				for (i = 0; i < texts.length; i++) {
-					if ($.type(texts[ i ]) === "string") {
+					if ($.ig.util.getType(texts[ i ]) === "string") {
 						expressions.push({
 							fieldName: this.options.textKey,
 							expr: texts[ i ],
@@ -5381,7 +5382,7 @@
 					}
 				};
 
-			if ($.type(texts) === "string") {
+			if ($.ig.util.getType(texts) === "string") {
 				texts = [ texts ];
 			}
 
@@ -5395,7 +5396,7 @@
 			});
 
 			if (texts.length > 0) {
-				if ($.type(types[ this.options.highlightMatchesMode ]) === "function") {
+				if ($.ig.util.getType(types[ this.options.highlightMatchesMode ]) === "function") {
 					pattern = types[ this.options.highlightMatchesMode ](texts);
 				} else {
 					throw new Error(this._getLocaleValue("errorUnrecognizedHighlightMatchesMode"));
@@ -5815,7 +5816,7 @@
 			var curCallback, i,
 				callbacks = this._options.internalSelChangeSubs;
 
-			if ($.type(callbacks) === "array") {
+			if ($.ig.util.getType(callbacks) === "array") {
 				for (i = 0; i < callbacks.length; i++) {
 					curCallback = callbacks[ i ];
 
@@ -6194,7 +6195,7 @@
 				$items = this._$items(),
 				result = null;
 
-			if ($.type(value) === "array") {
+			if ($.ig.util.getType(value) === "array") {
 				// Filter duplicate values
 				value = $.grep(value, function (val, index) {
 					return self._isValueInArray(val, value) === index;
@@ -6247,7 +6248,7 @@
 				dataLen = data.length,
 				valKey = this.options.valueKey;
 
-			if ($.type(index) === "array") {
+			if ($.ig.util.getType(index) === "array") {
 				value = [ ];
 
 				for (i = 0; i < index.length; i++) {
@@ -6552,7 +6553,7 @@
 									self._updateItems(offset);
 								}
 
-								if ($.type(callback) === "function") {
+								if ($.ig.util.getType(callback) === "function") {
 									callback();
 								}
 
@@ -6672,7 +6673,7 @@
 									self.clearFiltering(event);
 								}
 
-								if ($.type(callback) === "function") {
+								if ($.ig.util.getType(callback) === "function") {
 									callback();
 								}
 
@@ -6808,7 +6809,7 @@
 				returnValue = { combo: this, selectionCanceled: false };
 
 			// Use first data when multi selection is not enabled
-			data = ($.type(data) === "array" && !multiSelEnabled) ? data[ 0 ] : data;
+			data = ($.ig.util.getType(data) === "array" && !multiSelEnabled) ? data[ 0 ] : data;
 			items = this._itemsFromData(data);
 
 			options = options || {};
@@ -6823,7 +6824,7 @@
 				return returnValue;
 			}
 
-			if ($.type(items) !== "array") {
+			if ($.ig.util.getType(items) !== "array") {
 				items = [ items ];
 			}
 
@@ -7162,7 +7163,7 @@
 				return indexes;
 			}
 
-			if ($.type(index) !== "array") {
+			if ($.ig.util.getType(index) !== "array") {
 				index = [ index ];
 			}
 
@@ -7226,7 +7227,7 @@
 				return this;
 			}
 
-			if ($.type(items) !== "array") {
+			if ($.ig.util.getType(items) !== "array") {
 				items = [ items ];
 			}
 
@@ -7376,7 +7377,7 @@
 			var i, len,
 				dataToDeselect = [ ];
 
-			if ($.type(index) !== "array") {
+			if ($.ig.util.getType(index) !== "array") {
 				index = [ index ];
 			}
 
