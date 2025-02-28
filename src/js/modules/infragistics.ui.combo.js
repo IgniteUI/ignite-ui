@@ -5130,7 +5130,7 @@
 				lod = this.options.loadOnDemandSettings,
 				options = this.options,
 				isStringDataSource = $.ig.util.getType(options.dataSource) === "string",
-				url = options.dataSourceUrl;
+				url = options.dataSourceUrl,
 				dataSourceType = $.ig.util.getType(options.dataSource);
 
 			// Set the data source that should be used
