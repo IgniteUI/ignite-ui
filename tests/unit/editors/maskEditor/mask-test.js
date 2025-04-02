@@ -268,7 +268,7 @@ QUnit.test('[ID7] Mask editor selection', function (assert) {
 		listItems: [1, 2, 3]
 	});
 
-	editor.igMaskEditor("field").focus();
+	editor.igMaskEditor("field").trigger("focus");
 
 	$.ig.TestUtil.wait(200).then(function () {
 		var text = editor.igMaskEditor("getSelectedText");
@@ -316,7 +316,7 @@ QUnit.test('[ID8] Mask editor isValid option in edit mode', function (assert) {
 		inputMask: "&&00"
 	});
 
-	editor.igMaskEditor("field").focus();
+	editor.igMaskEditor("field").trigger("focus");
 	editor.data("igMaskEditor")._enterEditMode();
 	assert.notOk(editor.igMaskEditor("isValid"), "isValid option should be equal to false as none of the required fields are filled in");
 	editor.igMaskEditor("field").val("zz__");
@@ -544,7 +544,7 @@ QUnit.test('[ID12] Mask editor validate value against input mask', function (ass
 		inputMask: "CCR00"
 	});
 
-	editor.igMaskEditor("field").focus();
+	editor.igMaskEditor("field").trigger("focus");
 
 	$.ig.TestUtil.wait(100).then(function () {
 		$.ig.TestUtil.paste(editor.igMaskEditor("field")[0], "aaR15");
@@ -552,12 +552,12 @@ QUnit.test('[ID12] Mask editor validate value against input mask', function (ass
 	}).then(function () {
 		assert.equal(editor.igMaskEditor("field").val(), "aaR15", "The editor value should be aaR15");
 		editor.igMaskEditor("field").blur();
-		editor.igMaskEditor("field").focus();
+		editor.igMaskEditor("field").trigger("focus");
 		editor.igMaskEditor("option", "revertIfNotValid", true);
 		editor.data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
 		assert.equal(editor.igMaskEditor("field").val(), "aaR15", "When revertIfNotValid option is set to true the editor value should be reverted to aaR15 after entering an invalid input");
 		editor.igMaskEditor("option", "revertIfNotValid", false);
-		editor.igMaskEditor("field").focus();
+		editor.igMaskEditor("field").trigger("focus");
 		editor.data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
 		assert.equal(editor.igMaskEditor("field").val(), "__R__", "When revertIfNotValid option is set to false the editor field should be reverted to an empty mask with prompts after entering an invalid input");
 		assert.equal(editor.igMaskEditor("value"), "", "When revertIfNotValid option is set to false the editor value should be reverted to an empty string after entering an invalid input");
@@ -568,7 +568,7 @@ QUnit.test('[ID12] Mask editor validate value against input mask', function (ass
 		assert.ok(editor.data("igMaskEditor")._validateValueAgainstMask(""), "Empty string should be a valid input against editor's mask");
 		assert.notOk(editor.data("igMaskEditor")._validateValueAgainstMask("ffdd"), "The value ffdd should be invalid against editor's mask");
 		assert.ok(editor.data("igMaskEditor")._validateRequiredPrompts(""), "Empty string should be valid against editor required prompts");
-		editor1.igMaskEditor("field").focus();
+		editor1.igMaskEditor("field").trigger("focus");
 		editor1.data("igMaskEditor")._setCursorPosition(2);
 		var evt = $.Event("keydown");
 		evt.keyCode = 50;
@@ -591,7 +591,7 @@ QUnit.test('[ID13] Mask editor trigger keydown event', function (assert) {
 		value: "VAL"
 	});
 
-	editor1.igMaskEditor("field").focus().select();
+	editor1.igMaskEditor("field").trigger("focus").trigger("select");
 	$.ig.TestUtil.keyInteraction(8, editor1.igMaskEditor("field"));
 	$.ig.TestUtil.keyInteraction(8, editor1.igMaskEditor("field"));
 	assert.equal(editor1.igMaskEditor("field").val(), "___", "Pressing BACKSPACE key should set the editor field to an empty mask with prompts");
@@ -607,7 +607,7 @@ QUnit.test('[ID13] Mask editor trigger keydown event', function (assert) {
 		value: "val"
 	});
 
-	editor2.igMaskEditor("field").focus().select();
+	editor2.igMaskEditor("field").trigger("focus").trigger("select");
 	$.ig.TestUtil.keyInteraction(46, editor2.igMaskEditor("field"));
 	$.ig.TestUtil.keyInteraction(46, editor2.igMaskEditor("field"));
 	assert.equal(editor2.igMaskEditor("field").val(), "___", "Pressing DELETE key should set the editor field to an empty mask with prompts");
@@ -622,7 +622,7 @@ QUnit.test('[ID13] Mask editor trigger keydown event', function (assert) {
 		inputMask: "###"
 	});
 
-	editor3.igMaskEditor("field").focus().select();
+	editor3.igMaskEditor("field").trigger("focus").trigger("select");
 	$.ig.TestUtil.keyInteraction(8, editor3.igMaskEditor("field"));
 	assert.equal(editor3.igMaskEditor("field").val(), "___", "Pressing BACKSPACE key should set the editor field to an empty mask with prompts");
 
@@ -765,7 +765,7 @@ QUnit.test('[ID15] Mask editor unfilled char prompts', function (assert) {
 	});
 
 	var editorInput = editor1.igMaskEditor("field");
-	editorInput.focus().select();
+	editorInput.trigger("focus").trigger("select");
 	$.ig.TestUtil.keyInteraction(48, editorInput);
 	assert.equal(editorInput.val(), "000-000-00", "The editor input field value before loosing focus should be 000-000-00");
 	editorInput.blur();
@@ -834,12 +834,12 @@ QUnit.test('[ID17] Mask editor revertIfNotValid option - digit input mask', func
 	});
 
 	var field = editor.igMaskEditor("field");
-	field.focus();
+	field.trigger("focus");
 	editor.data("igMaskEditor")._insert("1234");
 	editor.blur();
 	assert.equal(field.val(), "1234", "Editor input field value should be 1234");
 	assert.ok(isTriggered, "The valueChanged event should be triggered.");
-	field.focus();
+	field.trigger("focus");
 	editor.data("igMaskEditor")._insert("123_");
 	editor.blur();
 	assert.equal(field.val(), "1234", "Editor input field value should be reverted to 1234");
@@ -898,26 +898,26 @@ QUnit.test('[ID19] Mask editor paste and insert', function (assert) {
 	}).then(function () {
 		assert.equal(editorInput[0].selectionStart, 14, "Selection start should be 14 after paste");
 		assert.equal(editorInput.val(), "57-2a/BC(test)", "Editor text after paste should be 57-2a/BC(test)");
-		editorInput[0].select();
+		editorInput[0].trigger("select");
 		$.ig.TestUtil.keyInteraction(8, editorInput);
 		$.ig.TestUtil.paste(editorInput[0], "57-2a");
 		return $.ig.TestUtil.wait(20);
 	}).then(function () {
 		assert.equal(editorInput[0].selectionStart, 5, "Selection start should be 5 after paste");
-		editorInput[0].select();
+		editorInput[0].trigger("select");
 		assert.equal(editorInput.val(), "57-2a/__(test)", "Editor text after paste should be 57-2a/__(test)");
 		$.ig.TestUtil.paste(editorInput[0], "572a/bc");
 		return $.ig.TestUtil.wait(20);
 	}).then(function () {
 		assert.equal(editorInput[0].selectionStart, 8, "Selection start should be 8 after paste");
 		assert.equal(editorInput.val(), "57-2a/BC(test)", "Editor text after paste should be 57-2a/BC(test)");
-		editorInput[0].select();
+		editorInput[0].trigger("select");
 		$.ig.TestUtil.paste(editorInput[0], "572abc(test)");
 		return $.ig.TestUtil.wait(20);
 	}).then(function () {
 		assert.equal(editorInput[0].selectionStart, 14, "Selection start should be 14 after paste");
 		assert.equal(editorInput.val(), "57-2a/BC(test)", "Editor text after paste should be 57-2a/BC(test)");
-		editorInput[0].select();
+		editorInput[0].trigger("select");
 		$.ig.TestUtil.paste(editorInput[0], "572abc(more random string value test)");
 		return $.ig.TestUtil.wait(20);
 	}).then(function () {
@@ -943,7 +943,7 @@ QUnit.test('[ID20] Mask editor show/hide dinamically clear button', function (as
 	var field = editor.igMaskEditor("field"),
 		clearButton = editor.igMaskEditor("clearButton");
 	assert.notOk(clearButton.is(":visible"), "The clear button should not be visible initilly");
-	field.focus();
+	field.trigger("focus");
 	assert.notOk(clearButton.is(":visible"), "The clear button should not be visible on focus");
 	field.val("someVal");
 
@@ -1115,7 +1115,7 @@ QUnit.test("[ID25] Unicode characters regex check", function (assert) {
 		field = $editor.igMaskEditor("field");
 
 	function enterValue(value){
-		$editor.focus()[0].setSelectionRange(0,0);
+		$editor.trigger("focus")[0].setSelectionRange(0,0);
 		$.ig.TestUtil.type(value, field);
 	}
 	var testValues = [{
@@ -1161,13 +1161,13 @@ QUnit.test("Should properly revert to last valid value", function (assert) {
 		dataMode: "rawText"
 	});
 	var field = $editor.igMaskEditor("field");
-	$editor.focus()[0].setSelectionRange(0,0);
+	$editor.trigger("focus")[0].setSelectionRange(0,0);
 	$.ig.TestUtil.type("111111111", field);
 	$editor.blur();
-	$editor.focus()[0].setSelectionRange(12, 13);
+	$editor.trigger("focus")[0].setSelectionRange(12, 13);
 	$editor.val("(111) 111-11_");
 	$editor.blur();
-	$editor.focus()[0].setSelectionRange(12,13);
+	$editor.trigger("focus")[0].setSelectionRange(12,13);
 
 	$.ig.TestUtil.type("2222", field);
 	$editor.blur();
@@ -1184,7 +1184,7 @@ QUnit.test('Test plain values that are not containing mask values', function (as
 	});
 
 	var inp = $editor.igMaskEditor("field");
-	inp.focus();
+	inp.trigger("focus");
 	inp.val("010120181200");
 	inp.blur();
 

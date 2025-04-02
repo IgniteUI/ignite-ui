@@ -197,18 +197,18 @@ QUnit.test('[ID2] Test autocomplete functionality', function (assert) {
 		assert.strictEqual(selectedText, 'om', 'Selected text is incorrect');
 
 		// Invalid value
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("Tx", $input, 'shiftKey');
 		assert.strictEqual($input.val(), 'Tx', 'Input value is incorrect');
 
 		// Multiple entries with same starting letter(s)
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("M", $input, 'shiftKey');
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
 		assert.strictEqual($input.val(), 'Mary', 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("Mi", $input, 'shiftKey');
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -217,7 +217,7 @@ QUnit.test('[ID2] Test autocomplete functionality', function (assert) {
 		// Test right arrow
 		$.ig.TestUtil.keyInteraction(39, $input); // right arrow
 		assert.strictEqual($input.val(), 'Mike', 'Input value is incorrect');
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('M', $input);
 
 		return $.ig.TestUtil.wait(100);
@@ -260,26 +260,26 @@ QUnit.test('[ID3] Autocomplete with multiple selection', function (assert) {
 	$.ig.TestUtil.wait(100).then(function () {
 		assert.strictEqual($input.val(), 'anna', 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('a,', $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
 		assert.strictEqual($input.val(), 'a,', 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('a, ', $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
 		isValueCorrect = $input.val() === 'Anna, ' || $input.val() === 'Anna';
 		assert.ok(isValueCorrect, 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('Anna,', $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
 		assert.strictEqual($input.val(), 'Anna,', 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('Anna, B', $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -314,13 +314,13 @@ QUnit.test('[ID4] Autocomplete with case sensitivity', function (assert) {
 	$.ig.TestUtil.wait(100).then(function () {
 		assert.strictEqual($input.val(), 'b', 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('B', $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
 		assert.strictEqual($input.val(), 'Bob', 'Input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type('BO', $input, "shiftKey");
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {

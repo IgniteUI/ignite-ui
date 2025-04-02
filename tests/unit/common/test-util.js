@@ -103,7 +103,7 @@
 				var newValue = $input.val();
 				newValue = newValue.slice(0, startPos) + newVal + newValue.slice(startPos);
 				if (focus) {
-					$input.focus();
+					$input.trigger("focus");
 				}
 				$input.val(newValue);
 				$input[0].selectionStart = startPos;

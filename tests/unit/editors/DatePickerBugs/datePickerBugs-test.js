@@ -237,7 +237,7 @@ QUnit.test('Bug 220775', function (assert) {
 	assert.expect(1);
 
 	this.editor = this.appendToFixture(this.inputTag).igDatePicker();
-	this.input().click().focus();
+	this.input().click().trigger("focus");
 	this.dropDownButton().click();
 	assert.equal(this.input().val(), "__/__/____", "Opening dropdown caused the entered text to be __/__/____");
 });
@@ -522,7 +522,7 @@ QUnit.test("Issue 1733 - igDatePicker throws error, when selecting with displayM
 	todayString = this.getDDmmYYYY(value, "-").split("-").reverse().join("-");
 
 
-	$editor.igDatePicker("field").focus();
+	$editor.igDatePicker("field").trigger("focus");
 	$editor.igDatePicker("showDropDown");
 
 	$.ig.TestUtil.wait(400).then(function () {

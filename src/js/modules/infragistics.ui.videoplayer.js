@@ -4001,11 +4001,11 @@
 
 		_handleKbNavigation: function (event) {
 			if (event.keyCode === $.ui.keyCode.HOME) {
-				$(this.controlButtons[ 0 ]).focus();
+				$(this.controlButtons[ 0 ]).trigger("focus");
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (event.keyCode === $.ui.keyCode.END) {
-				$(this.controlButtons[ this.controlButtons.length - 1 ]).focus();
+				$(this.controlButtons[ this.controlButtons.length - 1 ]).trigger("focus");
 				event.stopPropagation();
 				event.preventDefault();
 			}
@@ -4892,7 +4892,7 @@
 						event.preventDefault();
 						event.stopPropagation();
 						control._transferFocusFromVolumeButtonToVolumeSlider = true;
-						$("#" + control._id("_ctrls_vs")).data("igSlider").handle.focus();
+						$("#" + control._id("_ctrls_vs")).data("igSlider").handle.trigger("focus");
 					}
 				}
 			});
@@ -4901,7 +4901,7 @@
 					if (event.keyCode === $.ui.keyCode.TAB) {
 						event.preventDefault();
 						event.stopPropagation();
-						$("#" + control._id("_ctrls_fs_btn")).focus();
+						$("#" + control._id("_ctrls_fs_btn")).trigger("focus");
 					}
 				}
 			});

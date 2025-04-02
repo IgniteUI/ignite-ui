@@ -283,7 +283,7 @@
             // already focused and the inner span is clicked
             if (!_options.expandButton.is(":focus")) {
                 if (!_options.isExpanded) {
-                    _options.expandButton.focus();
+                    _options.expandButton.trigger("focus");
                 }
                 return;
             }
@@ -503,7 +503,7 @@
                     self._triggerExpanded(e);
                 } else if (!expandButton.is(":focus")) {
                     // Focus the expandButton when called as API method
-                    expandButton.focus();
+                    expandButton.trigger("focus");
                 }
             });
         },

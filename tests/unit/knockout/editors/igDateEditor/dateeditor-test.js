@@ -233,7 +233,7 @@ QUnit.test('Test value set to non-observable value remains non-observable after 
 	// and verify the change is reflected, but the value remains nonObservable.
 	stringDate = "01/01/2009";
 	editorInput = editor.igDateEditor("field");
-	editorInput.focus().val(stringDate);
+	editorInput.trigger("focus").val(stringDate);
 	editorInput.blur();
 	assert.equal(editor.igDateEditor("value").toString(), new Date(stringDate).toString(), "Value should be changed when interact through UI");
 	assert.notOk(ko.isObservable(editor.igDateEditor("value")), "Value should be non-observable");

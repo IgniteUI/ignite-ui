@@ -116,7 +116,7 @@ QUnit.test("Events testing", function (assert) {
 	editorInput = $editor.igNumericEditor("field");
 	text = editorInput.val();
 
-	editorInput.focus();
+	editorInput.trigger("focus");
 	$editor.on("ignumericeditortextchanged", function (evt, args) {
 		assert.equal(args.text, text, "Text changed event is not fired with correct new value");
 		textChanged++;
@@ -210,7 +210,7 @@ QUnit.test("Spin buttons disabling when the min/max value is exceeded", function
 	spinUpButton = $editorInDiv.igNumericEditor("spinUpButton");
 	spinDownButton = $editorInDiv.igNumericEditor("spinDownButton");
 
-	$editorInDiv.focus();
+	$editorInDiv.trigger("focus");
 	this.util.click(spinUpButton[0]);
 	assert.ok($editorInDiv.igNumericEditor("editorContainer").data("igNotifier") && $editorInDiv.igNumericEditor("editorContainer").igNotifier("isVisible"),
 		"No warning message shown for exceeding max value on spin");
@@ -510,7 +510,7 @@ QUnit.test("Default selectionOnFocus", function (assert) {
 
 	assert.equal($editor.igNumericEditor("option", "selectionOnFocus"), "browserDefault", "The selectionOnFocus is not correct");
 	$editor.igNumericEditor("option", "value", "905");
-	input.focus();
+	input.trigger("focus");
 	input.blur();
 	assert.equal($editor.igNumericEditor("value"), "905", "The value is not correct");
 });
@@ -568,7 +568,7 @@ QUnit.test("Min/Max value", function (assert) {
 	assert.strictEqual($editor.igNumericEditor("value"), 1, "Value should be set to min");
 	assert.equal(input.val(), "1", "Text not updated with min value");
 
-	$editor.focus();
+	$editor.trigger("focus");
 	input.val("3");
 	$editor.igNumericEditor("option", "minValue", 2);
 	assert.strictEqual($editor.igNumericEditor("value"), 2, "Value not set to min while editing");
@@ -804,17 +804,17 @@ QUnit.test("Convert between Scientific and fixed-point formats (dateMode, scient
 		scientificFormat: "E+"
 	});
 
-	$editor.trigger("focus")[0].select();
+	$editor.trigger("focus")[0].trigger("select");
 	this.util.paste($editor[0], "100");
 	this.util.wait(20).then(function () {
 		assert.equal($editor.val(), "1E2", "Edit Text not as expected on scientific format value paste.");
-		$editor[0].select();
+		$editor[0].trigger("select");
 		util.paste($editor[0], "1e-22");
 		return util.wait(20);
 	}).then(function () {
 		assert.equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
 		$editor.igNumericEditor("option", "scientificFormat", "e+");
-		$editor[0].select();
+		$editor[0].trigger("select");
 		util.paste($editor[0], "23e+1");
 		return util.wait(20);
 	}).then(function () {
@@ -861,7 +861,7 @@ QUnit.test("Group and decimal Separators", function (assert) {
 	assert.equal($editor.igNumericEditor("value"), 1264.89, "Decimal value not parsed correctly with decimal ','");
 
 	// For 207448: exception is thrown when trying to spin the value (with modified decimalSeparator)
-	input.focus();
+	input.trigger("focus");
 	this.util.keyInteraction(38, input); //arrow up
 	input.blur();
 	assert.equal($editor.igNumericEditor("value"), val + $editor.igNumericEditor("option", "spinDelta"), "Decimal value is not correct after spin");
@@ -979,7 +979,7 @@ QUnit.test("Typing negative signs (multiple prevention, leading, scientific)", f
 	});
 
 	$editor.trigger("focus");
-	$editor[0].select();
+	$editor[0].trigger("select");
 	this.util.keyInteraction(45, $editor);
 	assert.equal($editor.val(), "-", "Negative sign was not allowed to repalce entire value");
 
@@ -1047,7 +1047,7 @@ QUnit.test("Typing multiple exponent chars (scientific E-notation)", function (a
 	});
 
 	$editor.trigger("focus");
-	$editor[0].select();
+	$editor[0].trigger("select");
 	this.util.keyInteraction(101, $editor, "shiftKey");
 	assert.equal($editor.val(), "1E-7", "E character should not be allowed to replace entire value");
 
@@ -1072,7 +1072,7 @@ QUnit.test("Typing multiple exponent chars (scientific E-notation)", function (a
 	});
 
 	$editor.trigger("focus");
-	$editor[0].select();
+	$editor[0].trigger("select");
 	this.util.keyInteraction(101, $editor);
 	assert.equal($editor.val(), "1e-27", "e character should not be allowed to repalce entire value");
 
@@ -1374,7 +1374,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	$editor.igNumericEditor("spinUp");
 	assert.strictEqual($editor.igNumericEditor("value"), 5, "Value not changed on spin method");
 
-	$editor.focus();
+	$editor.trigger("focus");
 	this.util.click($spinUpButton[0]);
 	this.util.click($spinDownButton[0]);
 	assert.equal($editor.igNumericEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
@@ -1443,7 +1443,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	assert.equal($editor.igNumericEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
 
 	$editor.igNumericEditor("value", 12045);
-	$editor.focus();
+	$editor.trigger("focus");
 	$editor.blur();
 	assert.equal($editor.igNumericEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
 
@@ -1459,7 +1459,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	$editor.igNumericEditor("spinDown");
 	assert.equal($editor.igNumericEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
 
-	$editor.focus();
+	$editor.trigger("focus");
 	$editor.igNumericEditor("spinDown");
 	assert.equal($editor.igNumericEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 
@@ -1888,7 +1888,7 @@ QUnit.test("Clear button dynamic show/hide", function (assert) {
 
 	assert.notOk(clearButton.is(":visible"), "The clear button should not be visible inst illy");
 
-	field.focus();
+	field.trigger("focus");
 	assert.notOk(clearButton.is(":visible"), "The clear button should not be visible on focus");
 
 	field.val("10");
@@ -2087,7 +2087,7 @@ QUnit.test("cover _handleSpinUpEvent/_handleSpinDownEvent", function (assert) {
 	//Cover switch cases for _handleSpinUpEvent/_handleSpinDownEvent 
 	//_handleSpinUpEvent test All case
 	$editor2.igNumericEditor("option", "selectionOnFocus", 0);
-	containerInput.focus();
+	containerInput.trigger("focus");
 	this.util.keyInteraction(38, containerInput); //arrow up
 	containerInput.blur();
 	assert.equal($editor2.igNumericEditor("value"), val + spinDelta, "value is not correct after spin");
@@ -2095,7 +2095,7 @@ QUnit.test("cover _handleSpinUpEvent/_handleSpinDownEvent", function (assert) {
 
 	$editor2.igNumericEditor("option", "dataMode", "int");
 	$editor2.igNumericEditor("option", "value", 10);
-	containerInput.focus();
+	containerInput.trigger("focus");
 	this.util.keyInteraction(38, containerInput); //arrow up
 	containerInput.blur();
 	assert.equal($editor2.igNumericEditor("value"), val + spinDelta, "value is not correct after spin");
@@ -2106,7 +2106,7 @@ QUnit.test("cover _handleSpinUpEvent/_handleSpinDownEvent", function (assert) {
 	value = containerInput.val();
 	val = $editor3.igNumericEditor("value");
 
-	containerInput.focus();
+	containerInput.trigger("focus");
 	$editor3.igNumericEditor("select", 1, 2);
 	this.util.keyInteraction(38, containerInput); //arrow up
 	assert.ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
@@ -2117,7 +2117,7 @@ QUnit.test("cover _handleSpinUpEvent/_handleSpinDownEvent", function (assert) {
 	spinDelta = $editor4.igNumericEditor("option", "spinDelta");
 
 	$editor4.igNumericEditor("option", "selectionOnFocus", 0);
-	containerInput.focus();
+	containerInput.trigger("focus");
 	this.util.keyInteraction(40, containerInput); //arrow down
 	containerInput.blur();
 	assert.equal($editor4.igNumericEditor("value"), val - spinDelta, "value is not correct after spin");
@@ -2125,7 +2125,7 @@ QUnit.test("cover _handleSpinUpEvent/_handleSpinDownEvent", function (assert) {
 
 	$editor4.igNumericEditor("option", "dataMode", "int");
 	$editor4.igNumericEditor("option", "value", 10);
-	containerInput.focus();
+	containerInput.trigger("focus");
 	this.util.keyInteraction(40, containerInput); //arrow down
 	containerInput.blur();
 	assert.equal($editor4.igNumericEditor("value"), val - spinDelta, "value is not correct after spin");
@@ -2137,14 +2137,14 @@ QUnit.test("cover _handleSpinUpEvent/_handleSpinDownEvent", function (assert) {
 	value = containerInput.val();
 	val = $editor5.igNumericEditor("value");
 
-	containerInput.focus();
+	containerInput.trigger("focus");
 	$editor5.igNumericEditor("select", 1, 2);
 	this.util.keyInteraction(40, containerInput); //arrow down
 	assert.ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
 
 	//test fractional case
 	$editor5.igNumericEditor("option", "value", 0.123);
-	containerInput.focus();
+	containerInput.trigger("focus");
 	$editor5.igNumericEditor("select", 3, 4);
 	this.util.keyInteraction(40, containerInput); //arrow down
 	assert.ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");

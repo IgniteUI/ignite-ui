@@ -4302,7 +4302,7 @@
 					break;
 				}
 				if (icon === "" &&
-					(arrIE[ i ].def === true || ($.isArray(arrIE[ i ].ext) && arrIE[ i ].ext.length === 0))) {
+					(arrIE[ i ].def === true || (Array.isArray(arrIE[ i ].ext) && arrIE[ i ].ext.length === 0))) {
 					/* M.H. 27 Jul 2011 - fix bug 77162 - Default icon could be those which has property def true OR ext.length is 0 */
 					icon = arrIE[ i ].css;
 				}

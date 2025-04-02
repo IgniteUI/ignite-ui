@@ -185,19 +185,19 @@ QUnit.test('[ID5] Testing display factor with default value of 100', function (a
 
 	// 207134: Entered value of 12.12 is chaged to 12.11 in the Percent Editor
 	var field = editorInput4.igPercentEditor("field");
-	field.focus();
+	field.trigger("focus");
 	field.val("12.12");
 	field.blur();
 	assert.equal(editorInput4.igPercentEditor("displayValue"), "12.12%", "Decimal percent display value changed");
 	assert.equal(editorInput4.igPercentEditor("value"), 0.1212, "Decimal percent value changed");
 
 	// 20719:  Entered value is not correct after blurring the editor
-	field.focus();
+	field.trigger("focus");
 	field.val("33.33");
 	field.blur();
 	assert.equal(editorInput4.igPercentEditor("displayValue"), "33.33%", "Decimal percent display value changed");
 	assert.equal(editorInput4.igPercentEditor("value"), 0.3333, "Decimal percent value changed");
-	field.focus();
+	field.trigger("focus");
 	field.val("15.50");
 	field.blur();
 	assert.equal(editorInput4.igPercentEditor("displayValue"), "15.50%", "Decimal percent display value changed");
@@ -240,7 +240,7 @@ QUnit.test('[ID7] Spin functionality', function (assert) {
 		maxValue: 0.6
 	});
 	editorInput7.igPercentEditor("value", 0.57);
-	editorInput7.igPercentEditor("field").focus();
+	editorInput7.igPercentEditor("field").trigger("focus");
 	editorInput7.igPercentEditor("spinDown");
 	assert.equal(editorInput7.igPercentEditor("field").val(), "56", "Edit value after spin down is not correct");
 	editorInput7.igPercentEditor("field").blur();
@@ -264,7 +264,7 @@ QUnit.test('[ID8] List items.', function (assert) {
 	});
 	var field = percentEditorListInput.igPercentEditor("field");
 
-	field.focus();
+	field.trigger("focus");
 	field.val("100");
 	field.blur();
 	$.ig.TestUtil.wait(50).then(function () {
@@ -405,7 +405,7 @@ QUnit.test('[ID9] Lists testing P2, selection-value match', function (assert) {
 	editorInput.igPercentEditor("spinUp");
 	assert.strictEqual(editorInput.igPercentEditor("value"), 0.05, "Value not changed on spin method");
 
-	editorInput.focus();
+	editorInput.trigger("focus");
 	util.click(spinUpButton);
 	util.click(spinDownButton);
 	assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
@@ -431,7 +431,7 @@ QUnit.test('[ID9] Lists testing P2, selection-value match', function (assert) {
 	});
 	assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
 	editorInput.igPercentEditor("value", 120.45);
-	editorInput.focus();
+	editorInput.trigger("focus");
 	editorInput.blur();
 	assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
 
@@ -445,7 +445,7 @@ QUnit.test('[ID9] Lists testing P2, selection-value match', function (assert) {
 	editorInput.igPercentEditor("value", 120.45);
 	editorInput.igPercentEditor("spinDown");
 	assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
-	editorInput.focus();
+	editorInput.trigger("focus");
 	editorInput.igPercentEditor("spinDown");
 	assert.equal(editorInput.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 
@@ -467,7 +467,7 @@ QUnit.test('[ID10] Percent Editor Scientific format', function (assert) {
 	});
 	var field = editorInput.igPercentEditor("field");
 
-	field.focus();
+	field.trigger("focus");
 	field.val("10");
 	field.blur();
 	$.ig.TestUtil.wait(20).then(function () {
@@ -513,7 +513,7 @@ QUnit.test('[ID12] Percent Spin up', function (assert) {
 		displayFactor: 1
 	});
 
-	editorInput.focus();
+	editorInput.trigger("focus");
 	editorInput.igPercentEditor("spinUp");
 	editorInput.blur();
 	assert.equal(editorInput.igPercentEditor("displayValue"), "0.01%", "Display value after spin up is not correct");
@@ -564,7 +564,7 @@ QUnit.test('[ID13] Paste and insert', function (assert) {
 		spinWrapAround: true
 	});
 
-	editorInput11.igPercentEditor("field").focus();
+	editorInput11.igPercentEditor("field").trigger("focus");
 	editorInput11.igPercentEditor("insert", "301");
 	var done = assert.async();
 	
@@ -756,7 +756,7 @@ QUnit.test('[ID18] Spin events with set scientificFormat', function (assert) {
 		scientificFormat: "E"
 	});
 
-	editorInput.focus();
+	editorInput.trigger("focus");
 	assert.equal(editorInput.igPercentEditor("field").val(), "0E0", "The wrong value is set in the editor in edit mode.");
 	editorInput.igPercentEditor("spinUp");
 	assert.equal(editorInput.igPercentEditor("field").val(), "1E0", "The wrong value is set in the editor in edit mode.");

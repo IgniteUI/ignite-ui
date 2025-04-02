@@ -801,7 +801,7 @@ function pressEnterKey(){
 	input().trigger($.Event('keydown', {which: 13, keyCode: 13}));
 }
 function setCursorAt(pos){
-	input()[0].focus();
+	input()[0].trigger("focus");
 	input()[0].setSelectionRange(pos, pos);
 };
 //function dropDownValues(hDelta, mDelta, start = "", end = ""){

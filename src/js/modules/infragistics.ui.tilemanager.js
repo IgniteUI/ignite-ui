@@ -1870,7 +1870,7 @@
 
             if (rightPanelTilesWidth) {
                 return rightPanelTilesWidth;
-            } else if ($.isArray(gl.columnWidth)) {
+            } else if (Array.isArray(gl.columnWidth)) {
                 return gl.columnWidth[ gl.columnWidth.length - 1 ];
             } else {
                 return gl.columnWidth;
@@ -1882,7 +1882,7 @@
 
             if (rightPanelTilesHeight) {
                 return rightPanelTilesHeight;
-            } else if ($.isArray(gl.columnHeight)) {
+            } else if (Array.isArray(gl.columnHeight)) {
                 return gl.columnHeight[ gl.columnHeight.length - 1 ];
             } else {
                 return gl.columnHeight;
@@ -1943,7 +1943,7 @@
             var gl = this._options.gridLayout,
                 minWidth, i;
 
-            if ($.isArray(gl.columnWidth)) {
+            if (Array.isArray(gl.columnWidth)) {
                 minWidth = gl.columnWidth[ 0 ];
                 for (i = 0; i < gl.columnWidth.length; i++) {
                     if (minWidth > gl.columnWidth[ i ]) {

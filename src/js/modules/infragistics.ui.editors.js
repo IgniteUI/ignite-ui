@@ -1039,9 +1039,9 @@
 		_setFocusDelay: function (delay) {
 			var self = this;
 			if (delay) {
-				this._timeouts.push(setTimeout(function () { self.field().focus(); }, delay));
+				this._timeouts.push(setTimeout(function () { self.field().trigger("focus"); }, delay));
 			} else {
-				this.field().focus();
+				this.field().trigger("focus");
 			}
 		},
 		_setFocus: function (event) {
@@ -1061,7 +1061,7 @@
 		_setBlur: function (event) { //Base Editor
 			var newValue;
 			if (this._cancelBlurOnInput) {
-				this._editorInput.focus();
+				this._editorInput.trigger("focus");
 				delete this._cancelBlurOnInput;
 			} else {
 				this._triggerBlur(event);
@@ -3559,7 +3559,7 @@
 					// Proceed with hiding
 					// D.P. 21 Jun 2016 Bug 220712: igTextEditor - typed text is reverted to previous value in case the drop down is opened
 					if (!this._editMode && !this.options.suppressKeyboard) {
-						this._editorInput.focus();
+						this._editorInput.trigger("focus");
 					}
 					if (this._editMode && this.options.suppressKeyboard) {
 						this._editorInput.blur();
@@ -3640,7 +3640,7 @@
 				range.collapse(true);
 				range.moveEnd("character", selectionEnd);
 				range.moveStart("character", selectionStart);
-				range.select();
+				range.trigger("select");
 			}
 		},
 		_positionCursor: function (startPosition, endPosition) {
@@ -3660,7 +3660,7 @@
 									currentValue.length);
 							}, 100));
 						} else {
-							this._editorInput.select();
+							this._editorInput.trigger("select");
 						}
 					}
 						break;
@@ -3718,7 +3718,7 @@
 									currentValue.length);
 								}, 100));
 							} else {
-								this._editorInput.select();
+								this._editorInput.trigger("select");
 							}
 						}
 					}
@@ -3727,7 +3727,7 @@
 						break;
 				}
 			} else {
-				this._editorInput.select();
+				this._editorInput.trigger("select");
 			}
 		},
 		_carryOverNewLine: function(value) {
@@ -3758,7 +3758,7 @@
 				if (this._editMode) {
 					this._editorInput.val(nextItem.text());
 					this._processTextChanged();
-					this._editorInput.select();
+					this._editorInput.trigger("select");
 				} else {
 					this._processValueChanging(nextItem.text());
 					this._editorInput.val(this._getDisplayValue());
@@ -5828,7 +5828,7 @@
 			} else {
 				this._spinUp();
 				if (this._focused) {
-					this._editorInput.select();
+					this._editorInput.trigger("select");
 				}
 			}
 		},
@@ -5839,7 +5839,7 @@
 			} else {
 				this._spinDown();
 				if (this._focused) {
-					this._editorInput.select();
+					this._editorInput.trigger("select");
 				}
 			}
 		},
@@ -7381,7 +7381,7 @@
 			}
 			if (result === false && this._editSelectAllStarted) {
 				this._editorInput.val(this._editorValueBeforeClear);
-				this._editorInput.select();
+				this._editorInput.trigger("select");
 				delete this._editSelectAllStarted;
 				delete this._editorValueBeforeClear;
 			}
@@ -8911,7 +8911,7 @@
 		_setBlur: function (event) { //DateEditor
 			var newValue, oldVal, convertedDate;
 			if (this._cancelBlurOnInput) {
-				this._editorInput.focus();
+				this._editorInput.trigger("focus");
 				delete this._cancelBlurOnInput;
 			} else {
 				this._triggerBlur(event);
@@ -11080,7 +11080,7 @@
 					} else {
 						self._focused = false;
 						if (!self.options.suppressKeyboard) {
-							self._editorInput.focus();
+							self._editorInput.trigger("focus");
 						}
 					}
 				},
@@ -11882,13 +11882,13 @@
 
 						// Note: Don't preventDefault (all changes in this handler will be ignored) - set value back instead:
 						self._valueInput[ 0 ].checked = internalChecked;
-						this.focus();
+						this.trigger("focus");
 					}
 					self._toggleInternal(event);
 				},
 				"mousedown.editor": function (event) {
 					/* Prevent multi-click text selection, but keep focus */
-					this.focus();
+					this.trigger("focus");
 					event.preventDefault();
 					return false;
 				},
@@ -12109,12 +12109,12 @@
 			if (delay) {
 				this._timeouts.push(setTimeout(function () {
 					self._cancelFocusTrigger = true;
-					self._editorContainer.focus();
+					self._editorContainer.trigger("focus");
 					self._setFocus();
 				}, delay));
 			} else {
 				this._cancelFocusTrigger = true;
-				this._editorContainer.focus();
+				this._editorContainer.trigger("focus");
 				this._setFocus();
 			}
 		},

@@ -112,13 +112,13 @@ QUnit.test("Initializing igPercentEditor", function (assert) {
 	editorInput.val(485).blur();
 	this.checkAllValues(485, "The value is updated on change");
 
-	$("#inputValue").focus().val(236).change();
+	$("#inputValue").trigger("focus").val(236).change();
 	this.checkAllValues(236, "Values are as expected");
 
-	$("#inputValue").focus().val(23.6).change();
+	$("#inputValue").trigger("focus").val(23.6).change();
 	this.checkAllValues(23.6, "Values are as expected");
 
-	$("#inputValue").focus().val(-26).change();
+	$("#inputValue").trigger("focus").val(-26).change();
 	this.checkAllValues(-26, "Values are as expected");
 
 	ko.cleanNode(this.qunitFixture[0]);
@@ -314,7 +314,7 @@ QUnit.test("Value set when bound to a ViewModel's non-observable field", functio
 	this.applyBindings();
 	this.model.nonObservable2 = 245;
 	assert.equal(this.model.nonObservable2, 245); // check the inital value
-	editor.focus(); // focus editor
+	editor.trigger("focus"); // focus editor
 	editor.val(255); // change the editor's value
 	editor.blur(); // lose editor's focus to allow KO to update the binding
 	assert.equal(this.model.nonObservable2, 255); // check for the new value

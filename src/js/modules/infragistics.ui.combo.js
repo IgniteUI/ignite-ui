@@ -1676,7 +1676,7 @@
 				lod = options.loadOnDemandSettings;
 
 			if (this.options.dataSource) {
-				if ($.isArray(this.options.dataSource)) {
+				if (Array.isArray(this.options.dataSource)) {
 					firstDataItem = this.options.dataSource[ 0 ];
 				} else if (this.options.dataSource &&
 					typeof this.options.dataSource._xmlToArray === "function" &&
@@ -2983,7 +2983,7 @@
 				$(input).is(":visible") && !readonly) {
 				range = input.createTextRange();
 				range.collapse(false);
-				range.select();
+				range.trigger("select");
 			}
 
 			// Reapply readonly attribute
@@ -3480,15 +3480,15 @@
 				selRange.collapse(true);
 				selRange.moveStart("character", start);
 				selRange.moveEnd("character", end);
-				selRange.select();
-				field.focus();
+				selRange.trigger("select");
+				field.trigger("focus");
 			} else if (field.setSelectionRange) {
-				field.focus();
+				field.trigger("focus");
 				field.setSelectionRange(start, end);
 			} else if (typeof field.selectionStart !== "undefined") {
 				field.selectionStart = start;
 				field.selectionEnd = end;
-				field.focus();
+				field.trigger("focus");
 			}
 		},
 		_hasInputSelection: function () {
@@ -4122,12 +4122,12 @@
 			this._options.preventItemSeparatorOnFocus = preventItemSeparatorOnFocus;
 
 			if (!$input.is(":focus")) {
-				input.focus();
+				input.trigger("focus");
 			} else {
 
 				// Trigger focus handler to reset the flags
-				// $().focus() is not recommended when input is not focused, because it triggers focus handler twice in IE
-				$input.focus();
+				// $().trigger("focus") is not recommended when input is not focused, because it triggers focus handler twice in IE
+				$input.trigger("focus");
 			}
 		},
 		_windowResize: function () {
@@ -4373,7 +4373,7 @@
 
 				// Chrome does not move the carret if input wasn't focused initially
 				// This happens when while the focus was in the input we have clicked somewhere inside the input to move the carret ourself
-				this._options.$input.focus();
+				this._options.$input.trigger("focus");
 				this._moveCaretToInputEnd(true);
 
 				// Prevent carret from being set to where user clicked

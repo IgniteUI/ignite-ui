@@ -79,7 +79,7 @@
 			return elem && src && (elem.has(src).length > 0 || elem[ 0 ] === src);
 		},
 		_notab = function (elem) {
-			return elem.attr("zIndex", -1).css("outline", 0).attr("unselectable", "on");
+			return elem.attr("zIndex", -1).css("outline", "none").attr("unselectable", "on");
 		},
 		_toPx = function (elem, css) {
 
@@ -1030,8 +1030,8 @@
 			elem0 = $("<div />");
 			this.element.contents().appendTo(elem0);
 			el = elem = this.element;
-			elem.css({ zIndex: o.zIndex || 1000, outline: 0 }).attr("tabIndex", o.tabIndex)
-				.keydown(function (e) {
+			elem.css({ zIndex: o.zIndex || 1000, outline: "none" }).attr("tabIndex", o.tabIndex)
+				.on("keydown", function (e) {
 					if (o.closeOnEscape && e.keyCode === $.ui.keyCode.ESCAPE) {
 						self.close(e);
 						e.preventDefault();
@@ -1100,10 +1100,10 @@
 					if (targ === elem[ 0 ] || (targ === min && shift) || (targ === max && !shift)) {
 						_stopEvt(e);
 						el = shift ? max : min;
-						try { el.focus(); } catch (ex) { }
+						try { el.trigger("focus"); } catch (ex) { }
 					}
 				})
-				.mousedown(function (e) { self.moveToTop(e); });
+				.on("mousedown", function (e) { self.moveToTop(e); });
 			el.addClass(css.dialog);
 			if (o.dialogClass) {
 				el.addClass(o.dialogClass);
@@ -1602,7 +1602,7 @@
 			}
 			delete self._minHW;
 			header = self._header = _notab($("<div />").addClass(css.header).css("display", "block")
-				.prependTo(self.element)).dblclick(function (e) {
+				.prependTo(self.element)).on("dblclick", function (e) {
 				var dbl = o.enableDblclick;
 				if (!dbl) {
 					return;
@@ -2032,7 +2032,7 @@
 							self._hasFocus = true;
 						}
 						elem = elem || self.element[ 0 ];
-						elem.focus();
+						elem.trigger("focus");
 					}
 				} catch (ex) {}
 			}, 100);
@@ -2621,7 +2621,7 @@
 				self._modalDiv = div = _notab($("<div />").css({
 					position: "fixed", left: 0, top: 0, bottom: 0, right: 0, zIndex: _maxZ - 1
 				})
-					.addClass(self.css.overlay).mousedown(function (e) {
+					.addClass(self.css.overlay).on("mousedown", function (e) {
 						self._setFocus();
 						_stopEvt(e);
 					})

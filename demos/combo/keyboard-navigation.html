@@ -126,7 +126,7 @@
                 $("#combo").igCombo("clearInput");
                 $("#combo").igCombo("closeDropDown");
                 $('#tooltip').tooltip('open');
-                $(".ui-igcombo-field").focus();
+                $(".ui-igcombo-field").trigger("focus");
             }
 
             function showMessage(message) {

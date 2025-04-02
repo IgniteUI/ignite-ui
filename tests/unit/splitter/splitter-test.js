@@ -572,7 +572,7 @@ QUnit.test('Test 9: igSplitter widget drag horizontal split bar test.', function
 
 	var sliptbars = $('.ui-igsplitter-splitbar-hover');
 	assert.ok(sliptbars.length === 0, 'igSplitter hover sliptbar is not missing.');
-	bar.focus();
+	bar.trigger("focus");
 	bar.simulate("drag", {
 		dy: 200,
 		checkAfterMouseDown: function (target) {
@@ -794,7 +794,7 @@ QUnit.test('Test 14: igSplitter widget keyboard navigation.', function (assert) 
 		ID: 'sKbNav'
 	};
 	this.addSplitter(options);
-	$('div[tabindex="0"]')[0].focus();
+	$('div[tabindex="0"]')[0].trigger("focus");
 	var container = $('#sKbNav'), bar = $($(container.children())[1]), sliptbars = panel1 = panel2 = null;
 	panel1 = $($(container.children())[0]);
 	panel2 = $($(container.children())[2]);

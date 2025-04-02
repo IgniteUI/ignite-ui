@@ -113,8 +113,8 @@ QUnit.test("Update model -> editor (input)", function (assert) {
 	var done = assert.async(), self = this;
 
 	$('#inputEditor1').igCurrencyEditor("setFocus");
-	$('#inputEditor1').focus().val(52);
-	$("#outerInput").focus();
+	$('#inputEditor1').trigger("focus").val(52);
+	$("#outerInput").trigger("focus");
 
 	this.util.wait(200).then(function () {
 		self.checkAllValues(52, "Values are as expected");
@@ -133,7 +133,7 @@ QUnit.test("Update model -> editor (div)", function (assert) {
 	
 	$('#divEditor1').igCurrencyEditor("setFocus");	
 	$('#divEditor1').find('input').val(15.3).change();
-	$('#outerInput').focus();
+	$('#outerInput').trigger("focus");
 	this.util.wait(200).then(function () {
 		self.checkAllValues(15.3, "Values are as expected");
 		$("#outerInput").igCurrencyEditor("setFocus");
@@ -152,7 +152,7 @@ QUnit.test("Update model -> editor (td)", function (assert) {
 
 	$('#tdEditor1').igCurrencyEditor("setFocus");
 	$('#tdEditor1').find('input').val(369).change();
-	$('#outerInput').focus();
+	$('#outerInput').trigger("focus");
 	this.util.wait(200).then(function () {
 		self.checkAllValues(369, "Values are as expected");
 		$("#outerInput").igCurrencyEditor("setFocus");
@@ -263,8 +263,8 @@ QUnit.test("updateMode -> onChange", function (assert) {
 	ko.applyBindings(this.model, document.getElementById("inputEditor1"));
 
 	$('#inputEditor1').igCurrencyEditor('setFocus');
-	$("#inputEditor1").igCurrencyEditor("field").focus().val(485);
-	$('#outerInput').focus();
+	$("#inputEditor1").igCurrencyEditor("field").trigger("focus").val(485);
+	$('#outerInput').trigger("focus");
 	this.checkAllValues(485, "The value is updated on keyUp");
 });
 		

@@ -666,12 +666,12 @@ QUnit.test('[ID4] Validator API', function (assert) {
 		date: true
 	});
 	rangeDateEditor.igValidator("option", "valueRange", [value]);
-	rangeDateEditor.focus();
+	rangeDateEditor.trigger("focus");
 	rangeDateEditor.val(value.getFullYear() - 1).blur();
 	assert.equal(rangeDateEditor.igValidator("getErrorMessages")[0], $.ig.Validator.locale.minValueMessage.replace("{0}", value.toLocaleString()), "Wrong date min value message should be displayed");
 
 	rangeDateEditor.igValidator("option", "valueRange", [null, value]);
-	rangeDateEditor.focus();
+	rangeDateEditor.trigger("focus");
 	rangeDateEditor.val(value.getFullYear() + 1).blur();
 	assert.equal(rangeDateEditor.igValidator("getErrorMessages")[0], $.ig.Validator.locale.maxValueMessage.replace("{0}", value.toLocaleString()), "Wrong date max value message should be displayed");
 
@@ -878,7 +878,7 @@ QUnit.test('[ID5] Validation targets/types', function (assert) {
 		message: "Value shouldn't be valid over the threshold"
 	};
 
-	validatorInput.focus();
+	validatorInput.trigger("focus");
 	$.ig.TestUtil.keyInteraction(65, validatorInput);
 	$.ig.TestUtil.keyInteraction(66, validatorInput);
 	$.ig.TestUtil.keyInteraction(67, validatorInput);
@@ -1164,7 +1164,7 @@ QUnit.test('[ID7] Execute all rules', function (assert) {
 			assert.equal(diff.length, 0, "Failed rules event args should match the expected ones, diff: " + diff);
 		}
 	});
-	field.focus();
+	field.trigger("focus");
 	$.ig.TestUtil.keyInteraction(65, field);
 
 	check.message = "Must contain at least one number";
@@ -1183,7 +1183,7 @@ QUnit.test('[ID7] Execute all rules', function (assert) {
 			return false;
 		}
 	});
-	field1.focus();
+	field1.trigger("focus");
 	$.ig.TestUtil.keyInteraction(65, field1);
 	check.errorMessages = ["Entry should be at least 2 character(s) long", "Must contain at least one number", "This field needs attention"];
 	messages = getNotifierMessages(field1);
@@ -1257,7 +1257,7 @@ QUnit.test('[ID8] #1102 Setting valueRange min/max to null causes exceptions', f
 	field.igValidator({
 		valueRange: { min: 10, max: null }
 	});
-	field.focus();
+	field.trigger("focus");
 	field.val(5);
 	field.blur();
 	assert.notOk(field.igValidator("isValid"), "Value below min should not be valid");
@@ -1268,7 +1268,7 @@ QUnit.test('[ID8] #1102 Setting valueRange min/max to null causes exceptions', f
 	field1.igValidator({
 		valueRange: { min: null, max: 50 }
 	});
-	field1.focus();
+	field1.trigger("focus");
 	field1.val(-44);
 	field1.blur();
 	assert.ok(field.igValidator("isValid"), "Value below max should be valid");
@@ -1373,7 +1373,7 @@ QUnit.test('[ID9] igControls integration', function (assert) {
 		}
 	});
 
-	textbox.igTextEditor("field").focus();
+	textbox.igTextEditor("field").trigger("focus");
 	$.ig.TestUtil.keyInteraction(51, textbox.igTextEditor("field"), null, true); // enter 3
 	value = "";
 	valid = false;
@@ -1387,7 +1387,7 @@ QUnit.test('[ID9] igControls integration', function (assert) {
 		// Bug 209772: validation onchange does not work correctly when in edit mode
 		assert.strictEqual(ui.value, 3, "Spin editor event args value on validating");
 	});
-	spinEditor.igNumericEditor("field").focus();
+	spinEditor.igNumericEditor("field").trigger("focus");
 	$.ig.TestUtil.keyInteraction(51, spinEditor.igNumericEditor("field"), null, true); // enter 3
 
 	spinEditor.one("igvalidatorvalidated", function (evt, ui) {

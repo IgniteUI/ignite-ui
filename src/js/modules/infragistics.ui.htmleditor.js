@@ -1781,7 +1781,7 @@
         //    }
         //},
         _execCommand: function (name, args) {
-            this._selectionWrapperSaved.focus();
+            this._selectionWrapperSaved.trigger("focus");
 
             // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
             // R.K. 14th September 2017 #1188: Text in html editor is not styled in corresponding font-color
@@ -1884,7 +1884,7 @@
                 var target = $(e.target);
 
                 if (target.is("html")) {
-                    self.workspace.contentWindow.document.body.focus();
+                    self.workspace.contentWindow.document.body.trigger("focus");
                 }
                 self._isDirty = true;
                 self._hideDialogs();
@@ -1989,7 +1989,7 @@
                         language: this.options.language,
                         locale: this.options.locale,
                         applyform: function (e, ui) {
-                            self._selectionWrapperSaved.focus();
+                            self._selectionWrapperSaved.trigger("focus");
                             self._selectionWrapperSaved.replaceNode(ui.image);
                         }
                     });
@@ -2025,7 +2025,7 @@
                         language: this.options.language,
                         locale: this.options.locale,
                         applyform: function (e, ui) {
-                            self._selectionWrapperSaved.focus();
+                            self._selectionWrapperSaved.trigger("focus");
                             self._selectionWrapperSaved.replaceNode(ui.anchor);
                         }
                     });
@@ -2179,7 +2179,7 @@
                 .igPathFinder({
                     click: function (e, ui) {
                         var selectionWrapper = self._selectionWrapperSaved;
-                        self.workspace.contentWindow.document.body.focus();
+                        self.workspace.contentWindow.document.body.trigger("focus");
                         if (self._domPathToolbar.igPathFinder("option", "disabled")) {
                             return;
                         }
@@ -2379,8 +2379,8 @@
 
             // D.A. 25th November 2013, Bug #158403 ExecuteAction method ignores the current selection.
             // The select() call resets the selection.
-            //this._selectionWrapperSaved.focus();
-            //this._selectionWrapperSaved.select();
+            //this._selectionWrapperSaved.trigger("focus");
+            //this._selectionWrapperSaved.trigger("select");
             this._selectionWrapperSaved.execCommand(actionName.toLowerCase(), args);
             this._onSelectionChange();
         },
@@ -2761,7 +2761,7 @@
                 }
             });
             this.element.on("igpopovershown", function () {
-                self.poContent.find("#" + self._id("_linkHref")).focus();
+                self.poContent.find("#" + self._id("_linkHref")).trigger("focus");
             });
         },
         _createForm: function () {
@@ -3472,7 +3472,7 @@
                 if (focusTarget.length > 0) {
                     this._range.setStart(focusTarget[ 0 ], 0);
                     this._range.setEnd(focusTarget[ 0 ], 0);
-                    this._document.body.focus();
+                    this._document.body.trigger("focus");
                 }
             } else {
 
@@ -3498,7 +3498,7 @@
 
                     // Return the focus to the body
                     // FireFox needs focus to execude commands such as fontName
-                    this._document.body.focus();
+                    this._document.body.trigger("focus");
                 }
             }
         }

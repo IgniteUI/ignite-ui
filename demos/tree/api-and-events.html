@@ -134,7 +134,7 @@
             function focusOnMobile() {
             	setTimeout(function () {
             		if ($(window).width() < 600) {
-            			$(".api-viewer").focus();
+            			$(".api-viewer").trigger("focus");
             		}
             	}, 0);
             }

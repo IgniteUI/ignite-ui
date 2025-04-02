@@ -789,7 +789,7 @@
 				$(t).data("onFocus", false);
 			} else {
 				this._openPopover($(t));
-				$(t).focus();
+				$(t).trigger("focus");
 				$(t).data("onFocus", true);
 			}
 		},
@@ -804,7 +804,7 @@
 						$(t).data("onFocus", false);
 					}
 				}/* else {
-					$(t).focus();
+					$(t).trigger("focus");
 				}*/
 			}, 10);
 		},
@@ -1178,7 +1178,7 @@
 		},
 		_normalizePriority: function (priority) {
 			var dp = [ "bottom", "top", "right", "left" ], np = [], i;
-			if (!$.isArray(priority)) {
+			if (!Array.isArray(priority)) {
 				return dp;
 			}
 			for (i = 0; i < priority.length; i++) {

@@ -176,7 +176,7 @@ $.extend( $.simulate.prototype, {
 		}
 
 		element.on( "focus", trigger );
-		element[ 0 ].focus();
+		element[ 0 ].trigger("focus");
 
 		if ( !triggered ) {
 			focusinEvent = $.Event( "focusin" );
@@ -203,7 +203,7 @@ $.extend( $.simulate.prototype, {
 		setTimeout(function() {
 			// IE won't let the blur occur if the window is inactive
 			if ( element[ 0 ].ownerDocument.activeElement === element[ 0 ] ) {
-				element[ 0 ].ownerDocument.body.focus();
+				element[ 0 ].ownerDocument.body.trigger("focus");
 			}
 
 			// Firefox won't trigger events if the window is inactive
