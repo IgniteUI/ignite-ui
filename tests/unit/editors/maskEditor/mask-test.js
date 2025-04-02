@@ -911,7 +911,7 @@ QUnit.test('[ID19] Mask editor paste and insert', function (assert) {
 	}).then(function () {
 		assert.equal(editorInput[0].selectionStart, 8, "Selection start should be 8 after paste");
 		assert.equal(editorInput.val(), "57-2a/BC(test)", "Editor text after paste should be 57-2a/BC(test)");
-		editorInput[0].trigger("select");
+		editorInput[0].select();
 		$.ig.TestUtil.paste(editorInput[0], "572abc(test)");
 		return $.ig.TestUtil.wait(20);
 	}).then(function () {

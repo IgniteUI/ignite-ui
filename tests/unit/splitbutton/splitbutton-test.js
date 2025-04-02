@@ -257,7 +257,7 @@ QUnit.test('[ID8] igSplitButton focus, click and blur events', function (assert)
 
 	this.attachSplitBtnEvents();
 	var arrowSelectorElement = this.$sButton.find(this.arrowSelector).get(0);
-	arrowSelectorElement.trigger("focus");
+	arrowSelectorElement.focus();
 	this.$sButton.find(this.arrowSelector).click();
 	arrowSelectorElement.blur();
 
@@ -280,7 +280,7 @@ QUnit.test('[ID9] igSplitButton double click events', function (assert) {
 	this.$sButton
 		.find(this.arrowSelector)
 		.get(0)
-		.trigger("focus");
+		.focus();
 
 	this.$sButton
 		.find(this.arrowSelector)
