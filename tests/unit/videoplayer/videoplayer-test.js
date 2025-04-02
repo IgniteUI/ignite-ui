@@ -804,7 +804,7 @@ QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', 
 		ev = jQuery.Event('keydown');
 		ev.keyCode = $.ui.keyCode.END;
 
-	slider.focus();
+	slider.trigger("focus");
 	slider.trigger(ev);
 
 	setTimeout(function(){
@@ -829,12 +829,12 @@ QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', 
 			ev = jQuery.Event('keydown');
 			ev.keyCode = $.ui.keyCode.SPACE;
 
-			$("#player13_ctrls_play").focus();
+			$("#player13_ctrls_play").trigger("focus");
 			$("#player13_ctrls_play").trigger(ev);
 
 			checkElementClass($("#player13_ctrls_play_lbl"), 'ui-icon-pause', assert);
 
-			$("#player13_ctrls_fs_btn_lbl").focus();
+			$("#player13_ctrls_fs_btn_lbl").trigger("focus");
 			$("#player13_ctrls_fs_btn_lbl").trigger('click');
 
 
@@ -860,7 +860,7 @@ QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', 
 				$("#player13_banner_grid0").trigger('click');
 				window.open = windowOpen;
 
-				$("#player13_ctrls_vc_btn").focus();
+				$("#player13_ctrls_vc_btn").trigger("focus");
 
 				ev = jQuery.Event('keydown');
 				ev.keyCode = $.ui.keyCode.TAB;
@@ -878,7 +878,7 @@ QUnit.test('igVideoPlayer keyboard navigation between control buttons test 25', 
 
 					// assert.ok(vsPosNew > vsPos);
 
-					// vs.focus();
+					// vs.trigger("focus");
 					// ev = jQuery.Event('keydown');
 					// ev.keyCode = $.ui.keyCode.TAB;
 					// vs.trigger(ev);

@@ -398,7 +398,7 @@ QUnit.test('[ID8] When fitering is remote and multiSelection is enabled input va
 
 	$combo.data().igCombo._options.$dropDownListCont.outerHeight(1000);
 	$input = $combo.igCombo("textInput");
-	$input.focus();
+	$input.trigger("focus");
 	$.ig.TestUtil.type("v,", $input);
 	$dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
 

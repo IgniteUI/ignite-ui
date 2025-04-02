@@ -117,7 +117,7 @@ QUnit.test("Initializing igMaskEditor", function (assert) {
 	editorInput = $("#inputEditor1").igMaskEditor("field").val("9f2s").blur();
 	this.checkAllValues("9f2s", "The value is updated on change");
 
-	$("#inputValue").focus().val("9f2s").change();
+	$("#inputValue").trigger("focus").val("9f2s").change();
 	this.checkAllValues("9f2s", "Values are as expected");
 });
 

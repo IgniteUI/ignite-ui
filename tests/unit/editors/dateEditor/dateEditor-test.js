@@ -197,7 +197,7 @@ QUnit.test('Set dateDisplayFormat', function (assert) {
 	$editor.trigger("blur");
 	assert.equal($editor.val(), "8/30/2017 3:45 PM", "Runtime dateTime display format not applied");
 
-	$editor.focus();
+	$editor.trigger("focus");
 	$editor.igDateEditor("option", "dateDisplayFormat", "dateLong");
 	assert.equal($editor.val(), "08/30/2017", "Edit text should not change when seeting display format");
 
@@ -215,7 +215,7 @@ QUnit.test('Set dateDisplayFormat', function (assert) {
 	$editor.igDateEditor("option", "dateDisplayFormat", "dd MMM yy h:mm:ss tt");
 	assert.equal($editor.val(), "13 Apr 17 10:12:43 AM", "Runtime dateDisplayFormat display format not applied");
 
-	$editor.focus();
+	$editor.trigger("focus");
 	assert.equal($editor.val(), "10:12:43 AM", "Edit text not correct");
 
 	$editor.igDateEditor("option", "dateDisplayFormat", "time");
@@ -273,7 +273,7 @@ QUnit.test('Testing date format with milliseconds ', function (assert) {
 		done = assert.async(),
 		util = this.util;
 
-	$dtEditor.focus();
+	$dtEditor.trigger("focus");
 
 	this.util.wait(100).then(function () {
 		util.type("30,10,2016 10:25:56 12 PM", $dtEditor.igDateEditor("field"));
@@ -283,7 +283,7 @@ QUnit.test('Testing date format with milliseconds ', function (assert) {
 		assert.equal(currValue.getTime(), testValue.getTime(), 'Value is not as expected');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 10:25:56 12 PM", 'Display text is not as expected');
 
-		$dtEditor.focus();
+		$dtEditor.trigger("focus");
 
 		return util.wait(100);
 	}).then(function () {
@@ -315,7 +315,7 @@ QUnit.test("The same as the previous, but format of the editor is with 'fff' ins
 		done = assert.async(),
 		util = this.util;
 
-	$dtEditor.focus();
+	$dtEditor.trigger("focus");
 	this.util.wait(100).then(function () {
 		util.type("30,10,2016 10:25:56 12", $dtEditor.igDateEditor("field"));
 		$dtEditor.trigger("blur");
@@ -323,7 +323,7 @@ QUnit.test("The same as the previous, but format of the editor is with 'fff' ins
 		assert.equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 9, 30, 10, 25, 56, 120).getTime(), 'The initial value is not as expected1');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 10:25:56 120 AM", 'The initial value is not as expected2');
 
-		$dtEditor.focus();
+		$dtEditor.trigger("focus");
 		return util.wait(100);
 	}).then(function () {
 		util.paste($dtEditor.igDateEditor("field")[0], "30,10,2016 10:25:56 112 PM");
@@ -642,7 +642,7 @@ QUnit.test("isValid in edit mode", function (assert) {
 		dateInputFormat: "yyyy/MM/dd"
 	});
 
-	$dtEditor.igDateEditor("field").focus();
+	$dtEditor.igDateEditor("field").trigger("focus");
 	$dtEditor.data("igDateEditor")._enterEditMode();
 	assert.notOk($dtEditor.igDateEditor("isValid"), "Not all required fields are filled");
 
@@ -1731,7 +1731,7 @@ QUnit.test('Test backspace/delete while editing', function (assert) {
 		done = assert.async(),
 		util = this.util;
 
-	$field.focus();
+	$field.trigger("focus");
 
 	this.util.wait(100).then(function () {
 		util.keyDownChar(8, $field);
@@ -4398,7 +4398,7 @@ QUnit.test('Test invalid composition value', function (assert) {
 		util = this.util,
 		composition, compositionupdate, compositionend;
 
-	$field.focus();
+	$field.trigger("focus");
 	$field[0].setSelectionRange(0, 5);
 	composition = jQuery.Event("compositionstart");
 	$field.trigger(composition);
@@ -4530,7 +4530,7 @@ QUnit.test('Runtime changes for local and regional options', function (assert) {
 	$dtEditor.igDateEditor("option", "regional", "ja");
 	assert.equal($dtEditor.val(), "13 4月 17 10:12:43 午前", "Runtime display format not applied after region change");
 
-	$dtEditor.focus();
+	$dtEditor.trigger("focus");
 	assert.equal($dtEditor.val(), "2017/04/13 10:12", "Edit text not correct");
 
 	$dtEditor.igDateEditor("option", "dateDisplayFormat", "dateLong");
@@ -4548,7 +4548,7 @@ QUnit.test('Test plain values that are not containing mask values', function (as
 	});
 
 	var inp = $dtEditor.igDateEditor("field");
-	inp.focus();
+	inp.trigger("focus");
 	inp.val("010120180000");
 	inp.blur();
 

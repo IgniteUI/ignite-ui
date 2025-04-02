@@ -438,7 +438,7 @@
 					padding: "0px",
 					zIndex: -1,
 					border: "0px",
-					outline: 0
+					outline: "none"
 				};
 				me._foc = $("<input type=\"button\"/>").css(v).appendTo(cont).focus(function (evt) {
 					if (o.disabled || me._fcs) {
@@ -472,7 +472,7 @@
 					if (me._validator) {
 					    me._validator._validateInternal(me.element, e, true);
 					}
-				}).keydown(function (evt) {
+				}).on("keydown", function (evt) {
 					var old,
 					arrow = 0,
 					k = evt.keyCode,

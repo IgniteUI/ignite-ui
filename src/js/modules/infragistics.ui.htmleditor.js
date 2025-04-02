@@ -2379,8 +2379,8 @@
 
             // D.A. 25th November 2013, Bug #158403 ExecuteAction method ignores the current selection.
             // The select() call resets the selection.
-            //this._selectionWrapperSaved.focus();
-            //this._selectionWrapperSaved.select();
+            //this._selectionWrapperSaved.trigger("focus");
+            //this._selectionWrapperSaved.trigger("select");
             this._selectionWrapperSaved.execCommand(actionName.toLowerCase(), args);
             this._onSelectionChange();
         },
@@ -2761,7 +2761,7 @@
                 }
             });
             this.element.on("igpopovershown", function () {
-                self.poContent.find("#" + self._id("_linkHref")).focus();
+                self.poContent.find("#" + self._id("_linkHref")).trigger("focus");
             });
         },
         _createForm: function () {

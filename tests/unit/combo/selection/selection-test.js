@@ -813,7 +813,7 @@ QUnit.test('[ID9] Single selection typing in input', function (assert) {
 		assert.strictEqual($hiddenInput.val(), "Hana", 'Hidden input value is incorrect');
 
 		// 2. Type 'hn'
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("hn", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -836,7 +836,7 @@ QUnit.test('[ID9] Single selection typing in input', function (assert) {
 		assert.strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
 
 		// 3. Type 'm'
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("m", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -905,7 +905,7 @@ QUnit.test('[ID10] Multi selection typing in input', function (assert) {
 		assert.strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
 
 		// 2. Type 'a, '
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("a, ", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -922,7 +922,7 @@ QUnit.test('[ID10] Multi selection typing in input', function (assert) {
 		assert.ok($items.eq(6).hasClass('ui-state-active'), 'Item should be selected');
 
 		// 3. Type 'Anna, h'
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("Anna, h", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -1009,7 +1009,7 @@ QUnit.test('[ID11] Single selection typing in input autoSelectFirstMatch false',
 		assert.strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
 
 		// 2. Type 'hana'
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("hana", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -1032,7 +1032,7 @@ QUnit.test('[ID11] Single selection typing in input autoSelectFirstMatch false',
 		assert.strictEqual($hiddenInput.val(), "Hana", 'Hidden input value is incorrect');
 
 		// 3. Type 'm'
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("m", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -1095,7 +1095,7 @@ QUnit.test('[ID12] Multi selection typing in input autoSelectFirstMatch false', 
 		assert.strictEqual($input.val(), "a", 'Input value is incorrect');
 		assert.strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
 		
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("anna", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -1104,7 +1104,7 @@ QUnit.test('[ID12] Multi selection typing in input autoSelectFirstMatch false', 
 		assert.strictEqual($input.val(), "anna", 'Input value is incorrect');
 		assert.strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
 
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("anna, ", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -1117,7 +1117,7 @@ QUnit.test('[ID12] Multi selection typing in input autoSelectFirstMatch false', 
 		assert.notOk($items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
 		assert.ok($items.eq(6).hasClass('ui-state-active'), 'Item should be selected');
 		
-		$input.focus().select();
+		$input.trigger("focus").trigger("select");
 		$.ig.TestUtil.type("Anna, h", $input);
 		return $.ig.TestUtil.wait(100);
 	}).then(function () {
@@ -1383,7 +1383,7 @@ QUnit.test('[ID19] Keypress empty selection dropdown combo', function (assert) {
 
 	$input = $combo.data().igCombo._options.$input;
 
-	$input.focus();
+	$input.trigger("focus");
 	$.ig.TestUtil.keyInteraction(106, $input);
 	assert.equal($combo.igCombo('selectedItems')[0].data.Name, 'John Smith', 'Selected item matches');
 	$.ig.TestUtil.keyInteraction(106, $input);
@@ -1409,7 +1409,7 @@ QUnit.test('[ID20] When selection is single and press enter the list should be c
 
 	$listItems = $combo.igCombo("dropDown").find('.ui-igcombo-listitem');
 	$input = $combo.igCombo("textInput");
-	$input.focus();
+	$input.trigger("focus");
 	$.ig.TestUtil.keyInteraction(40, $input);
 	$.ig.TestUtil.keyInteraction(40, $input);
 	$.ig.TestUtil.keyInteraction(13, $input);
@@ -1454,7 +1454,7 @@ QUnit.test('[ID21] The editor text changes even if selectionChanging event is ca
 	$input = $combo.igCombo("textInput");
 	$listItems = $combo.igCombo("dropDown").find(".ui-igcombo-listitem");
 
-	$input.focus();
+	$input.trigger("focus");
 	$.ig.TestUtil.type('w', $input); // 'w' key
 
 	$combo.igCombo("refreshValue");

@@ -120,7 +120,7 @@ QUnit.test("Initializing igTextEditor", function (assert) {
 	editorInput.val("E6X").blur();
 	this.checkAllValues("E6X", "The value is updated on change");
 
-	$("#inputValue").focus().val("New Pesho").change();
+	$("#inputValue").trigger("focus").val("New Pesho").change();
 	this.checkAllValues("New Pesho", "Values are as expected");
 
 	

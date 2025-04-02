@@ -496,7 +496,7 @@
 
 			handle.addClass("ui-state-active");
 			if (!$.ig.util.isOpera) {
-				handle.focus();
+				handle.trigger("focus");
 			}
 
 			offset = handle.offset();

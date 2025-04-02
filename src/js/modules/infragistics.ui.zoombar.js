@@ -1611,12 +1611,12 @@
 			}
 		},
 		_copyRelevantOpts: function (opts) {
-			var ref = $.isArray(opts) ? [] : {}, type, self = this, props = false, cval;
+			var ref = Array.isArray(opts) ? [] : {}, type, self = this, props = false, cval;
 			$.each(opts, function (key, val) {
 				if (val === null) {
 					return true;
 				}
-				if ($.isArray(ref)) {
+				if (Array.isArray(ref)) {
 					if (typeof val !== "object") {
 						cval = val;
 					} else {
@@ -1687,7 +1687,7 @@
 						default:
 							if (val !== null) {
 								type = typeof val;
-								if (type === "object" || $.isArray(val)) {
+								if (type === "object" || Array.isArray(val)) {
 									cval = self._copyRelevantOpts(val);
 									if (cval !== null) {
 										props = true;

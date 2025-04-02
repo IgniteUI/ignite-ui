@@ -230,7 +230,7 @@
                 return;
             }
 
-            this.element.mousedown();
+            this.element.trigger("mousedown");
         },
         _triggerActivating: function (event) {
             var args = {

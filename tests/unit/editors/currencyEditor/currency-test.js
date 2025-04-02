@@ -319,7 +319,7 @@ QUnit.test("Lists testing, selection-value match", function (assert) {
 	$currencyEditor.igCurrencyEditor("spinUp");
 	assert.strictEqual($currencyEditor.igCurrencyEditor("value"), 5, "Value not changed on spin method");
 
-	$currencyEditor.focus();
+	$currencyEditor.trigger("focus");
 	this.util.click($spinUpButton);
 	this.util.click($spinDownButton);
 	assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
@@ -349,7 +349,7 @@ QUnit.test("Lists testing, selection-value match", function (assert) {
 	assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
 
 	$currencyEditor.igCurrencyEditor("value", 12045);
-	$currencyEditor.focus();
+	$currencyEditor.trigger("focus");
 	$currencyEditor.blur();
 	assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
 
@@ -365,7 +365,7 @@ QUnit.test("Lists testing, selection-value match", function (assert) {
 	$currencyEditor.igCurrencyEditor("spinDown");
 	assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
 
-	$currencyEditor.focus();
+	$currencyEditor.trigger("focus");
 	$currencyEditor.igCurrencyEditor("spinDown");
 	assert.equal($currencyEditor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 });

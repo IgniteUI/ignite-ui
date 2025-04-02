@@ -1214,7 +1214,7 @@ QUnit.test('[ID31] Combo remove separators', function (assert) {
 		assert.equal($combo.igCombo("text"), "John, ", "Text in input is correct");
 		$input.blur();
 		assert.equal($combo.igCombo("text"), "John", "Text in input is correct");
-		$input.focus();
+		$input.trigger("focus");
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
@@ -1244,7 +1244,7 @@ QUnit.test('[ID32] Combo add separators', function (assert) {
 	$combo.igCombo("select", $combo.igCombo("items")[0].element);
 	$input = $combo.igCombo("textInput");
 	assert.equal($combo.igCombo("text"), "John", "Text in input is correct");
-	$input.focus();
+	$input.trigger("focus");
 	$input.click();
 
 	$.ig.TestUtil.wait(3000).then(function () {

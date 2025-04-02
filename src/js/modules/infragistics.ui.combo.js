@@ -1676,7 +1676,7 @@
 				lod = options.loadOnDemandSettings;
 
 			if (this.options.dataSource) {
-				if ($.isArray(this.options.dataSource)) {
+				if (Array.isArray(this.options.dataSource)) {
 					firstDataItem = this.options.dataSource[ 0 ];
 				} else if (this.options.dataSource &&
 					typeof this.options.dataSource._xmlToArray === "function" &&
@@ -2983,7 +2983,7 @@
 				$(input).is(":visible") && !readonly) {
 				range = input.createTextRange();
 				range.collapse(false);
-				range.select();
+				range.trigger("select");
 			}
 
 			// Reapply readonly attribute
@@ -3480,7 +3480,7 @@
 				selRange.collapse(true);
 				selRange.moveStart("character", start);
 				selRange.moveEnd("character", end);
-				selRange.select();
+				selRange.trigger("select");
 				field.focus();
 			} else if (field.setSelectionRange) {
 				field.focus();
@@ -4126,8 +4126,8 @@
 			} else {
 
 				// Trigger focus handler to reset the flags
-				// $().focus() is not recommended when input is not focused, because it triggers focus handler twice in IE
-				$input.focus();
+				// $().trigger("focus") is not recommended when input is not focused, because it triggers focus handler twice in IE
+				$input.trigger("focus");
 			}
 		},
 		_windowResize: function () {

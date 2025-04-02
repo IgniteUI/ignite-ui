@@ -101,13 +101,13 @@
             			viewModel.SetSelected(parentNode.data);
             			setTimeout(function () {
             				if ($(window).width() < 600) {
-            					$("#productEditorsContainer").focus();
+            					$("#productEditorsContainer").trigger("focus");
             				}
             			}, 0);
             		} else {
             			setTimeout(function () {
             				if ($(window).width() < 600) {
-            					$("#categoryEditorsContainer").focus();
+            					$("#categoryEditorsContainer").trigger("focus");
             				}
             			}, 0);
             		}

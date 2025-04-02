@@ -2518,7 +2518,7 @@
 
 				// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
 				this.element.on("mousedown", "a", function () {
-					$(this).focus();
+					$(this).trigger("focus");
 				});
 			} else {
 				element.draggable(dragOptions);
@@ -2587,7 +2587,7 @@
 				if (noCancel) {
 					self.select(target.parent(), event);
 					if ($.ig.util.isWebKit) {
-						target.focus();
+						target.trigger("focus");
 					}
 				} else {
 					event.preventDefault();
@@ -2900,13 +2900,13 @@
 					// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 					// calling focus so I'm calling it manually
 					li.children("a").blur();
-					nextLi.children("a").focus();
+					nextLi.children("a").trigger("focus");
 				} else {
 
 					// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 					// calling focus so I'm calling it manually
 					li.children("a").blur();
-					nextLi.children("a").focus();
+					nextLi.children("a").trigger("focus");
 					this.select(nextLi, null);
 				}
 				event.preventDefault();
@@ -2921,13 +2921,13 @@
 					// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 					// calling focus so I'm calling it manually
 					li.children("a").blur();
-					nextLi.children("a").focus();
+					nextLi.children("a").trigger("focus");
 				} else {
 
 					// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 					// calling focus so I'm calling it manually
 					li.children("a").blur();
-					nextLi.children("a").focus();
+					nextLi.children("a").trigger("focus");
 					this.select(nextLi, null);
 				}
 				event.preventDefault();
@@ -2944,13 +2944,13 @@
 								// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 								// calling focus so I'm calling it manually
 								li.children("a").blur();
-								nextLi.children("a").focus();
+								nextLi.children("a").trigger("focus");
 							} else {
 
 								// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 								// calling focus so I'm calling it manually
 								li.children("a").blur();
-								nextLi.children("a").focus();
+								nextLi.children("a").trigger("focus");
 								this.select(nextLi, null);
 							}
 						}
@@ -2967,13 +2967,13 @@
 						// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 						// calling focus so I'm calling it manually
 						li.children("a").blur();
-						nextLi.children("a").focus();
+						nextLi.children("a").trigger("focus");
 					} else {
 
 						// K.D. December 14th, 2011 Bug #85068 jQuery 1.4.4 does not trigger blur when
 						// calling focus so I'm calling it manually
 						li.children("a").blur();
-						nextLi.children("a").focus();
+						nextLi.children("a").trigger("focus");
 						this.select(nextLi, null);
 					}
 				}
@@ -3004,7 +3004,7 @@
 				li.children("a").blur();
 				li = this.element.find("li:first");
 				if (li.length > 0) {
-					li.children("a").focus();
+					li.children("a").trigger("focus");
 					this.select(li);
 				}
 				event.preventDefault();
@@ -3015,7 +3015,7 @@
 				li.children("a").blur();
 				li = this._lastVisibleNode();
 				if (li) {
-					li.children("a").focus();
+					li.children("a").trigger("focus");
 					this.select(li);
 				}
 				event.preventDefault();
@@ -3704,7 +3704,7 @@
 						this._selectedNode[ 0 ] = this.nodeFromElement(element);
 					}
 					if (isFocused) {
-						element.children("a").focus();
+						element.children("a").trigger("focus");
 					}
 				}
 				break;
@@ -4475,7 +4475,7 @@
 			binding = this._retrieveCurrentDepthBinding(depth);
 			if (this.options.checkboxMode.toLowerCase() === "tristate") {
 				if (this.isChecked(parent)) {
-					this._populateCheckedStates($.isArray(node) ? node : [ node ], binding, "on");
+					this._populateCheckedStates(Array.isArray(node) ? node : [ node ], binding, "on");
 				}
 			}
 

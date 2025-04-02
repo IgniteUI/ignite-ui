@@ -58,7 +58,7 @@ QUnit.module("igTileManager unit tests", {
 	getTileManagerTileWidth: function (col, colSpan, colWidth, marginLeft) {
 		var baseWidth = 0, width, i;
 
-		if ($.isArray(colWidth)) {
+		if (Array.isArray(colWidth)) {
 			for (i = col; i < col + colSpan; i++) {
 				baseWidth = baseWidth + colWidth[i];
 			}
@@ -72,7 +72,7 @@ QUnit.module("igTileManager unit tests", {
 	getTileManagerTileHeight: function (row, rowSpan, colHeight, marginTop) {
 		var baseHeight = 0, height, i;
 
-		if ($.isArray(colHeight)) {
+		if (Array.isArray(colHeight)) {
 			for (i = row; i < row + rowSpan; i++) {
 				baseHeight += colHeight[i];
 			}
@@ -87,7 +87,7 @@ QUnit.module("igTileManager unit tests", {
 		var baseLeft = 0, i;
 
 		if (col > 0) {
-			if ($.isArray(colWidth)) {
+			if (Array.isArray(colWidth)) {
 				for (i = 0; i < col; i++) {
 					baseLeft += colWidth[i];
 				}
@@ -103,7 +103,7 @@ QUnit.module("igTileManager unit tests", {
 		var baseTop = 0, top, i;
 
 		if (row > 0) {
-			if ($.isArray(colHeight)) {
+			if (Array.isArray(colHeight)) {
 				for (i = 0; i < row; i++) {
 					baseTop += colHeight[i];
 				}
@@ -139,8 +139,8 @@ QUnit.module("igTileManager unit tests", {
 			padding = 5,
 			tilePaddings = padding * 2 + borderWidth,
 			splitterWidth = splitter.outerWidth(),
-			rightPanelTilesWidth = rightPanelTilesWidth || ($.isArray(colWidth) ? colWidth[colWidth.length - 1] : colWidth),
-			rightPanelTilesHeight = rightPanelTilesHeight || ($.isArray(colHeight) ? colHeight[colHeight.length - 1] : colHeight),
+			rightPanelTilesWidth = rightPanelTilesWidth || (Array.isArray(colWidth) ? colWidth[colWidth.length - 1] : colWidth),
+			rightPanelTilesHeight = rightPanelTilesHeight || (Array.isArray(colHeight) ? colHeight[colHeight.length - 1] : colHeight),
 			rightPanelHasScroll = showRightPanelScroll && rightPanelHasScroll,
 			rightPanelWidth = rightPanelCols * (rightPanelTilesWidth + marginLeft) + (rightPanelHasScroll ? this.scrollWidth : 0),
 			rightPanelHeight = containerHeight,
@@ -166,7 +166,7 @@ QUnit.module("igTileManager unit tests", {
 		// Configuration setup
 		this.assert.equal(layoutConfig.rows, rows, 'Number of rows in the layout configuration did not match.');
 		this.assert.equal(layoutConfig.cols, cols, 'Number of cols in the layout configuration did not match.');
-		if ($.isArray(layoutConfig.columnWidth)) {
+		if (Array.isArray(layoutConfig.columnWidth)) {
 			for (i = 0; i < layoutConfig.columnWidth.length; i++) {
 				this.assert.equal(layoutConfig.columnWidth[i], colWidth[i],
 					'The columnWidth[' + i + '] in the layout configuration did not match.');
@@ -175,7 +175,7 @@ QUnit.module("igTileManager unit tests", {
 			this.assert.equal(layoutConfig.columnWidth, colWidth, 'The columnWidth in the layout configuration did not match.');
 		}
 
-		if ($.isArray(layoutConfig.columnHeight)) {
+		if (Array.isArray(layoutConfig.columnHeight)) {
 			for (i = 0; i < layoutConfig.columnHeight.length; i++) {
 				this.assert.equal(layoutConfig.columnHeight[i], colHeight[i],
 					'The columnHeight[' + i + '] in the layout configuration did not match.');

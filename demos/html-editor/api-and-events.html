@@ -164,13 +164,13 @@
                     focusAndPrintType = "object"
                 }
                 if (typeof document.getElementById("htmlEditor_editor").focus === focusAndPrintType) {
-                    document.getElementById("htmlEditor_editor").focus();
+                    document.getElementById("htmlEditor_editor").trigger("focus");
                 }
                 if (typeof document.getElementById("htmlEditor_editor").print === focusAndPrintType) {
                     document.getElementById("htmlEditor_editor").print();
                 }
                 if (typeof document.getElementById("htmlEditor_editor").contentWindow.focus === focusAndPrintType) {
-                    document.getElementById("htmlEditor_editor").contentWindow.focus();
+                    document.getElementById("htmlEditor_editor").contentWindow.trigger("focus");
                 }
                 if (typeof document.getElementById("htmlEditor_editor").contentWindow.print === focusAndPrintType) {
                     document.getElementById("htmlEditor_editor").contentWindow.print();

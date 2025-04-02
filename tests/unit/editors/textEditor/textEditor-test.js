@@ -588,7 +588,7 @@ QUnit.test("Lists testing P2, selection-value match", function (assert) {
 	assert.equal(editor.igTextEditor("value"), "item1", "Value not changed on spin button");
 	assert.ok(this.spinUpButton().hasClass("ui-state-disabled"), "Spin up button not disabled");
 
-	editor.focus();
+	editor.trigger("focus");
 	this.util.mouseEvent(this.spinUpButton(), "mousedown");
 	this.util.mouseEvent(this.spinUpButton(), "mouseup");
 	this.util.mouseEvent(this.spinDownButton(), "mousedown");
@@ -713,7 +713,7 @@ QUnit.test("Keyboard/Mouse testing", function (assert) {
 		listItems: ["1", "2", "3"]
 	});
 	editor.igTextEditor("value", "12345");
-	this.input().focus();
+	this.input().trigger("focus");
 	this.util.keyInteraction(65, this.input());
 	assert.ok(this.container().hasClass($.ui.igNotifier.prototype.css.warningState) &&
 		this.container().igNotifier("isVisible"), "MaxLength reached message not shown.");
@@ -824,7 +824,7 @@ QUnit.test("Spin buttons", function (assert) {
 	assert.notOk(this.dropDownButton().hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down button");
 
 	this.dropDownButton().click();
-	this.input().focus();
+	this.input().trigger("focus");
 
 	// SpinUp using buttons
 	this.util.mouseEvent(this.spinUpButton(), "mouseover");
@@ -1170,7 +1170,7 @@ QUnit.test("Clear button dynamic show/hide", function (assert) {
 		buttonType: "clear"
 	});
 	assert.notOk(this.clearButton().is(":visible"), "The clear button should not be visible initilly");
-	this.input().focus();
+	this.input().trigger("focus");
 	assert.notOk(this.clearButton().is(":visible"), "The clear button should not be visible on focus");
 	this.input().val("someVal");
 	editor.data("igTextEditor")._processTextChanged();

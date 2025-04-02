@@ -572,7 +572,7 @@ QUnit.test('Test 9: igSplitter widget drag horizontal split bar test.', function
 
 	var sliptbars = $('.ui-igsplitter-splitbar-hover');
 	assert.ok(sliptbars.length === 0, 'igSplitter hover sliptbar is not missing.');
-	bar.focus();
+	bar.trigger("focus");
 	bar.simulate("drag", {
 		dy: 200,
 		checkAfterMouseDown: function (target) {

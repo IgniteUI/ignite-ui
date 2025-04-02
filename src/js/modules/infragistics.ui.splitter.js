@@ -1117,7 +1117,7 @@
                     return;
                 }
 
-                splitter._splitter.bar.focus();
+                splitter._splitter.bar.trigger("focus");
                 splitter._resizeArea = splitter._splitter;
                 if (splitter._resizeArea !== null) {
                     if ((splitter._resizeArea.left.options.resizable === undefined ||

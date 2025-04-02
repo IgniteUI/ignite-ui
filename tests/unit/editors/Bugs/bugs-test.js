@@ -223,11 +223,11 @@ QUnit.test('Bug 209696', function (assert) {
 		date1 = new Date(2015, 10, 13, 00, 34),
 		date2 = new Date(2015, 10, 13, 12, 34);
 
-	$editor1.igDateEditor("field").focus().val("13,11,2015 12:34 AM").blur();
+	$editor1.igDateEditor("field").trigger("focus").val("13,11,2015 12:34 AM").blur();
 	assert.equal($editor1.igDateEditor("field").val(), "13,11,2015 12:34 AM", "The display value is changed to 13,11,2015 12:34 AM");
 	assert.equal($editor1.igDateEditor("value").getTime(), date1.getTime(), "The value is changed to" + date1);
 
-	$editor2.igDateEditor("field").focus().val("13,11,2015 12:34 PM").blur();
+	$editor2.igDateEditor("field").trigger("focus").val("13,11,2015 12:34 PM").blur();
 	assert.equal($editor2.igDateEditor("field").val(), "13,11,2015 12:34 PM", "The display value is changed to 13,11,2015 12:34 PM");
 	assert.equal($editor2.igDateEditor("value").getTime(), date2.getTime(), "The value is changed to " + date2);
 });
@@ -238,10 +238,10 @@ QUnit.test('Bug 208809', function (assert) {
 	var $editor = this.util.appendToFixture(this.inputTag).igPercentEditor(),
 		field = $editor.igPercentEditor("field");
 
-	field.focus().val("123456789").blur();
+	field.trigger("focus").val("123456789").blur();
 	assert.equal(field.val(), "123,456,789.00%", "The value is changed to 123,456,789.00%");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "123456789", "The value is changed to 123456789");
 });
 
@@ -262,28 +262,28 @@ QUnit.test('Bug 208887, 216017', function (assert) {
 			}),
 		field = $editor1.igDateEditor("field");
 
-	field.focus().val("30,10,2016 10:25:56 12 AM");
+	field.trigger("focus").val("30,10,2016 10:25:56 12 AM");
 	assert.equal(field.val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
 	field.blur();
 	assert.equal(field.val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
 	field = $editor2.igDateEditor("field")
-	field.focus().val("30,10,2016 10:25:56 12_ AM");
+	field.trigger("focus").val("30,10,2016 10:25:56 12_ AM");
 	assert.equal(field.val(), "30,10,2016 10:25:56 12_ AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
 	field.blur();
 	assert.equal(field.val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 
 	// Bug #216017
 	field = $editor1.igDateEditor("field");
-	field.focus().val("00,00,0000 00:00:00 00 AM");
+	field.trigger("focus").val("00,00,0000 00:00:00 00 AM");
 	field.blur();
 	assert.equal(field.val(), "30,10,2000 12:0:00 00 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
 });
@@ -301,7 +301,7 @@ QUnit.test('Bug 209012', function (assert) {
 			}),
 		field = $textEditorUpper.igTextEditor("field");
 
-	field.focus();
+	field.trigger("focus");
 	$textEditorUpper.data("igTextEditor")._insert("NewVal1", "");
 	assert.equal(field.val(), "NEWVAL1", "The value is changed to NEWVAL1");
 
@@ -309,7 +309,7 @@ QUnit.test('Bug 209012', function (assert) {
 	assert.equal(field.val(), "NEWVAL1", "The value is changed to NEWVAL1");
 
 	field = $textEditorLower.igTextEditor("field")
-	field.focus();
+	field.trigger("focus");
 	$textEditorLower.data("igTextEditor")._insert("NewVal1", "");
 	assert.equal(field.val(), "newval1", "The value is changed to newval1");
 
@@ -333,24 +333,24 @@ QUnit.test('Bug 208350', function (assert) {
 		field;
 
 	field = $dateEditor.igDateEditor("field");
-	field.focus().val("15/10/2016 10:25:56");
+	field.trigger("focus").val("15/10/2016 10:25:56");
 	assert.equal(field.val(), "15/10/2016 10:25:56", "The text is changed to 15/10/2016 10:25:56");
 
 	field.blur();
 	assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal($dateEditor.igDateEditor("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 15/10/2016 10:25:56");
 	assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
 	field = $datePickerEditor.igDatePicker("field");
-	field.focus().val("15/10/2016 10:25:56");
+	field.trigger("focus").val("15/10/2016 10:25:56");
 	assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
 	field.blur();
 	assert.equal(field.val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal($datePickerEditor.igDatePicker("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 1476527156000");
 });
 
@@ -374,7 +374,7 @@ QUnit.test('Bug 208448', function (assert) {
 		}),
 		field = $editor.igDatePicker("field");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "25/05/2012", "The text is changed to 25/05/2012");
 
 	$editor.igDatePicker("dropDownButton").click();
@@ -394,14 +394,14 @@ QUnit.test('Bug 208264', function (assert) {
 		}),
 		field = $editor.igDateEditor("field");
 
-	field.focus();
+	field.trigger("focus");
 	$editor.data("igDateEditor")._insert("10:10:_9");
 	assert.equal(field.val(), "10:10:_9", "The text is changed to 10:10:9");
 
 	field.blur()
 	assert.equal(field.val(), "10:10:09", "The value is changed to 10:10:9");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "10:10:09", "The value is changed to 25/05/2012");
 });
 
@@ -442,7 +442,7 @@ QUnit.test('Bug 220479', function (assert) {
 	assert.equal($percentEditorvar.igPercentEditor("field").val(), "20.00%", "The value in the field should be 20.00%");
 	assert.equal($percentEditorvar.igPercentEditor("value"), "0.2", "The value in the field should be 0.2");
 
-	field.focus();
+	field.trigger("focus");
 	$currencyEditor1.igCurrencyEditor("insert", "20");
 	assert.equal(field.val(), "20", "The value in the field should be 20");
 
@@ -470,7 +470,7 @@ QUnit.test('Bug 220479 - 1', function (assert) {
 	assert.equal(field.val(), "23.00%", "The text after insert should be 23.00%");
 	assert.strictEqual($percentEditorvar.igPercentEditor("value"), 0.23, "The value after insert should be 0.23");
 
-	field.click().focus();
+	field.click().trigger("focus");
 	this.util.wait(100).then(function () {
 		$percentEditorvar.igPercentEditor("insert", "20");
 		assert.equal(field.val(), "20", "The value in the field should be 20. Actual - " + field.val());
@@ -598,7 +598,7 @@ QUnit.test('Bug 210990', function (assert) {
 	$editor.igMaskEditor("value", "");
 	assert.equal($editor.igMaskEditor("field").val(), "", "The text is changed to an empty string");
 
-	$editor.igMaskEditor("field").focus();
+	$editor.igMaskEditor("field").trigger("focus");
 	assert.equal($editor.igMaskEditor("field").val(), $editor.data("igMaskEditor")._maskWithPrompts, "The text is changed to 4");
 	assert.equal($editor.igMaskEditor("value"), "", "The text is changed to to an empty string");
 });
@@ -627,12 +627,12 @@ QUnit.test('Bug 208274', function (assert) {
 		}),
 		field = $editor.igDateEditor("field");
 
-	field.focus();
+	field.trigger("focus");
 	$editor.data("igDateEditor")._insert("20:01:05");
 	field.blur();
 	assert.equal(field.val(), "20:01:05", "The text is changed to 20:01:05");
 
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "20:01:05", "The value is changed to 20:01:05");
 });
 
@@ -677,7 +677,7 @@ QUnit.test('Bug 207321', function (assert) {
 				value: "value1"
 			});
 
-	$editor.igMaskEditor("field").focus();
+	$editor.igMaskEditor("field").trigger("focus");
 	$editor.data("igMaskEditor")._handleDeleteKey();
 	assert.equal($editor.data("igMaskEditor")._getCursorPosition(), 10, "the cursor should be on position 10");
 });
@@ -692,7 +692,7 @@ QUnit.test('Bug 211575', function (assert) {
 			dateInputFormat: 'yyyy/MM/dd'
 		});
 
-	$editor.igDateEditor("field").focus();
+	$editor.igDateEditor("field").trigger("focus");
 	$editor.data("igDateEditor")._insert("2015/10/10");
 	$editor.igDateEditor("field").blur()
 	assert.equal($editor.data("igDateEditor")._valueInput.val(), "2015/10/10", "The value is changed to 2015/10/10");
@@ -713,7 +713,7 @@ QUnit.test('Bug 212596', function (assert) {
 		field;
 
 	field = $numericEditor.igNumericEditor("field");
-	field.focus();
+	field.trigger("focus");
 	$numericEditor.data("igNumericEditor")._enterEditMode();
 	$numericEditor.igNumericEditor("value", "1234");
 	assert.equal(field.val(), "1234", "The value in edit mode should be 1234. It's: " + field.val());
@@ -793,11 +793,11 @@ QUnit.test('Bug 216789', function (assert) {
 				excludeKeys: '23'
 			});
 
-	$editor1.igTextEditor("field").focus();
+	$editor1.igTextEditor("field").trigger("focus");
 	$editor1.data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
-	$editor2.igTextEditor("field").focus();
+	$editor2.igTextEditor("field").trigger("focus");
 	$editor2.data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
-	$editor3.igTextEditor("field").focus();
+	$editor3.igTextEditor("field").trigger("focus");
 	$editor3.data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
 
 	//assert.ok(.hasClass("ui-igedit-dropdown-orientation-bottom"), "The dropDownContainer should be with ui-igedit-dropdown-orientation-bottom class applied");
@@ -824,7 +824,7 @@ QUnit.test('Bug 218836', function (assert) {
 		field;
 
 	field = $editor.igMaskEditor("field");
-	field.focus();
+	field.trigger("focus");
 	$editor.igMaskEditor("value", "1111111111");
 	assert.equal(field.val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
 
@@ -845,7 +845,7 @@ QUnit.test('Bug 218752', function (assert) {
 		valueDate,
 		field = $editor.igDateEditor("field");
 
-	field.focus();
+	field.trigger("focus");
 	field.val("2016/02/10");
 	field.blur();
 	assert.equal(field.val(), "2016/02/10", "The value in the field should be 2016/02/10");
@@ -866,7 +866,7 @@ QUnit.test('Bug 220712 - typed text is reverted to previous value in case the dr
 		field = $editor.igTextEditor("field");
 
 	// focus editor and set value
-	field.click().focus();
+	field.click().trigger("focus");
 	field.val("text");
 
 	//open dropdown
@@ -919,7 +919,7 @@ QUnit.test('Bug 221300', function (assert) {
 		field = $editor.igTextEditor("field"),
 		value;
 
-	field.click().focus();
+	field.click().trigger("focus");
 	field[0].setSelectionRange(6, 6);
 	this.util.keyInteraction(13, field);
 	field.blur();
@@ -927,7 +927,7 @@ QUnit.test('Bug 221300', function (assert) {
 	assert.equal(value, "John S\nmith, with long test", "Word is not carried over the new line");
 	assert.equal($editor.igTextEditor("getSelectionStart"), 7, "Cursor position is wrong");
 
-	field.click().focus();
+	field.click().trigger("focus");
 
 	field[0].setSelectionRange(10, 10);
 	this.util.keyInteraction(13, field);
@@ -958,7 +958,7 @@ QUnit.test('Bug 98', function (assert) {
 		text = field.val();
 		assert.equal(text, 5, "Text in editor is not set to the maxValue");
 
-		$editor.select();
+		$editor.trigger("select");
 		util.type("1", field);
 		util.keyInteraction(13, field);
 		text = field.val();
@@ -1328,7 +1328,7 @@ QUnit.test('Bug 695 - Check ', function (assert) {
 			value: 0.029
 		});
 
-	assert.equal($editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%"); //fails prior fix with 2.900,00%
+	assert.equal($editor.igPercentEditor("field").trigger("focus").blur().val(), "2,90%", "value should be to 2,90%"); //fails prior fix with 2.900,00%
 	assert.equal($editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
 });
 
@@ -1345,14 +1345,14 @@ QUnit.test('Bug 809 - Wrong value is set when we have isLimitedToListValues: tru
 		}),
 		input = $editor.igNumericEditor("field");
 
-	$editor.focus();
+	$editor.trigger("focus");
 	this.util.keyInteraction(38, input); //Arrow Up
 	input.val("");
 	$editor.blur();
 	assert.equal($editor.igNumericEditor("value"), "", "Value should be empty string");
 
 	$editor.igNumericEditor("option", "allowNullValue", "true");
-	$editor.focus();
+	$editor.trigger("focus");
 	this.util.keyInteraction(38, input); //Arrow Up
 	this.util.keyInteraction(13, input);
 
@@ -1362,12 +1362,12 @@ QUnit.test('Bug 809 - Wrong value is set when we have isLimitedToListValues: tru
 
 	$editor.igNumericEditor("option", "allowNullValue", "false");
 	$editor.igNumericEditor("option", "revertIfNotValid", "true");
-	$editor.focus();
+	$editor.trigger("focus");
 	this.util.keyInteraction(38, input); //Arrow Up
 	$editor.blur();
 	assert.equal($editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
 
-	$editor.focus().val(55);
+	$editor.trigger("focus").val(55);
 	$editor.blur();
 	assert.equal($editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
 	assert.ok($editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
@@ -1424,7 +1424,7 @@ QUnit.test('Bug 1027 Exception is thrown when typing due to incorrect value/null
 		});
 
 	// value not matching mask (fails validation)
-	$editor.trigger("focus").select();
+	$editor.trigger("focus").trigger("select");
 	try {
 		this.util.keyInteraction(49, $editor);
 		this.util.keyInteraction(50, $editor);
@@ -1444,7 +1444,7 @@ QUnit.test('Bug 1027 Exception is thrown when typing due to incorrect value/null
 			allowNullValue: true,
 			nullValue: "#5a" //wrong first char
 		});
-	$editor.trigger("focus").select();
+	$editor.trigger("focus").trigger("select");
 	try {
 		this.util.keyInteraction(97, $editor);
 		this.util.keyInteraction(98, $editor);
@@ -1463,7 +1463,7 @@ QUnit.test('Bug 1027 Exception is thrown when typing due to incorrect value/null
 			nullValue: 0
 		});
 	assert.equal($editor.val(), "0", "Null value not applied on Display text.")
-	$editor.trigger("focus").select();
+	$editor.trigger("focus").trigger("select");
 	try {
 		this.util.keyInteraction(49, $editor);
 		this.util.keyInteraction(50, $editor);
@@ -1521,7 +1521,7 @@ QUnit.test('Bug 1043 - maxLength not respected on Android', function (assert) {
 		util = this.util,
 		done = assert.async();
 
-	$field.focus();
+	$field.trigger("focus");
 	composition = jQuery.Event("compositionstart");
 	$field.trigger(composition);
 	$field.val("12345678");
@@ -1536,8 +1536,8 @@ QUnit.test('Bug 1043 - maxLength not respected on Android', function (assert) {
 
 		$field.blur();
 		// test case without start (Chrome Android)
-		$field.focus();
-		$field.select();
+		$field.trigger("focus");
+		$field.trigger("select");
 		var compositionupdate = jQuery.Event("compositionupdate");
 		compositionupdate.originalEvent = { data: "2" };
 		$field.val("12");
@@ -1583,7 +1583,7 @@ QUnit.test('Bug 1205 Decimal numbers are rounded when the editor is blurred', fu
 				allowNullValue: true,
 				nullValue: "#5a" //wrong first char
 			});
-	$editor.trigger("focus").select();
+	$editor.trigger("focus").trigger("select");
 	try {
 		$.ig.TestUtil.keyInteraction(97, $editor);
 		$.ig.TestUtil.keyInteraction(98, $editor);
@@ -1602,7 +1602,7 @@ QUnit.test('Bug 1205 Decimal numbers are rounded when the editor is blurred', fu
 				nullValue: 0
 			});
 	assert.equal($editor.val(), "0", "Null value not applied on Display text.")
-	$editor.trigger("focus").select();
+	$editor.trigger("focus").trigger("select");
 	try {
 		$.ig.TestUtil.keyInteraction(49, $editor);
 		$.ig.TestUtil.keyInteraction(50, $editor);
@@ -1683,7 +1683,7 @@ QUnit.test('Bug 256852: textChanged not fired on Safari on MacOS (Grid filtering
 		3. input (value assigned to input)
 		4. keydown
 		5. keyup */
-	$field.focus();
+	$field.trigger("focus");
 	$field.trigger(jQuery.Event("compositionstart"));
 	$field.trigger(jQuery.Event("compositionupdate"));
 	$field.val("d");
@@ -1781,8 +1781,8 @@ QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line cha
 	});
 
 	var field = newLineCharsEditor.igMaskEditor("field");
-	field.focus();
-	field.select();
+	field.trigger("focus");
+	field.trigger("select");
 	field.trigger(e);
 	field.val("201906");
 
@@ -1791,7 +1791,7 @@ QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line cha
 
 		newLineText = "201511\n";
 		expectedText = "2015-11";
-		field.select();
+		field.trigger("select");
 		field.trigger(e);
 		field.val("201511");
 
@@ -1815,8 +1815,8 @@ QUnit.test('Bug 264559: Text from Excel cannot be pasted --> Remove new line cha
 			}
 		};
 
-		dpField.focus();
-		dpField.select();
+		dpField.trigger("focus");
+		dpField.trigger("select");
 		dpField.trigger(event);
 		dpField.val("20190606");
 
@@ -1841,14 +1841,14 @@ QUnit.test('Bug 1974: inputMask literals are visible for empty value after blur'
 	});
 
 	var field = $editor1.igMaskEditor("field");
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "____/__", "Mask should be visible");
 	field.blur();
 	assert.equal(field.val(), "", "Editor text field should remain empty");
 	assert.equal($editor1.igMaskEditor("value"), "", "Value should be empty");
 
 	field = $editor2.igMaskEditor("field");
-	field.focus();
+	field.trigger("focus");
 	assert.equal(field.val(), "(___) ___-___", "Mask should be visible");
 	field.blur();
 	assert.equal(field.val(), "", "Editor text field should remain empty");

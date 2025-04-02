@@ -2564,7 +2564,7 @@
 			var i,
 				data = ds || this._data,
 				len = data ? data.length : 0,
-				search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
+				search = len > 0 && Array.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
 			for (i = 0; i < len; i++) {
 				if (data[ i ][ search ] === key) {
 					return data[ i ];
@@ -2622,7 +2622,7 @@
 			while (count < all.length) {
 				data = all[ count++ ];
 				len = data ? data.length : 0;
-				search = len > 0 && $.isArray(data[ 0 ]) ? primeIdx : prime;
+				search = len > 0 && Array.isArray(data[ 0 ]) ? primeIdx : prime;
 				for (i = 0; i < len; i++) {
 					if (data[ i ] && data[ i ][ search ] === key) {
 						//A.T. 8 March 2012 - Fix for bug #104244
@@ -9902,7 +9902,7 @@
 				return [];
 			}
 			if ($.ig.util.getType(dataRow) === "object") {
-				search = data && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
+				search = data && Array.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
 				key = dataRow[ search ];
 				if (key === undefined || key === null) {
 					return [];
@@ -11437,7 +11437,7 @@
 			}
 			var data = this._data, resRecord, search, key, objPath = { path: "" },
 				path, len = data ? data.length : 0;
-			search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
+			search = len > 0 && Array.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
 			if ($.ig.util.getType(record) !== "object") {
 				key = record;
 			} else {
@@ -11487,7 +11487,7 @@
 				data = ds || this._data,
 				len = data ? data.length : 0,
 				dsLayoutKey = this.settings.treeDS.childDataKey,
-				search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
+				search = len > 0 && Array.isArray(data[ 0 ]) ? this._lookupPkIndex() : this.settings.primaryKey;
 			objPath = objPath || { path: "", parentRows: [] };
 			objPath.parentRows = objPath.parentRows || [];
 			objPath.path = objPath.path || "";
@@ -11555,12 +11555,12 @@
 			}
 		},
 		_removeRecordInFlatDs: function (data, key, fk) {
-			if (!data || !$.isArray(data) || !data.length ||
+			if (!data || !Array.isArray(data) || !data.length ||
 				(key === undefined && fk === undefined)) {
 				return;
 			}
 			var i, prime = this.settings.primaryKey, tmp,
-				pkSearch = $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
+				pkSearch = Array.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
 				fkSearch = this.settings.treeDS.foreignKey;
 			for (i = 0; i < data.length; i++) {
 				if (data[ i ]) {
@@ -11583,7 +11583,7 @@
 			}
 			var i, prime = this.settings.primaryKey,
 				len = data ? data.length : 0,
-				search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
+				search = len > 0 && Array.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
 				layoutKey = this.settings.treeDS.childDataKey,
 				layoutData = [],
 				found = false;
