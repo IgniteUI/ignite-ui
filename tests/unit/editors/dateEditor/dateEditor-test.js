@@ -1760,7 +1760,7 @@ QUnit.test('Test backspace/delete while editing', function (assert) {
 
 		//delete :
 		$field.val("10/10/1010 PM");
-		$field[0].trigger("select");
+		$field[0].select();
 		util.keyDownChar(46, $field);
 		assert.equal($field.val(), "__/__/____ __", "Delete did not clear the editor input.");
 		assert.ok(($field[0].selectionStart === $field[0].selectionEnd) && ($field[0].selectionStart === 13), "Cursor not at end after delete.");

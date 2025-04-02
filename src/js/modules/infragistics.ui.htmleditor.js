@@ -1781,7 +1781,7 @@
         //    }
         //},
         _execCommand: function (name, args) {
-            this._selectionWrapperSaved.trigger("focus");
+            this._selectionWrapperSaved.focus();
 
             // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
             // R.K. 14th September 2017 #1188: Text in html editor is not styled in corresponding font-color
@@ -1884,7 +1884,7 @@
                 var target = $(e.target);
 
                 if (target.is("html")) {
-                    self.workspace.contentWindow.document.body.trigger("focus");
+                    self.workspace.contentWindow.document.body.focus();
                 }
                 self._isDirty = true;
                 self._hideDialogs();
@@ -1989,7 +1989,7 @@
                         language: this.options.language,
                         locale: this.options.locale,
                         applyform: function (e, ui) {
-                            self._selectionWrapperSaved.trigger("focus");
+                            self._selectionWrapperSaved.focus();
                             self._selectionWrapperSaved.replaceNode(ui.image);
                         }
                     });
@@ -2025,7 +2025,7 @@
                         language: this.options.language,
                         locale: this.options.locale,
                         applyform: function (e, ui) {
-                            self._selectionWrapperSaved.trigger("focus");
+                            self._selectionWrapperSaved.focus();
                             self._selectionWrapperSaved.replaceNode(ui.anchor);
                         }
                     });
@@ -2179,7 +2179,7 @@
                 .igPathFinder({
                     click: function (e, ui) {
                         var selectionWrapper = self._selectionWrapperSaved;
-                        self.workspace.contentWindow.document.body.trigger("focus");
+                        self.workspace.contentWindow.document.body.focus();
                         if (self._domPathToolbar.igPathFinder("option", "disabled")) {
                             return;
                         }
@@ -3472,7 +3472,7 @@
                 if (focusTarget.length > 0) {
                     this._range.setStart(focusTarget[ 0 ], 0);
                     this._range.setEnd(focusTarget[ 0 ], 0);
-                    this._document.body.trigger("focus");
+                    this._document.body.focus();
                 }
             } else {
 
@@ -3498,7 +3498,7 @@
 
                     // Return the focus to the body
                     // FireFox needs focus to execude commands such as fontName
-                    this._document.body.trigger("focus");
+                    this._document.body.focus();
                 }
             }
         }

@@ -794,7 +794,7 @@ QUnit.test('Test 14: igSplitter widget keyboard navigation.', function (assert) 
 		ID: 'sKbNav'
 	};
 	this.addSplitter(options);
-	$('div[tabindex="0"]')[0].trigger("focus");
+	$('div[tabindex="0"]')[0].focus();
 	var container = $('#sKbNav'), bar = $($(container.children())[1]), sliptbars = panel1 = panel2 = null;
 	panel1 = $($(container.children())[0]);
 	panel2 = $($(container.children())[2]);

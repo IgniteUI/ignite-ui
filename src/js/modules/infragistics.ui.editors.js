@@ -1039,9 +1039,9 @@
 		_setFocusDelay: function (delay) {
 			var self = this;
 			if (delay) {
-				this._timeouts.push(setTimeout(function () { self.field().trigger("focus"); }, delay));
+				this._timeouts.push(setTimeout(function () { self.field().focus(); }, delay));
 			} else {
-				this.field().trigger("focus");
+				this.field().focus();
 			}
 		},
 		_setFocus: function (event) {
@@ -11882,13 +11882,13 @@
 
 						// Note: Don't preventDefault (all changes in this handler will be ignored) - set value back instead:
 						self._valueInput[ 0 ].checked = internalChecked;
-						this.trigger("focus");
+						this.focus();
 					}
 					self._toggleInternal(event);
 				},
 				"mousedown.editor": function (event) {
 					/* Prevent multi-click text selection, but keep focus */
-					this.trigger("focus");
+					this.focus();
 					event.preventDefault();
 					return false;
 				},

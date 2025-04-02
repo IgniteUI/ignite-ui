@@ -3481,14 +3481,14 @@
 				selRange.moveStart("character", start);
 				selRange.moveEnd("character", end);
 				selRange.trigger("select");
-				field.trigger("focus");
+				field.focus();
 			} else if (field.setSelectionRange) {
-				field.trigger("focus");
+				field.focus();
 				field.setSelectionRange(start, end);
 			} else if (typeof field.selectionStart !== "undefined") {
 				field.selectionStart = start;
 				field.selectionEnd = end;
-				field.trigger("focus");
+				field.focus();
 			}
 		},
 		_hasInputSelection: function () {
@@ -4122,7 +4122,7 @@
 			this._options.preventItemSeparatorOnFocus = preventItemSeparatorOnFocus;
 
 			if (!$input.is(":focus")) {
-				input.trigger("focus");
+				input.focus();
 			} else {
 
 				// Trigger focus handler to reset the flags
@@ -4373,7 +4373,7 @@
 
 				// Chrome does not move the carret if input wasn't focused initially
 				// This happens when while the focus was in the input we have clicked somewhere inside the input to move the carret ourself
-				this._options.$input.trigger("focus");
+				this._options.$input.focus();
 				this._moveCaretToInputEnd(true);
 
 				// Prevent carret from being set to where user clicked

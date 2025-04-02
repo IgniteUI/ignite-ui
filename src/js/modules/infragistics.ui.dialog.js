@@ -1100,7 +1100,7 @@
 					if (targ === elem[ 0 ] || (targ === min && shift) || (targ === max && !shift)) {
 						_stopEvt(e);
 						el = shift ? max : min;
-						try { el.trigger("focus"); } catch (ex) { }
+						try { el.focus(); } catch (ex) { }
 					}
 				})
 				.on("mousedown", function (e) { self.moveToTop(e); });
@@ -2032,7 +2032,7 @@
 							self._hasFocus = true;
 						}
 						elem = elem || self.element[ 0 ];
-						elem.trigger("focus");
+						elem.focus();
 					}
 				} catch (ex) {}
 			}, 100);

@@ -804,17 +804,17 @@ QUnit.test("Convert between Scientific and fixed-point formats (dateMode, scient
 		scientificFormat: "E+"
 	});
 
-	$editor.trigger("focus")[0].trigger("select");
+	$editor.trigger("focus")[0].select();
 	this.util.paste($editor[0], "100");
 	this.util.wait(20).then(function () {
 		assert.equal($editor.val(), "1E2", "Edit Text not as expected on scientific format value paste.");
-		$editor[0].trigger("select");
+		$editor[0].select();
 		util.paste($editor[0], "1e-22");
 		return util.wait(20);
 	}).then(function () {
 		assert.equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
 		$editor.igNumericEditor("option", "scientificFormat", "e+");
-		$editor[0].trigger("select");
+		$editor[0].select();
 		util.paste($editor[0], "23e+1");
 		return util.wait(20);
 	}).then(function () {
@@ -979,7 +979,7 @@ QUnit.test("Typing negative signs (multiple prevention, leading, scientific)", f
 	});
 
 	$editor.trigger("focus");
-	$editor[0].trigger("select");
+	$editor[0].select();
 	this.util.keyInteraction(45, $editor);
 	assert.equal($editor.val(), "-", "Negative sign was not allowed to repalce entire value");
 
@@ -1047,7 +1047,7 @@ QUnit.test("Typing multiple exponent chars (scientific E-notation)", function (a
 	});
 
 	$editor.trigger("focus");
-	$editor[0].trigger("select");
+	$editor.select();
 	this.util.keyInteraction(101, $editor, "shiftKey");
 	assert.equal($editor.val(), "1E-7", "E character should not be allowed to replace entire value");
 
@@ -1072,7 +1072,7 @@ QUnit.test("Typing multiple exponent chars (scientific E-notation)", function (a
 	});
 
 	$editor.trigger("focus");
-	$editor[0].trigger("select");
+	$editor[0].select();
 	this.util.keyInteraction(101, $editor);
 	assert.equal($editor.val(), "1e-27", "e character should not be allowed to repalce entire value");
 

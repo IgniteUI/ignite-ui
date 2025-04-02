@@ -769,9 +769,9 @@
 
 				// get around bugs in IE9
 				if (me._foc && document.hasFocus && !document.hasFocus()) {
-					return setTimeout(function () { me.trigger("focus"); }, 0);
+					return setTimeout(function () { me.focus(); }, 0);
 				}
-				me.trigger("focus");
+				me.focus();
 			}
 
 			// mousemove
@@ -1093,7 +1093,7 @@
 			*/
 			if (this._foc) {
 				try {
-					this._foc[ 0 ].trigger("focus");
+					this._foc[ 0 ].focus();
 				} catch (ex) {}
 			}
 			return this;
