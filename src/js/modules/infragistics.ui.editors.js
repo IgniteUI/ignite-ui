@@ -1041,7 +1041,7 @@
 			if (delay) {
 				this._timeouts.push(setTimeout(function () { self.field().focus(); }, delay));
 			} else {
-				this.field().focus();
+				this.field().trigger("focus");
 			}
 		},
 		_setFocus: function (event) {

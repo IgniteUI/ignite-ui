@@ -2960,7 +2960,7 @@
 			// Remove readonly during the focus
 			// R.K. 29th August 2017, #1155 Combo in dropdown mode accepts keypress values in its input in IE/Edge
 			if (readonly && !($.ig.util.isEdge || $.ig.util.isIE)) {
-				this._options.$input.removeAttr("readonly");
+				this._options.$input.prop("readonly", false);
 			}
 
 			// Setting the range without focus won't work in most browsers

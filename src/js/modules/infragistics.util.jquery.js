@@ -214,7 +214,7 @@
 
 				// Get correct offsets
 				offset = this.igOffset();
-				if ( !$.nodeName( offsetParent[ 0 ], "html" ) ) {
+				if ( offsetParent[ 0 ].tagName.toLowerCase() !== "html" ) {
 					parentOffset = offsetParent.igOffset();
 				}
 
