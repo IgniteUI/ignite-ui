@@ -3772,8 +3772,8 @@
 	if (!String.prototype.startsWith) {
 		String.prototype.startsWith = function (s) {
 			return this.indexOf(s) === 0;
-		}
-	};
+		};
+	}
 
 	String.prototype.startsWith1 = function (s, comparisonType) {
 		if (this.length < s.length) {
@@ -3790,8 +3790,8 @@
 			}
 
 			return $.ig.util.stringCompare1(this.slice(-s.length), s, comparisonType || 0) === 0;
-		}
-	};
+		};
+	}
 
 	String.prototype.remove = function (index, count) {
 		if (!count || ((index + count) > this.length)) {
