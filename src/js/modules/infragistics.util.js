@@ -3769,8 +3769,10 @@
 		return ret;
 	});
 
-	String.prototype.startsWith = function (s) {
-		return this.indexOf(s) === 0;
+	if (!String.prototype.startsWith) {
+		String.prototype.startsWith = function (s) {
+			return this.indexOf(s) === 0;
+		}
 	};
 
 	String.prototype.startsWith1 = function (s, comparisonType) {
@@ -3781,12 +3783,14 @@
 		return $.ig.util.stringCompare1(this.slice(0, s.length), s, comparisonType || 0) === 0;
 	};
 
-	String.prototype.endsWith = function (s, comparisonType) {
-		if (this.length < s.length) {
-			return false;
-		}
+	if (!String.prototype.endsWith) {
+		String.prototype.endsWith = function (s, comparisonType) {
+			if (this.length < s.length) {
+				return false;
+			}
 
-		return $.ig.util.stringCompare1(this.slice(-s.length), s, comparisonType || 0) === 0;
+			return $.ig.util.stringCompare1(this.slice(-s.length), s, comparisonType || 0) === 0;
+		}
 	};
 
 	String.prototype.remove = function (index, count) {
