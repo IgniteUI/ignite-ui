@@ -59,6 +59,7 @@ function coreBundle (rootPath, locale) {
         `${rootPath}/js/modules/infragistics.util.jquery.js`,
         `${rootPath}/js/modules/infragistics.datasource.js`,
         `${rootPath}/js/modules/infragistics.templating.js`,
+        `${rootPath}/js/modules/infragistics.templating.advanced.js`,
         `${rootPath}/js/modules/infragistics.ui.widget.js`,
         `${rootPath}/js/modules/infragistics.ui.shared.js`,
         `${rootPath}/js/modules/infragistics.ui.scroll.js`
