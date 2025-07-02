@@ -50,13 +50,13 @@
 				temp = template.split(tokens[ 0 ]);
 				if (temp[ 0 ] && temp[ 0 ].length > 0) {
 					$.ig.args.push(temp[ 0 ]);
-					tmpl += "result += args[" + this.i++ + "];";
+					tmpl += "result += args[" + $.ig.i++ + "];";
 				}
 			}
-			tmpl += this._handleCompleteBlock(tokens);
+			tmpl += $.ig._handleCompleteBlock(tokens);
 			if (temp && temp.length > 0 && temp[ 1 ].length > 0) {
 				$.ig.args.push(temp[ 1 ]);
-				tmpl += "result += args[" + this.i++ + "];";
+				tmpl += "result += args[" + $.ig.i++ + "];";
 			}
 			tmpl += "return result;";
 
@@ -85,7 +85,7 @@
 					}
 					blocks[ 0 ][ i ] = blocks[ 0 ][ i ].
                     replace("{{" + tokens[ 1 ], $.ig._directives[ tokens[ 1 ] ].start);
-					template += this._handleEach(blocks[ 0 ][ i ] + "{{/each}}", [
+					template += $.ig._handleEach(blocks[ 0 ][ i ] + "{{/each}}", [
 						blocks[ 0 ][ i ] + "{{/each}}",
 						"each",
 						blocks[ 1 ][ i ],
@@ -93,7 +93,7 @@
 					]);
 				}
 			} else if (tokens[ 1 ] === "if") {
-				template += this._handleIfElse(tmpl, tokens);
+				template += $.ig._handleIfElse(tmpl, tokens);
 			}
 			return template;
 		},
@@ -141,11 +141,11 @@
 			// Check for a nested blocks and recursively handle them
 			if ($.ig.regExp.block.test(tmpl)) {
 				inner = $.ig.regExp.block.exec(tmpl);
-				tmpl = tmpl.replace(inner[ 0 ], this._handleCompleteBlock(inner));
+				tmpl = tmpl.replace(inner[ 0 ], $.ig._handleCompleteBlock(inner));
 			}
 
 			// Parse the contents of the block
-			htmlStrings = tokens[ 2 ].split(this.regExp.blockDirective);
+			htmlStrings = tokens[ 2 ].split($.ig.regExp.blockDirective);
 
 			// We need to make sure that we"re not replacing a substitute inside the if condition with result +=...
 			tmplArr.push(tmpl.slice(0, tmpl.indexOf(") {") + 3));

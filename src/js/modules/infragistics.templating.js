@@ -53,10 +53,10 @@
 			// K.D. May 28th, 2012 Bug #112490 Removing linebreaks in the template before rendering it.
 			//D.U. February 28th 2014 Checking if tmpl is initialized
 			if (tmpl) {
-			    tmpl = tmpl.replace(this.regExp.lineBreak, "");
+			    tmpl = tmpl.replace($.ig.regExp.lineBreak, "");
 
 				// Removing comments
-				tmpl = tmpl.replace(this.regExp.comment, "");
+				tmpl = tmpl.replace($.ig.regExp.comment, "");
 				if (typeof data === "function") {
 					if (args) {
 						data = data.apply(this, args);
@@ -64,60 +64,60 @@
 						data = data.call();
 					}
 				}
-				if (this._internalTmplCache && this._internalTmplCache.hasOwnProperty(tmpl)) {
-					this.tokens = this._internalTmplCache[ tmpl ].tokens;
-					this.args = this._internalTmplCache[ tmpl ].args;
-					this.i = this._internalTmplCache[ tmpl ].i;
-					this._hasBlock = this._internalTmplCache[ tmpl ]._hasBlock;
-					tmpl = this._internalTmplCache[ tmpl ].tmpl;
+				if ($.ig._internalTmplCache && $.ig._internalTmplCache.hasOwnProperty(tmpl)) {
+					$.ig.tokens = $.ig._internalTmplCache[ tmpl ].tokens;
+					$.ig.args = $.ig._internalTmplCache[ tmpl ].args;
+					$.ig.i = $.ig._internalTmplCache[ tmpl ].i;
+					$.ig._hasBlock = $.ig._internalTmplCache[ tmpl ]._hasBlock;
+					tmpl = $.ig._internalTmplCache[ tmpl ].tmpl;
 				} else {
-					this.tokens = [ ];
-					this.args = [ ];
-					this.i = 0;
-					this._tokenizeTemplate(tmpl);
+					$.ig.tokens = [ ];
+					$.ig.args = [ ];
+					$.ig.i = 0;
+					$.ig._tokenizeTemplate(tmpl);
 					cacheConst = tmpl;
-					this._internalTmplCache[ cacheConst ] = {};
-					this._internalTmplCache[ cacheConst ].tokens = this.tokens;
-					if (this.regExp.block.test(tmpl)) {
-						this._hasBlock = true;
+					$.ig._internalTmplCache[ cacheConst ] = {};
+					$.ig._internalTmplCache[ cacheConst ].tokens = $.ig.tokens;
+					if ($.ig.regExp.block.test(tmpl)) {
+						$.ig._hasBlock = true;
 						if (typeof $.ig._tokenizeDirectives === "function") {
 							tmpl = $.ig._tokenizeDirectives(tmpl);
 						} else {
-							console.warn(this._getLocaleString("noAdvancedTemplating"));
+							console.warn($.ig._getLocaleString("noAdvancedTemplating"));
 						}
 					} else {
-						this._hasBlock = false;
+						$.ig._hasBlock = false;
 					}
-					this._internalTmplCache[ cacheConst ].args = this.args;
-					this._internalTmplCache[ cacheConst ].i = this.i;
-					this._internalTmplCache[ cacheConst ]._hasBlock = this._hasBlock;
-					this._internalTmplCache[ cacheConst ].tmpl = tmpl;
+					$.ig._internalTmplCache[ cacheConst ].args = $.ig.args;
+					$.ig._internalTmplCache[ cacheConst ].i = $.ig.i;
+					$.ig._internalTmplCache[ cacheConst ]._hasBlock = $.ig._hasBlock;
+					$.ig._internalTmplCache[ cacheConst ].tmpl = tmpl;
 				}
-				if (!this.tokens.length) {
+				if (!$.ig.tokens.length) {
 
 					// Nothing got tokenized
 					return tmpl;// An exception can be thrown here
 				}
-				if (this._hasBlock) {
+				if ($.ig._hasBlock) {
 					if (typeof $.ig._compileTemplate === "function") {
 						// K.D. August 27th, 2013 Bug #150299 Using the advanced templating engine
 						tmpl = $.ig._compileTemplate(tmpl, data);
 					} else {
-						console.warn(this._getLocaleString("noAdvancedTemplating"));
+						console.warn($.ig._getLocaleString("noAdvancedTemplating"));
 					}
 				} else {
-					tmpl = this._populateTemplate(tmpl, data);
+					tmpl = $.ig._populateTemplate(tmpl, data);
 				}
-				delete this.args;
-				delete this.tokens;
-				delete this._hasBlock;
-				delete this.i;
+				delete $.ig.args;
+				delete $.ig.tokens;
+				delete $.ig._hasBlock;
+				delete $.ig.i;
 			}
 			return tmpl;
 		},
 		clearTmplCache: function () {
-			delete this._internalTmplCache;
-			this._internalTmplCache = {};
+			delete $.ig._internalTmplCache;
+			$.ig._internalTmplCache = {};
 		},
 		/* type="RegExp" Used to tokenize the template string. */
 		regExp: {
@@ -189,8 +189,8 @@
 		_internalTmplCache: {},
 		_tokenizeTemplate: function (template) {
 			var tempToken, splitName;
-			if (this.regExp.sub.test(template)) {
-				tempToken = this.regExp.sub.exec(template);
+			if ($.ig.regExp.sub.test(template)) {
+				tempToken = $.ig.regExp.sub.exec(template);
 				while (tempToken !== null) {
 				    splitName = tempToken[ 1 ].split(".");
 
@@ -200,12 +200,12 @@
 					tempToken[ 3 ] = new RegExp("\\$\\{" + tempToken[ 1 ] + "\\}", "g");
 					tempToken[ 1 ] = splitName;
 					tempToken[ 2 ] = true;
-					this.tokens.push(tempToken);
-					tempToken = this.regExp.sub.exec(template);
+					$.ig.tokens.push(tempToken);
+					tempToken = $.ig.regExp.sub.exec(template);
 				}
 			}
-			if (this.regExp.nonEncodeSub.test(template)) {
-				tempToken = this.regExp.nonEncodeSub.exec(template);
+			if ($.ig.regExp.nonEncodeSub.test(template)) {
+				tempToken = $.ig.regExp.nonEncodeSub.exec(template);
 				while (tempToken !== null) {
 				    splitName = tempToken[ 1 ].split(".");
 
@@ -215,25 +215,25 @@
 					tempToken[ 3 ] = new RegExp("\\{\\{html\\s+" + tempToken[ 1 ] + "\\}\\}", "g");
 					tempToken[ 1 ] = splitName;
 					tempToken[ 2 ] = false;
-					this.tokens.push(tempToken);
-					tempToken = this.regExp.nonEncodeSub.exec(template);
+					$.ig.tokens.push(tempToken);
+					tempToken = $.ig.regExp.nonEncodeSub.exec(template);
 				}
 			}
 		},
 		_populateTemplate: function (template, data) {
 			var i, j, result = "", temp;
 			if ($.ig.util.getType(data) !== "array") {
-				for (i = 0; i < this.tokens.length; i++) {
-					template = this._populateArgumentValue(data, this.tokens[ i ], template);
+				for (i = 0; i < $.ig.tokens.length; i++) {
+					template = $.ig._populateArgumentValue(data, $.ig.tokens[ i ], template);
 				}
 				result = template;
 			} else {
 				for (j = 0; j < data.length; j++) {
 					temp = template;
-					for (i = 0; i < this.tokens.length; i++) {
-						temp = this._populateArgumentValue(data[ j ], this.tokens[ i ], temp);
+					for (i = 0; i < $.ig.tokens.length; i++) {
+						temp = $.ig._populateArgumentValue(data[ j ], $.ig.tokens[ i ], temp);
 					}
-					temp = temp.replace(this.regExp.index, j);
+					temp = temp.replace($.ig.regExp.index, j);
 					result += temp;
 				}
 			}
@@ -259,13 +259,13 @@
 					}
 				}
 				if (token[ 2 ] && typeof tempData === "string") {
-					arg = this.encode(tempData);
+					arg = $.ig.encode(tempData);
 				} else {
 					arg = tempData;
 				}
 			} else {
 				if (token[ 2 ] && typeof data[ token[ 1 ] ] === "string") {
-					arg = this.encode(data[ token[ 1 ] ]);
+					arg = $.ig.encode(data[ token[ 1 ] ]);
 				} else {
 					arg = data[ token[ 1 ] ];
 				}
