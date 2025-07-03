@@ -37,6 +37,7 @@ $.ig.loaderClass.locale.descriptions = {
 	validatorDescription: "Component that offers validation options for variety of page elements.",
 	videoPlayerDescription: "Component that displays HTML 5 videos.",
 	templatingDescription: "A JavaScript library used to apply a content template to HTML elements.",
+	advancedTemplatingDescription: "An extension of igTemplating that provides advanced templating features such as conditional rendering and iteration.",
 	gridDescription: "Component used for displaying tabular data.",
 	gridColumnMovingDescription: "Allows moving columns to change their order.",
 	dataSourceDescription: "Component used for binding to various kinds of data.",
@@ -228,6 +229,15 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.templatingDescription
+	},
+	{
+		widget: "igAdvancedTemplating",
+		dependency: [ { name: "igTemplating" } ],
+		scripts: [ "$path$/modules/infragistics.templating.advanced.js" ],
+		locale: [  ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.advancedTemplatingDescription
 	},
 	{
 		widget: "igScroll",
