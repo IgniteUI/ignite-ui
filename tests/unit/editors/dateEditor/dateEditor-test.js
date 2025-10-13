@@ -392,7 +392,7 @@ QUnit.test('Test invalid day', function (assert) {
 		util.paste($dtEditor.igDateEditor("field")[0], "32/04/2015");
 		$dtEditor.trigger("blur");
 
-		assert.equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2015, 03, 30).getTime(), 'The initial value is not as expected');
+		assert.equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2015, 3, 30).getTime(), 'The initial value is not as expected');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30/04/2015", 'The initial value is not as expected');
 		done();
 	}).catch(function (er) {
@@ -447,7 +447,7 @@ QUnit.test('Test invalid hour', function (assert) {
 		$dtEditor.trigger("blur");
 		value = $dtEditor.igDateEditor("value");
 		value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
-		expectedValue = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 3, 00, 29);
+		expectedValue = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 3, 0, 29);
 		// use setDate to add a day, otherwise date won't increase correctly
 		expectedValue.setDate(expectedValue.getDate() + 1);
 		assert.equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
@@ -498,8 +498,6 @@ QUnit.test('Testing date format with two digits year', function (assert) {
 		value: '01/09/15',
 		dateInputFormat: "dd/MM/yy"
 	}),
-		value,
-		expectedValue,
 		done = assert.async(),
 		util = this.util;
 
@@ -534,7 +532,7 @@ QUnit.test('Testing time with spin buttons and cursor position at hours', functi
 		spinUpButton,
 		util = this.util;
 
-	$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 01, 20));
+	$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 1, 20));
 	$dtEditor.igDateEditor("setFocus");
 
 	this.util.wait(100).then(function () {
@@ -573,7 +571,7 @@ QUnit.test('Testing time with spin buttons and cursor position at minutes', func
 		spinUpButton,
 		util = this.util;
 
-	$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 01, 20));
+	$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 1, 20));
 	$dtEditor.igDateEditor("setFocus");
 
 	this.util.wait(100).then(function () {
@@ -611,7 +609,7 @@ QUnit.test('Testing time with spin buttons and cursor position at seconds', func
 		spinUpButton,
 		util = this.util;
 
-	$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 01, 20));
+	$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 1, 20));
 	$dtEditor.igDateEditor("setFocus");
 
 	this.util.wait(100).then(function () {
@@ -2234,7 +2232,7 @@ QUnit.test('Testing default date formats', function (assert) {
 	this.util.wait(100).then(function () {
 		util.paste($dtEditor.igDateEditor("field")[0], displayValue);
 		$dtEditor.trigger("blur");
-		checkValue = new Date(2009, 09, 30, 10, 25, 56);
+		checkValue = new Date(2009, 9, 30, 10, 25, 56);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("getSelectedDate").getTime(), checkValue.getTime(), "The internal date object is not correct");
 		assert.equal($dtEditor.igDateEditor("displayValue"), displayValue, "The display value is not correct");
@@ -2319,7 +2317,7 @@ QUnit.test('Testing date formats with offset = 0 - UTC time', function (assert) 
 	this.util.wait(100).then(function () {
 		util.type("30/10/2009 10:25:56", $dtEditor.igDateEditor("field"));
 		$dtEditor.trigger("blur");
-		checkValue = new Date(2009, 09, 30, 10, 25, 56);
+		checkValue = new Date(2009, 9, 30, 10, 25, 56);
 		offset = checkValue.getTimezoneOffset();
 		checkValue.setMinutes(checkValue.getMinutes() - offset);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
@@ -2336,22 +2334,22 @@ QUnit.test('Testing date formats with offset = 0 - UTC time', function (assert) 
 			displayTimeOffset: 0
 		});
 
-		checkValue = new Date(2016, 09, 30, 13, 25, 56);
+		checkValue = new Date(2016, 9, 30, 13, 25, 56);
 		offset = checkValue.getTimezoneOffset();
 		checkValue.setMinutes(checkValue.getMinutes() - offset);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
 
-		utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
+		utcDate = new Date(Date.UTC(2016, 9, 25, 12, 0, 0));
 		$dtEditor.igDateEditor("value", utcDate);
-		checkValue = new Date(2016, 09, 25, 12, 0, 0);
+		checkValue = new Date(2016, 9, 25, 12, 0, 0);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), utcDate.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(utcDate), "The hidden value sent to server is not correct");
 
-		$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
-		offsetHours = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset() / 60;
+		$dtEditor.igDateEditor("value", new Date(2016, 9, 25, 12, 0, 0));
+		offsetHours = new Date(2016, 9, 25, 12, 0, 0).getTimezoneOffset() / 60;
 		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 " + pad(12 + offsetHours) + ":00:00", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
@@ -2364,22 +2362,22 @@ QUnit.test('Testing date formats with offset = 0 - UTC time', function (assert) 
 			enableUTCDates: true
 		});
 
-		checkValue = new Date(2016, 09, 30, 13, 25, 56);
+		checkValue = new Date(2016, 9, 30, 13, 25, 56);
 		offset = checkValue.getTimezoneOffset();
 		checkValue.setMinutes(checkValue.getMinutes() - offset);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), checkValue.toISOString(), "The hidden value sent to server is not correct");
 
-		utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
+		utcDate = new Date(Date.UTC(2016, 9, 25, 12, 0, 0));
 		$dtEditor.igDateEditor("value", utcDate);
-		checkValue = new Date(2016, 09, 25, 12, 0, 0);
+		checkValue = new Date(2016, 9, 25, 12, 0, 0);
 		assert.equal($dtEditor.igDateEditor("value").getTime(), utcDate.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), utcDate.toISOString(), "The hidden value sent to server is not correct");
 
-		$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
-		offsetHours = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset() / 60;
+		$dtEditor.igDateEditor("value", new Date(2016, 9, 25, 12, 0, 0));
+		offsetHours = new Date(2016, 9, 25, 12, 0, 0).getTimezoneOffset() / 60;
 		assert.equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 " + pad(12 + offsetHours) + ":00:00", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), checkValue.toISOString(), "The hidden value sent to server is not correct");
@@ -2410,8 +2408,8 @@ QUnit.test('Testing date formats with offset defined', function (assert) {
 	});
 
 	hoursOffset = new Date("2016-10-30T13:25:56.000Z").getTimezoneOffset() / 60;
-	checkValue = new Date(2016, 09, 30, 20, 25, 56);
-	assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
+	checkValue = new Date(2016, 9, 30, 20, 25, 56);
+	assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 9, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
 	assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 20:25:56", "The display value is not correct");
 	assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
 
@@ -2420,8 +2418,8 @@ QUnit.test('Testing date formats with offset defined', function (assert) {
 	this.util.wait(100).then(function () {
 		util.type("30/10/2016 22:25:56", $dtEditor.igDateEditor("field"));
 		$dtEditor.trigger("blur");
-		checkValue = new Date(2016, 09, 30, 22, 25, 56);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 15 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
+		checkValue = new Date(2016, 9, 30, 22, 25, 56);
+		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 9, 30, 15 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 22:25:56", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T15:25:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
@@ -2434,8 +2432,8 @@ QUnit.test('Testing date formats with offset defined', function (assert) {
 		});
 
 		hoursOffset = new Date("2016-10-30T13:25:56.000Z").getTimezoneOffset() / 60;
-		checkValue = new Date(2016, 09, 30, 20, 25, 56);
-		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
+		checkValue = new Date(2016, 9, 30, 20, 25, 56);
+		assert.equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 9, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 20:25:56", "The display value is not correct");
 		assert.equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
 		$dtEditor.remove();
@@ -4391,7 +4389,7 @@ QUnit.test('Spin boundary values and update date object parts that are missing i
 QUnit.test('Test invalid composition value', function (assert) {
 	assert.expect(3);
 	var $dtEditor = this.util.appendToFixture(this.inputTag).igDateEditor({
-		value: new Date(2015, 04, 01)
+		value: new Date(2015, 4, 1)
 	}),
 		$field = $dtEditor.igDateEditor("field"),
 		done = assert.async(),
@@ -4413,7 +4411,7 @@ QUnit.test('Test invalid composition value', function (assert) {
 		assert.equal($field.val(), "05/01/2015", "Text should remain on invalid composition value.");
 		assert.ok($field[0].selectionStart === 0 && $field[0].selectionEnd === 10, "Entire value should be selected.");
 		$field.blur();
-		assert.equal($dtEditor.igDateEditor("value") && $dtEditor.igDateEditor("value").getTime(), new Date(2015, 04, 01).getTime(), "value did not stay the same");
+		assert.equal($dtEditor.igDateEditor("value") && $dtEditor.igDateEditor("value").getTime(), new Date(2015, 4, 1).getTime(), "value did not stay the same");
 
 		done();
 	}).catch(function (er) {
@@ -4465,7 +4463,7 @@ QUnit.test('Testing spin minutes in 12 hours format', function (assert) {
 		$dtEditor.data("igDateEditor")._setCursorPosition(12);
 		util.click(spinUpButton, false, false);
 		$dtEditor.trigger("blur");
-		expectedValue = new Date(2017, 11, 9, 1, 00);
+		expectedValue = new Date(2017, 11, 9, 1, 0);
 		value = $dtEditor.igDateEditor("value");
 		assert.equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expected');
 		assert.equal($dtEditor.igDateEditor("displayValue"), "12/9/2017 1:00 AM", 'The initial value is not as expected');
