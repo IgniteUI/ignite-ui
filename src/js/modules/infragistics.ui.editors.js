@@ -580,7 +580,7 @@
 				}
 			}
 			if (readOnly) {
-				element.removeAttr("readonly");
+				element.prop("readonly", false);
 
 				// If we have 'readOnly' attribute, then it is applied only when 'readOnly' options is not defined.
 				if (this._definedOptions === undefined || this._definedOptions.readOnly === undefined) {
@@ -11864,7 +11864,7 @@
 			this._super(this.element);
 
 			if (checked) {
-				this.element.removeAttr("checked");
+				this.element.prop("checked", false);
 				this.options.checked = true;
 			}
 		},

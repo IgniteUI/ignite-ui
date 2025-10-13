@@ -7653,7 +7653,7 @@
 			if (this.options.mode !== "editable") {
 				// Disable editing and selection for non-editable modes
 				this.element
-					.removeAttr("readonly")
+					.prop("readonly", false)
 					.removeAttr("unselectable")
 					.removeClass(this.css.unselectable);
 			}
