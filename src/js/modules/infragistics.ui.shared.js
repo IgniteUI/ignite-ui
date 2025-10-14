@@ -720,7 +720,7 @@
 					this.handles.attr("disabled", "disabled");
 					this.element.addClass("ui-disabled");
 				} else {
-					this.handles.prop("disabled", false);
+					this.handles.removeAttr("disabled");
 					this.element.removeClass("ui-disabled");
 				}
 				break;
@@ -1192,7 +1192,7 @@
             if (e.hasClass(o.css.buttonDisabledClass)) {
                 e.removeClass(o.css.buttonDisabledClass);
             }
-            e.prop("disabled", false);
+            e.removeAttr("disabled");
             if (e.is("a") === true) {
                 self._setLinkOptions(true);
             }

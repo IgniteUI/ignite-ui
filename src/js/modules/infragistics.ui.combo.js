@@ -4976,8 +4976,8 @@
 				this._options.$input.attr("disabled", true);
 				this._options.$hiddenInput.attr("disabled", true);
 			} else {
-				this._options.$input.prop("disabled", false);
-				this._options.$hiddenInput.prop("disabled", false);
+				this._options.$input.removeAttr("disabled");
+				this._options.$hiddenInput.removeAttr("disabled");
 			}
 		},
 		changeLocale: function () {
@@ -7653,7 +7653,7 @@
 			if (this.options.mode !== "editable") {
 				// Disable editing and selection for non-editable modes
 				this.element
-					.prop("readonly", false)
+					.removeAttr("readonly")
 					.removeAttr("unselectable")
 					.removeClass(this.css.unselectable);
 			}

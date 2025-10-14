@@ -572,7 +572,7 @@
 				}
 			}
 			if (disabled) {
-				element.prop("disabled", false);
+				element.removeAttr("disabled");
 
 				// If we have 'disabled' attribute, then it is applied only when 'disabled' options is not defined.
 				if (this._definedOptions === undefined || this._definedOptions.disabled === undefined) {
@@ -580,7 +580,7 @@
 				}
 			}
 			if (readOnly) {
-				element.prop("readonly", false);
+				element.removeAttr("readonly");
 
 				// If we have 'readOnly' attribute, then it is applied only when 'readOnly' options is not defined.
 				if (this._definedOptions === undefined || this._definedOptions.readOnly === undefined) {
@@ -2240,6 +2240,7 @@
 		_enableSpinButton: function (target, type) {
 			if (target && target.attr("disabled")) {
 				target.removeClass(this.css.disabled);
+				target.removeAttr("disabled");
 				target.prop("disabled", false);
 				this._attachButtonsEvents(type, target);
 			}
@@ -11862,8 +11863,8 @@
 
 			this._super(this.element);
 
-			if (checked) {
-				this.element.prop("checked", false);
+				if (checked) {
+				this.element.removeAttr("checked");
 				this.options.checked = true;
 			}
 		},
