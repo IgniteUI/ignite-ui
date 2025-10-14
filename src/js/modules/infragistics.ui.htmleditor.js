@@ -1934,7 +1934,7 @@
                 }
             });
 
-            $(document).click(function (e) {
+            $(document).on('click', function (e) {
                 var $tarParents = $(e.target).parents();
 
                 // Hide all popovers except when clicking on one of them

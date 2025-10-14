@@ -440,7 +440,7 @@
 					border: "0px",
 					outline: "none"
 				};
-				me._foc = $("<input type=\"button\"/>").css(v).appendTo(cont).focus(function (evt) {
+				me._foc = $("<input type=\"button\"/>").css(v).appendTo(cont).on('focus', function (evt) {
 					if (o.disabled || me._fcs) {
 						return;
 					}
@@ -456,7 +456,7 @@
 						me._hov.css("visibility", "visible");
 					}
 					me._elem.addClass(css.active);
-				}).blur(function (e) {
+				}).on('blur', function (e) {
 					if (o.disabled || !me._fcs) {
 						return;
 					}

@@ -1185,7 +1185,7 @@
                 // Z.K. Bug #201281 Click event does not fire on the click of the splitter.
                 // This is happening because the bar element is cloned and the click event is not fired.
                 // In order to overcome this mouse up and down events are handled and on mouse up "click" is triggered
-                clonedBar.mouseup(function () {
+                clonedBar.on('mouseup', function () {
 
                     if (splitter.options.orientation === "vertical") {
                         if (opt.barMouseDown && Math.round(offset.left) ===
