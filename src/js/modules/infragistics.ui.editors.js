@@ -11863,7 +11863,7 @@
 
 			this._super(this.element);
 
-				if (checked) {
+			if (checked) {
 				this.element.removeAttr("checked");
 				this.options.checked = true;
 			}
@@ -12844,3 +12844,4 @@
 	$.extend($.ui.igTimePicker, { version: "<build_number>" });
 	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
+
