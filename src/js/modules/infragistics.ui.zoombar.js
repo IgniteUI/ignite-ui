@@ -744,8 +744,8 @@
 					},
 					text: false
 				})
-				.click(this._leftRightButtonHandler)
-				.keyup(this._leftRightButtonHandler)
+				.on('click', this._leftRightButtonHandler)
+				.on('keyup', this._leftRightButtonHandler)
 				.removeClass("ui-corner-all")
 				.appendTo(container);
 		},

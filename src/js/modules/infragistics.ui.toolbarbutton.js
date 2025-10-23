@@ -266,7 +266,7 @@
                 self = this;
 
             // Toggle element state on click
-            this.element.click(function (e) {
+            this.element.on('click', function (e) {
                 if (o.allowToggling) {
                     if (o.isSelected) {
                         noCancel = self._triggerDeactivating(e);

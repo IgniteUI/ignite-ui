@@ -572,7 +572,7 @@
 				}
 			}
 			if (disabled) {
-				element[0].removeAttribute("disabled");
+				element.removeAttr("disabled");
 
 				// If we have 'disabled' attribute, then it is applied only when 'disabled' options is not defined.
 				if (this._definedOptions === undefined || this._definedOptions.disabled === undefined) {
@@ -2240,7 +2240,7 @@
 		_enableSpinButton: function (target, type) {
 			if (target && target.attr("disabled")) {
 				target.removeClass(this.css.disabled);
-				target[0].removeAttribute("disabled");
+				target.removeAttr("disabled");
 				target.prop("disabled", false);
 				this._attachButtonsEvents(type, target);
 			}
@@ -12844,3 +12844,4 @@
 	$.extend($.ui.igTimePicker, { version: "<build_number>" });
 	return $;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
+
