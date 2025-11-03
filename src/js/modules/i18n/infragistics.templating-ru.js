@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.ru.Templating = {
-			undefinedArgument: 'Произошла ошибка при извлечении значения поля из источника данных: '
+			undefinedArgument: 'Произошла ошибка при извлечении значения поля из источника данных: ',
+			noAdvancedTemplating: 'Расширенный механизм шаблонов не загружен для обработки {{if}} или {{each}}. Включите модуль "infragistics.templating.advanced.js", чтобы использовать расширенные возможности шаблонов.'
 	};
 	
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.ru.Templating;

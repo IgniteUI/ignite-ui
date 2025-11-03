@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.es.Templating = {
-			undefinedArgument: 'Se ha producido un error al intentar recuperar las propiedades del origen de datos: '
+			undefinedArgument: 'Se ha producido un error al intentar recuperar las propiedades del origen de datos: ',
+			noAdvancedTemplating: 'El motor de plantillas avanzado no está cargado para manejar {{if}} o {{each}}. Incluya el módulo "infragistics.templating.advanced.js" para utilizar funciones avanzadas de plantillas.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.es.Templating;

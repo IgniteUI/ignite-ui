@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.tr.Templating = {
-			undefinedArgument: 'Veri kaynağı özelliğini almaya çalışırken bir hata oluştu: '
+			undefinedArgument: 'Veri kaynağı özelliğini almaya çalışırken bir hata oluştu: ',
+			noAdvancedTemplating: '{{if}} veya {{each}} ifadelerini işlemek için gelişmiş şablon motoru yüklenmemiş. Gelişmiş şablon özelliklerini kullanmak için "infragistics.templating.advanced.js" modülünü ekleyin.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.tr.Templating;

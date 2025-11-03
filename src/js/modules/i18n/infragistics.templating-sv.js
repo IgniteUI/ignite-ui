@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.sv.Templating = {
-			undefinedArgument: 'Ett fel har inträffat vid försök att hämta egenskapen för datakällan: '
+			undefinedArgument: 'Ett fel har inträffat vid försök att hämta egenskapen för datakällan: ',
+			noAdvancedTemplating: 'Den avancerade mallmotorn är inte inläst för att hantera {{if}} eller {{each}}. Inkludera modulen "infragistics.templating.advanced.js" för att använda avancerade mallfunktioner.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.sv.Templating;

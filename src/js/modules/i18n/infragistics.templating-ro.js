@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.ro.Templating = {
-			undefinedArgument: 'A apărut o eroare la încercarea de recuperare a proprietății sursei de date: '
+			undefinedArgument: 'A apărut o eroare la încercarea de recuperare a proprietății sursei de date: ',
+			noAdvancedTemplating: 'Motorul avansat de șabloane nu este încărcat pentru a gestiona {{if}} sau {{each}}. Includeți modulul "infragistics.templating.advanced.js" pentru a utiliza funcțiile avansate de șabloane.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.ro.Templating;

@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.nb.Templating = {
-			undefinedArgument: 'Det har oppstått en feil under forsøket på å hente datakildegenskapen: '
+			undefinedArgument: 'Det har oppstått en feil under forsøket på å hente datakildegenskapen: ',
+			noAdvancedTemplating: 'Den avanserte malmotoren er ikke lastet for å håndtere {{if}} eller {{each}}. Inkluder modulen "infragistics.templating.advanced.js" for å bruke avanserte malfunksjoner.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.nb.Templating;

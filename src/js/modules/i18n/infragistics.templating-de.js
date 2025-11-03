@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.de.Templating = {
-			undefinedArgument: 'Beim Abrufen der Datenquellen-Eigenschaft ist ein Fehler aufgetreten: '
+			undefinedArgument: 'Beim Abrufen der Datenquellen-Eigenschaft ist ein Fehler aufgetreten: ',
+			noAdvancedTemplating: 'Die erweiterte Vorlagen-Engine ist nicht geladen, um {{if}} oder {{each}} zu verarbeiten. Bitte das Modul "infragistics.templating.advanced.js" einbinden, um erweiterte Vorlagenfunktionen zu verwenden.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.de.Templating;

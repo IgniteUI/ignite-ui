@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.it.Templating = {
-			undefinedArgument: 'Si è verificato un errore durante il tentativo di recuperare la proprietà dell\'origine dati: '
+			undefinedArgument: 'Si è verificato un errore durante il tentativo di recuperare la proprietà dell\'origine dati: ',
+			noAdvancedTemplating: 'Il motore di modelli avanzato non è caricato per gestire {{if}} o {{each}}. Includi il modulo "infragistics.templating.advanced.js" per utilizzare le funzionalità di modellazione avanzate.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.it.Templating;

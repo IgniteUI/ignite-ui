@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.nl.Templating = {
-			undefinedArgument: 'Er is een fout opgetreden bij het ophalen van de eigenschap van de gegevensbron: '
+			undefinedArgument: 'Er is een fout opgetreden bij het ophalen van de eigenschap van de gegevensbron: ',
+			noAdvancedTemplating: 'De geavanceerde sjabloonengine is niet geladen om {{if}} of {{each}} te verwerken. Voeg de module "infragistics.templating.advanced.js" toe om geavanceerde sjabloonfuncties te gebruiken.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.nl.Templating;
