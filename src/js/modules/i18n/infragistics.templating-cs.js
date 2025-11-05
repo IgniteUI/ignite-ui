@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.cs.Templating = {
-			undefinedArgument: 'Při pokusu o načtení vlastnosti zdroje dat došlo k chybě: '
+			undefinedArgument: 'Při pokusu o načtení vlastnosti zdroje dat došlo k chybě: ',
+			noAdvancedTemplating: 'Pokročilý šablonovací engine není načten pro zpracování {{if}} nebo {{each}}. Přidejte modul "infragistics.templating.advanced.js" pro použití pokročilých funkcí šablonování.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.cs.Templating;

@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.da.Templating = {
-			undefinedArgument: 'Der opstod en fejl under forsøg på at hente datakildeegenskaben: '
+			undefinedArgument: 'Der opstod en fejl under forsøg på at hente datakildeegenskaben: ',
+			noAdvancedTemplating: 'Den avancerede skabelonmotor er ikke indlæst til at håndtere {{if}} eller {{each}}. Inkluder venligst modulet "infragistics.templating.advanced.js" for at bruge avancerede skabelonfunktioner.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.da.Templating;

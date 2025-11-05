@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.pl.Templating = {
-			undefinedArgument: 'Wystąpił błąd podczas próby pobrania właściwości źródła danych: '
+			undefinedArgument: 'Wystąpił błąd podczas próby pobrania właściwości źródła danych: ',
+			noAdvancedTemplating: 'Zaawansowany silnik szablonów nie został załadowany, aby obsługiwać {{if}} lub {{each}}. Dołącz moduł "infragistics.templating.advanced.js", aby korzystać z zaawansowanych funkcji szablonów.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.pl.Templating;

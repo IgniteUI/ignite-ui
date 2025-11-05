@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale['zh-Hant'].Templating = {
-			undefinedArgument: '嘗試擷取資料來源屬性時出錯: '
+			undefinedArgument: '嘗試擷取資料來源屬性時出錯: ',
+			noAdvancedTemplating: '未載入進階樣板引擎，無法處理 {{if}} 或 {{each}}。請包含模組 "infragistics.templating.advanced.js" 以使用進階樣板功能。'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale['zh-Hant'].Templating;

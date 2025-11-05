@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.bg.Templating = {
-			undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
+			undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: ',
+			noAdvancedTemplating: 'Разширената система за шаблони не е заредена, за да обработва {{if}} или {{each}}. Моля, включете модула "infragistics.templating.advanced.js", за да използвате разширените функции за шаблониране.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.bg.Templating;

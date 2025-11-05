@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.ja.Templating = {
-			undefinedArgument: 'データ ソース プロパティを取得する際にエラーが発生しました: '
+			undefinedArgument: 'データ ソース プロパティを取得する際にエラーが発生しました: ',
+			noAdvancedTemplating: '{{if}} または {{each}} を処理するために高度なテンプレート エンジンが読み込まれていません。高度なテンプレート機能を使用するには、"infragistics.templating.advanced.js" モジュールを含めてください。'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.ja.Templating;

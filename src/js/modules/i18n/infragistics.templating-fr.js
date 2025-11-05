@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.fr.Templating = {
-			undefinedArgument: "Une erreur s'est produite pendant la récupération de la propriété de la source de données : "
+			undefinedArgument: "Une erreur s'est produite pendant la récupération de la propriété de la source de données : ",
+			noAdvancedTemplating: "Le moteur de modèles avancé n'est pas chargé pour gérer {{if}} ou {{each}}. Veuillez inclure le module 'infragistics.templating.advanced.js' pour utiliser les fonctionnalités avancées de modélisation."
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.fr.Templating;

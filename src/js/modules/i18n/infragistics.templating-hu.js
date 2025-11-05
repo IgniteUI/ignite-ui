@@ -21,7 +21,8 @@
 	$.ig.Templating = $.ig.Templating || {};
 	
 	$.ig.locale.hu.Templating = {
-			undefinedArgument: 'Hiba történt az adatforrás tulajdonságának lekérése közben: '
+			undefinedArgument: 'Hiba történt az adatforrás tulajdonságának lekérése közben: ',
+			noAdvancedTemplating: 'A speciális sablonmotor nincs betöltve, ezért nem tudja kezelni a {{if}} vagy {{each}} kifejezéseket. Kérjük, vegye fel az "infragistics.templating.advanced.js" modult a speciális sablonfunkciók használatához.'
 	};
 
 	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.hu.Templating;
