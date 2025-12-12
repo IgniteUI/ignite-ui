@@ -12,11 +12,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
+
       - run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - run: echo ${VERSION}
 
@@ -40,5 +41,4 @@ jobs:
 
       - run: npm publish --tag ${NPM_TAG}
         working-directory: dist
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
