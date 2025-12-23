@@ -12,10 +12,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
         node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     
@@ -31,7 +32,7 @@ jobs:
     - run: npm run cover
 
     - name: Publish to coveralls.io
-      if: github.repository == 'IgniteUI/ignite-ui' && matrix.node-version == '20.x'
+      if: github.repository == 'IgniteUI/ignite-ui' && matrix.node-version == '20.x' && matrix.os == 'ubuntu-latest'
       uses: coverallsapp/github-action@v1.2.1
       with:
           path-to-lcov: ./coverage/lcov.info
