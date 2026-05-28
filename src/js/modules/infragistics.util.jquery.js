@@ -1112,9 +1112,15 @@
 
 	// Returns the width of the vertical scrollbar
 	$.ig.util.getScrollWidth = function () {
-		var el = $('<div style="width: 100px; height: 100px; position: absolute; ' +
-			'top: -10000px; left: -10000px; overflow: scroll"></div>')
-			.appendTo($(document.body)), scrollWidth;
+		var el = $("<div></div>").appendTo($(document.body)), scrollWidth;
+		el.css({
+			"width": "100px",
+			"height": "100px",
+			"position": "absolute",
+			"top": "-10000px",
+			"left": "-10000px",
+			"overflow": "scroll"
+		});
 		scrollWidth = el[ 0 ].offsetWidth - el[ 0 ].clientWidth;
 		el.remove();
 		return scrollWidth;
@@ -1122,9 +1128,15 @@
 
 	// Returns the height of the horizontal scrollbar
 	$.ig.util.getScrollHeight = function () {
-		var el = $('<div style="width: 100px; height: 100px; position: absolute; ' +
-			'top: -10000px; left: -10000px; overflow: scroll"></div>')
-			.appendTo($(document.body)), scrollHeight;
+		var el = $("<div></div>").appendTo($(document.body)), scrollHeight;
+		el.css({
+			"width": "100px",
+			"height": "100px",
+			"position": "absolute",
+			"top": "-10000px",
+			"left": "-10000px",
+			"overflow": "scroll"
+		});
 		scrollHeight = el[ 0 ].offsetHeight - el[ 0 ].clientHeight;
 		el.remove();
 		return scrollHeight;
