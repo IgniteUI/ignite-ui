@@ -245,7 +245,10 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
 		locale: [ "$localePath$/infragistics.ui.scroll-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.scroll.css" ],
+		css: [
+			"$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.scroll.css"
+		],
 		description: $.ig.loaderClass.locale.descriptions.scrollDescription
 	},
 	{
@@ -1727,7 +1730,10 @@ $.ig.dependencies = [
 		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.layoutmanager.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ],
+		css: [
+			"$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.layout.css"
+		],
 		description: $.ig.loaderClass.locale.descriptions.layoutManagerDescription
 	},
 	{
@@ -1789,7 +1795,10 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.splitter.js" ],
 		locale: [ "$localePath$/infragistics.ui.splitter-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.splitter.css" ],
+		css: [
+			"$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.splitter.css"
+		],
 		description: $.ig.loaderClass.locale.descriptions.splitterDescription
 	},
 	{
