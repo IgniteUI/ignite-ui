@@ -472,3 +472,12 @@ visibility:hidden;
 		display: none !important
 	}
 }
+/* Scroll measurement helper - used by $.ig.util.getScrollWidth/getScrollHeight */
+.ui-ig-scroll-measure {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+    overflow: scroll;
+}
