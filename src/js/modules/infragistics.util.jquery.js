@@ -1112,7 +1112,7 @@
 
 	// Returns the width of the vertical scrollbar
 	$.ig.util.getScrollWidth = function () {
-		var el = $('<div></div>').addClass('ui-ig-scroll-measure')
+		var el = $("<div></div>").addClass("ui-ig-scroll-measure")
 			.appendTo($(document.body)), scrollWidth;
 		scrollWidth = el[ 0 ].offsetWidth - el[ 0 ].clientWidth;
 		el.remove();
@@ -1121,7 +1121,7 @@
 
 	// Returns the height of the horizontal scrollbar
 	$.ig.util.getScrollHeight = function () {
-		var el = $('<div></div>').addClass('ui-ig-scroll-measure')
+		var el = $("<div></div>").addClass("ui-ig-scroll-measure")
 			.appendTo($(document.body)), scrollHeight;
 		scrollHeight = el[ 0 ].offsetHeight - el[ 0 ].clientHeight;
 		el.remove();
