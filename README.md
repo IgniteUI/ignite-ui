@@ -163,6 +163,16 @@ Package contains similar files and structure to what you'd find in the [full ver
 ```
 The full built content for both packages can be browsed at the [Ignite UI for jQuery Bower Shim repository](https://github.com/IgniteUI/ignite-ui-bower).
 
+## Platform Support
+
+Ignite UI for jQuery is tested and supported on the following platforms:
+
+* **Operating Systems**: Windows, macOS, Linux (x86_64 and ARM64/aarch64)
+* **Node.js**: Node.js 20.x and later
+* **Browsers**: Chrome, Firefox, Safari, Edge
+
+The ARM64 (aarch64) support has been validated and is continuously tested via our CI/CD pipeline. This ensures that developers can build and run Ignite UI for jQuery on ARM-based systems including Apple Silicon Macs, AWS Graviton instances, and other ARM64 Linux environments.
+
 ## Running demos locally
 
 Besides browsing our [online samples](http://www.igniteui.com/), you can also run the demos included with this repo in a local clone.
