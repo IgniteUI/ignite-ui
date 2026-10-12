@@ -1,0 +1,15 @@
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/" # scans .github/workflows/ automatically
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    cooldown:
+      default-days: 14 # only propose versions released ≥14 days ago
+    groups:
+      github-actions:
+        applies-to: version-updates # security updates bypass grouping — each gets its own fast-track PR
+        patterns:
+          - "*" # batch all version updates into a single PR
