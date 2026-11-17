@@ -28,7 +28,7 @@ jobs:
       - run: echo "NODE_OPTIONS='--max_old_space_size=4096'" >> $GITHUB_ENV
       - run: npm ci
 
-      - run: grunt build
+      - run: npm run build
 
       # define npm tag
       - run: if [[ ${VERSION} == *"alpha"* || ${VERSION} == *"beta"* || ${VERSION} == *"rc"* ]]; then echo "NPM_TAG=next"; else echo "NPM_TAG=latest"; fi >> $GITHUB_ENV

@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: grunt build
+    - run: npm run build
     - run: npm run cover
 
     - name: Publish to coveralls.io

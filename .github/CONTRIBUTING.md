@@ -10,7 +10,7 @@ Your pull request will undergo a review and if approved will be merged. All chec
 In order to perform all the necessary checks before pulling your changes in, you need to run  
 
     npm install
-    grunt verify
+    npx grunt verify
 
 # Workflow
 When working on an issue for the Ignite UI for jQuery repository, you need to be aware of and to follow a correct status workflow. We have created a number of status labels in order to communicate well what the current status of a single issue/pull request is. The statuses are as follows:
