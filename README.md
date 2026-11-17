@@ -176,7 +176,7 @@ The command will install all build dependencies as well as bower packages used i
 
 To build the product: 
 ```bash
-grunt build
+npm run build
 ```
 This will create source files under the `dist/` folder complete with merged locales, combined script and structure CSS and can be called again to include new changes.
 
