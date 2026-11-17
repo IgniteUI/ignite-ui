@@ -480,13 +480,15 @@ QUnit.test('[ID14] igUpload MULTIPLE MODE test show/hide details', function (ass
 
 	// MULTIPLE UPLOAD Show/Hide Details
 	var click = jQuery.Event("click"),
-		buttonShowHideDetails = $('#' + uploaderId + '_shdbtn');
+		buttonShowHideDetails = $('#' + uploaderId + '_shdbtn'),
+		fileContainer = $('#' + uploaderId + '_fc');
 	buttonShowHideDetails.trigger(click);
 
-	$.ig.TestUtil.wait(500).then(function () {
-		assert.equal($('#' + uploaderId + '_fc').is(':hidden'), true, 'File container should be hidden.');
+	// wait for the slideToggle animation to complete instead of a fixed timeout equal to its duration
+	fileContainer.promise().then(function () {
+		assert.equal(fileContainer.is(':hidden'), true, 'File container should be hidden.');
 		buttonShowHideDetails.trigger(click);
-		assert.equal($('#' + uploaderId + '_fc').is(':hidden'), false, 'File container should be hidden.');
+		assert.equal(fileContainer.is(':hidden'), false, 'File container should be visible.');
 		done();
 	}).catch(function (er) {
 		assert.pushResult({ result: false, message: er.message });
