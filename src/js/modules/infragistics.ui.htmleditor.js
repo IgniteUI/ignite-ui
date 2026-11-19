@@ -1955,12 +1955,12 @@
 
                 // K.D. October 3rd, 2012 Bug #123366 Encoding the content before setting the value
                 // D.A. November 4th, 2013 Bug #155847 Viewsource cannot be switched when there are leading whitespaces
-                this.sourceWindow.val($.trim(workSpaceBody.html()));
+                this.sourceWindow.val($.ig.util.trim(workSpaceBody.html()));
                 workspace.hide();
                 this.sourceWindow.show();
             } else {
                 workSpaceBody.attr("contentEditable", true);
-                workSpaceBody.html($.trim(this.sourceWindow.val()));
+                workSpaceBody.html($.ig.util.trim(this.sourceWindow.val()));
                 workspace.show();
                 this.sourceWindow.hide();
 

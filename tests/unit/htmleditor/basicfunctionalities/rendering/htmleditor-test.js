@@ -1790,3 +1790,33 @@ QUnit.test('[ID74] igHtmlEditor igToolbarHelper unit tests - Add image to editor
 	});
 });
 
+QUnit.module("igHTMLEditor without $.trim (jQuery 4)", {
+	trim: null,
+	beforeEach: function () {
+		// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
+		this.trim = $.trim;
+		delete $.trim;
+	},
+	afterEach: function () {
+		$.trim = this.trim;
+	}
+});
+
+QUnit.test("Switch to the source view and back", function (assert) {
+	assert.expect(4);
+	var htmlEditor = $.ig.TestUtil.appendToFixture('<div></div>', { id: "trimHtmlEditor" }).igHtmlEditor({}),
+		viewSourceBtn = htmlEditor.find(".ui-igbutton-viewsource"),
+		designView = $("#trimHtmlEditor_editor"),
+		sourceView = $("#trimHtmlEditor_source");
+
+	htmlEditor.igHtmlEditor("setContent", "<p>test</p>", "html");
+	viewSourceBtn.click();
+	assert.notOk(designView.is(":visible"), "The source view should be shown.");
+	assert.equal(sourceView.val(), "<p>test</p>", "The source view should contain the content.");
+
+	sourceView.val("  <p>changed</p>  ");
+	viewSourceBtn.click();
+	assert.ok(designView.is(":visible"), "The design view should be shown.");
+	assert.equal(htmlEditor.igHtmlEditor("getContent", "html"), "<p>changed</p>", "The edited source should be applied without the surrounding whitespace.");
+});
+

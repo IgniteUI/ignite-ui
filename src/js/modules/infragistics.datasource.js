@@ -2102,7 +2102,7 @@
 				return "invalid";
 			}
 			if ($.ig.util.getType(ds) === "string") { //string or object
-				ds = $.trim(ds);
+				ds = $.ig.util.trim(ds);
 				if (ds.startsWith("/")) {
 					return "remoteUrl";
 				}
@@ -4009,7 +4009,7 @@
 					// M.H. 9 Oct 2013 Fix for bug #139006: dataSourceType should be set explicitly when invoke dataBind with remote operations
 					ds = this.dataSource();
 					if ($.ig.util.getType(ds) === "string") { //string or object
-						ds = $.trim(ds);
+						ds = $.ig.util.trim(ds);
 						/* N.A. 02/10/2014 Bug #162293 Add support for https requests. */
 						if (ds.startsWith("/") || ds.startsWith("http://") || ds.startsWith("https://")) {
 							this._runtimeType = "remoteUrl";
@@ -4497,7 +4497,7 @@
 					}
 				}
 				/* try to analyze and detect automatically */
-				data = $.ig.util.getType(data) === "string" ? $.trim(data) : data;
+				data = $.ig.util.getType(data) === "string" ? $.ig.util.trim(data) : data;
 				if ((data && $.ig.util.getType(data) === "string" && (data.startsWith("<?xml") ||
 					data.startsWith("<"))) || t === "xml") {
 					/* assume XML */
@@ -5771,7 +5771,7 @@
 
 			for (i = 0; i < tmp.length; i++) {
 				fields[ i ] = {};
-				tmp2 = $.trim(tmp[ i ]).split(" ");
+				tmp2 = $.ig.util.trim(tmp[ i ]).split(" ");
 				fields[ i ].fieldName = tmp2[ 0 ];
 				fields[ i ].dir = tmp2[ 1 ];
 			}
@@ -6209,17 +6209,17 @@
 		},
 		_parseFilterExprString: function (expr) {
 			//A.T. 18 Jan 2011 - fix for bug #62418
-			var exprs = $.trim(expr).split(/(?=AND+)|(?=OR+)/i), i, j, fields = [], tmp, tmp2, isInvalid = true;
+			var exprs = $.ig.util.trim(expr).split(/(?=AND+)|(?=OR+)/i), i, j, fields = [], tmp, tmp2, isInvalid = true;
 			for (i = 0; i < exprs.length; i++) {
 				fields[ i ] = {};
 				/* A.T. 18 Jan 2011 -  Fix for bug #62415 - equality sign (=) is not parsed when in a filtering expression string */
 				/* A.T. 19 Jan 2011 - removing (IN) operator. (bug #62365) */
-				tmp = $.trim(exprs[ i ]).split(/(?= \=+)|(?=<>+)|(?=>+)|(?=<+)|(?=LIKE+)|(?=NOT\WLIKE)+|(?=>\=+)|(?=<\=+)/);
-				if ($.trim(exprs[ i ]).toLowerCase().startsWith("and")) {
+				tmp = $.ig.util.trim(exprs[ i ]).split(/(?= \=+)|(?=<>+)|(?=>+)|(?=<+)|(?=LIKE+)|(?=NOT\WLIKE)+|(?=>\=+)|(?=<\=+)/);
+				if ($.ig.util.trim(exprs[ i ]).toLowerCase().startsWith("and")) {
 					fields[ i ].logic = "AND";
 					/* strip AND
 					tmp[0] = tmp[0].substring(tmp.indexOf(3)); */
-				} else if ($.trim(exprs[ i ]).toLowerCase().startsWith("or")) {
+				} else if ($.ig.util.trim(exprs[ i ]).toLowerCase().startsWith("or")) {
 					fields[ i ].logic = "OR";
 					/* strip OR
 					tmp[0] = tmp[0].substring(tmp.indexOf(2)); */
@@ -6229,11 +6229,11 @@
 					fields[ i - 1 ].logic = fields[ i ].logic;
 				}
 				if (tmp[ 0 ].toLowerCase().startsWith("and") || tmp[ 0 ].toLowerCase().startsWith("or")) {
-					fields[ i ].fieldName = $.trim(tmp[ 0 ].split(" ")[ 1 ]);
+					fields[ i ].fieldName = $.ig.util.trim(tmp[ 0 ].split(" ")[ 1 ]);
 				} else {
-					fields[ i ].fieldName = $.trim(tmp[ 0 ]);
+					fields[ i ].fieldName = $.ig.util.trim(tmp[ 0 ]);
 				}
-				tmp2 = $.trim(tmp[ 1 ]).split(" ");
+				tmp2 = $.ig.util.trim(tmp[ 1 ]).split(" ");
 				/* fix ambiguous matching between <, >, and <> */
 				if (exprs[ i ].indexOf("<>") !== -1) {
 					tmp2[ 0 ] = "<>";
@@ -6249,7 +6249,7 @@
 					tmp2 = [ tmp2[ 0 ], tmp2[ 1 ] ];
 				}
 				if (tmp[ 1 ].startsWith("NOT")) {
-					fields[ i ].expr = $.trim(tmp[ 2 ].replace("LIKE", ""));
+					fields[ i ].expr = $.ig.util.trim(tmp[ 2 ].replace("LIKE", ""));
 				} else {
 					fields[ i ].expr = tmp2[ 1 ];
 				}
@@ -6357,7 +6357,7 @@
 				return true;
 			}
 
-			tmpExpr = $.trim(expr);
+			tmpExpr = $.ig.util.trim(expr);
 			/*if (t === null || t === undefined) {
 				t = $.ig.util.getType(expr);
 			} */
@@ -8282,7 +8282,7 @@
 						text = "";
 						for (i = 0; i < li[ 0 ].childNodes.length; i++) {
 							if (li[ 0 ].childNodes[ i ].nodeType === 3 && li[ 0 ].childNodes[ i ].data) {
-								text += $.trim(li[ 0 ].childNodes[ i ].data);
+								text += $.ig.util.trim(li[ 0 ].childNodes[ i ].data);
 							}
 						}
 

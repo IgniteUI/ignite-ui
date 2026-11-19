@@ -2380,7 +2380,7 @@ $.extend($.ig.loaderClass, {
 			this._loadBatches.push(loadBatch);
 
 			for (i = 0; i < res.length; i++) {
-				(new $.ig._loadWorkItem(this)).loadWidgetResources($.trim(res[ i ]), loadBatch.callback);
+				(new $.ig._loadWorkItem(this)).loadWidgetResources(res[ i ].trim(), loadBatch.callback);
 			}
 		}
 		return this;
@@ -2524,7 +2524,7 @@ $.extend($.ig.loaderClass, {
 						locales = this.settings.locale.split(",");
 						localeScr = localeScripts.pop();
 						for ( k = 0; k < locales.length; k++) {
-							scriptData.unshift(localeScr.replace("$locale$", $.trim(locales[ k ])));
+							scriptData.unshift(localeScr.replace("$locale$", locales[ k ].trim()));
 						}
 					}
 				}
@@ -2536,7 +2536,7 @@ $.extend($.ig.loaderClass, {
 					while (regionalScripts.length > 0) {
 						regionalScr = regionalScripts.pop();
 						for ( k = 0; k < regionals.length; k++) {
-							scriptData.unshift(regionalScr.replace("$regional$", $.trim(regionals[ k ])));
+							scriptData.unshift(regionalScr.replace("$regional$", regionals[ k ].trim()));
 						}
 					}
 				}
