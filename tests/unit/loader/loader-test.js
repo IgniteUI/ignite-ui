@@ -215,3 +215,48 @@ QUnit.test("test 4: Test load resources with multiple regionals", function (asse
 		}
 	});
 });
+
+QUnit.module("igLoader without $.trim (jQuery 4)", {
+	jsPath: "base/mock/src/js/",
+	cssPath: "base/mock/src/css/",
+	trim: null,
+	beforeEach: function () {
+		// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
+		this.trim = $.trim;
+		delete $.trim;
+	},
+	afterEach: function () {
+		$.trim = this.trim;
+		$("head > script[src*='" + this.jsPath + "'], head > link[href*='" + this.cssPath + "']").remove();
+	}
+});
+
+QUnit.test("Load resources, locales and regionals from lists with spaces", function (assert) {
+	assert.expect(5);
+	var done = assert.async(),
+		expectedScripts = [
+			"infragistics.templating.js",
+			"infragistics.templating-fr.js",
+			"infragistics.ui.editors.js",
+			"infragistics.ui.editors-fr.js",
+			"infragistics.ui.regional-fr.js"
+		];
+
+	$.ig.loader({
+		scriptPath: this.jsPath,
+		cssPath: this.cssPath,
+		resources: "igTemplating, igEditors",
+		locale: "en, fr",
+		regional: "en, fr",
+		ready: () => {
+			var loadedScripts = $("head > script[src*='" + this.jsPath + "']").map(function () {
+				return this.src.split("/").pop();
+			}).get();
+
+			expectedScripts.forEach(function (script) {
+				assert.ok(loadedScripts.indexOf(script) !== -1, "The loaded resources should contain: " + script);
+			});
+			done();
+		}
+	});
+});

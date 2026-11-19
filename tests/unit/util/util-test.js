@@ -433,3 +433,26 @@ QUnit.test('[ID21] Test String.concat', function (assert) {
 	assert.equal(String.concat(arr[0], arr[1]), "abc123",  "Default w/ Separate arguments");
 	assert.equal(String.concat(arr), "abc123",  "Default w/ single argument");
 });
+
+QUnit.test('[ID22] Test $.ig.util.trim', function (assert) {
+	assert.expect(14);
+
+	var trim = $.trim,
+		values = [null, undefined, 0, 42, "  ABC  ", "\u00A0\uFEFF\t\r\n ABC \u00A0\uFEFF\t\r\n", "A B"],
+		expected = ["", "", "0", "42", "ABC", "ABC", "A B"],
+		i;
+
+	for (i = 0; i < values.length; i++) {
+		assert.strictEqual($.ig.util.trim(values[i]), trim(values[i]), "Same result as $.trim for " + JSON.stringify(values[i]));
+	}
+
+	// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
+	delete $.trim;
+	try {
+		for (i = 0; i < values.length; i++) {
+			assert.strictEqual($.ig.util.trim(values[i]), expected[i], "Trimmed without $.trim: " + JSON.stringify(values[i]));
+		}
+	} finally {
+		$.trim = trim;
+	}
+});

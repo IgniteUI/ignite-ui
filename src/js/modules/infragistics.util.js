@@ -4437,6 +4437,12 @@
 		return str.replace(new RegExp($.ig.util.escapeRegExp(oldValue), "g"), newValue);
 	};
 
+	// Replaces $.trim, which jQuery 4 removed: null and undefined give "",
+	// other values are converted to a string and trimmed on both ends
+	$.ig.util.trim = function (value) {
+		return value == null ? "" : String(value).trim();
+	};
+
 	// Implements the .NET String.Format functionality
 	$.ig.util.stringFormat = function (format) {
 		return $.ig.util.stringFormat1(format, Array.prototype.slice.call(arguments, 1));

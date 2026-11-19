@@ -1440,3 +1440,37 @@ QUnit.module("igDataSource filtering", {
 					fd = ds.filteredData();
 					assert.ok(fd.length === 0, "The items shoould not be filtered");
 				});
+
+				QUnit.module("igDataSource filtering without $.trim (jQuery 4)", {
+					trim: null,
+					beforeEach: function () {
+						// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
+						this.trim = $.trim;
+						delete $.trim;
+					},
+					afterEach: function () {
+						$.trim = this.trim;
+					}
+				});
+
+				QUnit.test("Local filtering with field expressions", function (assert) {
+					assert.expect(1);
+					var ds = new $.ig.DataSource({
+						dataSource: [{ ID: 1 }, { ID: 2 }, { ID: 3 }],
+						schema: { fields: [{ name: "ID", type: "number" }] }
+					});
+					ds.dataBind();
+					ds.filter([{ fieldName: "ID", expr: 2, cond: "greaterThan" }], "AND", true);
+					assert.deepEqual(ds.dataView(), [{ ID: 3 }], "Only the record with ID 3 should be left.");
+				});
+
+				QUnit.test("Local filtering with an expression string", function (assert) {
+					assert.expect(1);
+					var ds = new $.ig.DataSource({
+						dataSource: [{ ID: 1 }, { ID: 2 }, { ID: 3 }],
+						schema: { fields: [{ name: "ID", type: "number" }] }
+					});
+					ds.dataBind();
+					ds.filter(" ID > 1 AND ID < 3 ", true);
+					assert.deepEqual(ds.dataView(), [{ ID: 2 }], "Only the record with ID 2 should be left.");
+				});

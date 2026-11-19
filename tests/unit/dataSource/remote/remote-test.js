@@ -749,3 +749,55 @@
 		params = $.param(ds._encodeUrl());
 		assert.equal(params, "filter(ProductID)=Contains(%25EF%25BC%2593)", "Filtering Expression Value should be escaped.");
 	});
+
+	QUnit.module("igDataSource Remote without $.trim (jQuery 4)", {
+		trim: null,
+		mockId: null,
+		beforeEach: function () {
+			// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
+			this.trim = $.trim;
+			delete $.trim;
+			// A text response with surrounding whitespace, which the data source trims before parsing it
+			this.mockId = $.mockjax({
+				url: "/trim-test/products",
+				contentType: "text/plain",
+				responseText: "  { \"d\": { \"results\": [{ \"ID\": 1 }, { \"ID\": 2 }, { \"ID\": 3 }] } }  "
+			});
+		},
+		afterEach: function () {
+			$.mockjax.clear(this.mockId);
+			$.trim = this.trim;
+		}
+	});
+
+	QUnit.test("Bind to a URL string", function (assert) {
+		assert.expect(3);
+		var done = assert.async(), ds;
+		ds = new $.ig.DataSource({
+			dataSource: "/trim-test/products",
+			responseDataKey: "d.results",
+			callback: function (success, error) {
+				assert.ok(success, "The request should succeed. " + error);
+				assert.deepEqual(ds.dataView(), [{ ID: 1 }, { ID: 2 }, { ID: 3 }], "All records should be bound.");
+				done();
+			}
+		});
+		assert.equal(ds.analyzeDataSource(), "remoteUrl", "The data source should be recognized as a remote URL.");
+		ds.dataBind();
+	});
+
+	QUnit.test("Bind to a URL string with type json", function (assert) {
+		assert.expect(2);
+		var done = assert.async(), ds;
+		ds = new $.ig.DataSource({
+			type: "json",
+			dataSource: "/trim-test/products",
+			responseDataKey: "d.results",
+			callback: function (success, error) {
+				assert.ok(success, "The request should succeed. " + error);
+				assert.deepEqual(ds.dataView(), [{ ID: 1 }, { ID: 2 }, { ID: 3 }], "All records should be bound.");
+				done();
+			}
+		});
+		ds.dataBind();
+	});
