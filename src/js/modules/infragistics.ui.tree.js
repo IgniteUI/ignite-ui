@@ -4274,7 +4274,7 @@
 				var node = $(".selector").igTree("nodeByIndex", 10);
 			```
 				paramType="number" optional="false" Specifies the index the node at which to be retrieved.
-				paremType="object" optional="true" The parent node element to start the search from.
+				paramType="object" optional="true" The parent node element to start the search from.
 				returnType="object" The node element at the specified index.
 			*/
 			var node;
