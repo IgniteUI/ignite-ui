@@ -2269,7 +2269,7 @@
 
 				var dataSummaries = ds.dataSummaries();
 			```
-			 * returnType="object"
+			returnType="object"
 			*/
 			var s = this.settings.summaries, type = s.type;
 			if (type === "local") {
@@ -7633,8 +7633,8 @@
 		Eg: When you need to fetch the data remotely, or when it is stored in a string and needs to be evaluated first
 		*/
 		schema: {
-			/* A list of field definitions specifying the schema of the data source. Field objects description: {name, [type], [xpath]}
-			returnType="array" */
+			/* type="array" A list of field definitions specifying the schema of the data source. Field objects description: {name, [type], [xpath]}
+			*/
 			fields: [
 				{
 					/* type="string" Name of the field*/
@@ -7652,7 +7652,7 @@
 					xpath: undefined,
 					/* type="string|function" This option is applicable only for fields with fieldDataType="object". Reference to a function (string or function) that can be used for complex data extraction from the data records, whose return value will be used for all data operations associated with this field. */
 					mapper: undefined,
-					/*paramType="function" optional="true" formatter function which accepts three parameters: val - value of the field; record - data source record; field - field definition; and return the formatted string. Formatter function is used when filtering by all fields.*/
+					/*type="function" optional="true" formatter function which accepts three parameters: val - value of the field; record - data source record; field - field definition; and return the formatted string. Formatter function is used when filtering by all fields.*/
 					formatter: undefined
 				}
 			],
@@ -9654,7 +9654,7 @@
 		}
 	});
 	$.ig.TreeHierarchicalDataSource = $.ig.TreeHierarchicalDataSource || $.ig.DataSource.extend({
-		/* Configure datasource settings */
+		/* type="object" Configure datasource settings */
 		settings: {
 			/* Configure tree datasource specific settings */
 			treeDS: {
@@ -10467,8 +10467,8 @@
 		},
 		getExpandStateById: function (rowId) {
 			/*Gets whether the row with the specified id is expanded.Returns true if the row is expanded or false if it's not.
-			//paramType="string" optional="false" The id of the row.
-			//returnType="bool" Returns true if expanded and false if not.*/
+			paramType="string" optional="false" The id of the row.
+			returnType="bool" Returns true if expanded and false if not.*/
 			var rec = this.findRecordByKey(rowId),
 				propertyExp = this.settings.treeDS.expandedKey,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
@@ -11430,7 +11430,8 @@
 		},
 		getPathBy: function (record) {
 			/*Gets the path of a record by the record or the record's key
-			paramType="object|string|number" returnType="string" optional="false" the record or the record's key as string or number
+			paramType="object|string|number" optional="false" the record or the record's key as string or number
+			returnType="string"
 			*/
 			if (record === null || record === undefined) {
 				return null;
