@@ -44,6 +44,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
     - uses: actions/checkout@v7
     - name: Use Node.js 20.x
