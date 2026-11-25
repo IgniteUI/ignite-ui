@@ -1854,3 +1854,16 @@ QUnit.test('Bug 1974: inputMask literals are visible for empty value after blur'
 	assert.equal(field.val(), "", "Editor text field should remain empty");
 	assert.equal($editor1.igMaskEditor("value"), "", "Value should be empty");
 });
+
+QUnit.test('Boolean attributes without a value in the markup are applied', function (assert) {
+	assert.expect(3);
+
+	// jQuery 4's .attr() returns the attribute's value, which is "" for these
+	var $disabledEditor = this.util.appendToFixture('<input disabled/>').igTextEditor(),
+		$readOnlyEditor = this.util.appendToFixture('<input readonly/>').igTextEditor(),
+		$checkboxEditor = this.util.appendToFixture('<input type="checkbox" checked/>').igCheckboxEditor();
+
+	assert.strictEqual($disabledEditor.igTextEditor("option", "disabled"), true, "The disabled attribute should set the disabled option.");
+	assert.strictEqual($readOnlyEditor.igTextEditor("option", "readOnly"), true, "The readonly attribute should set the readOnly option.");
+	assert.strictEqual($checkboxEditor.igCheckboxEditor("option", "checked"), true, "The checked attribute should set the checked option.");
+});

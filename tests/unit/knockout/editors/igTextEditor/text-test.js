@@ -285,7 +285,7 @@ QUnit.test('Test disabled binding', function (assert) {
 	chk.click();
 	assert.ok(editor.igTextEditor("option", "disabled"), "Editor should be disabled");
 	assert.ok(editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-	assert.equal(editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+	assert.ok(editor.igTextEditor("field").is("[disabled]"), "Editor should be disabled");
 	assert.ok(editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 	chk.click();
 	chk.click();
@@ -309,12 +309,12 @@ QUnit.test('Test disabled binding', function (assert) {
 	editor = editorNotObs1; chk = chkNotObs1;
 	assert.ok(editor.igTextEditor("option", "disabled"), "Editor should be disabled");
 	assert.ok(editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-	assert.equal(editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+	assert.ok(editor.igTextEditor("field").is("[disabled]"), "Editor should be disabled");
 	assert.ok(editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 	chk.click();
 	assert.ok(editor.igTextEditor("option", "disabled"), "Editor should be disabled");
 	assert.ok(editor.igTextEditor("field").prop("disabled"), "Editor should be disabled");
-	assert.equal(editor.igTextEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+	assert.ok(editor.igTextEditor("field").is("[disabled]"), "Editor should be disabled");
 	assert.ok(editor.igTextEditor("editorContainer").hasClass($.ui.igTextEditor.prototype.css.disabled), "Editor should be disabled");
 });
 

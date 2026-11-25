@@ -123,8 +123,8 @@ QUnit.module("igDataSource Paging", {
 					{ "employeeId": 21, "supervisorId": 20, "firstName": "Jeremy", "lastName": "Donaldson", "Category": { "ID": 2,  "Name": "Name2"}  }
 				],
 				util: $.ig.TestUtil,
-				tmplHtml: '<script id="template1" type="text/x-jquery-tmpl">${firstName} <strong> ${lastName} </strong> <br/></script>',
-				tableTemplate: '<script id="tableTemplate" type="text/x-jquery-tmpl"><tr> <td> ${col1} </td> <td> ${col2} </td> <td> ${col3} </td>  <td> ${col4} </td> </tr></script>',
+				tmplHtml: '${firstName} <strong> ${lastName} </strong> <br/>',
+				tableTemplate: '<tr> <td> ${col1} </td> <td> ${col2} </td> <td> ${col3} </td>  <td> ${col4} </td> </tr>',
 				tableDsSource:'<table id="t1"><tbody><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr><tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> </tr><tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> </tr><tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> </tr><tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> </tr><tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> </tr><tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> </tr><tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> </tr><tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> </tr><tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td> </tr><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr></tbody></table>',
 				loadTestbeds: function(){
 					var tableDataSourceElement = $(this.tableDsSource).appendTo($('#qunit-fixture'));
@@ -136,9 +136,9 @@ QUnit.module("igDataSource Paging", {
 					// here we are specifying a default sort direction, which will be applied immediately after the source is bound 
 					this.jsonDs = new $.ig.ArrayDataSource( {sorting: { type: "local", defaultDirection: "asc" }, dataSource: this.arrayOfDataObjects }).dataBind();
 
-					// use jQuery templating to render the processed/transformed data source 
-					var template =  $(this.tmplHtml).appendTo($('#qunit-fixture'));
-					template.tmpl(this.jsonDs.dataView()).appendTo($('#qunit-fixture'));;
+					// use igTemplating to render the processed/transformed data source,
+					// skipping empty records like jquery.tmpl did
+					$('#qunit-fixture').append($.ig.tmpl(this.tmplHtml, this.jsonDs.dataView().filter(Boolean)));
 
 					this.treeDs = new $.ig.TreeHierarchicalDataSource({
 						dataSource: this.treeFlatData,

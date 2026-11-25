@@ -145,7 +145,6 @@ module.exports = {
 						'		define([\n' +
 						'			"jquery",\n' +
 						'			"jquery-ui",\n' +
-						'			"jquery-ui/ui/core",\n' +
 						'			"jquery-ui/ui/data",\n' +
 						'			"jquery-ui/ui/focusable",\n' +
 						'			"jquery-ui/ui/keycode",\n' +
@@ -172,7 +171,6 @@ module.exports = {
 						'		define([\n' +
 						'			"jquery",\n' +
 						'			"jquery-ui",\n' +
-						'			"jquery-ui/ui/core",\n' +
 						'			"jquery-ui/ui/data",\n' +
 						'			"jquery-ui/ui/focusable",\n' +
 						'			"jquery-ui/ui/keycode",\n' +

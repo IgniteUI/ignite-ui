@@ -101,7 +101,7 @@ QUnit.module("igDataSource dates", {
 
 	},
 	verifyDate: function(expectedDate, utcString, assert){
-		assert.ok($.type(expectedDate) === "date" &&
+		assert.ok($.ig.util.getType(expectedDate) === "date" &&
 		expectedDate.getTime() === new Date(utcString).getTime(),
 		"The type of the date is valid and the date is correct");
 	},

@@ -1251,6 +1251,6 @@
 				data = ds.data();
 				assert.equal( data[0].expanded, false, "Expanded property should be properly set.");
 				assert.equal( data[0].dataLevel, 0, "DataLevel property should be properly set.");
-				assert.equal($.type(data[0].Price), "number", "Value of field in the data source should be transformend to the correct data type.");
+				assert.equal($.ig.util.getType(data[0].Price), "number", "Value of field in the data source should be transformend to the correct data type.");
 			});
 		});

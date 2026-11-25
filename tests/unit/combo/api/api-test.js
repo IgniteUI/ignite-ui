@@ -209,7 +209,7 @@ QUnit.test('[ID4] Combo disable option', function (assert) {
 	var $input = $combo.igCombo("textInput");
 	assert.ok($combo.hasClass("ui-state-disabled"), "Combo does not have ui-state-disabled class applied");
 	assert.ok($combo.hasClass("ui-igCombo-disabled"), "Combo does not have ui-igCombo-disabled class applied");
-	assert.strictEqual($input.attr("disabled"), "disabled", "Disabled attribute was not applied");
+	assert.ok($input.is("[disabled]"), "Disabled attribute was not applied");
 
 	// Enabling again the combo through the options
 	$combo.igCombo("option", "disabled", false);
@@ -221,7 +221,7 @@ QUnit.test('[ID4] Combo disable option', function (assert) {
 	$combo.igCombo("option", "disabled", true);
 	assert.ok($combo.hasClass("ui-state-disabled"), "Combo does not have ui-state-disabled class applied");
 	assert.ok($combo.hasClass("ui-igCombo-disabled"), "Combo does not have ui-igCombo-disabled class applied");
-	assert.strictEqual($input.attr("disabled"), "disabled", "Disabled attribute was not applied");
+	assert.ok($input.is("[disabled]"), "Disabled attribute was not applied");
 });
 
 QUnit.test('[ID5] Enable checkboxes', function (assert) {

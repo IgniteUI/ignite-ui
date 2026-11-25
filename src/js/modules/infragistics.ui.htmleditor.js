@@ -1649,7 +1649,10 @@
             for (i = 0; i < this._allToolbars.length; i++) {
                 curSettings = this._allToolbars[ i ];
                 curName = curSettings.name;
-                showToolbarOption = $.camelCase("show-" + curName);
+                // Same result as $.camelCase, which jQuery 4 removed
+                showToolbarOption = ("show-" + curName).replace(/-([a-z])/g, function (match, letter) {
+                    return letter.toUpperCase();
+                });
                 showToolbar = true;
 
                 // Create the toolbar

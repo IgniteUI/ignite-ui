@@ -19,7 +19,10 @@ $.fn.simulate = function( type, options ) {
 };
 
 $.simulate = function( elem, type, options ) {
-	var method = $.camelCase( "simulate-" + type );
+	// Patched: jQuery 4 removed $.camelCase, which this used
+	var method = ( "simulate-" + type ).replace( /-([a-z])/g, function( all, letter ) {
+		return letter.toUpperCase();
+	});
 
 	this.target = elem;
 	this.options = options;

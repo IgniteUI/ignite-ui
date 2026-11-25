@@ -209,7 +209,7 @@ QUnit.test('Test disabled binding', function (assert) {
 	chk.click();
 	assert.ok(editor.igDateEditor("option", "disabled"), "Editor should be disabled");
 	assert.ok(editor.igDateEditor("field").prop("disabled"), "Editor should be disabled");
-	assert.equal(editor.igDateEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+	assert.ok(editor.igDateEditor("field").is("[disabled]"), "Editor should be disabled");
 	assert.ok(editor.igDateEditor("editorContainer").hasClass($.ui.igDateEditor.prototype.css.disabled), "Editor should be disabled");
 	chk.click();
 	chk.click();
