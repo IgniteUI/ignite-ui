@@ -728,7 +728,9 @@
 			return scrollbar;
 		},
 		_renderButton: function (dir, container) {
-			var ti = this.options.tabIndex;
+			var ti = this.options.tabIndex,
+				iconClass = dir === "left" ? this.css.scrollBarLeftButtonIconClass :
+					this.css.scrollBarRightButtonIconClass;
 			ti += dir === "left" ? 2 : 4;
 			$("<div></div>")
 				.attr({
@@ -738,9 +740,13 @@
 				.css("float", dir)
 				.addClass(this.css.scrollBarButtonClass)
 				.button({
+					// jQuery UI 1.12 and later. jQuery UI 1.14 ignores the
+					// icons and text options below unless $.uiBackCompat is true.
+					icon: iconClass,
+					showLabel: false,
+					// jQuery UI 1.11 and earlier
 					icons: {
-						primary: dir === "left" ? this.css.scrollBarLeftButtonIconClass :
-							this.css.scrollBarRightButtonIconClass
+						primary: iconClass
 					},
 					text: false
 				})
