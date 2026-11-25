@@ -1150,7 +1150,9 @@
 		if (requestOptions && "isCrossDomain" in requestOptions) {
 			isCrossDomain = requestOptions.isCrossDomain;
 		} else {
-			isCrossDomain = $.support.cors;
+			// jQuery 4 removed $.support.cors. Every browser it supports has CORS,
+			// so default to true, as $.support.cors was in those browsers on jQuery 3.
+			isCrossDomain = $.support.cors !== undefined ? $.support.cors : true;
 		}
 
 		var xhrObj = (function (rOptions) {

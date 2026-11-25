@@ -176,7 +176,7 @@ QUnit.test('[ID2] Drop down mode', function (assert) {
 	$dropDown = $combo.find('.ui-igcombo-dropdown');
 	$item = $combo.find('li').eq(0);
 
-	assert.strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+	assert.ok($input.is('[readonly]'), 'Readonly attribute was not applied');
 	assert.strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
 
 	$.ig.TestUtil.click($input)
@@ -217,7 +217,7 @@ QUnit.test('[ID3] Readonly mode', function (assert) {
 	$hiddenInput = $combo.find('.ui-igcombo-hidden-field');
 	$button = $combo.find('.ui-igcombo-button');
 
-	assert.strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+	assert.ok($input.is('[readonly]'), 'Readonly attribute was not applied');
 	assert.strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
 
 	assert.strictEqual($input.val(), "1", 'Input value is incorrect');
@@ -257,7 +257,7 @@ QUnit.test('[ID4] Readonlylist mode', function (assert) {
 	$item = $combo.find('li').eq(0);
 	$item1 = $combo.find('li').eq(1);
 
-	assert.strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+	assert.ok($input.is('[readonly]'), 'Readonly attribute was not applied');
 	assert.strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
 
 	$.ig.TestUtil.click($input);
@@ -305,7 +305,7 @@ QUnit.test('[ID5] Validation', function (assert) {
 
 	// Validator
 	validator = $valCombo.igCombo('validator');
-	assert.ok($.type(validator) === "object", "Validator should be object.");
+	assert.ok($.ig.util.getType(validator) === "object", "Validator should be object.");
 	assert.ok(validator.widgetName === "igValidator", "The type of Validator should be igValidator.");
 	assert.strictEqual($valCombo.igCombo('validate'), false, 'Validation error message should be previewed');
 

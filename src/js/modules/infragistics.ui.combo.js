@@ -1742,7 +1742,8 @@
 			// Multiple attribute
 			// JD 6/25/15 - Bug 201623 - The attribute should only apply if multiSelection.enabled was not
 			// set by the developer.
-			if ($combo.attr("multiple") === "multiple" &&
+			// Check for the attribute itself: jQuery 4 returns its value, which is "" for <select multiple>
+			if ($combo.is("[multiple]") &&
 				(this._options.originalOptions.multiSelection === undefined ||
 				this._options.originalOptions.multiSelection.enabled === undefined)) {
 				this.options.multiSelection.enabled = true;
@@ -2940,7 +2941,7 @@
 		_moveCaretToInputEnd: function (preventItemSeparatorOnFocus) {
 			var range,
 				input = this._options.$input[ 0 ],
-				readonly = this._options.$input.attr("readonly");
+				readonly = this._options.$input.is("[readonly]");
 
 			// H.A. 30/05/2016 Bug #219635 - Caret moves to combo input end if deleting a symbol that is not the last
 			if (document.activeElement === input) {

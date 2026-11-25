@@ -1134,7 +1134,7 @@ QUnit.test('[ID7] Execute all rules', function (assert) {
 	},
 		getNotifierMessages = function (field) {
 			return field.igValidator("notifier").container().find("ul > li").map(function () {
-				return $.trim($(this).text());
+				return $(this).text().trim();
 			}).get()
 		};
 

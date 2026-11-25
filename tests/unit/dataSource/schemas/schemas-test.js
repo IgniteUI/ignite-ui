@@ -487,7 +487,7 @@
 		for (var i = 0; i < data.length; i++) {
 			var dataObj = data[i];
 			for (var j = 0; j < fields.length; j++) {
-				assert.equal($.type(dataObj[fields[j].name]), fields[j].type, "Value of field in the data source should be transformend to the correct data type.");
+				assert.equal($.ig.util.getType(dataObj[fields[j].name]), fields[j].type, "Value of field in the data source should be transformend to the correct data type.");
 			}
 		}
 

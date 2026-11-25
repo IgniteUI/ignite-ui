@@ -184,7 +184,7 @@ QUnit.test('[ID1] igCombo existence', function (assert) {
 	var $combo = $.ig.TestUtil.appendToFixture(this.divTag, { id: "combo-div" }),
 		combo = $('#combo-div').igCombo;
 
-	assert.ok($.type(combo) === 'function', 'igCombo is not defined.');
+	assert.ok($.ig.util.getType(combo) === 'function', 'igCombo is not defined.');
 });
 
 QUnit.test('[ID2] igCombo div rendering', function (assert) {
@@ -684,7 +684,7 @@ QUnit.test('[ID11] igCombo disabled rendering', function (assert) {
 	$input = $comboElement.igCombo('textInput');
 
 	assert.equal($comboWrapper.hasClass("ui-igCombo-disabled ui-state-disabled"), true, "The combo wrapper element does not have the disabled css classes applied.");
-	assert.equal($input.attr("disabled"), "disabled", "The disabled attribute is not applied to the input.");
+	assert.ok($input.is("[disabled]"), "The disabled attribute is not applied to the input.");
 
 	$comboElement.igCombo("option", "disabled", false);
 

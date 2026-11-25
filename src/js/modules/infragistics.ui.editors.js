@@ -556,8 +556,9 @@
 			var element = this.element,
 				name = element.attr("name"),
 				value = element.attr("value"),
-				disabled = element.attr("disabled"),
-				readOnly = element.attr("readOnly");
+				// Check for the attributes themselves: jQuery 4 returns their values, which can be ""
+				disabled = element.is("[disabled]"),
+				readOnly = element.is("[readonly]");
 
 			if (name) {
 				element.removeAttr("name");
@@ -11859,7 +11860,8 @@
 
 		},
 		_readAttributes: function () {
-			var checked = this.element.attr("checked");
+			// Check for the attribute itself: jQuery 4 returns its value, which is "" for <input checked>
+			var checked = this.element.is("[checked]");
 
 			this._super(this.element);
 

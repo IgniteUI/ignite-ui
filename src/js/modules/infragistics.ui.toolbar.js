@@ -1059,9 +1059,10 @@
             var data, i;
 
             if (el !== undefined) {
+                // jQuery 4 creates .data() objects without a prototype, so they have no hasOwnProperty
                 data = el.data();
                 for (i in data) {
-                    if (data.hasOwnProperty(i) && data[ i ].widgetName) {
+                    if (Object.prototype.hasOwnProperty.call(data, i) && data[ i ].widgetName) {
                         return data[ i ].widgetName;
                     }
                 }

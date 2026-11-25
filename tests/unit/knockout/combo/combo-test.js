@@ -367,7 +367,7 @@ QUnit.test("[ID10] Combo editor test igComboDisable binding", function (assert) 
 	chk.click();
 	assert.ok(combo1.igCombo("option", "disabled"), "Combo editor disabled option should be equal to true");
 	assert.ok(combo1.igCombo("valueInput").prop("disabled"), "Combo editor value input disabled property should be equal to true");
-	assert.equal(combo1.igCombo("valueInput").attr("disabled"), "disabled", "Combo editor value input disabled attribute should be equal to disabled");
+	assert.ok(combo1.igCombo("valueInput").is("[disabled]"), "Combo editor value input disabled attribute should be equal to disabled");
 	assert.ok(combo1.igCombo("comboWrapper").hasClass($.ui.igCombo.prototype.css.disabled), "Combo editor comboWrapper should have disabled class");
 	chk.click();
 	chk.click();

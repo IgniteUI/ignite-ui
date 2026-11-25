@@ -435,24 +435,53 @@ QUnit.test('[ID21] Test String.concat', function (assert) {
 });
 
 QUnit.test('[ID22] Test $.ig.util.trim', function (assert) {
-	assert.expect(14);
-
+	// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
 	var trim = $.trim,
 		values = [null, undefined, 0, 42, "  ABC  ", "\u00A0\uFEFF\t\r\n ABC \u00A0\uFEFF\t\r\n", "A B"],
 		expected = ["", "", "0", "42", "ABC", "ABC", "A B"],
 		i;
 
-	for (i = 0; i < values.length; i++) {
-		assert.strictEqual($.ig.util.trim(values[i]), trim(values[i]), "Same result as $.trim for " + JSON.stringify(values[i]));
+	assert.expect(trim ? 14 : 7);
+
+	if (trim) {
+		for (i = 0; i < values.length; i++) {
+			assert.strictEqual($.ig.util.trim(values[i]), trim(values[i]), "Same result as $.trim for " + JSON.stringify(values[i]));
+		}
 	}
 
-	// jQuery 4 removed $.trim: https://github.com/IgniteUI/ignite-ui/issues/2302
 	delete $.trim;
 	try {
 		for (i = 0; i < values.length; i++) {
 			assert.strictEqual($.ig.util.trim(values[i]), expected[i], "Trimmed without $.trim: " + JSON.stringify(values[i]));
 		}
 	} finally {
-		$.trim = trim;
+		if (trim) {
+			$.trim = trim;
+		}
 	}
+});
+
+QUnit.test('[ID23] $.ig.util.ajax sends cross-domain requests without $.support.cors', function (assert) {
+	assert.expect(1);
+
+	// jQuery 4 removed $.support.cors: https://github.com/IgniteUI/ignite-ui/issues/2304
+	var ajax = $.ajax,
+		hasCors = "cors" in $.support,
+		cors = $.support.cors,
+		settings;
+
+	$.ajax = function (options) {
+		settings = options;
+	};
+	delete $.support.cors;
+	try {
+		$.ig.util.ajax("/util-ajax-test", "text/plain", null, "GET");
+	} finally {
+		$.ajax = ajax;
+		if (hasCors) {
+			$.support.cors = cors;
+		}
+	}
+
+	assert.strictEqual(settings.crossDomain, true, "The request should be sent as cross-domain.");
 });
