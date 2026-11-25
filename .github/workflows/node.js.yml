@@ -37,3 +37,27 @@ jobs:
           path-to-lcov: ./coverage/lcov.info
           github-token: ${{ github.token }}
 
+  # The build job tests the jQuery version in package-lock.json (3.x).
+  # This job runs the same tests on jQuery 4.1.
+  test-jquery-4:
+    name: Test on jQuery 4.1
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v7
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - run: npm ci
+    - name: Install jQuery 4.1
+      run: |
+        npm install --no-save jquery@4.1
+        npm ls jquery
+    # Skips the igZoombar tests: the charts scripts they load from the CDN
+    # call $.type, which jQuery 4 removed. Remove the --testPath argument
+    # once the charts package no longer calls it.
+    - run: npx karma start --single-run --testPath 'unit/!(zoombar)/**'
+
