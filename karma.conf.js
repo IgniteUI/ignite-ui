@@ -63,8 +63,7 @@ module.exports = function (config) {
       // http://karma-runner.github.io/1.0/config/files.html
       // serve resources
       { pattern: "node_modules/jquery/dist/jquery.min.js", included: true, watched: false },
-      // TODO: because.. jquery-ui package has no bundle
-      { pattern: `http://code.jquery.com/ui/1.13.0/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
+      { pattern: `node_modules/jquery-ui/dist/jquery-ui${config.singleRun ? ".min" : ""}.js`, included: true, watched: false },
       { pattern: "node_modules/jquery-mockjax/dist/jquery.mockjax.min.js", included: true, watched: false },
       { pattern: "node_modules/knockout/build/output/knockout-latest.js", included: true, watched: false },
 
@@ -120,7 +119,6 @@ module.exports = function (config) {
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_stacked.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_annotation.js", included: true, watched: false },
       { pattern: "http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.datachart_interactivity.js", included: true, watched: false },
-      "http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js",
       "tests/unit/common/test-util.js",
       "tests/unit/videoplayer/mockVideo.js",
       "tests/unit/common/simInteractions.js",

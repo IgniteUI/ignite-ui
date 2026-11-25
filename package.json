@@ -22,8 +22,8 @@
     "build": "grunt build"
   },
   "dependencies": {
-    "jquery": "^3.7.1",
-    "jquery-ui": "^1.14.1"
+    "jquery": "^3.7.1 || ^4.0.0",
+    "jquery-ui": "^1.14.2"
   },
   "devDependencies": {
     "coveralls": "^3.1.1",
@@ -35,7 +35,7 @@
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.2.2",
-    "jquery-mockjax": "^2.6.0",
+    "jquery-mockjax": "^2.7.0",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",
     "karma-coverage": "^2.2.1",

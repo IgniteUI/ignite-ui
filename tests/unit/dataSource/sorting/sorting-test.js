@@ -215,19 +215,15 @@ var textSettings =  {
 	},
 	initialized: false,
 	tableDsSource: '<table id="t1" cellpadding=5 cellspacing=0><tbody><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td>  <td> 7/23/2010 </td> <td>1</td></tr><tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> <td> 10/29/2010 </td><td>0</td> </tr><tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> <td> 10/28/2010 </td><td>0</td> </tr><tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> <td> 11/10/2010 </td><td>0</td></tr><tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> <td> 7/23/2009 </td><td>0</td></tr><tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> <td> 9/20/2010 </td><td>1</td> </tr><tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> <td> 7/23/2011 </td><td>1</td> </tr><tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> <td> 11/1/2010 </td> <td>0</td></tr><tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> <td> 5/20/2010 </td> <td>0</td></tr><tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td><td> 8/10/2010 </td>  <td>0</td></tr><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td><td> 7/23/2010 </td> <td>0</td> </tr></tbody></table>',
-	template1Html:'<script id="template1" type="text/x-jquery-tmpl">${firstName} <strong> ${lastName} </strong> <br/></script>',
-	tableTemplateHtml: '<script id="tableTemplate" type="text/x-jquery-tmpl"><tr> <td> ${col1} </td> <td> ${col2} </td> <td> ${col3} </td>  <td> ${col4} </td> <td> ${col5} </td>  <td> ${col6} </td></tr></script>',
+	template1Html:'${firstName} <strong> ${lastName} </strong> <br/>',
+	tableTemplateHtml: '<tr> <td> ${col1} </td> <td> ${col2} </td> <td> ${col3} </td>  <td> ${col4} </td> <td> ${col5} </td>  <td> ${col6} </td></tr>',
 	listHtml: '<ul id="list1"></ul>',
 	util: $.ig.TestUtil,
 	setTableTemplate: function(){
-		$("#t1 tbody").empty();
-		var tableTemplate = $(this.tableTemplateHtml).appendTo($('#qunit-fixture'));
-		tableTemplate.tmpl(this.tableDs.dataView()).appendTo("#t1 tbody");
+		$("#t1 tbody").empty().append($.ig.tmpl(this.tableTemplateHtml, this.tableDs.dataView()));
 	},
 	setListTemplate: function(){
-		$("#list1").empty();
-		var listTemplate = $(this.template1Html).appendTo($('#qunit-fixture'));
-		listTemplate.tmpl(this.jsonDs.dataView()).appendTo("#list1");
+		$("#list1").empty().append($.ig.tmpl(this.template1Html, this.jsonDs.dataView()));
 	},
 	beforeEach: function(assert) {
 		$(this.tableDsSource).appendTo($('#qunit-fixture'));
